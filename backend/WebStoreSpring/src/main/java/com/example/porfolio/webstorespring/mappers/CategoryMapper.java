@@ -13,10 +13,10 @@ import java.util.List;
 public interface CategoryMapper {
 
     @Mapping(target = "subCategoriesDto", source = "subCategories")
-    CategoryDto categoryToCategoryDto(Category category);
+    CategoryDto mapToDto(Category category);
 
     @Mapping(target = "subCategories", source = "subCategoriesDto")
-    Category categoryDtoToCategory(CategoryDto categoryDto);
+    Category mapToEntity(CategoryDto categoryDto);
 
-    List<CategoryDto> categoriesToCategoriesDto(List<Category> categories);
+    List<CategoryDto> mapToDto(List<Category> categories);
 }

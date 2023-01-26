@@ -18,11 +18,11 @@ public interface SubCategoryMapper {
 
     @Mapping(target = "categoryDto", source = "category")
     @Mapping(target = "productsDto", source = "products")
-    SubCategoryDto subCategoryToSubCategoryDto(SubCategory subcategory);
+    SubCategoryDto mapToDto(SubCategory subcategory);
 
     @Mapping(target = "category", source = "categoryDto")
     @Mapping(target = "products", source = "productsDto")
-    SubCategory subCategoryDtoToSubCategory(SubCategoryDto subCategoryDto);
+    SubCategory mapToEntity(SubCategoryDto subCategoryDto);
 
-    List<SubCategoryDto> subCategoriesDtoToSubCategories(List<SubCategory> subCategories);
+    List<SubCategoryDto> mapToDto(List<SubCategory> subCategories);
 }

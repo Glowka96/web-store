@@ -11,6 +11,7 @@ public class CategoryDto {
     @JsonIgnore
     private Long id;
 
+    @Size(min=2, message = "Min letters: 2")
     private String name;
 
     private List<SubCategoryDto> subCategoriesDto;

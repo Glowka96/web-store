@@ -16,9 +16,9 @@ public interface OrderMapper {
 
     @Mapping(target = "accountDto", source = "account")
     @Mapping(target = "shipmentsDto", source = "shipments")
-    OrderDto orderToOrderDto(Order order);
+    OrderDto mapToDto(Order order);
 
     @Mapping(target = "account", source = "accountDto")
     @Mapping(target = "shipments", source = "shipmentsDto")
-    Order orderDtoToOrder(OrderDto orderDto);
+    Order mapToEntity(OrderDto orderDto);
 }

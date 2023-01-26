@@ -13,8 +13,8 @@ import org.mapstruct.Mapping;
 )
 public interface ProducerMapper {
     @Mapping(target = "productsDto", ignore = true)
-    ProducerDto producerToProducerDto(Producer producer);
+    ProducerDto mapToDto(Producer producer);
 
     @Mapping(target = "products", ignore = true)
-    Producer producerDtoToProducer(ProducerDto producerDto);
+    Producer mapToEntity(ProducerDto producerDto);
 }

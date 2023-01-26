@@ -16,34 +16,32 @@ import java.util.List;
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
-    private final CategoryMapper mapper;
+    private final CategoryMapper categoryMapper;
 
     public List<CategoryDto> getAllCategory() {
-        return mapper.categoriesToCategoriesDto(
+        return categoryMapper.mapToDto(
                 categoryRepository.findAll());
     }
 
     public CategoryDto getCategoryById(Long id) {
         Category foundCategory = findCategoryById(id);
-        return mapper.categoryToCategoryDto(foundCategory);
+        return categoryMapper.mapToDto(foundCategory);
     }
 
     public CategoryDto save(CategoryDto categoryDto) {
-        Category category = categoryRepository.save(
-                mapper.categoryDtoToCategory(categoryDto));
-        category.getSubCategories().forEach(
-                subCategory -> subCategory.setCategory(category));
-        return mapper.categoryToCategoryDto(category);
+        Category category = categoryMapper.mapToEntity(categoryDto);
+        categoryRepository.save(category);
+        return categoryMapper.mapToDto(category);
     }
 
     public CategoryDto update(Long id, CategoryDto categoryDto) {
         Category findCategoryById = findCategoryById(id);
 
-        Category category = mapper.categoryDtoToCategory(categoryDto);
+        Category category = categoryMapper.mapToEntity(categoryDto);
         category.setId(findCategoryById.getId());
 
         Category saveCategory = categoryRepository.save(category);
-        return mapper.categoryToCategoryDto(saveCategory);
+        return categoryMapper.mapToDto(saveCategory);
     }
 
     private Category findCategoryById(Long id) {

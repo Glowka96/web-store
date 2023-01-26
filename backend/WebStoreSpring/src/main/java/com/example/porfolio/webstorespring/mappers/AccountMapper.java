@@ -15,8 +15,8 @@ import org.mapstruct.Mapping;
 public interface AccountMapper {
 
     @Mapping(target = "ordersDto", source = "orders")
-    AccountDto accountToAccountDto(Account account);
+    AccountDto mapToDto(Account account);
 
     @Mapping(target = "orders", source = "ordersDto")
-    Account accountDtoToAccount(AccountDto accountDto);
+    Account mapToEntity(AccountDto accountDto);
 }

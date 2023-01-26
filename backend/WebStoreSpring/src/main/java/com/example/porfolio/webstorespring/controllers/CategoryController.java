@@ -27,7 +27,6 @@ public class CategoryController {
     public ResponseEntity<CategoryDto> findCategoryById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(categoryService.getCategoryById(id));
     }
-
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<CategoryDto> saveCategory(@RequestBody CategoryDto categoryDto) {
@@ -38,9 +37,6 @@ public class CategoryController {
     @PutMapping("{id}")
     public ResponseEntity<CategoryDto> updateCategory(@PathVariable(value = "id") Long id,
                                                       @Valid @RequestBody CategoryDto categoryDto){
-        /*if(!categoryService.findById(id).isPresent()){
-            return ResponseEntity.badRequest().build();
-        }*/
         return ResponseEntity.status(HttpStatus.ACCEPTED)
                 .body(categoryService.update(id, categoryDto));
     }

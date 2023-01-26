@@ -15,10 +15,10 @@ public interface ShipmentMapper {
 
     @Mapping(target = "productDto", source = "product")
     @Mapping(target = "orderDto", source = "order")
-    ShipmentDto shipmentsToShipmentsDto(Shipment shipment);
+    ShipmentDto mapToDto(Shipment shipment);
 
 
     @Mapping(target = "product", source = "productDto")
     @Mapping(target = "order", source = "orderDto")
-    Shipment shipmentDtoToShipment(ShipmentDto shipmentDto);
+    Shipment mapToEntity(ShipmentDto shipmentDto);
 }

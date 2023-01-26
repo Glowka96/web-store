@@ -11,8 +11,8 @@ import org.mapstruct.Mapping;
 public interface AccountAddressMapper {
 
     @Mapping(target = "accountDto", source = "account")
-    AccountAddressDto accountAddressToAccountAddressDto(AccountAddress address);
+    AccountAddressDto mapToDto(AccountAddress address);
 
     @Mapping(target = "account", source = "accountDto")
-    AccountAddress accountAddressDtoToAccountAddress(AccountAddressDto accountAddressDto);
+    AccountAddress mapToEntity(AccountAddressDto accountAddressDto);
 }
