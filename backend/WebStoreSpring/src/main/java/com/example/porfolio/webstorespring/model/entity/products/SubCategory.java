@@ -23,7 +23,7 @@ public class SubCategory {
     private String name;
 
     @Setter
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id")
     private Category category;
 
@@ -31,4 +31,13 @@ public class SubCategory {
     @OneToMany(mappedBy = "subCategory")
     private List<Product> products;
 
+
+    public SubCategory(String name) {
+        this.name = name;
+    }
+
+    public SubCategory(String name, Category category) {
+        this.name = name;
+        this.category = category;
+    }
 }
