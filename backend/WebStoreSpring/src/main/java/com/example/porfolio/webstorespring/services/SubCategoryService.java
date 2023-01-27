@@ -20,20 +20,27 @@ public class SubCategoryService {
     private final SubCategoryMapper mapper;
     private final CategoryMapper categoryMapper;
 
-    public SubCategoryDto findSubCategoryById(Long id){
-        return mapper.subCategoryToSubCategoryDto(
-                repository.findById(id)
-                        .orElseThrow(() -> new ResourceNotFoundException(
-                                "SubCategory with id " + id + " not found")));
+    public SubCategoryDto getSubCategoryById(Long id) {
+        SubCategory foundSubCategory = findSubCategoryById(id);
+        return mapper.mapToDto(foundSubCategory);
     }
 
-    public SubCategoryDto save(Long id, SubCategoryDto subCategoryDto){
-        Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Category with id " + id + " not found"));
-        subCategoryDto.setCategoryDto(categoryMapper.categoryToCategoryDto(category));
+    public SubCategoryDto save(Long id, SubCategoryDto subCategoryDto) {
+        Category foundCategory = findCategoryById(id);
+        subCategoryDto.setCategoryDto(categoryMapper.mapToDto(foundCategory));
         SubCategory saveSubCategory = repository.save(
-                mapper.subCategoryDtoToSubCategory(subCategoryDto));
-        return mapper.subCategoryToSubCategoryDto(saveSubCategory);
+                mapper.mapToEntity(subCategoryDto));
+        return mapper.mapToDto(saveSubCategory);
     }
+
+    private SubCategory findSubCategoryById(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("SubCategory", "id", id));
+    }
+
+    private Category findCategoryById(Long id) {
+        return categoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category","id",id));
+    }
+
 }

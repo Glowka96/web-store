@@ -1,6 +1,5 @@
 package com.example.porfolio.webstorespring.services;
 
-import com.example.porfolio.webstorespring.exceptions.ErrorMSG;
 import com.example.porfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.porfolio.webstorespring.mappers.CategoryMapper;
 import com.example.porfolio.webstorespring.model.dto.products.CategoryDto;
@@ -23,7 +22,7 @@ public class CategoryService {
                 categoryRepository.findAll());
     }
 
-    public CategoryDto getCategoryById(Long id) {
+    public CategoryDto getCategoryDtoById(Long id) {
         Category foundCategory = findCategoryById(id);
         return categoryMapper.mapToDto(foundCategory);
     }
@@ -46,7 +45,6 @@ public class CategoryService {
 
     private Category findCategoryById(Long id) {
         return categoryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        String.format(ErrorMSG.CATEGORY_WITH_ID_NOT_FOUND.getMessage(), id)));
+                .orElseThrow(() -> new ResourceNotFoundException("Category","id", id));
     }
 }

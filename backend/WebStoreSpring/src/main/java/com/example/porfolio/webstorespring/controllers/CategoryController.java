@@ -19,13 +19,13 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping()
-    public ResponseEntity<List<CategoryDto>> findAllCategory() {
+    public ResponseEntity<List<CategoryDto>> getAllCategory() {
         return ResponseEntity.ok(categoryService.getAllCategory());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CategoryDto> findCategoryById(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(categoryService.getCategoryById(id));
+    public ResponseEntity<CategoryDto> getCategoryById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(categoryService.getCategoryDtoById(id));
     }
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)

@@ -53,7 +53,7 @@ class CategoryServiceTest {
         given(categoryRepository.findById(1L)).willReturn(Optional.of(category));
 
         // when
-        CategoryDto savedCategory = underTest.getCategoryById(category.getId());
+        CategoryDto savedCategory = underTest.getCategoryDtoById(category.getId());
 
         // then
         assertThat(savedCategory).isNotNull();
@@ -71,7 +71,7 @@ class CategoryServiceTest {
 
         // when
         // then
-        assertThatThrownBy(() -> underTest.getCategoryById(2L))
+        assertThatThrownBy(() -> underTest.getCategoryDtoById(2L))
                 .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessageContaining("Category with id 2 not found");
     }
@@ -122,17 +122,5 @@ class CategoryServiceTest {
         CategoryDto mappedCategoryDto = categoryMapper.mapToDto(capturedCategory);
 
         assertThat(mappedCategoryDto.getName()).isEqualTo(categoryDto.getName());
-
-
-
     }
-
-  /*  @Test
-    void shouldFindCategoryDtoById() {
-
-    }
-
-    @Test
-    void shouldCategoryDto() {
-    }*/
 }

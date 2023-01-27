@@ -1,6 +1,7 @@
 package com.example.porfolio.webstorespring.model.dto.products;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.util.List;
