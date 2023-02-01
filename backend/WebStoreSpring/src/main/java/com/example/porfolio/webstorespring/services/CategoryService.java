@@ -23,8 +23,7 @@ public class CategoryService {
     }
 
     public CategoryDto getCategoryDtoById(Long id) {
-        Category foundCategory = findCategoryById(id);
-        return categoryMapper.mapToDto(foundCategory);
+        return categoryMapper.mapToDto(findCategoryById(id));
     }
 
     public CategoryDto save(CategoryDto categoryDto) {
@@ -39,8 +38,8 @@ public class CategoryService {
         Category category = categoryMapper.mapToEntity(categoryDto);
         category.setId(findCategoryById.getId());
 
-        Category saveCategory = categoryRepository.save(category);
-        return categoryMapper.mapToDto(saveCategory);
+        categoryRepository.save(category);
+        return categoryMapper.mapToDto(category);
     }
 
     private Category findCategoryById(Long id) {
