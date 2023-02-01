@@ -27,15 +27,14 @@ public class CategoryController {
     public ResponseEntity<CategoryDto> getCategoryById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(categoryService.getCategoryDtoById(id));
     }
-    @PostMapping("")
-    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping()
     public ResponseEntity<CategoryDto> saveCategory(@RequestBody CategoryDto categoryDto) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(categoryService.save(categoryDto));
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<CategoryDto> updateCategory(@PathVariable(value = "id") Long id,
+    public ResponseEntity<CategoryDto> updateCategory(@PathVariable("id") Long id,
                                                       @Valid @RequestBody CategoryDto categoryDto){
         return ResponseEntity.status(HttpStatus.ACCEPTED)
                 .body(categoryService.update(id, categoryDto));
