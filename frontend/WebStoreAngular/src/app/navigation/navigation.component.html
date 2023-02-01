@@ -1,0 +1,9 @@
+<nav class="navigation">
+    <ul class="menu" *ngFor="let category of getCategories">
+      <p>{{category.name}}</p>
+      <li class="submenu" *ngFor="let subcategory of category.subCategoriesDto">
+        <a href="#">{{subcategory.name}}</a>   
+      </li>
+    </ul>
+</nav>
+
