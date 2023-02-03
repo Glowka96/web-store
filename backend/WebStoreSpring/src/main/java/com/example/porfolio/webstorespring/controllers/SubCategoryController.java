@@ -19,14 +19,14 @@ public class SubCategoryController {
 
     @GetMapping("/subcategories/{subCategoryName}")
     public ResponseEntity<SubCategoryDto> getSubCategoryByName(@PathVariable("subCategoryName") String name) {
-        return ResponseEntity.ok(subCategoryService.getSubCategoryByName(name));
+        return ResponseEntity.ok(subCategoryService.getSubCategoryDtoByName(name));
     }
 
     @PostMapping("/{categoryName}/subcategories")
     public ResponseEntity<SubCategoryDto> saveSubCategory(@PathVariable("categoryName") String name,
                                                           @Valid @RequestBody SubCategoryDto subCategoryDto) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(subCategoryService.saveSubCategory(name, subCategoryDto));
+                .body(subCategoryService.save(name, subCategoryDto));
     }
 
     @PutMapping("/{categoryName}/subcategories/{subCategoryName}")
@@ -34,7 +34,7 @@ public class SubCategoryController {
                                                             @PathVariable("subCategoryName") String subCategoryName,
                                                             @RequestBody SubCategoryDto subCategoryDto) {
         return ResponseEntity.status(HttpStatus.ACCEPTED)
-                .body(subCategoryService.updateSubCategory(categoryName, subCategoryName, subCategoryDto));
+                .body(subCategoryService.update(categoryName, subCategoryName, subCategoryDto));
     }
 
     @DeleteMapping("/subcategories/{subCategoryName}")

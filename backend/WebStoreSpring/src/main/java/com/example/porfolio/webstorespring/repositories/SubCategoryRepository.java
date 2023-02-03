@@ -9,5 +9,5 @@ public interface SubCategoryRepository extends JpaRepository<SubCategory, Long> 
 
     Optional<SubCategory> findByName(String name);
 
-    void deleteByIdName(String subCategoryName);
+    void deleteByName(String subCategoryName);
 }

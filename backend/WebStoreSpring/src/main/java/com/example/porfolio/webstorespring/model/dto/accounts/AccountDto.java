@@ -5,22 +5,33 @@ import com.example.porfolio.webstorespring.model.dto.orders.OrderDto;
 import com.example.porfolio.webstorespring.model.entity.accounts.AccountRoles;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.Email;
+import lombok.Data;
 
 import java.util.List;
 
-public record AccountDto(
-        @JsonIgnore
-        Long id,
-        String firstName,
-        String lastName,
-        @Email(message = "login should be a valid e-mail address format")
-        String email,
-        @Password
-        String password,
-        AccountAddressDto address,
-        String imageUrl,
-        AccountRoles accountRoles,
-        List<OrderDto> ordersDto
-) {
+@Data
+public class AccountDto {
 
+    @JsonIgnore
+    private Long id;
+
+    private String firstName;
+
+    private String lastName;
+
+    @Email(message = "login should be a valid e-mail address format")
+    private String email;
+
+    @Password
+    private String password;
+
+    private AccountAddressDto address;
+
+    private String imageUrl;
+
+    private Boolean enabled;
+
+    private AccountRoles accountRoles;
+
+    private List<OrderDto> ordersDto;
 }
