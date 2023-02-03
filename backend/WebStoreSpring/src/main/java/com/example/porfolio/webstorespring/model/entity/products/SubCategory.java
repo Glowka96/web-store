@@ -11,6 +11,8 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "subcategories")
+@NamedEntityGraph(name = "SubCategory.category",
+        attributeNodes = @NamedAttributeNode("category"))
 @NoArgsConstructor
 public class SubCategory {
     @Id
@@ -34,10 +36,5 @@ public class SubCategory {
 
     public SubCategory(String name) {
         this.name = name;
-    }
-
-    public SubCategory(String name, Category category) {
-        this.name = name;
-        this.category = category;
     }
 }

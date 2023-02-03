@@ -33,10 +33,10 @@ public class CategoryController {
                 .body(categoryService.save(categoryDto));
     }
 
-    @PutMapping("{id}")
-    public ResponseEntity<CategoryDto> updateCategory(@PathVariable("id") Long id,
+    @PutMapping("{name}")
+    public ResponseEntity<CategoryDto> updateCategory(@PathVariable(value = "name") String name,
                                                       @Valid @RequestBody CategoryDto categoryDto){
         return ResponseEntity.status(HttpStatus.ACCEPTED)
-                .body(categoryService.update(id, categoryDto));
+                .body(categoryService.update(name, categoryDto));
     }
 }

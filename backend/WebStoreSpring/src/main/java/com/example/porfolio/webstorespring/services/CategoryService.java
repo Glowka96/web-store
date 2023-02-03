@@ -22,8 +22,14 @@ public class CategoryService {
                 categoryRepository.findAll());
     }
 
+    public CategoryDto getCategoryDtoByName(String name){
+        Category foundCategory = findCategoryByName(name);
+        return categoryMapper.mapToDto(foundCategory);
+    }
+
     public CategoryDto getCategoryDtoById(Long id) {
-        return categoryMapper.mapToDto(findCategoryById(id));
+        Category foundCategory = findCategoryById(id);
+        return categoryMapper.mapToDto(foundCategory);
     }
 
     public CategoryDto save(CategoryDto categoryDto) {
@@ -32,18 +38,23 @@ public class CategoryService {
         return categoryMapper.mapToDto(category);
     }
 
-    public CategoryDto update(Long id, CategoryDto categoryDto) {
-        Category findCategoryById = findCategoryById(id);
+    public CategoryDto update(String nameCategory, CategoryDto categoryDto) {
+        Category findCategoryByName = findCategoryByName(nameCategory);
 
         Category category = categoryMapper.mapToEntity(categoryDto);
-        category.setId(findCategoryById.getId());
+        category.setId(findCategoryByName.getId());
 
-        categoryRepository.save(category);
-        return categoryMapper.mapToDto(category);
+        Category saveCategory = categoryRepository.save(category);
+        return categoryMapper.mapToDto(saveCategory);
     }
 
     private Category findCategoryById(Long id) {
         return categoryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Category","id", id));
+                .orElseThrow(() -> new ResourceNotFoundException("Category", "id", id));
+    }
+
+    private Category findCategoryByName(String name) {
+        return categoryRepository.findByName(name)
+                .orElseThrow(() -> new ResourceNotFoundException("Category", "name", name));
     }
 }

@@ -6,6 +6,7 @@ import com.example.porfolio.webstorespring.mappers.CategoryMapper;
 import com.example.porfolio.webstorespring.model.dto.products.CategoryDto;
 import com.example.porfolio.webstorespring.model.entity.products.Category;
 import com.example.porfolio.webstorespring.repositories.CategoryRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
@@ -33,6 +34,18 @@ class CategoryServiceTest {
     @InjectMocks
     private CategoryService underTest;
 
+    private CategoryDto categoryDto;
+    private Category category;
+    @BeforeEach
+    void initialization(){
+        category = new Category();
+        category.setId(1L);
+        category.setName("CategoryTest");
+
+        categoryDto = new CategoryDto();
+        categoryDto.setName("Test");
+    }
+
     @Test
     void shouldGetAllCategoryDto() {
         // when
@@ -46,11 +59,7 @@ class CategoryServiceTest {
     @Test
     void shouldGetCategoryById() {
         // given
-        Category category = new Category();
-        category.setId(1L);
-        category.setName("Test");
-
-        given(categoryRepository.findById(1L)).willReturn(Optional.of(category));
+        given(categoryRepository.findById(category.getId())).willReturn(Optional.of(category));
 
         // when
         CategoryDto savedCategory = underTest.getCategoryDtoById(category.getId());
@@ -61,12 +70,8 @@ class CategoryServiceTest {
     }
 
     @Test
-    void willThrowWhenIdIsNotFound() {
+    void willThrowWhenCategoryIdIsNotFound() {
         // given
-        Category category = new Category();
-        category.setId(1L);
-        category.setName("Test");
-
         given(categoryRepository.findById(2L)).willReturn(Optional.empty());
 
         // when
@@ -77,12 +82,19 @@ class CategoryServiceTest {
     }
 
     @Test
-    void shouldAddCategory() {
-        // given
-        CategoryDto categoryDto = new CategoryDto();
-        categoryDto.setId(1L);
-        categoryDto.setName("Test");
+    void willThrowWhenCategoryNameIsNotFound() {
+        given(categoryRepository.findByName("error")).willReturn(Optional.empty());
 
+        // when
+        // then
+        assertThatThrownBy(() -> underTest.getCategoryDtoByName("error"))
+                .isInstanceOf(ResourceNotFoundException.class)
+                .hasMessageContaining("Category with name error not found");
+    }
+
+    @Test
+    void shouldSaveCategory() {
+        // given
         // when
         underTest.save(categoryDto);
 
@@ -100,18 +112,9 @@ class CategoryServiceTest {
     @Test
     void shouldUpdateCategory() {
         // given
-        Category category = new Category("CategoryTest");
-        category.setId(1L);
-
-        given(categoryRepository.findById(1L)).willReturn(Optional.of(category));
-
-        CategoryDto categoryDto = new CategoryDto();
-        categoryDto.setName("Test");
-
-        Long wantedId = 1L;
-
+        given(categoryRepository.findByName(category.getName())).willReturn(Optional.of(category));
         // when
-        underTest.update(wantedId, categoryDto);
+        underTest.update(category.getName(), categoryDto);
 
         // then
         ArgumentCaptor<Category> categoryArgumentCaptor =
