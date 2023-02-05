@@ -20,23 +20,24 @@ public class CategoryController {
 
     @GetMapping()
     public ResponseEntity<List<CategoryDto>> getAllCategory() {
-        return ResponseEntity.ok(categoryService.getAllCategory());
+        return ResponseEntity.ok(categoryService.getAllCategoryDto());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<CategoryDto> getCategoryById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(categoryService.getCategoryDtoById(id));
     }
+
     @PostMapping()
-    public ResponseEntity<CategoryDto> saveCategory(@RequestBody CategoryDto categoryDto) {
+    public ResponseEntity<CategoryDto> saveCategory(@Valid @RequestBody CategoryDto categoryDto) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(categoryService.save(categoryDto));
     }
 
-    @PutMapping("{name}")
-    public ResponseEntity<CategoryDto> updateCategory(@PathVariable(value = "name") String name,
+    @PutMapping("{id}")
+    public ResponseEntity<CategoryDto> updateCategory(@PathVariable(value = "id") Long id,
                                                       @Valid @RequestBody CategoryDto categoryDto){
         return ResponseEntity.status(HttpStatus.ACCEPTED)
-                .body(categoryService.update(name, categoryDto));
+                .body(categoryService.update(id, categoryDto));
     }
 }

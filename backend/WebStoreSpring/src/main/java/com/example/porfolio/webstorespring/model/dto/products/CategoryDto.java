@@ -1,6 +1,6 @@
 package com.example.porfolio.webstorespring.model.dto.products;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
@@ -9,10 +9,10 @@ import java.util.List;
 @Data
 public class CategoryDto {
 
-    @JsonIgnore
     private Long id;
 
-    @Size(min=2, message = "Min letters: 2")
+    @NotNull
+    @Size(min=3, max = 20, message = "The name must between min 3 and max 20 letters")
     private String name;
 
     private List<SubCategoryDto> subCategoriesDto;

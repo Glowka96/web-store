@@ -60,28 +60,25 @@ class SubCategoryServiceTest {
 
     @Test
     void shouldGetSubCategoryById() {
-    }
-
-    @Test
-    void shouldGetSubCategoryByName() {
         // given
-        given(subCategoryRepository.findByName(subCategory.getName())).willReturn(Optional.of(subCategory));
+        given(subCategoryRepository.findById(subCategory.getId())).willReturn(Optional.of(subCategory));
 
         // when
-        SubCategoryDto savedSubCategoryDto = underTest.getSubCategoryDtoByName(subCategory.getName());
+        SubCategoryDto savedSubCategoryDto = underTest.getSubCategoryDtoById(subCategory.getId());
 
         // then
         assertThat(savedSubCategoryDto).isNotNull();
         assertThat(savedSubCategoryDto.getName()).isEqualTo(subCategory.getName());
-        verify(subCategoryRepository, times(1)).findByName(subCategory.getName());
+        verify(subCategoryRepository, times(1)).findById(subCategory.getId());
     }
 
     @Test
     void shouldSaveSubCategory() {
         // given
-        given(categoryRepository.findByName(category.getName())).willReturn(Optional.of(category));
+        given(categoryRepository.findById(category.getId())).willReturn(Optional.of(category));
+
         // when
-        SubCategoryDto savedSubCategoryDto = underTest.save(category.getName(), subCategoryDto);
+        SubCategoryDto savedSubCategoryDto = underTest.save(category.getId(), subCategoryDto);
 
         // then
         ArgumentCaptor<SubCategory> subCategoryArgumentCaptor =
@@ -99,24 +96,24 @@ class SubCategoryServiceTest {
     @Test
     void willThrowWhenSubCategoryNameIsNotFound() {
         // given
-        String notFoundName = "error";
-        given(subCategoryRepository.findByName(notFoundName)).willReturn(Optional.empty());
+        Long notFoundId = 2L;
+        given(subCategoryRepository.findById(notFoundId)).willReturn(Optional.empty());
 
         // when
         // then
-        assertThatThrownBy(() -> underTest.getSubCategoryDtoByName(notFoundName))
+        assertThatThrownBy(() -> underTest.getSubCategoryDtoById(notFoundId))
                 .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessageContaining("SubCategory with name error not found");
+                .hasMessageContaining("SubCategory with id 2 not found");
     }
 
     @Test
     void shouldUpdateSubCategory() {
         // given
-        given(categoryRepository.findByName(category.getName())).willReturn(Optional.of(category));
-        given(subCategoryRepository.findByName(subCategory.getName())).willReturn(Optional.of(subCategory));
+        given(categoryRepository.findById(category.getId())).willReturn(Optional.of(category));
+        given(subCategoryRepository.findById(subCategory.getId())).willReturn(Optional.of(subCategory));
 
         // when
-        SubCategoryDto updatedSubCategoryDto = underTest.update(category.getName(), subCategory.getName(), subCategoryDto);
+        SubCategoryDto updatedSubCategoryDto = underTest.update(category.getId(), subCategory.getId(), subCategoryDto);
 
         // then
         ArgumentCaptor<SubCategory> subCategoryArgumentCaptor =
@@ -134,12 +131,12 @@ class SubCategoryServiceTest {
     @Test
     void shouldDeleteSubCategory() {
         // given
-        given(subCategoryRepository.findByName(subCategory.getName())).willReturn(Optional.of(subCategory));
+        given(subCategoryRepository.findById(subCategory.getId())).willReturn(Optional.of(subCategory));
 
         // when
-        underTest.deleteSubCategory(subCategory.getName());
+        underTest.deleteSubCategory(subCategory.getId());
 
         // then
-        verify(subCategoryRepository, times(1)).deleteByName(subCategory.getName());
+        verify(subCategoryRepository, times(1)).deleteById(subCategory.getId());
     }
 }

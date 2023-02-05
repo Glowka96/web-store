@@ -17,29 +17,29 @@ public class SubCategoryController {
 
     private final SubCategoryService subCategoryService;
 
-    @GetMapping("/subcategories/{subCategoryName}")
-    public ResponseEntity<SubCategoryDto> getSubCategoryByName(@PathVariable("subCategoryName") String name) {
-        return ResponseEntity.ok(subCategoryService.getSubCategoryDtoByName(name));
+    @GetMapping("/subcategories/{subCategoryId}")
+    public ResponseEntity<SubCategoryDto> getSubCategoryByName(@PathVariable("subCategoryId") Long id) {
+        return ResponseEntity.ok(subCategoryService.getSubCategoryDtoById(id));
     }
 
-    @PostMapping("/{categoryName}/subcategories")
-    public ResponseEntity<SubCategoryDto> saveSubCategory(@PathVariable("categoryName") String name,
+    @PostMapping("/{categoryId}/subcategories")
+    public ResponseEntity<SubCategoryDto> saveSubCategory(@PathVariable("categoryId") Long id,
                                                           @Valid @RequestBody SubCategoryDto subCategoryDto) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(subCategoryService.save(name, subCategoryDto));
+                .body(subCategoryService.save(id, subCategoryDto));
     }
 
-    @PutMapping("/{categoryName}/subcategories/{subCategoryName}")
-    public ResponseEntity<SubCategoryDto> updateSubCategory(@PathVariable("categoryName") String categoryName,
-                                                            @PathVariable("subCategoryName") String subCategoryName,
+    @PutMapping("/{categoryId}/subcategories/{subCategoryId}")
+    public ResponseEntity<SubCategoryDto> updateSubCategory(@PathVariable("categoryId") Long categoryId,
+                                                            @PathVariable("subCategoryId") Long subCategoryId,
                                                             @RequestBody SubCategoryDto subCategoryDto) {
         return ResponseEntity.status(HttpStatus.ACCEPTED)
-                .body(subCategoryService.update(categoryName, subCategoryName, subCategoryDto));
+                .body(subCategoryService.update(categoryId, subCategoryId, subCategoryDto));
     }
 
-    @DeleteMapping("/subcategories/{subCategoryName}")
+    @DeleteMapping("/subcategories/{subCategoryId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void deleteSubCategoryByName(@PathVariable ("subCategoryName") String subCategoryName){
-        subCategoryService.deleteSubCategory(subCategoryName);
+    public void deleteSubCategoryByName(@PathVariable ("subCategoryId") Long id){
+        subCategoryService.deleteSubCategory(id);
     }
 }
