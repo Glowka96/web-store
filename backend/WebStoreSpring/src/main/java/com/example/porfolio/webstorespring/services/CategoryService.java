@@ -17,14 +17,9 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
 
-    public List<CategoryDto> getAllCategory() {
+    public List<CategoryDto> getAllCategoryDto() {
         return categoryMapper.mapToDto(
                 categoryRepository.findAll());
-    }
-
-    public CategoryDto getCategoryDtoByName(String name){
-        Category foundCategory = findCategoryByName(name);
-        return categoryMapper.mapToDto(foundCategory);
     }
 
     public CategoryDto getCategoryDtoById(Long id) {
@@ -38,8 +33,8 @@ public class CategoryService {
         return categoryMapper.mapToDto(category);
     }
 
-    public CategoryDto update(String nameCategory, CategoryDto categoryDto) {
-        Category findCategoryByName = findCategoryByName(nameCategory);
+    public CategoryDto update(Long id, CategoryDto categoryDto) {
+        Category findCategoryByName = findCategoryById(id);
 
         Category category = categoryMapper.mapToEntity(categoryDto);
         category.setId(findCategoryByName.getId());
@@ -51,10 +46,5 @@ public class CategoryService {
     private Category findCategoryById(Long id) {
         return categoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "id", id));
-    }
-
-    private Category findCategoryByName(String name) {
-        return categoryRepository.findByName(name)
-                .orElseThrow(() -> new ResourceNotFoundException("Category", "name", name));
     }
 }

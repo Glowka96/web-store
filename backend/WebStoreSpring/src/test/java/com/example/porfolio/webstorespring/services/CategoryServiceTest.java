@@ -36,8 +36,9 @@ class CategoryServiceTest {
 
     private CategoryDto categoryDto;
     private Category category;
+
     @BeforeEach
-    void initialization(){
+    void initialization() {
         category = new Category();
         category.setId(1L);
         category.setName("CategoryTest");
@@ -49,7 +50,7 @@ class CategoryServiceTest {
     @Test
     void shouldGetAllCategoryDto() {
         // when
-        underTest.getAllCategory();
+        underTest.getAllCategoryDto();
 
         // then
         verify(categoryRepository, times(1)).findAll();
@@ -83,13 +84,14 @@ class CategoryServiceTest {
 
     @Test
     void willThrowWhenCategoryNameIsNotFound() {
-        given(categoryRepository.findByName("error")).willReturn(Optional.empty());
+        // given
+        given(categoryRepository.findById(2L)).willReturn(Optional.empty());
 
         // when
         // then
-        assertThatThrownBy(() -> underTest.getCategoryDtoByName("error"))
+        assertThatThrownBy(() -> underTest.getCategoryDtoById(2L))
                 .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessageContaining("Category with name error not found");
+                .hasMessageContaining("Category with id 2 not found");
     }
 
     @Test
@@ -112,9 +114,10 @@ class CategoryServiceTest {
     @Test
     void shouldUpdateCategory() {
         // given
-        given(categoryRepository.findByName(category.getName())).willReturn(Optional.of(category));
+        given(categoryRepository.findById(category.getId())).willReturn(Optional.of(category));
+
         // when
-        underTest.update(category.getName(), categoryDto);
+        underTest.update(category.getId(), categoryDto);
 
         // then
         ArgumentCaptor<Category> categoryArgumentCaptor =

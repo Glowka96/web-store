@@ -18,21 +18,15 @@ public class SubCategoryService {
     private final SubCategoryRepository subCategoryRepository;
     private final CategoryRepository categoryRepository;
     private final SubCategoryMapper subCategoryMapper;
-    private final CategoryMapper categoryMapper;
 
-    public SubCategoryDto getSubCategoryById(Long id) {
+    public SubCategoryDto getSubCategoryDtoById(Long id) {
         SubCategory foundSubCategory = findSubCategoryById(id);
         return subCategoryMapper.mapToDto(foundSubCategory);
     }
 
-    public SubCategoryDto getSubCategoryDtoByName(String name) {
-        SubCategory foundSubCategory = findSubCategoryByName(name);
-        return subCategoryMapper.mapToDto(foundSubCategory);
-    }
-
-    public SubCategoryDto save(String categoryName,
+    public SubCategoryDto save(Long id,
                                SubCategoryDto subCategoryDto) {
-        Category foundCategory = findCategoryByName(categoryName);
+        Category foundCategory = findCategoryById(id);
         SubCategory subCategory = subCategoryMapper.mapToEntity(subCategoryDto);
 
         subCategory.setCategory(foundCategory);
@@ -40,11 +34,11 @@ public class SubCategoryService {
         return subCategoryMapper.mapToDto(subCategory);
     }
 
-    public SubCategoryDto update(String categoryName,
-                                 String subCategoryName,
+    public SubCategoryDto update(Long id,
+                                 Long subCategoryId,
                                  SubCategoryDto subCategoryDto) {
-        Category foundCategory = findCategoryByName(categoryName);
-        SubCategory foundSubCategory = findSubCategoryByName(subCategoryName);
+        Category foundCategory = findCategoryById(id);
+        SubCategory foundSubCategory = findSubCategoryById(subCategoryId);
 
         SubCategory subCategory = subCategoryMapper.mapToEntity(subCategoryDto);
 
@@ -55,9 +49,9 @@ public class SubCategoryService {
         return subCategoryMapper.mapToDto(subCategory);
     }
 
-    public void deleteSubCategory(String subCategoryName) {
-        SubCategory foundSubCategory = findSubCategoryByName(subCategoryName);
-        subCategoryRepository.deleteByName(foundSubCategory.getName());
+    public void deleteSubCategory(Long subCategoryId) {
+        SubCategory foundSubCategory = findSubCategoryById(subCategoryId);
+        subCategoryRepository.deleteById(foundSubCategory.getId());
     }
 
     private SubCategory findSubCategoryById(Long id) {
@@ -65,13 +59,8 @@ public class SubCategoryService {
                 .orElseThrow(() -> new ResourceNotFoundException("SubCategory", "id", id));
     }
 
-    private SubCategory findSubCategoryByName(String name) {
-        return subCategoryRepository.findByName(name)
-                .orElseThrow(() -> new ResourceNotFoundException("SubCategory", "name", name));
-    }
-
-    private Category findCategoryByName(String name) {
-        return categoryRepository.findByName(name)
-                .orElseThrow(() -> new ResourceNotFoundException("Category", "name", name));
+    private Category findCategoryById(Long id) {
+        return categoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category", "id", id));
     }
 }
