@@ -6,6 +6,7 @@ import com.example.porfolio.webstorespring.model.dto.products.CategoryDto;
 import com.example.porfolio.webstorespring.model.entity.products.Category;
 import com.example.porfolio.webstorespring.repositories.CategoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,17 +35,33 @@ public class CategoryService {
     }
 
     public CategoryDto update(Long id, CategoryDto categoryDto) {
-        Category findCategoryByName = findCategoryById(id);
+        Category foundCategory = findCategoryById(id);
 
         Category category = categoryMapper.mapToEntity(categoryDto);
-        category.setId(findCategoryByName.getId());
+        setupCategory(foundCategory, category);
 
-        Category saveCategory = categoryRepository.save(category);
-        return categoryMapper.mapToDto(saveCategory);
+        categoryRepository.save(category);
+        return categoryMapper.mapToDto(category);
+    }
+
+    public void delete(CategoryDto categoryDto) {
+        Category category = categoryMapper.mapToEntity(categoryDto);
+        categoryRepository.delete(category);
     }
 
     private Category findCategoryById(Long id) {
         return categoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "id", id));
+    }
+
+    private void setupCategory(@NotNull Category foundCategory, Category updatedCategory){
+        updatedCategory.setId(foundCategory.getId());
+
+        if(updatedCategory.getName() == null) {
+            updatedCategory.setName(foundCategory.getName());
+        }
+        if(updatedCategory.getSubCategories() == null){
+            updatedCategory.setSubCategories(foundCategory.getSubCategories());
+        }
     }
 }
