@@ -34,10 +34,10 @@ public class SubCategoryService {
         return subCategoryMapper.mapToDto(subCategory);
     }
 
-    public SubCategoryDto update(Long id,
+    public SubCategoryDto update(Long categoryId,
                                  Long subCategoryId,
                                  SubCategoryDto subCategoryDto) {
-        Category foundCategory = findCategoryById(id);
+        Category foundCategory = findCategoryById(categoryId);
         SubCategory foundSubCategory = findSubCategoryById(subCategoryId);
 
         SubCategory subCategory = subCategoryMapper.mapToEntity(subCategoryDto);

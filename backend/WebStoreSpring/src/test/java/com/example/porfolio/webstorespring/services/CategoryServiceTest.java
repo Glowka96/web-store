@@ -13,10 +13,8 @@ import org.mapstruct.factory.Mappers;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 
 import java.util.Optional;
 
@@ -51,10 +49,10 @@ class CategoryServiceTest {
     void shouldGetAllCategoryDto() {
         // when
         underTest.getAllCategoryDto();
+            // then
+            verify(categoryRepository, times(1)).findAll();
+            verifyNoMoreInteractions(categoryRepository);
 
-        // then
-        verify(categoryRepository, times(1)).findAll();
-        verifyNoMoreInteractions(categoryRepository);
     }
 
     @Test

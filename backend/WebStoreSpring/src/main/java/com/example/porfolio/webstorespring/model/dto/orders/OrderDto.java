@@ -11,9 +11,8 @@ import java.util.List;
 @Data
 public final class OrderDto {
 
-    @JsonIgnore
     private Long id;
-
+    @JsonIgnore
     private String nameUser;
 
     private Double productsPrice;
@@ -22,8 +21,10 @@ public final class OrderDto {
 
     private String shipmentAddress;
 
+    @JsonIgnore
     private Date dateOfCreated;
 
+    @JsonIgnore
     private OrderStatus status;
 
     private AccountDto accountDto;

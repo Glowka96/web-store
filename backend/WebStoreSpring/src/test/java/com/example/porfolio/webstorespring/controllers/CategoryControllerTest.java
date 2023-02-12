@@ -1,6 +1,6 @@
 package com.example.porfolio.webstorespring.controllers;
 
-import com.example.porfolio.webstorespring.exceptions.ErrorResponse;
+
 import com.example.porfolio.webstorespring.model.dto.products.CategoryDto;
 import com.example.porfolio.webstorespring.services.CategoryService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -61,6 +61,8 @@ class CategoryControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)));
+
+
     }
 
     @Test
