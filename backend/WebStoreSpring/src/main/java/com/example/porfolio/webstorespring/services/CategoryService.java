@@ -54,7 +54,7 @@ public class CategoryService {
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "id", id));
     }
 
-    private void setupCategory(@NotNull Category foundCategory, Category updatedCategory){
+    private void setupCategory(Category foundCategory, Category updatedCategory){
         updatedCategory.setId(foundCategory.getId());
 
         if(updatedCategory.getName() == null) {

@@ -10,7 +10,13 @@ import com.example.porfolio.webstorespring.repositories.ProducerRepository;
 import com.example.porfolio.webstorespring.repositories.ProductRepository;
 import com.example.porfolio.webstorespring.repositories.SubCategoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +30,20 @@ public class ProductService {
     public ProductDto getProductDtoById(Long id) {
         Product foundProduct = findProductById(id);
         return productMapper.mapToDto(foundProduct);
+    }
+
+    public List<ProductDto> getAllProducts(Integer pageNo, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+
+        Page<Product> productPage = productRepository.findAll(pageable);
+        return productPage.map(productMapper::mapToDto).getContent();
+    }
+
+    public List<ProductDto> getAllProducts(Integer pageNo, Integer pageSize, String sortBy){
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+
+        Page<Product> productPage = productRepository.findAll(pageable);
+        return productPage.map(productMapper::mapToDto).getContent();
     }
 
     public ProductDto save(ProductDto productDto) {

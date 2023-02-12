@@ -8,7 +8,6 @@ import java.util.List;
 @Data
 public class SubCategoryDto {
 
-    @JsonIgnore
     private Long id;
 
     private String name;

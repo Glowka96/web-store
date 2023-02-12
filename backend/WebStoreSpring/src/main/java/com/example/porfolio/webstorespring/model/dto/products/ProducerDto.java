@@ -8,11 +8,9 @@ import java.util.List;
 @Data
 public class ProducerDto {
 
-    @JsonIgnore
     private final Long id;
 
     private final String name;
 
-    @JsonIgnore
     private final List<ProductDto> productsDto;
 }

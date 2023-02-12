@@ -7,7 +7,6 @@ import lombok.Data;
 @Data
 public class ProductDto {
 
-    @JsonIgnore
     private Long id;
 
     private String name;
