@@ -34,10 +34,16 @@ public class CategoryController {
                 .body(categoryService.save(categoryDto));
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<CategoryDto> updateCategory(@PathVariable(value = "id") Long id,
                                                       @Valid @RequestBody CategoryDto categoryDto){
         return ResponseEntity.status(HttpStatus.ACCEPTED)
                 .body(categoryService.update(id, categoryDto));
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void deleteCategoryById(@PathVariable("id") Long id) {
+        categoryService.deleteById(id);
     }
 }

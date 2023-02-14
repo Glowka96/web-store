@@ -5,16 +5,18 @@ import com.example.porfolio.webstorespring.model.entity.products.Producer;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(
-        componentModel = "spring",
-        uses = {
-                ProductMapper.class
-        }
+        componentModel = "spring"
 )
 public interface ProducerMapper {
-    @Mapping(target = "productsDto", ignore = true)
+    @Mapping(target = "productsDto", source = "products")
     ProducerDto mapToDto(Producer producer);
 
-    @Mapping(target = "products", ignore = true)
+    @Mapping(target = "productsDto", source = "products")
+    List<ProducerDto> mapToDto(List<Producer> producers);
+
+    @Mapping(target = "products", source = "productsDto")
     Producer mapToEntity(ProducerDto producerDto);
 }

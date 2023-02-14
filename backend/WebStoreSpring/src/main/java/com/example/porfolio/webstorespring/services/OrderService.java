@@ -5,6 +5,7 @@ import com.example.porfolio.webstorespring.mappers.OrderMapper;
 import com.example.porfolio.webstorespring.model.dto.orders.OrderDto;
 import com.example.porfolio.webstorespring.model.entity.accounts.Account;
 import com.example.porfolio.webstorespring.model.entity.orders.Order;
+import com.example.porfolio.webstorespring.model.entity.orders.OrderStatus;
 import com.example.porfolio.webstorespring.model.entity.orders.Shipment;
 import com.example.porfolio.webstorespring.repositories.AccountRepository;
 import com.example.porfolio.webstorespring.repositories.OrderRepository;
@@ -65,6 +66,8 @@ public class OrderService {
 
         order.setDateOfCreated(Date.from(LocalDateTime.now()
                 .atZone(ZoneId.systemDefault()).toInstant()));
+
+        order.setStatus(OrderStatus.OPEN);
 
         Double productsPrice = order.getShipments()
                 .stream()

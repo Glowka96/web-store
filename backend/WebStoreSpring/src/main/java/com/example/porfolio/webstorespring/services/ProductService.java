@@ -32,22 +32,33 @@ public class ProductService {
         return productMapper.mapToDto(foundProduct);
     }
 
-    public List<ProductDto> getAllProducts(Integer pageNo, Integer pageSize) {
-        Pageable pageable = PageRequest.of(pageNo, pageSize);
+    public List<ProductDto> getAllProductsBySubCategoryId(Long subCategoryId,
+                                                          Integer pageNo,
+                                                          Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.ASC, "price"));
 
-        Page<Product> productPage = productRepository.findAll(pageable);
+        Page<Product> productPage =findPageProductsBySubCategoryId(subCategoryId, pageable);
         return productPage.map(productMapper::mapToDto).getContent();
     }
 
-    public List<ProductDto> getAllProducts(Integer pageNo, Integer pageSize, String sortBy){
-        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+    public List<ProductDto> getAllProductsBySubCategoryId(Long subCategoryId,
+                                                          Integer pageNo,
+                                                          Integer pageSize,
+                                                          String sortBy){
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.ASC, sortBy));
 
-        Page<Product> productPage = productRepository.findAll(pageable);
+        Page<Product> productPage  = findPageProductsBySubCategoryId(subCategoryId, pageable);
         return productPage.map(productMapper::mapToDto).getContent();
     }
 
-    public ProductDto save(ProductDto productDto) {
+    public ProductDto save(Long subCategoryId, Long producerId, ProductDto productDto) {
+        SubCategory subCategory = findSubCategoryById(subCategoryId);
+        Producer foundProducer = findProducerById(producerId);
+
         Product product = productMapper.mapToEntity(productDto);
+        product.setSubCategory(subCategory);
+        product.setProducer(foundProducer);
+
         productRepository.save(product);
         return productMapper.mapToDto(product);
     }
@@ -67,14 +78,20 @@ public class ProductService {
         return productMapper.mapToDto(product);
     }
 
-    public void delete(ProductDto productDto) {
-        Product product = productMapper.mapToEntity(productDto);
-        productRepository.delete(product);
+    public void deleteById(Long id) {
+        Product foundProduct = findProductById(id);
+        productRepository.delete(foundProduct);
     }
 
     private Product findProductById(Long id) {
         return productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "id", id));
+    }
+
+    private Page<Product> findPageProductsBySubCategoryId(Long subCategoryId, Pageable pageable) {
+        return productRepository.findProductBySubCategory_Id(subCategoryId, pageable)
+                .orElseThrow(() -> new ResourceNotFoundException("Products", "page number", pageable.getPageNumber()));
+
     }
 
     private SubCategory findSubCategoryById(Long id) {

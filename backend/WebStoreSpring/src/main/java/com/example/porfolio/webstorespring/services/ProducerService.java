@@ -4,11 +4,11 @@ import com.example.porfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.porfolio.webstorespring.mappers.ProducerMapper;
 import com.example.porfolio.webstorespring.model.dto.products.ProducerDto;
 import com.example.porfolio.webstorespring.model.entity.products.Producer;
-import com.example.porfolio.webstorespring.repositories.CategoryRepository;
 import com.example.porfolio.webstorespring.repositories.ProducerRepository;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -17,9 +17,13 @@ public class ProducerService {
     private final ProducerRepository producerRepository;
     private final ProducerMapper producerMapper;
 
-    public ProducerDto geProducerById(Long id) {
+    public ProducerDto getProducerById(Long id) {
         Producer foundProducer = findProducerById(id);
         return producerMapper.mapToDto(foundProducer);
+    }
+
+    public List<ProducerDto> getAllProducer() {
+        return producerMapper.mapToDto(producerRepository.findAll());
     }
 
     public ProducerDto save(ProducerDto producerDto) {
@@ -38,9 +42,9 @@ public class ProducerService {
         return producerMapper.mapToDto(producer);
     }
 
-    public void delete(ProducerDto producerDto) {
-        Producer producer = producerMapper.mapToEntity(producerDto);
-        producerRepository.delete(producer);
+    public void deleteById(Long id) {
+        Producer foundProducer = findProducerById(id);
+        producerRepository.delete(foundProducer);
     }
 
     private Producer findProducerById(Long id) {
