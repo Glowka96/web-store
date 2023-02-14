@@ -44,8 +44,8 @@ public class CategoryService {
         return categoryMapper.mapToDto(category);
     }
 
-    public void delete(CategoryDto categoryDto) {
-        Category category = categoryMapper.mapToEntity(categoryDto);
+    public void deleteById(Long id) {
+        Category category = findCategoryById(id);
         categoryRepository.delete(category);
     }
 

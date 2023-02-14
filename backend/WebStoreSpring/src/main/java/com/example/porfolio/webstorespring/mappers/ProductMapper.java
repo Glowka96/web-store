@@ -6,7 +6,10 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(
-        componentModel = "spring"
+        componentModel = "spring",
+        uses = {
+                ProducerMapper.class
+        }
 )
 public interface ProductMapper {
 

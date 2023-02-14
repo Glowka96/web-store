@@ -32,14 +32,14 @@ public class SubCategoryController {
     @PutMapping("/{categoryId}/subcategories/{subCategoryId}")
     public ResponseEntity<SubCategoryDto> updateSubCategory(@PathVariable("categoryId") Long categoryId,
                                                             @PathVariable("subCategoryId") Long subCategoryId,
-                                                            @RequestBody SubCategoryDto subCategoryDto) {
+                                                            @Valid @RequestBody SubCategoryDto subCategoryDto) {
         return ResponseEntity.status(HttpStatus.ACCEPTED)
                 .body(subCategoryService.update(categoryId, subCategoryId, subCategoryDto));
     }
 
     @DeleteMapping("/subcategories/{subCategoryId}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public void deleteSubCategoryByName(@PathVariable ("subCategoryId") Long id){
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteSubCategoryById(@PathVariable ("subCategoryId") Long id){
         subCategoryService.deleteSubCategory(id);
     }
 }
