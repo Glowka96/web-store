@@ -2,6 +2,7 @@ package com.example.porfolio.webstorespring.services;
 
 import com.example.porfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.porfolio.webstorespring.mappers.CategoryMapper;
+import com.example.porfolio.webstorespring.mappers.ProductMapper;
 import com.example.porfolio.webstorespring.mappers.SubCategoryMapper;
 import com.example.porfolio.webstorespring.model.dto.products.SubCategoryDto;
 import com.example.porfolio.webstorespring.model.entity.products.Category;
@@ -22,7 +23,6 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
@@ -44,6 +44,8 @@ class SubCategoryServiceTest {
     @BeforeEach
     public void initialization() {
         CategoryMapper categoryMapper = Mappers.getMapper(CategoryMapper.class);
+        ProductMapper productMapper = Mappers.getMapper(ProductMapper.class);
+        ReflectionTestUtils.setField(subCategoryMapper, "productMapper", productMapper);
         ReflectionTestUtils.setField(subCategoryMapper, "categoryMapper", categoryMapper);
 
         category = new Category("Category");
@@ -64,11 +66,11 @@ class SubCategoryServiceTest {
         given(subCategoryRepository.findById(subCategory.getId())).willReturn(Optional.of(subCategory));
 
         // when
-        SubCategoryDto savedSubCategoryDto = underTest.getSubCategoryDtoById(subCategory.getId());
+        SubCategoryDto subCategoryDto = underTest.getSubCategoryDtoById(1L);
 
         // then
-        assertThat(savedSubCategoryDto).isNotNull();
-        assertThat(savedSubCategoryDto.getName()).isEqualTo(subCategory.getName());
+        assertThat(subCategoryDto).isNotNull();
+        assertThat(subCategoryDto.getName()).isEqualTo(subCategory.getName());
         verify(subCategoryRepository, times(1)).findById(subCategory.getId());
     }
 
@@ -129,7 +131,7 @@ class SubCategoryServiceTest {
     }
 
     @Test
-    void shouldDeleteSubCategory() {
+    void shouldDeleteSubCategoryById() {
         // given
         given(subCategoryRepository.findById(subCategory.getId())).willReturn(Optional.of(subCategory));
 

@@ -35,19 +35,19 @@ public class ProductService {
     public List<ProductDto> getAllProductsBySubCategoryId(Long subCategoryId,
                                                           Integer pageNo,
                                                           Integer pageSize) {
-        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.ASC, "price"));
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.ASC, "id"));
 
-        Page<Product> productPage =findPageProductsBySubCategoryId(subCategoryId, pageable);
+        Page<Product> productPage = findPageProductsBySubCategoryId(subCategoryId, pageable);
         return productPage.map(productMapper::mapToDto).getContent();
     }
 
     public List<ProductDto> getAllProductsBySubCategoryId(Long subCategoryId,
                                                           Integer pageNo,
                                                           Integer pageSize,
-                                                          String sortBy){
+                                                          String sortBy) {
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.ASC, sortBy));
 
-        Page<Product> productPage  = findPageProductsBySubCategoryId(subCategoryId, pageable);
+        Page<Product> productPage = findPageProductsBySubCategoryId(subCategoryId, pageable);
         return productPage.map(productMapper::mapToDto).getContent();
     }
 
@@ -107,24 +107,24 @@ public class ProductService {
     private void setupProduct(SubCategory foundSubCategory,
                               Producer foundProducer,
                               Product foundProduct,
-                              Product updatedProduct){
+                              Product updatedProduct) {
         updatedProduct.setSubCategory(foundSubCategory);
         updatedProduct.setProducer(foundProducer);
         updatedProduct.setId(foundProduct.getId());
 
-        if(updatedProduct.getName() == null) {
+        if (updatedProduct.getName() == null) {
             updatedProduct.setName(foundProduct.getName());
         }
-        if(updatedProduct.getDescription() == null) {
+        if (updatedProduct.getDescription() == null) {
             updatedProduct.setDescription(foundProduct.getDescription());
         }
-        if(updatedProduct.getImageUrl() == null) {
+        if (updatedProduct.getImageUrl() == null) {
             updatedProduct.setImageUrl(foundProduct.getImageUrl());
         }
-        if(updatedProduct.getPrice() == null) {
+        if (updatedProduct.getPrice() == null) {
             updatedProduct.setPrice(foundProduct.getPrice());
         }
-        if(updatedProduct.getType() == null) {
+        if (updatedProduct.getType() == null) {
             updatedProduct.setType(foundProduct.getType());
         }
     }
