@@ -9,6 +9,8 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "products")
+@NamedEntityGraph(name = "Product.producer",
+        attributeNodes = @NamedAttributeNode("producer"))
 @NoArgsConstructor
 public class Product {
     @Id

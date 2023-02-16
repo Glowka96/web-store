@@ -49,9 +49,9 @@ class CategoryServiceTest {
     void shouldGetAllCategoryDto() {
         // when
         underTest.getAllCategoryDto();
-            // then
-            verify(categoryRepository, times(1)).findAll();
-            verifyNoMoreInteractions(categoryRepository);
+        // then
+        verify(categoryRepository, times(1)).findAll();
+        verifyNoMoreInteractions(categoryRepository);
 
     }
 
@@ -61,10 +61,10 @@ class CategoryServiceTest {
         given(categoryRepository.findById(category.getId())).willReturn(Optional.of(category));
 
         // when
-        CategoryDto savedCategory = underTest.getCategoryDtoById(category.getId());
+        CategoryDto foundCategory = underTest.getCategoryDtoById(category.getId());
 
         // then
-        assertThat(savedCategory).isNotNull();
+        assertThat(foundCategory).isNotNull();
         verify(categoryRepository, times(1)).findById(category.getId());
     }
 
@@ -126,5 +126,19 @@ class CategoryServiceTest {
         CategoryDto mappedCategoryDto = categoryMapper.mapToDto(capturedCategory);
 
         assertThat(mappedCategoryDto.getName()).isEqualTo(categoryDto.getName());
+        assertThat(mappedCategoryDto.getId()).isEqualTo(category.getId());
+    }
+
+    @Test
+    void shouldDeleteCategoryById() {
+        // given
+        given(categoryRepository.findById(anyLong())).willReturn(Optional.of(category));
+
+        // when
+        underTest.deleteById(1L);
+
+        // then
+        verify(categoryRepository, times(1)).findById(1L);
+        verify(categoryRepository, times(1)).delete(category);
     }
 }
