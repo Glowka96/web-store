@@ -17,8 +17,8 @@ public class ProductDto {
     @Size(min = 3, max = 20, message = "The name must between min 3 and max 20 letters")
     private String name;
 
-    @NotNull(message = "The name can't be null")
-    @NotBlank(message = "The name can't be blank")
+    @NotNull(message = "The description can't be null")
+    @NotBlank(message = "The description can't be blank")
     @Size(min = 3, max = 256, message = "The description must between min 3 and max 256 letters")
     private String description;
 

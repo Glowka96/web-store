@@ -5,6 +5,8 @@ import com.example.porfolio.webstorespring.model.entity.products.Product;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(
         componentModel = "spring",
         uses = {
@@ -16,6 +18,10 @@ public interface ProductMapper {
     @Mapping(target = "subCategoryDto", source = "subCategory")
     @Mapping(target = "producerDto", source = "producer")
     ProductDto mapToDto(Product product);
+
+    @Mapping(target = "subCategoryDto", source = "subCategory")
+    @Mapping(target = "producerDto", source = "producer")
+    List<ProductDto> mapToDto(List<Product> products);
 
     @Mapping(target = "subCategory", source = "subCategoryDto")
     @Mapping(target = "producer", source = "producerDto")
