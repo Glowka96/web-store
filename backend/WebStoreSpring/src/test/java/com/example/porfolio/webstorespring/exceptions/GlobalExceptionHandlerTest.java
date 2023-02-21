@@ -1,0 +1,72 @@
+package com.example.porfolio.webstorespring.exceptions;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.context.request.WebRequest;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
+
+@ExtendWith({MockitoExtension.class})
+public class GlobalExceptionHandlerTest {
+
+    @Mock
+    private ResourceNotFoundException resourceNotFoundException;
+    @Mock
+    private MethodArgumentNotValidException argumentNotValidException;
+    @Mock
+    private WebRequest webRequest;
+    //@Spy
+    @InjectMocks
+    private GlobalExceptionHandler underTest;
+
+    @Test
+    public void testResourceNotFoundException() {
+        // given
+        ErrorResponse expectedErrorResponse = new ErrorResponse(HttpStatus.NOT_FOUND.value(),
+                resourceNotFoundException.getMessage(),
+                webRequest.getDescription(false));
+
+        // when
+        ResponseEntity<Object> responseEntity = underTest
+                .resourceNotFoundException(resourceNotFoundException, webRequest);
+
+        // then
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertThat(responseEntity.getBody()).isEqualTo(expectedErrorResponse);
+    }
+
+    @Test
+    public void testMethodArgumentNotValidException() {
+       // String expectedErrorMessage = "Error message 1, Error message 2";
+        List<String> excepted = new ArrayList<>();
+        excepted.add("Error message 1");
+        excepted.add("Error message 2");
+
+        FieldError fieldError1 = new FieldError("objectName", "fieldName1", "Error message 1");
+        FieldError fieldError2 = new FieldError("objectName", "fieldName2", "Error message 2");
+
+        when(argumentNotValidException.getAllErrors()).thenReturn(Arrays.asList(fieldError1, fieldError2));
+
+        ErrorResponse expectedErrorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(),
+                excepted,
+                webRequest.getDescription(false));
+
+        ResponseEntity<Object> responseEntity = underTest
+                .argumentNotValidException(argumentNotValidException, webRequest);
+
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(responseEntity.getBody()).isEqualTo(expectedErrorResponse);
+    }
+}

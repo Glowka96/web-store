@@ -13,7 +13,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.Arrays;
 import java.util.List;
@@ -44,6 +43,7 @@ class CategoryControllerTest {
         mapper = new ObjectMapper();
         categoryDto = new CategoryDto();
         categoryDto.setName("Test");
+        categoryDto.setId(1L);
     }
 
     @Test
@@ -69,9 +69,6 @@ class CategoryControllerTest {
     void shouldGetCategoryById() throws Exception {
         // given
         Long categoryId = 1L;
-        CategoryDto categoryDto = new CategoryDto();
-        categoryDto.setName("Test");
-        categoryDto.setId(categoryId);
 
         // when
         when(categoryService.getCategoryDtoById(categoryId)).thenReturn(categoryDto);
@@ -81,8 +78,9 @@ class CategoryControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(categoryDto)))
-                .andExpect(status().isOk()).andDo(print())
-                .andExpect(jsonPath("$.name", is("Test")));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", is("Test")))
+                .andDo(print());
     }
 
     @Test
@@ -96,35 +94,37 @@ class CategoryControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(categoryDto)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.name", is("Test")));
+                .andExpect(jsonPath("$.name", is("Test")))
+                .andDo(print());
     }
 
     @Test
-    void willThrowWhenSendPostForCategoryNameIsShortOrLong() throws Exception {
+    void shouldUpdateCategory() throws Exception {
         // given
-        categoryDto.setName("Er");
+        Long categoryId = 1L;
+        CategoryDto newCategory = new CategoryDto();
+        newCategory.setName("New name");
 
+        CategoryDto exceptedCategoryDto = new CategoryDto();
+        exceptedCategoryDto.setName("New name");
+        exceptedCategoryDto.setId(1L);
         // when
+        when(categoryService.update(categoryId, newCategory)).thenReturn(exceptedCategoryDto);
+
         // then
-        mvc.perform(post(URL)
+        mvc.perform(put(URL + "/{id}", categoryId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(categoryDto))).andDo(print())
-                .andExpect(status().isBadRequest());
-        /*TODO:
-            ** REPAIR THIS - NOT RETURN JSON
-
-                .andExpect(jsonPath("$.timestamp", is(notNullValue())))
-                .andExpect(jsonPath("$.status", is(400)))
-                .andExpect(jsonPath("$.message",is("The name must between min 3 and max 20 letters")));*/    }
+                        .content(mapper.writeValueAsString(newCategory)))
+                .andExpect(status().isAccepted())
+                .andExpect(jsonPath("$.name", is("New name")))
+                .andExpect(jsonPath("$.id", is(1)))
+                .andDo(print());
+    }
 
     @Test
-    void updateCategory() {
-        // given
-        String name = "New name";
-        CategoryDto categoryDto;
-
-        // then
-        // mvc.perform(put(URL + "/{name}"))
+    void shouldDeleteCategoryById() throws Exception {
+        mvc.perform(delete(URL + "/{id}", 1L))
+                .andExpect(status().isAccepted());
     }
 }
