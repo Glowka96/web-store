@@ -1,8 +1,7 @@
 package com.example.porfolio.webstorespring.controllers;
 
-
-import com.example.porfolio.webstorespring.model.dto.products.CategoryDto;
-import com.example.porfolio.webstorespring.services.CategoryService;
+import com.example.porfolio.webstorespring.model.dto.products.SubcategoryDto;
+import com.example.porfolio.webstorespring.services.SubcategoryService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,10 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.Arrays;
-
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -25,95 +21,82 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
-class CategoryControllerTest {
+class SubcategoryControllerTest {
+
     @InjectMocks
-    private CategoryController underTest;
+    private SubcategoryController underTest;
     @Mock
-    private CategoryService categoryService;
+    private SubcategoryService subCategoryService;
     private MockMvc mvc;
     private ObjectMapper mapper;
     private final static String URL = "/api/v1/categories";
-    private CategoryDto categoryDto;
+    private SubcategoryDto subCategoryDto;
 
     @BeforeEach
-    public void initialization() {
+    void initialization() {
         mvc = MockMvcBuilders.standaloneSetup(underTest).build();
 
         mapper = new ObjectMapper();
 
-        categoryDto = new CategoryDto();
-        categoryDto.setName("Test");
-        categoryDto.setId(1L);
+        subCategoryDto = new SubcategoryDto();
+        subCategoryDto.setId(1L);
+        subCategoryDto.setName("Test");
     }
 
     @Test
-    void shouldGetAllCategory() throws Exception {
+    void shouldGetSubCategoryByName() throws Exception {
         // given
-        given(categoryService.getAllCategoryDto()).willReturn(Arrays.asList(categoryDto, new CategoryDto()));
+        given(subCategoryService.getSubcategoryDtoById(1L)).willReturn(subCategoryDto);
 
         // when
         // then
-        mvc.perform(get(URL)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(2)))
-                .andDo(print());
-    }
-
-    @Test
-    void shouldGetCategoryById() throws Exception {
-        // given
-        given(categoryService.getCategoryDtoById(1L)).willReturn(categoryDto);
-
-        // when
-        // then
-        mvc.perform(get(URL + "/{id}", 1L)
+        mvc.perform(get(URL + "/subcategories/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(categoryDto)))
+                        .content(mapper.writeValueAsString(subCategoryDto)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.name", is("Test")))
                 .andDo(print());
     }
 
+
     @Test
-    void shouldSaveCategory() throws Exception {
+    public void shouldSaveSubCategory() throws Exception {
         // given
-        given(categoryService.save(categoryDto)).willReturn(categoryDto);
+        given(subCategoryService.save(1L, subCategoryDto)).willReturn(subCategoryDto);
 
         // when
         // then
-        mvc.perform(post(URL)
+        mvc.perform(post("/api/v1/categories/1/subcategories")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(categoryDto)))
+                        .content(mapper.writeValueAsString(subCategoryDto)))
                 .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.name", is("Test")))
                 .andDo(print());
     }
 
     @Test
-    void shouldUpdateCategory() throws Exception {
+    void shouldUpdateSubCategory() throws Exception {
         // given
-        given(categoryService.update(1L, categoryDto)).willReturn(categoryDto);
+        given(subCategoryService.update(1L, 1L, subCategoryDto)).willReturn(subCategoryDto);
 
         // when
         // then
-        mvc.perform(put(URL + "/{id}", 1L)
+        mvc.perform(put(URL + "/{categoryId}/subcategories/{subcategoryId}", 1, 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(categoryDto)))
+                        .content(mapper.writeValueAsString(subCategoryDto)))
                 .andExpect(status().isAccepted())
-                .andExpect(jsonPath("$.name", is("Test")))
                 .andExpect(jsonPath("$.id", is(1)))
+                .andExpect(jsonPath("$.name", is("Test")))
                 .andDo(print());
     }
 
     @Test
-    void shouldDeleteCategoryById() throws Exception {
-        mvc.perform(delete(URL + "/{id}", 1L))
-                .andExpect(status().isAccepted());
+    void shouldDeleteSubCategoryByName() throws Exception {
+        mvc.perform(delete(URL + "/subcategories/{subcategoryId}", 1L))
+                .andExpect(status().isNoContent())
+                .andDo(print());
     }
 }

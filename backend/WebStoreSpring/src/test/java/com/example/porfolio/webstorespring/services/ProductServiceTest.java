@@ -5,30 +5,31 @@ import com.example.porfolio.webstorespring.mappers.ProducerMapper;
 import com.example.porfolio.webstorespring.mappers.ProductMapper;
 import com.example.porfolio.webstorespring.model.dto.products.ProducerDto;
 import com.example.porfolio.webstorespring.model.dto.products.ProductDto;
-import com.example.porfolio.webstorespring.model.dto.products.SubCategoryDto;
+import com.example.porfolio.webstorespring.model.dto.products.SubcategoryDto;
 import com.example.porfolio.webstorespring.model.entity.products.Producer;
 import com.example.porfolio.webstorespring.model.entity.products.Product;
-import com.example.porfolio.webstorespring.model.entity.products.SubCategory;
+import com.example.porfolio.webstorespring.model.entity.products.Subcategory;
 import com.example.porfolio.webstorespring.repositories.ProducerRepository;
 import com.example.porfolio.webstorespring.repositories.ProductRepository;
-import com.example.porfolio.webstorespring.repositories.SubCategoryRepository;
+import com.example.porfolio.webstorespring.repositories.SubcategoryRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
-import org.mockito.*;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.*;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
@@ -40,7 +41,7 @@ class ProductServiceTest {
     @Mock
     private ProductRepository productRepository;
     @Mock
-    private SubCategoryRepository subCategoryRepository;
+    private SubcategoryRepository subCategoryRepository;
     @Mock
     private ProducerRepository producerRepository;
     @InjectMocks
@@ -52,8 +53,8 @@ class ProductServiceTest {
     private ProductDto productDto;
     private ProductDto productDto2;
     private ProductDto productDto3;
-    private SubCategory subCategory;
-    private SubCategoryDto subCategoryDto;
+    private Subcategory subCategory;
+    private SubcategoryDto subCategoryDto;
     private Producer producer;
     private ProducerDto producerDto;
 
@@ -62,10 +63,10 @@ class ProductServiceTest {
         ProducerMapper producerMapper = Mappers.getMapper(ProducerMapper.class);
         ReflectionTestUtils.setField(productMapper, "producerMapper", producerMapper);
 
-        subCategory = new SubCategory();
+        subCategory = new Subcategory();
         subCategory.setId(1L);
 
-        subCategoryDto = new SubCategoryDto();
+        subCategoryDto = new SubcategoryDto();
         subCategoryDto.setId(1L);
 
         producer = new Producer();
@@ -79,7 +80,7 @@ class ProductServiceTest {
         product.setName("Test");
         product.setPrice(29.99);
         product.setDescription("This is description");
-        product.setSubCategory(subCategory);
+        product.setSubcategory(subCategory);
         product.setProducer(producer);
 
         product2 = new Product();
@@ -87,7 +88,7 @@ class ProductServiceTest {
         product2.setName("Test");
         product2.setPrice(25.99);
         product2.setDescription("This is description");
-        product2.setSubCategory(subCategory);
+        product2.setSubcategory(subCategory);
         product2.setProducer(producer);
 
         product3 = new Product();
@@ -95,7 +96,7 @@ class ProductServiceTest {
         product3.setName("Test");
         product3.setPrice(22.99);
         product3.setDescription("This is description");
-        product3.setSubCategory(subCategory);
+        product3.setSubcategory(subCategory);
         product3.setProducer(producer);
 
         productDto = new ProductDto();
@@ -103,7 +104,7 @@ class ProductServiceTest {
         productDto.setName("Test");
         productDto.setPrice(29.99);
         productDto.setDescription("This is description");
-        productDto.setSubCategoryDto(subCategoryDto);
+        productDto.setSubcategoryDto(subCategoryDto);
         productDto.setProducerDto(producerDto);
 
         productDto2 = new ProductDto();
@@ -111,7 +112,7 @@ class ProductServiceTest {
         productDto2.setName("Test");
         productDto2.setPrice(25.99);
         productDto2.setDescription("This is description");
-        productDto2.setSubCategoryDto(subCategoryDto);
+        productDto2.setSubcategoryDto(subCategoryDto);
         productDto2.setProducerDto(producerDto);
 
         productDto3 = new ProductDto();
@@ -119,7 +120,7 @@ class ProductServiceTest {
         productDto3.setName("Test");
         productDto3.setPrice(22.99);
         productDto3.setDescription("This is description");
-        productDto3.setSubCategoryDto(subCategoryDto);
+        productDto3.setSubcategoryDto(subCategoryDto);
         productDto3.setProducerDto(producerDto);
     }
 
@@ -149,7 +150,7 @@ class ProductServiceTest {
 
         List<ProductDto> exceptedList = Arrays.asList(productDto, productDto2, productDto3);
 
-        given(productRepository.findProductBySubCategory_Id(eq(subCategory.getId()), any(Pageable.class)))
+        given(productRepository.findProductBySubcategory_Id(eq(subCategory.getId()), any(Pageable.class)))
                 .willReturn(Optional.of(productPage));
 
         // when
@@ -158,7 +159,7 @@ class ProductServiceTest {
         // then
         assertThat(actualProductDtoList).isNotNull();
         assertThat(actualProductDtoList).isEqualTo(exceptedList);
-        verify(productRepository, times(1)).findProductBySubCategory_Id(subCategory.getId(), pageable);
+        verify(productRepository, times(1)).findProductBySubcategory_Id(subCategory.getId(), pageable);
     }
 
     @Test
@@ -171,7 +172,7 @@ class ProductServiceTest {
 
         List<ProductDto> exceptedProductDtoList = Arrays.asList(productDto3, productDto2, productDto);
 
-        given(productRepository.findProductBySubCategory_Id(subCategory.getId(), pageable))
+        given(productRepository.findProductBySubcategory_Id(subCategory.getId(), pageable))
                 .willReturn(Optional.of(productPage));
 
         // when
@@ -180,7 +181,7 @@ class ProductServiceTest {
         // then
         assertThat(actualProductDtoList).isNotNull();
         assertThat(actualProductDtoList).isEqualTo(exceptedProductDtoList);
-        verify(productRepository, times(1)).findProductBySubCategory_Id(subCategory.getId(), pageable);
+        verify(productRepository, times(1)).findProductBySubcategory_Id(subCategory.getId(), pageable);
     }
 
     @Test

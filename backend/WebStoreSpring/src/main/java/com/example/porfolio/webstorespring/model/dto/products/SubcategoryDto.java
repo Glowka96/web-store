@@ -9,7 +9,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class SubCategoryDto {
+public class SubcategoryDto {
 
     private Long id;
 

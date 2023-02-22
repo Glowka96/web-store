@@ -1,8 +1,7 @@
 package com.example.porfolio.webstorespring.controllers;
 
-
-import com.example.porfolio.webstorespring.model.dto.products.CategoryDto;
-import com.example.porfolio.webstorespring.services.CategoryService;
+import com.example.porfolio.webstorespring.model.dto.products.ProducerDto;
+import com.example.porfolio.webstorespring.services.ProducerService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,35 +23,33 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(MockitoExtension.class)
-class CategoryControllerTest {
-    @InjectMocks
-    private CategoryController underTest;
+@ExtendWith({MockitoExtension.class})
+class ProducerControllerTest {
+
     @Mock
-    private CategoryService categoryService;
+    private ProducerService producerService;
+    @InjectMocks
+    private ProducerController underTest;
     private MockMvc mvc;
     private ObjectMapper mapper;
-    private final static String URL = "/api/v1/categories";
-    private CategoryDto categoryDto;
+    private static final String URL = "/api/v1/producers";
+    private ProducerDto producerDto;
 
     @BeforeEach
-    public void initialization() {
+    void initialization() {
         mvc = MockMvcBuilders.standaloneSetup(underTest).build();
 
         mapper = new ObjectMapper();
 
-        categoryDto = new CategoryDto();
-        categoryDto.setName("Test");
-        categoryDto.setId(1L);
+        producerDto = new ProducerDto();
+        producerDto.setId(1L);
+        producerDto.setName("Test");
     }
 
     @Test
-    void shouldGetAllCategory() throws Exception {
-        // given
-        given(categoryService.getAllCategoryDto()).willReturn(Arrays.asList(categoryDto, new CategoryDto()));
+    void shouldGetAllProducer() throws Exception {
+        given(producerService.getAllProducer()).willReturn(Arrays.asList(producerDto, new ProducerDto()));
 
-        // when
-        // then
         mvc.perform(get(URL)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -62,58 +59,49 @@ class CategoryControllerTest {
     }
 
     @Test
-    void shouldGetCategoryById() throws Exception {
-        // given
-        given(categoryService.getCategoryDtoById(1L)).willReturn(categoryDto);
+    void shouldGetProducerById() throws Exception {
+        given(producerService.getProducerById(1L)).willReturn(producerDto);
 
-        // when
-        // then
-        mvc.perform(get(URL + "/{id}", 1L)
+        mvc.perform(get(URL + "/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(categoryDto)))
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.name", is("Test")))
                 .andDo(print());
     }
 
     @Test
-    void shouldSaveCategory() throws Exception {
-        // given
-        given(categoryService.save(categoryDto)).willReturn(categoryDto);
+    void shouldSaveProducer() throws Exception {
+        given(producerService.save(producerDto)).willReturn(producerDto);
 
-        // when
-        // then
         mvc.perform(post(URL)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(categoryDto)))
+                        .content(mapper.writeValueAsString(producerDto)))
                 .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.name", is("Test")))
                 .andDo(print());
     }
 
     @Test
-    void shouldUpdateCategory() throws Exception {
-        // given
-        given(categoryService.update(1L, categoryDto)).willReturn(categoryDto);
+    void shouldUpdateProducer() throws Exception {
+        given(producerService.update(1L, producerDto)).willReturn(producerDto);
 
-        // when
-        // then
-        mvc.perform(put(URL + "/{id}", 1L)
+        mvc.perform(put(URL + "/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(categoryDto)))
+                        .content(mapper.writeValueAsString(producerDto)))
                 .andExpect(status().isAccepted())
-                .andExpect(jsonPath("$.name", is("Test")))
                 .andExpect(jsonPath("$.id", is(1)))
+                .andExpect(jsonPath("$.name", is("Test")))
                 .andDo(print());
     }
 
     @Test
-    void shouldDeleteCategoryById() throws Exception {
-        mvc.perform(delete(URL + "/{id}", 1L))
-                .andExpect(status().isAccepted());
+    void shouldDeleteProducer() throws Exception{
+        mvc.perform(delete(URL + "/{id}", 1))
+                .andExpect(status().isNoContent())
+                .andDo(print());
     }
 }

@@ -11,8 +11,8 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "category")
-@NamedEntityGraph(name = "Category.subCategories",
-        attributeNodes = @NamedAttributeNode("subCategories"))
+@NamedEntityGraph(name = "Category.subcategories",
+        attributeNodes = @NamedAttributeNode("subcategories"))
 @NoArgsConstructor
 public class Category {
 
@@ -25,7 +25,7 @@ public class Category {
     private String name;
 
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<SubCategory> subCategories;
+    private List<Subcategory> subcategories;
 
     public Category(String name) {
         this.name = name;

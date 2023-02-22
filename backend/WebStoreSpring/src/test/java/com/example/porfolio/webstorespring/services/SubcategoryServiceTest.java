@@ -3,12 +3,12 @@ package com.example.porfolio.webstorespring.services;
 import com.example.porfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.porfolio.webstorespring.mappers.CategoryMapper;
 import com.example.porfolio.webstorespring.mappers.ProductMapper;
-import com.example.porfolio.webstorespring.mappers.SubCategoryMapper;
-import com.example.porfolio.webstorespring.model.dto.products.SubCategoryDto;
+import com.example.porfolio.webstorespring.mappers.SubcategoryMapper;
+import com.example.porfolio.webstorespring.model.dto.products.SubcategoryDto;
 import com.example.porfolio.webstorespring.model.entity.products.Category;
-import com.example.porfolio.webstorespring.model.entity.products.SubCategory;
+import com.example.porfolio.webstorespring.model.entity.products.Subcategory;
 import com.example.porfolio.webstorespring.repositories.CategoryRepository;
-import com.example.porfolio.webstorespring.repositories.SubCategoryRepository;
+import com.example.porfolio.webstorespring.repositories.SubcategoryRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,24 +22,26 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith({MockitoExtension.class})
-class SubCategoryServiceTest {
+class SubcategoryServiceTest {
     @Spy
-    private SubCategoryMapper subCategoryMapper = Mappers.getMapper(SubCategoryMapper.class);
+    private SubcategoryMapper subCategoryMapper = Mappers.getMapper(SubcategoryMapper.class);
     @Mock
-    private SubCategoryRepository subCategoryRepository;
+    private SubcategoryRepository subCategoryRepository;
     @Mock
     private CategoryRepository categoryRepository;
     @InjectMocks
-    private SubCategoryService underTest;
+    private SubcategoryService underTest;
 
     private Category category;
-    private SubCategory subCategory;
-    private SubCategoryDto subCategoryDto;
+    private Subcategory subCategory;
+    private SubcategoryDto subCategoryDto;
 
     @BeforeEach
     public void initialization() {
@@ -51,11 +53,11 @@ class SubCategoryServiceTest {
         category = new Category("Category");
         category.setId(1L);
 
-        subCategory = new SubCategory("SubCategory");
+        subCategory = new Subcategory("SubCategory");
         subCategory.setId(1L);
         subCategory.setCategory(category);
 
-        subCategoryDto = new SubCategoryDto();
+        subCategoryDto = new SubcategoryDto();
         subCategoryDto.setId(1L);
         subCategoryDto.setName("Test");
     }
@@ -66,7 +68,7 @@ class SubCategoryServiceTest {
         given(subCategoryRepository.findById(subCategory.getId())).willReturn(Optional.of(subCategory));
 
         // when
-        SubCategoryDto subCategoryDto = underTest.getSubCategoryDtoById(1L);
+        SubcategoryDto subCategoryDto = underTest.getSubcategoryDtoById(1L);
 
         // then
         assertThat(subCategoryDto).isNotNull();
@@ -80,19 +82,19 @@ class SubCategoryServiceTest {
         given(categoryRepository.findById(category.getId())).willReturn(Optional.of(category));
 
         // when
-        SubCategoryDto savedSubCategoryDto = underTest.save(category.getId(), subCategoryDto);
+        SubcategoryDto savedSubcategoryDto = underTest.save(category.getId(), subCategoryDto);
 
         // then
-        ArgumentCaptor<SubCategory> subCategoryArgumentCaptor =
-                ArgumentCaptor.forClass(SubCategory.class);
+        ArgumentCaptor<Subcategory> subCategoryArgumentCaptor =
+                ArgumentCaptor.forClass(Subcategory.class);
         verify(subCategoryRepository).save(subCategoryArgumentCaptor.capture());
 
-        SubCategory capturedSubCategory = subCategoryArgumentCaptor.getValue();
-        SubCategoryDto mappedSubCategory = subCategoryMapper.mapToDto(capturedSubCategory);
+        Subcategory capturedSubcategory = subCategoryArgumentCaptor.getValue();
+        SubcategoryDto mappedSubCategory = subCategoryMapper.mapToDto(capturedSubcategory);
 
-        assertThat(savedSubCategoryDto).isNotNull();
-        assertThat(savedSubCategoryDto.getCategoryDto()).isNotNull();
-        assertThat(savedSubCategoryDto).isEqualTo(mappedSubCategory);
+        assertThat(savedSubcategoryDto).isNotNull();
+        assertThat(savedSubcategoryDto.getCategoryDto()).isNotNull();
+        assertThat(savedSubcategoryDto).isEqualTo(mappedSubCategory);
     }
 
     @Test
@@ -103,7 +105,7 @@ class SubCategoryServiceTest {
 
         // when
         // then
-        assertThatThrownBy(() -> underTest.getSubCategoryDtoById(notFoundId))
+        assertThatThrownBy(() -> underTest.getSubcategoryDtoById(notFoundId))
                 .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessageContaining("SubCategory with id 2 not found");
     }
@@ -115,19 +117,19 @@ class SubCategoryServiceTest {
         given(subCategoryRepository.findById(subCategory.getId())).willReturn(Optional.of(subCategory));
 
         // when
-        SubCategoryDto updatedSubCategoryDto = underTest.update(category.getId(), subCategory.getId(), subCategoryDto);
+        SubcategoryDto updatedSubcategoryDto = underTest.update(category.getId(), subCategory.getId(), subCategoryDto);
 
         // then
-        ArgumentCaptor<SubCategory> subCategoryArgumentCaptor =
-                ArgumentCaptor.forClass(SubCategory.class);
+        ArgumentCaptor<Subcategory> subCategoryArgumentCaptor =
+                ArgumentCaptor.forClass(Subcategory.class);
         verify(subCategoryRepository).save(subCategoryArgumentCaptor.capture());
 
-        SubCategory capturedSubCategory = subCategoryArgumentCaptor.getValue();
-        SubCategoryDto mappedSubCategoryDto = subCategoryMapper.mapToDto(capturedSubCategory);
+        Subcategory capturedSubcategory = subCategoryArgumentCaptor.getValue();
+        SubcategoryDto mappedSubcategoryDto = subCategoryMapper.mapToDto(capturedSubcategory);
 
-        assertThat(updatedSubCategoryDto.getName()).isEqualTo(subCategoryDto.getName());
-        assertThat(updatedSubCategoryDto.getCategoryDto()).isNotNull();
-        assertThat(updatedSubCategoryDto).isEqualTo(mappedSubCategoryDto);
+        assertThat(updatedSubcategoryDto.getName()).isEqualTo(subCategoryDto.getName());
+        assertThat(updatedSubcategoryDto.getCategoryDto()).isNotNull();
+        assertThat(updatedSubcategoryDto).isEqualTo(mappedSubcategoryDto);
     }
 
     @Test
@@ -136,7 +138,7 @@ class SubCategoryServiceTest {
         given(subCategoryRepository.findById(subCategory.getId())).willReturn(Optional.of(subCategory));
 
         // when
-        underTest.deleteSubCategory(subCategory.getId());
+        underTest.deleteSubcategory(subCategory.getId());
 
         // then
         verify(subCategoryRepository, times(1)).deleteById(subCategory.getId());
