@@ -6,7 +6,6 @@ import com.example.porfolio.webstorespring.model.dto.products.CategoryDto;
 import com.example.porfolio.webstorespring.model.entity.products.Category;
 import com.example.porfolio.webstorespring.repositories.CategoryRepository;
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -60,8 +59,8 @@ public class CategoryService {
         if(updatedCategory.getName() == null) {
             updatedCategory.setName(foundCategory.getName());
         }
-        if(updatedCategory.getSubCategories() == null){
-            updatedCategory.setSubCategories(foundCategory.getSubCategories());
+        if(updatedCategory.getSubcategories() == null){
+            updatedCategory.setSubcategories(foundCategory.getSubcategories());
         }
     }
 }

@@ -28,7 +28,7 @@ public class ProductDto {
 
     private ProductType type;
     @JsonIgnore
-    private SubCategoryDto subCategoryDto;
-
+    private SubcategoryDto subcategoryDto;
+    @JsonIgnore
     private ProducerDto producerDto;
 }

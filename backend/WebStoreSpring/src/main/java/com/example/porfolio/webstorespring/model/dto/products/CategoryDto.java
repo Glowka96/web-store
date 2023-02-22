@@ -17,5 +17,5 @@ public class CategoryDto {
     @Size(min=3, max = 20, message = "The name must between min 3 and max 20 letters")
     private String name;
 
-    private List<SubCategoryDto> subCategoriesDto;
+    private List<SubcategoryDto> subcategoriesDto;
 }

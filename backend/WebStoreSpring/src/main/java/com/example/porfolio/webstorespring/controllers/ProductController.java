@@ -18,35 +18,35 @@ public class ProductController {
 
     private final ProductService productService;
 
-    @GetMapping(value = "/{subCategoryId}/products", params = {"page", "size"})
-    public ResponseEntity<List<ProductDto>> getAllProductsBySubCategoryId(@PathVariable("subCategoryId") Long subCategoryId,
+    @GetMapping(value = "/{subcategoryId}/products", params = {"page", "size"})
+    public ResponseEntity<List<ProductDto>> getAllProductsBySubCategoryId(@PathVariable("subcategoryId") Long subcategoryId,
                                                                           @RequestParam("page") Integer page,
                                                                           @RequestParam("size") Integer size) {
-        return ResponseEntity.ok(productService.getAllProductsBySubCategoryId(subCategoryId, page, size));
+        return ResponseEntity.ok(productService.getAllProductsBySubCategoryId(subcategoryId, page, size));
     }
 
-    @GetMapping(value = "/{subCategoryId}/products", params = {"page", "size", "sort"})
-    public ResponseEntity<List<ProductDto>> getAllProductsBySubCategoryId(@PathVariable("subCategoryId") Long subCategoryId,
+    @GetMapping(value = "/{subcategoryId}/products", params = {"page", "size", "sort"})
+    public ResponseEntity<List<ProductDto>> getAllProductsBySubCategoryId(@PathVariable("subcategoryId") Long subcategoryId,
                                                                           @RequestParam("page") Integer page,
                                                                           @RequestParam("size") Integer size,
                                                                           @RequestParam("sort") String sort) {
-        return ResponseEntity.ok(productService.getAllProductsBySubCategoryId(subCategoryId, page, size, sort));
+        return ResponseEntity.ok(productService.getAllProductsBySubCategoryId(subcategoryId, page, size, sort));
     }
 
-    @PostMapping("/{subCategoryId}/producers/{producerId}/products")
-    public ResponseEntity<ProductDto> saveProduct(@PathVariable("subCategoryId") Long subCategoryId,
+    @PostMapping("/{subcategoryId}/producers/{producerId}/products")
+    public ResponseEntity<ProductDto> saveProduct(@PathVariable("subcategoryId") Long subcategoryId,
                                                   @PathVariable("producerId") Long producerId,
                                                   @Valid @RequestBody ProductDto productDto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(subCategoryId, producerId, productDto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(subcategoryId, producerId, productDto));
     }
 
-    @PutMapping("/{subCategoryId}/producers/{producerId}/products/{productId}")
-    public ResponseEntity<ProductDto> updateProduct(@PathVariable Long subCategoryId,
+    @PutMapping("/{subcategoryId}/producers/{producerId}/products/{productId}")
+    public ResponseEntity<ProductDto> updateProduct(@PathVariable Long subcategoryId,
                                                     @PathVariable Long producerId,
                                                     @PathVariable Long productId,
                                                     @Valid @RequestBody ProductDto productDto) {
         return ResponseEntity.status(HttpStatus.ACCEPTED)
-                .body(productService.updateProduct(subCategoryId, producerId, productId, productDto));
+                .body(productService.updateProduct(subcategoryId, producerId, productId, productDto));
     }
 
     @DeleteMapping("/products/{productId}")
