@@ -54,7 +54,7 @@ class ProductServiceTest {
     private ProductDto productDto2;
     private ProductDto productDto3;
     private Subcategory subCategory;
-    private SubcategoryDto subCategoryDto;
+    private SubcategoryDto subcategoryDto;
     private Producer producer;
     private ProducerDto producerDto;
 
@@ -66,8 +66,8 @@ class ProductServiceTest {
         subCategory = new Subcategory();
         subCategory.setId(1L);
 
-        subCategoryDto = new SubcategoryDto();
-        subCategoryDto.setId(1L);
+        subcategoryDto = new SubcategoryDto();
+        subcategoryDto.setId(1L);
 
         producer = new Producer();
         producer.setId(1L);
@@ -104,7 +104,7 @@ class ProductServiceTest {
         productDto.setName("Test");
         productDto.setPrice(29.99);
         productDto.setDescription("This is description");
-        productDto.setSubcategoryDto(subCategoryDto);
+        productDto.setSubcategoryDto(subcategoryDto);
         productDto.setProducerDto(producerDto);
 
         productDto2 = new ProductDto();
@@ -112,7 +112,7 @@ class ProductServiceTest {
         productDto2.setName("Test");
         productDto2.setPrice(25.99);
         productDto2.setDescription("This is description");
-        productDto2.setSubcategoryDto(subCategoryDto);
+        productDto2.setSubcategoryDto(subcategoryDto);
         productDto2.setProducerDto(producerDto);
 
         productDto3 = new ProductDto();
@@ -120,7 +120,7 @@ class ProductServiceTest {
         productDto3.setName("Test");
         productDto3.setPrice(22.99);
         productDto3.setDescription("This is description");
-        productDto3.setSubcategoryDto(subCategoryDto);
+        productDto3.setSubcategoryDto(subcategoryDto);
         productDto3.setProducerDto(producerDto);
     }
 
@@ -164,7 +164,6 @@ class ProductServiceTest {
 
     @Test
     void shouldGetAllProductsBySubCategoryId_WhenGetSubCategoryId_PageNo_PageSize_SortBy() {
-        String sortBy = "price";
         Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Direction.ASC, "price"));
         List<Product> productList = Arrays.asList(product3, product2, product);
 
