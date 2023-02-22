@@ -41,12 +41,13 @@ public class ShipmentService {
         Shipment shipment = shipmentMapper.mapToEntity(shipmentDto);
 
         shipment.setId(foundShipment.getId());
+        shipmentRepository.save(shipment);
         return shipmentMapper.mapToDto(shipment);
     }
 
-    public void delete(ShipmentDto shipmentDto) {
-        Shipment shipment = shipmentMapper.mapToEntity(shipmentDto);
-        shipmentRepository.delete(shipment);
+    public void deleteById(Long id) {
+        Shipment foundShipment = findShipmentById(id);
+        shipmentRepository.delete(foundShipment);
     }
 
     private Shipment findShipmentById(Long id) {
