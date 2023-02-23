@@ -40,6 +40,6 @@ public class SubcategoryController {
     @DeleteMapping("/subcategories/{subcategoryId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteSubcategoryById(@PathVariable ("subcategoryId") Long id){
-        subcategoryService.deleteSubcategory(id);
+        subcategoryService.deleteSubcategoryById(id);
     }
 }

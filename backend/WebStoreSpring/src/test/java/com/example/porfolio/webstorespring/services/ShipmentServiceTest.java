@@ -147,7 +147,7 @@ class ShipmentServiceTest {
         given(shipmentRepository.findById(1L)).willReturn(Optional.of(shipment));
 
         // when
-        underTest.deleteById(1L);
+        underTest.deleteShipmentById(1L);
 
         // then
         verify(shipmentRepository, times(1)).findById(1L);
