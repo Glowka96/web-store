@@ -1,5 +1,6 @@
 package com.example.porfolio.webstorespring.services;
 
+import com.example.porfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.porfolio.webstorespring.mappers.ProducerMapper;
 import com.example.porfolio.webstorespring.mappers.ProductMapper;
 import com.example.porfolio.webstorespring.mappers.ShipmentMapper;
@@ -7,7 +8,6 @@ import com.example.porfolio.webstorespring.model.dto.orders.ShipmentDto;
 import com.example.porfolio.webstorespring.model.dto.products.ProductDto;
 import com.example.porfolio.webstorespring.model.entity.orders.Shipment;
 import com.example.porfolio.webstorespring.model.entity.products.Product;
-import com.example.porfolio.webstorespring.repositories.ProductRepository;
 import com.example.porfolio.webstorespring.repositories.ShipmentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,6 +23,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
@@ -33,12 +34,8 @@ class ShipmentServiceTest {
     private ShipmentRepository shipmentRepository;
     @Spy
     private ShipmentMapper shipmentMapper = Mappers.getMapper(ShipmentMapper.class);
-    @Mock
-    private ProductRepository productRepository;
     @InjectMocks
     private ShipmentService underTest;
-
-    private Product product;
     private ProductDto productDto;
     private Shipment shipment;
     private ShipmentDto shipmentDto;
@@ -51,7 +48,7 @@ class ShipmentServiceTest {
         ProducerMapper producerMapper = Mappers.getMapper(ProducerMapper.class);
         ReflectionTestUtils.setField(productMapper, "producerMapper", producerMapper);
 
-        product = new Product();
+        Product product = new Product();
         product.setId(1L);
         product.setPrice(20.0);
 
@@ -81,6 +78,18 @@ class ShipmentServiceTest {
         // then
         assertThat(shipment).isNotNull();
         assertThat(shipment.getId()).isEqualTo(shipment.getId());
+    }
+
+    @Test
+    void willThrowWhenShipmentByIdIsNotFound() {
+        // given
+        given(shipmentRepository.findById(1L)).willReturn(Optional.empty());
+
+        // when
+        // then
+        assertThatThrownBy(() -> underTest.getShipmentDtoById(1L))
+                .isInstanceOf(ResourceNotFoundException.class)
+                .hasMessageContaining("Shipment with id 1 not found");
     }
 
     @Test
@@ -133,7 +142,7 @@ class ShipmentServiceTest {
     }
 
     @Test
-    void shouldDelete() {
+    void shouldDeleteById() {
         // given
         given(shipmentRepository.findById(1L)).willReturn(Optional.of(shipment));
 

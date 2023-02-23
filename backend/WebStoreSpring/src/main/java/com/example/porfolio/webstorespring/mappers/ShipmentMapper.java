@@ -27,5 +27,7 @@ public interface ShipmentMapper {
     @Mapping(target = "order", source = "orderDto")
     Shipment mapToEntity(ShipmentDto shipmentDto);
 
-
+    @Mapping(target = "product", source = "productDto")
+    @Mapping(target = "order", source = "orderDto")
+    List<Shipment> mapToEntity(List<ShipmentDto> shipmentDtos);
 }
