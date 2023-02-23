@@ -29,18 +29,21 @@ public class ShipmentService {
 
     public ShipmentDto save(ShipmentDto shipmentDto) {
         Shipment shipment = shipmentMapper.mapToEntity(shipmentDto);
+
         BigDecimal price = BigDecimal.valueOf(
                 shipment.getProduct().getPrice() * shipment.getQuality());
         shipment.setPrice(price.doubleValue());
+
         shipmentRepository.save(shipment);
         return shipmentMapper.mapToDto(shipment);
     }
 
-    public ShipmentDto update(Long id, ShipmentDto shipmentDto) {
-        Shipment foundShipment = findShipmentById(id);
+    public ShipmentDto update(Long shipmentId, ShipmentDto shipmentDto) {
+        Shipment foundShipment = findShipmentById(shipmentId);
         Shipment shipment = shipmentMapper.mapToEntity(shipmentDto);
 
         shipment.setId(foundShipment.getId());
+
         shipmentRepository.save(shipment);
         return shipmentMapper.mapToDto(shipment);
     }

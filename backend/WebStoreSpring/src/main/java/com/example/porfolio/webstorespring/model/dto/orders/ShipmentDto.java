@@ -1,7 +1,6 @@
 package com.example.porfolio.webstorespring.model.dto.orders;
 
 import com.example.porfolio.webstorespring.model.dto.products.ProductDto;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -16,8 +15,7 @@ public class ShipmentDto {
     @NotNull
     private Integer quality;
 
-    @NotNull
-    private Integer price;
+    private Double price;
 
     @NotNull
     private OrderDto orderDto;
