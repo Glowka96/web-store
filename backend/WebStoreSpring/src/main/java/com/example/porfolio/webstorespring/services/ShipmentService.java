@@ -48,7 +48,7 @@ public class ShipmentService {
         return shipmentMapper.mapToDto(shipment);
     }
 
-    public void deleteById(Long id) {
+    public void deleteShipmentById(Long id) {
         Shipment foundShipment = findShipmentById(id);
         shipmentRepository.delete(foundShipment);
     }

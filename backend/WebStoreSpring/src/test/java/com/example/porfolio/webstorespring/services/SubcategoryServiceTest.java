@@ -138,7 +138,7 @@ class SubcategoryServiceTest {
         given(subCategoryRepository.findById(subCategory.getId())).willReturn(Optional.of(subCategory));
 
         // when
-        underTest.deleteSubcategory(subCategory.getId());
+        underTest.deleteSubcategoryById(subCategory.getId());
 
         // then
         verify(subCategoryRepository, times(1)).deleteById(subCategory.getId());
