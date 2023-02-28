@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 @ExtendWith({MockitoExtension.class})
 public class GlobalExceptionHandlerTest {
@@ -26,13 +26,14 @@ public class GlobalExceptionHandlerTest {
     @Mock
     private MethodArgumentNotValidException argumentNotValidException;
     @Mock
+    private OrderCanNotBeUpdated orderCanNotBeUpdated;
+    @Mock
     private WebRequest webRequest;
-    //@Spy
     @InjectMocks
     private GlobalExceptionHandler underTest;
 
     @Test
-    public void testResourceNotFoundException() {
+    void testResourceNotFoundException() {
         // given
         ErrorResponse expectedErrorResponse = new ErrorResponse(HttpStatus.NOT_FOUND.value(),
                 resourceNotFoundException.getMessage(),
@@ -48,8 +49,8 @@ public class GlobalExceptionHandlerTest {
     }
 
     @Test
-    public void testMethodArgumentNotValidException() {
-       // String expectedErrorMessage = "Error message 1, Error message 2";
+    void testMethodArgumentNotValidException() {
+        // given
         List<String> excepted = new ArrayList<>();
         excepted.add("Error message 1");
         excepted.add("Error message 2");
@@ -57,6 +58,7 @@ public class GlobalExceptionHandlerTest {
         FieldError fieldError1 = new FieldError("objectName", "fieldName1", "Error message 1");
         FieldError fieldError2 = new FieldError("objectName", "fieldName2", "Error message 2");
 
+        // when
         when(argumentNotValidException.getAllErrors()).thenReturn(Arrays.asList(fieldError1, fieldError2));
 
         ErrorResponse expectedErrorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(),
@@ -66,7 +68,24 @@ public class GlobalExceptionHandlerTest {
         ResponseEntity<Object> responseEntity = underTest
                 .argumentNotValidException(argumentNotValidException, webRequest);
 
+        // then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
         assertThat(responseEntity.getBody()).isEqualTo(expectedErrorResponse);
+    }
+
+    @Test
+    void testMethodOrderCanNotUpdateException() {
+        // given
+        ErrorResponse exceptedErrorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(),
+                orderCanNotBeUpdated.getMessage(),
+                webRequest.getDescription(false));
+
+        // when
+        ResponseEntity<Object> responseEntity = underTest
+                .orderCanNotUpdateException(orderCanNotBeUpdated, webRequest);
+
+        // then
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(responseEntity.getBody()).isEqualTo(exceptedErrorResponse);
     }
 }
