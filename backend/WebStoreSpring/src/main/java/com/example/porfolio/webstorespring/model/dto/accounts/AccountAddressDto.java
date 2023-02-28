@@ -11,6 +11,8 @@ public class AccountAddressDto {
 
     private String city;
 
+    private String postcode;
+
     private String address;
 
     private AccountDto accountDto;
