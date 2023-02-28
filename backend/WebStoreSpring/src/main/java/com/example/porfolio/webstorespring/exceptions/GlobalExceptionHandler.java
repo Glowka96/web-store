@@ -23,7 +23,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> argumentNotValidException(MethodArgumentNotValidException exception,
                                                             WebRequest webRequest) {
-        ErrorResponse errorResponse = createErrorArgumentNotValid(exception, webRequest);
+        ErrorResponse errorResponse = createErrorResponseBadRequest(exception, webRequest);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(OrderCanNotBeUpdated.class)
+    public ResponseEntity<Object> orderCanNotUpdateException(OrderCanNotBeUpdated exception,
+                                                             WebRequest webRequest) {
+        ErrorResponse errorResponse = createErrorResponseBadRequest(exception, webRequest);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
@@ -33,13 +40,20 @@ public class GlobalExceptionHandler {
                 webRequest.getDescription(false));
     }
 
-    private ErrorResponse createErrorArgumentNotValid(MethodArgumentNotValidException exception,
-                                                      WebRequest webRequest) {
+    private ErrorResponse createErrorResponseBadRequest(MethodArgumentNotValidException exception,
+                                                        WebRequest webRequest) {
         return new ErrorResponse(HttpStatus.BAD_REQUEST.value(),
                 exception.getAllErrors()
                         .stream()
                         .map(DefaultMessageSourceResolvable::getDefaultMessage)
                         .toList(),
+                webRequest.getDescription(false));
+    }
+
+    private ErrorResponse createErrorResponseBadRequest(Exception exception,
+                                                        WebRequest webRequest) {
+        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(),
+                exception.getMessage(),
                 webRequest.getDescription(false));
     }
 }
