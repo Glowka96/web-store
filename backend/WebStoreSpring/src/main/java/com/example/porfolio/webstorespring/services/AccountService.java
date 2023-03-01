@@ -1,22 +1,18 @@
 package com.example.porfolio.webstorespring.services;
 
-import com.example.porfolio.webstorespring.exceptions.AccountCanNotModifiedException;
 import com.example.porfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.porfolio.webstorespring.mappers.AccountMapper;
 import com.example.porfolio.webstorespring.model.dto.accounts.AccountDto;
 import com.example.porfolio.webstorespring.model.entity.accounts.Account;
 import com.example.porfolio.webstorespring.model.entity.accounts.AccountRoles;
 import com.example.porfolio.webstorespring.repositories.AccountRepository;
-import com.example.porfolio.webstorespring.services.auth.AccountDetails;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AccountService {
+public class AccountService extends AuthorityService {
 
     private final AccountRepository accountRepository;
     private final AccountMapper accountMapper;
@@ -29,7 +25,10 @@ public class AccountService {
 
     public AccountDto saveAccount(AccountDto accountDto) {
         Account account = accountMapper.mapToEntity(accountDto);
+
         account.setPassword(encoder.encode(account.getPassword()));
+        account.setAccountRoles(AccountRoles.USER);
+
         accountRepository.save(account);
         return accountMapper.mapToDto(account);
     }
@@ -40,7 +39,7 @@ public class AccountService {
         checkValidAlreadyLoggedUser(foundAccount, "update");
 
         Account updatedAccount = accountMapper.mapToEntity(accountDto);
-        setupAccount(foundAccount, updatedAccount);
+        setupUpdateAccount(foundAccount, updatedAccount);
 
         accountRepository.save(updatedAccount);
         return accountMapper.mapToDto(updatedAccount);
@@ -59,35 +58,7 @@ public class AccountService {
                 .orElseThrow(() -> new ResourceNotFoundException("Account", "id", accountId));
     }
 
-    private void checkValidAlreadyLoggedUser(Account foundAccount, String option) {
-        AccountDetails principal = getPrincipal();
-
-        String loggedUsername = principal.getUsername();
-
-        String authority = getNameAuthority(principal);
-
-        if (authority != null &&
-                authority.equalsIgnoreCase(AccountRoles.USER.name()) &&
-                !loggedUsername.equalsIgnoreCase(foundAccount.getEmail())) {
-            throw new AccountCanNotModifiedException(option);
-        }
-    }
-
-    private AccountDetails getPrincipal() {
-        return (AccountDetails) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal();
-    }
-
-    private String getNameAuthority(AccountDetails principal) {
-        return principal.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .findFirst()
-                .orElse(null);
-    }
-
-    private void setupAccount(Account foundAccount, Account updatedAccount) {
+    private void setupUpdateAccount(Account foundAccount, Account updatedAccount) {
         updatedAccount.setId(foundAccount.getId());
 
         if (updatedAccount.getFirstName() == null) {
@@ -112,6 +83,9 @@ public class AccountService {
         }
         if (updatedAccount.getOrders() == null) {
             updatedAccount.setOrders(foundAccount.getOrders());
+        }
+        if (updatedAccount.getAccountRoles() == null) {
+            updatedAccount.setAccountRoles(foundAccount.getAccountRoles());
         }
     }
 }

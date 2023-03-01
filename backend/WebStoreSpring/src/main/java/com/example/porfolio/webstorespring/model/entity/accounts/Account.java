@@ -33,8 +33,7 @@ public class Account {
     @Column(nullable = false)
     private String password;
 
-    @OneToOne
-    @JoinColumn(name = "address_id")
+    @OneToOne(mappedBy = "account")
     private AccountAddress address;
 
     private String imageUrl;
