@@ -174,7 +174,7 @@ class OrderServiceTest {
     }
 
     @Test
-    void willThrowWhenOrderStatusIsNotOpen() {
+    void willThrowWhenUpdateOrderStatusIsNotOpen() {
         // given
         order.setStatus(OrderStatus.COMPLETED);
         given(orderRepository.findById(1L)).willReturn(Optional.of(order));
@@ -183,7 +183,7 @@ class OrderServiceTest {
         // then
         assertThatThrownBy(() -> underTest.update(1L, 1L, orderDto))
                 .isInstanceOf(OrderCanNotModifiedException.class)
-                .hasMessageContaining("The order cannot be updated because the order is being prepared");
+                .hasMessageContaining("The order cannot be update because the order is being prepared");
     }
 
     @Test
@@ -196,6 +196,18 @@ class OrderServiceTest {
 
         // then
         verify(orderRepository, times(1)).findById(1L);
-        verify(orderRepository, times(1)).deleteById(1L);
+        verify(orderRepository, times(1)).delete(order);
+    }
+
+    @Test
+    void willThrowWhenDeleteOrderStatusIsNotOpen() {
+        order.setStatus(OrderStatus.COMPLETED);
+        given(orderRepository.findById(1L)).willReturn(Optional.of(order));
+
+        // when
+        // then
+        assertThatThrownBy(() -> underTest.deleteOrderById(1L))
+                .isInstanceOf(OrderCanNotModifiedException.class)
+                .hasMessageContaining("The order cannot be delete because the order is being prepared");
     }
 }
