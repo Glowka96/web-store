@@ -25,6 +25,7 @@ public class AccountAddress {
     @Column(nullable = false)
     private String address;
 
-    @OneToOne(mappedBy = "address")
+    @OneToOne
+    @JoinColumn(name = "account_id")
     private Account account;
 }
