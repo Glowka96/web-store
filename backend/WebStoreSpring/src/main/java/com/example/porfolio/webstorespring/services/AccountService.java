@@ -1,5 +1,6 @@
 package com.example.porfolio.webstorespring.services;
 
+import com.example.porfolio.webstorespring.exceptions.AccountCanNotModifiedException;
 import com.example.porfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.porfolio.webstorespring.mappers.AccountMapper;
 import com.example.porfolio.webstorespring.model.dto.accounts.AccountDto;
@@ -28,7 +29,7 @@ public class AccountService {
 
     public AccountDto saveAccount(AccountDto accountDto) {
         Account account = accountMapper.mapToEntity(accountDto);
-        encoder.encode(account.getPassword());
+        account.setPassword(encoder.encode(account.getPassword()));
         accountRepository.save(account);
         return accountMapper.mapToDto(account);
     }
@@ -68,7 +69,7 @@ public class AccountService {
         if (authority != null &&
                 authority.equalsIgnoreCase(AccountRoles.USER.name()) &&
                 !loggedUsername.equalsIgnoreCase(foundAccount.getEmail())) {
-            throw new RuntimeException(String.format("You can only %s your own data!", option));
+            throw new AccountCanNotModifiedException(option);
         }
     }
 
@@ -100,6 +101,8 @@ public class AccountService {
         }
         if (updatedAccount.getPassword() == null) {
             updatedAccount.setPassword(foundAccount.getPassword());
+        } else {
+            updatedAccount.setPassword(encoder.encode(updatedAccount.getPassword()));
         }
         if (updatedAccount.getAddress() == null) {
             updatedAccount.setAddress(foundAccount.getAddress());

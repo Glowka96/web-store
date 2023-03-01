@@ -1,6 +1,5 @@
 package com.example.porfolio.webstorespring.controllers;
 
-import com.example.porfolio.webstorespring.exceptions.OrderCanNotBeUpdated;
 import com.example.porfolio.webstorespring.model.dto.orders.OrderDto;
 import com.example.porfolio.webstorespring.services.OrderService;
 import jakarta.validation.Valid;
@@ -39,7 +38,7 @@ public class OrderController {
     @PutMapping("/accounts/{accountId}/orders/{orderId}")
     public ResponseEntity<OrderDto> updateOrder(@PathVariable("accountId") Long accountId,
                                                 @PathVariable("orderId") Long orderId,
-                                                @Valid @RequestBody OrderDto orderDto) throws OrderCanNotBeUpdated {
+                                                @Valid @RequestBody OrderDto orderDto) {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(orderService.update(accountId, orderId, orderDto));
     }
 

@@ -1,6 +1,6 @@
 package com.example.porfolio.webstorespring.services;
 
-import com.example.porfolio.webstorespring.exceptions.OrderCanNotBeUpdated;
+import com.example.porfolio.webstorespring.exceptions.OrderCanNotModifiedException;
 import com.example.porfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.porfolio.webstorespring.mappers.OrderMapper;
 import com.example.porfolio.webstorespring.mappers.ProducerMapper;
@@ -154,7 +154,7 @@ class OrderServiceTest {
     }
 
     @Test
-    void shouldUpdate() throws OrderCanNotBeUpdated {
+    void shouldUpdate() throws OrderCanNotModifiedException {
         // given
         given(accountRepository.findById(1L)).willReturn(Optional.of(account));
         given(orderRepository.findById(1L)).willReturn(Optional.of(order));
@@ -182,7 +182,7 @@ class OrderServiceTest {
         // when
         // then
         assertThatThrownBy(() -> underTest.update(1L, 1L, orderDto))
-                .isInstanceOf(OrderCanNotBeUpdated.class)
+                .isInstanceOf(OrderCanNotModifiedException.class)
                 .hasMessageContaining("The order cannot be updated because the order is being prepared");
     }
 

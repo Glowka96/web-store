@@ -26,7 +26,7 @@ public class GlobalExceptionHandlerTest {
     @Mock
     private MethodArgumentNotValidException argumentNotValidException;
     @Mock
-    private OrderCanNotBeUpdated orderCanNotBeUpdated;
+    private OrderCanNotModifiedException orderCanNotModifiedException;
     @Mock
     private WebRequest webRequest;
     @InjectMocks
@@ -77,12 +77,12 @@ public class GlobalExceptionHandlerTest {
     void testMethodOrderCanNotUpdateException() {
         // given
         ErrorResponse exceptedErrorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(),
-                orderCanNotBeUpdated.getMessage(),
+                orderCanNotModifiedException.getMessage(),
                 webRequest.getDescription(false));
 
         // when
         ResponseEntity<Object> responseEntity = underTest
-                .orderCanNotUpdateException(orderCanNotBeUpdated, webRequest);
+                .orderCanNotModifiedException(orderCanNotModifiedException, webRequest);
 
         // then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
