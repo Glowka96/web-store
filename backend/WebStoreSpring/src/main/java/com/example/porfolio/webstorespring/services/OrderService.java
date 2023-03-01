@@ -1,6 +1,6 @@
 package com.example.porfolio.webstorespring.services;
 
-import com.example.porfolio.webstorespring.exceptions.OrderCanNotBeUpdated;
+import com.example.porfolio.webstorespring.exceptions.OrderCanNotModifiedException;
 import com.example.porfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.porfolio.webstorespring.mappers.OrderMapper;
 import com.example.porfolio.webstorespring.model.dto.orders.OrderDto;
@@ -47,10 +47,11 @@ public class OrderService {
         return orderMapper.mapToDto(order);
     }
 
-    public OrderDto update(Long accountId, Long orderId, OrderDto orderDto) throws OrderCanNotBeUpdated {
+    public OrderDto update(Long accountId, Long orderId, OrderDto orderDto) {
         Order foundOrder = findOrderById(orderId);
+
         if(foundOrder.getStatus() != OrderStatus.OPEN) {
-            throw new OrderCanNotBeUpdated();
+            throw new OrderCanNotModifiedException("update");
         }
         Account foundAccount = findAccountById(accountId);
         Order order = orderMapper.mapToEntity(orderDto);
@@ -62,7 +63,11 @@ public class OrderService {
 
     public void deleteOrderById(Long id) {
         Order foundOrder = findOrderById(id);
-        orderRepository.deleteById(id);
+
+        if(foundOrder.getStatus() != OrderStatus.OPEN) {
+            throw new OrderCanNotModifiedException("delete");
+        }
+        orderRepository.delete(foundOrder);
     }
 
     private Order findOrderById(Long id) {

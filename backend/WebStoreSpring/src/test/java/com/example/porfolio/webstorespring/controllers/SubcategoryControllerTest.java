@@ -67,8 +67,9 @@ class SubcategoryControllerTest {
 
         // when
         // then
-        mvc.perform(post("/api/v1/categories/1/subcategories")
+        mvc.perform(post(URL + "/{id}/subcategories", 1)
                         .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(subCategoryDto)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", is(1)))
