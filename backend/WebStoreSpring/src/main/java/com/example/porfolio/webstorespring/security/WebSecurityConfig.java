@@ -1,4 +1,4 @@
-package com.example.porfolio.webstorespring.security.config;
+package com.example.porfolio.webstorespring.security;
 
 import com.example.porfolio.webstorespring.services.auth.AccountDetailsService;
 import lombok.RequiredArgsConstructor;
