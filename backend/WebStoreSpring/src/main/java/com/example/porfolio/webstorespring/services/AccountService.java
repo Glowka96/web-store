@@ -26,7 +26,7 @@ public class AccountService extends AuthorityService {
     public AccountDto saveAccount(AccountDto accountDto) {
         Account account = accountMapper.mapToEntity(accountDto);
 
-        account.setPassword(encoder.encode(account.getPassword()));
+        account.setPassword(encoder.encode(accountDto.getPassword()));
         account.setAccountRoles(AccountRoles.USER);
 
         accountRepository.save(account);
