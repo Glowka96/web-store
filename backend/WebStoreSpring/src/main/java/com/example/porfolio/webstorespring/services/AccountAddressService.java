@@ -21,7 +21,7 @@ public class AccountAddressService extends AuthorityService {
     public AccountAddressDto getAccountAddressByAccountId(Long accountId) {
         Account foundAccount = findAccountById(accountId);
 
-        checkValidAlreadyLoggedUser(foundAccount, "get");
+        validateAuthorityLoggedUser(foundAccount, "get");
 
         return addressMapper.mapToDto(findAccountAddressByAccountId(accountId));
     }
@@ -29,7 +29,7 @@ public class AccountAddressService extends AuthorityService {
     public AccountAddressDto saveAccountAddress(Long accountId, AccountAddressDto accountAddressDto) {
         Account foundAccount = findAccountById(accountId);
 
-        checkValidAlreadyLoggedUser(foundAccount, "add");
+        validateAuthorityLoggedUser(foundAccount, "add");
 
         AccountAddress accountAddress = addressMapper.mapToEntity(accountAddressDto);
 
@@ -42,7 +42,7 @@ public class AccountAddressService extends AuthorityService {
         Account foundAccount = findAccountById(accountId);
         AccountAddress foundAddress = findAccountAddressByAccountId(accountId);
 
-        checkValidAlreadyLoggedUser(foundAccount, "update");
+        validateAuthorityLoggedUser(foundAccount, "update");
 
         AccountAddress accountAddress = addressMapper.mapToEntity(accountAddressDto);
 

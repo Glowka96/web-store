@@ -1,4 +1,4 @@
-package com.example.porfolio.webstorespring.model.dto.accounts.annotations;
+package com.example.porfolio.webstorespring.annotations;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;

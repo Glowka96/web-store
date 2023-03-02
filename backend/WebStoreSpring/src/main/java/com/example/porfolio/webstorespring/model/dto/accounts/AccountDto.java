@@ -1,12 +1,12 @@
 package com.example.porfolio.webstorespring.model.dto.accounts;
 
-import com.example.porfolio.webstorespring.model.dto.accounts.annotations.Password;
+import com.example.porfolio.webstorespring.annotations.Password;
+import com.example.porfolio.webstorespring.annotations.UniqueEmail;
 import com.example.porfolio.webstorespring.model.dto.orders.OrderDto;
 import com.example.porfolio.webstorespring.model.entity.accounts.AccountRoles;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.Email;
 import lombok.Data;
-import org.hibernate.validator.constraints.UniqueElements;
 
 import java.util.List;
 
@@ -20,8 +20,8 @@ public class AccountDto {
 
     private String lastName;
 
-    @Email(message = "login should be a valid e-mail address format")
-    @UniqueElements(message = "The email is already in use")
+    @Email(message = "Login should be a valid e-mail address format")
+    @UniqueEmail()
     private String email;
 
     @Password

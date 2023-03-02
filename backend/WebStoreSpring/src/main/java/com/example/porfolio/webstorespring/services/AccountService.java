@@ -36,7 +36,7 @@ public class AccountService extends AuthorityService {
     public AccountDto updateAccount(Long accountId, AccountDto accountDto) {
         Account foundAccount = findAccountById(accountId);
 
-        checkValidAlreadyLoggedUser(foundAccount, "update");
+        validateAuthorityLoggedUser(foundAccount, "update");
 
         Account updatedAccount = accountMapper.mapToEntity(accountDto);
         setupUpdateAccount(foundAccount, updatedAccount);
@@ -48,7 +48,7 @@ public class AccountService extends AuthorityService {
     public void deleteAccountById(Long accountId) {
         Account foundAccount = findAccountById(accountId);
 
-        checkValidAlreadyLoggedUser(foundAccount, "delete");
+        validateAuthorityLoggedUser(foundAccount, "delete");
 
         accountRepository.delete(foundAccount);
     }
