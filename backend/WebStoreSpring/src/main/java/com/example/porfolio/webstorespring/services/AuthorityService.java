@@ -8,15 +8,15 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 public abstract class AuthorityService {
-    protected void checkValidAlreadyLoggedUser(Account foundAccount, String option) {
+    protected void validateAuthorityLoggedUser(Account foundAccount, String option) {
         AccountDetails principal = getPrincipal();
 
         String loggedUsername = principal.getUsername();
 
-        String authority = getNameAuthority(principal);
+        String authorityName = getNameAuthority(principal);
 
-        if (authority != null &&
-                authority.equalsIgnoreCase(AccountRoles.USER.name()) &&
+        if (authorityName != null &&
+                authorityName.equalsIgnoreCase(AccountRoles.USER.name()) &&
                 !loggedUsername.equalsIgnoreCase(foundAccount.getEmail())) {
             throw new AccountCanNotModifiedException(option);
         }
