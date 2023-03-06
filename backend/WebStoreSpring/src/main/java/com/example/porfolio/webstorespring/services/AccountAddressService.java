@@ -8,28 +8,27 @@ import com.example.porfolio.webstorespring.model.entity.accounts.AccountAddress;
 import com.example.porfolio.webstorespring.repositories.AccountAddressRepository;
 import com.example.porfolio.webstorespring.repositories.AccountRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AccountAddressService extends AuthorityService {
+public class AccountAddressService{
 
     private final AccountAddressRepository addressRepository;
     private final AccountAddressMapper addressMapper;
     private final AccountRepository accountRepository;
 
+    @PreAuthorize("@accountDetailsService.isValidAuthLoggedUser(#accountId)")
     public AccountAddressDto getAccountAddressByAccountId(Long accountId) {
-        Account foundAccount = findAccountById(accountId);
+        AccountAddress foundAddress = findAccountAddressByAccountId(accountId);
 
-        validateAuthorityLoggedUser(foundAccount, "get");
-
-        return addressMapper.mapToDto(findAccountAddressByAccountId(accountId));
+        return addressMapper.mapToDto(foundAddress);
     }
 
+    @PreAuthorize("@accountDetailsService.isValidAuthLoggedUser(#accountId)")
     public AccountAddressDto saveAccountAddress(Long accountId, AccountAddressDto accountAddressDto) {
         Account foundAccount = findAccountById(accountId);
-
-        validateAuthorityLoggedUser(foundAccount, "add");
 
         AccountAddress accountAddress = addressMapper.mapToEntity(accountAddressDto);
 
@@ -38,11 +37,9 @@ public class AccountAddressService extends AuthorityService {
         return addressMapper.mapToDto(accountAddress);
     }
 
+    @PreAuthorize("@accountDetailsService.isValidAuthLoggedUser(#accountId)")
     public AccountAddressDto updateAccountAddress(Long accountId, AccountAddressDto accountAddressDto) {
-        Account foundAccount = findAccountById(accountId);
         AccountAddress foundAddress = findAccountAddressByAccountId(accountId);
-
-        validateAuthorityLoggedUser(foundAccount, "update");
 
         AccountAddress accountAddress = addressMapper.mapToEntity(accountAddressDto);
 
