@@ -7,17 +7,20 @@ import com.example.porfolio.webstorespring.model.entity.accounts.Account;
 import com.example.porfolio.webstorespring.model.entity.accounts.AccountRoles;
 import com.example.porfolio.webstorespring.repositories.AccountRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AccountService extends AuthorityService {
+public class AccountService {
 
     private final AccountRepository accountRepository;
     private final AccountMapper accountMapper;
     private final BCryptPasswordEncoder encoder;
 
+
+    @PreAuthorize("@accountDetailsService.isValidAuthLoggedUser(#accountId)")
     public AccountDto getAccountById(Long accountId) {
         Account foundAccount = findAccountById(accountId);
         return accountMapper.mapToDto(foundAccount);
@@ -33,10 +36,9 @@ public class AccountService extends AuthorityService {
         return accountMapper.mapToDto(account);
     }
 
+    @PreAuthorize("@accountDetailsService.isValidAuthLoggedUser(#accountId)")
     public AccountDto updateAccount(Long accountId, AccountDto accountDto) {
         Account foundAccount = findAccountById(accountId);
-
-        validateAuthorityLoggedUser(foundAccount, "update");
 
         Account updatedAccount = accountMapper.mapToEntity(accountDto);
         setupUpdateAccount(foundAccount, updatedAccount);
@@ -45,10 +47,9 @@ public class AccountService extends AuthorityService {
         return accountMapper.mapToDto(updatedAccount);
     }
 
+    @PreAuthorize("@accountDetailsService.isValidAuthLoggedUser(#accountId)")
     public void deleteAccountById(Long accountId) {
         Account foundAccount = findAccountById(accountId);
-
-        validateAuthorityLoggedUser(foundAccount, "delete");
 
         accountRepository.delete(foundAccount);
     }
