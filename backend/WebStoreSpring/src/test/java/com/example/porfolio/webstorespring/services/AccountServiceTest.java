@@ -43,8 +43,6 @@ class AccountServiceTest {
     private BCryptPasswordEncoder encoder;
     @Spy
     private AccountMapper accountMapper = Mappers.getMapper(AccountMapper.class);
-  /*  @Mock
-    private AuthorityService authorityService;*/
     @InjectMocks
     private AccountService underTest;
 
@@ -73,6 +71,10 @@ class AccountServiceTest {
         accountDto.setFirstName("Test");
         accountDto.setLastName("Dev");
         accountDto.setPassword("Abcd123$");
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(new AccountDetails(account), null);
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        securityContext.setAuthentication(authentication);
     }
 
     @Test
@@ -128,10 +130,6 @@ class AccountServiceTest {
         // given
         given(accountRepository.findById(anyLong())).willReturn(Optional.of(account));
 
-        Authentication authentication = new UsernamePasswordAuthenticationToken(new AccountDetails(account), null);
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        securityContext.setAuthentication(authentication);
-
         // when
         when(encoder.encode(accountDto.getPassword())).thenReturn("Abcd123$");
         accountDto = underTest.updateAccount(1L, accountDto);
@@ -151,10 +149,6 @@ class AccountServiceTest {
     void shouldDeleteAccountById() {
         // given
         given(accountRepository.findById(anyLong())).willReturn(Optional.of(account));
-
-        Authentication authentication = new UsernamePasswordAuthenticationToken(new AccountDetails(account), null);
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        securityContext.setAuthentication(authentication);
 
         // when
         underTest.deleteAccountById(1L);

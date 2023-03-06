@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -34,9 +35,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(AccountCanNotModifiedException.class)
-    public ResponseEntity<Object> accountCanNotModifiedException(AccountCanNotModifiedException exception,
-                                                                 WebRequest webRequest) {
+    @ExceptionHandler({AccessDeniedException.class, AccountCanNotModifiedException.class})
+    public ResponseEntity<Object> accessDeniedException(Exception exception, WebRequest webRequest) {
         ErrorResponse errorResponse = createErrorResponseForbidden(exception, webRequest);
         return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
     }
