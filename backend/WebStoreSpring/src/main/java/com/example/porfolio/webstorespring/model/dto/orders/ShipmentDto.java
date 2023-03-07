@@ -17,6 +17,5 @@ public class ShipmentDto {
 
     private Double price;
 
-    @NotNull
     private OrderDto orderDto;
 }
