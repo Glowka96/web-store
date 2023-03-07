@@ -16,6 +16,7 @@ import com.example.porfolio.webstorespring.model.entity.orders.OrderStatus;
 import com.example.porfolio.webstorespring.model.entity.orders.Shipment;
 import com.example.porfolio.webstorespring.repositories.AccountRepository;
 import com.example.porfolio.webstorespring.repositories.OrderRepository;
+import com.example.porfolio.webstorespring.services.auth.AccountDetails;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,6 +26,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
@@ -34,8 +39,10 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith({MockitoExtension.class})
 class OrderServiceTest {
@@ -63,6 +70,10 @@ class OrderServiceTest {
 
         ProducerMapper producerMapper = Mappers.getMapper(ProducerMapper.class);
         ReflectionTestUtils.setField(productMapper, "producerMapper", producerMapper);
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(new AccountDetails(account), null);
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        securityContext.setAuthentication(authentication);
 
         accountDto = new AccountDto();
         accountDto.setId(1L);
@@ -103,49 +114,39 @@ class OrderServiceTest {
     }
 
     @Test
-    void shouldGetOrderDtoById() {
+    void shouldGetAllAccountsOrder() {
         // given
-        given(orderRepository.findById(1L)).willReturn(Optional.of(order));
+        given(orderRepository.findAllByAccountId(anyLong())).willReturn(Arrays.asList(order, new Order()));
 
         // when
-        OrderDto orderDto1 = underTest.getOrderDtoById(1L);
+       List<OrderDto> orderDtos = underTest.getAllOrderDtoByAccountId(1L);
 
         // then
-        assertThat(order.getId()).isEqualTo(orderDto1.getId());
+        assertThat(orderDtos).isNotNull();
+        assertThat(orderDtos.size()).isEqualTo(2);
     }
 
     @Test
     void willThrowWhenOrderByIdIsNotFound() {
         // given
-        given(orderRepository.findById(1L)).willReturn(Optional.empty());
+        given(orderRepository.findOrderByAccountIdAndId(anyLong(), anyLong())).willReturn(Optional.empty());
 
         // when
         // then
-        assertThatThrownBy(() -> underTest.getOrderDtoById(1L))
+        assertThatThrownBy(() -> underTest.getOrderByAccountIdAndOrderId(1L, 1L))
                 .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessageContaining("Order with id 1 not found");
-    }
-
-    @Test
-    void shouldGetAllOrderDto() {
-        // given
-        // when
-        underTest.getAllOrderDto();
-
-        // then
-        verify(orderRepository, times(1)).findAll();
-        verifyNoMoreInteractions(orderRepository);
+                .hasMessageContaining("Order with accountId 1 or orderId 1 not found");
     }
 
     @Test
     void shouldSave() {
         // given
-        given(accountRepository.findById(1L)).willReturn(Optional.of(account));
+        given(accountRepository.findById(anyLong())).willReturn(Optional.of(account));
         String expectedNameUser = accountDto.getFirstName() + " " + accountDto.getLastName();
         Double expectedDouble = 63.0;
 
         // when
-        orderDto = underTest.save(1L, orderDto);
+        orderDto = underTest.saveOrder(1L, orderDto);
 
         // then
         assertThat(orderDto.getAccountDto().getId()).isEqualTo(1L);
@@ -156,11 +157,11 @@ class OrderServiceTest {
     @Test
     void shouldUpdate() throws OrderCanNotModifiedException {
         // given
-        given(accountRepository.findById(1L)).willReturn(Optional.of(account));
-        given(orderRepository.findById(1L)).willReturn(Optional.of(order));
+        given(accountRepository.findById(anyLong())).willReturn(Optional.of(account));
+        given(orderRepository.findById(anyLong())).willReturn(Optional.of(order));
 
         // when
-        orderDto = underTest.update(1L, 1L, orderDto);
+        orderDto = underTest.updateOrder(1L, 1L, orderDto);
 
         // then
         ArgumentCaptor<Order> orderArgumentCaptor =
@@ -177,11 +178,11 @@ class OrderServiceTest {
     void willThrowWhenUpdateOrderStatusIsNotOpen() {
         // given
         order.setStatus(OrderStatus.COMPLETED);
-        given(orderRepository.findById(1L)).willReturn(Optional.of(order));
+        given(orderRepository.findById(anyLong())).willReturn(Optional.of(order));
 
         // when
         // then
-        assertThatThrownBy(() -> underTest.update(1L, 1L, orderDto))
+        assertThatThrownBy(() -> underTest.updateOrder(1L, 1L, orderDto))
                 .isInstanceOf(OrderCanNotModifiedException.class)
                 .hasMessageContaining("The order cannot be update because the order is being prepared");
     }
@@ -189,10 +190,10 @@ class OrderServiceTest {
     @Test
     void shouldDeleteOrderById() {
         // given
-        given(orderRepository.findById(1L)).willReturn(Optional.of(order));
+        given(orderRepository.findById(anyLong())).willReturn(Optional.of(order));
 
         // when
-        underTest.deleteOrderById(1L);
+        underTest.deleteOrderById(1L, 1L);
 
         // then
         verify(orderRepository, times(1)).findById(1L);
@@ -202,11 +203,11 @@ class OrderServiceTest {
     @Test
     void willThrowWhenDeleteOrderStatusIsNotOpen() {
         order.setStatus(OrderStatus.COMPLETED);
-        given(orderRepository.findById(1L)).willReturn(Optional.of(order));
+        given(orderRepository.findById(anyLong())).willReturn(Optional.of(order));
 
         // when
         // then
-        assertThatThrownBy(() -> underTest.deleteOrderById(1L))
+        assertThatThrownBy(() -> underTest.deleteOrderById(1L, 1L))
                 .isInstanceOf(OrderCanNotModifiedException.class)
                 .hasMessageContaining("The order cannot be delete because the order is being prepared");
     }
