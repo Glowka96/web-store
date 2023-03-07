@@ -10,6 +10,7 @@ import com.example.porfolio.webstorespring.model.entity.orders.OrderStatus;
 import com.example.porfolio.webstorespring.repositories.AccountRepository;
 import com.example.porfolio.webstorespring.repositories.OrderRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -28,16 +29,19 @@ public class OrderService {
     private final AccountRepository accountRepository;
     private final Clock clock = Clock.systemUTC();
 
-    public OrderDto getOrderDtoById(Long id) {
-        Order foundOrder = findOrderById(id);
-        return orderMapper.mapToDto(foundOrder);
+    @PreAuthorize("@accountDetailsService.isValidAuthLoggedUser(#accountId)")
+    public List<OrderDto> getAllOrderDtoByAccountId(Long accountId) {
+        List<Order> orders = orderRepository.findAllByAccountId(accountId);
+        return orderMapper.mapToDto(orders);
     }
 
-    public List<OrderDto> getAllOrderDto() {
-        return orderMapper.mapToDto(orderRepository.findAll());
+    public OrderDto getOrderByAccountIdAndOrderId(Long accountId, Long orderId) {
+        Order order = findOrderByAccountIdAndOrderId(accountId, orderId);
+        return orderMapper.mapToDto(order);
     }
 
-    public OrderDto save(Long accountId, OrderDto orderDto) {
+    @PreAuthorize("@accountDetailsService.isValidAuthLoggedUser(#accountId)")
+    public OrderDto saveOrder(Long accountId, OrderDto orderDto) {
         Account foundAccount = findAccountById(accountId);
         Order order = orderMapper.mapToEntity(orderDto);
 
@@ -47,12 +51,14 @@ public class OrderService {
         return orderMapper.mapToDto(order);
     }
 
-    public OrderDto update(Long accountId, Long orderId, OrderDto orderDto) {
+    @PreAuthorize("@accountDetailsService.isValidAuthLoggedUser(#accountId)")
+    public OrderDto updateOrder(Long accountId, Long orderId, OrderDto orderDto) {
         Order foundOrder = findOrderById(orderId);
 
         if(foundOrder.getStatus() != OrderStatus.OPEN) {
             throw new OrderCanNotModifiedException("update");
         }
+
         Account foundAccount = findAccountById(accountId);
         Order order = orderMapper.mapToEntity(orderDto);
 
@@ -61,7 +67,8 @@ public class OrderService {
         return orderMapper.mapToDto(order);
     }
 
-    public void deleteOrderById(Long id) {
+    @PreAuthorize("@accountDetailsService.isValidAuthLoggedUser(#accountId)")
+    public void deleteOrderById(Long accountId, Long id) {
         Order foundOrder = findOrderById(id);
 
         if(foundOrder.getStatus() != OrderStatus.OPEN) {
@@ -73,6 +80,13 @@ public class OrderService {
     private Order findOrderById(Long id) {
         return orderRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Order", "id", id));
+    }
+
+    private Order findOrderByAccountIdAndOrderId(Long accountId, Long orderId) {
+        String msgErrorAccountId = "accountId " + accountId;
+        String msgErrorOrderId = "or orderId " + orderId;
+        return orderRepository.findOrderByAccountIdAndId(accountId, orderId)
+                .orElseThrow(() -> new ResourceNotFoundException("Order", msgErrorAccountId, msgErrorOrderId));
     }
 
     private Account findAccountById(Long id) {

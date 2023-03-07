@@ -6,45 +6,48 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
-@RequestMapping("api/v1")
+@RestController
+@RequestMapping("api/v1/accounts/{accountId}/orders")
 @CrossOrigin(origins = "http://localhost:4200")
 @RequiredArgsConstructor
 public class OrderController {
 
     private final OrderService orderService;
 
-    @GetMapping("/orders")
-    public ResponseEntity<List<OrderDto>> getAllOrders() {
-        return ResponseEntity.ok(orderService.getAllOrderDto());
+    @GetMapping()
+    public ResponseEntity<List<OrderDto>> getAllOrdersByAccountId(@PathVariable("accountId") Long accountId) {
+        return ResponseEntity.ok(orderService.getAllOrderDtoByAccountId(accountId));
     }
 
-    @GetMapping("/orders/{id}")
-    public ResponseEntity<OrderDto> getOrderById(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(orderService.getOrderDtoById(id));
+    @GetMapping("/{orderId}")
+    public ResponseEntity<OrderDto> getOrderByAccountIdAndOrderId(@PathVariable("accountId") Long accountId,
+                                                                  @PathVariable("orderId") Long orderId) {
+        return ResponseEntity.ok(orderService.getOrderByAccountIdAndOrderId(accountId, orderId));
     }
 
-    @PostMapping("/accounts/{accountId}/orders")
+    @PostMapping()
     public ResponseEntity<OrderDto> saveOrder(@PathVariable("accountId") Long accountId,
                                               @Valid @RequestBody OrderDto orderDto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(orderService.save(accountId, orderDto));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(orderService.saveOrder(accountId, orderDto));
     }
 
-    @PutMapping("/accounts/{accountId}/orders/{orderId}")
+    @PutMapping("/{orderId}")
     public ResponseEntity<OrderDto> updateOrder(@PathVariable("accountId") Long accountId,
                                                 @PathVariable("orderId") Long orderId,
                                                 @Valid @RequestBody OrderDto orderDto) {
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(orderService.update(accountId, orderId, orderDto));
+        return ResponseEntity.status(HttpStatus.ACCEPTED)
+                .body(orderService.updateOrder(accountId, orderId, orderDto));
     }
 
-    @DeleteMapping("/orders/{orderId}")
+    @DeleteMapping("/{orderId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteOrderById(@PathVariable("orderId") Long orderId) {
-        orderService.deleteOrderById(orderId);
+    public void deleteOrderById(@PathVariable("accountId") Long accountId,
+                                @PathVariable("orderId") Long orderId) {
+        orderService.deleteOrderById(accountId, orderId);
     }
 }

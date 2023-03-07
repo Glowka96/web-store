@@ -19,6 +19,8 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -36,7 +38,7 @@ class OrderControllerTest {
 
     private MockMvc mvc;
     private ObjectMapper mapper;
-    private static final String URL = "/api/v1";
+    private static final String URL = "/api/v1/accounts/{accountId}";
     private OrderDto orderDto;
 
     @BeforeEach
@@ -50,12 +52,12 @@ class OrderControllerTest {
     }
 
 
-    @Test
+   @Test
     void shouldGetAllOrders() throws Exception {
         List<OrderDto> orderDtos = new ArrayList<>(Arrays.asList(orderDto, new OrderDto()));
-        given(orderService.getAllOrderDto()).willReturn(orderDtos);
+        given(orderService.getAllOrderDtoByAccountId(anyLong())).willReturn(orderDtos);
 
-        mvc.perform(get(URL + "/orders")
+        mvc.perform(get(URL + "/orders", 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -64,10 +66,10 @@ class OrderControllerTest {
     }
 
     @Test
-    void shouldGetOrderById() throws Exception {
-        given(orderService.getOrderDtoById(1L)).willReturn(orderDto);
+    void shouldGetOrderByAccountIdAndId() throws Exception {
+        given(orderService.getOrderByAccountIdAndOrderId(anyLong(), anyLong())).willReturn(orderDto);
 
-        mvc.perform(get(URL + "/orders/{id}", 1)
+        mvc.perform(get(URL + "/orders/{id}", 1, 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -77,9 +79,9 @@ class OrderControllerTest {
 
     @Test
     void shouldSaveOrder() throws Exception {
-        given(orderService.save(1L, orderDto)).willReturn(orderDto);
+        given(orderService.saveOrder(1L, orderDto)).willReturn(orderDto);
 
-        mvc.perform(post(URL + "/accounts/{accountId}/orders", 1)
+        mvc.perform(post(URL + "/orders", 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(orderDto)))
@@ -90,9 +92,9 @@ class OrderControllerTest {
 
     @Test
     void shouldUpdateOrder() throws Exception {
-        given(orderService.update(1L, 1L, orderDto)).willReturn(orderDto).willReturn(orderDto);
+        given(orderService.updateOrder(anyLong(), anyLong(), any(OrderDto.class))).willReturn(orderDto);
 
-        mvc.perform(put(URL + "/accounts/{accountId}/orders/{ordersId}", 1, 1)
+        mvc.perform(put(URL + "/orders/{ordersId}", 1, 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(orderDto)))
@@ -103,7 +105,7 @@ class OrderControllerTest {
 
     @Test
     void shouldDeleteOrderById() throws Exception {
-        mvc.perform(delete(URL + "/orders/{orderId}", 1)
+        mvc.perform(delete(URL + "/orders/{orderId}", 1, 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent())
