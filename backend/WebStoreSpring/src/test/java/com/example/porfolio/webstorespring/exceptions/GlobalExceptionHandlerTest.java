@@ -28,6 +28,8 @@ public class GlobalExceptionHandlerTest {
     @Mock
     private OrderCanNotModifiedException orderCanNotModifiedException;
     @Mock
+    private AccountCanNotModifiedException accountCanNotModifiedException;
+    @Mock
     private WebRequest webRequest;
     @InjectMocks
     private GlobalExceptionHandler underTest;
@@ -44,7 +46,7 @@ public class GlobalExceptionHandlerTest {
                 .resourceNotFoundException(resourceNotFoundException, webRequest);
 
         // then
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertThat(responseEntity.getStatusCode().value()).isEqualTo(expectedErrorResponse.getStatusCode());
         assertThat(responseEntity.getBody()).isEqualTo(expectedErrorResponse);
     }
 
@@ -69,7 +71,7 @@ public class GlobalExceptionHandlerTest {
                 .argumentNotValidException(argumentNotValidException, webRequest);
 
         // then
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(responseEntity.getStatusCode().value()).isEqualTo(expectedErrorResponse.getStatusCode());
         assertThat(responseEntity.getBody()).isEqualTo(expectedErrorResponse);
     }
 
@@ -85,7 +87,24 @@ public class GlobalExceptionHandlerTest {
                 .orderCanNotModifiedException(orderCanNotModifiedException, webRequest);
 
         // then
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(responseEntity.getStatusCode().value()).isEqualTo(exceptedErrorResponse.getStatusCode());
+        assertThat(responseEntity.getBody()).isEqualTo(exceptedErrorResponse);
+    }
+
+
+    @Test
+    void testAccessDeniedException() {
+        // given
+        ErrorResponse exceptedErrorResponse = new ErrorResponse(HttpStatus.FORBIDDEN.value(),
+                accountCanNotModifiedException.getMessage(),
+                webRequest.getDescription(false));
+
+        // when
+        ResponseEntity<Object> responseEntity = underTest
+                .accessDeniedException(accountCanNotModifiedException, webRequest);
+
+        // then
+        assertThat(responseEntity.getStatusCode().value()).isEqualTo(exceptedErrorResponse.getStatusCode());
         assertThat(responseEntity.getBody()).isEqualTo(exceptedErrorResponse);
     }
 }
