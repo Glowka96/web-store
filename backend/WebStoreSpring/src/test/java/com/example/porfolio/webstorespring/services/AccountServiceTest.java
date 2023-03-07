@@ -111,8 +111,7 @@ class AccountServiceTest {
         when(accountRepository.save(any(Account.class))).thenReturn(account);
         when(encoder.encode(accountDto.getPassword())).thenReturn("Abcd123$");
 
-        underTest.saveAccount(accountDto);
-        accountDto.setAccountRoles(AccountRoles.USER);
+        accountDto = underTest.saveAccount(accountDto);
 
         // then
         ArgumentCaptor<Account> accountArgumentCaptor =

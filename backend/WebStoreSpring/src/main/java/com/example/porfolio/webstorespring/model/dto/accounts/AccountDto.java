@@ -4,7 +4,6 @@ import com.example.porfolio.webstorespring.annotations.Password;
 import com.example.porfolio.webstorespring.annotations.UniqueEmail;
 import com.example.porfolio.webstorespring.model.dto.orders.OrderDto;
 import com.example.porfolio.webstorespring.model.entity.accounts.AccountRoles;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.Email;
 import lombok.Data;
 
@@ -13,7 +12,6 @@ import java.util.List;
 @Data
 public class AccountDto {
 
-    @JsonIgnore
     private Long id;
 
     private String firstName;
