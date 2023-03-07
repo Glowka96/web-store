@@ -114,6 +114,6 @@ class CategoryControllerTest {
     @Test
     void shouldDeleteCategoryById() throws Exception {
         mvc.perform(delete(URL + "/{id}", 1L))
-                .andExpect(status().isAccepted());
+                .andExpect(status().isNoContent());
     }
 }
