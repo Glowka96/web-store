@@ -29,7 +29,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
@@ -102,26 +101,6 @@ class AccountServiceTest {
         assertThatThrownBy(() -> underTest.getAccountById(1L))
                 .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessageContaining("Account with id 1 not found");
-    }
-
-    @Test
-    void shouldSaveAccount() {
-        // given
-        // when
-        when(accountRepository.save(any(Account.class))).thenReturn(account);
-        when(encoder.encode(accountDto.getPassword())).thenReturn("Abcd123$");
-
-        accountDto = underTest.saveAccount(accountDto);
-
-        // then
-        ArgumentCaptor<Account> accountArgumentCaptor =
-                ArgumentCaptor.forClass(Account.class);
-        verify(accountRepository).save(accountArgumentCaptor.capture());
-
-        Account captureAccount = accountArgumentCaptor.getValue();
-        AccountDto mappedAccount = accountMapper.mapToDto(captureAccount);
-
-        assertThat(mappedAccount).isEqualTo(accountDto);
     }
 
     @Test

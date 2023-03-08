@@ -72,22 +72,6 @@ class AccountControllerTest {
     *  repair ValidationException: HV000064: Unable to instantiate ConstraintValidator
     * */
     @Test
-    void shouldSaveAccount() throws Exception {
-        given(accountService.saveAccount(any(AccountDto.class))).willReturn(accountDto);
-
-        mvc.perform(post(URL)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(accountDto)))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.firstName", is("Test")))
-                .andExpect(jsonPath("$.lastName", is("Dev")))
-                .andExpect(jsonPath("$.email", is("test@test.pl")))
-                .andDo(print());
-    }
-
-    @Test
     void shouldUpdateAccount() throws Exception {
         given(accountService.updateAccount(anyLong(), any(AccountDto.class))).willReturn(accountDto);
 

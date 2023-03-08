@@ -21,12 +21,6 @@ public class AccountController {
         return ResponseEntity.ok(accountService.getAccountById(accountId));
     }
 
-    @PostMapping
-    public ResponseEntity<AccountDto> saveAccount(@Valid @RequestBody AccountDto accountDto) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(accountService.saveAccount(accountDto));
-    }
-
     @PutMapping("/{accountId}")
     public ResponseEntity<AccountDto> updateAccount(@PathVariable(value = "accountId") Long accountId,
                                                     @Valid @RequestBody AccountDto accountDto) {
