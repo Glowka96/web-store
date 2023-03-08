@@ -4,7 +4,6 @@ import com.example.porfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.porfolio.webstorespring.mappers.AccountMapper;
 import com.example.porfolio.webstorespring.model.dto.accounts.AccountDto;
 import com.example.porfolio.webstorespring.model.entity.accounts.Account;
-import com.example.porfolio.webstorespring.model.entity.accounts.AccountRoles;
 import com.example.porfolio.webstorespring.repositories.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,16 +23,6 @@ public class AccountService {
     public AccountDto getAccountById(Long accountId) {
         Account foundAccount = findAccountById(accountId);
         return accountMapper.mapToDto(foundAccount);
-    }
-
-    public AccountDto saveAccount(AccountDto accountDto) {
-        Account account = accountMapper.mapToEntity(accountDto);
-
-        account.setPassword(encoder.encode(accountDto.getPassword()));
-        account.setAccountRoles(AccountRoles.USER);
-
-        accountRepository.save(account);
-        return accountMapper.mapToDto(account);
     }
 
     @PreAuthorize("@accountDetailsService.isValidAuthLoggedUser(#accountId)")

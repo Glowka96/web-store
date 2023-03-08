@@ -46,6 +46,6 @@ public record AccountDetails(Account account) implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return account.getEnabled();
     }
 }
