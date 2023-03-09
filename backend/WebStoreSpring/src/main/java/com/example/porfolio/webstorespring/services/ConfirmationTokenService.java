@@ -29,9 +29,9 @@ public class ConfirmationTokenService {
         return confirmationToken;
     }
 
-    public ConfirmationToken getConfirmationToken(String token) {
+    public ConfirmationToken getConfirmationTokenByToken(String token) {
         return confirmationTokenRepository.findByToken(token)
-                .orElseThrow(() -> new ResourceNotFoundException("Confirmation","token", token));
+                .orElseThrow(() -> new ResourceNotFoundException("Confirmation token","token", token));
     }
 
     public boolean isConfirmed(ConfirmationToken token) {
@@ -42,12 +42,12 @@ public class ConfirmationTokenService {
         return token.getExpiresAt().isBefore(LocalDateTime.now(clock));
     }
 
-    public void setConfirmedAt(ConfirmationToken token) {
+    public void setConfirmedAtAndSaveConfirmationToken(ConfirmationToken token) {
         token.setConfirmedAt(LocalDateTime.now(clock));
         confirmationTokenRepository.save(token);
     }
 
-    public void deleteToken(ConfirmationToken confirmationToken) {
+    public void deleteConfirmationToken(ConfirmationToken confirmationToken) {
         confirmationTokenRepository.delete(confirmationToken);
     }
 }

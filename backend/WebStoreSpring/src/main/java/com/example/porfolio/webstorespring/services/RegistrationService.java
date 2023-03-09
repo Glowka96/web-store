@@ -1,5 +1,6 @@
 package com.example.porfolio.webstorespring.services;
 
+import com.example.porfolio.webstorespring.exceptions.EmailAlreadyConfirmedException;
 import com.example.porfolio.webstorespring.model.dto.accounts.RegistrationRequest;
 import com.example.porfolio.webstorespring.model.entity.accounts.Account;
 import com.example.porfolio.webstorespring.model.entity.accounts.AccountRoles;
@@ -29,23 +30,23 @@ public class RegistrationService {
     }
 
     public String confirmToken(String token) {
-        ConfirmationToken confirmationToken = tokenService.getConfirmationToken(token);
+        ConfirmationToken confirmationToken = tokenService.getConfirmationTokenByToken(token);
         Account account = confirmationToken.getAccount();
 
         if (tokenService.isConfirmed(confirmationToken)) {
             //TODO add to GlobalExceptionHandler
-            throw new IllegalStateException("Email already confirmed");
+            throw new EmailAlreadyConfirmedException();
         }
 
         if (!account.getEnabled() && tokenService.isTokenExpired(confirmationToken)) {
             ConfirmationToken newToken = tokenService.createConfirmationToken(account);
-            tokenService.deleteToken(confirmationToken);
+            tokenService.deleteConfirmationToken(confirmationToken);
             return emailSenderService.sendEmail(account.getEmail(),
                     "New confirmation token",
                     newToken.getToken());
         }
 
-        tokenService.setConfirmedAt(confirmationToken);
+        tokenService.setConfirmedAtAndSaveConfirmationToken(confirmationToken);
         account.setEnabled(true);
         accountRepository.save(account);
         return "Account confirmed";
