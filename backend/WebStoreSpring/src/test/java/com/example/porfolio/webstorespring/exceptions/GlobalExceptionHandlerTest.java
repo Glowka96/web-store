@@ -28,6 +28,8 @@ public class GlobalExceptionHandlerTest {
     @Mock
     private OrderCanNotModifiedException orderCanNotModifiedException;
     @Mock
+    private EmailAlreadyConfirmedException emailAlreadyConfirmedException;
+    @Mock
     private AccountCanNotModifiedException accountCanNotModifiedException;
     @Mock
     private WebRequest webRequest;
@@ -76,7 +78,7 @@ public class GlobalExceptionHandlerTest {
     }
 
     @Test
-    void testMethodOrderCanNotUpdateException() {
+    void testMethodCanNotModifiedExceptionWhenOrderCanNotModifiedException() {
         // given
         ErrorResponse exceptedErrorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(),
                 orderCanNotModifiedException.getMessage(),
@@ -84,7 +86,23 @@ public class GlobalExceptionHandlerTest {
 
         // when
         ResponseEntity<Object> responseEntity = underTest
-                .orderCanNotModifiedException(orderCanNotModifiedException, webRequest);
+                .canNotModifiedException(orderCanNotModifiedException, webRequest);
+
+        // then
+        assertThat(responseEntity.getStatusCode().value()).isEqualTo(exceptedErrorResponse.getStatusCode());
+        assertThat(responseEntity.getBody()).isEqualTo(exceptedErrorResponse);
+    }
+
+    @Test
+    void testMethodCanNotModifiedWhenEmailAlreadyConfirmedException() {
+        // given
+        ErrorResponse exceptedErrorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(),
+                emailAlreadyConfirmedException.getMessage(),
+                webRequest.getDescription(false));
+
+        // when
+        ResponseEntity<Object> responseEntity = underTest
+                .canNotModifiedException(emailAlreadyConfirmedException, webRequest);
 
         // then
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(exceptedErrorResponse.getStatusCode());
