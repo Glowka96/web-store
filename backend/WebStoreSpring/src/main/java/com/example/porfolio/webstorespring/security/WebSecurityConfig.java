@@ -46,9 +46,12 @@ public class WebSecurityConfig {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authenticationProvider(authenticationProvider())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/v1/registration").permitAll()
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/v1/registration/**",
+                                "/api/v1/categories").permitAll()
                         .anyRequest().authenticated())
-                .formLogin(withDefaults())
+                .formLogin((form) -> {
+                    form.defaultSuccessUrl("/api/v1/categories");
+                        })
                 .httpBasic(withDefaults())
                 .build();
     }
