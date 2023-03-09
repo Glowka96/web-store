@@ -90,7 +90,7 @@ class ConfirmationTokenServiceTest {
         // when
         ConfirmationToken actual = underTest.getConfirmationTokenByToken(UUID_CODE);
 
-        //
+        // then
         assertThat(actual).isNotNull();
         verify(tokenRepository, times(1)).findByToken(UUID_CODE);
     }
@@ -107,7 +107,7 @@ class ConfirmationTokenServiceTest {
     }
 
     @Test
-    void isConfirmed() {
+    void shouldSuccessConfirmed() {
         // given
         confirmationToken.setConfirmedAt(LocalDateTime.now(clock));
 
@@ -119,10 +119,17 @@ class ConfirmationTokenServiceTest {
     }
 
     @Test
-    void isNotConfirmed() {
+    void shouldFailConfirmed() {
         boolean isNotConfirmed = underTest.isConfirmed(confirmationToken);
 
         assertThat(isNotConfirmed).isFalse();
+    }
+
+    @Test
+    void shouldSuccessTokenExpired() {
+        boolean isExpired = underTest.isTokenExpired(confirmationToken);
+
+        assertThat(isExpired).isTrue();
     }
 
     @Test
@@ -134,7 +141,7 @@ class ConfirmationTokenServiceTest {
     }
 
     @Test
-    void deleteToken() {
+    void shouldDeleteToken() {
         underTest.deleteConfirmationToken(confirmationToken);
 
         verify(tokenRepository, times(1)).delete(confirmationToken);

@@ -28,6 +28,4 @@ public class RegistrationRequest {
     @NotNull(message = "The email can't be null")
     @NotBlank(message = "The email can't be blank")
     private String password;
-
-
 }
