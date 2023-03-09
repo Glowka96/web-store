@@ -34,7 +34,6 @@ public class RegistrationService {
         Account account = confirmationToken.getAccount();
 
         if (tokenService.isConfirmed(confirmationToken)) {
-            //TODO add to GlobalExceptionHandler
             throw new EmailAlreadyConfirmedException();
         }
 
