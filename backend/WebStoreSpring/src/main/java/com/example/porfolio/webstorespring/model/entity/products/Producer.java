@@ -11,6 +11,8 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "producer")
+@NamedEntityGraph(name = "Producer.products",
+        attributeNodes = @NamedAttributeNode("products"))
 @NoArgsConstructor
 public class Producer {
     @Id

@@ -17,14 +17,9 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
 
-    public List<CategoryDto> getAllCategory() {
+    public List<CategoryDto> getAllCategoryDto() {
         return categoryMapper.mapToDto(
                 categoryRepository.findAll());
-    }
-
-    public CategoryDto getCategoryDtoByName(String name){
-        Category foundCategory = findCategoryByName(name);
-        return categoryMapper.mapToDto(foundCategory);
     }
 
     public CategoryDto getCategoryDtoById(Long id) {
@@ -38,14 +33,19 @@ public class CategoryService {
         return categoryMapper.mapToDto(category);
     }
 
-    public CategoryDto update(String nameCategory, CategoryDto categoryDto) {
-        Category findCategoryByName = findCategoryByName(nameCategory);
+    public CategoryDto update(Long id, CategoryDto categoryDto) {
+        Category foundCategory = findCategoryById(id);
 
         Category category = categoryMapper.mapToEntity(categoryDto);
-        category.setId(findCategoryByName.getId());
+        setupCategory(foundCategory, category);
 
-        Category saveCategory = categoryRepository.save(category);
-        return categoryMapper.mapToDto(saveCategory);
+        categoryRepository.save(category);
+        return categoryMapper.mapToDto(category);
+    }
+
+    public void deleteById(Long id) {
+        Category category = findCategoryById(id);
+        categoryRepository.delete(category);
     }
 
     private Category findCategoryById(Long id) {
@@ -53,8 +53,14 @@ public class CategoryService {
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "id", id));
     }
 
-    private Category findCategoryByName(String name) {
-        return categoryRepository.findByName(name)
-                .orElseThrow(() -> new ResourceNotFoundException("Category", "name", name));
+    private void setupCategory(Category foundCategory, Category updatedCategory){
+        updatedCategory.setId(foundCategory.getId());
+
+        if(updatedCategory.getName() == null) {
+            updatedCategory.setName(foundCategory.getName());
+        }
+        if(updatedCategory.getSubcategories() == null){
+            updatedCategory.setSubcategories(foundCategory.getSubcategories());
+        }
     }
 }

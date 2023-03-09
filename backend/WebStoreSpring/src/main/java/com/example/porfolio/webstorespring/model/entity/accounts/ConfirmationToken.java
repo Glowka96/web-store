@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-@Table(name = "confirmation tokens")
+@Table(name = "confirmation_tokens")
 @NoArgsConstructor
 public class ConfirmationToken {
 

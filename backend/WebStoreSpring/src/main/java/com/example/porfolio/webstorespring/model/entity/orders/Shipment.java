@@ -25,7 +25,7 @@ public class Shipment {
     private Integer quality;
 
     @Column(nullable = false)
-    private Integer price;
+    private Double price;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")

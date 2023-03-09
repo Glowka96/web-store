@@ -1,7 +1,6 @@
 package com.example.porfolio.webstorespring.model.entity.products;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,8 +11,8 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "category")
-@NamedEntityGraph(name = "Category.subCategories",
-        attributeNodes = @NamedAttributeNode("subCategories"))
+@NamedEntityGraph(name = "Category.subcategories",
+        attributeNodes = @NamedAttributeNode("subcategories"))
 @NoArgsConstructor
 public class Category {
 
@@ -26,12 +25,7 @@ public class Category {
     private String name;
 
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<SubCategory> subCategories;
-
-    public Category(String name, List<SubCategory> subCategories) {
-        this.name = name;
-        this.subCategories = subCategories;
-    }
+    private List<Subcategory> subcategories;
 
     public Category(String name) {
         this.name = name;

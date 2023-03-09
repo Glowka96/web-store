@@ -14,7 +14,7 @@ import java.util.List;
 @NamedEntityGraph(name = "SubCategory.category",
         attributeNodes = @NamedAttributeNode("category"))
 @NoArgsConstructor
-public class SubCategory {
+public class Subcategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
@@ -30,11 +30,11 @@ public class SubCategory {
     private Category category;
 
     @Setter
-    @OneToMany(mappedBy = "subCategory")
+    @OneToMany(mappedBy = "subcategory")
     private List<Product> products;
 
 
-    public SubCategory(String name) {
+    public Subcategory(String name) {
         this.name = name;
     }
 }
