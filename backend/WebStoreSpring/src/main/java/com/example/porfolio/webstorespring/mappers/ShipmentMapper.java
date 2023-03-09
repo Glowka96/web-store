@@ -5,6 +5,8 @@ import com.example.porfolio.webstorespring.model.entity.orders.Shipment;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(
         componentModel = "spring",
         uses = {
@@ -17,8 +19,15 @@ public interface ShipmentMapper {
     @Mapping(target = "orderDto", source = "order")
     ShipmentDto mapToDto(Shipment shipment);
 
+    @Mapping(target = "productDto", source = "product")
+    @Mapping(target = "orderDto", source = "order")
+    List<ShipmentDto> mapToDto(List<Shipment> all);
 
     @Mapping(target = "product", source = "productDto")
     @Mapping(target = "order", source = "orderDto")
     Shipment mapToEntity(ShipmentDto shipmentDto);
+
+    @Mapping(target = "product", source = "productDto")
+    @Mapping(target = "order", source = "orderDto")
+    List<Shipment> mapToEntity(List<ShipmentDto> shipmentDtos);
 }

@@ -1,4 +1,4 @@
-package com.example.porfolio.webstorespring.security.config;
+package com.example.porfolio.webstorespring.security;
 
 import com.example.porfolio.webstorespring.services.auth.AccountDetailsService;
 import lombok.RequiredArgsConstructor;
@@ -10,8 +10,12 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+
+import static org.springframework.security.config.Customizer.withDefaults;
 
 @EnableWebSecurity
 @EnableMethodSecurity()
@@ -39,10 +43,16 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests().anyRequest().permitAll();
-        http.csrf().disable();
-        http.headers().frameOptions().sameOrigin();
-
-        return http.build();
+        return http.csrf(AbstractHttpConfigurer::disable)
+                .authenticationProvider(authenticationProvider())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/v1/registration/**",
+                                "/api/v1/categories").permitAll()
+                        .anyRequest().authenticated())
+                .formLogin((form) -> {
+                    form.defaultSuccessUrl("/api/v1/categories");
+                        })
+                .httpBasic(withDefaults())
+                .build();
     }
 }

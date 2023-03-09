@@ -6,12 +6,13 @@ import lombok.Data;
 @Data
 public class AccountAddressDto {
 
-    @JsonIgnore
     private Long id;
 
     private String city;
 
-    private String address;
+    private String postcode;
 
+    private String address;
+    @JsonIgnore
     private AccountDto accountDto;
 }

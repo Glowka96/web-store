@@ -1,6 +1,9 @@
 package com.example.porfolio.webstorespring.model.dto.products;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.util.List;
@@ -8,11 +11,13 @@ import java.util.List;
 @Data
 public class ProducerDto {
 
-    @JsonIgnore
-    private final Long id;
+    private Long id;
 
-    private final String name;
+    @NotNull(message = "The name can't be null")
+    @NotBlank(message = "The name can't be blank")
+    @Size(min = 3, max = 20, message = "The name must between min 3 and max 20 letters")
+    private String name;
 
     @JsonIgnore
-    private final List<ProductDto> productsDto;
+    private List<ProductDto> productsDto;
 }

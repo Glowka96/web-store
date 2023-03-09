@@ -13,10 +13,8 @@ import org.mapstruct.factory.Mappers;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 
 import java.util.Optional;
 
@@ -36,8 +34,9 @@ class CategoryServiceTest {
 
     private CategoryDto categoryDto;
     private Category category;
+
     @BeforeEach
-    void initialization(){
+    void initialization() {
         category = new Category();
         category.setId(1L);
         category.setName("CategoryTest");
@@ -49,11 +48,11 @@ class CategoryServiceTest {
     @Test
     void shouldGetAllCategoryDto() {
         // when
-        underTest.getAllCategory();
-
+        underTest.getAllCategoryDto();
         // then
         verify(categoryRepository, times(1)).findAll();
         verifyNoMoreInteractions(categoryRepository);
+
     }
 
     @Test
@@ -62,10 +61,10 @@ class CategoryServiceTest {
         given(categoryRepository.findById(category.getId())).willReturn(Optional.of(category));
 
         // when
-        CategoryDto savedCategory = underTest.getCategoryDtoById(category.getId());
+        CategoryDto foundCategory = underTest.getCategoryDtoById(category.getId());
 
         // then
-        assertThat(savedCategory).isNotNull();
+        assertThat(foundCategory).isNotNull();
         verify(categoryRepository, times(1)).findById(category.getId());
     }
 
@@ -83,13 +82,14 @@ class CategoryServiceTest {
 
     @Test
     void willThrowWhenCategoryNameIsNotFound() {
-        given(categoryRepository.findByName("error")).willReturn(Optional.empty());
+        // given
+        given(categoryRepository.findById(2L)).willReturn(Optional.empty());
 
         // when
         // then
-        assertThatThrownBy(() -> underTest.getCategoryDtoByName("error"))
+        assertThatThrownBy(() -> underTest.getCategoryDtoById(2L))
                 .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessageContaining("Category with name error not found");
+                .hasMessageContaining("Category with id 2 not found");
     }
 
     @Test
@@ -112,9 +112,10 @@ class CategoryServiceTest {
     @Test
     void shouldUpdateCategory() {
         // given
-        given(categoryRepository.findByName(category.getName())).willReturn(Optional.of(category));
+        given(categoryRepository.findById(category.getId())).willReturn(Optional.of(category));
+
         // when
-        underTest.update(category.getName(), categoryDto);
+        underTest.update(category.getId(), categoryDto);
 
         // then
         ArgumentCaptor<Category> categoryArgumentCaptor =
@@ -125,5 +126,19 @@ class CategoryServiceTest {
         CategoryDto mappedCategoryDto = categoryMapper.mapToDto(capturedCategory);
 
         assertThat(mappedCategoryDto.getName()).isEqualTo(categoryDto.getName());
+        assertThat(mappedCategoryDto.getId()).isEqualTo(category.getId());
+    }
+
+    @Test
+    void shouldDeleteCategoryById() {
+        // given
+        given(categoryRepository.findById(anyLong())).willReturn(Optional.of(category));
+
+        // when
+        underTest.deleteById(1L);
+
+        // then
+        verify(categoryRepository, times(1)).findById(1L);
+        verify(categoryRepository, times(1)).delete(category);
     }
 }
