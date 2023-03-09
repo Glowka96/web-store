@@ -28,9 +28,9 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(OrderCanNotModifiedException.class)
-    public ResponseEntity<Object> orderCanNotModifiedException(OrderCanNotModifiedException exception,
-                                                               WebRequest webRequest) {
+    @ExceptionHandler({OrderCanNotModifiedException.class, EmailAlreadyConfirmedException.class})
+    public ResponseEntity<Object> canNotModifiedException(RuntimeException exception,
+                                                          WebRequest webRequest) {
         ErrorResponse errorResponse = createErrorResponseBadRequest(exception, webRequest);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
@@ -40,6 +40,7 @@ public class GlobalExceptionHandler {
         ErrorResponse errorResponse = createErrorResponseForbidden(exception, webRequest);
         return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
     }
+
 
     private ErrorResponse createErrorResponseNotFound(Exception exception, WebRequest webRequest) {
         return new ErrorResponse(HttpStatus.NOT_FOUND.value(),
