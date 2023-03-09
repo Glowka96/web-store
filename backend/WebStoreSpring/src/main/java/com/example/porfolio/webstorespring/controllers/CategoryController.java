@@ -23,9 +23,9 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.getAllCategoryDto());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<CategoryDto> getCategoryById(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(categoryService.getCategoryDtoById(id));
+    @GetMapping("/{categoryId}")
+    public ResponseEntity<CategoryDto> getCategoryById(@PathVariable(value = "categoryId") Long categoryId) {
+        return ResponseEntity.ok(categoryService.getCategoryDtoById(categoryId));
     }
 
     @PostMapping()
@@ -34,16 +34,16 @@ public class CategoryController {
                 .body(categoryService.save(categoryDto));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<CategoryDto> updateCategory(@PathVariable(value = "id") Long id,
+    @PutMapping("/{categoryId}")
+    public ResponseEntity<CategoryDto> updateCategory(@PathVariable(value = "categoryId") Long categoryId,
                                                       @Valid @RequestBody CategoryDto categoryDto){
         return ResponseEntity.status(HttpStatus.ACCEPTED)
-                .body(categoryService.update(id, categoryDto));
+                .body(categoryService.update(categoryId, categoryDto));
     }
 
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public void deleteCategoryById(@PathVariable("id") Long id) {
-        categoryService.deleteById(id);
+    @DeleteMapping("/{categoryId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteCategoryById(@PathVariable(value = "categoryId") Long categoryId) {
+        categoryService.deleteById(categoryId);
     }
 }
