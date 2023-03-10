@@ -1,0 +1,48 @@
+.navigation{
+    height: 60px;
+    padding: 0 5%;
+    display: flex;
+    background-color: rgba(20, 201, 14, 0.897);
+}
+
+.menu {
+    padding: 0;
+    margin: auto;
+    height: 35px;
+    font-size: 18px;
+    width: 30%;
+    border-right: 1px rgb(15, 104, 12) solid;
+    letter-spacing: 0.1rem;
+    padding: 0.5em;
+}
+
+.menu:first-child{
+    border-left: 1px rgb(7, 155, 2) solid;
+}
+
+.menu p {
+    margin: 5px 0 10px 0;
+}
+
+.menu a {
+    text-decoration: none;
+    display: inline-block;
+    color: #000000;
+}
+
+.menu:hover .submenu a{
+    display: block;
+    padding: 3%;
+    background-color:  rgba(20, 201, 14, 0.897);
+}
+
+.submenu {
+    list-style: none;
+}
+
+.submenu a {
+    display: none;
+    text-decoration: none;
+    position: relative;
+    z-index: 100%;
+}

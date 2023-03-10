@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="ca58252e-ff90-4d97-b9c7-691b32594a2d" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/exceptions/OrderCanNotBeUpdated.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/services/OrderServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/dto/orders/ShipmentDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/dto/orders/ShipmentDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/services/OrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/services/OrderService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/services/ShipmentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/services/ShipmentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/services/ShipmentServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/services/ShipmentServiceTest.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="JUnit5 Test Class" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="feature/WBSA-1.0" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="useMavenConfig" value="true" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectId" id="2LIECtzaDHNRnvkeN8FMfdPCkPJ" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/Programowanie/Portfolio/Web-store/backend/WebStoreSpring&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.jsonOptions&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;30e509d246827f3a7659ec1e1acf7e6c&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
+    ]
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="com.example.porfolio.webstorespring.services" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JUnit.ProducerServiceTest.shouldGetProducerById">
+    <configuration name="All in WebStoreSpring" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="WebStoreSpring" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CategoryControllerTest.shouldSaveCategory" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="WebStoreSpring" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.porfolio.webstorespring.controllers.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.example.porfolio.webstorespring.controllers" />
+      <option name="MAIN_CLASS_NAME" value="com.example.porfolio.webstorespring.controllers.CategoryControllerTest" />
+      <option name="METHOD_NAME" value="shouldSaveCategory" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CategoryControllerTest.willThrowWhenSendPostForCategoryNameIsShortOrLong" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="WebStoreSpring" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.porfolio.webstorespring.controllers.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.example.porfolio.webstorespring.controllers" />
+      <option name="MAIN_CLASS_NAME" value="com.example.porfolio.webstorespring.controllers.CategoryControllerTest" />
+      <option name="METHOD_NAME" value="willThrowWhenSendPostForCategoryNameIsShortOrLong" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ProducerServiceTest.shouldGetProducerById" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="WebStoreSpring" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.porfolio.webstorespring.services.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.example.porfolio.webstorespring.services" />
+      <option name="MAIN_CLASS_NAME" value="com.example.porfolio.webstorespring.services.ProducerServiceTest" />
+      <option name="METHOD_NAME" value="shouldGetProducerById" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="WebStoreSpringApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="WebStoreSpring" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.porfolio.webstorespring.WebStoreSpringApplication" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.porfolio.webstorespring.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.ProducerServiceTest.shouldGetProducerById" />
+        <item itemvalue="Spring Boot.WebStoreSpringApplication" />
+        <item itemvalue="JUnit.All in WebStoreSpring" />
+        <item itemvalue="JUnit.CategoryControllerTest.willThrowWhenSendPostForCategoryNameIsShortOrLong" />
+        <item itemvalue="JUnit.CategoryControllerTest.shouldSaveCategory" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SpringBeansView">
+    <option name="showFilesets" value="false" />
+    <option name="beanDetailsProportion" value="0.3" />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ca58252e-ff90-4d97-b9c7-691b32594a2d" name="Changes" comment="" />
+      <created>1675550071132</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1675550071132</updated>
+      <workItem from="1675550072415" duration="19535000" />
+      <workItem from="1675691380100" duration="45000" />
+      <workItem from="1675777789218" duration="8780000" />
+      <workItem from="1675866109246" duration="121000" />
+      <workItem from="1675866323487" duration="7603000" />
+      <workItem from="1675957549414" duration="1832000" />
+      <workItem from="1676192022976" duration="5062000" />
+      <workItem from="1676270171406" duration="2700000" />
+      <workItem from="1676348711519" duration="3655000" />
+      <workItem from="1677167502925" duration="33000" />
+    </task>
+    <task id="LOCAL-00001" summary="feature: CategoryControllerTest and MethodAgumentNotValidation in GlobalExceptionHandler, change: rest url name -&gt; id method and test method,">
+      <created>1675575372107</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1675575372107</updated>
+    </task>
+    <task id="LOCAL-00002" summary="feature: ProductService, ProducerService, fix: method update(...) in category and subCategory services">
+      <created>1675787358912</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1675787358912</updated>
+    </task>
+    <task id="LOCAL-00003" summary="feature: annotation field in dto class, basic method OrderService and ShipmentService, pagination method ProductService. change: naming argument method, Intiger -&gt; Double price in shipment">
+      <created>1676193812311</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1676193812311</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="feature: CategoryControllerTest and MethodAgumentNotValidation in GlobalExceptionHandler, change: rest url name -&gt; id method and test method," />
+    <MESSAGE value="feature: ProductService, ProducerService, fix: method update(...) in category and subCategory services" />
+    <MESSAGE value="feature: annotation field in dto class, basic method OrderService and ShipmentService, pagination method ProductService. change: naming argument method" />
+    <MESSAGE value="feature: annotation field in dto class, basic method OrderService and ShipmentService, pagination method ProductService. change: naming parameters method, Integer -&gt; Double price in shipment" />
+    <option name="LAST_COMMIT_MESSAGE" value="feature: annotation field in dto class, basic method OrderService and ShipmentService, pagination method ProductService. change: naming parameters method, Integer -&gt; Double price in shipment" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/backend/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/controllers/CategoryControllerTest.java</url>
+          <line>62</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/backend/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/services/ProducerServiceTest.java</url>
+          <line>53</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Web_store$All_in_WebStoreSpring.ic" NAME="All in WebStoreSpring Coverage Results" MODIFIED="1675790167381" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+  </component>
+</project>
