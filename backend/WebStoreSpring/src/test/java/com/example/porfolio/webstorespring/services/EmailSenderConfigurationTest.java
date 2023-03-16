@@ -13,12 +13,12 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 
 @ExtendWith(MockitoExtension.class)
-class EmailSenderServiceTest {
+class EmailSenderConfigurationTest {
 
     @Mock
     private JavaMailSender javaMailSender;
     @InjectMocks
-    private EmailSenderService underTest;
+    private EmailSenderConfiguration underTest;
 
     @Test
     void sendEmail() {

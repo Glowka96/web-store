@@ -16,7 +16,7 @@ public class RegistrationService {
 
     private final BCryptPasswordEncoder encoder;
     private final ConfirmationTokenService tokenService;
-    private final EmailSenderService emailSenderService;
+    private final EmailSenderConfiguration emailSenderConfiguration;
     private final AccountRepository accountRepository;
 
     public String registrationAccount(RegistrationRequest registrationRequest) {
@@ -24,7 +24,7 @@ public class RegistrationService {
         accountRepository.save(account);
 
         ConfirmationToken savedToken = tokenService.createConfirmationToken(account);
-        return emailSenderService.sendEmail(account.getEmail(),
+        return emailSenderConfiguration.sendEmail(account.getEmail(),
                 "Complete Registration!",
                 savedToken.getToken());
     }
@@ -40,7 +40,7 @@ public class RegistrationService {
         if (!account.getEnabled() && tokenService.isTokenExpired(confirmationToken)) {
             ConfirmationToken newToken = tokenService.createConfirmationToken(account);
             tokenService.deleteConfirmationToken(confirmationToken);
-            return emailSenderService.sendEmail(account.getEmail(),
+            return emailSenderConfiguration.sendEmail(account.getEmail(),
                     "New confirmation token",
                     newToken.getToken());
         }

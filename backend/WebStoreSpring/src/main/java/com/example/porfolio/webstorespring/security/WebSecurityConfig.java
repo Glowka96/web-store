@@ -47,7 +47,7 @@ public class WebSecurityConfig {
                 .authenticationProvider(authenticationProvider())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/v1/registration/**",
-                                "/api/v1/categories").permitAll()
+                                "/api/v1/categories/**").permitAll()
                         .anyRequest().authenticated())
                 .formLogin((form) -> {
                     form.defaultSuccessUrl("/api/v1/categories");
