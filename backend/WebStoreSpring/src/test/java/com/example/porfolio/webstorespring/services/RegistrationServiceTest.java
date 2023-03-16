@@ -33,7 +33,7 @@ class RegistrationServiceTest {
     private ConfirmationTokenService tokenService;
 
     @Mock
-    private EmailSenderService emailSenderService;
+    private EmailSenderConfiguration emailSenderConfiguration;
 
     @Mock
     private AccountRepository accountRepository;
@@ -68,7 +68,7 @@ class RegistrationServiceTest {
         // given
         // when
         when(tokenService.createConfirmationToken(any(Account.class))).thenReturn(token);
-        when(emailSenderService.sendEmail(anyString(), anyString(), anyString()))
+        when(emailSenderConfiguration.sendEmail(anyString(), anyString(), anyString()))
                 .thenReturn("Verify email by the link sent on your email address");
 
         String result = underTest.registrationAccount(request);
@@ -82,7 +82,7 @@ class RegistrationServiceTest {
         // then
         assertThat(result).isEqualTo("Verify email by the link sent on your email address");
         verify(accountRepository).save(captureAccount);
-        verify(emailSenderService).sendEmail(account.getEmail(),
+        verify(emailSenderConfiguration).sendEmail(account.getEmail(),
                 "Complete Registration!",
                 token.getToken());
     }
@@ -116,7 +116,7 @@ class RegistrationServiceTest {
         when(tokenService.getConfirmationTokenByToken(anyString())).thenReturn(token);
         when(tokenService.isTokenExpired(any(ConfirmationToken.class))).thenReturn(true);
         when(tokenService.createConfirmationToken(any(Account.class))).thenReturn(token);
-        when(emailSenderService.sendEmail(anyString(), anyString(), anyString()))
+        when(emailSenderConfiguration.sendEmail(anyString(), anyString(), anyString()))
                 .thenReturn("Verify email by the link sent on your email address");
 
         String result = underTest.confirmToken(token.getToken());

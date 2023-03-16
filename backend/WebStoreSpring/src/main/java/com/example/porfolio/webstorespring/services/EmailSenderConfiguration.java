@@ -1,13 +1,13 @@
 package com.example.porfolio.webstorespring.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.stereotype.Service;
 
-@Service
+@Configuration
 @RequiredArgsConstructor
-public class EmailSenderService {
+public class EmailSenderConfiguration {
 
     private final JavaMailSender javaMailSender;
 
