@@ -1,8 +1,22 @@
 <nav class="navigation">
-  <ul class="menu" *ngFor="let category of getCategories">
-    <p>{{category.name}}</p>
-      <li class="submenu" *ngFor="let subcategory of category.subcategoriesDto">
-          <a href="#">{{subcategory.name}}</a>   
-      </li>
-  </ul>
+  <div class="nav-logo">
+    <a href="#">
+      <img src="/assets/images/logo2.png" alt="" width="230px" height="80px">
+    </a>
+  </div>
+  <div class="nav-menu">
+    <ul *ngFor="let category of getCategories">
+      <li>{{category.name}}</li>
+      <ul class="nav-submenu" *ngFor="let subcategory of category.subcategoriesDto">
+        <li><a [routerLink]="['/subcategories', subcategory.id]">{{subcategory.name}}</a></li>
+      </ul>
+    </ul>
+  </div>
+  <div class="nav-user">
+    <form>
+      <input type="search">
+    </form>
+    <a href="#">Login</a>
+    <a href="#">Signup</a>
+  </div>
 </nav>
