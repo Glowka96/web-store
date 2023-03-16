@@ -46,12 +46,13 @@ public class WebSecurityConfig {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authenticationProvider(authenticationProvider())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/v1/registration/**",
-                                "/api/v1/categories/**").permitAll()
+                .authorizeHttpRequests(auth -> auth.requestMatchers(
+                                "/api/v1/registration/**",
+                                "/api/v1/categories/**",
+                                "/api/v1/subcategories/**").permitAll()
                         .anyRequest().authenticated())
-                .formLogin((form) -> {
-                    form.defaultSuccessUrl("/api/v1/categories");
-                        })
+                .formLogin(form ->
+                        form.defaultSuccessUrl("/api/v1/categories"))
                 .httpBasic(withDefaults())
                 .build();
     }

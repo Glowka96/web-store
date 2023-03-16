@@ -8,7 +8,8 @@
     <ul *ngFor="let category of getCategories">
       <li>{{category.name}}</li>
       <ul class="nav-submenu" *ngFor="let subcategory of category.subcategoriesDto">
-        <li><a [routerLink]="['/subcategories', subcategory.id]">{{subcategory.name}}</a></li>
+        <li><a [routerLink]="['/subcategories', subcategory.id, 'products']"
+            (click)="getProductsBySubcategoryId(subcategory.id)">{{subcategory.name}}</a></li>
       </ul>
     </ul>
   </div>
