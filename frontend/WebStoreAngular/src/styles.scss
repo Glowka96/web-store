@@ -1,5 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
- body{
-     background-color: #303030;
-     margin: 0;
- }
+body {
+  background: linear-gradient(
+    47deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(88, 23, 210, 1) 28%,
+    rgba(0, 212, 255, 1) 100%
+  );
+  margin: 0;
+  height: 100vh;
+}
+
+a {
+  text-decoration: none;
+}

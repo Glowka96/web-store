@@ -1,30 +1,27 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { CategoryService } from '../category.service';
-import { Category } from '../model/category';
+import { Category } from '../models/category';
+import { ShopService } from '../shop.service';
 
 @Component({
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
-  styleUrls: ['./navigation.component.scss']
+  styleUrls: ['./navigation.component.scss'],
 })
 export class NavigationComponent implements OnInit {
   private categories: Category[] = [];
   private sub: Subscription;
 
-  constructor(private categoryService: CategoryService) {
-    this.sub = categoryService.categories.subscribe( (categories) => {
+  constructor(private shopService: ShopService) {
+    this.sub = shopService.categories.subscribe((categories) => {
       this.categories = categories;
       console.log(this.categories);
-    })
-   }
+    });
+  }
 
-  public get getCategories(): Category[]{
+  public get getCategories(): Category[] {
     return this.categories;
   }
 
-
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

@@ -4,20 +4,14 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CategoryService } from './category.service';
 import { NavigationComponent } from './navigation/navigation.component';
+import { ProductsComponent } from './products/products.component';
+import { ShopService } from './shop.service';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    NavigationComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule
-  ],
-  providers: [CategoryService],
-  bootstrap: [AppComponent]
+  declarations: [AppComponent, NavigationComponent, ProductsComponent],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule],
+  providers: [ShopService],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
