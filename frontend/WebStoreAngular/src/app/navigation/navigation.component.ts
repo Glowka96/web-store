@@ -13,12 +13,10 @@ import { ShopService } from '../shop.service';
 export class NavigationComponent implements OnInit {
   private categories: Category[] = [];
   private sub: Subscription;
-  subcategoryProducts: Product[] = [];
 
   constructor(private route: ActivatedRoute, private shopService: ShopService) {
     this.sub = shopService.categories.subscribe((categories) => {
       this.categories = categories;
-      console.log(this.categories);
     });
   }
 
@@ -26,22 +24,5 @@ export class NavigationComponent implements OnInit {
     return this.categories;
   }
 
-  ngOnInit() {
-    this.route.paramMap.subscribe((params) => {
-      const subcategoryId = params.get('id') as string;
-      if (subcategoryId) {
-        this.getProductsBySubcategoryId(subcategoryId);
-      }
-    });
-  }
-
-  public getProductsBySubcategoryId(subcategoryId: string) {
-    console.log('start gets products');
-    this.shopService
-      .getProductsBySubcategory(subcategoryId)
-      .subscribe((products) => {
-        this.subcategoryProducts = products;
-      });
-    console.log(this.subcategoryProducts);
-  }
+  ngOnInit() {}
 }
