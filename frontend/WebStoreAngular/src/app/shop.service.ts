@@ -11,6 +11,7 @@ import { Product } from './models/product';
 export class ShopService {
   private apiServerUrl = environment.apiBaseUrl;
   private listCategory: Observable<Category[]>;
+  private listProducts: Observable<Product[]> | undefined;
 
   constructor(private http: HttpClient) {
     this.listCategory = this.getCategories();
@@ -38,5 +39,9 @@ export class ShopService {
       `${this.apiServerUrl}/subcategories/${subcategoryId}/products`,
       { params }
     );
+  }
+
+  public get products(): Observable<Product[]> | undefined {
+    return this.listProducts;
   }
 }
