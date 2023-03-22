@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ProductsComponent } from './products/products.component';
+import { ContentComponent } from './content/content.component';
 
 const routes: Routes = [
-  { path: 'subcategories/:id/products', component: ProductsComponent },
+  { path: ':subcategoryName/:id/products', component: ContentComponent },
 ];
 
 @NgModule({

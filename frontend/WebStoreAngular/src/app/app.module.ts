@@ -7,9 +7,11 @@ import { AppComponent } from './app.component';
 import { NavigationComponent } from './navigation/navigation.component';
 import { ProductsComponent } from './products/products.component';
 import { ShopService } from './shop.service';
+import { FilterComponent } from './filter/filter.component';
+import { ContentComponent } from './content/content.component';
 
 @NgModule({
-  declarations: [AppComponent, NavigationComponent, ProductsComponent],
+  declarations: [AppComponent, NavigationComponent, ProductsComponent, FilterComponent, ContentComponent],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule],
   providers: [ShopService],
   bootstrap: [AppComponent],

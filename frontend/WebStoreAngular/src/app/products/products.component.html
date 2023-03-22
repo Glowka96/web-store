@@ -1,6 +1,7 @@
-<p>products works!</p>
-<div class="products">
-    <ul class="product" *ngFor="let product of getProducts">
+<main class="list-product">
+    <div class="product" *ngFor="let product of products">
         {{product.name}}
-    </ul>
-</div>
+        <img src={{product.imageUrl}} alt="{{product.name}}">
+        {{product.price}}
+    </div>
+</main>

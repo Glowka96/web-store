@@ -1,0 +1,13 @@
+.list-product {
+  display: flex;
+  width: 30%;
+  margin: auto;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.product {
+  min-width: 100px;
+  min-height: 100px;
+}
