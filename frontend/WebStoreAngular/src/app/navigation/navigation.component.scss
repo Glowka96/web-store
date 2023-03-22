@@ -48,7 +48,6 @@
           display: block;
         }
         &:hover {
-          background-color: rgba(24, 24, 24, 0.897);
           text-decoration: underline;
         }
       }
@@ -56,6 +55,10 @@
         visibility: visible;
         opacity: 1;
         display: block;
+      }
+      &:last-child {
+        border-bottom-right-radius: 15px;
+        border-bottom-left-radius: 15px;
       }
     }
     &:hover {

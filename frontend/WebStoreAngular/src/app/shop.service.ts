@@ -11,7 +11,6 @@ import { Product } from './models/product';
 export class ShopService {
   private apiServerUrl = environment.apiBaseUrl;
   private listCategory: Observable<Category[]>;
-  private listProducts: Observable<Product[]> | undefined;
 
   constructor(private http: HttpClient) {
     this.listCategory = this.getCategories();
@@ -26,12 +25,11 @@ export class ShopService {
     return this.listCategory;
   }
 
-  getProductsBySubcategory(
+  public getProductsBySubcategory(
     subcategoryId: string,
     page: number = 0,
     size: number = 10
   ): Observable<Product[]> {
-    console.log('gets products');
     const params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString());
@@ -39,9 +37,5 @@ export class ShopService {
       `${this.apiServerUrl}/subcategories/${subcategoryId}/products`,
       { params }
     );
-  }
-
-  public get products(): Observable<Product[]> | undefined {
-    return this.listProducts;
   }
 }
