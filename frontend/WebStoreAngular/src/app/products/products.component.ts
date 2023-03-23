@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { Product } from '../models/product';
 import { ShopService } from '../shop.service';
 
@@ -11,8 +10,24 @@ import { ShopService } from '../shop.service';
 export class ProductsComponent implements OnInit {
   @Input()
   products: Product[] = [];
-  //private products: Product[] = [];
 
   constructor(private shopService: ShopService) {}
+
   ngOnInit(): void {}
+
+  public increaseNumberOfProduct(product: Product): void {
+    if (product.amountOfProduct < 100) {
+      product.amountOfProduct++;
+    }
+  }
+
+  public decreaseNumberOfProduct(product: Product): void {
+    if (product.amountOfProduct > 1) {
+      product.amountOfProduct--;
+    }
+  }
+
+  public getPrice(product: Product): number {
+    return parseFloat(product.price) * product.amountOfProduct;
+  }
 }

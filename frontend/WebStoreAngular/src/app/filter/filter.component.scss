@@ -1,0 +1,11 @@
+.content-filter {
+  height: 400px;
+  width: 400px;
+  display: flex;
+  justify-content: flex-end;
+  .filter {
+    height: 100%;
+    width: 90%;
+    background-color: rgb(26, 219, 219);
+  }
+}

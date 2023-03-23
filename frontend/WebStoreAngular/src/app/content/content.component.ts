@@ -32,6 +32,7 @@ export class ContentComponent implements OnInit {
     this.shopService
       .getProductsBySubcategory(subcategoryId)
       .subscribe((products) => {
+        products.forEach((product) => (product.amountOfProduct = 1));
         this.subcategoryProducts = products;
         console.log(this.subcategoryProducts);
       });
@@ -41,7 +42,7 @@ export class ContentComponent implements OnInit {
     return this.subcategoryProducts;
   }
 
-  public get getSubcategoryName() {
-    return this.subcategoryName;
+  public get getSubcategoryName(): string {
+    return this.subcategoryName.toUpperCase();
   }
 }

@@ -1,8 +1,7 @@
- body {
-     background-color: #333;
-     margin: 0;
- }
- .wrapper {
-     margin: 0;
-     text-align: center;
- }
+.wrapper {
+  margin: 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  //row-gap: 15px;
+}

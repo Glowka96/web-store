@@ -28,7 +28,7 @@ export class ShopService {
   public getProductsBySubcategory(
     subcategoryId: string,
     page: number = 0,
-    size: number = 10
+    size: number = 12
   ): Observable<Product[]> {
     const params = new HttpParams()
       .set('page', page.toString())

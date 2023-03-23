@@ -1,7 +1,23 @@
-<main class="list-product">
-    <div class="product" *ngFor="let product of products">
-        {{product.name}}
-        <img src={{product.imageUrl}} alt="{{product.name}}">
-        {{product.price}}
+<section class="wrapper-products">
+    <div class="list-product">
+        <div class="product" *ngFor="let product of products">
+            <!-- <div class="product-properties"> -->
+            <span class="product-name">{{product.name}}</span>
+            <img src={{product.imageUrl}} alt="{{product.name}}">
+            <!-- </div> -->
+            <div class="amount-product">
+                <span>{{getPrice(product)}}</span>
+                <input type="number" [(ngModel)]="product.amountOfProduct" min="1" max="100">
+                <button class="change-ammount" (click)="increaseNumberOfProduct(product)">
+                    <i class="icon-plus"></i>
+                </button>
+                <button class="change-ammount" (click)="decreaseNumberOfProduct(product)">
+                    <i class="icon-minus"></i>
+                </button>
+            </div>
+            <div class="add-to-cart">
+                Add to cart<i class="icon-cart-plus"></i>
+            </div>
+        </div>
     </div>
-</main>
+</section>

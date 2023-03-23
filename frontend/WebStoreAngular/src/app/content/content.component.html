@@ -1,6 +1,11 @@
-<p>content works!</p>
-<main class="content">
-    <h1> {{getSubcategoryName}} </h1>
-    <app-filter></app-filter>
-    <app-products [products]="getProducts"></app-products>
+<main class="main">
+    <div class="content">
+        <div class="subcategory-name">
+            <h1> {{getSubcategoryName}} </h1>
+        </div>
+        <div class="row">
+            <app-filter></app-filter>
+            <app-products [products]="getProducts"></app-products>
+        </div>
+    </div>
 </main>
