@@ -9,10 +9,17 @@ import { ProductsComponent } from './products/products.component';
 import { ShopService } from './shop.service';
 import { FilterComponent } from './filter/filter.component';
 import { ContentComponent } from './content/content.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [AppComponent, NavigationComponent, ProductsComponent, FilterComponent, ContentComponent],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule],
+  declarations: [
+    AppComponent,
+    NavigationComponent,
+    ProductsComponent,
+    FilterComponent,
+    ContentComponent,
+  ],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule],
   providers: [ShopService],
   bootstrap: [AppComponent],
 })
