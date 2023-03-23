@@ -27,7 +27,7 @@ export class ProductsComponent implements OnInit {
     }
   }
 
-  public getPrice(product: Product): number {
-    return parseFloat(product.price) * product.amountOfProduct;
+  public getPrice(product: Product): string {
+    return (parseFloat(product.price) * product.amountOfProduct).toFixed(2);
   }
 }
