@@ -10,6 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 public class RegistrationService {
@@ -19,7 +22,7 @@ public class RegistrationService {
     private final EmailSenderConfiguration emailSenderConfiguration;
     private final AccountRepository accountRepository;
 
-    public String registrationAccount(RegistrationRequest registrationRequest) {
+    public Map<String, Object> registrationAccount(RegistrationRequest registrationRequest) {
         Account account = setupNewAccount(registrationRequest);
         accountRepository.save(account);
 
@@ -29,7 +32,7 @@ public class RegistrationService {
                 savedToken.getToken());
     }
 
-    public String confirmToken(String token) {
+    public Map<String, Object> confirmToken(String token) {
         ConfirmationToken confirmationToken = tokenService.getConfirmationTokenByToken(token);
         Account account = confirmationToken.getAccount();
 
@@ -48,7 +51,9 @@ public class RegistrationService {
         tokenService.setConfirmedAtAndSaveConfirmationToken(confirmationToken);
         account.setEnabled(true);
         accountRepository.save(account);
-        return "Account confirmed";
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "Account confirmed");
+        return response;
     }
 
     private Account setupNewAccount(RegistrationRequest registrationRequest) {

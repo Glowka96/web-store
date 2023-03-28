@@ -1,7 +1,15 @@
 .wrapper {
   margin: 0;
   text-align: center;
+}
+
+.login-form {
   display: flex;
-  flex-direction: column;
-  //row-gap: 15px;
+  justify-content: center;
+}
+
+app-login {
+  z-index: 1;
+  position: absolute;
+  top: 100px;
 }

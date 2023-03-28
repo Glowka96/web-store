@@ -5,13 +5,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Configuration
 @RequiredArgsConstructor
 public class EmailSenderConfiguration {
 
     private final JavaMailSender javaMailSender;
 
-    public String sendEmail(String email, String subject, String token) {
+    public Map<String, Object> sendEmail(String email, String subject, String token) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(email);
         mailMessage.setSubject(subject);
@@ -20,6 +23,8 @@ public class EmailSenderConfiguration {
         mailMessage.setFrom("glowackispring@gmail.com");
         javaMailSender.send(mailMessage);
 
-        return "Verify email by the link sent on your email address";
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("message", "Verify email by the link sent on your email address");
+        return responseBody;
     }
 }

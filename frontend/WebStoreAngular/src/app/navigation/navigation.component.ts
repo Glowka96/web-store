@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Category } from '../models/category';
-import { ShopService } from '../shop.service';
+import { FormLoginService } from '../services/form-login.service';
+import { ShopService } from '../services/shop.service';
 
 @Component({
   selector: 'app-navigation',
@@ -12,8 +13,15 @@ import { ShopService } from '../shop.service';
 export class NavigationComponent implements OnInit {
   private categories: Category[] = [];
   private sub: Subscription;
+  private isLoggedIn = false;
+  private showAdminBoard = false;
+  private showUserBoard = false;
 
-  constructor(private route: ActivatedRoute, private shopService: ShopService) {
+  constructor(
+    private route: ActivatedRoute,
+    private shopService: ShopService,
+    private formLoginService: FormLoginService
+  ) {
     this.sub = shopService.categories.subscribe((categories) => {
       this.categories = categories;
     });
@@ -21,6 +29,10 @@ export class NavigationComponent implements OnInit {
 
   public get getCategories(): Category[] {
     return this.categories;
+  }
+
+  public changeStatusLogginForm() {
+    this.formLoginService.changeStatusFormLogin();
   }
 
   ngOnInit() {}

@@ -31,9 +31,9 @@ class EmailSenderConfigurationTest {
 
         // when
         doNothing().when(javaMailSender).send(any(SimpleMailMessage.class));
-        String actual = underTest.sendEmail(email,subject,token);
+        boolean isTrue = underTest.sendEmail(email, subject, token).values().stream().filter((message) -> message.equals(excepted)).isParallel();
 
         // then
-        assertThat(actual).isEqualTo(excepted);
+        assertThat(isTrue).isEqualTo(true);
     }
 }
