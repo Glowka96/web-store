@@ -64,6 +64,8 @@
       align-items: center;
       justify-content: center;
       padding: 0px 20px;
+      font-family: "Baloo 2", cursive;
+
       .form-group .errors {
         display: flex;
         flex-direction: column;
@@ -89,6 +91,15 @@
         &:active {
           transform: scale(0.9);
         }
+      }
+      .disabled-btn {
+        background-image: linear-gradient(
+          47deg,
+          rgb(85, 85, 85) 28%,
+          rgb(41, 41, 41) 100%
+        );
+        color: white;
+        cursor: not-allowed;
       }
     }
   }

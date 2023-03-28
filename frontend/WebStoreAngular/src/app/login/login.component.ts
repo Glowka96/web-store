@@ -20,8 +20,8 @@ export class LoginComponent implements OnInit {
   registrationError!: string;
   snackBar: any;
   router: any;
-  successMessage?: string;
-  errorMessage?: string;
+  successMessage?: string | null;
+  errorMessage?: string | null;
 
   public loginForm = new FormGroup({
     email: new FormControl(null, [Validators.required]),
@@ -48,12 +48,34 @@ export class LoginComponent implements OnInit {
         ],
         updateOn: 'change',
       }),
-      email: new FormControl('', [
-        Validators.required,
-        Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
-      ]),
-      password: new FormControl('', [Validators.required]),
-      confirmPassword: ['', { validators: [Validators.required] }],
+      email: new FormControl('', {
+        validators: [
+          Validators.required,
+          Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+        ],
+        updateOn: 'change',
+      }),
+      password: new FormControl('', {
+        validators: [
+          Validators.required,
+          Validators.pattern(
+            /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
+          ),
+          Validators.minLength(8),
+          Validators.maxLength(30),
+        ],
+      }),
+      confirmPassword: new FormControl('', {
+        validators: [
+          Validators.required,
+          Validators.pattern(
+            /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
+          ),
+          Validators.minLength(8),
+          Validators.maxLength(30),
+        ],
+        updateOn: 'change',
+      }),
     },
     {
       validators: this.passwordMatchValidator,
@@ -81,20 +103,20 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     if (this.registrationForm.valid) {
       const request: RegistrationRequest = {
-        firstName: this.registrationForm.controls['firstName'].value || '',
-        lastName: this.registrationForm.controls['lastName'].value || '',
-        email: this.registrationForm.controls['email'].value || '',
-        password: this.registrationForm.controls['password'].value || '',
+        firstName: this.registrationForm.controls['firstName']?.value,
+        lastName: this.registrationForm.controls['lastName']?.value,
+        email: this.registrationForm.controls['email']?.value,
+        password: this.registrationForm.controls['password'].value,
       };
       console.log('create-request');
       this.registrationService.register(this.registrationForm.value).subscribe(
         (response) => {
           this.successMessage = response.message;
-          this.errorMessage != null;
+          this.errorMessage = null;
         },
         (error) => {
           if (error.status === 400) {
-            this.successMessage != null;
+            this.successMessage = null;
             let errorMessage = '';
             errorMessage = error.error.errors.join('<br>');
             this.errorMessage = errorMessage;
@@ -108,11 +130,17 @@ export class LoginComponent implements OnInit {
     let slider = document.querySelector('.slider');
     slider?.classList.add('moveslider');
     this.formSectionMove = true;
+    this.errorMessage = null;
+    this.successMessage = null;
+    this.loginForm.reset();
   }
 
   onLogin() {
     let slider = document.querySelector('.slider');
     slider?.classList.remove('moveslider');
     this.formSectionMove = false;
+    this.successMessage = null;
+    this.errorMessage = null;
+    this.registrationForm.reset();
   }
 }
