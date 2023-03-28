@@ -4,6 +4,34 @@
   overflow: hidden;
   background-color: rgb(255, 255, 255);
   border-radius: 25px;
+  .btn-close {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: -15px;
+    left: 96%;
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
+    font-size: 32px;
+    border: none;
+    background-color: rgb(0, 171, 194);
+    box-shadow: 18px 1px 49px rgb(78, 82, 83);
+    .icon-cancel-1::before {
+      margin: 0px;
+      color: rgb(255, 255, 255);
+    }
+    &:hover {
+      background-color: rgb(235, 232, 232);
+      .icon-cancel-1::before {
+        color: rgb(0, 171, 194);
+      }
+    }
+    &:active {
+      transform: scale(0.9);
+    }
+  }
   .slider {
     height: 50px;
     width: 150px;
@@ -100,6 +128,9 @@
         );
         color: white;
         cursor: not-allowed;
+        &:active {
+          transform: none;
+        }
       }
     }
   }

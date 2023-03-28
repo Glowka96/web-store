@@ -1,5 +1,7 @@
 <div class="login-container">
-
+    <button class="btn-close" (click)="closeLoginForm()">
+        <i class="icon-cancel-1"></i>
+    </button>
     <div class="slider"></div>
 
     <div class="btn">
@@ -7,14 +9,16 @@
         <button class="signup" (click)="onSignup()">Signup</button>
     </div>
 
-    <div class="form-section" [ngClass]="{'form-section-move': formSectionMove}">
-        <div class="login-box" *ngIf="!formSectionMove">
-            <input type="email" class="email ele" placeholder="Email">
-            <input type="password" class="password ele" placeholder="Password">
-            <button class="clkbtn">Login</button>
-        </div>
+    <div class="form-section">
+        <form class="login-box" [formGroup]="loginForm" *ngIf="!getFormSectionMove">
+            <input type="email" class="email ele" placeholder="Email" formControlName="email">
+            <input type="password" class="password ele" placeholder="Password" formControlName="password">
+            <button class="clkbtn" [disabled]="loginForm.invalid"
+                [ngClass]="{'disabled-btn': loginForm.invalid}">Login</button>
+        </form>
 
-        <form class="signup-box" [formGroup]="registrationForm" (ngSubmit)="onSubmit()" *ngIf="formSectionMove">
+        <form class="signup-box" [formGroup]="registrationForm" (ngSubmit)="onSubmitRegister()"
+            *ngIf="getFormSectionMove">
             <div class="form-group">
                 <input formControlName="firstName" type="text" class="name ele" placeholder="Name" />
                 <div *ngIf="registrationForm.get('firstName')?.invalid && (registrationForm.get('firstName')?.dirty)"
@@ -77,11 +81,11 @@
                         diffrent</small>
                 </div>
             </div>
-            <div *ngIf="successMessage" class="alert alert-success" role="alert">
-                {{ successMessage }}
+            <div *ngIf="getSuccessMessage" class="alert alert-success" role="alert">
+                {{ getSuccessMessage }}
             </div>
-            <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
-                <span [innerHTML]="errorMessage"></span>
+            <div *ngIf="getErrorMessage" class="alert alert-danger" role="alert">
+                <span [innerHTML]="getErrorMessage"></span>
             </div>
             <button type="submit" class="clkbtn" [disabled]="registrationForm.invalid"
                 [ngClass]="{'disabled-btn': registrationForm.invalid}">Signup</button>
