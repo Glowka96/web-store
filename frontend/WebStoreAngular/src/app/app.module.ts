@@ -6,10 +6,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavigationComponent } from './navigation/navigation.component';
 import { ProductsComponent } from './products/products.component';
-import { ShopService } from './shop.service';
+import { ShopService } from './services/shop.service';
 import { FilterComponent } from './filter/filter.component';
 import { ContentComponent } from './content/content.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -18,8 +19,15 @@ import { FormsModule } from '@angular/forms';
     ProductsComponent,
     FilterComponent,
     ContentComponent,
+    LoginComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    FormsModule,
+  ],
   providers: [ShopService],
   bootstrap: [AppComponent],
 })

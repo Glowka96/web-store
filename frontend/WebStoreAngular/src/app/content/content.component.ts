@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Product } from '../models/product';
-import { ShopService } from '../shop.service';
+import { ShopService } from '../services/shop.service';
 
 @Component({
   selector: 'app-content',

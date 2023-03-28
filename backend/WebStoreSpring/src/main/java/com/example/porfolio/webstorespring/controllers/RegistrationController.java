@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @CrossOrigin("http://localhost:4200")
 @RequestMapping("api/v1/registration")
@@ -17,12 +19,12 @@ public class RegistrationController {
     private final RegistrationService registrationService;
 
     @GetMapping(value = "/confirm", params = "token")
-    public ResponseEntity<String> confirm(@RequestParam("token") String token) {
+    public ResponseEntity<Map<String, Object>> confirm(@RequestParam("token") String token) {
         return ResponseEntity.ok(registrationService.confirmToken(token));
     }
 
     @PostMapping
-    public ResponseEntity<String> registration(@Valid @RequestBody RegistrationRequest request) {
+    public ResponseEntity<Map<String, Object>> registration(@Valid @RequestBody RegistrationRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(registrationService.registrationAccount(request));
     }
