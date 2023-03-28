@@ -57,6 +57,11 @@
                     class="errors">
                     <small *ngIf="registrationForm.get('password')?.errors?.['required']">The password is
                         required</small>
+                    <small *ngIf="registrationForm.get('password')?.errors?.['minLength'] || ['maxLength']">The password
+                        must between min 8 and max 30 letters</small>
+                    <small *ngIf="registrationForm.get('password')?.errors?.['pattern']">The password must contain at
+                        least <br> one uppercase letter <br> one lowercase letter <br> one special character
+                    </small>
                 </div>
             </div>
 
@@ -78,10 +83,8 @@
             <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
                 <span [innerHTML]="errorMessage"></span>
             </div>
-            <!-- [disabled]="registrationForm.invalid" -->
-            <button type="submit" class="clkbtn">Signup</button>
-
+            <button type="submit" class="clkbtn" [disabled]="registrationForm.invalid"
+                [ngClass]="{'disabled-btn': registrationForm.invalid}">Signup</button>
         </form>
     </div>
-
 </div>
