@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { RegistrationService } from '../services/registration.service';
 import { RegistrationRequest } from '../models/registration-request';
+import { FormLoginService } from '../services/form-login.service';
 
 @Component({
   selector: 'app-login',
@@ -14,18 +15,21 @@ import { RegistrationRequest } from '../models/registration-request';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  @Input()
-  opacity!: number;
-  formSectionMove = false;
-  registrationError!: string;
-  snackBar: any;
-  router: any;
-  successMessage?: string | null;
-  errorMessage?: string | null;
+  // @Input()
+  // opacity!: number;
+  private formSectionMove = false;
+  private successMessage?: string | null;
+  private errorMessage?: string | null;
+  private passwordPattern =
+    /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/;
+  private emailPattern = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
 
   public loginForm = new FormGroup({
-    email: new FormControl(null, [Validators.required]),
-    password: new FormControl(null, [Validators.required]),
+    email: new FormControl('', {
+      validators: [Validators.required, Validators.pattern(this.emailPattern)],
+      updateOn: 'change',
+    }),
+    password: new FormControl('', { validators: [Validators.required] }),
   });
 
   public registrationForm = this.formBuilder.group(
@@ -51,16 +55,14 @@ export class LoginComponent implements OnInit {
       email: new FormControl('', {
         validators: [
           Validators.required,
-          Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+          Validators.pattern(this.emailPattern),
         ],
         updateOn: 'change',
       }),
       password: new FormControl('', {
         validators: [
           Validators.required,
-          Validators.pattern(
-            /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
-          ),
+          Validators.pattern(this.passwordPattern),
           Validators.minLength(8),
           Validators.maxLength(30),
         ],
@@ -68,9 +70,7 @@ export class LoginComponent implements OnInit {
       confirmPassword: new FormControl('', {
         validators: [
           Validators.required,
-          Validators.pattern(
-            /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
-          ),
+          Validators.pattern(this.passwordPattern),
           Validators.minLength(8),
           Validators.maxLength(30),
         ],
@@ -95,12 +95,13 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private registrationService: RegistrationService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private formService: FormLoginService
   ) {}
 
   ngOnInit(): void {}
 
-  onSubmit() {
+  onSubmitRegister() {
     if (this.registrationForm.valid) {
       const request: RegistrationRequest = {
         firstName: this.registrationForm.controls['firstName']?.value,
@@ -142,5 +143,21 @@ export class LoginComponent implements OnInit {
     this.successMessage = null;
     this.errorMessage = null;
     this.registrationForm.reset();
+  }
+
+  closeLoginForm() {
+    this.formService.changeStatusFormLogin();
+  }
+
+  public get getSuccessMessage() {
+    return this.successMessage;
+  }
+
+  public get getErrorMessage() {
+    return this.errorMessage;
+  }
+
+  public get getFormSectionMove() {
+    return this.formSectionMove;
   }
 }
