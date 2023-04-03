@@ -10,7 +10,7 @@ import { ShopService } from './services/shop.service';
 import { FilterComponent } from './filter/filter.component';
 import { ContentComponent } from './content/content.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { LoginComponent } from './login/login.component';
+import { FormComponent } from './form/form.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +19,7 @@ import { LoginComponent } from './login/login.component';
     ProductsComponent,
     FilterComponent,
     ContentComponent,
-    LoginComponent,
+    FormComponent,
   ],
   imports: [
     BrowserModule,

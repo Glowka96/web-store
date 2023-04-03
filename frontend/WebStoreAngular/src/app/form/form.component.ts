@@ -10,13 +10,11 @@ import { RegistrationRequest } from '../models/registration-request';
 import { FormLoginService } from '../services/form-login.service';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
+  selector: 'app-form',
+  templateUrl: './form.component.html',
+  styleUrls: ['./form.component.scss'],
 })
-export class LoginComponent implements OnInit {
-  // @Input()
-  // opacity!: number;
+export class FormComponent implements OnInit {
   private formSectionMove = false;
   private successMessage?: string | null;
   private errorMessage?: string | null;

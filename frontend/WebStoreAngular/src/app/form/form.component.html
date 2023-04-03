@@ -63,8 +63,8 @@
                         required</small>
                     <small *ngIf="registrationForm.get('password')?.errors?.['minLength'] || ['maxLength']">The password
                         must between min 8 and max 30 letters</small>
-                    <small *ngIf="registrationForm.get('password')?.errors?.['pattern']">The password must contain at
-                        least <br> one uppercase letter <br> one lowercase letter <br> one special character
+                    <small *ngIf="registrationForm.get('password')?.errors?.['pattern']">The password must contain at:
+                        least <br> - one uppercase letter <br> - one lowercase letter <br> - one special character
                     </small>
                 </div>
             </div>
