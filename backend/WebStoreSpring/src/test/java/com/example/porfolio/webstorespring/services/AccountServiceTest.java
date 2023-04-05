@@ -45,7 +45,6 @@ class AccountServiceTest {
     private AccountMapper accountMapper = Mappers.getMapper(AccountMapper.class);
     @InjectMocks
     private AccountService underTest;
-
     private Account account;
     private AccountDto accountDto;
 
@@ -62,7 +61,7 @@ class AccountServiceTest {
         account.setFirstName("Test");
         account.setLastName("Dev");
         account.setPassword("Abcd123$");
-        account.setAccountRoles(AccountRoles.USER);
+        account.setAccountRoles(AccountRoles.ROLE_USER);
         account.setEmail("test@test.pl");
 
 
