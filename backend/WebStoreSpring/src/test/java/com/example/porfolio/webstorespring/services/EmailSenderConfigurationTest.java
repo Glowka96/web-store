@@ -1,5 +1,6 @@
 package com.example.porfolio.webstorespring.services;
 
+import com.example.porfolio.webstorespring.services.accounts.EmailSenderConfiguration;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

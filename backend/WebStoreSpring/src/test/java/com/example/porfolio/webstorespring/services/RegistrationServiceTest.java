@@ -4,7 +4,10 @@ import com.example.porfolio.webstorespring.exceptions.EmailAlreadyConfirmedExcep
 import com.example.porfolio.webstorespring.model.dto.accounts.RegistrationRequest;
 import com.example.porfolio.webstorespring.model.entity.accounts.Account;
 import com.example.porfolio.webstorespring.model.entity.accounts.ConfirmationToken;
-import com.example.porfolio.webstorespring.repositories.AccountRepository;
+import com.example.porfolio.webstorespring.repositories.accounts.AccountRepository;
+import com.example.porfolio.webstorespring.services.accounts.ConfirmationTokenService;
+import com.example.porfolio.webstorespring.services.accounts.EmailSenderConfiguration;
+import com.example.porfolio.webstorespring.services.accounts.RegistrationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

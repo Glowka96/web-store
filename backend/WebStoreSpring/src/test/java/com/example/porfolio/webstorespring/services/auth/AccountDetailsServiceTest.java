@@ -2,7 +2,9 @@ package com.example.porfolio.webstorespring.services.auth;
 
 import com.example.porfolio.webstorespring.exceptions.AccountCanNotModifiedException;
 import com.example.porfolio.webstorespring.model.entity.accounts.Account;
-import com.example.porfolio.webstorespring.repositories.AccountRepository;
+import com.example.porfolio.webstorespring.repositories.accounts.AccountRepository;
+import com.example.porfolio.webstorespring.security.auth.AccountDetails;
+import com.example.porfolio.webstorespring.security.auth.AccountDetailsService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

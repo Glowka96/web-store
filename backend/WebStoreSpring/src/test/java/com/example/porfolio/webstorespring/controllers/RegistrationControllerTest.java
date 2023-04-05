@@ -1,7 +1,8 @@
 package com.example.porfolio.webstorespring.controllers;
 
+import com.example.porfolio.webstorespring.controllers.accounts.RegistrationController;
 import com.example.porfolio.webstorespring.model.dto.accounts.RegistrationRequest;
-import com.example.porfolio.webstorespring.services.RegistrationService;
+import com.example.porfolio.webstorespring.services.accounts.RegistrationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
