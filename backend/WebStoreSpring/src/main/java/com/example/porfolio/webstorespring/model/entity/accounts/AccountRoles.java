@@ -1,6 +1,6 @@
 package com.example.porfolio.webstorespring.model.entity.accounts;
 
 public enum AccountRoles {
-    USER,
-    ADMIN
+    ROLE_USER,
+    ROLE_ADMIN
 }

@@ -1,0 +1,76 @@
+package com.example.porfolio.webstorespring.services.accounts;
+
+import com.example.porfolio.webstorespring.exceptions.EmailAlreadyConfirmedException;
+import com.example.porfolio.webstorespring.model.dto.accounts.RegistrationRequest;
+import com.example.porfolio.webstorespring.model.entity.accounts.Account;
+import com.example.porfolio.webstorespring.model.entity.accounts.AccountRoles;
+import com.example.porfolio.webstorespring.model.entity.accounts.ConfirmationToken;
+import com.example.porfolio.webstorespring.repositories.accounts.AccountRepository;
+import com.example.porfolio.webstorespring.security.auth.JwtService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@Service
+@RequiredArgsConstructor
+public class RegistrationService {
+
+    private final BCryptPasswordEncoder encoder;
+    private final ConfirmationTokenService tokenService;
+    private final EmailSenderConfiguration emailSenderConfiguration;
+    private final AccountRepository accountRepository;
+    private final JwtService jwtService;
+    private final AuthService authService;
+
+    public Map<String, Object> registrationAccount(RegistrationRequest registrationRequest) {
+        Account account = setupNewAccount(registrationRequest);
+        accountRepository.save(account);
+
+        ConfirmationToken savedToken = tokenService.createConfirmationToken(account);
+        return emailSenderConfiguration.sendEmail(account.getEmail(),
+                "Complete Registration!",
+                savedToken.getToken());
+    }
+
+    public Map<String, Object> confirmToken(String token) {
+        ConfirmationToken confirmationToken = tokenService.getConfirmationTokenByToken(token);
+        Account account = confirmationToken.getAccount();
+
+        if (tokenService.isConfirmed(confirmationToken)) {
+            throw new EmailAlreadyConfirmedException();
+        }
+
+        if (!account.getEnabled() && tokenService.isTokenExpired(confirmationToken)) {
+            ConfirmationToken newToken = tokenService.createConfirmationToken(account);
+            tokenService.deleteConfirmationToken(confirmationToken);
+            return emailSenderConfiguration.sendEmail(account.getEmail(),
+                    "New confirmation token",
+                    newToken.getToken());
+        }
+
+        tokenService.setConfirmedAtAndSaveConfirmationToken(confirmationToken);
+        account.setEnabled(true);
+        accountRepository.save(account);
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "Account confirmed");
+
+        var jwtToken = jwtService.generateToken((UserDetails) account);
+        authService.saveAccountToken(account, jwtToken);
+        return response;
+    }
+
+    private Account setupNewAccount(RegistrationRequest registrationRequest) {
+        Account account = new Account();
+        account.setFirstName(registrationRequest.getFirstName());
+        account.setLastName(registrationRequest.getLastName());
+        account.setEmail(registrationRequest.getEmail());
+        account.setPassword(encoder.encode(registrationRequest.getPassword()));
+        account.setAccountRoles(AccountRoles.ROLE_USER);
+        account.setEnabled(false);
+        return account;
+    }
+}

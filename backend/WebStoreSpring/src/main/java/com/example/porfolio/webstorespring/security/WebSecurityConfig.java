@@ -1,6 +1,7 @@
 package com.example.porfolio.webstorespring.security;
 
-import com.example.porfolio.webstorespring.services.auth.AccountDetailsService;
+import com.example.porfolio.webstorespring.security.auth.AccountDetailsService;
+import com.example.porfolio.webstorespring.security.auth.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,17 +15,18 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static org.springframework.security.config.Customizer.withDefaults;
 
+@Configuration
 @EnableWebSecurity
 @EnableMethodSecurity()
 @RequiredArgsConstructor
-@Configuration
 public class WebSecurityConfig {
 
     private final AccountDetailsService accountDetailsService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final JwtAuthenticationFilter jwtAuthFilter;
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
@@ -47,13 +49,17 @@ public class WebSecurityConfig {
                 .authenticationProvider(authenticationProvider())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth.requestMatchers(
+                                "/api/v1/login/**",
                                 "/api/v1/registration/**",
                                 "/api/v1/categories/**",
                                 "/api/v1/subcategories/**").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(form ->
                         form.defaultSuccessUrl("/api/v1/categories"))
-                .httpBasic(withDefaults())
+                .headers().frameOptions().sameOrigin()
+                .and()
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 }

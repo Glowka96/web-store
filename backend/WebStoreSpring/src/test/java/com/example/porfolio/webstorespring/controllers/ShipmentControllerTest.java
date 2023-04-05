@@ -1,8 +1,9 @@
 package com.example.porfolio.webstorespring.controllers;
 
+import com.example.porfolio.webstorespring.controllers.orders.ShipmentController;
 import com.example.porfolio.webstorespring.model.dto.orders.ShipmentDto;
 import com.example.porfolio.webstorespring.model.dto.products.ProductDto;
-import com.example.porfolio.webstorespring.services.ShipmentService;
+import com.example.porfolio.webstorespring.services.orders.ShipmentService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

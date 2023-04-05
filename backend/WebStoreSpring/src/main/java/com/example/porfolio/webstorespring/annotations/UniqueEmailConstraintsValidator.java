@@ -1,6 +1,6 @@
 package com.example.porfolio.webstorespring.annotations;
 
-import com.example.porfolio.webstorespring.repositories.AccountRepository;
+import com.example.porfolio.webstorespring.repositories.accounts.AccountRepository;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
