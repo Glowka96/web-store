@@ -6,7 +6,6 @@ import com.example.porfolio.webstorespring.model.dto.accounts.LoginRequest;
 import com.example.porfolio.webstorespring.model.entity.accounts.Account;
 import com.example.porfolio.webstorespring.repositories.accounts.AccountRepository;
 import com.example.porfolio.webstorespring.security.auth.AccountDetailsService;
-import com.example.porfolio.webstorespring.security.auth.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,7 +18,6 @@ public class LoginService {
 
     private final AccountRepository accountRepository;
     private final AuthenticationManager authenticationManager;
-    private final JwtService jwtService;
     private final AccountDetailsService accountDetailsService;
     private final AuthService authService;
 
@@ -32,16 +30,20 @@ public class LoginService {
         );
 
         UserDetails userDetails = accountDetailsService.loadUserByUsername(loginRequest.getEmail());
-        Account account = accountRepository.findByEmail(loginRequest.getEmail())
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "account", "email", loginRequest.getEmail()));
-        String jwtToken = jwtService.generateToken(userDetails);
+        Account account = findAccountByEmail(loginRequest.getEmail());
+        String jwtToken = authService.generateAuthToken(userDetails);
 
-        authService.revokeAllUserTokens(account);
-        authService.saveAccountToken(account, jwtToken);
+        authService.revokeAllUserAuthTokens(account);
+        authService.saveAccountAuthToken(account, jwtToken);
 
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
+    }
+
+    private Account findAccountByEmail(String email) {
+        return accountRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "account", "email", email));
     }
 }

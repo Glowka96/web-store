@@ -6,7 +6,6 @@ import com.example.porfolio.webstorespring.model.entity.accounts.Account;
 import com.example.porfolio.webstorespring.model.entity.accounts.AccountRoles;
 import com.example.porfolio.webstorespring.model.entity.accounts.ConfirmationToken;
 import com.example.porfolio.webstorespring.repositories.accounts.AccountRepository;
-import com.example.porfolio.webstorespring.security.auth.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,46 +19,45 @@ import java.util.Map;
 public class RegistrationService {
 
     private final BCryptPasswordEncoder encoder;
-    private final ConfirmationTokenService tokenService;
+    private final ConfirmationTokenService confirmationTokenService;
     private final EmailSenderConfiguration emailSenderConfiguration;
     private final AccountRepository accountRepository;
-    private final JwtService jwtService;
     private final AuthService authService;
 
     public Map<String, Object> registrationAccount(RegistrationRequest registrationRequest) {
         Account account = setupNewAccount(registrationRequest);
         accountRepository.save(account);
 
-        ConfirmationToken savedToken = tokenService.createConfirmationToken(account);
+        ConfirmationToken savedToken = confirmationTokenService.createConfirmationToken(account);
         return emailSenderConfiguration.sendEmail(account.getEmail(),
                 "Complete Registration!",
                 savedToken.getToken());
     }
 
     public Map<String, Object> confirmToken(String token) {
-        ConfirmationToken confirmationToken = tokenService.getConfirmationTokenByToken(token);
+        ConfirmationToken confirmationToken = confirmationTokenService.getConfirmationTokenByToken(token);
         Account account = confirmationToken.getAccount();
 
-        if (tokenService.isConfirmed(confirmationToken)) {
+        if (confirmationTokenService.isConfirmed(confirmationToken)) {
             throw new EmailAlreadyConfirmedException();
         }
 
-        if (!account.getEnabled() && tokenService.isTokenExpired(confirmationToken)) {
-            ConfirmationToken newToken = tokenService.createConfirmationToken(account);
-            tokenService.deleteConfirmationToken(confirmationToken);
+        if (!account.getEnabled() && confirmationTokenService.isTokenExpired(confirmationToken)) {
+            ConfirmationToken newToken = confirmationTokenService.createConfirmationToken(account);
+            confirmationTokenService.deleteConfirmationToken(confirmationToken);
             return emailSenderConfiguration.sendEmail(account.getEmail(),
                     "New confirmation token",
                     newToken.getToken());
         }
 
-        tokenService.setConfirmedAtAndSaveConfirmationToken(confirmationToken);
+        confirmationTokenService.setConfirmedAtAndSaveConfirmationToken(confirmationToken);
         account.setEnabled(true);
         accountRepository.save(account);
         Map<String, Object> response = new HashMap<>();
         response.put("message", "Account confirmed");
 
-        var jwtToken = jwtService.generateToken((UserDetails) account);
-        authService.saveAccountToken(account, jwtToken);
+        var jwtToken = authService.generateAuthToken((UserDetails) account);
+        authService.saveAccountAuthToken(account, jwtToken);
         return response;
     }
 

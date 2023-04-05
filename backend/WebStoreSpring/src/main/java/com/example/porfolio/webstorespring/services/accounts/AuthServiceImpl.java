@@ -4,19 +4,23 @@ import com.example.porfolio.webstorespring.model.entity.accounts.Account;
 import com.example.porfolio.webstorespring.model.entity.accounts.AuthToken;
 import com.example.porfolio.webstorespring.model.entity.accounts.AuthTokenType;
 import com.example.porfolio.webstorespring.repositories.accounts.AuthTokenRepository;
+import com.example.porfolio.webstorespring.security.auth.JwtService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
-    private final AuthTokenRepository tokenRepository;
+    private final AuthTokenRepository authTokenRepository;
+    private final JwtService jwtService;
 
     @Override
-    public void saveAccountToken(Account account, String jwtToken) {
+    public void saveAccountAuthToken(Account account, String jwtToken) {
         AuthToken token = AuthToken.builder()
                 .account(account)
                 .token(jwtToken)
@@ -24,19 +28,32 @@ public class AuthServiceImpl implements AuthService {
                 .expired(false)
                 .revoked(false)
                 .build();
-        tokenRepository.save(token);
+        authTokenRepository.save(token);
     }
 
     @Override
-    public void revokeAllUserTokens(Account account) {
-        List<AuthToken> validUserTokens = tokenRepository.findAllValidTokenByAccountId(account.getId());
-        if (validUserTokens.isEmpty()){
+    public void revokeAllUserAuthTokens(Account account) {
+        List<AuthToken> validUserTokens = authTokenRepository.findAllValidTokenByAccountId(account.getId());
+        if (validUserTokens.isEmpty()) {
             return;
         }
         validUserTokens.forEach(authToken -> {
             authToken.setExpired(true);
             authToken.setRevoked(true);
         });
-        tokenRepository.saveAll(validUserTokens);
+        authTokenRepository.saveAll(validUserTokens);
     }
+
+    @Override
+    public String generateAuthToken(UserDetails userDetails) {
+        return jwtService.generateToken(userDetails);
+    }
+
+    @Override
+    public String generateAuthToken(HashMap<String, Object> extraClaims,
+                                    UserDetails userDetails) {
+        return jwtService.generateToken(userDetails);
+    }
+
+
 }
