@@ -6,7 +6,6 @@ import com.example.porfolio.webstorespring.model.dto.accounts.AccountDto;
 import com.example.porfolio.webstorespring.model.entity.accounts.Account;
 import com.example.porfolio.webstorespring.repositories.accounts.AccountRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,13 +17,11 @@ public class AccountService {
     private final AccountMapper accountMapper;
     private final BCryptPasswordEncoder encoder;
 
-    @PreAuthorize("@accountDetailsService.isValidAuthLoggedUser(#accountId)")
     public AccountDto getAccountById(Long accountId) {
         Account foundAccount = findAccountById(accountId);
         return accountMapper.mapToDto(foundAccount);
     }
 
-    @PreAuthorize("@accountDetailsService.isValidAuthLoggedUser(#accountId)")
     public AccountDto updateAccount(Long accountId, AccountDto accountDto) {
         Account foundAccount = findAccountById(accountId);
 
@@ -35,7 +32,6 @@ public class AccountService {
         return accountMapper.mapToDto(updatedAccount);
     }
 
-    @PreAuthorize("@accountDetailsService.isValidAuthLoggedUser(#accountId)")
     public void deleteAccountById(Long accountId) {
         Account foundAccount = findAccountById(accountId);
 

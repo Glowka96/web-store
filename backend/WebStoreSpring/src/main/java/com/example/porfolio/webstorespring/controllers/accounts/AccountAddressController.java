@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,11 +19,13 @@ public class AccountAddressController {
     private final AccountAddressService addressService;
 
     @GetMapping("/address")
+    @PreAuthorize("@authServiceImpl.checkAuthorization(#accountId, #authHeader)")
     public ResponseEntity<AccountAddressDto> getAccountAddressByAccountId(@PathVariable("accountId") Long accountId) {
         return ResponseEntity.ok(addressService.getAccountAddressByAccountId(accountId));
     }
 
     @PostMapping("/address")
+    @PreAuthorize("@authServiceImpl.checkAuthorization(#accountId, #authHeader)")
     public ResponseEntity<AccountAddressDto> saveAccountAddress(@PathVariable("accountId") Long accountId,
                                                                 @Valid @RequestBody AccountAddressDto accountAddressDto) {
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -30,6 +33,7 @@ public class AccountAddressController {
     }
 
     @PutMapping("/address")
+    @PreAuthorize("@authServiceImpl.checkAuthorization(#accountId, #authHeader)")
     public ResponseEntity<AccountAddressDto> updateAccountAddress(@PathVariable("accountId") Long accountId,
                                                                   @Valid @RequestBody AccountAddressDto accountAddressDto) {
         return ResponseEntity.status(HttpStatus.ACCEPTED)

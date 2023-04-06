@@ -6,6 +6,7 @@ import com.example.porfolio.webstorespring.model.entity.accounts.AuthToken;
 import com.example.porfolio.webstorespring.model.entity.accounts.AuthTokenType;
 import com.example.porfolio.webstorespring.repositories.accounts.AuthTokenRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
@@ -57,7 +59,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public Boolean checkAuthorization(String authHeader) {
+    public Boolean checkAuthorization(Long accountId, String authHeader) {
         if (!authHeader.startsWith("Bearer ")) {
             return false;
         }
@@ -65,10 +67,11 @@ public class AuthServiceImpl implements AuthService {
         String authToken = authHeader.substring(7);
 
         Account foundAccountByAuthToken = findAccountByAuthToken(authToken);
-        Account accountPrincipal = getAccountPrincipal();
+        AccountDetails accountPrincipal = getAccountPrincipal();
+        Account account = accountPrincipal.getAccount();
 
-        return foundAccountByAuthToken.getId()
-                .equals(accountPrincipal.getId());
+        return foundAccountByAuthToken.getId().equals(account.getId()) &&
+                account.getId().equals(accountId);
     }
 
     private Account findAccountByAuthToken(String authToken) {
@@ -77,8 +80,8 @@ public class AuthServiceImpl implements AuthService {
                 .getAccount();
     }
 
-    private Account getAccountPrincipal() {
-        return (Account) SecurityContextHolder.getContext()
+    private AccountDetails getAccountPrincipal() {
+        return (AccountDetails) SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getPrincipal();
     }

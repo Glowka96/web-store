@@ -8,7 +8,6 @@ import com.example.porfolio.webstorespring.model.dto.accounts.AccountDto;
 import com.example.porfolio.webstorespring.model.entity.accounts.Account;
 import com.example.porfolio.webstorespring.model.entity.accounts.AccountRoles;
 import com.example.porfolio.webstorespring.repositories.accounts.AccountRepository;
-import com.example.porfolio.webstorespring.security.auth.AccountDetails;
 import com.example.porfolio.webstorespring.services.accounts.AccountService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,10 +18,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -70,10 +65,6 @@ class AccountServiceTest {
         accountDto.setFirstName("Test");
         accountDto.setLastName("Dev");
         accountDto.setPassword("Abcd123$");
-
-        Authentication authentication = new UsernamePasswordAuthenticationToken(new AccountDetails(account), null);
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        securityContext.setAuthentication(authentication);
     }
 
     @Test

@@ -10,7 +10,6 @@ import com.example.porfolio.webstorespring.model.entity.orders.OrderStatus;
 import com.example.porfolio.webstorespring.repositories.accounts.AccountRepository;
 import com.example.porfolio.webstorespring.repositories.orders.OrderRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -29,7 +28,6 @@ public class OrderService {
     private final AccountRepository accountRepository;
     private final Clock clock = Clock.systemUTC();
 
-    @PreAuthorize("@accountDetailsService.isValidAuthLoggedUser(#accountId)")
     public List<OrderDto> getAllOrderDtoByAccountId(Long accountId) {
         List<Order> orders = orderRepository.findAllByAccountId(accountId);
         return orderMapper.mapToDto(orders);
@@ -40,7 +38,6 @@ public class OrderService {
         return orderMapper.mapToDto(order);
     }
 
-    @PreAuthorize("@accountDetailsService.isValidAuthLoggedUser(#accountId)")
     public OrderDto saveOrder(Long accountId, OrderDto orderDto) {
         Account foundAccount = findAccountById(accountId);
         Order order = orderMapper.mapToEntity(orderDto);
@@ -51,7 +48,6 @@ public class OrderService {
         return orderMapper.mapToDto(order);
     }
 
-    @PreAuthorize("@accountDetailsService.isValidAuthLoggedUser(#accountId)")
     public OrderDto updateOrder(Long accountId, Long orderId, OrderDto orderDto) {
         Order foundOrder = findOrderById(orderId);
 
@@ -67,7 +63,6 @@ public class OrderService {
         return orderMapper.mapToDto(order);
     }
 
-    @PreAuthorize("@accountDetailsService.isValidAuthLoggedUser(#accountId)")
     public void deleteOrderById(Long accountId, Long id) {
         Order foundOrder = findOrderById(id);
 
