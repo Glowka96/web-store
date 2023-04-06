@@ -4,6 +4,7 @@ import com.example.porfolio.webstorespring.model.dto.accounts.AuthenticationResp
 import com.example.porfolio.webstorespring.model.dto.accounts.LoginRequest;
 import com.example.porfolio.webstorespring.model.entity.accounts.Account;
 import com.example.porfolio.webstorespring.security.auth.AccountDetails;
+import com.example.porfolio.webstorespring.security.auth.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

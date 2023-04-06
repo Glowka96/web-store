@@ -48,5 +48,5 @@ public class Account {
     private List<Order> orders;
 
     @OneToMany(mappedBy = "account")
-    private List<AuthToken> tokens;
+    private List<AuthToken> authTokens;
 }
