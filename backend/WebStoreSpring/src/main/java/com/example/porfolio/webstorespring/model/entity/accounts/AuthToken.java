@@ -28,7 +28,7 @@ public class AuthToken {
 
     public boolean expired;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
     public Account account;
 }

@@ -1,11 +1,12 @@
-package com.example.porfolio.webstorespring.services.accounts;
+package com.example.porfolio.webstorespring.security.auth;
 
+import com.example.porfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.porfolio.webstorespring.model.entity.accounts.Account;
 import com.example.porfolio.webstorespring.model.entity.accounts.AuthToken;
 import com.example.porfolio.webstorespring.model.entity.accounts.AuthTokenType;
 import com.example.porfolio.webstorespring.repositories.accounts.AuthTokenRepository;
-import com.example.porfolio.webstorespring.security.auth.JwtService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -53,5 +54,32 @@ public class AuthServiceImpl implements AuthService {
     public String generateAuthToken(HashMap<String, Object> extraClaims,
                                     UserDetails userDetails) {
         return jwtService.generateToken(userDetails);
+    }
+
+    @Override
+    public Boolean checkAuthorization(String authHeader) {
+        if (!authHeader.startsWith("Bearer ")) {
+            return false;
+        }
+
+        String authToken = authHeader.substring(7);
+
+        Account foundAccountByAuthToken = findAccountByAuthToken(authToken);
+        Account accountPrincipal = getAccountPrincipal();
+
+        return foundAccountByAuthToken.getId()
+                .equals(accountPrincipal.getId());
+    }
+
+    private Account findAccountByAuthToken(String authToken) {
+        return authTokenRepository.findByToken(authToken)
+                .orElseThrow(() -> new ResourceNotFoundException("Authorization token", "token", authToken))
+                .getAccount();
+    }
+
+    private Account getAccountPrincipal() {
+        return (Account) SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getPrincipal();
     }
 }

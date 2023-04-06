@@ -1,4 +1,4 @@
-package com.example.porfolio.webstorespring.services.accounts;
+package com.example.porfolio.webstorespring.security.auth;
 
 import com.example.porfolio.webstorespring.model.entity.accounts.Account;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,4 +13,6 @@ public interface AuthService {
     String generateAuthToken(UserDetails userDetails);
 
     String generateAuthToken(HashMap<String, Object> extraClaims, UserDetails userDetails);
+
+    Boolean checkAuthorization(String authToken);
 }

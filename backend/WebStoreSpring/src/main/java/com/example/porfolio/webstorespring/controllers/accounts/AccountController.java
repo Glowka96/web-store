@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,7 +18,9 @@ public class AccountController {
     private final AccountService accountService;
 
     @GetMapping("/{accountId}")
-    public ResponseEntity<AccountDto> getAccountById(@PathVariable(value = "accountId") Long accountId) {
+    @PreAuthorize("@authServiceImpl.checkAuthorization(#authHeader)")
+    public ResponseEntity<AccountDto> getAccountById(@PathVariable(value = "accountId") Long accountId,
+                                                     @RequestHeader("Authorization") String authHeader ) {
         return ResponseEntity.ok(accountService.getAccountById(accountId));
     }
 
