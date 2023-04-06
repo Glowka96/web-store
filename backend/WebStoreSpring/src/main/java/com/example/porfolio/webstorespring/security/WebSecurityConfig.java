@@ -13,9 +13,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
 
 
 @Configuration
@@ -27,6 +29,7 @@ public class WebSecurityConfig {
     private final AccountDetailsService accountDetailsService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final JwtAuthenticationFilter jwtAuthFilter;
+    private final LogoutHandler logoutHandler;
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
@@ -47,8 +50,10 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authenticationProvider(authenticationProvider())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth.requestMatchers(
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth ->
+                        auth.requestMatchers(
                                 "/api/v1/login/**",
                                 "/api/v1/registration/**",
                                 "/api/v1/categories/**",
@@ -57,6 +62,12 @@ public class WebSecurityConfig {
                 .formLogin(form ->
                         form.defaultSuccessUrl("/api/v1/categories"))
                 .headers().frameOptions().sameOrigin()
+                .and()
+                .logout().logoutUrl("api/v1/logout")
+                .addLogoutHandler(logoutHandler)
+                .logoutSuccessHandler((request,
+                                       response,
+                                       authentication) -> SecurityContextHolder.clearContext())
                 .and()
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
