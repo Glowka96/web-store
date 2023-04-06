@@ -53,14 +53,15 @@ class OrderControllerTest {
     }
 
 
-   @Test
+    @Test
     void shouldGetAllOrders() throws Exception {
         List<OrderDto> orderDtos = new ArrayList<>(Arrays.asList(orderDto, new OrderDto()));
         given(orderService.getAllOrderDtoByAccountId(anyLong())).willReturn(orderDtos);
 
         mvc.perform(get(URL + "/orders", 1)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
+                        .accept(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer {JWT_TOKEN}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andDo(print());
@@ -72,7 +73,8 @@ class OrderControllerTest {
 
         mvc.perform(get(URL + "/orders/{id}", 1, 1)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
+                        .accept(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer {JWT_TOKEN}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andDo(print());
@@ -85,7 +87,8 @@ class OrderControllerTest {
         mvc.perform(post(URL + "/orders", 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(orderDto)))
+                        .content(mapper.writeValueAsString(orderDto))
+                        .header("Authorization", "Bearer {JWT_TOKEN}"))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andDo(print());
@@ -98,7 +101,8 @@ class OrderControllerTest {
         mvc.perform(put(URL + "/orders/{ordersId}", 1, 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(orderDto)))
+                        .content(mapper.writeValueAsString(orderDto))
+                        .header("Authorization", "Bearer {JWT_TOKEN}"))
                 .andExpect(status().isAccepted())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andDo(print());
@@ -108,7 +112,8 @@ class OrderControllerTest {
     void shouldDeleteOrderById() throws Exception {
         mvc.perform(delete(URL + "/orders/{orderId}", 1, 1)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
+                        .accept(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer {JWT_TOKEN}"))
                 .andExpect(status().isNoContent())
                 .andDo(print());
     }

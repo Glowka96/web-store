@@ -20,14 +20,16 @@ public class AccountAddressController {
 
     @GetMapping("/address")
     @PreAuthorize("@authServiceImpl.checkAuthorization(#accountId, #authHeader)")
-    public ResponseEntity<AccountAddressDto> getAccountAddressByAccountId(@PathVariable("accountId") Long accountId) {
+    public ResponseEntity<AccountAddressDto> getAccountAddressByAccountId(@PathVariable("accountId") Long accountId,
+                                                                          @RequestHeader("Authorization") String authHeader) {
         return ResponseEntity.ok(addressService.getAccountAddressByAccountId(accountId));
     }
 
     @PostMapping("/address")
     @PreAuthorize("@authServiceImpl.checkAuthorization(#accountId, #authHeader)")
     public ResponseEntity<AccountAddressDto> saveAccountAddress(@PathVariable("accountId") Long accountId,
-                                                                @Valid @RequestBody AccountAddressDto accountAddressDto) {
+                                                                @Valid @RequestBody AccountAddressDto accountAddressDto,
+                                                                @RequestHeader("Authorization") String authHeader) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(addressService.saveAccountAddress(accountId, accountAddressDto));
     }
@@ -35,7 +37,8 @@ public class AccountAddressController {
     @PutMapping("/address")
     @PreAuthorize("@authServiceImpl.checkAuthorization(#accountId, #authHeader)")
     public ResponseEntity<AccountAddressDto> updateAccountAddress(@PathVariable("accountId") Long accountId,
-                                                                  @Valid @RequestBody AccountAddressDto accountAddressDto) {
+                                                                  @Valid @RequestBody AccountAddressDto accountAddressDto,
+                                                                  @RequestHeader("Authorization") String authHeader) {
         return ResponseEntity.status(HttpStatus.ACCEPTED)
                 .body(addressService.updateAccountAddress(accountId, accountAddressDto));
     }
