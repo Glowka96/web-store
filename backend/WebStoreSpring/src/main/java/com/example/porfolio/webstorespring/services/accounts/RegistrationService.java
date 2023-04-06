@@ -7,7 +7,6 @@ import com.example.porfolio.webstorespring.model.entity.accounts.AccountRoles;
 import com.example.porfolio.webstorespring.model.entity.accounts.ConfirmationToken;
 import com.example.porfolio.webstorespring.repositories.accounts.AccountRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +21,6 @@ public class RegistrationService {
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailSenderConfiguration emailSenderConfiguration;
     private final AccountRepository accountRepository;
-    private final AuthService authService;
 
     public Map<String, Object> registrationAccount(RegistrationRequest registrationRequest) {
         Account account = setupNewAccount(registrationRequest);
@@ -53,11 +51,9 @@ public class RegistrationService {
         confirmationTokenService.setConfirmedAtAndSaveConfirmationToken(confirmationToken);
         account.setEnabled(true);
         accountRepository.save(account);
+
         Map<String, Object> response = new HashMap<>();
         response.put("message", "Account confirmed");
-
-        var jwtToken = authService.generateAuthToken((UserDetails) account);
-        authService.saveAccountAuthToken(account, jwtToken);
         return response;
     }
 
