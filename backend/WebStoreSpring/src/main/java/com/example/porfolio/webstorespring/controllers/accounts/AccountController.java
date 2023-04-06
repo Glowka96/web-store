@@ -27,7 +27,8 @@ public class AccountController {
     @PutMapping("/{accountId}")
     @PreAuthorize("@authServiceImpl.checkAuthorization(#accountId, #authHeader)")
     public ResponseEntity<AccountDto> updateAccount(@PathVariable(value = "accountId") Long accountId,
-                                                    @Valid @RequestBody AccountDto accountDto) {
+                                                    @Valid @RequestBody AccountDto accountDto,
+                                                    @RequestHeader("Authorization") String authHeader) {
         return ResponseEntity.status(HttpStatus.ACCEPTED)
                 .body(accountService.updateAccount(accountId, accountDto));
     }

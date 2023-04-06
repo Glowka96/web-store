@@ -21,21 +21,24 @@ public class OrderController {
 
     @GetMapping()
     @PreAuthorize("@authServiceImpl.checkAuthorization(#accountId, #authHeader)")
-    public ResponseEntity<List<OrderDto>> getAllOrdersByAccountId(@PathVariable("accountId") Long accountId) {
+    public ResponseEntity<List<OrderDto>> getAllOrdersByAccountId(@PathVariable("accountId") Long accountId,
+                                                                  @RequestHeader("Authorization") String authHeader) {
         return ResponseEntity.ok(orderService.getAllOrderDtoByAccountId(accountId));
     }
 
     @GetMapping("/{orderId}")
     @PreAuthorize("@authServiceImpl.checkAuthorization(#accountId, #authHeader)")
     public ResponseEntity<OrderDto> getOrderByAccountIdAndOrderId(@PathVariable("accountId") Long accountId,
-                                                                  @PathVariable("orderId") Long orderId) {
+                                                                  @PathVariable("orderId") Long orderId,
+                                                                  @RequestHeader("Authorization") String authHeader) {
         return ResponseEntity.ok(orderService.getOrderByAccountIdAndOrderId(accountId, orderId));
     }
 
     @PostMapping()
     @PreAuthorize("@authServiceImpl.checkAuthorization(#accountId, #authHeader)")
     public ResponseEntity<OrderDto> saveOrder(@PathVariable("accountId") Long accountId,
-                                              @Valid @RequestBody OrderDto orderDto) {
+                                              @Valid @RequestBody OrderDto orderDto,
+                                              @RequestHeader("Authorization") String authHeader) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(orderService.saveOrder(accountId, orderDto));
     }
@@ -44,7 +47,8 @@ public class OrderController {
     @PreAuthorize("@authServiceImpl.checkAuthorization(#accountId, #authHeader)")
     public ResponseEntity<OrderDto> updateOrder(@PathVariable("accountId") Long accountId,
                                                 @PathVariable("orderId") Long orderId,
-                                                @Valid @RequestBody OrderDto orderDto) {
+                                                @Valid @RequestBody OrderDto orderDto,
+                                                @RequestHeader("Authorization") String authHeader) {
         return ResponseEntity.status(HttpStatus.ACCEPTED)
                 .body(orderService.updateOrder(accountId, orderId, orderDto));
     }
@@ -53,7 +57,8 @@ public class OrderController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("@authServiceImpl.checkAuthorization(#accountId, #authHeader)")
     public void deleteOrderById(@PathVariable("accountId") Long accountId,
-                                @PathVariable("orderId") Long orderId) {
+                                @PathVariable("orderId") Long orderId,
+                                @RequestHeader("Authorization") String authHeader) {
         orderService.deleteOrderById(accountId, orderId);
     }
 }
