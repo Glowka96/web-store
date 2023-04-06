@@ -18,13 +18,14 @@ public class AccountController {
     private final AccountService accountService;
 
     @GetMapping("/{accountId}")
-    @PreAuthorize("@authServiceImpl.checkAuthorization(#authHeader)")
+    @PreAuthorize("@authServiceImpl.checkAuthorization(#accountId, #authHeader)")
     public ResponseEntity<AccountDto> getAccountById(@PathVariable(value = "accountId") Long accountId,
                                                      @RequestHeader("Authorization") String authHeader ) {
         return ResponseEntity.ok(accountService.getAccountById(accountId));
     }
 
     @PutMapping("/{accountId}")
+    @PreAuthorize("@authServiceImpl.checkAuthorization(#accountId, #authHeader)")
     public ResponseEntity<AccountDto> updateAccount(@PathVariable(value = "accountId") Long accountId,
                                                     @Valid @RequestBody AccountDto accountDto) {
         return ResponseEntity.status(HttpStatus.ACCEPTED)
@@ -33,6 +34,7 @@ public class AccountController {
 
     @DeleteMapping("/{accountId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("@authServiceImpl.checkAuthorization(#accountId, #authHeader)")
     public void deleteAccountById(@PathVariable("accountId") Long accountId) {
         accountService.deleteAccountById(accountId);
     }

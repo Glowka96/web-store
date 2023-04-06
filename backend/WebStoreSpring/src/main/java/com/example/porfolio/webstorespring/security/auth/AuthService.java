@@ -14,5 +14,5 @@ public interface AuthService {
 
     String generateAuthToken(HashMap<String, Object> extraClaims, UserDetails userDetails);
 
-    Boolean checkAuthorization(String authToken);
+    Boolean checkAuthorization(Long accountId, String authToken);
 }

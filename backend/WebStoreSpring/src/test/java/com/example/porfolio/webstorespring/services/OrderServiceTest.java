@@ -16,7 +16,6 @@ import com.example.porfolio.webstorespring.model.entity.orders.OrderStatus;
 import com.example.porfolio.webstorespring.model.entity.orders.Shipment;
 import com.example.porfolio.webstorespring.repositories.accounts.AccountRepository;
 import com.example.porfolio.webstorespring.repositories.orders.OrderRepository;
-import com.example.porfolio.webstorespring.security.auth.AccountDetails;
 import com.example.porfolio.webstorespring.services.orders.OrderService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,10 +26,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
@@ -71,10 +66,6 @@ class OrderServiceTest {
 
         ProducerMapper producerMapper = Mappers.getMapper(ProducerMapper.class);
         ReflectionTestUtils.setField(productMapper, "producerMapper", producerMapper);
-
-        Authentication authentication = new UsernamePasswordAuthenticationToken(new AccountDetails(account), null);
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        securityContext.setAuthentication(authentication);
 
         accountDto = new AccountDto();
         accountDto.setId(1L);

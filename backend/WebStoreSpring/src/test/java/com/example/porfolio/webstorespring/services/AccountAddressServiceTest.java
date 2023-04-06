@@ -7,7 +7,6 @@ import com.example.porfolio.webstorespring.model.entity.accounts.Account;
 import com.example.porfolio.webstorespring.model.entity.accounts.AccountAddress;
 import com.example.porfolio.webstorespring.repositories.accounts.AccountAddressRepository;
 import com.example.porfolio.webstorespring.repositories.accounts.AccountRepository;
-import com.example.porfolio.webstorespring.security.auth.AccountDetails;
 import com.example.porfolio.webstorespring.services.accounts.AccountAddressService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,10 +17,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Optional;
 
@@ -62,10 +57,6 @@ class AccountAddressServiceTest {
         accountAddress.setAccount(account);
 
         accountAddressDto = new AccountAddressDto();
-
-        Authentication authentication = new UsernamePasswordAuthenticationToken(new AccountDetails(account), null);
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        securityContext.setAuthentication(authentication);
     }
 
     @Test

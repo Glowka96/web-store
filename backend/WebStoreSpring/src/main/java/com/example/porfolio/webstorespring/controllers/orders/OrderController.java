@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,17 +20,20 @@ public class OrderController {
     private final OrderService orderService;
 
     @GetMapping()
+    @PreAuthorize("@authServiceImpl.checkAuthorization(#accountId, #authHeader)")
     public ResponseEntity<List<OrderDto>> getAllOrdersByAccountId(@PathVariable("accountId") Long accountId) {
         return ResponseEntity.ok(orderService.getAllOrderDtoByAccountId(accountId));
     }
 
     @GetMapping("/{orderId}")
+    @PreAuthorize("@authServiceImpl.checkAuthorization(#accountId, #authHeader)")
     public ResponseEntity<OrderDto> getOrderByAccountIdAndOrderId(@PathVariable("accountId") Long accountId,
                                                                   @PathVariable("orderId") Long orderId) {
         return ResponseEntity.ok(orderService.getOrderByAccountIdAndOrderId(accountId, orderId));
     }
 
     @PostMapping()
+    @PreAuthorize("@authServiceImpl.checkAuthorization(#accountId, #authHeader)")
     public ResponseEntity<OrderDto> saveOrder(@PathVariable("accountId") Long accountId,
                                               @Valid @RequestBody OrderDto orderDto) {
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -37,6 +41,7 @@ public class OrderController {
     }
 
     @PutMapping("/{orderId}")
+    @PreAuthorize("@authServiceImpl.checkAuthorization(#accountId, #authHeader)")
     public ResponseEntity<OrderDto> updateOrder(@PathVariable("accountId") Long accountId,
                                                 @PathVariable("orderId") Long orderId,
                                                 @Valid @RequestBody OrderDto orderDto) {
@@ -46,6 +51,7 @@ public class OrderController {
 
     @DeleteMapping("/{orderId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("@authServiceImpl.checkAuthorization(#accountId, #authHeader)")
     public void deleteOrderById(@PathVariable("accountId") Long accountId,
                                 @PathVariable("orderId") Long orderId) {
         orderService.deleteOrderById(accountId, orderId);
