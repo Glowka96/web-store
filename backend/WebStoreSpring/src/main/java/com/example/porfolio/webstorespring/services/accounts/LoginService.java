@@ -34,8 +34,6 @@ public class LoginService {
         authService.revokeAllUserAuthTokens(account);
         authService.saveAccountAuthToken(account, jwtToken);
 
-        return AuthenticationResponse.builder()
-                .token(jwtToken)
-                .build();
+        return new AuthenticationResponse(jwtToken);
     }
 }
