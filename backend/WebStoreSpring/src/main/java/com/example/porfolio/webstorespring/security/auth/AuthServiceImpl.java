@@ -1,5 +1,6 @@
 package com.example.porfolio.webstorespring.security.auth;
 
+import com.example.porfolio.webstorespring.exceptions.AccountCanNotModifiedException;
 import com.example.porfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.porfolio.webstorespring.model.entity.accounts.Account;
 import com.example.porfolio.webstorespring.model.entity.accounts.AuthToken;
@@ -70,8 +71,12 @@ public class AuthServiceImpl implements AuthService {
         AccountDetails accountPrincipal = getAccountPrincipal();
         Account account = accountPrincipal.getAccount();
 
-        return foundAccountByAuthToken.getId().equals(account.getId()) &&
-                account.getId().equals(accountId);
+        if (!foundAccountByAuthToken.getId().equals(accountId) &&
+                !account.getId().equals(accountId)) {
+            throw new AccountCanNotModifiedException();
+        }
+
+        return true;
     }
 
     private Account findAccountByAuthToken(String authToken) {

@@ -1,5 +1,6 @@
 package com.example.porfolio.webstorespring.security.auth;
 
+import com.example.porfolio.webstorespring.exceptions.AccountCanNotModifiedException;
 import com.example.porfolio.webstorespring.model.entity.accounts.Account;
 import com.example.porfolio.webstorespring.model.entity.accounts.AccountRoles;
 import com.example.porfolio.webstorespring.model.entity.accounts.AuthToken;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -135,5 +137,31 @@ class AuthServiceImplTest {
         assertFalse(excepted);
     }
 
+    @Test
+    void willThrowWhenNotEqualsAccountsId() {
+        // given
+        Account invalidAccount = new Account();
+        invalidAccount.setId(2L);
 
+        Authentication authentication = new UsernamePasswordAuthenticationToken(new AccountDetails(invalidAccount), null);
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        securityContext.setAuthentication(authentication);
+
+        AuthToken invalidAuthToken = AuthToken.builder()
+                .account(invalidAccount)
+                .token(jwtToken)
+                .tokenType(AuthTokenType.BEARER)
+                .expired(false)
+                .revoked(false)
+                .build();
+
+        // when
+        when(authTokenRepository.findByToken(any())).thenReturn(Optional.of(invalidAuthToken));
+
+        // then
+        assertThatThrownBy(() -> underTest.checkAuthorization(account.getId(), "Bearer 7777"))
+                .isInstanceOf(AccountCanNotModifiedException.class)
+                .hasMessageContaining("You can only used or modified your own account!");
+
+    }
 }
