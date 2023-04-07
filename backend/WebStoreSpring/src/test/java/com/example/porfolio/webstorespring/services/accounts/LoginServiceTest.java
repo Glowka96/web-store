@@ -15,7 +15,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -42,8 +41,6 @@ class LoginServiceTest {
         Authentication authentication = new UsernamePasswordAuthenticationToken(new AccountDetails(account), null);
         SecurityContext securityContext = SecurityContextHolder.getContext();
         securityContext.setAuthentication(authentication);
-
-        UserDetails userDetails = new AccountDetails(account);
 
         String jwtToken = "777";
 
