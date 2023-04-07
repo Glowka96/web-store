@@ -11,8 +11,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -48,14 +48,14 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public String generateAuthToken(UserDetails userDetails) {
+    public String generateJwtToken(UserDetails userDetails) {
         return jwtService.generateToken(userDetails);
     }
 
     @Override
-    public String generateAuthToken(HashMap<String, Object> extraClaims,
-                                    UserDetails userDetails) {
-        return jwtService.generateToken(userDetails);
+    public String generateJwtToken(Map<String, Object> extraClaims,
+                                   UserDetails userDetails) {
+        return jwtService.generateToken(extraClaims, userDetails);
     }
 
     @Override
