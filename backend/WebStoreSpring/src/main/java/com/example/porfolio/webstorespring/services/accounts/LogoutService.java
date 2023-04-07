@@ -1,5 +1,6 @@
 package com.example.porfolio.webstorespring.services.accounts;
 
+import com.example.porfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.porfolio.webstorespring.model.entity.accounts.AuthToken;
 import com.example.porfolio.webstorespring.repositories.accounts.AuthTokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,7 +28,7 @@ public class LogoutService implements LogoutHandler {
         }
         jwt = authHeader.substring(7);
         AuthToken storedToken = authTokenRepository.findByToken(jwt)
-                .orElse(null);
+                .orElseThrow(() -> new ResourceNotFoundException("Authorization token", "token", jwt));
         if (storedToken != null) {
             storedToken.setExpired(true);
             storedToken.setRevoked(true);
