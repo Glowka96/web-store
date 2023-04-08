@@ -1,9 +1,10 @@
 package com.example.porfolio.webstorespring.controllers;
 
+import com.example.porfolio.webstorespring.controllers.accounts.AccountAddressController;
 import com.example.porfolio.webstorespring.exceptions.GlobalExceptionHandler;
 import com.example.porfolio.webstorespring.model.dto.accounts.AccountAddressDto;
 import com.example.porfolio.webstorespring.model.dto.accounts.AccountDto;
-import com.example.porfolio.webstorespring.services.AccountAddressService;
+import com.example.porfolio.webstorespring.services.accounts.AccountAddressService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -64,7 +65,8 @@ class AccountAddressControllerTest {
         mvc.perform(get(URL, 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(address)))
+                        .content(mapper.writeValueAsString(address))
+                        .header("Authorization", "Bearer {JWT_TOKEN}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.city", is("Test")))
@@ -80,7 +82,8 @@ class AccountAddressControllerTest {
         mvc.perform(post(URL, 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(address)))
+                        .content(mapper.writeValueAsString(address))
+                        .header("Authorization", "Bearer {JWT_TOKEN}"))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.city", is("Test")))
@@ -96,7 +99,8 @@ class AccountAddressControllerTest {
         mvc.perform(put(URL, 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(address)))
+                        .content(mapper.writeValueAsString(address))
+                        .header("Authorization", "Bearer {JWT_TOKEN}"))
                 .andExpect(status().isAccepted())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.city", is("Test")))

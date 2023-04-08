@@ -1,48 +1,79 @@
-.navigation{
-    height: 60px;
-    padding: 0 5%;
+.navigation {
+  height: 60px;
+  padding: 0 5%;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-around;
+  padding: 10px;
+  background-color: rgba(20, 20, 20, 0.95);
+  border-bottom: 1px solid white;
+  .nav-logo {
+    background-repeat: no-repeat;
+  }
+  .nav-menu {
     display: flex;
-    background-color: rgba(20, 201, 14, 0.897);
-}
-
-.menu {
-    padding: 0;
-    margin: auto;
-    height: 35px;
-    font-size: 18px;
-    width: 30%;
-    border-right: 1px rgb(15, 104, 12) solid;
+    flex-direction: row;
+    text-decoration: none;
+    font-family: "Baloo 2", cursive;
+    font-size: 24px;
+    color: rgb(255, 255, 255);
     letter-spacing: 0.1rem;
-    padding: 0.5em;
-}
-
-.menu:first-child{
-    border-left: 1px rgb(7, 155, 2) solid;
-}
-
-.menu p {
-    margin: 5px 0 10px 0;
-}
-
-.menu a {
-    text-decoration: none;
-    display: inline-block;
-    color: #000000;
-}
-
-.menu:hover .submenu a{
-    display: block;
-    padding: 3%;
-    background-color:  rgba(20, 201, 14, 0.897);
-}
-
-.submenu {
-    list-style: none;
-}
-
-.submenu a {
-    display: none;
-    text-decoration: none;
-    position: relative;
-    z-index: 100%;
+    width: 30%;
+    ul {
+      padding-left: 0;
+      margin: 0;
+      width: 100%;
+      display: block;
+      position: relative;
+      list-style: none;
+      li {
+        padding: 1rem;
+        text-align: center;
+      }
+      .nav-submenu {
+        background-color: rgb(24, 24, 24);
+        left: 0;
+        opacity: 0;
+        position: absolute;
+        visibility: hidden;
+        z-index: 1;
+        li {
+          text-align: center;
+          display: block;
+          a {
+            color: rgb(255, 255, 255);
+            display: block;
+          }
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+        &:hover {
+          visibility: visible;
+          opacity: 1;
+          display: block;
+        }
+        &:last-child {
+          border-bottom-right-radius: 15px;
+          border-bottom-left-radius: 15px;
+        }
+      }
+      &:hover {
+        border-left: 1px dashed white;
+        border-right: 1px dashed white;
+      }
+      &:hover .nav-submenu {
+        visibility: visible;
+        opacity: 1;
+        display: block;
+        border: none;
+      }
+    }
+  }
+  .nav-user {
+    display: flex;
+    text-align: center;
+    width: 25%;
+  }
 }

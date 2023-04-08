@@ -47,4 +47,6 @@ public class Account {
     @OneToMany(mappedBy = "account")
     private List<Order> orders;
 
+    @OneToMany(mappedBy = "account")
+    private List<AuthToken> authTokens;
 }

@@ -4,20 +4,31 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CategoryService } from './category.service';
 import { NavigationComponent } from './navigation/navigation.component';
+import { ProductsComponent } from './products/products.component';
+import { ShopService } from './services/shop.service';
+import { FilterComponent } from './filter/filter.component';
+import { ContentComponent } from './content/content.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormComponent } from './form/form.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavigationComponent
+    NavigationComponent,
+    ProductsComponent,
+    FilterComponent,
+    ContentComponent,
+    FormComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule,
+    FormsModule,
   ],
-  providers: [CategoryService],
-  bootstrap: [AppComponent]
+  providers: [ShopService],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

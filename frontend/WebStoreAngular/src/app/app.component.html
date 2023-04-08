@@ -1,6 +1,8 @@
-<div class="wrapper">
-    <h1>Welcome to my Web Store - test</h1 >
+<div [style.opacity]="getOpacity" class="wrapper" id="wrapper">
     <app-navigation></app-navigation>
-    <p>working</p>
-    <h2>After navigation bar</h2>
+    <router-outlet></router-outlet>
 </div>
+<div class="login-form">
+    <app-form *ngIf="getOpacity2 === 0.1"></app-form>
+</div>
+<div class="my-div">

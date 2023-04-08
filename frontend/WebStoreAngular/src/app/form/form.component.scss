@@ -1,0 +1,158 @@
+.login-container {
+  width: 500px;
+  box-shadow: 8px 8px 20px rgb(78, 82, 83);
+  overflow: hidden;
+  background-color: rgb(255, 255, 255);
+  border-radius: 25px;
+  .btn-close {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: -15px;
+    left: 96%;
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
+    font-size: 32px;
+    border: none;
+    background-color: rgb(0, 171, 194);
+    box-shadow: 18px 1px 49px rgb(78, 82, 83);
+    .icon-cancel-1::before {
+      margin: 0px;
+      color: rgb(255, 255, 255);
+    }
+    &:hover {
+      cursor: pointer;
+      background-color: rgb(235, 232, 232);
+      .icon-cancel-1::before {
+        color: rgb(0, 171, 194);
+      }
+    }
+    &:active {
+      transform: scale(0.9);
+    }
+  }
+  .slider {
+    height: 50px;
+    width: 150px;
+    border-radius: 50px;
+    background-image: linear-gradient(
+      to right,
+      rgba(88, 23, 210, 1) 28%,
+      rgba(0, 212, 255, 1) 100%
+    );
+    position: absolute;
+    top: 30px;
+    left: 100px;
+    transition: all 0.5s ease-in-out;
+  }
+  .moveslider {
+    left: 250px;
+  }
+  .btn {
+    height: 50px;
+    width: 300px;
+    margin: 30px auto;
+    box-shadow: 10px 10px 25px rgb(23, 188, 210);
+    background-color: rgb(0, 171, 194);
+    border-radius: 50px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    .login,
+    .signup {
+      font-size: 24px;
+      font-weight: 500;
+      color: rgb(255, 255, 255);
+      border: none;
+      outline: none;
+      background-color: transparent;
+      position: relative;
+      cursor: pointer;
+    }
+  }
+  .form-section {
+    padding: 20px 0;
+    display: flex;
+    position: relative;
+    transition: all 0.5s ease-in-out;
+    left: 0px;
+    .login-box {
+      margin-top: 50px;
+      &:last-child {
+        margin-top: 30px;
+      }
+    }
+    .login-box,
+    .signup-box {
+      height: 100%;
+      width: 500px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0px 20px;
+      font-family: "Baloo 2", cursive;
+
+      .form-group .errors {
+        display: flex;
+        flex-direction: column;
+        color: red;
+        margin-left: 30px;
+        margin-top: 10px;
+      }
+      .clkbtn {
+        height: 50px;
+        width: 150px;
+        margin-bottom: 10px;
+        color: rgb(255, 255, 255);
+        font-weight: 500;
+        font-size: 24px;
+        border-radius: 50px;
+        background-image: linear-gradient(
+          47deg,
+          rgba(88, 23, 210, 1) 28%,
+          rgba(0, 212, 255, 1) 100%
+        );
+        border: none;
+        cursor: pointer;
+        &:active {
+          transform: scale(0.9);
+        }
+      }
+      .disabled-btn {
+        background-image: linear-gradient(
+          47deg,
+          rgb(85, 85, 85) 28%,
+          rgb(41, 41, 41) 100%
+        );
+        color: white;
+        cursor: not-allowed;
+        &:active {
+          transform: none;
+        }
+      }
+    }
+  }
+}
+
+.login-box {
+  gap: 50px;
+}
+
+.signup-box {
+  gap: 30px;
+}
+
+.ele {
+  height: 50px;
+  width: 400px;
+  outline: none;
+  border: none;
+  color: rgb(77, 77, 77);
+  background-color: rgb(240, 240, 240);
+  border-radius: 50px;
+  padding-left: 30px;
+  font-size: 18px;
+}
