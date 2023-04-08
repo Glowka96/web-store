@@ -1,7 +1,8 @@
 package com.example.porfolio.webstorespring.controllers;
 
+import com.example.porfolio.webstorespring.controllers.accounts.RegistrationController;
 import com.example.porfolio.webstorespring.model.dto.accounts.RegistrationRequest;
-import com.example.porfolio.webstorespring.services.RegistrationService;
+import com.example.porfolio.webstorespring.services.accounts.RegistrationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
@@ -32,6 +36,7 @@ class RegistrationControllerTest {
     private MockMvc mvc;
     private ObjectMapper mapper;
     private static final String URL = "/api/v1/registration";
+    private Map<String, Object> result;
 
     @BeforeEach
     void initialization() {
@@ -43,13 +48,14 @@ class RegistrationControllerTest {
 
     @Test
     void shouldConfirm() throws Exception {
-        String result = "Account confirmed";
+        result = new HashMap<>();
+        result.put("message", "Account confirmed");
         given(registrationService.confirmToken(anyString())).willReturn(result);
 
         mvc.perform(get("/api/v1/registration/confirm")
                         .param("token", "token123"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath( "$",is("Account confirmed")));
+                .andExpect(jsonPath( "$",is(result)));
 
     }
 
@@ -62,8 +68,11 @@ class RegistrationControllerTest {
         request.setEmail("test@test.pl");
         request.setPassword("password");
 
+        result = new HashMap<>();
+        result.put("message","Verify email by the link sent on your email address");
+
         given(registrationService.registrationAccount(any(RegistrationRequest.class)))
-                .willReturn("Verify email by the link sent on your email address");
+                .willReturn(result);
 
         mvc.perform(post(URL)
                         .contentType(MediaType.APPLICATION_JSON)

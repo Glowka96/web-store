@@ -1,8 +1,9 @@
 package com.example.porfolio.webstorespring.controllers;
 
+import com.example.porfolio.webstorespring.controllers.accounts.AccountController;
 import com.example.porfolio.webstorespring.exceptions.GlobalExceptionHandler;
 import com.example.porfolio.webstorespring.model.dto.accounts.AccountDto;
-import com.example.porfolio.webstorespring.services.AccountService;
+import com.example.porfolio.webstorespring.services.accounts.AccountService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,6 +19,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -54,12 +56,13 @@ class AccountControllerTest {
 
     @Test
     void shouldGetAccountById() throws Exception {
-        given(accountService.getAccountById(anyLong())).willReturn(accountDto);
+        when(accountService.getAccountById(anyLong())).thenReturn(accountDto);
 
         mvc.perform(get(URL + "/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(accountDto)))
+                        .content(mapper.writeValueAsString(accountDto))
+                        .header("Authorization", "Bearer {JWT_TOKEN}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.firstName", is("Test")))
@@ -69,8 +72,8 @@ class AccountControllerTest {
     }
 
     /*TODO
-    *  repair ValidationException: HV000064: Unable to instantiate ConstraintValidator
-    * */
+     *  repair ValidationException: HV000064: Unable to instantiate ConstraintValidator
+     * */
     @Test
     void shouldUpdateAccount() throws Exception {
         given(accountService.updateAccount(anyLong(), any(AccountDto.class))).willReturn(accountDto);
@@ -78,7 +81,8 @@ class AccountControllerTest {
         mvc.perform(put(URL + "/{accountId}", 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(accountDto)))
+                        .content(mapper.writeValueAsString(accountDto))
+                        .header("Authorization", "Bearer {JWT_TOKEN}"))
                 .andExpect(status().isAccepted())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.firstName", is("Test")))
@@ -88,7 +92,7 @@ class AccountControllerTest {
     }
 
     @Test
-    void shouldDeleteAccountById() throws Exception{
+    void shouldDeleteAccountById() throws Exception {
         mvc.perform(delete(URL + "/{accountId}", 1))
                 .andExpect(status().isNoContent());
     }
