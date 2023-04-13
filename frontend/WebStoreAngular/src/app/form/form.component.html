@@ -10,10 +10,16 @@
     </div>
 
     <div class="form-section">
-        <form class="login-box" [formGroup]="loginForm" *ngIf="!getFormSectionMove">
-            <input type="email" class="email ele" placeholder="Email" formControlName="email">
-            <input type="password" class="password ele" placeholder="Password" formControlName="password">
-            <button class="clkbtn" [disabled]="loginForm.invalid"
+        <form class="login-box" [formGroup]="loginForm" (ngSubmit)="onSumbitLogin()" *ngIf="!getFormSectionMove">
+            <input formControlName="email" type="email" class="email ele" placeholder="Email">
+            <input formControlName="password" type="password" class="password ele" placeholder="Password">
+            <div *ngIf="getSuccessMessage" class="alert alert-success" role="alert">
+                {{ getSuccessMessage }}
+            </div>
+            <div *ngIf="getErrorMessage" class="alert alert-danger" role="alert">
+                <span [innerHTML]="getErrorMessage"></span>
+            </div>
+            <button type="sumbit" class="clkbtn" [disabled]="loginForm.invalid"
                 [ngClass]="{'disabled-btn': loginForm.invalid}">Login</button>
         </form>
 
@@ -26,8 +32,7 @@
                     <small *ngIf="registrationForm.get('firstName')?.errors?.['required']">The first name is
                         required</small>
                     <small *ngIf="registrationForm.get('firstName')?.errors?.['minLength'] || ['maxLength']">The first
-                        name
-                        must between min 3 and max 20 letters</small>
+                        name must between min 3 and max 20 letters</small>
                     <small *ngIf="registrationForm.get('firstName')?.errors?.['pattern']">The first name cannot have
                         numbers</small>
                 </div>

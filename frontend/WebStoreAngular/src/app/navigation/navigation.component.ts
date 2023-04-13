@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
 import { Category } from '../models/category';
 import { FormLoginService } from '../services/form-login.service';
 import { ShopService } from '../services/shop.service';
+import { AuthenticationService } from '../services/authentication.service';
 
 @Component({
   selector: 'app-navigation',
@@ -12,23 +12,32 @@ import { ShopService } from '../services/shop.service';
 })
 export class NavigationComponent implements OnInit {
   private categories: Category[] = [];
-  private sub: Subscription;
-  private isLoggedIn = false;
-  private showAdminBoard = false;
-  private showUserBoard = false;
+  private loggedIn: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
     private shopService: ShopService,
-    private formLoginService: FormLoginService
+    private formLoginService: FormLoginService,
+    private authService: AuthenticationService
   ) {
-    this.sub = shopService.categories.subscribe((categories) => {
+    shopService.categories.subscribe((categories) => {
       this.categories = categories;
+    });
+    authService.isLoggedIn().subscribe((value) => {
+      this.loggedIn = value;
     });
   }
 
   public get getCategories(): Category[] {
     return this.categories;
+  }
+
+  public isLoggedIn(): boolean {
+    return this.loggedIn;
+  }
+
+  public logout(): void {
+    this.authService.logout();
   }
 
   public changeStatusLogginForm() {

@@ -79,8 +79,8 @@ class AuthServiceImplTest {
 
         // then
         verify(authTokenRepository, times(1)).saveAll(authTokens);
-        assertTrue(authToken.revoked);
-        assertTrue(authToken.expired);
+        assertTrue(authToken.isRevoked());
+        assertTrue(authToken.isExpired());
     }
 
     @Test

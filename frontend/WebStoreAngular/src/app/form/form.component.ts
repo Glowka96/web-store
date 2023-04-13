@@ -8,6 +8,9 @@ import {
 import { RegistrationService } from '../services/registration.service';
 import { RegistrationRequest } from '../models/registration-request';
 import { FormLoginService } from '../services/form-login.service';
+import { AuthenticationService } from '../services/authentication.service';
+import { LoginRequest } from '../models/login-request';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-form',
@@ -93,22 +96,43 @@ export class FormComponent implements OnInit {
 
   constructor(
     private registrationService: RegistrationService,
+    private authenticationService: AuthenticationService,
     private formBuilder: FormBuilder,
     private formService: FormLoginService
   ) {}
 
   ngOnInit(): void {}
 
+  onSumbitLogin() {
+    if (this.loginForm.valid) {
+      let request: LoginRequest = {
+        email: this.loginForm.controls['email']?.value ?? '',
+        password: this.loginForm.controls['password']?.value ?? '',
+      };
+      this.authenticationService.authenticate(request).subscribe(
+        () => {
+          this.formService.changeStatusFormLogin();
+          this.authenticationService.setLoggedIn(true);
+        },
+        (error) => {
+          this.successMessage = null;
+          let errorMessage = '';
+          errorMessage = error.error.errors.join('<br>');
+          this.errorMessage = errorMessage;
+        }
+      );
+    }
+  }
+
   onSubmitRegister() {
     if (this.registrationForm.valid) {
-      const request: RegistrationRequest = {
+      let request: RegistrationRequest = {
         firstName: this.registrationForm.controls['firstName']?.value,
         lastName: this.registrationForm.controls['lastName']?.value,
         email: this.registrationForm.controls['email']?.value,
         password: this.registrationForm.controls['password'].value,
       };
-      console.log('create-request');
-      this.registrationService.register(this.registrationForm.value).subscribe(
+      this.registrationService.register(request).subscribe(
         (response) => {
           this.successMessage = response.message;
           this.errorMessage = null;
