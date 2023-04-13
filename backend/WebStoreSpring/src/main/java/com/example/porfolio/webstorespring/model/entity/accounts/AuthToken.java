@@ -16,19 +16,19 @@ public class AuthToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true)
-    public Long id;
+    private Long id;
 
     @Column(unique = true)
-    public String token;
+    private String token;
 
     @Enumerated(EnumType.STRING)
-    public AuthTokenType tokenType = AuthTokenType.BEARER;
+    private AuthTokenType tokenType = AuthTokenType.BEARER;
 
-    public boolean revoked;
+    private boolean revoked;
 
-    public boolean expired;
+    private boolean expired;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
-    public Account account;
+    private Account account;
 }

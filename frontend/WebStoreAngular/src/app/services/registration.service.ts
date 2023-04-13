@@ -12,12 +12,9 @@ export class RegistrationService {
 
   constructor(private http: HttpClient) {}
 
-  register(request: any): Observable<any> {
+  register(request: RegistrationRequest): Observable<any> {
     return this.http
       .post<any>(`${this.apiServerUrl}/registration`, request)
-      .pipe(
-        tap((response) => console.log('Server response:', response))
-        //catchError(this.handleError)
-      );
+      .pipe(tap((response) => console.log('Server response:', response)));
   }
 }

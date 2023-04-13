@@ -48,12 +48,15 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.headers().cacheControl();
+        http.cors();
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authenticationProvider(authenticationProvider())
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers(
+                                "/api/v1/logout/**",
                                 "/api/v1/login/**",
                                 "/api/v1/registration/**",
                                 "/api/v1/categories/**",
@@ -63,7 +66,7 @@ public class WebSecurityConfig {
                         form.defaultSuccessUrl("/api/v1/categories"))
                 .headers().frameOptions().sameOrigin()
                 .and()
-                .logout().logoutUrl("api/v1/logout")
+                .logout().logoutUrl("api/v1/logout").permitAll()
                 .addLogoutHandler(logoutHandler)
                 .logoutSuccessHandler((request,
                                        response,

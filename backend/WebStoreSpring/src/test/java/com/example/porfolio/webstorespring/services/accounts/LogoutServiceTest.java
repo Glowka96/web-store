@@ -57,8 +57,8 @@ class LogoutServiceTest {
         verify(authTokenRepository).findByToken(jwt);
         verify(authTokenRepository).save(authToken);
 
-        assertTrue(authToken.expired);
-        assertTrue(authToken.revoked);
+        assertTrue(authToken.isExpired());
+        assertTrue(authToken.isRevoked());
     }
 
     @Test
