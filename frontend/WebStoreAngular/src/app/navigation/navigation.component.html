@@ -9,7 +9,8 @@
       <li>{{category.name}}</li>
       <ul class="nav-submenu">
         <li *ngFor="let subcategory of category.subcategoriesDto">
-          <a [routerLink]="[subcategory.name, subcategory.id, 'products']">{{subcategory.name}}</a>
+          <a [routerLink]="[subcategory.name, subcategory.id, 'products']"
+            [queryParams]="{ page: 1 }">{{subcategory.name}}</a>
         </li>
       </ul>
     </ul>

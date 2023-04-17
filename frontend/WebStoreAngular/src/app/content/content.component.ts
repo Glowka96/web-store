@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Product } from '../models/product';
 import { ShopService } from '../services/shop.service';
 
@@ -10,7 +10,10 @@ import { ShopService } from '../services/shop.service';
 })
 export class ContentComponent implements OnInit {
   private subcategoryProducts: Product[] = [];
-  private subcategoryName!: string;
+  private subcatName!: string;
+  private countProducts!: number;
+  private subcategoryId!: string;
+  private countPage!: number;
 
   constructor(
     private route: ActivatedRoute,
@@ -19,12 +22,12 @@ export class ContentComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
-      const subcategoryId = params.get('id') as string;
-      console.log(subcategoryId);
-      if (subcategoryId) {
-        this.getProductsBySubcategoryId(subcategoryId);
+      this.subcategoryId = params.get('id') as string;
+      if (this.subcategoryId) {
+        this.getProductsBySubcategoryId(this.subcategoryId);
+        this.getCountProductsBySubcategoryId(this.subcategoryId);
       }
-      this.subcategoryName = params.get('subcategoryName') as string;
+      this.subcatName = params.get('subcategoryName') as string;
     });
   }
 
@@ -38,11 +41,36 @@ export class ContentComponent implements OnInit {
       });
   }
 
-  public get getProducts(): Product[] {
+  public getPageProductsBySubcatId(page: number) {
+    this.shopService
+      .getProductsBySubcategory(this.subcategoryId, page)
+      .subscribe((products) => {
+        products.forEach((product) => (product.amountOfProduct = 1));
+        this.subcategoryProducts = products;
+        console.log(this.subcategoryProducts);
+      });
+  }
+
+  private getCountProductsBySubcategoryId(subcategoryId: string) {
+    this.shopService.getCountProducts(subcategoryId).subscribe((value) => {
+      this.countProducts = value;
+      this.countPage = Math.ceil(value / 12);
+    });
+  }
+
+  public get products(): Product[] {
     return this.subcategoryProducts;
   }
 
-  public get getSubcategoryName(): string {
-    return this.subcategoryName.toUpperCase();
+  public get subcategoryName(): string {
+    return this.subcatName.toUpperCase();
+  }
+
+  public get countProduct(): number {
+    return this.countProducts;
+  }
+
+  public get countPagesArray(): number[] {
+    return Array.from({ length: this.countPage }, (_, i) => i);
   }
 }

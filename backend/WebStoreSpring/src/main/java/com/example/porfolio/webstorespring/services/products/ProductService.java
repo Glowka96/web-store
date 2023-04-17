@@ -32,7 +32,7 @@ public class ProductService {
         return productMapper.mapToDto(foundProduct);
     }
 
-    public List<ProductDto> getAllProductsBySubCategoryId(Long subcategoryId,
+    public List<ProductDto> getAllProductsBySubcategoryId(Long subcategoryId,
                                                           Integer pageNo,
                                                           Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.ASC, "id"));
@@ -41,7 +41,7 @@ public class ProductService {
         return productPage.map(productMapper::mapToDto).getContent();
     }
 
-    public List<ProductDto> getAllProductsBySubCategoryId(Long subcategoryId,
+    public List<ProductDto> getAllProductsBySubcategoryId(Long subcategoryId,
                                                           Integer pageNo,
                                                           Integer pageSize,
                                                           String sortBy) {
@@ -49,6 +49,10 @@ public class ProductService {
 
         Page<Product> productPage = findPageProductsBySubcategoryId(subcategoryId, pageable);
         return productPage.map(productMapper::mapToDto).getContent();
+    }
+
+    public Long getAmountProductsBySubcategoryId(Long subcategoryId) {
+        return productRepository.countProductBySubcategory_Id(subcategoryId);
     }
 
     public ProductDto save(Long subcategoryId, Long producerId, ProductDto productDto) {

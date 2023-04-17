@@ -1,11 +1,17 @@
 <main class="main">
     <div class="content">
         <div class="subcategory-name">
-            <h1> {{getSubcategoryName}} </h1>
+            <h1> {{subcategoryName}} </h1>
+            <p> ({{countProduct}})</p>
         </div>
-        <div class="row">
+        <div class="wrapper">
             <app-filter></app-filter>
-            <app-products [products]="getProducts"></app-products>
+            <app-products [products]="products"></app-products>
         </div>
+        <nav class="pagination">
+            <ul *ngFor="let count of countPagesArray">
+                <button (click)="getPageProductsBySubcatId(count)">{{count+1}}</button>
+            </ul>
+        </nav>
     </div>
 </main>

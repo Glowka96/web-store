@@ -22,7 +22,7 @@ public class ProductController {
     public ResponseEntity<List<ProductDto>> getAllProductsBySubCategoryId(@PathVariable("subcategoryId") Long subcategoryId,
                                                                           @RequestParam(defaultValue = "0")Integer page,
                                                                           @RequestParam(defaultValue = "10") Integer  size) {
-        return ResponseEntity.ok(productService.getAllProductsBySubCategoryId(subcategoryId, page, size));
+        return ResponseEntity.ok(productService.getAllProductsBySubcategoryId(subcategoryId, page, size));
     }
 
     @GetMapping(value = "/{subcategoryId}/products", params = {"page", "size", "sort"})
@@ -30,7 +30,12 @@ public class ProductController {
                                                                           @RequestParam("page") Integer page,
                                                                           @RequestParam("size") Integer size,
                                                                           @RequestParam("sort") String sort) {
-        return ResponseEntity.ok(productService.getAllProductsBySubCategoryId(subcategoryId, page, size, sort));
+        return ResponseEntity.ok(productService.getAllProductsBySubcategoryId(subcategoryId, page, size, sort));
+    }
+
+    @GetMapping(value = "/{subcategoryId}/products/amount")
+    public ResponseEntity<Long> getCountProductsBySubcategoryId(@PathVariable("subcategoryId") Long subcategoryId) {
+        return ResponseEntity.ok(productService.getAmountProductsBySubcategoryId(subcategoryId));
     }
 
     @PostMapping("/{subcategoryId}/producers/{producerId}/products")

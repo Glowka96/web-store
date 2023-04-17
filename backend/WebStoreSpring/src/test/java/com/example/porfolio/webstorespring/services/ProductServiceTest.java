@@ -155,7 +155,7 @@ class ProductServiceTest {
                 .willReturn(Optional.of(productPage));
 
         // when
-        List<ProductDto> actualProductDtoList = underTest.getAllProductsBySubCategoryId(subCategory.getId(), 0, 5);
+        List<ProductDto> actualProductDtoList = underTest.getAllProductsBySubcategoryId(subCategory.getId(), 0, 5);
 
         // then
         assertThat(actualProductDtoList).isNotNull();
@@ -176,12 +176,25 @@ class ProductServiceTest {
                 .willReturn(Optional.of(productPage));
 
         // when
-        List<ProductDto> actualProductDtoList = underTest.getAllProductsBySubCategoryId(subCategory.getId(), 0, 5, "price");
+        List<ProductDto> actualProductDtoList = underTest.getAllProductsBySubcategoryId(subCategory.getId(), 0, 5, "price");
 
         // then
         assertThat(actualProductDtoList).isNotNull();
         assertThat(actualProductDtoList).isEqualTo(exceptedProductDtoList);
         verify(productRepository, times(1)).findProductBySubcategory_Id(subCategory.getId(), pageable);
+    }
+
+    @Test
+    void shouldGetCountProductsBySubcategoryId() {
+        // given
+        Long count = 12L;
+        given(productRepository.countProductBySubcategory_Id(anyLong())).willReturn(count);
+
+        // when
+        Long actual = underTest.getAmountProductsBySubcategoryId(1L);
+
+        // then
+        assertThat(actual).isEqualTo(count);
     }
 
     @Test
