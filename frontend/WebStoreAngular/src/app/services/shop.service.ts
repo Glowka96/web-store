@@ -4,6 +4,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Category } from '../models/category';
 import { Product } from '../models/product';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,11 @@ export class ShopService {
   private apiServerUrl = environment.apiBaseUrl;
   private listCategory: Observable<Category[]>;
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
     this.listCategory = this.getCategories();
   }
 
@@ -30,12 +35,24 @@ export class ShopService {
     page: number = 0,
     size: number = 12
   ): Observable<Product[]> {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { page: page + 1 }, // Add page as a query parameter
+      queryParamsHandling: 'merge',
+    });
+    console.log('page number' + page);
     const params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString());
     return this.http.get<Product[]>(
       `${this.apiServerUrl}/subcategories/${subcategoryId}/products`,
       { params }
+    );
+  }
+
+  public getCountProducts(subcategoryId: string): Observable<number> {
+    return this.http.get<number>(
+      `${this.apiServerUrl}/subcategories/${subcategoryId}/products/counts`
     );
   }
 }

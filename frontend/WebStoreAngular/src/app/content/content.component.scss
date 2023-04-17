@@ -12,23 +12,39 @@
     align-items: center;
     width: 100%;
     .subcategory-name {
-      width: 100%;
+      width: 95%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      margin: 25px 50px;
+      background-color: aliceblue;
+      border-radius: 15px;
+      font-weight: 700;
       h1 {
-        margin-left: 15px;
-        margin-right: 15px;
-        padding: 10px;
+        margin: 0;
         font-size: 32px;
-        font-weight: 700;
         font-family: "Baloo 2", cursive;
         letter-spacing: 5px;
-        background-color: aliceblue;
-        border-radius: 10px;
+      }
+      p {
+        font-size: 22px;
       }
     }
-    .row {
+    .wrapper {
       display: flex;
       width: 100%;
       column-gap: 1em;
+    }
+    .pagination {
+      display: flex;
+      flex-direction: row;
+      width: 95%;
+      justify-content: center;
+      background-color: aliceblue;
+      margin: 15px 0;
+      border-radius: 15px;
     }
   }
 }

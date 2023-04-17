@@ -20,6 +20,7 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -70,7 +71,7 @@ class ProductControllerTest {
 
     @Test
     void shouldGetAllProductsBySubCategoryIdPaginationNoSort() throws Exception {
-        given(productService.getAllProductsBySubCategoryId(1L, 0, 3))
+        given(productService.getAllProductsBySubcategoryId(1L, 0, 3))
                 .willReturn(productDtoList);
 
         mvc.perform(get(URL + "/{subcategoryId}/products", 1)
@@ -85,7 +86,7 @@ class ProductControllerTest {
 
     @Test
     void shouldGetAllProductsBySubCategoryIdPaginationWithSort() throws Exception {
-        given(productService.getAllProductsBySubCategoryId(1L, 0, 3, "price"))
+        given(productService.getAllProductsBySubcategoryId(1L, 0, 3, "price"))
                 .willReturn(productDtoList);
 
         mvc.perform(get(URL + "/{subcategoryId}/products", 1)
@@ -96,6 +97,18 @@ class ProductControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(3)))
+                .andDo(print());
+    }
+
+    @Test
+    void shouldGetAmountProductsBySubcategoryId() throws Exception {
+        given(productService.getAmountProductsBySubcategoryId(anyLong())).willReturn(12L);
+
+        mvc.perform(get(URL + "/{subcategoryId}/products/amount", 1)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", is(12)))
                 .andDo(print());
     }
 
