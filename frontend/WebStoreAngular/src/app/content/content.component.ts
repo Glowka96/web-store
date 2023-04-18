@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Product } from '../models/product';
 import { ShopService } from '../services/shop.service';
 
@@ -9,11 +9,12 @@ import { ShopService } from '../services/shop.service';
   styleUrls: ['./content.component.scss'],
 })
 export class ContentComponent implements OnInit {
-  private subcategoryProducts: Product[] = [];
-  private subcatName!: string;
+  private products: Product[] = [];
+  private title!: string;
   private countProducts!: number;
   private subcategoryId!: string;
   private countPage!: number;
+  private searchQuery!: string; // Add searchQuery variable
 
   constructor(
     private route: ActivatedRoute,
@@ -22,12 +23,20 @@ export class ContentComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
-      this.subcategoryId = params.get('id') as string;
-      if (this.subcategoryId) {
+      if (params.get('id')) {
+        this.subcategoryId = params.get('id') as string;
         this.getProductsBySubcategoryId(this.subcategoryId);
-        this.getCountProductsBySubcategoryId(this.subcategoryId);
+        this.getAmountProductsBySubcategoryId(this.subcategoryId);
+        this.title = params.get('subcategoryName') as string;
       }
-      this.subcatName = params.get('subcategoryName') as string;
+    });
+    this.route.queryParams.subscribe((params: Params) => {
+      if (params['q']) {
+        this.searchQuery = params['q'];
+        this.searchProducts(this.searchQuery);
+        this.getAmountSearchProducts(this.searchQuery);
+        this.title = 'Result of search';
+      }
     });
   }
 
@@ -36,34 +45,55 @@ export class ContentComponent implements OnInit {
       .getProductsBySubcategory(subcategoryId)
       .subscribe((products) => {
         products.forEach((product) => (product.amountOfProduct = 1));
-        this.subcategoryProducts = products;
-        console.log(this.subcategoryProducts);
+        this.products = products;
       });
   }
 
-  public getPageProductsBySubcatId(page: number) {
-    this.shopService
-      .getProductsBySubcategory(this.subcategoryId, page)
-      .subscribe((products) => {
-        products.forEach((product) => (product.amountOfProduct = 1));
-        this.subcategoryProducts = products;
-        console.log(this.subcategoryProducts);
-      });
-  }
-
-  private getCountProductsBySubcategoryId(subcategoryId: string) {
+  private getAmountProductsBySubcategoryId(subcategoryId: string) {
     this.shopService.getCountProducts(subcategoryId).subscribe((value) => {
       this.countProducts = value;
       this.countPage = Math.ceil(value / 12);
     });
   }
 
-  public get products(): Product[] {
-    return this.subcategoryProducts;
+  private searchProducts(text: string) {
+    this.shopService.getSearchProducts(text).subscribe((products) => {
+      products.forEach((product) => (product.amountOfProduct = 1));
+      this.products = products;
+    });
   }
 
-  public get subcategoryName(): string {
-    return this.subcatName.toUpperCase();
+  private getAmountSearchProducts(text: string) {
+    this.shopService.getCountSearchProducts(text).subscribe((value) => {
+      this.countProducts = value;
+      this.countPage = Math.ceil(value / 12);
+    });
+  }
+
+  public getPageProducts(page: number) {
+    if (this.title.match('search')) {
+      this.shopService
+        .getSearchProducts(this.searchQuery, page)
+        .subscribe((products) => {
+          products.forEach((product) => (product.amountOfProduct = 1));
+          this.products = products;
+        });
+    } else {
+      this.shopService
+        .getProductsBySubcategory(this.subcategoryId, page)
+        .subscribe((products) => {
+          products.forEach((product) => (product.amountOfProduct = 1));
+          this.products = products;
+        });
+    }
+  }
+
+  public get listProduct(): Product[] {
+    return this.products;
+  }
+
+  public get getTitle(): string {
+    return this.title.toUpperCase();
   }
 
   public get countProduct(): number {

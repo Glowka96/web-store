@@ -32,6 +32,8 @@ public class GlobalExceptionHandlerTest {
     @Mock
     private AccountCanNotModifiedException accountCanNotModifiedException;
     @Mock
+    private SearchNotFoundException searchNotFoundException;
+    @Mock
     private WebRequest webRequest;
     @InjectMocks
     private GlobalExceptionHandler underTest;
@@ -48,6 +50,21 @@ public class GlobalExceptionHandlerTest {
                 .resourceNotFoundException(resourceNotFoundException, webRequest);
 
         // then
+        assertThat(responseEntity.getStatusCode().value()).isEqualTo(expectedErrorResponse.getStatusCode());
+        assertThat(responseEntity.getBody()).isEqualTo(expectedErrorResponse);
+    }
+
+    @Test
+    void testSearchNotFoundException() {
+        // given
+        ErrorResponse expectedErrorResponse = new ErrorResponse(HttpStatus.NOT_FOUND.value(),
+                searchNotFoundException.getMessage(),
+                webRequest.getDescription(false));
+
+        // when
+        ResponseEntity<Object> responseEntity = underTest
+                .resourceNotFoundException(searchNotFoundException, webRequest);
+
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(expectedErrorResponse.getStatusCode());
         assertThat(responseEntity.getBody()).isEqualTo(expectedErrorResponse);
     }
@@ -111,7 +128,7 @@ public class GlobalExceptionHandlerTest {
 
 
     @Test
-    void testAccessDeniedException() {
+    void testMethodAccessDeniedException() {
         // given
         ErrorResponse exceptedErrorResponse = new ErrorResponse(HttpStatus.FORBIDDEN.value(),
                 accountCanNotModifiedException.getMessage(),

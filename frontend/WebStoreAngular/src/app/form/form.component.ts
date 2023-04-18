@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -10,7 +10,6 @@ import { RegistrationRequest } from '../models/registration-request';
 import { FormLoginService } from '../services/form-login.service';
 import { AuthenticationService } from '../services/authentication.service';
 import { LoginRequest } from '../models/login-request';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-form',
@@ -30,7 +29,10 @@ export class FormComponent implements OnInit {
       validators: [Validators.required, Validators.pattern(this.emailPattern)],
       updateOn: 'change',
     }),
-    password: new FormControl('', { validators: [Validators.required] }),
+    password: new FormControl('', {
+      validators: [Validators.required],
+      updateOn: 'change',
+    }),
   });
 
   public registrationForm = this.formBuilder.group(

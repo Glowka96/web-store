@@ -14,8 +14,8 @@ import org.springframework.web.context.request.WebRequest;
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<Object> resourceNotFoundException(ResourceNotFoundException exception,
+    @ExceptionHandler({ResourceNotFoundException.class, SearchNotFoundException.class})
+    public ResponseEntity<Object> resourceNotFoundException(RuntimeException exception,
                                                             WebRequest webRequest) {
         ErrorResponse errorResponse = createErrorResponseNotFound(exception, webRequest);
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);

@@ -1,6 +1,6 @@
 <nav class="navigation">
   <div class="nav-logo">
-    <a href="#" alt="home">
+    <a [routerLink]="'/'" alt="home">
       <img src="/assets/images/logo2.png" alt="logo" width="230px" height="80px">
     </a>
   </div>
@@ -16,15 +16,15 @@
     </ul>
   </div>
   <div class="nav-user">
-    <form>
-      <input type="search">
-      <button type="submit"><i class="icon-search"></i></button>
+    <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
+      <input formControlName="search" type="search" class="search" placeholder="search">
+      <button class="btn-search"><i class="icon-search"></i></button>
     </form>
     <i class="icon-basket"></i>
-    <button *ngIf="!isLoggedIn()" (click)="changeStatusLogginForm()" class="log">Login</button>
+    <button *ngIf="!isLoggedIn()" (click)="changeStatusLogginForm()" class="btn-log">Login</button>
     <div *ngIf="isLoggedIn()" class="menu-user">
       <i class="icon-user"></i>
-      <button class="log" (click)="logout()">Logout</button>
+      <button class="btn-log" (click)="logout()">Logout</button>
     </div>
   </div>
 </nav>

@@ -74,7 +74,53 @@
   }
   .nav-user {
     display: flex;
-    text-align: center;
+    justify-content: center;
     width: 25%;
+    form {
+      margin-top: auto;
+      margin-bottom: auto;
+      .search,
+      .btn-search {
+        padding: 4px 8px;
+        border-radius: 10px;
+      }
+      .search {
+        border: none;
+        padding-right: 15px;
+        &:focus {
+          border-right: none;
+        }
+      }
+      .btn-search {
+        position: relative;
+        left: -35px;
+      }
+      .btn-search :hover {
+        cursor: pointer;
+      }
+    }
+    .icon-basket {
+      color: white;
+    }
+    .icon-basket,
+    .icon-search {
+      margin-top: auto;
+      margin-bottom: auto;
+    }
+    .btn-log {
+      padding: 8px 12px;
+      margin-left: 8px;
+      color: white;
+      font-size: 14px;
+      letter-spacing: 0.3px;
+      background-image: linear-gradient(
+        47deg,
+        rgba(88, 23, 210, 1) 28%,
+        rgba(0, 212, 255, 1) 100%
+      );
+      border-radius: 10px;
+      border: none;
+      box-shadow: none;
+    }
   }
 }
