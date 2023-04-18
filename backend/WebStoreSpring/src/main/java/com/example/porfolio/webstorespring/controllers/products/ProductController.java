@@ -20,8 +20,8 @@ public class ProductController {
 
     @GetMapping(value = "/{subcategoryId}/products", params = {"page", "size"})
     public ResponseEntity<List<ProductDto>> getAllProductsBySubCategoryId(@PathVariable("subcategoryId") Long subcategoryId,
-                                                                          @RequestParam(defaultValue = "0")Integer page,
-                                                                          @RequestParam(defaultValue = "10") Integer  size) {
+                                                                          @RequestParam("page")Integer page,
+                                                                          @RequestParam("size") Integer  size) {
         return ResponseEntity.ok(productService.getAllProductsBySubcategoryId(subcategoryId, page, size));
     }
 

@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Category } from '../models/category';
 import { FormLoginService } from '../services/form-login.service';
 import { ShopService } from '../services/shop.service';
 import { AuthenticationService } from '../services/authentication.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-navigation',
@@ -14,8 +15,15 @@ export class NavigationComponent implements OnInit {
   private categories: Category[] = [];
   private loggedIn: boolean = false;
 
+  public searchForm = new FormGroup({
+    search: new FormControl('', {
+      validators: [Validators.required],
+      updateOn: 'change',
+    }),
+  });
+
   constructor(
-    private route: ActivatedRoute,
+    private router: Router,
     private shopService: ShopService,
     private formLoginService: FormLoginService,
     private authService: AuthenticationService
@@ -27,6 +35,8 @@ export class NavigationComponent implements OnInit {
       this.loggedIn = value;
     });
   }
+
+  ngOnInit() {}
 
   public get getCategories(): Category[] {
     return this.categories;
@@ -40,9 +50,15 @@ export class NavigationComponent implements OnInit {
     this.authService.logout();
   }
 
+  public onSearch(): void {
+    if (this.searchForm.valid) {
+      let text = this.searchForm.get('search')?.value ?? '';
+      this.shopService.getSearchProducts(text);
+      this.router.navigate(['/search'], { queryParams: { q: text } });
+    }
+  }
+
   public changeStatusLogginForm() {
     this.formLoginService.changeStatusFormLogin();
   }
-
-  ngOnInit() {}
 }

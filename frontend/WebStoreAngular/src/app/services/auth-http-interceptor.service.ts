@@ -19,7 +19,6 @@ export class AuthHttpInterceptorService implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     let token = sessionStorage.getItem('token');
-    console.log('http interceptor ' + token);
     if (token) {
       request = request.clone({
         setHeaders: { Authorization: `${token}` },
@@ -30,7 +29,6 @@ export class AuthHttpInterceptorService implements HttpInterceptor {
       catchError((err) => {
         if (err instanceof HttpErrorResponse) {
           if (err.status === 401) {
-            // redirect user to the logout page
           }
         }
         const erre = new Error('test');

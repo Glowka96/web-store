@@ -1,6 +1,7 @@
 package com.example.porfolio.webstorespring.services.products;
 
 import com.example.porfolio.webstorespring.exceptions.ResourceNotFoundException;
+import com.example.porfolio.webstorespring.exceptions.SearchNotFoundException;
 import com.example.porfolio.webstorespring.mappers.ProductMapper;
 import com.example.porfolio.webstorespring.model.dto.products.ProductDto;
 import com.example.porfolio.webstorespring.model.entity.products.Producer;
@@ -10,6 +11,7 @@ import com.example.porfolio.webstorespring.repositories.products.ProducerReposit
 import com.example.porfolio.webstorespring.repositories.products.ProductRepository;
 import com.example.porfolio.webstorespring.repositories.products.SubcategoryRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class ProductService {
 
@@ -53,6 +56,18 @@ public class ProductService {
 
     public Long getAmountProductsBySubcategoryId(Long subcategoryId) {
         return productRepository.countProductBySubcategory_Id(subcategoryId);
+    }
+
+    public List<ProductDto> getSearchProducts(String text, Integer pageNo, Integer pageSize, String sortBy) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.ASC, sortBy));
+
+        Page<Product> productPage = searchProductsByText(text, pageable);
+        return productPage.map(productMapper::mapToDto).getContent();
+    }
+
+    public Long getAmountSearchProducts(String text) {
+        return productRepository
+                .countProductByNameOrDescriptionContainsIgnoreCaseOrProducerName(text, text, text);
     }
 
     public ProductDto save(Long subcategoryId, Long producerId, ProductDto productDto) {
@@ -96,6 +111,15 @@ public class ProductService {
         return productRepository.findProductBySubcategory_Id(subCategoryId, pageable)
                 .orElseThrow(() -> new ResourceNotFoundException("Products", "page number", pageable.getPageNumber()));
 
+    }
+
+    private Page<Product> searchProductsByText(String text, Pageable pageable) {
+        return productRepository
+                .searchProductByNameContainsIgnoreCaseOrDescriptionContainsIgnoreCaseOrProducerName(text,
+                        text,
+                        text,
+                        pageable)
+                .orElseThrow(SearchNotFoundException::new);
     }
 
     private Subcategory findSubcategoryById(Long id) {

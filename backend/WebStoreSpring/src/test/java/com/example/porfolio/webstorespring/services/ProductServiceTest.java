@@ -149,9 +149,9 @@ class ProductServiceTest {
 
         Page<Product> productPage = new PageImpl<>(productList, pageable, productList.size());
 
-        List<ProductDto> exceptedList = Arrays.asList(productDto, productDto2, productDto3);
+        List<ProductDto> exceptedProductDtoList = Arrays.asList(productDto, productDto2, productDto3);
 
-        given(productRepository.findProductBySubcategory_Id(eq(subCategory.getId()), any(Pageable.class)))
+        given(productRepository.findProductBySubcategory_Id(anyLong(), any(Pageable.class)))
                 .willReturn(Optional.of(productPage));
 
         // when
@@ -159,7 +159,7 @@ class ProductServiceTest {
 
         // then
         assertThat(actualProductDtoList).isNotNull();
-        assertThat(actualProductDtoList).isEqualTo(exceptedList);
+        assertThat(actualProductDtoList).isEqualTo(exceptedProductDtoList);
         verify(productRepository, times(1)).findProductBySubcategory_Id(subCategory.getId(), pageable);
     }
 
@@ -172,7 +172,7 @@ class ProductServiceTest {
 
         List<ProductDto> exceptedProductDtoList = Arrays.asList(productDto3, productDto2, productDto);
 
-        given(productRepository.findProductBySubcategory_Id(subCategory.getId(), pageable))
+        given(productRepository.findProductBySubcategory_Id(anyLong(), any(Pageable.class)))
                 .willReturn(Optional.of(productPage));
 
         // when
@@ -185,17 +185,53 @@ class ProductServiceTest {
     }
 
     @Test
-    void shouldGetCountProductsBySubcategoryId() {
+    void shouldGetAmountProductsBySubcategoryId() {
         // given
-        Long count = 12L;
-        given(productRepository.countProductBySubcategory_Id(anyLong())).willReturn(count);
+        Long amount = 12L;
+        given(productRepository.countProductBySubcategory_Id(anyLong())).willReturn(amount);
 
         // when
-        Long actual = underTest.getAmountProductsBySubcategoryId(1L);
+        Long actualProductDtoList = underTest.getAmountProductsBySubcategoryId(1L);
 
         // then
-        assertThat(actual).isEqualTo(count);
+        assertThat(actualProductDtoList).isEqualTo(amount);
     }
+
+    @Test
+    void shouldGetSearchProductsByText() {
+        // given
+        Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Direction.ASC, "id"));
+        List<Product> productList = Arrays.asList(product, product2, product3);
+
+        Page<Product> productPage = new PageImpl<>(productList, pageable, productList.size());
+
+        List<ProductDto> exceptedProductDtoList = Arrays.asList(productDto, productDto2, productDto3);
+        
+        given(productRepository.searchProductByNameContainsIgnoreCaseOrDescriptionContainsIgnoreCaseOrProducerName(anyString(), anyString(), anyString(), any(Pageable.class)))
+                .willReturn(Optional.of(productPage));
+        
+        // when
+        List<ProductDto> actualProductDtoList = underTest.getSearchProducts("test", 0, 5, "id");
+        
+        // then
+        assertThat(actualProductDtoList).isNotNull();
+        assertThat(actualProductDtoList).isEqualTo(exceptedProductDtoList);
+        verify(productRepository, times(1)).searchProductByNameContainsIgnoreCaseOrDescriptionContainsIgnoreCaseOrProducerName("test","test","test", pageable);
+    }
+    
+    @Test
+    void shouldGetAmountSearchProduct() {
+        // given
+        Long amount = 12L;
+        given(productRepository.countProductByNameOrDescriptionContainsIgnoreCaseOrProducerName(anyString(),anyString(), anyString())).willReturn(amount);
+
+        // when
+        Long actual = underTest.getAmountSearchProducts("test");
+
+        // then
+        assertThat(actual).isEqualTo(amount);
+    }
+
 
     @Test
     void shouldSaveProduct() {
