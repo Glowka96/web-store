@@ -67,7 +67,7 @@ public class ProductService {
 
     public Long getAmountSearchProducts(String text) {
         return productRepository
-                .countProductByNameOrDescriptionContainsIgnoreCaseOrProducerName(text, text, text);
+                .countProductByNameContainsIgnoreCaseOrDescriptionContainsIgnoreCaseOrProducerName(text, text, text);
     }
 
     public ProductDto save(Long subcategoryId, Long producerId, ProductDto productDto) {

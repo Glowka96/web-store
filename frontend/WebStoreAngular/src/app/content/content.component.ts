@@ -14,7 +14,8 @@ export class ContentComponent implements OnInit {
   private countProducts!: number;
   private subcategoryId!: string;
   private countPage!: number;
-  private searchQuery!: string; // Add searchQuery variable
+  private searchQuery!: string;
+  private pageClicked: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -31,12 +32,13 @@ export class ContentComponent implements OnInit {
       }
     });
     this.route.queryParams.subscribe((params: Params) => {
-      if (params['q']) {
+      if (params['q'] && !this.pageClicked) {
         this.searchQuery = params['q'];
-        this.searchProducts(this.searchQuery);
+        this.getSearchProducts(this.searchQuery);
         this.getAmountSearchProducts(this.searchQuery);
         this.title = 'Result of search';
       }
+      this.pageClicked = false;
     });
   }
 
@@ -56,8 +58,9 @@ export class ContentComponent implements OnInit {
     });
   }
 
-  private searchProducts(text: string) {
+  private getSearchProducts(text: string) {
     this.shopService.getSearchProducts(text).subscribe((products) => {
+      console.log('start get products');
       products.forEach((product) => (product.amountOfProduct = 1));
       this.products = products;
     });
@@ -65,12 +68,14 @@ export class ContentComponent implements OnInit {
 
   private getAmountSearchProducts(text: string) {
     this.shopService.getCountSearchProducts(text).subscribe((value) => {
+      console.log('start get amount products');
       this.countProducts = value;
       this.countPage = Math.ceil(value / 12);
     });
   }
 
   public getPageProducts(page: number) {
+    this.pageClicked = true;
     if (this.title.match('search')) {
       this.shopService
         .getSearchProducts(this.searchQuery, page)
