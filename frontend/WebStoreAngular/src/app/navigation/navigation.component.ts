@@ -23,12 +23,11 @@ export class NavigationComponent implements OnInit {
   });
 
   constructor(
-    private router: Router,
     private shopService: ShopService,
     private formLoginService: FormLoginService,
     private authService: AuthenticationService
   ) {
-    shopService.categories.subscribe((categories) => {
+    shopService.categories$.subscribe((categories) => {
       this.categories = categories;
     });
     authService.isLoggedIn().subscribe((value) => {
@@ -54,7 +53,6 @@ export class NavigationComponent implements OnInit {
     if (this.searchForm.valid) {
       let text = this.searchForm.get('search')?.value ?? '';
       this.shopService.getSearchProducts(text);
-      this.router.navigate(['/search'], { queryParams: { q: text } });
     }
   }
 

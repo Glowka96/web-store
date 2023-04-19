@@ -25,7 +25,7 @@ export class ShopService {
     return this.http.get<Category[]>(`${this.apiServerUrl}/categories`);
   }
 
-  public get categories(): Observable<Category[]> {
+  public get categories$(): Observable<Category[]> {
     return this.listCategory;
   }
 
@@ -39,7 +39,6 @@ export class ShopService {
       queryParams: { page: page + 1, size: size },
       queryParamsHandling: 'merge',
     });
-    console.log('page number' + page);
     let params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString());
@@ -61,22 +60,19 @@ export class ShopService {
     size: number = 12,
     sort: string = 'id'
   ): Observable<Product[]> {
-    console.log('text ' + text);
-    {
-      this.router.navigate([], {
-        relativeTo: this.route,
-        queryParams: { page: page + 1, size: size, sort: sort },
-        queryParamsHandling: 'merge',
-      });
-      let params = new HttpParams()
-        .set('page', page.toString())
-        .set('size', size.toString())
-        .set('sort', sort);
-      return this.http.get<Product[]>(
-        `${this.apiServerUrl}/products/search/${text}`,
-        { params }
-      );
-    }
+    this.router.navigate(['/search'], {
+      queryParams: { q: text, page: page + 1, size: size, sort: sort },
+      queryParamsHandling: 'merge',
+    });
+    console.log('page number ' + page);
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString())
+      .set('sort', sort);
+    return this.http.get<Product[]>(
+      `${this.apiServerUrl}/products/search/${text}`,
+      { params }
+    );
   }
 
   public getCountSearchProducts(text: string): Observable<number> {

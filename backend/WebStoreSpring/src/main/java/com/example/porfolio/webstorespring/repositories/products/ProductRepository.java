@@ -16,7 +16,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                                                                                              String producer_name,
                                                                                              Pageable pageable);
 
-    Long countProductByNameOrDescriptionContainsIgnoreCaseOrProducerName(String name,
+    Long countProductByNameContainsIgnoreCaseOrDescriptionContainsIgnoreCaseOrProducerName(String name,
                                                                          String description,
                                                                          String producer_name);
 }
