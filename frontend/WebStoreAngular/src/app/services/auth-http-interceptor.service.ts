@@ -7,7 +7,6 @@ import {
   HttpRequest,
 } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
-import { RouterLink } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',

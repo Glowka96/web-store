@@ -10,7 +10,7 @@ import { __values } from 'tslib';
 })
 export class AuthenticationService {
   private apiServerUrl = environment.apiBaseUrl;
-  private loggedRole!: BehaviorSubject<string>;
+  private loggedRole: BehaviorSubject<string> = new BehaviorSubject<string>('');
   private loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
     false
   );
@@ -26,13 +26,12 @@ export class AuthenticationService {
         sessionStorage.setItem('token', tokenStr);
 
         let decodedJWT = JSON.parse(window.atob(tokenStr.split('.')[1]));
-        this.loggedRole = decodedJWT.role;
+        this.loggedRole.next(decodedJWT.role);
 
         let headers = new HttpHeaders();
         if (tokenStr) {
           console.log('setup headers');
           headers.set('Authorization', tokenStr);
-          console.log(headers.get('Authorization'));
           console.log('end setup');
         }
       })
@@ -60,23 +59,9 @@ export class AuthenticationService {
       .post(`${this.apiServerUrl}/logout`, { headers: headers })
       .subscribe(() => {
         this.loggedIn.next(false);
+        this.loggedRole.next('');
         sessionStorage.removeItem('token');
       });
-
-    // // Send an HTTP GET request to the logout endpoint in your backend API
-    // this.http.post(`${this.apiServerUrl}/logout`, this.http.options).subscribe(
-    //   () => {
-    //     // Logout successful, update your app's state or perform other actions
-    //     this.loggedIn.next(false);
-    //     sessionStorage.removeItem('token');
-
-    //     window.location.reload();
-    //   },
-    //   (error) => {
-    //     // Handle error if logout request fails
-    //     console.error('Logout failed:', error);
-    //   }
-    // );
   }
 
   isAuthenticated(): boolean {
