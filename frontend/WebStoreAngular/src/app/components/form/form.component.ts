@@ -5,11 +5,11 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { RegistrationService } from '../services/registration.service';
-import { RegistrationRequest } from '../models/registration-request';
-import { FormLoginService } from '../services/form-login.service';
-import { AuthenticationService } from '../services/authentication.service';
-import { LoginRequest } from '../models/login-request';
+import { LoginRequest } from 'src/app/models/login-request';
+import { RegistrationRequest } from 'src/app/models/registration-request';
+import { AuthenticationService } from 'src/app/services/authentication.service';
+import { FormLoginService } from 'src/app/services/form-login.service';
+import { RegistrationService } from 'src/app/services/registration.service';
 
 @Component({
   selector: 'app-form',

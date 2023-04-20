@@ -64,7 +64,6 @@ export class ShopService {
       queryParams: { q: text, page: page + 1, size: size, sort: sort },
       queryParamsHandling: 'merge',
     });
-    console.log('page number ' + page);
     let params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString())

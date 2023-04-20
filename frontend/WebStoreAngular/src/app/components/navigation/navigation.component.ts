@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Category } from '../models/category';
-import { FormLoginService } from '../services/form-login.service';
-import { ShopService } from '../services/shop.service';
-import { AuthenticationService } from '../services/authentication.service';
+
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Category } from 'src/app/models/category';
+import { ShopService } from 'src/app/services/shop.service';
+import { AuthenticationService } from 'src/app/services/authentication.service';
+import { FormLoginService } from 'src/app/services/form-login.service';
 
 @Component({
   selector: 'app-navigation',
@@ -14,6 +15,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class NavigationComponent implements OnInit {
   private categories: Category[] = [];
   private loggedIn: boolean = false;
+  private loggedRole!: string;
 
   public searchForm = new FormGroup({
     search: new FormControl('', {
@@ -31,7 +33,12 @@ export class NavigationComponent implements OnInit {
       this.categories = categories;
     });
     authService.isLoggedIn().subscribe((value) => {
+      console.log(value);
       this.loggedIn = value;
+    });
+    authService.isLoggedRole().subscribe((value) => {
+      console.log('role: ' + value);
+      this.loggedRole = value;
     });
   }
 
@@ -43,6 +50,12 @@ export class NavigationComponent implements OnInit {
 
   public isLoggedIn(): boolean {
     return this.loggedIn;
+  }
+
+  public isAdmin(): boolean {
+    const is = this.loggedRole.includes('ROLE_USER');
+    console.log(is);
+    return this.loggedIn && this.loggedRole.includes('ROLE_USER');
   }
 
   public logout(): void {

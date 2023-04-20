@@ -7,13 +7,7 @@ import { AuthenticationService } from '../services/authentication.service';
   styleUrls: ['./board.component.scss'],
 })
 export class BoardComponent implements OnInit {
-  private isLogged!: string;
-
-  constructor(private authService: AuthenticationService) {
-    authService.isLoggedRole().subscribe((value) => {
-      this.isLogged = value;
-    });
-  }
+  constructor(private authService: AuthenticationService) {}
 
   ngOnInit(): void {}
 }

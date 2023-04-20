@@ -4,15 +4,18 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NavigationComponent } from './navigation/navigation.component';
-import { ProductsComponent } from './products/products.component';
+
 import { ShopService } from './services/shop.service';
-import { FilterComponent } from './filter/filter.component';
-import { ContentComponent } from './content/content.component';
+
+import { ContentComponent } from './components/content/content.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FormComponent } from './form/form.component';
+
 import { BoardComponent } from './board/board.component';
 import { AuthHttpInterceptorService } from './services/auth-http-interceptor.service';
+import { NavigationComponent } from './components/navigation/navigation.component';
+import { ProductsComponent } from './components/products/products.component';
+import { FilterComponent } from './components/filter/filter.component';
+import { FormComponent } from './components/form/form.component';
 
 @NgModule({
   declarations: [
