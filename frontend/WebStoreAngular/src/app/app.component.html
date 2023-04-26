@@ -1,6 +1,6 @@
 <div [style.opacity]="getOpacity" class="wrapper" id="wrapper">
     <app-navigation></app-navigation>
-    <router-outlet></router-outlet>
+    <app-content></app-content>
 </div>
 <div class="login-form">
     <app-form *ngIf="getOpacity2 === 0.1"></app-form>

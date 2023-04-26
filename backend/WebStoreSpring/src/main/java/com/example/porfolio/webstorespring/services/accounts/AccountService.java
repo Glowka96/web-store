@@ -16,7 +16,7 @@ public class AccountService {
     private final AccountRepository accountRepository;
     private final AccountMapper accountMapper;
     private final BCryptPasswordEncoder encoder;
-
+    
     public AccountDto getAccountById(Long accountId) {
         Account foundAccount = findAccountById(accountId);
         return accountMapper.mapToDto(foundAccount);

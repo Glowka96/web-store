@@ -68,8 +68,7 @@ public class AuthServiceImpl implements AuthService {
         String authToken = authHeader.substring(7);
 
         Account foundAccountByAuthToken = findAccountByAuthToken(authToken);
-        AccountDetails accountPrincipal = getAccountPrincipal();
-        Account account = accountPrincipal.getAccount();
+        Account account = getAccountPrincipal().getAccount();
 
         if (!foundAccountByAuthToken.getId().equals(accountId) &&
                 !account.getId().equals(accountId)) {

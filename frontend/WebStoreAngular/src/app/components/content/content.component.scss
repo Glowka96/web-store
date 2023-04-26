@@ -7,44 +7,7 @@
   box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 52px -2px,
     rgba(0, 0, 0, 0.3) 0px 3px 57px -3px;
   .content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     width: 100%;
-    .title-products {
-      width: 95%;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: center;
-      padding: 10px;
-      margin: 25px 50px;
-      background-color: aliceblue;
-      border-radius: 15px;
-      font-weight: 700;
-      h1 {
-        margin: 0;
-        font-size: 32px;
-        font-family: "Baloo 2", cursive;
-        letter-spacing: 5px;
-      }
-      p {
-        font-size: 22px;
-      }
-    }
-    .wrapper {
-      display: flex;
-      width: 100%;
-      column-gap: 1em;
-    }
-    .pagination {
-      display: flex;
-      flex-direction: row;
-      width: 95%;
-      justify-content: center;
-      background-color: aliceblue;
-      margin: 15px 0;
-      border-radius: 15px;
-    }
+    height: 100%;
   }
 }
