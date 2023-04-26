@@ -1,5 +1,29 @@
 .wrapper-products {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .title-products {
+    width: 95%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    margin: 25px 50px;
+    background-color: aliceblue;
+    border-radius: 15px;
+    font-weight: 700;
+    h1 {
+      margin: 0;
+      font-size: 32px;
+      font-family: "Baloo 2", cursive;
+      letter-spacing: 5px;
+    }
+    p {
+      font-size: 22px;
+    }
+  }
   .list-product {
     width: 95%;
     display: flex;
@@ -32,14 +56,14 @@
         justify-content: center;
         align-items: center;
         .button-add {
+          display: flex;
+          justify-content: center;
+          align-items: center;
           margin-top: 5px;
           border-radius: 5px;
           border: 0;
           box-shadow: 0px 0px 6px 0px rgb(154, 155, 167);
           padding: 10px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
           font-size: 14px;
           font-family: "Baloo 2", cursive;
           cursor: pointer;
@@ -50,6 +74,24 @@
             transform: scale(0.9);
           }
         }
+      }
+    }
+  }
+  .pagination {
+    width: 95%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: aliceblue;
+    margin: 25px 50px;
+    border-radius: 15px;
+    ul {
+      margin: 15px;
+      padding: 0;
+      row-gap: 2em;
+      button {
+        border-radius: 5px;
       }
     }
   }

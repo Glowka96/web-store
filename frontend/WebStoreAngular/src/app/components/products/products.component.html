@@ -1,6 +1,10 @@
 <section class="wrapper-products">
+    <div class="title-products">
+        <h1> {{getTitle}} </h1>
+        <p> ({{countProduct}})</p>
+    </div>
     <div class="list-product">
-        <div class="product" *ngFor="let product of products">
+        <div class="product" *ngFor="let product of listProduct">
             <span class="product-name">{{product.name}}</span>
             <img src={{product.imageUrl}} alt="{{product.name}}">
             <div class="amount-product">
@@ -21,4 +25,31 @@
             </div>
         </div>
     </div>
+    <nav class="pagination">
+        <ul *ngFor="let count of countPagesArray">
+            <button (click)="getPageProducts(count)">{{count+1}}</button>
+        </ul>
+    </nav>
+    <!-- <div class="list-product">
+        <div class="product" *ngFor="let product of products">
+            <span class="product-name">{{product.name}}</span>
+            <img src={{product.imageUrl}} alt="{{product.name}}">
+            <div class="amount-product">
+                <span class="product-price">{{getPrice(product)}} PLN</span>
+                <input type="number" [(ngModel)]="product.amountOfProduct" min="1" max="100">
+                <button class="button-change-amount" (click)="increaseNumberOfProduct(product)">
+                    <i class="icon-plus"></i>
+                </button>
+                <button class="button-change-amount" (click)="decreaseNumberOfProduct(product)">
+                    <i class="icon-minus"></i>
+                </button>
+            </div>
+            <div class="add-to-cart">
+                <button class="button-add" type="submit">
+                    <span>Add to cart</span>
+                    <i class="icon-cart-plus"></i>
+                </button>
+            </div>
+        </div>
+    </div> -->
 </section>

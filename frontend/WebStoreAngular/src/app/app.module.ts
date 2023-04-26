@@ -1,21 +1,19 @@
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
 import { ShopService } from './services/shop.service';
-
 import { ContentComponent } from './components/content/content.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-import { BoardComponent } from './board/board.component';
+import { BoardComponent } from './components/board/board.component';
 import { AuthHttpInterceptorService } from './services/auth-http-interceptor.service';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { ProductsComponent } from './components/products/products.component';
 import { FilterComponent } from './components/filter/filter.component';
 import { FormComponent } from './components/form/form.component';
+import { ModCategoryComponent } from './components/mod-category/mod-category.component';
+import { BoardAdminComponent } from './components/board-admin/board-admin.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +24,8 @@ import { FormComponent } from './components/form/form.component';
     ContentComponent,
     FormComponent,
     BoardComponent,
+    ModCategoryComponent,
+    BoardAdminComponent,
   ],
   imports: [
     BrowserModule,

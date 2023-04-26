@@ -1,17 +1,5 @@
 <main class="main">
     <div class="content">
-        <div class="title-products">
-            <h1> {{getTitle}} </h1>
-            <p> ({{countProduct}})</p>
-        </div>
-        <div class="wrapper">
-            <app-filter></app-filter>
-            <app-products [products]="listProduct"></app-products>
-        </div>
-        <nav class="pagination">
-            <ul *ngFor="let count of countPagesArray">
-                <button (click)="getPageProducts(count)">{{count+1}}</button>
-            </ul>
-        </nav>
+        <router-outlet></router-outlet>
     </div>
 </main>
