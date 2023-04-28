@@ -34,6 +34,7 @@ export class ModProducerComponent implements OnInit {
 
   public deleteForm = new FormGroup({
     choiceProducer: new FormControl('', {
+      validators: [Validators.required],
       updateOn: 'change',
     }),
   });

@@ -35,6 +35,7 @@ export class ModCategoryComponent implements OnInit {
 
   public deleteForm = new FormGroup({
     choiceCategory: new FormControl('', {
+      validators: [Validators.required],
       updateOn: 'change',
     }),
   });

@@ -27,7 +27,8 @@
             <div *ngIf="errorAddMessage" class="alert" role="alert">
                 <span [innerHTML]="errorAddMessage"></span>
             </div>
-            <button type="submit" class="clkbtn" [disabled]="addForm.invalid">Submit</button>
+            <button type="submit" class="clkbtn" [disabled]="addForm.invalid"
+                [ngClass]="{'disabled-btn': updateForm.invalid}">Submit</button>
         </form>
     </div>
     <div class="box">
@@ -62,7 +63,8 @@
             <div *ngIf="errorAddMessage" class="alert" role="alert">
                 <span [innerHTML]="errorAddMessage"></span>
             </div>
-            <button type="submit" class="clkbtn" [disabled]="addForm.invalid">Submit</button>
+            <button type="submit" class="clkbtn" [disabled]="updateForm.invalid"
+                [ngClass]="{'disabled-btn': updateForm.invalid}">Submit</button>
         </form>
     </div>
     <div class="box">
@@ -76,7 +78,8 @@
             <div *ngIf="errorDeleteMessage" class="alert" role="alert">
                 <span [innerHTML]="errorDeleteMessage"></span>
             </div>
-            <button type="submit" class="clkbtn">Submit</button>
+            <button type="submit" class="clkbtn" [disabled]="deleteForm.invalid"
+                [ngClass]="{'disabled-btn': deleteForm.invalid}">Submit</button>
         </form>
     </div>
 </div>
