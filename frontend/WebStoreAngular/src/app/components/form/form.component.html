@@ -13,10 +13,10 @@
         <form class="login-box" [formGroup]="loginForm" (ngSubmit)="onSumbitLogin()" *ngIf="!getFormSectionMove">
             <input formControlName="email" type="email" class="email ele" placeholder="Email">
             <input formControlName="password" type="password" class="password ele" placeholder="Password">
-            <div *ngIf="getSuccessMessage" class="alert alert-success" role="alert">
+            <div *ngIf="getSuccessMessage" class="alert" role="alert">
                 {{ getSuccessMessage }}
             </div>
-            <div *ngIf="getErrorMessage" class="alert alert-danger" role="alert">
+            <div *ngIf="getErrorMessage" class="alert errors" role="alert">
                 <span [innerHTML]="getErrorMessage"></span>
             </div>
             <button type="sumbit" class="clkbtn" [disabled]="loginForm.invalid"
@@ -86,10 +86,10 @@
                         diffrent</small>
                 </div>
             </div>
-            <div *ngIf="getSuccessMessage" class="alert alert-success" role="alert">
+            <div *ngIf="getSuccessMessage" class="alert" role="alert">
                 {{ getSuccessMessage }}
             </div>
-            <div *ngIf="getErrorMessage" class="alert alert-danger" role="alert">
+            <div *ngIf="getErrorMessage" class="alert errors" role="alert">
                 <span [innerHTML]="getErrorMessage"></span>
             </div>
             <button type="submit" class="clkbtn" [disabled]="registrationForm.invalid"

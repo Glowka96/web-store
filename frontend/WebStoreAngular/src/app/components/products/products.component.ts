@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Product } from 'src/app/models/product';
+import { ProductService } from 'src/app/services/product.service';
 import { ShopService } from 'src/app/services/shop.service';
 
 @Component({
@@ -9,11 +10,9 @@ import { ShopService } from 'src/app/services/shop.service';
   styleUrls: ['./products.component.scss'],
 })
 export class ProductsComponent implements OnInit {
-  //@Input()
-  //products: Product[] = [];
   private products: Product[] = [];
   private title!: string;
-  private countProducts!: number;
+  private amountProducts!: number;
   private subcategoryId!: string;
   private countPage!: number;
   private searchQuery!: string;
@@ -21,7 +20,7 @@ export class ProductsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private shopService: ShopService
+    private productService: ProductService
   ) {}
 
   ngOnInit(): void {
@@ -45,7 +44,7 @@ export class ProductsComponent implements OnInit {
   }
 
   private getProductsBySubcategoryId(subcategoryId: string) {
-    this.shopService
+    this.productService
       .getProductsBySubcategory(subcategoryId)
       .subscribe((products) => {
         products.forEach((product) => (product.amountOfProduct = 1));
@@ -54,14 +53,14 @@ export class ProductsComponent implements OnInit {
   }
 
   private getAmountProductsBySubcategoryId(subcategoryId: string) {
-    this.shopService.getCountProducts(subcategoryId).subscribe((value) => {
-      this.countProducts = value;
+    this.productService.getCountProducts(subcategoryId).subscribe((value) => {
+      this.amountProducts = value;
       this.countPage = Math.ceil(value / 12);
     });
   }
 
   private getSearchProducts(text: string) {
-    this.shopService.getSearchProducts(text).subscribe((products) => {
+    this.productService.getSearchProducts(text).subscribe((products) => {
       console.log('start get products');
       products.forEach((product) => (product.amountOfProduct = 1));
       this.products = products;
@@ -69,9 +68,9 @@ export class ProductsComponent implements OnInit {
   }
 
   private getAmountSearchProducts(text: string) {
-    this.shopService.getCountSearchProducts(text).subscribe((value) => {
+    this.productService.getCountSearchProducts(text).subscribe((value) => {
       console.log('start get amount products');
-      this.countProducts = value;
+      this.amountProducts = value;
       this.countPage = Math.ceil(value / 12);
     });
   }
@@ -79,14 +78,14 @@ export class ProductsComponent implements OnInit {
   public getPageProducts(page: number) {
     this.pageClicked = true;
     if (this.title.match('search')) {
-      this.shopService
+      this.productService
         .getSearchProducts(this.searchQuery, page)
         .subscribe((products) => {
           products.forEach((product) => (product.amountOfProduct = 1));
           this.products = products;
         });
     } else {
-      this.shopService
+      this.productService
         .getProductsBySubcategory(this.subcategoryId, page)
         .subscribe((products) => {
           products.forEach((product) => (product.amountOfProduct = 1));
@@ -119,8 +118,8 @@ export class ProductsComponent implements OnInit {
     return this.title.toUpperCase();
   }
 
-  public get countProduct(): number {
-    return this.countProducts;
+  public get amountProduct(): number {
+    return this.amountProducts;
   }
 
   public get countPagesArray(): number[] {

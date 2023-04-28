@@ -22,8 +22,12 @@ public class ProductDto {
     @Size(min = 3, max = 256, message = "The description must between min 3 and max 256 letters")
     private String description;
 
+    @NotNull(message = "The image url can't be null")
+    @NotBlank(message = "The image url can't be blank")
     private String imageUrl;
 
+    @NotNull(message = "The price can't be null")
+    @NotBlank(message = "The price can't be blank")
     private Double price;
 
     private ProductType type;

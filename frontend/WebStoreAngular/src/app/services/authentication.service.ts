@@ -4,6 +4,7 @@ import { LoginRequest } from '../models/login-request';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 import { __values } from 'tslib';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +16,9 @@ export class AuthenticationService {
     false
   );
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {
+    this.checkLogged();
+  }
 
   authenticate(request: LoginRequest) {
     return this.http.post<any>(`${this.apiServerUrl}/login`, request).pipe(
@@ -28,14 +31,47 @@ export class AuthenticationService {
         let decodedJWT = JSON.parse(window.atob(tokenStr.split('.')[1]));
         this.loggedRole.next(decodedJWT.role);
 
+        this.checkAdminRouteNav();
+
         let headers = new HttpHeaders();
         if (tokenStr) {
-          console.log('setup headers');
           headers.set('Authorization', tokenStr);
-          console.log('end setup');
         }
       })
     );
+  }
+
+  logout(): void {
+    this.router.navigate([''], {
+      queryParams: {},
+      queryParamsHandling: 'merge',
+    });
+    let headers = new HttpHeaders().set(
+      'Authorization',
+      'Bearer ' + sessionStorage.getItem('token')
+    );
+    this.http
+      .post(`${this.apiServerUrl}/logout`, { headers: headers })
+      .subscribe(() => {
+        this.loggedIn.next(false);
+        this.loggedRole.next('');
+        sessionStorage.clear();
+      });
+  }
+
+  private checkAdminRouteNav(): void {
+    if (this.loggedRole.value === 'ROLE_ADMIN') {
+      this.router.navigate(['/admin-board'], {});
+    }
+  }
+
+  private checkLogged() {
+    let token = sessionStorage.getItem('token');
+    if (token) {
+      let decodedJWT = JSON.parse(window.atob(token.split('.')[1]));
+      this.loggedRole.next(decodedJWT.role);
+      this.loggedIn.next(true);
+    }
   }
 
   isLoggedRole(): Observable<string> {
@@ -48,23 +84,5 @@ export class AuthenticationService {
 
   isLoggedIn(): Observable<boolean> {
     return this.loggedIn.asObservable();
-  }
-
-  logout(): void {
-    let headers = new HttpHeaders().set(
-      'Authorization',
-      'Bearer ' + sessionStorage.getItem('token')
-    );
-    this.http
-      .post(`${this.apiServerUrl}/logout`, { headers: headers })
-      .subscribe(() => {
-        this.loggedIn.next(false);
-        this.loggedRole.next('');
-        sessionStorage.removeItem('token');
-      });
-  }
-
-  isAuthenticated(): boolean {
-    return !!localStorage.getItem('token');
   }
 }

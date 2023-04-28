@@ -56,6 +56,7 @@ public class WebSecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers(
+                                         "/api/v1/categories/**",
                                         "/api/v1/logout/**",
                                         "/api/v1/login/**",
                                         "/api/v1/registration/**",

@@ -6,13 +6,14 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("api/v1/producers")
+@RequestMapping(value = "api/v1/producers")
 @RequiredArgsConstructor
 public class ProducerController {
 
@@ -23,25 +24,28 @@ public class ProducerController {
         return ResponseEntity.ok(producerService.getAllProducer());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}")
     public ResponseEntity<ProducerDto> getProducerById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(producerService.getProducerById(id));
     }
 
-    @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping()
     public ResponseEntity<ProducerDto> saveProducer(@Valid @RequestBody ProducerDto producerDto) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(producerService.save(producerDto));
     }
 
-    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping(value = "/{id}")
     public ResponseEntity<ProducerDto> updateProducer(@PathVariable("id") Long id,
                                                       @Valid @RequestBody ProducerDto producerDto) {
         return ResponseEntity.status(HttpStatus.ACCEPTED)
                 .body(producerService.update(id, producerDto));
     }
 
-    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteProducer(@PathVariable("id") Long id) {
         producerService.deleteById(id);

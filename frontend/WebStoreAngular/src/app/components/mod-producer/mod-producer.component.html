@@ -1,0 +1,44 @@
+<div class="form-section">
+    <div class="box">
+        <h3>Add Producer</h3>
+        <form class="form-box" [formGroup]="addForm" (ngSubmit)="onSumbitAdd()">
+            <label for="category-name">Producer name:</label>
+            <input type="text" formControlName="name" placeholder="Producer name">
+            <br>
+            <div *ngIf="errorAddMessage" class="alert" role="alert">
+                <span [innerHTML]="errorAddMessage"></span>
+            </div>
+            <button type="submit" class="clkbtn" [disabled]="addForm.invalid">Submit</button>
+        </form>
+    </div>
+    <div class="box">
+        <h3>Update Producer</h3>
+        <form class="form-box" [formGroup]="updateForm" (ngSubmit)="onSumbitUpdate()">
+            <label for="category">Choise a producer</label>
+            <select name="category" formControlName="choiceProducer">
+                <option *ngFor="let category of listProducer" value="{{category.id}}">{{category.name}}</option>
+            </select>
+            <label for="category-name">Producer name:</label>
+            <input type="text" formControlName="name" placeholder="Producer name">
+            <br>
+            <div *ngIf="errorUpdateMessage" class="alert" role="alert">
+                <span [innerHTML]="errorUpdateMessage"></span>
+            </div>
+            <button type="submit" class="clkbtn" [disabled]="updateForm.invalid">Submit</button>
+        </form>
+    </div>
+    <div class="box">
+        <h3>Delete Producer</h3>
+        <form class="form-box" [formGroup]="deleteForm" (ngSubmit)="onSumbitDelete()">
+            <label for="category">Choise a producer</label>
+            <select name="category" formControlName="choiceProducer">
+                <option *ngFor="let category of listProducer" value="{{category.id}}">{{category.name}}</option>
+            </select>
+            <br>
+            <div *ngIf="errorDeleteMessage" class="alert" role="alert">
+                <span [innerHTML]="errorDeleteMessage"></span>
+            </div>
+            <button type="submit" class="clkbtn">Submit</button>
+        </form>
+    </div>
+</div>

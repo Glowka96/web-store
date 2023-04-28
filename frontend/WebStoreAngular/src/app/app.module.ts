@@ -6,7 +6,6 @@ import { AppComponent } from './app.component';
 import { ShopService } from './services/shop.service';
 import { ContentComponent } from './components/content/content.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BoardComponent } from './components/board/board.component';
 import { AuthHttpInterceptorService } from './services/auth-http-interceptor.service';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { ProductsComponent } from './components/products/products.component';
@@ -14,6 +13,9 @@ import { FilterComponent } from './components/filter/filter.component';
 import { FormComponent } from './components/form/form.component';
 import { ModCategoryComponent } from './components/mod-category/mod-category.component';
 import { BoardAdminComponent } from './components/board-admin/board-admin.component';
+import { ModSubcategoryComponent } from './components/mod-subcategory/mod-subcategory.component';
+import { ModProductsComponent } from './components/mod-products/mod-products.component';
+import { ModProducerComponent } from './components/mod-producer/mod-producer.component';
 
 @NgModule({
   declarations: [
@@ -23,9 +25,11 @@ import { BoardAdminComponent } from './components/board-admin/board-admin.compon
     FilterComponent,
     ContentComponent,
     FormComponent,
-    BoardComponent,
     ModCategoryComponent,
     BoardAdminComponent,
+    ModSubcategoryComponent,
+    ModProductsComponent,
+    ModProducerComponent,
   ],
   imports: [
     BrowserModule,

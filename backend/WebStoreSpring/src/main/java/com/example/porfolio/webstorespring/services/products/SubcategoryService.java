@@ -10,6 +10,8 @@ import com.example.porfolio.webstorespring.repositories.products.SubcategoryRepo
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class SubcategoryService {
@@ -21,6 +23,10 @@ public class SubcategoryService {
     public SubcategoryDto getSubcategoryDtoById(Long id) {
         Subcategory foundSubcategory = findSubcategoryById(id);
         return subcategoryMapper.mapToDto(foundSubcategory);
+    }
+
+    public List<SubcategoryDto> getAllSubcategoryDto() {
+        return subcategoryMapper.mapToDto(subcategoryRepository.findAll());
     }
 
     public SubcategoryDto save(Long categoryId,

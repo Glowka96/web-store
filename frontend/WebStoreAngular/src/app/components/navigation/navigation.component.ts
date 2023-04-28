@@ -1,16 +1,29 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  ControlContainer,
+  FormControl,
+  FormGroup,
+  FormGroupDirective,
+  Validators,
+} from '@angular/forms';
 import { Category } from 'src/app/models/category';
 import { ShopService } from 'src/app/services/shop.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { FormLoginService } from 'src/app/services/form-login.service';
+import { CategoryService } from 'src/app/services/category.service';
+import { ProductService } from 'src/app/services/product.service';
 
 @Component({
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss'],
+  viewProviders: [
+    {
+      provide: ControlContainer,
+      useExisting: FormGroupDirective,
+    },
+  ],
 })
 export class NavigationComponent implements OnInit {
   private categories: Category[] = [];
@@ -25,11 +38,12 @@ export class NavigationComponent implements OnInit {
   });
 
   constructor(
-    private shopService: ShopService,
+    private productService: ProductService,
     private formLoginService: FormLoginService,
-    private authService: AuthenticationService
+    private authService: AuthenticationService,
+    private categoryService: CategoryService
   ) {
-    shopService.categories$.subscribe((categories) => {
+    categoryService.categories$.subscribe((categories) => {
       this.categories = categories;
     });
     authService.isLoggedIn().subscribe((value) => {
@@ -64,8 +78,9 @@ export class NavigationComponent implements OnInit {
 
   public onSearch(): void {
     if (this.searchForm.valid) {
-      let text = this.searchForm.get('search')?.value ?? '';
-      this.shopService.getSearchProducts(text);
+      console.log('search');
+      let text = this.searchForm.controls['search']?.value ?? '';
+      this.productService.getSearchProducts(text);
     }
   }
 
