@@ -35,6 +35,10 @@ public class ProductService {
         return productMapper.mapToDto(foundProduct);
     }
 
+    public List<ProductDto> getAllProducts() {
+        return productMapper.mapToDto(productRepository.findAll());
+    }
+
     public List<ProductDto> getAllProductsBySubcategoryId(Long subcategoryId,
                                                           Integer pageNo,
                                                           Integer pageSize) {

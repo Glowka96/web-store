@@ -1,0 +1,38 @@
+.wpraper-board {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-family: "Baloo 2", cursive;
+  .title {
+    width: 95%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    margin: 25px 0;
+    background-color: aliceblue;
+    border-radius: 15px;
+    font-weight: 700;
+    letter-spacing: 5px;
+    h1 {
+      margin: 0;
+      font-size: 32px;
+    }
+  }
+  .board {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-flow: row wrap;
+    gap: 2em;
+    .options {
+      padding: 35px;
+      border-radius: 25px;
+      background-color: aliceblue;
+      h2 {
+        margin: 0;
+      }
+    }
+  }
+}

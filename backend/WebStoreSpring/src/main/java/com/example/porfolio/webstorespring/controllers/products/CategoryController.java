@@ -6,42 +6,48 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("api/v1/categories")
+@RequestMapping(value = "api/v1/categories")
 @RequiredArgsConstructor
 public class CategoryController {
 
     private final CategoryService categoryService;
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping()
     public ResponseEntity<List<CategoryDto>> getAllCategory() {
         return ResponseEntity.ok(categoryService.getAllCategoryDto());
     }
 
-    @GetMapping("/{categoryId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping(value = "/{categoryId}")
     public ResponseEntity<CategoryDto> getCategoryById(@PathVariable(value = "categoryId") Long categoryId) {
         return ResponseEntity.ok(categoryService.getCategoryDtoById(categoryId));
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping()
     public ResponseEntity<CategoryDto> saveCategory(@Valid @RequestBody CategoryDto categoryDto) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(categoryService.save(categoryDto));
     }
 
-    @PutMapping("/{categoryId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping(value = "/{categoryId}")
     public ResponseEntity<CategoryDto> updateCategory(@PathVariable(value = "categoryId") Long categoryId,
                                                       @Valid @RequestBody CategoryDto categoryDto){
         return ResponseEntity.status(HttpStatus.ACCEPTED)
                 .body(categoryService.update(categoryId, categoryDto));
     }
 
-    @DeleteMapping("/{categoryId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping(value = "/{categoryId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCategoryById(@PathVariable(value = "categoryId") Long categoryId) {
         categoryService.deleteById(categoryId);

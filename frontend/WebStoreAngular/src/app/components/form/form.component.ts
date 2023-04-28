@@ -111,18 +111,18 @@ export class FormComponent implements OnInit {
         email: this.loginForm.controls['email']?.value ?? '',
         password: this.loginForm.controls['password']?.value ?? '',
       };
-      this.authenticationService.authenticate(request).subscribe(
-        () => {
+      this.authenticationService.authenticate(request).subscribe({
+        next: () => {
           this.formService.changeStatusFormLogin();
           this.authenticationService.setLoggedIn(true);
         },
-        (error) => {
+        error: (error) => {
           this.successMessage = null;
           let errorMessage = '';
           errorMessage = error.error.errors.join('<br>');
           this.errorMessage = errorMessage;
-        }
-      );
+        },
+      });
     }
   }
 
@@ -134,20 +134,20 @@ export class FormComponent implements OnInit {
         email: this.registrationForm.controls['email']?.value,
         password: this.registrationForm.controls['password'].value,
       };
-      this.registrationService.register(request).subscribe(
-        (response) => {
+      this.registrationService.register(request).subscribe({
+        next: (response) => {
           this.successMessage = response.message;
           this.errorMessage = null;
         },
-        (error) => {
+        error: (error) => {
           if (error.status === 400) {
             this.successMessage = null;
             let errorMessage = '';
             errorMessage = error.error.errors.join('<br>');
             this.errorMessage = errorMessage;
           }
-        }
-      );
+        },
+      });
     }
   }
 

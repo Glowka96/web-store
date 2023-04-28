@@ -1,0 +1,82 @@
+<div class="form-section">
+    <div class="box">
+        <h3>Add Product</h3>
+        <form class="form-box" [formGroup]="addForm" (ngSubmit)="onSumbitAdd()">
+            <label for="subcategory">Choise a subcategory</label>
+            <select name="subcategory" formControlName="choiceSubcategory">
+                <option *ngFor="let subcategory of subcategories" value="{{subcategory.id}}">{{subcategory.name}}
+                </option>
+            </select>
+            <label for="producer">Choise a producer</label>
+            <select name="producer" formControlName="choiceProducer">
+                <option *ngFor="let producer of listProducer" value="{{producer.id}}">{{producer.name}}</option>
+            </select>
+            <label for="name">Product name</label>
+            <input type="text" formControlName="name">
+            <label for="description">Product description </label>
+            <textarea formControlName="description" rows="6" cols="30"></textarea>
+            <label for="imageUrl">Product imageUrl</label>
+            <input type="text" formControlName="imageUrl">
+            <label for="price">Product price</label>
+            <input type="text" formControlName="price">
+            <label for="type">Choise a type</label>
+            <select name="type" formControlName="choiceType">
+                <option *ngFor="let type of listProductType" value="{{type}}">{{type}}</option>
+            </select>
+            <br>
+            <div *ngIf="errorAddMessage" class="alert" role="alert">
+                <span [innerHTML]="errorAddMessage"></span>
+            </div>
+            <button type="submit" class="clkbtn" [disabled]="addForm.invalid">Submit</button>
+        </form>
+    </div>
+    <div class="box">
+        <h3>Update Product</h3>
+        <form class="form-box" [formGroup]="updateForm">
+            <label for="subcategory">Choise a subcategory</label>
+            <select name="subcategory" formControlName="choiceSubcategory">
+                <option *ngFor="let subcategory of subcategories" value="{{subcategory.id}}">{{subcategory.name}}
+                </option>
+            </select>
+            <label for="producer">Choise a producer</label>
+            <select name="producer" formControlName="choiceProducer">
+                <option *ngFor="let producer of listProducer" value="{{producer.id}}">{{producer.name}}</option>
+            </select>
+            <label for="product">Choise a product</label>
+            <select name="product" formControlName="choiceProducer">
+                <option *ngFor="let product of listProducts" value="{{product.id}}">{{product.name}}</option>
+            </select>
+            <label for="name">Product name</label>
+            <input type="text" formControlName="name">
+            <label for="description">Product description </label>
+            <textarea formControlName="description" rows="6" cols="30"></textarea>
+            <label for="imageUrl">Product imageUrl</label>
+            <input type="text" formControlName="imageUrl">
+            <label for="price">Product price</label>
+            <input type="text" formControlName="price">
+            <label for="type">Choise a type</label>
+            <select name="type" formControlName="choiceType">
+                <option *ngFor="let type of listProductType" value="{{type}}">{{type}}</option>
+            </select>
+            <br>
+            <div *ngIf="errorAddMessage" class="alert" role="alert">
+                <span [innerHTML]="errorAddMessage"></span>
+            </div>
+            <button type="submit" class="clkbtn" [disabled]="addForm.invalid">Submit</button>
+        </form>
+    </div>
+    <div class="box">
+        <h3>Delete Product</h3>
+        <form class="form-box" [formGroup]="deleteForm" (ngSubmit)="onSumbitDelete()">
+            <label for="product">Choise a product</label>
+            <select name="product" formControlName="choiceProduct">
+                <option *ngFor="let product of listProducts" value="{{product.id}}">{{product.name}}</option>
+            </select>
+            <br>
+            <div *ngIf="errorDeleteMessage" class="alert" role="alert">
+                <span [innerHTML]="errorDeleteMessage"></span>
+            </div>
+            <button type="submit" class="clkbtn">Submit</button>
+        </form>
+    </div>
+</div>
