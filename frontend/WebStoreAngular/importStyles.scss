@@ -1,7 +1,6 @@
 .form-section {
   display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
+  flex-flow: column wrap;
   .box {
     margin: 10px 0;
     padding: 30px;
@@ -10,11 +9,39 @@
     .form-box {
       display: flex;
       flex-direction: column;
+      label {
+        font-size: 18px;
+      }
+      input {
+        padding: 5px;
+        border-radius: 5px;
+        border: 0.5px solid;
+      }
+      select {
+        padding: 5px;
+        border-radius: 5px;
+        border: 0.5px solid;
+      }
       .alert {
         color: red;
       }
+      .clkbtn {
+        padding: 5px;
+        border-radius: 5px;
+        cursor: pointer;
+        &:active {
+          transform: scale(0.9);
+        }
+      }
+      .disabled-btn {
+        cursor: not-allowed;
+        &:active {
+          transform: none;
+        }
+      }
     }
     h3 {
+      font-size: 20px;
       margin-top: 0;
     }
   }
