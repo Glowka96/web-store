@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { LoginRequest } from '../models/login-request';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, Observable, map } from 'rxjs';
+import { BehaviorSubject, Observable, filter, map } from 'rxjs';
 import { __values } from 'tslib';
-import { Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -15,9 +15,15 @@ export class AuthenticationService {
   private loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
     false
   );
+  currentRoute: any;
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
     this.checkLogged();
+    this.checkRole();
   }
 
   authenticate(request: LoginRequest) {
@@ -71,6 +77,14 @@ export class AuthenticationService {
       let decodedJWT = JSON.parse(window.atob(token.split('.')[1]));
       this.loggedRole.next(decodedJWT.role);
       this.loggedIn.next(true);
+    }
+  }
+
+  private checkRole() {
+    let token = sessionStorage.getItem('token');
+    if (token) {
+      let decodedJWT = JSON.parse(window.atob(token.split('.')[1])).role;
+      console.log('in method' + decodedJWT);
     }
   }
 

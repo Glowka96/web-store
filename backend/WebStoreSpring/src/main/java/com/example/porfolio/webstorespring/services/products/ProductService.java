@@ -58,7 +58,7 @@ public class ProductService {
         return productPage.map(productMapper::mapToDto).getContent();
     }
 
-    public Long getAmountProductsBySubcategoryId(Long subcategoryId) {
+    public Long getQuantityOfProductsBySubcategoryId(Long subcategoryId) {
         return productRepository.countProductBySubcategory_Id(subcategoryId);
     }
 

@@ -48,8 +48,8 @@ public class ProductController {
     }
 
     @GetMapping(value = "/{subcategoryId}/products/amount")
-    public ResponseEntity<Long> getCountProductsBySubcategoryId(@PathVariable("subcategoryId") Long subcategoryId) {
-        return ResponseEntity.ok(productService.getAmountProductsBySubcategoryId(subcategoryId));
+    public ResponseEntity<Long> getQuantityOfProductsBySubcategoryId(@PathVariable("subcategoryId") Long subcategoryId) {
+        return ResponseEntity.ok(productService.getQuantityOfProductsBySubcategoryId(subcategoryId));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
