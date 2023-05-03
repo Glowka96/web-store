@@ -191,7 +191,7 @@ class ProductServiceTest {
         given(productRepository.countProductBySubcategory_Id(anyLong())).willReturn(amount);
 
         // when
-        Long actualProductDtoList = underTest.getAmountProductsBySubcategoryId(1L);
+        Long actualProductDtoList = underTest.getQuantityOfProductsBySubcategoryId(1L);
 
         // then
         assertThat(actualProductDtoList).isEqualTo(amount);

@@ -1,7 +1,7 @@
 <section class="wrapper-products">
     <div class="title-products">
         <h1> {{getTitle}} </h1>
-        <p> ({{amountProduct}})</p>
+        <p> ({{quantityOfProduct}})</p>
     </div>
     <div class="list-product">
         <div class="product" *ngFor="let product of listProduct">
@@ -9,16 +9,16 @@
             <img src={{product.imageUrl}} alt="{{product.name}}">
             <div class="amount-product">
                 <span class="product-price">{{getPrice(product)}} PLN</span>
-                <input type="number" [(ngModel)]="product.amountOfProduct" min="1" max="100">
-                <button class="button-change-amount" (click)="increaseNumberOfProduct(product)">
+                <input type="number" value="{{getProductQuantity(product.id)}}" min="1" max="100">
+                <button class="button-change-amount" (click)="increaseProductQuantity(product.id)">
                     <i class="icon-plus"></i>
                 </button>
-                <button class="button-change-amount" (click)="decreaseNumberOfProduct(product)">
+                <button class="button-change-amount" (click)="decreaseProductQuantity(product.id)">
                     <i class="icon-minus"></i>
                 </button>
             </div>
             <div class="add-to-cart">
-                <button class="button-add" type="submit">
+                <button class="button-add" type="submit" (click)="addToBasket(product.id)">
                     <span>Add to cart</span>
                     <i class="icon-cart-plus"></i>
                 </button>
@@ -31,3 +31,5 @@
         </ul>
     </nav>
 </section>
+
+<!-- [(ngModel)]="product.amountOfProduct" -->

@@ -102,7 +102,7 @@ class ProductControllerTest {
 
     @Test
     void shouldGetAmountProductsBySubcategoryId() throws Exception {
-        given(productService.getAmountProductsBySubcategoryId(anyLong())).willReturn(12L);
+        given(productService.getQuantityOfProductsBySubcategoryId(anyLong())).willReturn(12L);
 
         mvc.perform(get(URL + "/{subcategoryId}/products/amount", 1)
                 .contentType(MediaType.APPLICATION_JSON)

@@ -105,9 +105,9 @@ export class ModProductsComponent implements OnInit {
     private productService: ProductService,
     private producerService: ProducerService
   ) {
-    productService.productTypes$.subscribe(
-      (types) => (this.productTypes = types)
-    );
+    productService.getProductTypes().subscribe((types) => {
+      this.productTypes = types;
+    });
     productService.getAllProducts().subscribe((products) => {
       this.products = products;
     });

@@ -5,23 +5,18 @@ import { ProductRequest } from '../models/product-request';
 import { Observable } from 'rxjs';
 import { Product } from '../models/product';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProductType } from '../models/product-type';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
   private apiServerUrl = environment.apiBaseUrl;
-  private listProductTypes: Observable<string[]>;
 
   constructor(
     private http: HttpClient,
     private router: Router,
     private route: ActivatedRoute
-  ) {
-    this.listProductTypes = this.getProductTypes();
-    console.log('type' + this.listProductTypes);
-  }
+  ) {}
 
   public getProductsBySubcategory(
     subcategoryId: string,
@@ -42,7 +37,7 @@ export class ProductService {
     );
   }
 
-  public getCountProducts(subcategoryId: string): Observable<number> {
+  public getQuantityOfProducts(subcategoryId: string): Observable<number> {
     return this.http.get<number>(
       `${this.apiServerUrl}/subcategories/${subcategoryId}/products/amount`
     );
@@ -68,7 +63,7 @@ export class ProductService {
     );
   }
 
-  public getCountSearchProducts(text: string): Observable<number> {
+  public getQuanititySearchProducts(text: string): Observable<number> {
     return this.http.get<number>(
       `${this.apiServerUrl}/products/search/${text}/amount`
     );
@@ -80,7 +75,7 @@ export class ProductService {
     );
   }
 
-  private getProductTypes(): Observable<string[]> {
+  public getProductTypes(): Observable<string[]> {
     return this.http.get<string[]>(
       `${this.apiServerUrl}/subcategories/products/types`
     );
@@ -112,9 +107,5 @@ export class ProductService {
     return this.http.delete<any>(
       `${this.apiServerUrl}/subcategories/products/${productId}`
     );
-  }
-
-  public get productTypes$(): Observable<string[]> {
-    return this.listProductTypes;
   }
 }
