@@ -6,10 +6,15 @@
     <div class="list-product">
         <div class="product" *ngFor="let product of listProduct">
             <span class="product-name">{{product.name}}</span>
-            <img src={{product.imageUrl}} alt="{{product.name}}">
+            <span class="product-img"><img src={{product.imageUrl}} alt="{{product.name}}">
+                <span class="product-description">{{product.description}}</span>
+            </span>
+
             <div class="amount-product">
                 <span class="product-price">{{getPrice(product)}} PLN</span>
-                <input type="number" value="{{getProductQuantity(product.id)}}" min="1" max="100">
+                <input #box (keyup.enter)="changeProductQuantity(product.id, box.value)"
+                    (blur)="changeProductQuantity(product.id, box.value)" type="number"
+                    value="{{getProductQuantity(product.id)}}" min="1" max="100">
                 <button class="button-change-amount" (click)="increaseProductQuantity(product.id)">
                     <i class="icon-plus"></i>
                 </button>

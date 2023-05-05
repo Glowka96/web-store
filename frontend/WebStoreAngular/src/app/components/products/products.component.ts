@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Product } from 'src/app/models/product';
-import { Shipment } from 'src/app/models/shipment';
 import { ProductService } from 'src/app/services/product.service';
 import { ShopService } from 'src/app/services/shop.service';
 
@@ -109,30 +108,41 @@ export class ProductsComponent implements OnInit {
     });
     if (product) {
       let price = Number(this.getPrice(product));
-      console.log('price: ' + price);
-
       let quality = this.cart[product.id];
       let shipment = { product, quality, price };
+      console.log(shipment);
       this.shopService.addToBasket(shipment);
-      console.log('shipment price: ' + shipment.price);
     }
   }
 
   getProductQuantity(productId: string) {
-    console.log('cart ' + this.cart[productId]);
     return this.cart[productId] || 1;
   }
 
-  increaseProductQuantity(productId: string) {
-    if (this.cart[productId]) {
-      this.cart[productId] += 1;
-      console.log(this.cart);
+  changeProductQuantity(productId: string, quantity: string) {
+    if (Number(quantity) > 100) {
+      quantity = '100';
     }
+    if (Number(quantity) < 1) {
+      quantity = '1';
+    }
+    this.cart[productId] = Number(quantity);
+  }
+
+  increaseProductQuantity(productId: string) {
+    if (this.cart[productId] == 100) {
+      this.cart[productId] = 100;
+    } else {
+      this.cart[productId] += 1;
+    }
+    console.log(this.cart);
   }
 
   decreaseProductQuantity(productId: string) {
     if (this.cart[productId] > 1) {
       this.cart[productId] -= 1;
+    } else {
+      this.cart[productId] = 1;
     }
   }
 

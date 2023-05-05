@@ -16,6 +16,8 @@ import { BoardAdminComponent } from './components/board-admin/board-admin.compon
 import { ModSubcategoryComponent } from './components/mod-subcategory/mod-subcategory.component';
 import { ModProductsComponent } from './components/mod-products/mod-products.component';
 import { ModProducerComponent } from './components/mod-producer/mod-producer.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AccountComponent } from './components/account/account.component';
 
 @NgModule({
   declarations: [
@@ -30,9 +32,11 @@ import { ModProducerComponent } from './components/mod-producer/mod-producer.com
     ModSubcategoryComponent,
     ModProductsComponent,
     ModProducerComponent,
+    AccountComponent,
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,

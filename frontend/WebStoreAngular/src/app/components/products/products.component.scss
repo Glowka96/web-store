@@ -38,10 +38,32 @@
       padding: 25px;
       background-color: aliceblue;
       border-radius: 5%;
+      .product-img {
+        display: flex;
+        align-items: center;
+        img {
+          width: 100%;
+        }
+        .product-description {
+          position: absolute;
+          z-index: 0;
+          max-width: 150px;
+          padding: 10px;
+          background-color: rgb(212, 212, 212);
+          border-radius: 10px;
+          visibility: hidden;
+        }
+        &:hover {
+          .product-description {
+            visibility: visible;
+          }
+        }
+      }
       .product-name {
         font-size: 22px;
         font-weight: bold;
       }
+
       .amount-product {
         .product-price {
           margin-right: 5px;

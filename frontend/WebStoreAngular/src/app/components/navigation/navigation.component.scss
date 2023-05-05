@@ -1,34 +1,38 @@
 .navigation {
   position: sticky;
   top: 0;
-  height: 60px;
   display: flex;
-  flex-direction: row;
+  flex-flow: row wrap;
   align-items: center;
   justify-content: space-around;
-  padding: 10px;
   background-color: rgba(20, 20, 20);
   border-bottom: 1px solid white;
+  z-index: 999;
   .nav-logo {
     background-repeat: no-repeat;
   }
   .nav-menu {
     display: flex;
-    flex-direction: row;
+    flex-flow: row wrap;
     text-decoration: none;
     font-family: "Baloo 2", cursive;
     font-size: 24px;
     color: rgb(255, 255, 255);
     letter-spacing: 0.1rem;
-    ul {
+    margin: 0;
+    ul,
+    li {
+      list-style: none;
+      padding-left: 0;
+    }
+    .nav-category {
       padding-left: 0;
       margin: 0;
-      width: 100%;
       display: block;
       position: relative;
       list-style: none;
-      min-width: 150px;
       li {
+        min-width: 130px;
         padding: 1rem;
         text-align: center;
         &:hover {
@@ -37,16 +41,13 @@
       }
       .nav-submenu {
         background-color: rgb(24, 24, 24);
-        left: 0;
         position: absolute;
         visibility: hidden;
         z-index: 2;
         li {
           text-align: center;
-          display: block;
           a {
             color: rgb(255, 255, 255);
-            display: block;
           }
           &:hover {
             text-decoration: underline;
@@ -73,11 +74,16 @@
         border: none;
       }
     }
+    .icon {
+      display: none;
+    }
   }
   .nav-user {
     display: flex;
+    align-items: center;
+    flex-flow: row wrap;
     justify-content: center;
-    width: 25%;
+    width: max-content;
     form {
       margin-top: auto;
       margin-bottom: auto;
@@ -101,13 +107,13 @@
         cursor: pointer;
       }
     }
-    .icon-basket {
-      color: white;
-    }
     .icon-basket,
-    .icon-search {
-      margin-top: auto;
-      margin-bottom: auto;
+    .icon-user {
+      color: white;
+      padding: 10px;
+    }
+    .icon-basket {
+      display: block;
     }
     .btn-log {
       padding: 8px 12px;
