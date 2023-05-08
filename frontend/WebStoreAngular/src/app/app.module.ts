@@ -18,6 +18,9 @@ import { ModProductsComponent } from './components/mod-products/mod-products.com
 import { ModProducerComponent } from './components/mod-producer/mod-producer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AccountComponent } from './components/account/account.component';
+import { OrderComponent } from './components/order/order.component';
+import { BasketComponent } from './components/basket/basket.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +36,9 @@ import { AccountComponent } from './components/account/account.component';
     ModProductsComponent,
     ModProducerComponent,
     AccountComponent,
+    OrderComponent,
+    BasketComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,

@@ -2,6 +2,6 @@ import { Product } from './product';
 
 export interface Shipment {
   product: Product;
-  quality: number;
+  quantity: number;
   price: number;
 }
