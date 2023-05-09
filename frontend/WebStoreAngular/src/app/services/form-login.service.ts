@@ -14,7 +14,6 @@ export class FormLoginService {
     this.isActiveFormLogin = !this.isActiveFormLogin;
     this.isActiveFormLogin ? (this.opacity = 0.1) : (this.opacity = 1);
     this.opacitySubject.next(this.opacity);
-    console.log(this.opacitySubject.value);
   }
 
   public getOpacitySubject() {

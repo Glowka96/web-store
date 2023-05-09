@@ -23,7 +23,6 @@ export class AuthenticationService {
     private route: ActivatedRoute
   ) {
     this.checkLogged();
-    this.checkRole();
   }
 
   authenticate(request: LoginRequest) {
@@ -31,17 +30,17 @@ export class AuthenticationService {
       map((userData) => {
         sessionStorage.setItem('username', request.email);
 
-        let tokenStr = 'Bearer ' + userData.token;
-        sessionStorage.setItem('token', tokenStr);
+        let token = 'Bearer ' + userData.token;
+        sessionStorage.setItem('token', token);
 
-        let decodedJWT = JSON.parse(window.atob(tokenStr.split('.')[1]));
+        let decodedJWT = this.getDecodedJWT(token);
         this.loggedRole.next(decodedJWT.role);
 
         this.checkAdminRouteNav();
 
         let headers = new HttpHeaders();
-        if (tokenStr) {
-          headers.set('Authorization', tokenStr);
+        if (token) {
+          headers.set('Authorization', token);
         }
       })
     );
@@ -74,21 +73,17 @@ export class AuthenticationService {
   private checkLogged() {
     let token = sessionStorage.getItem('token');
     if (token) {
-      let decodedJWT = JSON.parse(window.atob(token.split('.')[1]));
+      let decodedJWT = this.getDecodedJWT(token);
       this.loggedRole.next(decodedJWT.role);
       this.loggedIn.next(true);
     }
   }
 
-  private checkRole() {
-    let token = sessionStorage.getItem('token');
-    if (token) {
-      let decodedJWT = JSON.parse(window.atob(token.split('.')[1])).role;
-      console.log('in method' + decodedJWT);
-    }
+  private getDecodedJWT(token: string) {
+    return JSON.parse(window.atob(token.split('.')[1]));
   }
 
-  isLoggedRole(): Observable<string> {
+  loggedRole$(): Observable<string> {
     return this.loggedRole.asObservable();
   }
 
@@ -96,7 +91,7 @@ export class AuthenticationService {
     this.loggedIn.next(loggedIn);
   }
 
-  isLoggedIn(): Observable<boolean> {
+  loggedIn$(): Observable<boolean> {
     return this.loggedIn.asObservable();
   }
 }

@@ -2,7 +2,7 @@
     <div class="title">
         <h1>Admin board</h1>
     </div>
-    <div class="board">
+    <div class="board" *ngIf="isAdmin()">
         <div class="options">
             <h2>Modification Category</h2>
             <app-mod-category [categories]="listCategories"></app-mod-category>

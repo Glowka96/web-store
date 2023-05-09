@@ -10,7 +10,8 @@ import { ShopService } from 'src/app/services/shop.service';
 })
 export class BasketComponent implements OnInit {
   private basket: Shipment[] = [];
-  private update: boolean = false;
+  private cart: { [shipment: string]: number } = {};
+  private selectedId!: string;
 
   public changeForm = new FormGroup({
     quantity: new FormControl('', {
@@ -22,7 +23,6 @@ export class BasketComponent implements OnInit {
   constructor(private shopService: ShopService) {
     this.shopService.basket$.subscribe((shipments) => {
       this.basket = shipments;
-      console.log('basket: ' + this.basket);
     });
   }
 
@@ -41,12 +41,12 @@ export class BasketComponent implements OnInit {
     this.basket.splice(index, 1);
   }
 
-  public isUpdate() {
-    return this.update;
+  isUpdate(shipmentId: string) {
+    return this.selectedId === shipmentId;
   }
 
-  public change() {
-    this.update = !this.update;
+  change(shipmentId: string) {
+    this.selectedId = shipmentId;
   }
 
   public onSumbitChange(productId: string) {
@@ -57,7 +57,8 @@ export class BasketComponent implements OnInit {
       this.basket[index].quantity = Number(quantity);
       this.basket[index].price =
         Number(quantity) * Number(this.basket[index].product.price);
-      this.change();
+      this.change('');
+      this.changeForm.controls['quantity'].reset();
     }
   }
 
