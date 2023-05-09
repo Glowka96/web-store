@@ -14,19 +14,29 @@
                 </span>
             </div>
             <div class="shipment-products">
-                <div class="shipment-quantity">
+                <div class="shipment-quantity" *ngIf="!isUpdate()">
                     <span class="title">Quantity: </span><span>{{shipment.quantity}}</span>
                 </div>
+                <form class="quantity-change" [formGroup]="changeForm" (ngSubmit)="onSumbitChange(shipment.product.id)"
+                    *ngIf="isUpdate()">
+                    <input formControlName="quantity" class="change" type="text" placeholder="Quantity">
+                </form>
                 <div class="shipment-price">
                     <span class="title">Price for the product:</span><span> {{shipment.price}}</span>
                 </div>
             </div>
+            <button class="btn-delete" (click)="deleteProductFromBasket(shipment.product.id)"><i
+                    class="icon-cancel"></i></button>
+            <button class="btn-change" (click)="change()">Change</button>
         </div>
     </div>
     <div class="purchase-box">
-        <div class="sumbit-box">
+        <div class="sumbit-box" *ngIf="isBasketEmpty">
             <p>Do you want to buy these products?</p>
             <button class="btn-buy" type="submit">BUY</button>
+        </div>
+        <div class="continue-box" *ngIf="!isBasketEmpty">
+            <p>Your basker is empty</p>
         </div>
     </div>
 </section>
