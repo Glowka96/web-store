@@ -14,12 +14,16 @@
                 </span>
             </div>
             <div class="shipment-products">
-                <div class="shipment-quantity" *ngIf="!isUpdate()">
+                <div class="shipment-quantity" *ngIf="!isUpdate(shipment.product.id)">
                     <span class="title">Quantity: </span><span>{{shipment.quantity}}</span>
                 </div>
                 <form class="quantity-change" [formGroup]="changeForm" (ngSubmit)="onSumbitChange(shipment.product.id)"
-                    *ngIf="isUpdate()">
+                    *ngIf="isUpdate(shipment.product.id)">
                     <input formControlName="quantity" class="change" type="text" placeholder="Quantity">
+                    <div class="error" *ngIf="changeForm.get('quantity')?.invalid">
+                        <small *ngIf="changeForm.get('quantity')?.errors?.['min'] || ['max']">The quantity must be
+                            beetwen 1 nad 100.</small>
+                    </div>
                 </form>
                 <div class="shipment-price">
                     <span class="title">Price for the product:</span><span> {{shipment.price}}</span>
@@ -27,7 +31,7 @@
             </div>
             <button class="btn-delete" (click)="deleteProductFromBasket(shipment.product.id)"><i
                     class="icon-cancel"></i></button>
-            <button class="btn-change" (click)="change()">Change</button>
+            <button class="btn-change" (click)="change(shipment.product.id)">Change</button>
         </div>
     </div>
     <div class="purchase-box">

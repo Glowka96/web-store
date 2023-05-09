@@ -65,7 +65,6 @@ export class ProductsComponent implements OnInit {
 
   private getSearchProducts(text: string) {
     this.productService.getSearchProducts(text).subscribe((products) => {
-      console.log('start get products');
       products.forEach((product) => (this.cart[product.id] = 1));
       this.products = products;
     });
@@ -73,7 +72,6 @@ export class ProductsComponent implements OnInit {
 
   private getQuanititySearchProducts(text: string) {
     this.productService.getQuanititySearchProducts(text).subscribe((value) => {
-      console.log('start get amount products');
       this.quantityOfProducts = value;
       this.countPage = Math.ceil(value / 12);
     });
@@ -110,7 +108,6 @@ export class ProductsComponent implements OnInit {
       let price = Number(this.getPrice(product));
       let quantity = this.cart[product.id];
       let shipment = { product, quantity, price };
-      console.log(shipment);
       this.shopService.addToBasket(shipment);
     }
   }
@@ -135,7 +132,6 @@ export class ProductsComponent implements OnInit {
     } else {
       this.cart[productId] += 1;
     }
-    console.log(this.cart);
   }
 
   decreaseProductQuantity(productId: string) {

@@ -32,7 +32,7 @@
                     <small *ngIf="registrationForm.get('firstName')?.errors?.['required']">The first name is
                         required</small>
                     <small *ngIf="registrationForm.get('firstName')?.errors?.['minLength'] || ['maxLength']">The first
-                        name must between min 3 and max 20 letters</small>
+                        name must be between min 3 and max 20 letters</small>
                     <small *ngIf="registrationForm.get('firstName')?.errors?.['pattern']">The first name cannot have
                         numbers</small>
                 </div>
@@ -45,7 +45,7 @@
                     <small *ngIf="registrationForm.get('lastName')?.errors?.['required']">The last name is
                         required</small>
                     <small *ngIf="registrationForm.get('firstName')?.errors?.['minLength'] || ['maxLength']">The last
-                        name must between min 3 and max 20 letters</small>
+                        name must be between min 3 and max 20 letters</small>
                     <small *ngIf="registrationForm.get('firstName')?.errors?.['pattern']">The last name cannot have
                         numbers</small>
                 </div>
@@ -67,7 +67,7 @@
                     <small *ngIf="registrationForm.get('password')?.errors?.['required']">The password is
                         required</small>
                     <small *ngIf="registrationForm.get('password')?.errors?.['minLength'] || ['maxLength']">The password
-                        must between min 8 and max 30 letters</small>
+                        must be between min 8 and max 30 letters</small>
                     <small *ngIf="registrationForm.get('password')?.errors?.['pattern']">The password must contain at:
                         least <br> - one uppercase letter <br> - one lowercase letter <br> - one special character
                     </small>

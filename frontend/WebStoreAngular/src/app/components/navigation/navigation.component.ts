@@ -8,7 +8,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { Category } from 'src/app/models/category';
-import { ShopService } from 'src/app/services/shop.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { FormLoginService } from 'src/app/services/form-login.service';
 import { CategoryService } from 'src/app/services/category.service';
@@ -28,7 +27,6 @@ import { ProductService } from 'src/app/services/product.service';
 export class NavigationComponent implements OnInit {
   private categories: Category[] = [];
   private loggedIn: boolean = false;
-  private loggedRole!: string;
 
   public searchForm = new FormGroup({
     search: new FormControl('', {
@@ -46,13 +44,8 @@ export class NavigationComponent implements OnInit {
     categoryService.categories$.subscribe((categories) => {
       this.categories = categories;
     });
-    authService.isLoggedIn().subscribe((value) => {
-      console.log(value);
+    authService.loggedIn$().subscribe((value) => {
       this.loggedIn = value;
-    });
-    authService.isLoggedRole().subscribe((value) => {
-      console.log('role: ' + value);
-      this.loggedRole = value;
     });
   }
 
@@ -66,19 +59,12 @@ export class NavigationComponent implements OnInit {
     return this.loggedIn;
   }
 
-  public isAdmin(): boolean {
-    const is = this.loggedRole.includes('ROLE_USER');
-    console.log(is);
-    return this.loggedIn && this.loggedRole.includes('ROLE_USER');
-  }
-
   public logout(): void {
     this.authService.logout();
   }
 
   public onSearch(): void {
     if (this.searchForm.valid) {
-      console.log('search');
       let text = this.searchForm.controls['search']?.value ?? '';
       this.productService.getSearchProducts(text);
     }
