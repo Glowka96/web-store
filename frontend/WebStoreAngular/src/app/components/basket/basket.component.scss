@@ -24,6 +24,7 @@
       display: flex;
       flex-flow: column wrap;
       justify-content: center;
+      position: relative;
       padding: 20px;
       border-radius: 15px;
       background-color: rgb(228, 228, 228);
@@ -43,13 +44,35 @@
           }
         }
       }
+      .btn-delete {
+        position: absolute;
+        top: -12px;
+        right: -12px;
+        height: 30px;
+        border-radius: 50%;
+        box-shadow: 18px 1px 49px rgb(78, 82, 83);
+        border: none;
+        i {
+          font-size: 20px;
+        }
+      }
+      .btn-change {
+        position: absolute;
+        padding: 8px;
+        bottom: 33px;
+        right: 27px;
+        border-radius: 5px;
+        box-shadow: 0px 0px 6px 0px rgb(154, 155, 167);
+        border: none;
+      }
     }
   }
   .purchase-box {
     width: fit-content;
     margin: 0 auto;
     padding: 15px;
-    .sumbit-box {
+    .sumbit-box,
+    .continue-box {
       padding: 15px;
       border-radius: 15px;
       background-color: rgb(228, 228, 228);
