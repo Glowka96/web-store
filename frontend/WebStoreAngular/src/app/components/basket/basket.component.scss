@@ -50,7 +50,7 @@
         right: -12px;
         height: 30px;
         border-radius: 50%;
-        box-shadow: 18px 1px 49px rgb(78, 82, 83);
+        box-shadow: 5px 0px 9px -3px rgb(78, 82, 83);
         border: none;
         i {
           font-size: 20px;
@@ -65,6 +65,16 @@
         box-shadow: 0px 0px 6px 0px rgb(154, 155, 167);
         border: none;
       }
+      .btn-delete,
+      .btn-change {
+        cursor: pointer;
+        &:hover {
+          background-color: darkgray;
+        }
+        &:active {
+          transform: scale(0.9);
+        }
+      }
       .error {
         color: red;
       }
@@ -75,18 +85,21 @@
     margin: 0 auto;
     padding: 15px;
     .sumbit-box,
-    .continue-box {
+    .continue-box,
+    .message-box {
       padding: 15px;
       border-radius: 15px;
       background-color: rgb(228, 228, 228);
       p {
         font-weight: 600;
       }
-      .btn-buy {
+      .btn-buy,
+      .btn-register {
         padding: 8px;
         border-radius: 5px;
         border: 0;
         box-shadow: 0px 0px 6px 0px rgb(154, 155, 167);
+        cursor: pointer;
         &:hover {
           background-color: darkgray;
         }

@@ -105,7 +105,7 @@ export class ProductsComponent implements OnInit {
       return product.id == id;
     });
     if (product) {
-      let price = Number(this.getPrice(product));
+      let price = this.getPrice(product);
       let quantity = this.cart[product.id];
       let shipment = { product, quantity, price };
       this.shopService.addToBasket(shipment);

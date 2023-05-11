@@ -74,5 +74,4 @@ public class AccountDetails implements UserDetails {
         return "AccountDetails[" +
                 "account=" + account + ']';
     }
-
 }

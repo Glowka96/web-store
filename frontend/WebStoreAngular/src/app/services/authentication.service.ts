@@ -15,6 +15,7 @@ export class AuthenticationService {
   private loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
     false
   );
+  private loggedId: BehaviorSubject<string> = new BehaviorSubject<string>('');
   currentRoute: any;
 
   constructor(
@@ -35,6 +36,9 @@ export class AuthenticationService {
 
         let decodedJWT = this.getDecodedJWT(token);
         this.loggedRole.next(decodedJWT.role);
+        this.loggedId.next(decodedJWT.id);
+
+        console.log('id: ' + this.loggedId.value);
 
         this.checkAdminRouteNav();
 
@@ -93,5 +97,9 @@ export class AuthenticationService {
 
   loggedIn$(): Observable<boolean> {
     return this.loggedIn.asObservable();
+  }
+
+  loggedId$(): Observable<string> {
+    return this.loggedId.asObservable();
   }
 }
