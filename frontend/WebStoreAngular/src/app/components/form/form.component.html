@@ -1,14 +1,14 @@
 <div class="login-container">
-    <button class="btn-close" (click)="closeLoginForm()">
-        <i class="icon-cancel"></i>
-    </button>
+    <div class="btn-box">
+        <button class="btn-close" (click)="closeLoginForm()">
+            <i class="icon-cancel"></i>
+        </button>
+    </div>
     <div class="slider"></div>
-
     <div class="btn">
         <button class="login" (click)="onLogin()">Login</button>
         <button class="signup" (click)="onSignup()">Signup</button>
     </div>
-
     <div class="form-section">
         <form class="login-box" [formGroup]="loginForm" (ngSubmit)="onSumbitLogin()" *ngIf="!getFormSectionMove">
             <input formControlName="email" type="email" class="email ele" placeholder="Email">
@@ -22,7 +22,6 @@
             <button type="sumbit" class="clkbtn" [disabled]="loginForm.invalid"
                 [ngClass]="{'disabled-btn': loginForm.invalid}">Login</button>
         </form>
-
         <form class="signup-box" [formGroup]="registrationForm" (ngSubmit)="onSubmitRegister()"
             *ngIf="getFormSectionMove">
             <div class="form-group">
@@ -37,7 +36,6 @@
                         numbers</small>
                 </div>
             </div>
-
             <div class="form-group">
                 <input formControlName="lastName" type="text" class="email ele" placeholder="Last name" />
                 <div *ngIf="registrationForm.get('lastName')?.invalid && (registrationForm.get('lastName')?.dirty)"
@@ -50,7 +48,6 @@
                         numbers</small>
                 </div>
             </div>
-
             <div class="form-group">
                 <input formControlName="email" type="email" class="email ele" placeholder="Email" />
                 <div *ngIf="registrationForm.get('email')?.invalid && (registrationForm.get('email')?.dirty)"
@@ -59,7 +56,6 @@
                     <small *ngIf="registrationForm.get('email')?.errors?.['pattern']">Invalid the email format</small>
                 </div>
             </div>
-
             <div class="form-group">
                 <input formControlName="password" type="password" class="password ele" placeholder="Password" />
                 <div *ngIf="registrationForm.get('password')?.invalid && (registrationForm.get('password')?.dirty)"
@@ -73,7 +69,6 @@
                     </small>
                 </div>
             </div>
-
             <div class="form-group">
                 <input formControlName="confirmPassword" type="password" class="password ele"
                     placeholder="Confirm password" />

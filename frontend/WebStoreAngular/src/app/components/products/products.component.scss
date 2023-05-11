@@ -109,8 +109,9 @@
       margin: 15px;
       padding: 0;
       row-gap: 2em;
-      button {
+      .btn-page {
         border-radius: 5px;
+        cursor: pointer;
       }
     }
   }

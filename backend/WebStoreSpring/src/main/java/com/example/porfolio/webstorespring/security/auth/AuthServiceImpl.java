@@ -7,7 +7,6 @@ import com.example.porfolio.webstorespring.model.entity.accounts.AuthToken;
 import com.example.porfolio.webstorespring.model.entity.accounts.AuthTokenType;
 import com.example.porfolio.webstorespring.repositories.accounts.AuthTokenRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 

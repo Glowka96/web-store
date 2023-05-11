@@ -37,7 +37,10 @@ public class JwtService {
             UserDetails userDetails
     ) {
         String role = userDetails.getAuthorities().toString().replaceAll("[\\[\\]]", "");
+        AccountDetails accountDetails = (AccountDetails) userDetails;
+        Long id = accountDetails.getAccount().getId();
         extraClaims.put("role", role);
+        extraClaims.put("id", id);
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
