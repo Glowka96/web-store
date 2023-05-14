@@ -1,6 +1,7 @@
 package com.example.porfolio.webstorespring.model.dto.products;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -21,6 +22,7 @@ public class SubcategoryDto {
     @JsonIgnore
     private CategoryDto categoryDto;
 
+    @JsonProperty("products")
     private List<ProductDto> productsDto;
 
 }

@@ -6,4 +6,3 @@ export interface Product {
   price: string;
   type: string;
 }
-// amountOfProduct: number;

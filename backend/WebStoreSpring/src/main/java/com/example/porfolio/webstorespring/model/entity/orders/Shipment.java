@@ -22,7 +22,7 @@ public class Shipment {
     private Product product;
 
     @Column(nullable = false)
-    private Integer quality;
+    private Integer quantity;
 
     @Column(nullable = false)
     private Double price;

@@ -1,0 +1,137 @@
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AccountAddress } from 'src/app/models/account-address';
+import { Order } from 'src/app/models/order';
+import { Shipment } from 'src/app/models/shipment';
+import { AccountService } from 'src/app/services/account.service';
+import { AuthenticationService } from 'src/app/services/authentication.service';
+import { ShopService } from 'src/app/services/shop.service';
+
+@Component({
+  selector: 'app-purchase',
+  templateUrl: './purchase.component.html',
+  styleUrls: ['./purchase.component.scss'],
+})
+export class PurchaseComponent implements OnInit {
+  private accountId!: string;
+  private accountAddress!: AccountAddress;
+  private foundAddress!: boolean;
+  private basket!: Shipment[];
+  private shipmentsPrice: number = 0;
+  private sumbitPurchase: boolean = false;
+  private message!: string;
+  private postcodePattern = /^\d{2}-\d{3}$/;
+  private addressPattern =
+    /^(ul\s|ul.\s)?[A-Z]{0,1}[a-z]*\s{1}[0-9]{1,3}(\/[0-9]{1,3})|(\s[m]\.{0,1}\s[0-9]{1,3})[a-z]?$/;
+
+  public deliveryAddressForm = new FormGroup({
+    city: new FormControl('', {
+      validators: [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(32),
+      ],
+      updateOn: 'change',
+    }),
+    postcode: new FormControl('', {
+      validators: [
+        Validators.required,
+        Validators.pattern(this.postcodePattern),
+      ],
+      updateOn: 'change',
+    }),
+    address: new FormControl('', {
+      validators: [
+        Validators.required,
+        Validators.pattern(this.addressPattern),
+      ],
+      updateOn: 'change',
+    }),
+  });
+
+  constructor(
+    private accountService: AccountService,
+    private authService: AuthenticationService,
+    private shopService: ShopService
+  ) {
+    this.authService.loggedId$().subscribe((id) => {
+      this.accountId = id;
+    });
+    this.accountService.getAccountAddress(this.accountId).subscribe({
+      next: (response) => {
+        this.accountAddress = response;
+        this.foundAddress = true;
+      },
+      error: (error) => {
+        if (error.status === 404) {
+          this.foundAddress = false;
+        }
+      },
+    });
+    this.shopService.basket$.subscribe((shipments) => {
+      this.basket = shipments;
+      shipments.forEach((shipment) =>
+        (this.shipmentsPrice += Number(shipment.price)).toFixed(2)
+      );
+    });
+  }
+
+  ngOnInit(): void {}
+
+  public autocomplete() {
+    this.deliveryAddressForm.controls['city'].setValue(
+      this.accountAddress.city
+    );
+    this.deliveryAddressForm.controls['postcode'].setValue(
+      this.accountAddress.postcode
+    );
+    this.deliveryAddressForm.controls['address'].setValue(
+      this.accountAddress.address
+    );
+  }
+
+  public purchase() {
+    if (this.deliveryAddressForm.valid) {
+      let city = this.deliveryAddressForm.controls['city']?.value ?? '';
+      let postcode = this.deliveryAddressForm.controls['postcode']?.value ?? '';
+      let address = this.deliveryAddressForm.controls['address']?.value ?? '';
+      let request: Order = {
+        shipments: this.basket,
+        deliveryAddress: city + ', ' + postcode + ', ' + address,
+      };
+      console.log(request);
+      this.shopService.purchase(request, this.accountId).subscribe({
+        next: () => {
+          this.sumbitPurchase = true;
+          this.message = 'Your order has been acepted';
+        },
+        error: (error) => {
+          if (error.status === 400) {
+            this.sumbitPurchase = true;
+            this.message = error.error.errors;
+          }
+        },
+      });
+    }
+  }
+
+  public get isFoundAddress() {
+    return this.foundAddress;
+  }
+
+  public get quantity() {
+    return this.basket.length;
+  }
+
+  public get price() {
+    return this.shipmentsPrice;
+  }
+
+  public get isSumbitPurchase() {
+    return this.sumbitPurchase;
+  }
+
+  public get sumbitMessage() {
+    return this.message;
+  }
+}

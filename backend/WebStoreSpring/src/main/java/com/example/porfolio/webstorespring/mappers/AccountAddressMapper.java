@@ -10,9 +10,9 @@ import org.mapstruct.Mapping;
 )
 public interface AccountAddressMapper {
 
-    @Mapping(target = "accountDto", source = "account")
+    @Mapping(target = "accountDto", ignore = true)
     AccountAddressDto mapToDto(AccountAddress address);
 
-    @Mapping(target = "account", source = "accountDto")
+    @Mapping(target = "account", ignore = true)
     AccountAddress mapToEntity(AccountAddressDto accountAddressDto);
 }

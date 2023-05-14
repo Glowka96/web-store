@@ -3,7 +3,8 @@ package com.example.porfolio.webstorespring.services.orders;
 import com.example.porfolio.webstorespring.exceptions.OrderCanNotModifiedException;
 import com.example.porfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.porfolio.webstorespring.mappers.OrderMapper;
-import com.example.porfolio.webstorespring.model.dto.orders.OrderDto;
+import com.example.porfolio.webstorespring.model.dto.orders.OrderRequest;
+import com.example.porfolio.webstorespring.model.dto.orders.OrderResponse;
 import com.example.porfolio.webstorespring.model.entity.accounts.Account;
 import com.example.porfolio.webstorespring.model.entity.orders.Order;
 import com.example.porfolio.webstorespring.model.entity.orders.OrderStatus;
@@ -24,23 +25,31 @@ import java.util.List;
 public class OrderService {
 
     private final OrderRepository orderRepository;
+    private final ShipmentService shipmentService;
     private final OrderMapper orderMapper;
     private final AccountRepository accountRepository;
     private final Clock clock = Clock.systemUTC();
+   private final static String SHIPMENT_ADDRESS = "City: Lodz, Postcode: 91-473, Adress: Julianowska 41/2";
 
-    public List<OrderDto> getAllOrderDtoByAccountId(Long accountId) {
+    public List<OrderResponse> getAllOrderDtoByAccountId(Long accountId) {
         List<Order> orders = orderRepository.findAllByAccountId(accountId);
         return orderMapper.mapToDto(orders);
     }
 
-    public OrderDto getOrderByAccountIdAndOrderId(Long accountId, Long orderId) {
+    public OrderResponse getOrderByAccountIdAndOrderId(Long accountId, Long orderId) {
         Order order = findOrderByAccountIdAndOrderId(accountId, orderId);
         return orderMapper.mapToDto(order);
     }
 
-    public OrderDto saveOrder(Long accountId, OrderDto orderDto) {
+    public OrderResponse saveOrder(Long accountId, OrderRequest orderRequest) {
         Account foundAccount = findAccountById(accountId);
-        Order order = orderMapper.mapToEntity(orderDto);
+
+        orderRequest.setShipmentsDto(orderRequest.getShipmentsDto()
+                .stream()
+                .map(shipmentService::save)
+                .toList());
+
+        Order order = orderMapper.mapToEntity(orderRequest);
 
         setupNewOrder(foundAccount, order);
 
@@ -48,7 +57,7 @@ public class OrderService {
         return orderMapper.mapToDto(order);
     }
 
-    public OrderDto updateOrder(Long accountId, Long orderId, OrderDto orderDto) {
+    public OrderResponse updateOrder(Long accountId, Long orderId, OrderRequest orderRequest) {
         Order foundOrder = findOrderById(orderId);
 
         if(foundOrder.getStatus() != OrderStatus.OPEN) {
@@ -56,7 +65,7 @@ public class OrderService {
         }
 
         Account foundAccount = findAccountById(accountId);
-        Order order = orderMapper.mapToEntity(orderDto);
+        Order order = orderMapper.mapToEntity(orderRequest);
 
         setupUpdateOrder(foundAccount, foundOrder, order);
         orderRepository.save(order);
@@ -98,6 +107,13 @@ public class OrderService {
                 .atZone(ZoneId.systemDefault()).toInstant()));
 
         order.setStatus(OrderStatus.OPEN);
+
+        if(order.getDeliveryAddress().isEmpty() || order.getDeliveryAddress().isBlank()) {
+            String deliveryAddress = account.getAddress().toString();
+            order.setDeliveryAddress(deliveryAddress);
+        }
+
+        order.setShipmentAddress(SHIPMENT_ADDRESS);
 
         Double productsPrice = order.getShipments()
                 .stream()

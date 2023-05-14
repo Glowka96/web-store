@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ProducerRequest } from '../models/producer-request';
 import { Producer } from '../models/producer';
-import { ProductType } from '../models/product-type';
 
 @Injectable({
   providedIn: 'root',

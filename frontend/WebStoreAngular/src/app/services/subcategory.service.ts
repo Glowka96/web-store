@@ -30,7 +30,6 @@ export class SubcategoryService {
     categoryId: string,
     request: SubcategoryRequest
   ): Observable<any> {
-    console.log('send request');
     return this.http.post<any>(
       `${this.apiServerUrl}/categories/${categoryId}/subcategories`,
       request

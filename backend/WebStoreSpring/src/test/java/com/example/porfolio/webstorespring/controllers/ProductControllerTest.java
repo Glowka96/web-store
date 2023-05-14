@@ -2,6 +2,7 @@ package com.example.porfolio.webstorespring.controllers;
 
 import com.example.porfolio.webstorespring.controllers.products.ProductController;
 import com.example.porfolio.webstorespring.model.dto.products.ProductDto;
+import com.example.porfolio.webstorespring.model.entity.products.ProductType;
 import com.example.porfolio.webstorespring.services.products.ProductService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -53,6 +54,8 @@ class ProductControllerTest {
         productDto.setName("Test");
         productDto.setPrice(20.0);
         productDto.setDescription("Description test");
+        productDto.setImageUrl("test.pl");
+        productDto.setType(ProductType.PUZZLE);
 
         ProductDto productDto1 = new ProductDto();
         productDto1.setId(2L);

@@ -60,12 +60,12 @@ class ShipmentServiceTest {
         shipment = new Shipment();
         shipment.setId(1L);
         shipment.setProduct(product);
-        shipment.setQuality(3);
+        shipment.setQuantity(3);
 
         shipmentDto = new ShipmentDto();
         shipmentDto.setId(1L);
         shipmentDto.setProductDto(productDto);
-        shipmentDto.setQuality(3);
+        shipmentDto.setQuantity(3);
     }
 
     @Test
@@ -120,7 +120,7 @@ class ShipmentServiceTest {
 
         assertThat(mappedShipmentDto.getId()).isEqualTo(shipmentDto.getId());
         assertThat(mappedShipmentDto.getProductDto()).isEqualTo(productDto);
-        assertThat(mappedShipmentDto.getQuality()).isEqualTo(shipmentDto.getQuality());
+        assertThat(mappedShipmentDto.getQuantity()).isEqualTo(shipmentDto.getQuantity());
     }
 
     @Test

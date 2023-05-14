@@ -96,10 +96,6 @@ export class ProductsComponent implements OnInit {
     }
   }
 
-  public getPrice(product: Product): string {
-    return (parseFloat(product.price) * this.cart[product.id]).toFixed(2);
-  }
-
   public addToBasket(id: string) {
     let product = this.products.find((product: Product) => {
       return product.id == id;
@@ -112,11 +108,15 @@ export class ProductsComponent implements OnInit {
     }
   }
 
-  getProductQuantity(productId: string) {
+  public getPrice(product: Product): string {
+    return (Number(this.cart[product.id]) * Number(product.price)).toFixed(2);
+  }
+
+  public getProductQuantity(productId: string) {
     return this.cart[productId] || 1;
   }
 
-  changeProductQuantity(productId: string, quantity: string) {
+  public changeProductQuantity(productId: string, quantity: string) {
     if (Number(quantity) > 100) {
       quantity = '100';
     }
@@ -126,7 +126,7 @@ export class ProductsComponent implements OnInit {
     this.cart[productId] = Number(quantity);
   }
 
-  increaseProductQuantity(productId: string) {
+  public increaseProductQuantity(productId: string) {
     if (this.cart[productId] == 100) {
       this.cart[productId] = 100;
     } else {
@@ -134,7 +134,7 @@ export class ProductsComponent implements OnInit {
     }
   }
 
-  decreaseProductQuantity(productId: string) {
+  public decreaseProductQuantity(productId: string) {
     if (this.cart[productId] > 1) {
       this.cart[productId] -= 1;
     } else {
