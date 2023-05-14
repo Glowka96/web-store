@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AccountAddress } from 'src/app/models/account-address';
 import { Order } from 'src/app/models/order';
 import { Shipment } from 'src/app/models/shipment';
@@ -18,7 +19,7 @@ export class PurchaseComponent implements OnInit {
   private foundAddress!: boolean;
   private basket!: Shipment[];
   private shipmentsPrice: number = 0;
-  private sumbitPurchase: boolean = false;
+  private submitPurchase: boolean = false;
   private message!: string;
   private postcodePattern = /^\d{2}-\d{3}$/;
   private addressPattern =
@@ -52,7 +53,8 @@ export class PurchaseComponent implements OnInit {
   constructor(
     private accountService: AccountService,
     private authService: AuthenticationService,
-    private shopService: ShopService
+    private shopService: ShopService,
+    private router: Router
   ) {
     this.authService.loggedId$().subscribe((id) => {
       this.accountId = id;
@@ -99,15 +101,15 @@ export class PurchaseComponent implements OnInit {
         shipments: this.basket,
         deliveryAddress: city + ', ' + postcode + ', ' + address,
       };
-      console.log(request);
       this.shopService.purchase(request, this.accountId).subscribe({
         next: () => {
-          this.sumbitPurchase = true;
-          this.message = 'Your order has been acepted';
+          setTimeout(() => {
+            this.router.navigate(['/accounts']);
+          }, 2000);
         },
         error: (error) => {
           if (error.status === 400) {
-            this.sumbitPurchase = true;
+            this.submitPurchase = true;
             this.message = error.error.errors;
           }
         },
@@ -127,8 +129,8 @@ export class PurchaseComponent implements OnInit {
     return this.shipmentsPrice;
   }
 
-  public get isSumbitPurchase() {
-    return this.sumbitPurchase;
+  public get isSubmitPurchase() {
+    return this.submitPurchase;
   }
 
   public get sumbitMessage() {

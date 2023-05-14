@@ -3,10 +3,9 @@ package com.example.porfolio.webstorespring.services;
 import com.example.porfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.porfolio.webstorespring.mappers.AccountAddressMapper;
 import com.example.porfolio.webstorespring.mappers.AccountMapper;
-import com.example.porfolio.webstorespring.mappers.OrderMapper;
-import com.example.porfolio.webstorespring.model.dto.accounts.AccountDto;
+import com.example.porfolio.webstorespring.model.dto.accounts.AccountRequest;
+import com.example.porfolio.webstorespring.model.dto.accounts.AccountResponse;
 import com.example.porfolio.webstorespring.model.entity.accounts.Account;
-import com.example.porfolio.webstorespring.model.entity.accounts.AccountRoles;
 import com.example.porfolio.webstorespring.repositories.accounts.AccountRepository;
 import com.example.porfolio.webstorespring.services.accounts.AccountService;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +26,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class AccountServiceTest {
@@ -41,13 +41,11 @@ class AccountServiceTest {
     @InjectMocks
     private AccountService underTest;
     private Account account;
-    private AccountDto accountDto;
+    private AccountResponse accountResponse;
+    private AccountRequest accountRequest;
 
     @BeforeEach()
     void initialization() {
-        OrderMapper orderMapper = Mappers.getMapper(OrderMapper.class);
-        ReflectionTestUtils.setField(accountMapper, "orderMapper", orderMapper);
-
         AccountAddressMapper addressMapper = Mappers.getMapper(AccountAddressMapper.class);
         ReflectionTestUtils.setField(accountMapper, "accountAddressMapper", addressMapper);
 
@@ -55,16 +53,18 @@ class AccountServiceTest {
         account.setId(1L);
         account.setFirstName("Test");
         account.setLastName("Dev");
-        account.setPassword("Abcd123$");
-        account.setAccountRoles(AccountRoles.ROLE_USER);
-        account.setEmail("test@test.pl");
+
+        accountRequest = new AccountRequest();
+        accountRequest.setFirstName("Test");
+        accountRequest.setLastName("Dev");
+        accountRequest.setPassword("Abcd123$");
+        accountRequest.setEmail("test@test.pl");
 
 
-        accountDto = new AccountDto();
-        accountDto.setId(1L);
-        accountDto.setFirstName("Test");
-        accountDto.setLastName("Dev");
-        accountDto.setPassword("Abcd123$");
+        accountResponse = new AccountResponse();
+        accountResponse.setId(1L);
+        accountResponse.setFirstName("Test");
+        accountResponse.setLastName("Dev");
     }
 
     @Test
@@ -73,13 +73,13 @@ class AccountServiceTest {
         given(accountRepository.findById(anyLong())).willReturn(Optional.of(account));
 
         // when
-        accountDto = underTest.getAccountById(1L);
+        accountResponse = underTest.getAccountById(1L);
 
         // then
-        assertThat(accountDto).isNotNull();
-        assertThat(accountDto.getId()).isEqualTo(1L);
-        assertThat(accountDto.getFirstName()).isEqualTo("Test");
-        assertThat(accountDto.getLastName()).isEqualTo("Dev");
+        assertThat(accountResponse).isNotNull();
+        assertThat(accountResponse.getId()).isEqualTo(1L);
+        assertThat(accountResponse.getFirstName()).isEqualTo("Test");
+        assertThat(accountResponse.getLastName()).isEqualTo("Dev");
     }
 
     @Test
@@ -100,8 +100,7 @@ class AccountServiceTest {
         given(accountRepository.findById(anyLong())).willReturn(Optional.of(account));
 
         // when
-        when(encoder.encode(accountDto.getPassword())).thenReturn("Abcd123$");
-        accountDto = underTest.updateAccount(1L, accountDto);
+        accountResponse = underTest.updateAccount(1L, accountRequest);
 
         // then
         ArgumentCaptor<Account> accountArgumentCaptor =
@@ -109,9 +108,9 @@ class AccountServiceTest {
         verify(accountRepository).save(accountArgumentCaptor.capture());
 
         Account captureAccount = accountArgumentCaptor.getValue();
-        AccountDto mappedAccount = accountMapper.mapToDto(captureAccount);
+        AccountResponse mappedAccount = accountMapper.mapToDto(captureAccount);
 
-        assertThat(mappedAccount).isEqualTo(accountDto);
+        assertThat(mappedAccount).isEqualTo(accountResponse);
     }
 
     @Test

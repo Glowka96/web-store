@@ -2,7 +2,8 @@ package com.example.porfolio.webstorespring.controllers;
 
 import com.example.porfolio.webstorespring.controllers.accounts.AccountController;
 import com.example.porfolio.webstorespring.exceptions.GlobalExceptionHandler;
-import com.example.porfolio.webstorespring.model.dto.accounts.AccountDto;
+import com.example.porfolio.webstorespring.model.dto.accounts.AccountRequest;
+import com.example.porfolio.webstorespring.model.dto.accounts.AccountResponse;
 import com.example.porfolio.webstorespring.services.accounts.AccountService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,7 +37,7 @@ class AccountControllerTest {
     private MockMvc mvc;
     private ObjectMapper mapper;
     private final static String URL = "/api/v1/accounts";
-    private AccountDto accountDto;
+    private AccountResponse accountResponse;
 
     @BeforeEach
     void initialization() {
@@ -46,22 +47,21 @@ class AccountControllerTest {
 
         mapper = new ObjectMapper();
 
-        accountDto = new AccountDto();
-        accountDto.setId(1L);
-        accountDto.setFirstName("Test");
-        accountDto.setLastName("Dev");
-        accountDto.setPassword("Abcd123$");
-        accountDto.setEmail("test@test.pl");
+        accountResponse = new AccountResponse();
+        accountResponse.setId(1L);
+        accountResponse.setFirstName("Test");
+        accountResponse.setLastName("Dev");
+        accountResponse.setEmail("test@test.pl");
     }
 
     @Test
     void shouldGetAccountById() throws Exception {
-        when(accountService.getAccountById(anyLong())).thenReturn(accountDto);
+        when(accountService.getAccountById(anyLong())).thenReturn(accountResponse);
 
         mvc.perform(get(URL + "/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(accountDto))
+                        .content(mapper.writeValueAsString(accountResponse))
                         .header("Authorization", "Bearer {JWT_TOKEN}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
@@ -76,12 +76,12 @@ class AccountControllerTest {
      * */
     @Test
     void shouldUpdateAccount() throws Exception {
-        given(accountService.updateAccount(anyLong(), any(AccountDto.class))).willReturn(accountDto);
+        given(accountService.updateAccount(anyLong(), any(AccountRequest.class))).willReturn(accountResponse);
 
         mvc.perform(put(URL + "/{accountId}", 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(accountDto))
+                        .content(mapper.writeValueAsString(accountResponse))
                         .header("Authorization", "Bearer {JWT_TOKEN}"))
                 .andExpect(status().isAccepted())
                 .andExpect(jsonPath("$.id", is(1)))

@@ -57,8 +57,8 @@ public class AccountAddressService{
     private void setupUpdateAddress(AccountAddress foundAddress, AccountAddress accountAddress) {
         accountAddress.setAccount(foundAddress.getAccount());
 
-        if (accountAddress.getAddress() == null) {
-            accountAddress.setAddress(foundAddress.getAddress());
+        if (accountAddress.getStreet() == null) {
+            accountAddress.setStreet(foundAddress.getStreet());
         }
         if (accountAddress.getCity() == null) {
             accountAddress.setCity(foundAddress.getCity());
