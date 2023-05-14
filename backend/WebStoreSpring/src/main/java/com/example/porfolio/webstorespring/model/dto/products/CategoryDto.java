@@ -1,5 +1,6 @@
 package com.example.porfolio.webstorespring.model.dto.products;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -17,5 +18,6 @@ public class CategoryDto {
     @Size(min=3, max = 20, message = "The name must between min 3 and max 20 letters")
     private String name;
 
+    @JsonProperty("subcategories")
     private List<SubcategoryDto> subcategoriesDto;
 }

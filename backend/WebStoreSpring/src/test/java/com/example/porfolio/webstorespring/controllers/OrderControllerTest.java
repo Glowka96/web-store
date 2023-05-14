@@ -1,7 +1,9 @@
 package com.example.porfolio.webstorespring.controllers;
 
 import com.example.porfolio.webstorespring.controllers.orders.OrderController;
-import com.example.porfolio.webstorespring.model.dto.orders.OrderDto;
+import com.example.porfolio.webstorespring.model.dto.orders.OrderRequest;
+import com.example.porfolio.webstorespring.model.dto.orders.OrderResponse;
+import com.example.porfolio.webstorespring.model.dto.orders.ShipmentDto;
 import com.example.porfolio.webstorespring.services.orders.OrderService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,7 +42,8 @@ class OrderControllerTest {
     private MockMvc mvc;
     private ObjectMapper mapper;
     private static final String URL = "/api/v1/accounts/{accountId}";
-    private OrderDto orderDto;
+    private OrderResponse orderResponse;
+    private OrderRequest orderRequest;
 
     @BeforeEach
     void initialization() {
@@ -48,15 +51,19 @@ class OrderControllerTest {
 
         mapper = new ObjectMapper();
 
-        orderDto = new OrderDto();
-        orderDto.setId(1L);
+        orderResponse = new OrderResponse();
+        orderResponse.setId(1L);
+
+        orderRequest = new OrderRequest();
+        orderRequest.setDeliveryAddress("City: test, postcode: 99-999, address: test 59/55");
+        orderRequest.setShipmentsDto(Arrays.asList(new ShipmentDto()));
     }
 
 
     @Test
     void shouldGetAllOrders() throws Exception {
-        List<OrderDto> orderDtos = new ArrayList<>(Arrays.asList(orderDto, new OrderDto()));
-        given(orderService.getAllOrderDtoByAccountId(anyLong())).willReturn(orderDtos);
+        List<OrderResponse> orderResponses = new ArrayList<>(Arrays.asList(orderResponse, new OrderResponse()));
+        given(orderService.getAllOrderDtoByAccountId(anyLong())).willReturn(orderResponses);
 
         mvc.perform(get(URL + "/orders", 1)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -69,7 +76,7 @@ class OrderControllerTest {
 
     @Test
     void shouldGetOrderByAccountIdAndId() throws Exception {
-        given(orderService.getOrderByAccountIdAndOrderId(anyLong(), anyLong())).willReturn(orderDto);
+        given(orderService.getOrderByAccountIdAndOrderId(anyLong(), anyLong())).willReturn(orderResponse);
 
         mvc.perform(get(URL + "/orders/{id}", 1, 1)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -82,12 +89,12 @@ class OrderControllerTest {
 
     @Test
     void shouldSaveOrder() throws Exception {
-        given(orderService.saveOrder(1L, orderDto)).willReturn(orderDto);
+        given(orderService.saveOrder(1L, orderRequest)).willReturn(orderResponse);
 
         mvc.perform(post(URL + "/orders", 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(orderDto))
+                        .content(mapper.writeValueAsString(orderRequest))
                         .header("Authorization", "Bearer {JWT_TOKEN}"))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", is(1)))
@@ -96,12 +103,12 @@ class OrderControllerTest {
 
     @Test
     void shouldUpdateOrder() throws Exception {
-        given(orderService.updateOrder(anyLong(), anyLong(), any(OrderDto.class))).willReturn(orderDto);
+        given(orderService.updateOrder(anyLong(), anyLong(), any(OrderRequest.class))).willReturn(orderResponse);
 
         mvc.perform(put(URL + "/orders/{ordersId}", 1, 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(orderDto))
+                        .content(mapper.writeValueAsString(orderRequest))
                         .header("Authorization", "Bearer {JWT_TOKEN}"))
                 .andExpect(status().isAccepted())
                 .andExpect(jsonPath("$.id", is(1)))

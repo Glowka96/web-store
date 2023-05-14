@@ -50,7 +50,7 @@ class ShipmentControllerTest {
 
         shipmentDto = new ShipmentDto();
         shipmentDto.setId(1L);
-        shipmentDto.setQuality(3);
+        shipmentDto.setQuantity(3);
         shipmentDto.setProductDto(productDto);
     }
 
@@ -98,7 +98,7 @@ class ShipmentControllerTest {
                         .content(mapper.writeValueAsString(shipmentDto)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.quality", is(3)))
+                .andExpect(jsonPath("$.quantity", is(3)))
                 .andDo(print());
     }
 
@@ -115,7 +115,7 @@ class ShipmentControllerTest {
                         .content(mapper.writeValueAsString(shipmentDto)))
                 .andExpect(status().isAccepted())
                 .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.quality", is(3)))
+                .andExpect(jsonPath("$.quantity", is(3)))
                 .andDo(print());
     }
 

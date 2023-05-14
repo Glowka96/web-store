@@ -2,7 +2,7 @@ package com.example.porfolio.webstorespring.model.dto.accounts;
 
 import com.example.porfolio.webstorespring.annotations.Password;
 import com.example.porfolio.webstorespring.annotations.UniqueEmail;
-import com.example.porfolio.webstorespring.model.dto.orders.OrderDto;
+import com.example.porfolio.webstorespring.model.dto.orders.OrderResponse;
 import com.example.porfolio.webstorespring.model.entity.accounts.AccountRoles;
 import jakarta.validation.constraints.Email;
 import lombok.Data;
@@ -33,5 +33,5 @@ public class AccountDto {
 
     private AccountRoles accountRoles;
 
-    private List<OrderDto> ordersDto;
+    private List<OrderResponse> ordersDto;
 }

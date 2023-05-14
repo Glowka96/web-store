@@ -1,0 +1,63 @@
+<section class="wrapper-purchase">
+    <div class="title-purchase">
+        <h1>Purchase these products</h1>
+    </div>
+    <div class="purchase-box">
+        <div class="info-box">
+            <div class="order-box">
+                <span>
+                    <p>Shipments quantity: </p>{{quantity}}
+                </span>
+                <span>
+                    <p>Shipments price: </p>{{price}}
+                </span>
+            </div>
+            <div class="autocomplete-box" *ngIf="isFoundAddress">
+                <p>Do you want ship these products to your address? <br> If yes, you can autocomplete address.</p>
+                <button (click)="autocomplete()">Autocomplete</button>
+            </div>
+        </div>
+        <form class="address-box" [formGroup]="deliveryAddressForm">
+            <h2>Delivery address: </h2>
+            <div class="form-group">
+                <input formControlName="city" type="text" placeholder="City">
+                <div class="errors"
+                    *ngIf="deliveryAddressForm.get('city')?.invalid && deliveryAddressForm.get('city')?.dirty">
+                    <small *ngIf="deliveryAddressForm.get('city')?.errors?.['required']">The city is
+                        required.<br></small>
+                    <small *ngIf="deliveryAddressForm.get('city')?.errors?.['minLength'] || ['maxLength']">The city
+                        is must be between min 2 and max 32 letters.</small>
+                </div>
+            </div>
+            <div class="form-group">
+                <input formControlName="postcode" type="text" placeholder="Postcode">
+                <div class="errors"
+                    *ngIf="deliveryAddressForm.get('postcode')?.invalid && deliveryAddressForm.get('postcode')?.dirty">
+                    <small *ngIf="deliveryAddressForm.get('postcode')?.errors?.['required']">The postcode is
+                        required.<br></small>
+                    <small *ngIf="deliveryAddressForm.get('postcode')?.errors?.['pattern']">The postcode is invalid.
+                        <br>The correct form is e.g 99-999
+                    </small>
+                </div>
+            </div>
+            <div class="form-group">
+                <input formControlName="address" type="text" placeholder="Delivery address">
+                <div class="errors"
+                    *ngIf="deliveryAddressForm.get('address')?.invalid && deliveryAddressForm.get('address')?.dirty">
+                    <small *ngIf="deliveryAddressForm.get('address')?.errors?.['required']">The address is
+                        required.<br></small>
+                    <small *ngIf="deliveryAddressForm.get('address')?.errors?.['pattern']">The postcode is invalid.
+                        <br>The correct forms: street 50/21, ul. street 50 m21, ul street 50 m.20a
+                    </small>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="sumbit-box">
+        <button type="submit" (click)="purchase()" class="btn-purchase"
+            [disabled]="deliveryAddressForm.invalid">Purchase</button>
+        <div class="success-msg-box" *ngIf="isSumbitPurchase">
+            <p>{{sumbitMessage}}</p>
+        </div>
+    </div>
+</section>

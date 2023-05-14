@@ -37,7 +37,7 @@
     <div class="purchase-box">
         <div class="sumbit-box" *ngIf="isBasketEmpty">
             <p>Do you want to buy these products?</p>
-            <button class="btn-buy" (click)="onSumbitBuy()" type="submit">BUY</button>
+            <button class="btn-continue" (click)="onSumbitBuy()" type="submit">Continue purchase</button>
             <div class="continue-box" *ngIf="!isLoggedIn && isBuyBtnClicked">
                 <p>If you don't have an account, you need create account to buy these products. <br> You only spend one
                     minutes on it.</p>

@@ -7,16 +7,19 @@ import com.example.porfolio.webstorespring.mappers.ProducerMapper;
 import com.example.porfolio.webstorespring.mappers.ProductMapper;
 import com.example.porfolio.webstorespring.mappers.ShipmentMapper;
 import com.example.porfolio.webstorespring.model.dto.accounts.AccountDto;
-import com.example.porfolio.webstorespring.model.dto.orders.OrderDto;
+import com.example.porfolio.webstorespring.model.dto.orders.OrderRequest;
+import com.example.porfolio.webstorespring.model.dto.orders.OrderResponse;
 import com.example.porfolio.webstorespring.model.dto.orders.ShipmentDto;
 import com.example.porfolio.webstorespring.model.dto.products.ProductDto;
 import com.example.porfolio.webstorespring.model.entity.accounts.Account;
+import com.example.porfolio.webstorespring.model.entity.accounts.AccountAddress;
 import com.example.porfolio.webstorespring.model.entity.orders.Order;
 import com.example.porfolio.webstorespring.model.entity.orders.OrderStatus;
 import com.example.porfolio.webstorespring.model.entity.orders.Shipment;
 import com.example.porfolio.webstorespring.repositories.accounts.AccountRepository;
 import com.example.porfolio.webstorespring.repositories.orders.OrderRepository;
 import com.example.porfolio.webstorespring.services.orders.OrderService;
+import com.example.porfolio.webstorespring.services.orders.ShipmentService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,10 +38,10 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith({MockitoExtension.class})
 class OrderServiceTest {
@@ -46,15 +49,19 @@ class OrderServiceTest {
     private OrderRepository orderRepository;
     @Mock
     private AccountRepository accountRepository;
+    @Mock
+    private ShipmentService shipmentService;
     @Spy
     private OrderMapper orderMapper = Mappers.getMapper(OrderMapper.class);
     @InjectMocks
     private OrderService underTest;
 
     private Order order;
-    private OrderDto orderDto;
+    private OrderResponse orderResponse;
     private AccountDto accountDto;
     private Account account;
+    private OrderRequest orderRequest;
+    private List<ShipmentDto> shipmentsDto;
 
     @BeforeEach
     void initialization() {
@@ -67,6 +74,11 @@ class OrderServiceTest {
         ProducerMapper producerMapper = Mappers.getMapper(ProducerMapper.class);
         ReflectionTestUtils.setField(productMapper, "producerMapper", producerMapper);
 
+        AccountAddress accountAddress = new AccountAddress();
+        accountAddress.setCity("Test");
+        accountAddress.setPostcode("99-999");
+        accountAddress.setAddress("test 59/55");
+
         accountDto = new AccountDto();
         accountDto.setId(1L);
         accountDto.setFirstName("Account test");
@@ -76,6 +88,7 @@ class OrderServiceTest {
         account.setId(1L);
         account.setFirstName("Account test");
         account.setLastName("Name");
+        account.setAddress(accountAddress);
 
         ProductDto productDto = new ProductDto();
         productDto.setId(1L);
@@ -85,24 +98,28 @@ class OrderServiceTest {
         ShipmentDto shipmentDto = new ShipmentDto();
         shipmentDto.setId(1L);
         shipmentDto.setProductDto(productDto);
-        shipmentDto.setQuality(3);
+        shipmentDto.setQuantity(3);
         shipmentDto.setPrice(31.5);
 
-        List<ShipmentDto> shipmentDtos = new ArrayList<>(Arrays.asList(shipmentDto, shipmentDto));
+        shipmentsDto = new ArrayList<>(Arrays.asList(shipmentDto, shipmentDto));
 
-        orderDto = new OrderDto();
-        orderDto.setId(1L);
-        orderDto.setShipmentsDto(shipmentDtos);
-        orderDto.setStatus(OrderStatus.OPEN);
-        orderDto.setAccountDto(accountDto);
+        orderResponse = new OrderResponse();
+        orderResponse.setId(1L);
+        orderResponse.setShipmentsDto(shipmentsDto);
+        orderResponse.setStatus(OrderStatus.OPEN);
+        orderResponse.setDeliveryAddress("Test");
 
-        List<Shipment> shipments = shipmentMapper.mapToEntity(shipmentDtos);
+        List<Shipment> shipments = shipmentMapper.mapToEntity(shipmentsDto);
 
         order = new Order();
         order.setId(1L);
         order.setShipments(shipments);
         order.setStatus(OrderStatus.OPEN);
         order.setAccount(account);
+
+        orderRequest = new OrderRequest();
+        orderRequest.setShipmentsDto(shipmentsDto);
+        orderRequest.setDeliveryAddress("");
     }
 
     @Test
@@ -111,11 +128,11 @@ class OrderServiceTest {
         given(orderRepository.findAllByAccountId(anyLong())).willReturn(Arrays.asList(order, new Order()));
 
         // when
-       List<OrderDto> orderDtos = underTest.getAllOrderDtoByAccountId(1L);
+        List<OrderResponse> orderResponses = underTest.getAllOrderDtoByAccountId(1L);
 
         // then
-        assertThat(orderDtos).isNotNull();
-        assertThat(orderDtos.size()).isEqualTo(2);
+        assertThat(orderResponses).isNotNull();
+        assertThat(orderResponses.size()).isEqualTo(2);
     }
 
     @Test
@@ -138,12 +155,12 @@ class OrderServiceTest {
         Double expectedDouble = 63.0;
 
         // when
-        orderDto = underTest.saveOrder(1L, orderDto);
+        when(shipmentService.save(any(ShipmentDto.class))).thenReturn(shipmentsDto.get(0));
+        orderResponse = underTest.saveOrder(1L, orderRequest);
 
         // then
-        assertThat(orderDto.getAccountDto().getId()).isEqualTo(1L);
-        assertThat(orderDto.getNameUser()).isEqualTo(expectedNameUser);
-        assertThat(orderDto.getProductsPrice()).isEqualTo(expectedDouble);
+        assertThat(orderResponse.getNameUser()).isEqualTo(expectedNameUser);
+        assertThat(orderResponse.getProductsPrice()).isEqualTo(expectedDouble);
     }
 
     @Test
@@ -153,7 +170,7 @@ class OrderServiceTest {
         given(orderRepository.findById(anyLong())).willReturn(Optional.of(order));
 
         // when
-        orderDto = underTest.updateOrder(1L, 1L, orderDto);
+        orderResponse = underTest.updateOrder(1L, 1L, orderRequest);
 
         // then
         ArgumentCaptor<Order> orderArgumentCaptor =
@@ -161,9 +178,9 @@ class OrderServiceTest {
         verify(orderRepository).save(orderArgumentCaptor.capture());
 
         Order capturedOrder = orderArgumentCaptor.getValue();
-        OrderDto mappedOrderDto = orderMapper.mapToDto(capturedOrder);
+        OrderResponse mappedOrderResponse = orderMapper.mapToDto(capturedOrder);
 
-        assertThat(mappedOrderDto).isEqualTo(orderDto);
+        assertThat(mappedOrderResponse).isEqualTo(orderResponse);
     }
 
     @Test
@@ -174,7 +191,7 @@ class OrderServiceTest {
 
         // when
         // then
-        assertThatThrownBy(() -> underTest.updateOrder(1L, 1L, orderDto))
+        assertThatThrownBy(() -> underTest.updateOrder(1L, 1L, orderRequest))
                 .isInstanceOf(OrderCanNotModifiedException.class)
                 .hasMessageContaining("The order cannot be update because the order is being prepared");
     }

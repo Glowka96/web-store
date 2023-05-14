@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Shipment } from '../models/shipment';
+import { Order } from '../models/order';
 
 @Injectable({
   providedIn: 'root',
@@ -14,16 +15,24 @@ export class ShopService {
   );
   constructor(private http: HttpClient) {}
 
-  addToBasket(shipment: Shipment) {
+  public addToBasket(shipment: Shipment) {
     let cart = this.basket.value;
     let findShipment = cart.find((s) => s.product.id == shipment.product.id);
     if (findShipment) {
-      findShipment.price = findShipment.price + shipment.price;
+      findShipment.price = (
+        Number(findShipment.price) + Number(shipment.price)
+      ).toFixed(2);
       findShipment.quantity += shipment.quantity;
     } else {
       cart.push(shipment);
     }
     this.basket.next(cart);
+  }
+
+  public purchase(request: Order, accountId: string): Observable<any> {
+    return this.http
+      .post<any>(`${this.apiServerUrl}/accounts/${accountId}/orders`, request)
+      .pipe(tap((response) => console.log('Server response:', response)));
   }
 
   public get basket$() {

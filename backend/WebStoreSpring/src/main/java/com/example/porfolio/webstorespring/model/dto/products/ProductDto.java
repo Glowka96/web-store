@@ -26,8 +26,6 @@ public class ProductDto {
     @NotBlank(message = "The image url can't be blank")
     private String imageUrl;
 
-    @NotNull(message = "The price can't be null")
-    @NotBlank(message = "The price can't be blank")
     private Double price;
 
     private ProductType type;

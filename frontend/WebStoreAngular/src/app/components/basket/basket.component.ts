@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Shipment } from 'src/app/models/shipment';
+import { AccountService } from 'src/app/services/account.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { FormLoginService } from 'src/app/services/form-login.service';
 import { ShopService } from 'src/app/services/shop.service';
@@ -14,7 +16,6 @@ export class BasketComponent implements OnInit {
   private basket: Shipment[] = [];
   private cart: { [shipment: string]: number } = {};
   private selectedId!: string;
-  private accountId!: string;
   private loggedIn: boolean = false;
   private buyBtnClicked = false;
 
@@ -28,20 +29,19 @@ export class BasketComponent implements OnInit {
   constructor(
     private shopService: ShopService,
     private authService: AuthenticationService,
-    private formLoginService: FormLoginService
+    private formLoginService: FormLoginService,
+    private router: Router
   ) {
     this.shopService.basket$.subscribe((shipments) => {
       this.basket = shipments;
     });
-    this.authService.loggedId$().subscribe((id) => {
-      this.accountId = id;
-    });
+  }
+
+  ngOnInit(): void {
     this.authService.loggedIn$().subscribe((isLogged) => {
       this.loggedIn = isLogged;
     });
   }
-
-  ngOnInit(): void {}
 
   public get shipments() {
     return this.basket;
@@ -80,6 +80,9 @@ export class BasketComponent implements OnInit {
 
   public onSumbitBuy() {
     this.buyBtnClicked = !this.buyBtnClicked;
+    if (this.isLoggedIn) {
+      this.router.navigate(['/basket/purchase'], {});
+    }
   }
 
   public onRegister() {
