@@ -1,6 +1,7 @@
 package com.example.porfolio.webstorespring.mappers;
 
-import com.example.porfolio.webstorespring.model.dto.accounts.AccountDto;
+import com.example.porfolio.webstorespring.model.dto.accounts.AccountRequest;
+import com.example.porfolio.webstorespring.model.dto.accounts.AccountResponse;
 import com.example.porfolio.webstorespring.model.entity.accounts.Account;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -14,9 +15,9 @@ import org.mapstruct.Mapping;
 )
 public interface AccountMapper {
 
-    @Mapping(target = "ordersDto", source = "orders")
-    AccountDto mapToDto(Account account);
+    @Mapping(target = "addressDto", source = "address")
+    AccountResponse mapToDto(Account account);
 
-    @Mapping(target = "orders", source = "ordersDto")
-    Account mapToEntity(AccountDto accountDto);
+    @Mapping(target = "address", source = "addressDto")
+    Account mapToEntity(AccountRequest accountRequest);
 }

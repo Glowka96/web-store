@@ -51,7 +51,7 @@ class AccountAddressServiceTest {
 
         accountAddress = new AccountAddress();
         accountAddress.setId(1L);
-        accountAddress.setAddress("test 59");
+        accountAddress.setStreet("test 59/2");
         accountAddress.setCity("test");
         accountAddress.setPostcode("99-999");
         accountAddress.setAccount(account);
@@ -70,7 +70,7 @@ class AccountAddressServiceTest {
         // then
         assertThat(accountAddressDto).isNotNull();
         assertThat(accountAddressDto.getId()).isEqualTo(1);
-        assertThat(accountAddressDto.getAddress()).isEqualTo("test 59");
+        assertThat(accountAddressDto.getStreet()).isEqualTo("test 59/2");
         assertThat(accountAddressDto.getCity()).isEqualTo("test");
         assertThat(accountAddressDto.getPostcode()).isEqualTo("99-999");
     }

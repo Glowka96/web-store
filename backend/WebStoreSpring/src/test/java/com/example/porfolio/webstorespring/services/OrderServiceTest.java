@@ -6,7 +6,7 @@ import com.example.porfolio.webstorespring.mappers.OrderMapper;
 import com.example.porfolio.webstorespring.mappers.ProducerMapper;
 import com.example.porfolio.webstorespring.mappers.ProductMapper;
 import com.example.porfolio.webstorespring.mappers.ShipmentMapper;
-import com.example.porfolio.webstorespring.model.dto.accounts.AccountDto;
+import com.example.porfolio.webstorespring.model.dto.accounts.AccountRequest;
 import com.example.porfolio.webstorespring.model.dto.orders.OrderRequest;
 import com.example.porfolio.webstorespring.model.dto.orders.OrderResponse;
 import com.example.porfolio.webstorespring.model.dto.orders.ShipmentDto;
@@ -58,7 +58,7 @@ class OrderServiceTest {
 
     private Order order;
     private OrderResponse orderResponse;
-    private AccountDto accountDto;
+    private AccountRequest accountRequest;
     private Account account;
     private OrderRequest orderRequest;
     private List<ShipmentDto> shipmentsDto;
@@ -77,12 +77,11 @@ class OrderServiceTest {
         AccountAddress accountAddress = new AccountAddress();
         accountAddress.setCity("Test");
         accountAddress.setPostcode("99-999");
-        accountAddress.setAddress("test 59/55");
+        accountAddress.setStreet("test 59/55");
 
-        accountDto = new AccountDto();
-        accountDto.setId(1L);
-        accountDto.setFirstName("Account test");
-        accountDto.setLastName("Name");
+        accountRequest = new AccountRequest();
+        accountRequest.setFirstName("Account test");
+        accountRequest.setLastName("Name");
 
         account = new Account();
         account.setId(1L);
@@ -151,7 +150,7 @@ class OrderServiceTest {
     void shouldSave() {
         // given
         given(accountRepository.findById(anyLong())).willReturn(Optional.of(account));
-        String expectedNameUser = accountDto.getFirstName() + " " + accountDto.getLastName();
+        String expectedNameUser = accountRequest.getFirstName() + " " + accountRequest.getLastName();
         Double expectedDouble = 63.0;
 
         // when
