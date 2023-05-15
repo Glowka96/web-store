@@ -9,7 +9,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthHttpInterceptorService } from './services/auth-http-interceptor.service';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { ProductsComponent } from './components/products/products.component';
-import { FormComponent } from './components/form/form.component';
 import { ModCategoryComponent } from './components/mod-category/mod-category.component';
 import { BoardAdminComponent } from './components/board-admin/board-admin.component';
 import { ModSubcategoryComponent } from './components/mod-subcategory/mod-subcategory.component';
@@ -20,6 +19,8 @@ import { AccountComponent } from './components/account/account.component';
 import { BasketComponent } from './components/basket/basket.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { PurchaseComponent } from './components/purchase/purchase.component';
+import { FormLoginComponent } from './components/form-login/form-login.component';
+import { FormAccountComponent } from './components/form-account/form-account.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,7 @@ import { PurchaseComponent } from './components/purchase/purchase.component';
     NavigationComponent,
     ProductsComponent,
     ContentComponent,
-    FormComponent,
+    FormLoginComponent,
     ModCategoryComponent,
     BoardAdminComponent,
     ModSubcategoryComponent,
@@ -37,6 +38,7 @@ import { PurchaseComponent } from './components/purchase/purchase.component';
     BasketComponent,
     FooterComponent,
     PurchaseComponent,
+    FormAccountComponent,
   ],
   imports: [
     BrowserModule,

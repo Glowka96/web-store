@@ -1,0 +1,50 @@
+.wrapper-account {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  width: 95%;
+  border-radius: 15px;
+  margin: 15px auto;
+  padding-bottom: 32px;
+  background-color: aliceblue;
+  .title-accounts {
+    font-size: 32px;
+    width: 100%;
+  }
+  .account-box {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    gap: 2rem;
+    .options-box {
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: center;
+      gap: 15px;
+      .options {
+        cursor: pointer;
+        padding: 15px;
+        box-shadow: 0px 0px 6px 0px rgb(154, 155, 167);
+        background-color: rgb(240, 240, 240);
+        border-radius: 15px;
+        a {
+          text-decoration: none;
+          color: rgb(000, 000, 000);
+        }
+        &:hover {
+          background-color: darkgray;
+        }
+        &:active {
+          transform: scale(0.9);
+        }
+      }
+    }
+  }
+  .account-data {
+    margin-top: 15px;
+    font-size: 18px;
+    .data {
+      font-weight: 600;
+    }
+  }
+}

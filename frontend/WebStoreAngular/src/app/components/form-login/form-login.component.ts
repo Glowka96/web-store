@@ -13,10 +13,10 @@ import { RegistrationService } from 'src/app/services/registration.service';
 
 @Component({
   selector: 'app-form',
-  templateUrl: './form.component.html',
-  styleUrls: ['./form.component.scss'],
+  templateUrl: './form-login.component.html',
+  styleUrls: ['./form-login.component.scss'],
 })
-export class FormComponent implements OnInit {
+export class FormLoginComponent implements OnInit {
   private formSectionMove = false;
   private successMessage?: string | null;
   private errorMessage?: string | null;
