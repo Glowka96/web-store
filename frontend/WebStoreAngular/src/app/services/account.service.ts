@@ -5,6 +5,7 @@ import { Observable, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AccountAddress } from '../models/account-address';
 import { Account } from '../models/account';
+import { AccountRequest } from '../models/account-request';
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +22,16 @@ export class AccountService {
   public getAccountAddress(accountId: string): Observable<AccountAddress> {
     return this.http.get<AccountAddress>(
       `${this.apiServerUrl}/accounts/${accountId}/address`
+    );
+  }
+
+  public updateAccount(
+    accountId: string,
+    request: AccountRequest
+  ): Observable<Account> {
+    return this.http.put<Account>(
+      `${this.apiServerUrl}/accounts/${accountId}`,
+      request
     );
   }
 }

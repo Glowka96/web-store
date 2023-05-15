@@ -28,7 +28,7 @@ public class RegistrationRequest {
     private String email;
 
     @Password
-    @NotNull(message = "The email can't be null")
-    @NotBlank(message = "The email can't be blank")
+    @NotNull(message = "The password can't be null")
+    @NotBlank(message = "The password can't be blank")
     private String password;
 }
