@@ -41,12 +41,12 @@
                 </div>
             </div>
             <div class="form-group">
-                <input formControlName="address" type="text" placeholder="Delivery address">
+                <input formControlName="street" type="text" placeholder="Delivery address">
                 <div class="errors"
-                    *ngIf="deliveryAddressForm.get('address')?.invalid && deliveryAddressForm.get('address')?.dirty">
-                    <small *ngIf="deliveryAddressForm.get('address')?.errors?.['required']">The address is
+                    *ngIf="deliveryAddressForm.get('street')?.invalid && deliveryAddressForm.get('address')?.dirty">
+                    <small *ngIf="deliveryAddressForm.get('street')?.errors?.['required']">The address is
                         required.<br></small>
-                    <small *ngIf="deliveryAddressForm.get('address')?.errors?.['pattern']">The postcode is invalid.
+                    <small *ngIf="deliveryAddressForm.get('street')?.errors?.['pattern']">The postcode is invalid.
                         <br>The correct forms: street 50/21, ul. street 50 m21, ul street 50 m.20a
                     </small>
                 </div>

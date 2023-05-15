@@ -42,6 +42,8 @@
         align-items: center;
         img {
           width: 100%;
+          max-width: 240px;
+          max-height: 240px;
         }
         .product-description {
           position: absolute;

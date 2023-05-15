@@ -1,1 +1,29 @@
-<p>account works!</p>
+<section class="wrapper-account">
+    <div class="title-accounts">
+        <h1>Your account</h1>
+    </div>
+    <div class="account-box">
+        <div class="account-img">
+            <img src="{{acc.imageUrl}}" alt="account-img">
+        </div>
+        <div class="options-box">
+            <div class="options">
+                <a [routerLink]="['accounts/update']">Update account</a>
+            </div>
+            <div class="options">
+                <a [routerLink]="['accounts/address/update']">Update address</a>
+            </div>
+            <div class="options">
+                <a [routerLink]="['accounts/orders']">Your orders</a>
+            </div>
+        </div>
+    </div>
+    <div class="account-data">
+        <p><span class="data">First name: </span>{{acc.firstName}} </p>
+        <p><span class="data">Last name: </span>{{acc.lastName}} </p>
+        <p><span class="data">Email: </span>{{acc.email}}</p>
+        <p><span class="data">City: </span>{{acc.address.city}}</p>
+        <p><span class="data">Postcode: </span>{{acc.address.postcode}}</p>
+        <p><span class="data">Street: </span>{{acc.address.street}}</p>
+    </div>
+</section>

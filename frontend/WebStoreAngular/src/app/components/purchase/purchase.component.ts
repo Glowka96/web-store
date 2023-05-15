@@ -41,7 +41,7 @@ export class PurchaseComponent implements OnInit {
       ],
       updateOn: 'change',
     }),
-    address: new FormControl('', {
+    street: new FormControl('', {
       validators: [
         Validators.required,
         Validators.pattern(this.addressPattern),
@@ -63,6 +63,7 @@ export class PurchaseComponent implements OnInit {
       next: (response) => {
         this.accountAddress = response;
         this.foundAddress = true;
+        console.log(this.accountAddress);
       },
       error: (error) => {
         if (error.status === 404) {
@@ -87,8 +88,8 @@ export class PurchaseComponent implements OnInit {
     this.deliveryAddressForm.controls['postcode'].setValue(
       this.accountAddress.postcode
     );
-    this.deliveryAddressForm.controls['address'].setValue(
-      this.accountAddress.address
+    this.deliveryAddressForm.controls['street'].setValue(
+      this.accountAddress.street
     );
   }
 
@@ -96,7 +97,7 @@ export class PurchaseComponent implements OnInit {
     if (this.deliveryAddressForm.valid) {
       let city = this.deliveryAddressForm.controls['city']?.value ?? '';
       let postcode = this.deliveryAddressForm.controls['postcode']?.value ?? '';
-      let address = this.deliveryAddressForm.controls['address']?.value ?? '';
+      let address = this.deliveryAddressForm.controls['street']?.value ?? '';
       let request: Order = {
         shipments: this.basket,
         deliveryAddress: city + ', ' + postcode + ', ' + address,

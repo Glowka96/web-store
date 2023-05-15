@@ -38,8 +38,6 @@ export class AuthenticationService {
         this.loggedRole.next(decodedJWT.role);
         this.loggedId.next(decodedJWT.id);
 
-        console.log('id: ' + this.loggedId.value);
-
         this.checkAdminRouteNav();
 
         let headers = new HttpHeaders();
@@ -87,19 +85,19 @@ export class AuthenticationService {
     return JSON.parse(window.atob(token.split('.')[1]));
   }
 
-  loggedRole$(): Observable<string> {
+  public loggedRole$(): Observable<string> {
     return this.loggedRole.asObservable();
   }
 
-  setLoggedIn(loggedIn: boolean): void {
+  public setLoggedIn(loggedIn: boolean): void {
     this.loggedIn.next(loggedIn);
   }
 
-  loggedIn$(): Observable<boolean> {
+  public loggedIn$(): Observable<boolean> {
     return this.loggedIn.asObservable();
   }
 
-  loggedId$(): Observable<string> {
+  public loggedId$(): Observable<string> {
     return this.loggedId.asObservable();
   }
 }
