@@ -24,7 +24,7 @@ public class RegistrationRequest {
     @UniqueEmail
     @NotNull(message = "The email can't be null")
     @NotBlank(message = "The email can't be blank")
-    @Email(message = "Login should be a valid e-mail address format")
+    @Email(message = "The login should be a valid e-mail address format")
     private String email;
 
     @Password
