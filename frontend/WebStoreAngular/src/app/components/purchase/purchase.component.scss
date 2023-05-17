@@ -1,13 +1,13 @@
 .wrapper-purchase {
   display: flex;
-  flex-flow: column wrap;
-  justify-content: center;
+  flex-direction: column;
   width: 95%;
   border-radius: 15px;
   margin: 15px auto;
   background-color: aliceblue;
   .title-purchase {
     font-size: 32px;
+    border-bottom: 1px solid black;
   }
   .purchase-box {
     display: flex;

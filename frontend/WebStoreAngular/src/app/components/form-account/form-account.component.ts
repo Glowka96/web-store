@@ -26,19 +26,19 @@ export class FormAccountComponent implements OnInit {
     {
       firstName: new FormControl('', {
         validators: [
+          Validators.required,
           Validators.minLength(3),
           Validators.maxLength(20),
           Validators.pattern('[a-zA-Z ]*'),
-          Validators.required,
         ],
         updateOn: 'change',
       }),
       lastName: new FormControl('', {
         validators: [
+          Validators.required,
           Validators.minLength(3),
           Validators.maxLength(20),
           Validators.pattern('[a-zA-Z ]*'),
-          Validators.required,
         ],
         updateOn: 'change',
       }),
@@ -52,7 +52,6 @@ export class FormAccountComponent implements OnInit {
       }),
       confirmPassword: new FormControl('', {
         validators: [
-          Validators.required,
           Validators.pattern(this.passwordPattern),
           Validators.minLength(8),
           Validators.maxLength(30),
@@ -60,7 +59,7 @@ export class FormAccountComponent implements OnInit {
         updateOn: 'change',
       }),
       imageUrl: new FormControl('', {
-        validators: [Validators.required],
+        validators: [Validators.pattern(this.imageUrlPattern)],
       }),
     },
     {
@@ -92,7 +91,7 @@ export class FormAccountComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  public onSumbitUpdate() {
+  onSumbitUpdate() {
     if (this.accountForm.valid) {
       let request: AccountRequest = {
         firstName: this.accountForm.controls['firstName']?.value,
@@ -101,13 +100,12 @@ export class FormAccountComponent implements OnInit {
         imageUrl: this.accountForm.controls['imageUrl']?.value,
       };
       this.accountService.updateAccount(this.accountId, request).subscribe({
-        next: () => {
+        next: (response) => {
           this.router.navigate(['/accounts'], {});
         },
         error: (error) => {
           if (error.status === 400) {
-            let errorMessage = '';
-            errorMessage = error.error.errors.join('<br>');
+            let errorMessage = error.error.errors.join('<br>');
             this.errorMessage = errorMessage;
           }
         },

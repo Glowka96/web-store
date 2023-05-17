@@ -4,6 +4,7 @@ import com.example.porfolio.webstorespring.model.entity.products.ProductType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
@@ -24,11 +25,16 @@ public class ProductDto {
 
     @NotNull(message = "The image url can't be null")
     @NotBlank(message = "The image url can't be blank")
+    @Pattern(regexp = "^(http(s)?:)?([/|.|\\w|\\s|-])*\\.(?:jpg|png)$",
+            message = "This is not image url")
     private String imageUrl;
 
+    @NotNull(message = "The price can't be null")
+    @NotBlank(message = "The price can't be blank")
     private Double price;
 
     private ProductType type;
+
     @JsonIgnore
     private SubcategoryDto subcategoryDto;
     @JsonIgnore

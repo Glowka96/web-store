@@ -32,7 +32,7 @@
                         required.
                         <br></small>
                     <small *ngIf="registrationForm.get('firstName')?.errors?.['minLength'] || ['maxLength']">The first
-                        name must be between min 3 and max 20 letters. <br></small>
+                        name must be between min 3 and max 20 letters.<br></small>
                     <small *ngIf="registrationForm.get('firstName')?.errors?.['pattern']">The first name cannot have
                         numbers.</small>
                 </div>
