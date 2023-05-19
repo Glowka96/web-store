@@ -18,5 +18,6 @@ public interface AccountMapper {
     @Mapping(target = "addressDto", source = "address")
     AccountResponse mapToDto(Account account);
 
+    @Mapping(target = "enabled", ignore = true)
     Account mapToEntity(AccountRequest accountRequest);
 }

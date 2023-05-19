@@ -73,6 +73,5 @@ public class AccountService {
         if (updatedAccount.getAccountRoles() == null) {
             updatedAccount.setAccountRoles(foundAccount.getAccountRoles());
         }
-        updatedAccount.setEnabled(Boolean.TRUE);
     }
 }
