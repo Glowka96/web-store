@@ -27,7 +27,15 @@ export class AccountComponent implements OnInit {
     });
   }
 
-  public get acc() {
+  public get user() {
     return this.account;
+  }
+
+  public getUserImageUrl() {
+    if (this.account) {
+      return this.account.imageUrl;
+    } else {
+      return 'https://i.imgur.com/a23SANX.png';
+    }
   }
 }

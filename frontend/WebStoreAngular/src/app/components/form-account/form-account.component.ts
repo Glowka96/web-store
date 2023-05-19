@@ -29,7 +29,7 @@ export class FormAccountComponent implements OnInit {
           Validators.required,
           Validators.minLength(3),
           Validators.maxLength(20),
-          Validators.pattern('[a-zA-Z ]*'),
+          Validators.pattern('[a-zA-Z]*'),
         ],
         updateOn: 'change',
       }),
@@ -38,7 +38,7 @@ export class FormAccountComponent implements OnInit {
           Validators.required,
           Validators.minLength(3),
           Validators.maxLength(20),
-          Validators.pattern('[a-zA-Z ]*'),
+          Validators.pattern('[a-zA-Z]*'),
         ],
         updateOn: 'change',
       }),
@@ -100,7 +100,7 @@ export class FormAccountComponent implements OnInit {
         imageUrl: this.accountForm.controls['imageUrl']?.value,
       };
       this.accountService.updateAccount(this.accountId, request).subscribe({
-        next: (response) => {
+        next: () => {
           this.router.navigate(['/accounts'], {});
         },
         error: (error) => {

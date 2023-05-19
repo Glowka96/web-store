@@ -31,6 +31,7 @@ export class PurchaseComponent implements OnInit {
         Validators.required,
         Validators.minLength(2),
         Validators.maxLength(32),
+        Validators.pattern('[a-zA-Z]*'),
       ],
       updateOn: 'change',
     }),

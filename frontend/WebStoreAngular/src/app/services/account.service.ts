@@ -34,4 +34,14 @@ export class AccountService {
       request
     );
   }
+
+  public updateAddress(
+    accountId: string,
+    request: AccountAddress
+  ): Observable<AccountAddress> {
+    return this.http.put<AccountAddress>(
+      `${this.apiServerUrl}/accounts/${accountId}/address`,
+      request
+    );
+  }
 }

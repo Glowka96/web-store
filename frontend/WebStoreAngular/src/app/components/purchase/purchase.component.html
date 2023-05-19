@@ -26,7 +26,9 @@
                     <small *ngIf="deliveryAddressForm.get('city')?.errors?.['required']">The city is
                         required.<br></small>
                     <small *ngIf="deliveryAddressForm.get('city')?.errors?.['minLength'] || ['maxLength']">The city
-                        is must be between min 2 and max 32 letters.</small>
+                        is must be between min 2 and max 32 letters.<br></small>
+                    <small *ngIf="deliveryAddressForm.get('city')?.errors?.['pattern']">The city cannot have number or
+                        special char.</small>
                 </div>
             </div>
             <div class="form-group">
@@ -36,18 +38,18 @@
                     <small *ngIf="deliveryAddressForm.get('postcode')?.errors?.['required']">The postcode is
                         required.<br></small>
                     <small *ngIf="deliveryAddressForm.get('postcode')?.errors?.['pattern']">The postcode is invalid.
-                        <br>The correct form is e.g 99-999
+                        <br>The correct form is e.g: 99-999
                     </small>
                 </div>
             </div>
             <div class="form-group">
                 <input formControlName="street" type="text" placeholder="Delivery address">
                 <div class="errors"
-                    *ngIf="deliveryAddressForm.get('street')?.invalid && deliveryAddressForm.get('address')?.dirty">
+                    *ngIf="deliveryAddressForm.get('street')?.invalid && deliveryAddressForm.get('street')?.dirty">
                     <small *ngIf="deliveryAddressForm.get('street')?.errors?.['required']">The address is
                         required.<br></small>
                     <small *ngIf="deliveryAddressForm.get('street')?.errors?.['pattern']">The postcode is invalid.
-                        <br>The correct forms: street 50/21, ul. street 50 m21, ul street 50 m.20a
+                        <br>The correct forms is e.g: street 50/21, ul. street 50 m21, ul street 50 m.20a
                     </small>
                 </div>
             </div>

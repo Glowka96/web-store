@@ -13,7 +13,7 @@ public class AccountAddressDto {
 
     @NotNull(message = "The city can't be null")
     @NotBlank(message = "The city can't be blank")
-    @Size(min = 2, max = 32, message = "The city must between min 3 and max 20 letters")
+    @Size(min = 2, max = 32, message = "The city must between min 3 and max 32 letters")
     private String city;
 
     @NotNull(message = "The street can't be null")

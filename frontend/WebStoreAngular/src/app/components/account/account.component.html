@@ -4,7 +4,7 @@
     </div>
     <div class="account-box">
         <div class="account-img">
-            <img src="{{acc.imageUrl}}" alt="account-img">
+            <img [src]="getUserImageUrl()" alt="account-img">
         </div>
         <div class="options-box">
             <div class="options">
@@ -19,11 +19,11 @@
         </div>
     </div>
     <div class="account-data">
-        <p><span class="data">First name: </span>{{acc.firstName}} </p>
-        <p><span class="data">Last name: </span>{{acc.lastName}} </p>
-        <p><span class="data">Email: </span>{{acc.email}}</p>
-        <p><span class="data">City: </span>{{acc.address.city}}</p>
-        <p><span class="data">Postcode: </span>{{acc.address.postcode}}</p>
-        <p><span class="data">Street: </span>{{acc.address.street}}</p>
+        <p><span class="data">First name: </span>{{user.firstName}} </p>
+        <p><span class="data">Last name: </span>{{user.lastName}} </p>
+        <p><span class="data">Email: </span>{{user.email}}</p>
+        <p><span class="data">City: </span>{{user.address.city}}</p>
+        <p><span class="data">Postcode: </span>{{user.address.postcode}}</p>
+        <p><span class="data">Street: </span>{{user.address.street}}</p>
     </div>
 </section>
