@@ -118,8 +118,7 @@ export class FormLoginComponent implements OnInit {
         },
         error: (error) => {
           this.successMessage = null;
-          let errorMessage = '';
-          errorMessage = error.error.errors.join('<br>');
+          let errorMessage = error.error.errors.join('<br>');
           this.errorMessage = errorMessage;
         },
       });

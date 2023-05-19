@@ -104,10 +104,8 @@ export class FormAccountComponent implements OnInit {
           this.router.navigate(['/accounts'], {});
         },
         error: (error) => {
-          if (error.status === 400) {
-            let errorMessage = error.error.errors.join('<br>');
-            this.errorMessage = errorMessage;
-          }
+          let errorMessage = error.error.errors.join('<br>');
+          this.errorMessage = errorMessage;
         },
       });
     }

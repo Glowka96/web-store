@@ -1,6 +1,5 @@
-package com.example.porfolio.webstorespring.controllers;
+package com.example.porfolio.webstorespring.controllers.accounts;
 
-import com.example.porfolio.webstorespring.controllers.accounts.RegistrationController;
 import com.example.porfolio.webstorespring.model.dto.accounts.RegistrationRequest;
 import com.example.porfolio.webstorespring.services.accounts.RegistrationService;
 import com.fasterxml.jackson.databind.ObjectMapper;

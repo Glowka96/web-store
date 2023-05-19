@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import {
-  HttpErrorResponse,
   HttpEvent,
   HttpHandler,
   HttpInterceptor,
   HttpRequest,
 } from '@angular/common/http';
-import { Observable, catchError, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -24,15 +23,6 @@ export class AuthHttpInterceptorService implements HttpInterceptor {
       });
     }
 
-    return next.handle(request).pipe(
-      catchError((err) => {
-        if (err instanceof HttpErrorResponse) {
-          if (err.status === 401) {
-          }
-        }
-        const erre = new Error('test');
-        return throwError(() => erre);
-      })
-    );
+    return next.handle(request);
   }
 }

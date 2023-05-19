@@ -1,6 +1,5 @@
-package com.example.porfolio.webstorespring.controllers;
+package com.example.porfolio.webstorespring.controllers.orders;
 
-import com.example.porfolio.webstorespring.controllers.orders.OrderController;
 import com.example.porfolio.webstorespring.model.dto.orders.OrderRequest;
 import com.example.porfolio.webstorespring.model.dto.orders.OrderResponse;
 import com.example.porfolio.webstorespring.model.dto.orders.ShipmentDto;

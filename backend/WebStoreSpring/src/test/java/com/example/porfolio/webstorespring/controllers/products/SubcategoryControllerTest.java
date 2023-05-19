@@ -1,8 +1,7 @@
-package com.example.porfolio.webstorespring.controllers;
+package com.example.porfolio.webstorespring.controllers.products;
 
-import com.example.porfolio.webstorespring.controllers.products.ProducerController;
-import com.example.porfolio.webstorespring.model.dto.products.ProducerDto;
-import com.example.porfolio.webstorespring.services.products.ProducerService;
+import com.example.porfolio.webstorespring.model.dto.products.SubcategoryDto;
+import com.example.porfolio.webstorespring.services.products.SubcategoryService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,27 +13,24 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.Arrays;
-
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith({MockitoExtension.class})
-class ProducerControllerTest {
+@ExtendWith(MockitoExtension.class)
+class SubcategoryControllerTest {
 
-    @Mock
-    private ProducerService producerService;
     @InjectMocks
-    private ProducerController underTest;
+    private SubcategoryController underTest;
+    @Mock
+    private SubcategoryService subCategoryService;
     private MockMvc mvc;
     private ObjectMapper mapper;
-    private static final String URL = "/api/v1/producers";
-    private ProducerDto producerDto;
+    private final static String URL = "/api/v1/categories";
+    private SubcategoryDto subCategoryDto;
 
     @BeforeEach
     void initialization() {
@@ -42,43 +38,39 @@ class ProducerControllerTest {
 
         mapper = new ObjectMapper();
 
-        producerDto = new ProducerDto();
-        producerDto.setId(1L);
-        producerDto.setName("Test");
+        subCategoryDto = new SubcategoryDto();
+        subCategoryDto.setId(1L);
+        subCategoryDto.setName("Test");
     }
 
     @Test
-    void shouldGetAllProducer() throws Exception {
-        given(producerService.getAllProducer()).willReturn(Arrays.asList(producerDto, new ProducerDto()));
+    void shouldGetSubCategoryByName() throws Exception {
+        // given
+        given(subCategoryService.getSubcategoryDtoById(1L)).willReturn(subCategoryDto);
 
-        mvc.perform(get(URL)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(2)))
-                .andDo(print());
-    }
-
-    @Test
-    void shouldGetProducerById() throws Exception {
-        given(producerService.getProducerById(1L)).willReturn(producerDto);
-
-        mvc.perform(get(URL + "/{id}", 1)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(1)))
-                .andDo(print());
-    }
-
-    @Test
-    void shouldSaveProducer() throws Exception {
-        given(producerService.save(producerDto)).willReturn(producerDto);
-
-        mvc.perform(post(URL)
+        // when
+        // then
+        mvc.perform(get(URL + "/subcategories/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(producerDto)))
+                        .content(mapper.writeValueAsString(subCategoryDto)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", is("Test")))
+                .andDo(print());
+    }
+
+
+    @Test
+    public void shouldSaveSubCategory() throws Exception {
+        // given
+        given(subCategoryService.save(1L, subCategoryDto)).willReturn(subCategoryDto);
+
+        // when
+        // then
+        mvc.perform(post(URL + "/{id}/subcategories", 1)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(subCategoryDto)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.name", is("Test")))
@@ -86,13 +78,16 @@ class ProducerControllerTest {
     }
 
     @Test
-    void shouldUpdateProducer() throws Exception {
-        given(producerService.update(1L, producerDto)).willReturn(producerDto);
+    void shouldUpdateSubCategory() throws Exception {
+        // given
+        given(subCategoryService.update(1L, 1L, subCategoryDto)).willReturn(subCategoryDto);
 
-        mvc.perform(put(URL + "/{id}", 1)
+        // when
+        // then
+        mvc.perform(put(URL + "/{categoryId}/subcategories/{subcategoryId}", 1, 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(producerDto)))
+                        .content(mapper.writeValueAsString(subCategoryDto)))
                 .andExpect(status().isAccepted())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.name", is("Test")))
@@ -100,8 +95,8 @@ class ProducerControllerTest {
     }
 
     @Test
-    void shouldDeleteProducer() throws Exception{
-        mvc.perform(delete(URL + "/{id}", 1))
+    void shouldDeleteSubCategoryByName() throws Exception {
+        mvc.perform(delete(URL + "/subcategories/{subcategoryId}", 1L))
                 .andExpect(status().isNoContent())
                 .andDo(print());
     }

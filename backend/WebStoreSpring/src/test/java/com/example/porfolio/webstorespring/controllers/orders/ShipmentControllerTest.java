@@ -1,9 +1,8 @@
-package com.example.porfolio.webstorespring.controllers;
+package com.example.porfolio.webstorespring.controllers.orders;
 
-
-import com.example.porfolio.webstorespring.controllers.products.CategoryController;
-import com.example.porfolio.webstorespring.model.dto.products.CategoryDto;
-import com.example.porfolio.webstorespring.services.products.CategoryService;
+import com.example.porfolio.webstorespring.model.dto.orders.ShipmentDto;
+import com.example.porfolio.webstorespring.model.dto.products.ProductDto;
+import com.example.porfolio.webstorespring.services.orders.ShipmentService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,38 +18,50 @@ import java.util.Arrays;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(MockitoExtension.class)
-class CategoryControllerTest {
+@ExtendWith({MockitoExtension.class})
+class ShipmentControllerTest {
     @InjectMocks
-    private CategoryController underTest;
+    private ShipmentController underTest;
     @Mock
-    private CategoryService categoryService;
-    private MockMvc mvc;
+    private ShipmentService shipmentService;
+
     private ObjectMapper mapper;
-    private final static String URL = "/api/v1/categories";
-    private CategoryDto categoryDto;
+    private MockMvc mvc;
+
+    private final static String URL = "/api/v1/shipments";
+    private ShipmentDto shipmentDto;
 
     @BeforeEach
-    public void initialization() {
+    void initialization() {
         mvc = MockMvcBuilders.standaloneSetup(underTest).build();
 
         mapper = new ObjectMapper();
 
-        categoryDto = new CategoryDto();
-        categoryDto.setName("Test");
-        categoryDto.setId(1L);
+        ProductDto  productDto = new ProductDto();
+        productDto.setId(1L);
+        productDto.setPrice(20.0);
+        productDto.setName("Test");
+        productDto.setDescription("Test description");
+        productDto.setImageUrl("https://www.trefl.com/media/catalog/product/cache/550c1e1c568f7ff4e3f4d09dfa9b2306/3/7/37459_150_01.png");
+
+        shipmentDto = new ShipmentDto();
+        shipmentDto.setId(1L);
+        shipmentDto.setQuantity(3);
+        shipmentDto.setProductDto(productDto);
     }
 
     @Test
-    void shouldGetAllCategory() throws Exception {
+    void shouldGetAllShipments() throws Exception {
         // given
-        given(categoryService.getAllCategoryDto()).willReturn(Arrays.asList(categoryDto, new CategoryDto()));
+        given(shipmentService.getAllShipment()).willReturn(Arrays.asList(shipmentDto, shipmentDto));
 
         // when
         // then
@@ -63,58 +74,59 @@ class CategoryControllerTest {
     }
 
     @Test
-    void shouldGetCategoryById() throws Exception {
+    void shouldGetShipmentById() throws Exception {
         // given
-        given(categoryService.getCategoryDtoById(1L)).willReturn(categoryDto);
+        given(shipmentService.getShipmentDtoById(anyLong())).willReturn(shipmentDto);
 
         // when
         // then
-        mvc.perform(get(URL + "/{id}", 1L)
+        mvc.perform(get(URL + "/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(categoryDto)))
+                        .content(mapper.writeValueAsString(shipmentDto)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.name", is("Test")))
                 .andDo(print());
     }
 
     @Test
-    void shouldSaveCategory() throws Exception {
+    void shouldSaveShipment() throws Exception {
         // given
-        given(categoryService.save(categoryDto)).willReturn(categoryDto);
+        given(shipmentService.save(any(ShipmentDto.class))).willReturn(shipmentDto);
 
         // when
         // then
         mvc.perform(post(URL)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(categoryDto)))
+                        .content(mapper.writeValueAsString(shipmentDto)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.name", is("Test")))
+                .andExpect(jsonPath("$.id", is(1)))
+                .andExpect(jsonPath("$.quantity", is(3)))
                 .andDo(print());
     }
 
     @Test
-    void shouldUpdateCategory() throws Exception {
+    void shouldUpdateShipment() throws Exception {
         // given
-        given(categoryService.update(1L, categoryDto)).willReturn(categoryDto);
+        given(shipmentService.update(anyLong(), any(ShipmentDto.class))).willReturn(shipmentDto);
 
         // when
         // then
-        mvc.perform(put(URL + "/{id}", 1L)
+        mvc.perform(put(URL + "/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(categoryDto)))
+                        .content(mapper.writeValueAsString(shipmentDto)))
                 .andExpect(status().isAccepted())
-                .andExpect(jsonPath("$.name", is("Test")))
                 .andExpect(jsonPath("$.id", is(1)))
+                .andExpect(jsonPath("$.quantity", is(3)))
                 .andDo(print());
     }
 
     @Test
-    void shouldDeleteCategoryById() throws Exception {
-        mvc.perform(delete(URL + "/{id}", 1L))
-                .andExpect(status().isNoContent());
+    void shouldDeleteShipmentById() throws Exception {
+        mvc.perform(delete(URL + "/{id}" , 1))
+                .andExpect(status().isNoContent())
+                .andDo(print());
     }
 }
