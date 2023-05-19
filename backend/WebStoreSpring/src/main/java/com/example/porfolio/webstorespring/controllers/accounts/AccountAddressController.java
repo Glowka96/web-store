@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin("http://localhost:4200")
-@RequestMapping("api/v1/accounts/{" +
-        "accountId}")
+@RequestMapping("api/v1/accounts/{accountId}")
 @RequiredArgsConstructor
 public class AccountAddressController {
 

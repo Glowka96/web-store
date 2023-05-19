@@ -21,6 +21,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { PurchaseComponent } from './components/purchase/purchase.component';
 import { FormLoginComponent } from './components/form-login/form-login.component';
 import { FormAccountComponent } from './components/form-account/form-account.component';
+import { FormAccountAddressComponent } from './components/form-account-address/form-account-address.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { FormAccountComponent } from './components/form-account/form-account.com
     FooterComponent,
     PurchaseComponent,
     FormAccountComponent,
+    FormAccountAddressComponent,
   ],
   imports: [
     BrowserModule,

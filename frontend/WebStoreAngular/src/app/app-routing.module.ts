@@ -6,6 +6,7 @@ import { AccountComponent } from './components/account/account.component';
 import { BasketComponent } from './components/basket/basket.component';
 import { PurchaseComponent } from './components/purchase/purchase.component';
 import { FormAccountComponent } from './components/form-account/form-account.component';
+import { FormAccountAddressComponent } from './components/form-account-address/form-account-address.component';
 
 const routes: Routes = [
   { path: ':subcategoryName/:id/products', component: ProductsComponent },
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'basket', component: BasketComponent },
   { path: 'basket/purchase', component: PurchaseComponent },
   { path: 'accounts/update', component: FormAccountComponent },
+  { path: 'accounts/address/update', component: FormAccountAddressComponent },
 ];
 
 @NgModule({
