@@ -1,9 +1,8 @@
-package com.example.porfolio.webstorespring.controllers;
+package com.example.porfolio.webstorespring.controllers.products;
 
-import com.example.porfolio.webstorespring.controllers.orders.ShipmentController;
-import com.example.porfolio.webstorespring.model.dto.orders.ShipmentDto;
-import com.example.porfolio.webstorespring.model.dto.products.ProductDto;
-import com.example.porfolio.webstorespring.services.orders.ShipmentService;
+
+import com.example.porfolio.webstorespring.model.dto.products.CategoryDto;
+import com.example.porfolio.webstorespring.services.products.CategoryService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,39 +24,32 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith({MockitoExtension.class})
-class ShipmentControllerTest {
+@ExtendWith(MockitoExtension.class)
+class CategoryControllerTest {
     @InjectMocks
-    private ShipmentController underTest;
+    private CategoryController underTest;
     @Mock
-    private ShipmentService shipmentService;
-
-    private ObjectMapper mapper;
+    private CategoryService categoryService;
     private MockMvc mvc;
-
-    private final static String URL = "/api/v1/shipments";
-    private ShipmentDto shipmentDto;
+    private ObjectMapper mapper;
+    private final static String URL = "/api/v1/categories";
+    private CategoryDto categoryDto;
 
     @BeforeEach
-    void initialization() {
+    public void initialization() {
         mvc = MockMvcBuilders.standaloneSetup(underTest).build();
 
         mapper = new ObjectMapper();
 
-        ProductDto  productDto = new ProductDto();
-        productDto.setId(1L);
-        productDto.setPrice(20.0);
-
-        shipmentDto = new ShipmentDto();
-        shipmentDto.setId(1L);
-        shipmentDto.setQuantity(3);
-        shipmentDto.setProductDto(productDto);
+        categoryDto = new CategoryDto();
+        categoryDto.setName("Test");
+        categoryDto.setId(1L);
     }
 
     @Test
-    void shouldGetAllShipments() throws Exception {
+    void shouldGetAllCategory() throws Exception {
         // given
-        given(shipmentService.getAllShipment()).willReturn(Arrays.asList(shipmentDto, shipmentDto));
+        given(categoryService.getAllCategoryDto()).willReturn(Arrays.asList(categoryDto, new CategoryDto()));
 
         // when
         // then
@@ -70,59 +62,58 @@ class ShipmentControllerTest {
     }
 
     @Test
-    void shouldGetShipmentById() throws Exception {
+    void shouldGetCategoryById() throws Exception {
         // given
-        given(shipmentService.getShipmentDtoById(1L)).willReturn(shipmentDto);
+        given(categoryService.getCategoryDtoById(1L)).willReturn(categoryDto);
 
         // when
         // then
-        mvc.perform(get(URL + "/{id}", 1)
+        mvc.perform(get(URL + "/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(shipmentDto)))
+                        .content(mapper.writeValueAsString(categoryDto)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
+                .andExpect(jsonPath("$.name", is("Test")))
                 .andDo(print());
     }
 
     @Test
-    void shouldSaveShipment() throws Exception {
+    void shouldSaveCategory() throws Exception {
         // given
-        given(shipmentService.save(shipmentDto)).willReturn(shipmentDto);
+        given(categoryService.save(categoryDto)).willReturn(categoryDto);
 
         // when
         // then
         mvc.perform(post(URL)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(shipmentDto)))
+                        .content(mapper.writeValueAsString(categoryDto)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.quantity", is(3)))
+                .andExpect(jsonPath("$.name", is("Test")))
                 .andDo(print());
     }
 
     @Test
-    void shouldUpdateShipment() throws Exception {
+    void shouldUpdateCategory() throws Exception {
         // given
-        given(shipmentService.update(1L, shipmentDto)).willReturn(shipmentDto);
+        given(categoryService.update(1L, categoryDto)).willReturn(categoryDto);
 
         // when
         // then
-        mvc.perform(put(URL + "/{id}", 1)
+        mvc.perform(put(URL + "/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(shipmentDto)))
+                        .content(mapper.writeValueAsString(categoryDto)))
                 .andExpect(status().isAccepted())
+                .andExpect(jsonPath("$.name", is("Test")))
                 .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.quantity", is(3)))
                 .andDo(print());
     }
 
     @Test
-    void shouldDeleteShipmentById() throws Exception {
-        mvc.perform(delete(URL + "/{id}" , 1))
-                .andExpect(status().isNoContent())
-                .andDo(print());
+    void shouldDeleteCategoryById() throws Exception {
+        mvc.perform(delete(URL + "/{id}", 1L))
+                .andExpect(status().isNoContent());
     }
 }

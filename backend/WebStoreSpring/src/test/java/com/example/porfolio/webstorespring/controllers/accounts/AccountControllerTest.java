@@ -1,6 +1,5 @@
-package com.example.porfolio.webstorespring.controllers;
+package com.example.porfolio.webstorespring.controllers.accounts;
 
-import com.example.porfolio.webstorespring.controllers.accounts.AccountController;
 import com.example.porfolio.webstorespring.exceptions.GlobalExceptionHandler;
 import com.example.porfolio.webstorespring.model.dto.accounts.AccountRequest;
 import com.example.porfolio.webstorespring.model.dto.accounts.AccountResponse;
@@ -20,7 +19,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -31,6 +29,7 @@ class AccountControllerTest {
 
     @Mock
     private AccountService accountService;
+
     @InjectMocks
     private AccountController underTest;
 
@@ -38,13 +37,10 @@ class AccountControllerTest {
     private ObjectMapper mapper;
     private final static String URL = "/api/v1/accounts";
     private AccountResponse accountResponse;
+    private AccountRequest accountRequest;
 
     @BeforeEach
     void initialization() {
-        mvc = MockMvcBuilders.standaloneSetup(underTest)
-                .setControllerAdvice(new GlobalExceptionHandler())
-                .build();
-
         mapper = new ObjectMapper();
 
         accountResponse = new AccountResponse();
@@ -52,16 +48,24 @@ class AccountControllerTest {
         accountResponse.setFirstName("Test");
         accountResponse.setLastName("Dev");
         accountResponse.setEmail("test@test.pl");
+
+        accountRequest = new AccountRequest();
+        accountRequest.setFirstName("Test");
+        accountRequest.setLastName("Dev");
+        accountRequest.setPassword("Abcd123$");
+        accountRequest.setImageUrl("https://i.imgur.com/a23SANX.png");
+
+        mvc = MockMvcBuilders.standaloneSetup(underTest)
+                .setControllerAdvice(new GlobalExceptionHandler())
+                .build();
     }
 
     @Test
     void shouldGetAccountById() throws Exception {
-        when(accountService.getAccountById(anyLong())).thenReturn(accountResponse);
+        given(accountService.getAccountById(anyLong())).willReturn(accountResponse);
 
         mvc.perform(get(URL + "/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(accountResponse))
                         .header("Authorization", "Bearer {JWT_TOKEN}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
@@ -71,17 +75,13 @@ class AccountControllerTest {
                 .andDo(print());
     }
 
-    /*TODO
-     *  repair ValidationException: HV000064: Unable to instantiate ConstraintValidator
-     * */
     @Test
     void shouldUpdateAccount() throws Exception {
         given(accountService.updateAccount(anyLong(), any(AccountRequest.class))).willReturn(accountResponse);
 
-        mvc.perform(put(URL + "/{accountId}", 1)
+        mvc.perform(put(URL + "/{accountId}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(accountResponse))
+                        .content(mapper.writeValueAsString(accountRequest))
                         .header("Authorization", "Bearer {JWT_TOKEN}"))
                 .andExpect(status().isAccepted())
                 .andExpect(jsonPath("$.id", is(1)))
@@ -93,7 +93,7 @@ class AccountControllerTest {
 
     @Test
     void shouldDeleteAccountById() throws Exception {
-        mvc.perform(delete(URL + "/{accountId}", 1))
+        mvc.perform(delete(URL + "/{accountId}", 1L))
                 .andExpect(status().isNoContent());
     }
 }

@@ -1,6 +1,5 @@
-package com.example.porfolio.webstorespring.controllers;
+package com.example.porfolio.webstorespring.controllers.accounts;
 
-import com.example.porfolio.webstorespring.controllers.accounts.AccountAddressController;
 import com.example.porfolio.webstorespring.exceptions.GlobalExceptionHandler;
 import com.example.porfolio.webstorespring.model.dto.accounts.AccountAddressDto;
 import com.example.porfolio.webstorespring.model.dto.accounts.AccountResponse;

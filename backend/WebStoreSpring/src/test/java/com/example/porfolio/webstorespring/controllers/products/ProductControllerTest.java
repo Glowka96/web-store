@@ -1,6 +1,5 @@
-package com.example.porfolio.webstorespring.controllers;
+package com.example.porfolio.webstorespring.controllers.products;
 
-import com.example.porfolio.webstorespring.controllers.products.ProductController;
 import com.example.porfolio.webstorespring.model.dto.products.ProductDto;
 import com.example.porfolio.webstorespring.model.entity.products.ProductType;
 import com.example.porfolio.webstorespring.services.products.ProductService;
@@ -54,7 +53,7 @@ class ProductControllerTest {
         productDto.setName("Test");
         productDto.setPrice(20.0);
         productDto.setDescription("Description test");
-        productDto.setImageUrl("test.pl");
+        productDto.setImageUrl("https://i.imgur.com/a23SANX.png");
         productDto.setType(ProductType.PUZZLE);
 
         ProductDto productDto1 = new ProductDto();

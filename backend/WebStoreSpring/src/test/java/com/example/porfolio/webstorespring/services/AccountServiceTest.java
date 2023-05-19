@@ -58,8 +58,6 @@ class AccountServiceTest {
         accountRequest.setFirstName("Test");
         accountRequest.setLastName("Dev");
         accountRequest.setPassword("Abcd123$");
-        accountRequest.setEmail("test@test.pl");
-
 
         accountResponse = new AccountResponse();
         accountResponse.setId(1L);
