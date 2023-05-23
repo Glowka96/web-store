@@ -1,19 +1,18 @@
-.wrapper-purchase {
+.wrapper-form {
   display: flex;
   flex-direction: column;
   width: 95%;
   border-radius: 15px;
   margin: 15px auto;
   background-color: aliceblue;
-  .title-purchase {
+  .title {
     font-size: 32px;
     border-bottom: 1px solid black;
   }
-  .purchase-box {
+  .box {
     display: flex;
     flex-flow: row wrap;
     justify-content: center;
-    align-content: baseline;
     .info-box {
       min-width: 300px;
       padding: 20px;

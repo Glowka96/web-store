@@ -49,6 +49,7 @@ export class FormAccountComponent implements OnInit {
           Validators.minLength(8),
           Validators.maxLength(30),
         ],
+        updateOn: 'change',
       }),
       confirmPassword: new FormControl('', {
         validators: [
@@ -61,6 +62,7 @@ export class FormAccountComponent implements OnInit {
       imageUrl: new FormControl('', {
         validators: [Validators.pattern(this.imageUrlPattern)],
       }),
+      updateOn: 'change',
     },
     {
       validators: this.passwordMatchValidator,
