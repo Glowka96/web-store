@@ -112,4 +112,8 @@ export class FormAccountComponent implements OnInit {
       });
     }
   }
+
+  public get getErrorMessage() {
+    return this.errorMessage;
+  }
 }

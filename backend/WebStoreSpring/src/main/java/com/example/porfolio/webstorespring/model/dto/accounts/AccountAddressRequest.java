@@ -7,9 +7,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class AccountAddressDto {
-
-    private Long id;
+public class AccountAddressRequest {
 
     @NotNull(message = "The city can't be null")
     @NotBlank(message = "The city can't be blank")

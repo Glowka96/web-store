@@ -6,13 +6,8 @@
   margin: 15px auto;
   background-color: aliceblue;
   .title-shipments {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     border-bottom: 1px solid black;
-    h1 {
-      font-size: 32px;
-    }
+    font-size: 32px;
   }
   .list-shipments {
     display: flex;

@@ -74,5 +74,8 @@
             </div>
         </div>
         <button type="submit" class="clkbtn">Update</button>
+        <div *ngIf="getErrorMessage" class="errors" role="alert">
+            <span [innerHTML]="getErrorMessage"></span>
+        </div>
     </form>
 </section>

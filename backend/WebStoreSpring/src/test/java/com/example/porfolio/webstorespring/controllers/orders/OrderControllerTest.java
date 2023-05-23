@@ -2,7 +2,7 @@ package com.example.porfolio.webstorespring.controllers.orders;
 
 import com.example.porfolio.webstorespring.model.dto.orders.OrderRequest;
 import com.example.porfolio.webstorespring.model.dto.orders.OrderResponse;
-import com.example.porfolio.webstorespring.model.dto.orders.ShipmentDto;
+import com.example.porfolio.webstorespring.model.dto.orders.ShipmentResponse;
 import com.example.porfolio.webstorespring.services.orders.OrderService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,7 +55,7 @@ class OrderControllerTest {
 
         orderRequest = new OrderRequest();
         orderRequest.setDeliveryAddress("City: test, postcode: 99-999, address: test 59/55");
-        orderRequest.setShipmentsDto(Arrays.asList(new ShipmentDto()));
+        orderRequest.setShipmentsDto(Arrays.asList(new ShipmentResponse()));
     }
 
 

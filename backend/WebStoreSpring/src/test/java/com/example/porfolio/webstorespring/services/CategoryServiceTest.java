@@ -3,7 +3,7 @@ package com.example.porfolio.webstorespring.services;
 
 import com.example.porfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.porfolio.webstorespring.mappers.CategoryMapper;
-import com.example.porfolio.webstorespring.model.dto.products.CategoryDto;
+import com.example.porfolio.webstorespring.model.dto.products.CategoryResponse;
 import com.example.porfolio.webstorespring.model.entity.products.Category;
 import com.example.porfolio.webstorespring.repositories.products.CategoryRepository;
 import com.example.porfolio.webstorespring.services.products.CategoryService;
@@ -33,7 +33,7 @@ class CategoryServiceTest {
     @InjectMocks
     private CategoryService underTest;
 
-    private CategoryDto categoryDto;
+    private CategoryResponse categoryResponse;
     private Category category;
 
     @BeforeEach
@@ -42,8 +42,8 @@ class CategoryServiceTest {
         category.setId(1L);
         category.setName("CategoryTest");
 
-        categoryDto = new CategoryDto();
-        categoryDto.setName("Test");
+        categoryResponse = new CategoryResponse();
+        categoryResponse.setName("Test");
     }
 
     @Test
@@ -62,7 +62,7 @@ class CategoryServiceTest {
         given(categoryRepository.findById(category.getId())).willReturn(Optional.of(category));
 
         // when
-        CategoryDto foundCategory = underTest.getCategoryDtoById(category.getId());
+        CategoryResponse foundCategory = underTest.getCategoryDtoById(category.getId());
 
         // then
         assertThat(foundCategory).isNotNull();
@@ -97,7 +97,7 @@ class CategoryServiceTest {
     void shouldSaveCategory() {
         // given
         // when
-        underTest.save(categoryDto);
+        underTest.save(categoryResponse);
 
         // then
         ArgumentCaptor<Category> categoryArgumentCaptor =
@@ -105,9 +105,9 @@ class CategoryServiceTest {
         verify(categoryRepository).save(categoryArgumentCaptor.capture());
 
         Category capturedCategory = categoryArgumentCaptor.getValue();
-        CategoryDto mappedCategoryDto = categoryMapper.mapToDto(capturedCategory);
+        CategoryResponse mappedCategoryResponse = categoryMapper.mapToDto(capturedCategory);
 
-        assertThat(mappedCategoryDto).isEqualTo(categoryDto);
+        assertThat(mappedCategoryResponse).isEqualTo(categoryResponse);
     }
 
     @Test
@@ -116,7 +116,7 @@ class CategoryServiceTest {
         given(categoryRepository.findById(category.getId())).willReturn(Optional.of(category));
 
         // when
-        underTest.update(category.getId(), categoryDto);
+        underTest.update(category.getId(), categoryResponse);
 
         // then
         ArgumentCaptor<Category> categoryArgumentCaptor =
@@ -124,10 +124,10 @@ class CategoryServiceTest {
         verify(categoryRepository).save(categoryArgumentCaptor.capture());
 
         Category capturedCategory = categoryArgumentCaptor.getValue();
-        CategoryDto mappedCategoryDto = categoryMapper.mapToDto(capturedCategory);
+        CategoryResponse mappedCategoryResponse = categoryMapper.mapToDto(capturedCategory);
 
-        assertThat(mappedCategoryDto.getName()).isEqualTo(categoryDto.getName());
-        assertThat(mappedCategoryDto.getId()).isEqualTo(category.getId());
+        assertThat(mappedCategoryResponse.getName()).isEqualTo(categoryResponse.getName());
+        assertThat(mappedCategoryResponse.getId()).isEqualTo(category.getId());
     }
 
     @Test

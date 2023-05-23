@@ -1,6 +1,7 @@
 package com.example.porfolio.webstorespring.controllers.products;
 
-import com.example.porfolio.webstorespring.model.dto.products.ProducerDto;
+import com.example.porfolio.webstorespring.model.dto.products.ProducerRequest;
+import com.example.porfolio.webstorespring.model.dto.products.ProducerResponse;
 import com.example.porfolio.webstorespring.services.products.ProducerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,28 +21,28 @@ public class ProducerController {
     private final ProducerService producerService;
 
     @GetMapping()
-    public ResponseEntity<List<ProducerDto>> getAllProducer() {
+    public ResponseEntity<List<ProducerResponse>> getAllProducer() {
         return ResponseEntity.ok(producerService.getAllProducer());
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<ProducerDto> getProducerById(@PathVariable("id") Long id) {
+    public ResponseEntity<ProducerResponse> getProducerById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(producerService.getProducerById(id));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping()
-    public ResponseEntity<ProducerDto> saveProducer(@Valid @RequestBody ProducerDto producerDto) {
+    public ResponseEntity<ProducerResponse> saveProducer(@Valid @RequestBody ProducerRequest producerRequest) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(producerService.save(producerDto));
+                .body(producerService.save(producerRequest));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping(value = "/{id}")
-    public ResponseEntity<ProducerDto> updateProducer(@PathVariable("id") Long id,
-                                                      @Valid @RequestBody ProducerDto producerDto) {
+    public ResponseEntity<ProducerResponse> updateProducer(@PathVariable("id") Long id,
+                                                           @Valid @RequestBody ProducerRequest producerRequest) {
         return ResponseEntity.status(HttpStatus.ACCEPTED)
-                .body(producerService.update(id, producerDto));
+                .body(producerService.update(id, producerRequest));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")

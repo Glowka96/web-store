@@ -1,6 +1,6 @@
 package com.example.porfolio.webstorespring.controllers.products;
 
-import com.example.porfolio.webstorespring.model.dto.products.SubcategoryDto;
+import com.example.porfolio.webstorespring.model.dto.products.SubcategoryRequest;
 import com.example.porfolio.webstorespring.services.products.SubcategoryService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,7 +30,7 @@ class SubcategoryControllerTest {
     private MockMvc mvc;
     private ObjectMapper mapper;
     private final static String URL = "/api/v1/categories";
-    private SubcategoryDto subCategoryDto;
+    private SubcategoryRequest subCategoryRequest;
 
     @BeforeEach
     void initialization() {
@@ -38,22 +38,22 @@ class SubcategoryControllerTest {
 
         mapper = new ObjectMapper();
 
-        subCategoryDto = new SubcategoryDto();
-        subCategoryDto.setId(1L);
-        subCategoryDto.setName("Test");
+        subCategoryRequest = new SubcategoryRequest();
+        subCategoryRequest.setId(1L);
+        subCategoryRequest.setName("Test");
     }
 
     @Test
     void shouldGetSubCategoryByName() throws Exception {
         // given
-        given(subCategoryService.getSubcategoryDtoById(1L)).willReturn(subCategoryDto);
+        given(subCategoryService.getSubcategoryDtoById(1L)).willReturn(subCategoryRequest);
 
         // when
         // then
         mvc.perform(get(URL + "/subcategories/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(subCategoryDto)))
+                        .content(mapper.writeValueAsString(subCategoryRequest)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", is("Test")))
                 .andDo(print());
@@ -63,14 +63,14 @@ class SubcategoryControllerTest {
     @Test
     public void shouldSaveSubCategory() throws Exception {
         // given
-        given(subCategoryService.save(1L, subCategoryDto)).willReturn(subCategoryDto);
+        given(subCategoryService.save(1L, subCategoryRequest)).willReturn(subCategoryRequest);
 
         // when
         // then
         mvc.perform(post(URL + "/{id}/subcategories", 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(subCategoryDto)))
+                        .content(mapper.writeValueAsString(subCategoryRequest)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.name", is("Test")))
@@ -80,14 +80,14 @@ class SubcategoryControllerTest {
     @Test
     void shouldUpdateSubCategory() throws Exception {
         // given
-        given(subCategoryService.update(1L, 1L, subCategoryDto)).willReturn(subCategoryDto);
+        given(subCategoryService.update(1L, 1L, subCategoryRequest)).willReturn(subCategoryRequest);
 
         // when
         // then
         mvc.perform(put(URL + "/{categoryId}/subcategories/{subcategoryId}", 1, 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(subCategoryDto)))
+                        .content(mapper.writeValueAsString(subCategoryRequest)))
                 .andExpect(status().isAccepted())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.name", is("Test")))

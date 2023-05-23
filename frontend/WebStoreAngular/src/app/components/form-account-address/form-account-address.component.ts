@@ -11,7 +11,6 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
   styleUrls: ['./form-account-address.component.scss'],
 })
 export class FormAccountAddressComponent implements OnInit {
-  private accountAddress!: AccountAddress;
   private accountId!: string;
   private errorMessage!: string;
   private postcodePattern = /^\d{2}-\d{3}$/;
@@ -73,5 +72,9 @@ export class FormAccountAddressComponent implements OnInit {
         },
       });
     }
+  }
+
+  public get getErrorMessage() {
+    return this.errorMessage;
   }
 }

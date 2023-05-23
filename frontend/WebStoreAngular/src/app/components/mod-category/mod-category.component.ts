@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Category } from 'src/app/models/category';
+import { CategoryResponse } from 'src/app/models/category-response';
 import { CategoryRequest } from 'src/app/models/category-request';
 import { CategoryService } from 'src/app/services/category.service';
 
@@ -11,7 +11,7 @@ import { CategoryService } from 'src/app/services/category.service';
 })
 export class ModCategoryComponent implements OnInit {
   @Input()
-  categories!: Category[];
+  categories!: CategoryResponse[];
   private errorAddMsg = '';
   private errorUpdateMsg = '';
   private errorDeleteMsg = '';

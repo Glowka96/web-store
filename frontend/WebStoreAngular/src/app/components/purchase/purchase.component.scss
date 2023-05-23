@@ -1,15 +1,15 @@
-.wrapper-form {
+.wrapper-purchase {
   display: flex;
   flex-direction: column;
   width: 95%;
   border-radius: 15px;
   margin: 15px auto;
   background-color: aliceblue;
-  .title {
+  .title-purchase {
     font-size: 32px;
     border-bottom: 1px solid black;
   }
-  .box {
+  .purchase-box {
     display: flex;
     flex-flow: row wrap;
     justify-content: center;

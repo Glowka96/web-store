@@ -4,8 +4,8 @@ import com.example.porfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.porfolio.webstorespring.mappers.ProducerMapper;
 import com.example.porfolio.webstorespring.mappers.ProductMapper;
 import com.example.porfolio.webstorespring.mappers.ShipmentMapper;
-import com.example.porfolio.webstorespring.model.dto.orders.ShipmentDto;
-import com.example.porfolio.webstorespring.model.dto.products.ProductDto;
+import com.example.porfolio.webstorespring.model.dto.orders.ShipmentResponse;
+import com.example.porfolio.webstorespring.model.dto.products.ProductRequest;
 import com.example.porfolio.webstorespring.model.entity.orders.Shipment;
 import com.example.porfolio.webstorespring.model.entity.products.Product;
 import com.example.porfolio.webstorespring.repositories.orders.ShipmentRepository;
@@ -37,9 +37,9 @@ class ShipmentServiceTest {
     private ShipmentMapper shipmentMapper = Mappers.getMapper(ShipmentMapper.class);
     @InjectMocks
     private ShipmentService underTest;
-    private ProductDto productDto;
+    private ProductRequest productRequest;
     private Shipment shipment;
-    private ShipmentDto shipmentDto;
+    private ShipmentResponse shipmentResponse;
 
     @BeforeEach
     void initialization() {
@@ -53,19 +53,19 @@ class ShipmentServiceTest {
         product.setId(1L);
         product.setPrice(20.0);
 
-        productDto = new ProductDto();
-        productDto.setId(1L);
-        productDto.setPrice(20.0);
+        productRequest = new ProductRequest();
+        productRequest.setId(1L);
+        productRequest.setPrice(20.0);
 
         shipment = new Shipment();
         shipment.setId(1L);
         shipment.setProduct(product);
         shipment.setQuantity(3);
 
-        shipmentDto = new ShipmentDto();
-        shipmentDto.setId(1L);
-        shipmentDto.setProductDto(productDto);
-        shipmentDto.setQuantity(3);
+        shipmentResponse = new ShipmentResponse();
+        shipmentResponse.setId(1L);
+        shipmentResponse.setProductRequest(productRequest);
+        shipmentResponse.setQuantity(3);
     }
 
     @Test
@@ -74,7 +74,7 @@ class ShipmentServiceTest {
         given(shipmentRepository.findById(1L)).willReturn(Optional.of(shipment));
 
         // when
-        shipmentDto = underTest.getShipmentDtoById(1L);
+        shipmentResponse = underTest.getShipmentDtoById(1L);
 
         // then
         assertThat(shipment).isNotNull();
@@ -108,7 +108,7 @@ class ShipmentServiceTest {
     void shouldSaveShipment() {
         // given
         // when
-        underTest.save(shipmentDto);
+        underTest.save(shipmentResponse);
 
         //then
         ArgumentCaptor<Shipment> shipmentArgumentCaptor =
@@ -116,11 +116,11 @@ class ShipmentServiceTest {
         verify(shipmentRepository).save(shipmentArgumentCaptor.capture());
 
         Shipment capturedShipment = shipmentArgumentCaptor.getValue();
-        ShipmentDto mappedShipmentDto = shipmentMapper.mapToDto(capturedShipment);
+        ShipmentResponse mappedShipmentResponse = shipmentMapper.mapToDto(capturedShipment);
 
-        assertThat(mappedShipmentDto.getId()).isEqualTo(shipmentDto.getId());
-        assertThat(mappedShipmentDto.getProductDto()).isEqualTo(productDto);
-        assertThat(mappedShipmentDto.getQuantity()).isEqualTo(shipmentDto.getQuantity());
+        assertThat(mappedShipmentResponse.getId()).isEqualTo(shipmentResponse.getId());
+        assertThat(mappedShipmentResponse.getProductRequest()).isEqualTo(productRequest);
+        assertThat(mappedShipmentResponse.getQuantity()).isEqualTo(shipmentResponse.getQuantity());
     }
 
     @Test
@@ -129,7 +129,7 @@ class ShipmentServiceTest {
         given(shipmentRepository.findById(1L)).willReturn(Optional.of(shipment));
 
         // when
-        underTest.update(1L, shipmentDto);
+        underTest.update(1L, shipmentResponse);
 
         // then
         ArgumentCaptor<Shipment> shipmentArgumentCaptor =
@@ -137,9 +137,9 @@ class ShipmentServiceTest {
         verify(shipmentRepository).save(shipmentArgumentCaptor.capture());
 
         Shipment capturedShipment = shipmentArgumentCaptor.getValue();
-        ShipmentDto mappedShipmentDto = shipmentMapper.mapToDto(capturedShipment);
+        ShipmentResponse mappedShipmentResponse = shipmentMapper.mapToDto(capturedShipment);
 
-        assertThat(mappedShipmentDto).isEqualTo(shipmentDto);
+        assertThat(mappedShipmentResponse).isEqualTo(shipmentResponse);
     }
 
     @Test

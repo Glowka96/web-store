@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CategoryRequest } from 'src/app/models/category-request';
-import { Producer } from 'src/app/models/producer';
+import { ProducerResponse } from 'src/app/models/producer-response';
 import { ProducerService } from 'src/app/services/producer.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { ProducerService } from 'src/app/services/producer.service';
   styleUrls: ['./mod-producer.component.scss'],
 })
 export class ModProducerComponent implements OnInit {
-  private producers: Producer[] = [];
+  private producers: ProducerResponse[] = [];
   private errorAddMsg = '';
   private errorUpdateMsg = '';
   private errorDeleteMsg = '';

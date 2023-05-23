@@ -1,9 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Producer } from 'src/app/models/producer';
-import { Product } from 'src/app/models/product';
+import { ProducerResponse } from 'src/app/models/producer-response';
+import { ProductResponse } from 'src/app/models/product-response';
 import { ProductRequest } from 'src/app/models/product-request';
-import { Subcategory } from 'src/app/models/subcategory';
+import { SubcategoryResponse } from 'src/app/models/subcategory-response';
 import { ProducerService } from 'src/app/services/producer.service';
 import { ProductService } from 'src/app/services/product.service';
 
@@ -14,10 +14,10 @@ import { ProductService } from 'src/app/services/product.service';
 })
 export class ModProductsComponent implements OnInit {
   @Input()
-  subcategories!: Subcategory[];
+  subcategories!: SubcategoryResponse[];
   private productTypes: string[] = [];
-  private products: Product[] = [];
-  private producers: Producer[] = [];
+  private products: ProductResponse[] = [];
+  private producers: ProducerResponse[] = [];
   private errorAddMsg = '';
   private errorUpdateMsg = '';
   private errorDeleteMsg = '';

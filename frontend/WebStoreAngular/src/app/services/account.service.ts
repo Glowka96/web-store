@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AccountAddress } from '../models/account-address';
-import { Account } from '../models/account';
+import { AccountResponse } from '../models/account-response';
 import { AccountRequest } from '../models/account-request';
 
 @Injectable({
@@ -13,10 +13,12 @@ import { AccountRequest } from '../models/account-request';
 export class AccountService {
   private apiServerUrl = environment.apiBaseUrl;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient) {}
 
-  public getAccount(accountId: string): Observable<Account> {
-    return this.http.get<Account>(`${this.apiServerUrl}/accounts/${accountId}`);
+  public getAccount(accountId: string): Observable<AccountResponse> {
+    return this.http.get<AccountResponse>(
+      `${this.apiServerUrl}/accounts/${accountId}`
+    );
   }
 
   public getAccountAddress(accountId: string): Observable<AccountAddress> {
@@ -28,8 +30,8 @@ export class AccountService {
   public updateAccount(
     accountId: string,
     request: AccountRequest
-  ): Observable<Account> {
-    return this.http.put<Account>(
+  ): Observable<AccountResponse> {
+    return this.http.put<AccountResponse>(
       `${this.apiServerUrl}/accounts/${accountId}`,
       request
     );

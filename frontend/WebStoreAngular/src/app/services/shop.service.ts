@@ -1,21 +1,21 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { Shipment } from '../models/shipment';
-import { Order } from '../models/order';
+import { ShipmentRequest } from '../models/shipment-request';
+import { OrderRequest } from '../models/order-request';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ShopService {
   private apiServerUrl = environment.apiBaseUrl;
-  private basket: BehaviorSubject<Shipment[]> = new BehaviorSubject(
-    [] as Shipment[]
+  private basket: BehaviorSubject<ShipmentRequest[]> = new BehaviorSubject(
+    [] as ShipmentRequest[]
   );
   constructor(private http: HttpClient) {}
 
-  public addToBasket(shipment: Shipment) {
+  public addToBasket(shipment: ShipmentRequest) {
     let cart = this.basket.value;
     let findShipment = cart.find((s) => s.product.id == shipment.product.id);
     if (findShipment) {
@@ -29,7 +29,7 @@ export class ShopService {
     this.basket.next(cart);
   }
 
-  public purchase(request: Order, accountId: string): Observable<any> {
+  public purchase(request: OrderRequest, accountId: string): Observable<any> {
     return this.http
       .post<any>(`${this.apiServerUrl}/accounts/${accountId}/orders`, request)
       .pipe(tap((response) => console.log('Server response:', response)));

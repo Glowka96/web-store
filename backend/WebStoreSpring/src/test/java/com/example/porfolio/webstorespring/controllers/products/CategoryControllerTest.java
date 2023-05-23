@@ -1,7 +1,7 @@
 package com.example.porfolio.webstorespring.controllers.products;
 
 
-import com.example.porfolio.webstorespring.model.dto.products.CategoryDto;
+import com.example.porfolio.webstorespring.model.dto.products.CategoryResponse;
 import com.example.porfolio.webstorespring.services.products.CategoryService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,7 +33,7 @@ class CategoryControllerTest {
     private MockMvc mvc;
     private ObjectMapper mapper;
     private final static String URL = "/api/v1/categories";
-    private CategoryDto categoryDto;
+    private CategoryResponse categoryResponse;
 
     @BeforeEach
     public void initialization() {
@@ -41,15 +41,15 @@ class CategoryControllerTest {
 
         mapper = new ObjectMapper();
 
-        categoryDto = new CategoryDto();
-        categoryDto.setName("Test");
-        categoryDto.setId(1L);
+        categoryResponse = new CategoryResponse();
+        categoryResponse.setName("Test");
+        categoryResponse.setId(1L);
     }
 
     @Test
     void shouldGetAllCategory() throws Exception {
         // given
-        given(categoryService.getAllCategoryDto()).willReturn(Arrays.asList(categoryDto, new CategoryDto()));
+        given(categoryService.getAllCategoryDto()).willReturn(Arrays.asList(categoryResponse, new CategoryResponse()));
 
         // when
         // then
@@ -64,14 +64,14 @@ class CategoryControllerTest {
     @Test
     void shouldGetCategoryById() throws Exception {
         // given
-        given(categoryService.getCategoryDtoById(1L)).willReturn(categoryDto);
+        given(categoryService.getCategoryDtoById(1L)).willReturn(categoryResponse);
 
         // when
         // then
         mvc.perform(get(URL + "/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(categoryDto)))
+                        .content(mapper.writeValueAsString(categoryResponse)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.name", is("Test")))
@@ -81,14 +81,14 @@ class CategoryControllerTest {
     @Test
     void shouldSaveCategory() throws Exception {
         // given
-        given(categoryService.save(categoryDto)).willReturn(categoryDto);
+        given(categoryService.save(categoryResponse)).willReturn(categoryResponse);
 
         // when
         // then
         mvc.perform(post(URL)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(categoryDto)))
+                        .content(mapper.writeValueAsString(categoryResponse)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.name", is("Test")))
                 .andDo(print());
@@ -97,14 +97,14 @@ class CategoryControllerTest {
     @Test
     void shouldUpdateCategory() throws Exception {
         // given
-        given(categoryService.update(1L, categoryDto)).willReturn(categoryDto);
+        given(categoryService.update(1L, categoryResponse)).willReturn(categoryResponse);
 
         // when
         // then
         mvc.perform(put(URL + "/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(categoryDto)))
+                        .content(mapper.writeValueAsString(categoryResponse)))
                 .andExpect(status().isAccepted())
                 .andExpect(jsonPath("$.name", is("Test")))
                 .andExpect(jsonPath("$.id", is(1)))

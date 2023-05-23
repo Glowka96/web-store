@@ -2,7 +2,8 @@ package com.example.porfolio.webstorespring.services.orders;
 
 import com.example.porfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.porfolio.webstorespring.mappers.ShipmentMapper;
-import com.example.porfolio.webstorespring.model.dto.orders.ShipmentDto;
+import com.example.porfolio.webstorespring.model.dto.orders.ShipmentRequest;
+import com.example.porfolio.webstorespring.model.dto.orders.ShipmentResponse;
 import com.example.porfolio.webstorespring.model.entity.orders.Shipment;
 import com.example.porfolio.webstorespring.repositories.orders.ShipmentRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,17 +19,17 @@ public class ShipmentService {
     private final ShipmentRepository shipmentRepository;
     private final ShipmentMapper shipmentMapper;
 
-    public ShipmentDto getShipmentDtoById(Long id) {
+    public ShipmentResponse getShipmentDtoById(Long id) {
         Shipment shipment = findShipmentById(id);
         return shipmentMapper.mapToDto(shipment);
     }
 
-    public List<ShipmentDto> getAllShipment() {
+    public List<ShipmentResponse> getAllShipment() {
         return shipmentMapper.mapToDto(shipmentRepository.findAll());
     }
 
-    public ShipmentDto save(ShipmentDto shipmentDto) {
-        Shipment shipment = shipmentMapper.mapToEntity(shipmentDto);
+    public ShipmentResponse save(ShipmentRequest shipmentRequest) {
+        Shipment shipment = shipmentMapper.mapToEntity(shipmentRequest);
 
         BigDecimal price = BigDecimal.valueOf(
                 shipment.getProduct().getPrice() * shipment.getQuantity());
@@ -38,9 +39,9 @@ public class ShipmentService {
         return shipmentMapper.mapToDto(shipment);
     }
 
-    public ShipmentDto update(Long shipmentId, ShipmentDto shipmentDto) {
+    public ShipmentResponse update(Long shipmentId, ShipmentRequest shipmentRequest) {
         Shipment foundShipment = findShipmentById(shipmentId);
-        Shipment shipment = shipmentMapper.mapToEntity(shipmentDto);
+        Shipment shipment = shipmentMapper.mapToEntity(shipmentRequest);
 
         shipment.setId(foundShipment.getId());
 

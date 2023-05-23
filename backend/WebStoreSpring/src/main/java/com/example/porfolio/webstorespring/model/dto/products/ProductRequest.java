@@ -1,7 +1,6 @@
 package com.example.porfolio.webstorespring.model.dto.products;
 
 import com.example.porfolio.webstorespring.model.entity.products.ProductType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -9,9 +8,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class ProductDto {
-
-    private Long id;
+public class ProductRequest {
 
     @NotNull(message = "The name can't be null")
     @NotBlank(message = "The name can't be blank")
@@ -32,9 +29,4 @@ public class ProductDto {
     private Double price;
 
     private ProductType type;
-
-    @JsonIgnore
-    private SubcategoryDto subcategoryDto;
-    @JsonIgnore
-    private ProducerDto producerDto;
 }

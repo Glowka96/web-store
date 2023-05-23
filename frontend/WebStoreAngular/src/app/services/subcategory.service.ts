@@ -3,26 +3,26 @@ import { Injectable } from '@angular/core';
 import { SubcategoryRequest } from '../models/subcategory-request';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Subcategory } from '../models/subcategory';
+import { SubcategoryResponse } from '../models/subcategory-response';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SubcategoryService {
   private apiServerUrl = environment.apiBaseUrl;
-  private listSubcategory: Observable<Subcategory[]>;
+  private listSubcategory: Observable<SubcategoryResponse[]>;
 
   constructor(private http: HttpClient) {
     this.listSubcategory = this.getSubcategories();
   }
 
-  private getSubcategories(): Observable<Subcategory[]> {
-    return this.http.get<Subcategory[]>(
+  private getSubcategories(): Observable<SubcategoryResponse[]> {
+    return this.http.get<SubcategoryResponse[]>(
       `${this.apiServerUrl}/categories/subcategories`
     );
   }
 
-  public get subcategories$(): Observable<Subcategory[]> {
+  public get subcategories$(): Observable<SubcategoryResponse[]> {
     return this.listSubcategory;
   }
 

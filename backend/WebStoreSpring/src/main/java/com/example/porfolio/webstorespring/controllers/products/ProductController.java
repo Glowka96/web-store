@@ -1,6 +1,7 @@
 package com.example.porfolio.webstorespring.controllers.products;
 
-import com.example.porfolio.webstorespring.model.dto.products.ProductDto;
+import com.example.porfolio.webstorespring.model.dto.products.ProductRequest;
+import com.example.porfolio.webstorespring.model.dto.products.ProductResponse;
 import com.example.porfolio.webstorespring.model.entity.products.ProductType;
 import com.example.porfolio.webstorespring.services.products.ProductService;
 import jakarta.validation.Valid;
@@ -28,22 +29,22 @@ public class ProductController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping(value = "/products")
-    public ResponseEntity<List<ProductDto>> getAllProducts() {
+    public ResponseEntity<List<ProductResponse>> getAllProducts() {
         return ResponseEntity.ok(productService.getAllProducts());
     }
 
     @GetMapping(value = "/{subcategoryId}/products", params = {"page", "size"})
-    public ResponseEntity<List<ProductDto>> getAllProductsBySubCategoryId(@PathVariable("subcategoryId") Long subcategoryId,
-                                                                          @RequestParam("page") Integer page,
-                                                                          @RequestParam("size") Integer size) {
+    public ResponseEntity<List<ProductResponse>> getAllProductsBySubCategoryId(@PathVariable("subcategoryId") Long subcategoryId,
+                                                                              @RequestParam("page") Integer page,
+                                                                              @RequestParam("size") Integer size) {
         return ResponseEntity.ok(productService.getAllProductsBySubcategoryId(subcategoryId, page, size));
     }
 
     @GetMapping(value = "/{subcategoryId}/products", params = {"page", "size", "sort"})
-    public ResponseEntity<List<ProductDto>> getAllProductsBySubCategoryId(@PathVariable("subcategoryId") Long subcategoryId,
-                                                                          @RequestParam("page") Integer page,
-                                                                          @RequestParam("size") Integer size,
-                                                                          @RequestParam("sort") String sort) {
+    public ResponseEntity<List<ProductResponse>> getAllProductsBySubCategoryId(@PathVariable("subcategoryId") Long subcategoryId,
+                                                                              @RequestParam("page") Integer page,
+                                                                              @RequestParam("size") Integer size,
+                                                                              @RequestParam("sort") String sort) {
         return ResponseEntity.ok(productService.getAllProductsBySubcategoryId(subcategoryId, page, size, sort));
     }
 
@@ -54,20 +55,20 @@ public class ProductController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping(value = "/{subcategoryId}/producers/{producerId}/products")
-    public ResponseEntity<ProductDto> saveProduct(@PathVariable("subcategoryId") Long subcategoryId,
-                                                  @PathVariable("producerId") Long producerId,
-                                                  @Valid @RequestBody ProductDto productDto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(subcategoryId, producerId, productDto));
+    public ResponseEntity<ProductResponse> saveProduct(@PathVariable("subcategoryId") Long subcategoryId,
+                                                      @PathVariable("producerId") Long producerId,
+                                                      @Valid @RequestBody ProductRequest productRequest) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(subcategoryId, producerId, productRequest));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping(value = "/{subcategoryId}/producers/{producerId}/products/{productId}")
-    public ResponseEntity<ProductDto> updateProduct(@PathVariable Long subcategoryId,
-                                                    @PathVariable Long producerId,
-                                                    @PathVariable Long productId,
-                                                    @Valid @RequestBody ProductDto productDto) {
+    public ResponseEntity<ProductResponse> updateProduct(@PathVariable Long subcategoryId,
+                                                        @PathVariable Long producerId,
+                                                        @PathVariable Long productId,
+                                                        @Valid @RequestBody ProductRequest productRequest) {
         return ResponseEntity.status(HttpStatus.ACCEPTED)
-                .body(productService.updateProduct(subcategoryId, producerId, productId, productDto));
+                .body(productService.updateProduct(subcategoryId, producerId, productId, productRequest));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")

@@ -1,6 +1,7 @@
 package com.example.porfolio.webstorespring.mappers;
 
-import com.example.porfolio.webstorespring.model.dto.orders.ShipmentDto;
+import com.example.porfolio.webstorespring.model.dto.orders.ShipmentRequest;
+import com.example.porfolio.webstorespring.model.dto.orders.ShipmentResponse;
 import com.example.porfolio.webstorespring.model.entity.orders.Shipment;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -15,17 +16,15 @@ import java.util.List;
 )
 public interface ShipmentMapper {
 
-    @Mapping(target = "productDto", source = "product")
-    @Mapping(target = "orderResponse", source = "order")
-    ShipmentDto mapToDto(Shipment shipment);
+    @Mapping(target = "productResponse", source = "product")
+    ShipmentResponse mapToDto(Shipment shipment);
 
-    @Mapping(target = "orderResponse", source = "order")
-    List<ShipmentDto> mapToDto(List<Shipment> all);
+    @Mapping(target = "productResponse", source = "products")
+    List<ShipmentResponse> mapToDto(List<Shipment> shipments);
 
-    @Mapping(target = "product", source = "productDto")
-    @Mapping(target = "order", source = "orderResponse")
-    Shipment mapToEntity(ShipmentDto shipmentDto);
+    @Mapping(target = "product", source = "productRequest")
+    Shipment mapToEntity(ShipmentRequest shipmentRequest);
 
-    @Mapping(target = "order", source = "orderResponse")
-    List<Shipment> mapToEntity(List<ShipmentDto> shipmentDtos);
+    @Mapping(target = "product", source = "productRequest")
+    List<Shipment> mapToEntity(List<ShipmentResponse> shipmentResponses);
 }
