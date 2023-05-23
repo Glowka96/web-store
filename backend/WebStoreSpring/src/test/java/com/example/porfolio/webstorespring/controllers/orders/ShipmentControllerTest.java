@@ -1,7 +1,7 @@
 package com.example.porfolio.webstorespring.controllers.orders;
 
-import com.example.porfolio.webstorespring.model.dto.orders.ShipmentDto;
-import com.example.porfolio.webstorespring.model.dto.products.ProductDto;
+import com.example.porfolio.webstorespring.model.dto.orders.ShipmentResponse;
+import com.example.porfolio.webstorespring.model.dto.products.ProductRequest;
 import com.example.porfolio.webstorespring.services.orders.ShipmentService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,7 +37,7 @@ class ShipmentControllerTest {
     private MockMvc mvc;
 
     private final static String URL = "/api/v1/shipments";
-    private ShipmentDto shipmentDto;
+    private ShipmentResponse shipmentResponse;
 
     @BeforeEach
     void initialization() {
@@ -45,23 +45,23 @@ class ShipmentControllerTest {
 
         mapper = new ObjectMapper();
 
-        ProductDto  productDto = new ProductDto();
-        productDto.setId(1L);
-        productDto.setPrice(20.0);
-        productDto.setName("Test");
-        productDto.setDescription("Test description");
-        productDto.setImageUrl("https://www.trefl.com/media/catalog/product/cache/550c1e1c568f7ff4e3f4d09dfa9b2306/3/7/37459_150_01.png");
+        ProductRequest productRequest = new ProductRequest();
+        productRequest.setId(1L);
+        productRequest.setPrice(20.0);
+        productRequest.setName("Test");
+        productRequest.setDescription("Test description");
+        productRequest.setImageUrl("https://www.trefl.com/media/catalog/product/cache/550c1e1c568f7ff4e3f4d09dfa9b2306/3/7/37459_150_01.png");
 
-        shipmentDto = new ShipmentDto();
-        shipmentDto.setId(1L);
-        shipmentDto.setQuantity(3);
-        shipmentDto.setProductDto(productDto);
+        shipmentResponse = new ShipmentResponse();
+        shipmentResponse.setId(1L);
+        shipmentResponse.setQuantity(3);
+        shipmentResponse.setProductRequest(productRequest);
     }
 
     @Test
     void shouldGetAllShipments() throws Exception {
         // given
-        given(shipmentService.getAllShipment()).willReturn(Arrays.asList(shipmentDto, shipmentDto));
+        given(shipmentService.getAllShipment()).willReturn(Arrays.asList(shipmentResponse, shipmentResponse));
 
         // when
         // then
@@ -76,14 +76,14 @@ class ShipmentControllerTest {
     @Test
     void shouldGetShipmentById() throws Exception {
         // given
-        given(shipmentService.getShipmentDtoById(anyLong())).willReturn(shipmentDto);
+        given(shipmentService.getShipmentDtoById(anyLong())).willReturn(shipmentResponse);
 
         // when
         // then
         mvc.perform(get(URL + "/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(shipmentDto)))
+                        .content(mapper.writeValueAsString(shipmentResponse)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andDo(print());
@@ -92,14 +92,14 @@ class ShipmentControllerTest {
     @Test
     void shouldSaveShipment() throws Exception {
         // given
-        given(shipmentService.save(any(ShipmentDto.class))).willReturn(shipmentDto);
+        given(shipmentService.save(any(ShipmentResponse.class))).willReturn(shipmentResponse);
 
         // when
         // then
         mvc.perform(post(URL)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(shipmentDto)))
+                        .content(mapper.writeValueAsString(shipmentResponse)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.quantity", is(3)))
@@ -109,14 +109,14 @@ class ShipmentControllerTest {
     @Test
     void shouldUpdateShipment() throws Exception {
         // given
-        given(shipmentService.update(anyLong(), any(ShipmentDto.class))).willReturn(shipmentDto);
+        given(shipmentService.update(anyLong(), any(ShipmentResponse.class))).willReturn(shipmentResponse);
 
         // when
         // then
         mvc.perform(put(URL + "/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(shipmentDto)))
+                        .content(mapper.writeValueAsString(shipmentResponse)))
                 .andExpect(status().isAccepted())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.quantity", is(3)))

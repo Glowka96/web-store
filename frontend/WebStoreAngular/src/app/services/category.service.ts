@@ -3,24 +3,24 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { CategoryRequest } from '../models/category-request';
 import { Observable } from 'rxjs';
-import { Category } from '../models/category';
+import { CategoryResponse } from '../models/category-response';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CategoryService {
   private apiServerUrl = environment.apiBaseUrl;
-  private listCategory: Observable<Category[]>;
+  private listCategory: Observable<CategoryResponse[]>;
 
   constructor(private http: HttpClient) {
     this.listCategory = this.getCategories();
   }
 
-  private getCategories(): Observable<Category[]> {
-    return this.http.get<Category[]>(`${this.apiServerUrl}/categories`);
+  private getCategories(): Observable<CategoryResponse[]> {
+    return this.http.get<CategoryResponse[]>(`${this.apiServerUrl}/categories`);
   }
 
-  public get categories$(): Observable<Category[]> {
+  public get categories$(): Observable<CategoryResponse[]> {
     return this.listCategory;
   }
 

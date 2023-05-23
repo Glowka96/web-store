@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { Product } from 'src/app/models/product';
+import { ProductResponse } from 'src/app/models/product-response';
 import { ProductService } from 'src/app/services/product.service';
 import { ShopService } from 'src/app/services/shop.service';
 
@@ -10,7 +10,7 @@ import { ShopService } from 'src/app/services/shop.service';
   styleUrls: ['./products.component.scss'],
 })
 export class ProductsComponent implements OnInit {
-  private products: Product[] = [];
+  private products: ProductResponse[] = [];
   private cart: { [productId: string]: number } = {};
   private title!: string;
   private quantityOfProducts!: number;
@@ -97,7 +97,7 @@ export class ProductsComponent implements OnInit {
   }
 
   public addToBasket(id: string) {
-    let product = this.products.find((product: Product) => {
+    let product = this.products.find((product: ProductResponse) => {
       return product.id == id;
     });
     if (product) {
@@ -108,7 +108,7 @@ export class ProductsComponent implements OnInit {
     }
   }
 
-  public getPrice(product: Product): string {
+  public getPrice(product: ProductResponse): string {
     return (Number(this.cart[product.id]) * Number(product.price)).toFixed(2);
   }
 
@@ -142,7 +142,7 @@ export class ProductsComponent implements OnInit {
     }
   }
 
-  public get listProduct(): Product[] {
+  public get listProduct(): ProductResponse[] {
     return this.products;
   }
 

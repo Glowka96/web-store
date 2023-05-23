@@ -1,6 +1,7 @@
 import { AccountAddress } from './account-address';
 
-export interface Account {
+export interface AccountResponse {
+  id: string;
   firstName: string;
   lastName: string;
   email: string;

@@ -1,10 +1,10 @@
-<nav class="navigation">
+<header class="navigation">
   <div class="nav-logo">
     <a [routerLink]="'/'" alt="home">
       <img src="/assets/images/logo2.png" alt="logo" width="230px" height="80px">
     </a>
   </div>
-  <div class="nav-menu">
+  <nav class="nav-menu">
     <ul class="nav-category" *ngFor="let category of getCategories">
       <li>{{category.name}}</li>
       <ul class="nav-submenu">
@@ -14,7 +14,7 @@
         </li>
       </ul>
     </ul>
-  </div>
+  </nav>
   <div class="nav-user">
     <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
       <input formControlName="search" type="search" class="search" placeholder="search">
@@ -27,4 +27,4 @@
       <button class="btn-log" (click)="logout()">Logout</button>
     </div>
   </div>
-</nav>
+</header>

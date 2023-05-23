@@ -2,7 +2,7 @@ package com.example.porfolio.webstorespring.services.products;
 
 import com.example.porfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.porfolio.webstorespring.mappers.SubcategoryMapper;
-import com.example.porfolio.webstorespring.model.dto.products.SubcategoryDto;
+import com.example.porfolio.webstorespring.model.dto.products.SubcategoryRequest;
 import com.example.porfolio.webstorespring.model.entity.products.Category;
 import com.example.porfolio.webstorespring.model.entity.products.Subcategory;
 import com.example.porfolio.webstorespring.repositories.products.CategoryRepository;
@@ -20,32 +20,32 @@ public class SubcategoryService {
     private final CategoryRepository categoryRepository;
     private final SubcategoryMapper subcategoryMapper;
 
-    public SubcategoryDto getSubcategoryDtoById(Long id) {
+    public SubcategoryRequest getSubcategoryDtoById(Long id) {
         Subcategory foundSubcategory = findSubcategoryById(id);
         return subcategoryMapper.mapToDto(foundSubcategory);
     }
 
-    public List<SubcategoryDto> getAllSubcategoryDto() {
+    public List<SubcategoryRequest> getAllSubcategoryDto() {
         return subcategoryMapper.mapToDto(subcategoryRepository.findAll());
     }
 
-    public SubcategoryDto save(Long categoryId,
-                               SubcategoryDto subCategoryDto) {
+    public SubcategoryRequest save(Long categoryId,
+                                   SubcategoryRequest subCategoryRequest) {
         Category foundCategory = findCategoryById(categoryId);
-        Subcategory subcategory = subcategoryMapper.mapToEntity(subCategoryDto);
+        Subcategory subcategory = subcategoryMapper.mapToEntity(subCategoryRequest);
 
         subcategory.setCategory(foundCategory);
         subcategoryRepository.save(subcategory);
         return subcategoryMapper.mapToDto(subcategory);
     }
 
-    public SubcategoryDto update(Long categoryId,
-                                 Long subCategoryId,
-                                 SubcategoryDto subCategoryDto) {
+    public SubcategoryRequest update(Long categoryId,
+                                     Long subCategoryId,
+                                     SubcategoryRequest subCategoryRequest) {
         Category foundCategory = findCategoryById(categoryId);
         Subcategory foundSubcategory = findSubcategoryById(subCategoryId);
 
-        Subcategory subCategory = subcategoryMapper.mapToEntity(subCategoryDto);
+        Subcategory subCategory = subcategoryMapper.mapToEntity(subCategoryRequest);
         setupSubcategory(foundCategory, foundSubcategory, subCategory);
 
         subcategoryRepository.save(subCategory);

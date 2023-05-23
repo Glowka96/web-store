@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AccountAddress } from 'src/app/models/account-address';
-import { Order } from 'src/app/models/order';
-import { Shipment } from 'src/app/models/shipment';
+import { OrderRequest } from 'src/app/models/order-request';
+import { ShipmentRequest } from 'src/app/models/shipment-request';
 import { AccountService } from 'src/app/services/account.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ShopService } from 'src/app/services/shop.service';
@@ -17,7 +17,7 @@ export class PurchaseComponent implements OnInit {
   private accountId!: string;
   private accountAddress!: AccountAddress;
   private foundAddress!: boolean;
-  private basket!: Shipment[];
+  private basket!: ShipmentRequest[];
   private shipmentsPrice: number = 0;
   private submitPurchase: boolean = false;
   private message!: string;
@@ -99,7 +99,7 @@ export class PurchaseComponent implements OnInit {
       let city = this.deliveryAddressForm.controls['city']?.value ?? '';
       let postcode = this.deliveryAddressForm.controls['postcode']?.value ?? '';
       let address = this.deliveryAddressForm.controls['street']?.value ?? '';
-      let request: Order = {
+      let request: OrderRequest = {
         shipments: this.basket,
         deliveryAddress: city + ', ' + postcode + ', ' + address,
       };

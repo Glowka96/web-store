@@ -2,7 +2,7 @@ package com.example.porfolio.webstorespring.services;
 
 import com.example.porfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.porfolio.webstorespring.mappers.ProducerMapper;
-import com.example.porfolio.webstorespring.model.dto.products.ProducerDto;
+import com.example.porfolio.webstorespring.model.dto.products.ProducerResponse;
 import com.example.porfolio.webstorespring.model.entity.products.Producer;
 import com.example.porfolio.webstorespring.repositories.products.ProducerRepository;
 import com.example.porfolio.webstorespring.services.products.ProducerService;
@@ -32,7 +32,7 @@ class ProducerServiceTest {
     @InjectMocks
     private ProducerService underTest;
 
-    private ProducerDto producerDto;
+    private ProducerResponse producerResponse;
     private Producer producer;
 
     @BeforeEach
@@ -41,9 +41,9 @@ class ProducerServiceTest {
         producer.setId(1L);
         producer.setName("ProducerTest");
 
-        producerDto = new ProducerDto();
-        producerDto.setId(3L);
-        producerDto.setName("Test");
+        producerResponse = new ProducerResponse();
+        producerResponse.setId(3L);
+        producerResponse.setName("Test");
     }
 
     @Test
@@ -52,11 +52,11 @@ class ProducerServiceTest {
         given(producerRepository.findById(producer.getId())).willReturn(Optional.of(producer));
 
         // when
-        producerDto = underTest.getProducerById(1L);
+        producerResponse = underTest.getProducerById(1L);
 
         // then
-        assertThat(producerDto).isNotNull();
-        assertThat(producerDto.getName()).isNotNull();
+        assertThat(producerResponse).isNotNull();
+        assertThat(producerResponse.getName()).isNotNull();
     }
 
     @Test
@@ -86,7 +86,7 @@ class ProducerServiceTest {
     void shouldSaveProducer() {
         // given
         // when
-        underTest.save(producerDto);
+        underTest.save(producerResponse);
 
         // then
         ArgumentCaptor<Producer> producerArgumentCaptor =
@@ -94,9 +94,9 @@ class ProducerServiceTest {
         verify(producerRepository).save(producerArgumentCaptor.capture());
 
         Producer captureProducer = producerArgumentCaptor.getValue();
-        ProducerDto mappedProducerDto = producerMapper.mapToDto(captureProducer);
+        ProducerResponse mappedProducerResponse = producerMapper.mapToDto(captureProducer);
 
-        assertThat(mappedProducerDto).isEqualTo(producerDto);
+        assertThat(mappedProducerResponse).isEqualTo(producerResponse);
     }
 
     @Test
@@ -105,10 +105,10 @@ class ProducerServiceTest {
         given(producerRepository.findById(producer.getId())).willReturn(Optional.of(producer));
 
         // when
-        ProducerDto savedProducer = underTest.update(producer.getId(), producerDto);
+        ProducerResponse savedProducer = underTest.update(producer.getId(), producerResponse);
 
         // then
-        assertThat(savedProducer.getName()).isEqualTo(producerDto.getName());
+        assertThat(savedProducer.getName()).isEqualTo(producerResponse.getName());
         assertThat(savedProducer.getId()).isEqualTo(producer.getId());
     }
 

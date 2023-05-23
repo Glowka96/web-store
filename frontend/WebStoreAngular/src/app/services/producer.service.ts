@@ -3,21 +3,21 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ProducerRequest } from '../models/producer-request';
-import { Producer } from '../models/producer';
+import { ProducerResponse } from '../models/producer-response';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProducerService {
   private apiServerUrl = environment.apiBaseUrl;
-  private listProducer: Observable<Producer[]>;
+  private listProducer: Observable<ProducerResponse[]>;
 
   constructor(private http: HttpClient) {
     this.listProducer = this.getAllProducers();
   }
 
-  private getAllProducers(): Observable<Producer[]> {
-    return this.http.get<Producer[]>(`${this.apiServerUrl}/producers`);
+  private getAllProducers(): Observable<ProducerResponse[]> {
+    return this.http.get<ProducerResponse[]>(`${this.apiServerUrl}/producers`);
   }
 
   public addProducer(request: ProducerRequest): Observable<any> {
@@ -40,7 +40,7 @@ export class ProducerService {
     );
   }
 
-  public get producers$(): Observable<Producer[]> {
+  public get producers$(): Observable<ProducerResponse[]> {
     return this.listProducer;
   }
 }

@@ -1,7 +1,7 @@
 package com.example.porfolio.webstorespring.controllers.accounts;
 
 import com.example.porfolio.webstorespring.exceptions.GlobalExceptionHandler;
-import com.example.porfolio.webstorespring.model.dto.accounts.AccountAddressDto;
+import com.example.porfolio.webstorespring.model.dto.accounts.AccountAddressRequest;
 import com.example.porfolio.webstorespring.model.dto.accounts.AccountResponse;
 import com.example.porfolio.webstorespring.services.accounts.AccountAddressService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,7 +34,7 @@ class AccountAddressControllerTest {
     private final static String URL = "/api/v1/accounts/{accountId}/address";
     private ObjectMapper mapper;
     private MockMvc mvc;
-    private AccountAddressDto address;
+    private AccountAddressRequest address;
 
     @BeforeEach
     void initialization() {
@@ -47,7 +47,7 @@ class AccountAddressControllerTest {
         AccountResponse account = new AccountResponse();
         account.setId(1L);
 
-        address = new AccountAddressDto();
+        address = new AccountAddressRequest();
         address.setId(1L);
         address.setCity("Test");
         address.setStreet("test 59/2");
@@ -74,7 +74,7 @@ class AccountAddressControllerTest {
 
     @Test
     void saveAccountAddress() throws Exception {
-        given(addressService.saveAccountAddress(anyLong(), any(AccountAddressDto.class))).willReturn(address);
+        given(addressService.saveAccountAddress(anyLong(), any(AccountAddressRequest.class))).willReturn(address);
 
         mvc.perform(post(URL, 1)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -91,7 +91,7 @@ class AccountAddressControllerTest {
 
     @Test
     void updateAccountAddress() throws Exception {
-        given(addressService.updateAccountAddress(anyLong(), any(AccountAddressDto.class))).willReturn(address);
+        given(addressService.updateAccountAddress(anyLong(), any(AccountAddressRequest.class))).willReturn(address);
 
         mvc.perform(put(URL, 1)
                         .contentType(MediaType.APPLICATION_JSON)

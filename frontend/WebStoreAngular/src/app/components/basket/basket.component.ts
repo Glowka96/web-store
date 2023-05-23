@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Shipment } from 'src/app/models/shipment';
+import { ShipmentRequest } from 'src/app/models/shipment-request';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { FormLoginService } from 'src/app/services/form-login.service';
 import { ShopService } from 'src/app/services/shop.service';
@@ -12,7 +12,7 @@ import { ShopService } from 'src/app/services/shop.service';
   styleUrls: ['./basket.component.scss'],
 })
 export class BasketComponent implements OnInit {
-  private basket: Shipment[] = [];
+  private basket: ShipmentRequest[] = [];
   private selectedId!: string;
   private loggedIn: boolean = false;
   private buyBtnClicked = false;

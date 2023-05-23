@@ -1,6 +1,6 @@
 package com.example.porfolio.webstorespring.controllers.products;
 
-import com.example.porfolio.webstorespring.model.dto.products.ProductDto;
+import com.example.porfolio.webstorespring.model.dto.products.ProductResponse;
 import com.example.porfolio.webstorespring.services.products.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +17,10 @@ public class SearchController {
     private final ProductService productService;
 
     @GetMapping(value = "/search/{text}", params = {"page", "size", "sort"})
-    public ResponseEntity<List<ProductDto>> getSearchProductsByText(@PathVariable("text") String text,
-                                                              @RequestParam("page") Integer page,
-                                                              @RequestParam("size") Integer size,
-                                                              @RequestParam("sort") String sort) {
+    public ResponseEntity<List<ProductResponse>> getSearchProductsByText(@PathVariable("text") String text,
+                                                                         @RequestParam("page") Integer page,
+                                                                         @RequestParam("size") Integer size,
+                                                                         @RequestParam("sort") String sort) {
         return ResponseEntity.ok(productService.getSearchProducts(text, page, size, sort));
     }
 

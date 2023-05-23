@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Category } from 'src/app/models/category';
-import { Subcategory } from 'src/app/models/subcategory';
+import { CategoryResponse } from 'src/app/models/category-response';
+import { SubcategoryResponse } from 'src/app/models/subcategory-response';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { CategoryService } from 'src/app/services/category.service';
 import { SubcategoryService } from 'src/app/services/subcategory.service';
@@ -12,8 +12,8 @@ import { SubcategoryService } from 'src/app/services/subcategory.service';
   styleUrls: ['./board-admin.component.scss'],
 })
 export class BoardAdminComponent implements OnInit {
-  private categories: Category[] = [];
-  private subcategories: Subcategory[] = [];
+  private categories: CategoryResponse[] = [];
+  private subcategories: SubcategoryResponse[] = [];
   private loggedRole!: string;
 
   constructor(

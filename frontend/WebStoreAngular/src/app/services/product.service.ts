@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { ProductRequest } from '../models/product-request';
 import { Observable } from 'rxjs';
-import { Product } from '../models/product';
+import { ProductResponse } from '../models/product-response';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Injectable({
@@ -22,7 +22,7 @@ export class ProductService {
     subcategoryId: string,
     page: number = 0,
     size: number = 12
-  ): Observable<Product[]> {
+  ): Observable<ProductResponse[]> {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: { page: page + 1, size: size },
@@ -31,7 +31,7 @@ export class ProductService {
     let params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString());
-    return this.http.get<Product[]>(
+    return this.http.get<ProductResponse[]>(
       `${this.apiServerUrl}/subcategories/${subcategoryId}/products`,
       { params }
     );
@@ -48,7 +48,7 @@ export class ProductService {
     page: number = 0,
     size: number = 12,
     sort: string = 'id'
-  ): Observable<Product[]> {
+  ): Observable<ProductResponse[]> {
     this.router.navigate(['/search'], {
       queryParams: { q: text, page: page + 1, size: size, sort: sort },
       queryParamsHandling: 'merge',
@@ -57,7 +57,7 @@ export class ProductService {
       .set('page', page.toString())
       .set('size', size.toString())
       .set('sort', sort);
-    return this.http.get<Product[]>(
+    return this.http.get<ProductResponse[]>(
       `${this.apiServerUrl}/products/search/${text}`,
       { params }
     );
@@ -69,8 +69,8 @@ export class ProductService {
     );
   }
 
-  public getAllProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(
+  public getAllProducts(): Observable<ProductResponse[]> {
+    return this.http.get<ProductResponse[]>(
       `${this.apiServerUrl}/subcategories/products`
     );
   }

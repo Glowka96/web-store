@@ -2,7 +2,8 @@ package com.example.porfolio.webstorespring.services.products;
 
 import com.example.porfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.porfolio.webstorespring.mappers.ProducerMapper;
-import com.example.porfolio.webstorespring.model.dto.products.ProducerDto;
+import com.example.porfolio.webstorespring.model.dto.products.ProducerRequest;
+import com.example.porfolio.webstorespring.model.dto.products.ProducerResponse;
 import com.example.porfolio.webstorespring.model.entity.products.Producer;
 import com.example.porfolio.webstorespring.repositories.products.ProducerRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,25 +18,25 @@ public class ProducerService {
     private final ProducerRepository producerRepository;
     private final ProducerMapper producerMapper;
 
-    public ProducerDto getProducerById(Long id) {
+    public ProducerResponse getProducerById(Long id) {
         Producer foundProducer = findProducerById(id);
         return producerMapper.mapToDto(foundProducer);
     }
 
-    public List<ProducerDto> getAllProducer() {
+    public List<ProducerResponse> getAllProducer() {
         return producerMapper.mapToDto(producerRepository.findAll());
     }
 
-    public ProducerDto save(ProducerDto producerDto) {
-        Producer producer = producerMapper.mapToEntity(producerDto);
+    public ProducerResponse save(ProducerRequest producerRequest) {
+        Producer producer = producerMapper.mapToEntity(producerRequest);
         producerRepository.save(producer);
         return producerMapper.mapToDto(producer);
     }
 
-    public ProducerDto update(Long id, ProducerDto producerDto) {
+    public ProducerResponse update(Long id, ProducerRequest producerRequest) {
         Producer foundProducer = findProducerById(id);
 
-        Producer producer = producerMapper.mapToEntity(producerDto);
+        Producer producer = producerMapper.mapToEntity(producerRequest);
         setupProducer(foundProducer, producer);
 
         producerRepository.save(producer);

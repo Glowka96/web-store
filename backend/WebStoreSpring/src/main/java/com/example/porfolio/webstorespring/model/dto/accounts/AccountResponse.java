@@ -14,7 +14,7 @@ public class AccountResponse {
     private String email;
 
     @JsonProperty("address")
-    private AccountAddressDto addressDto;
+    private AccountAddressRequest addressDto;
 
     private String imageUrl;
 }

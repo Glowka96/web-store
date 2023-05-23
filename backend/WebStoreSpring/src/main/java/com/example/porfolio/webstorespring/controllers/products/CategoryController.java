@@ -1,6 +1,7 @@
 package com.example.porfolio.webstorespring.controllers.products;
 
-import com.example.porfolio.webstorespring.model.dto.products.CategoryDto;
+import com.example.porfolio.webstorespring.model.dto.products.CategoryRequest;
+import com.example.porfolio.webstorespring.model.dto.products.CategoryResponse;
 import com.example.porfolio.webstorespring.services.products.CategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,28 +21,28 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping()
-    public ResponseEntity<List<CategoryDto>> getAllCategory() {
+    public ResponseEntity<List<CategoryResponse>> getAllCategory() {
         return ResponseEntity.ok(categoryService.getAllCategoryDto());
     }
 
     @GetMapping(value = "/{categoryId}")
-    public ResponseEntity<CategoryDto> getCategoryById(@PathVariable(value = "categoryId") Long categoryId) {
+    public ResponseEntity<CategoryResponse> getCategoryById(@PathVariable(value = "categoryId") Long categoryId) {
         return ResponseEntity.ok(categoryService.getCategoryDtoById(categoryId));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping()
-    public ResponseEntity<CategoryDto> saveCategory(@Valid @RequestBody CategoryDto categoryDto) {
+    public ResponseEntity<CategoryResponse> saveCategory(@Valid @RequestBody CategoryRequest categoryRequest) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(categoryService.save(categoryDto));
+                .body(categoryService.save(categoryRequest));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping(value = "/{categoryId}")
-    public ResponseEntity<CategoryDto> updateCategory(@PathVariable(value = "categoryId") Long categoryId,
-                                                      @Valid @RequestBody CategoryDto categoryDto){
+    public ResponseEntity<CategoryResponse> updateCategory(@PathVariable(value = "categoryId") Long categoryId,
+                                                           @Valid @RequestBody CategoryRequest categoryRequest){
         return ResponseEntity.status(HttpStatus.ACCEPTED)
-                .body(categoryService.update(categoryId, categoryDto));
+                .body(categoryService.update(categoryId, categoryRequest));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")

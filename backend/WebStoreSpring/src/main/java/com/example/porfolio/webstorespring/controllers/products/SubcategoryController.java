@@ -1,6 +1,6 @@
 package com.example.porfolio.webstorespring.controllers.products;
 
-import com.example.porfolio.webstorespring.model.dto.products.SubcategoryDto;
+import com.example.porfolio.webstorespring.model.dto.products.SubcategoryRequest;
 import com.example.porfolio.webstorespring.services.products.SubcategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,30 +20,30 @@ public class SubcategoryController {
     private final SubcategoryService subcategoryService;
 
     @GetMapping(value = "/subcategories/{subCategoryId}")
-    public ResponseEntity<SubcategoryDto> getSubcategoryById(@PathVariable("subCategoryId") Long id) {
+    public ResponseEntity<SubcategoryRequest> getSubcategoryById(@PathVariable("subCategoryId") Long id) {
         return ResponseEntity.ok(subcategoryService.getSubcategoryDtoById(id));
     }
 
     @GetMapping(value = "/subcategories")
-    public ResponseEntity<List<SubcategoryDto>> getAllSubcategory() {
+    public ResponseEntity<List<SubcategoryRequest>> getAllSubcategory() {
         return ResponseEntity.ok(subcategoryService.getAllSubcategoryDto());
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping(value = "/{categoryId}/subcategories")
-    public ResponseEntity<SubcategoryDto> saveSubcategory(@PathVariable("categoryId") Long id,
-                                                          @Valid @RequestBody SubcategoryDto subcategoryDto) {
+    public ResponseEntity<SubcategoryRequest> saveSubcategory(@PathVariable("categoryId") Long id,
+                                                              @Valid @RequestBody SubcategoryRequest subcategoryRequest) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(subcategoryService.save(id, subcategoryDto));
+                .body(subcategoryService.save(id, subcategoryRequest));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping(value = "/{categoryId}/subcategories/{subcategoryId}")
-    public ResponseEntity<SubcategoryDto> updateSubcategory(@PathVariable("categoryId") Long categoryId,
-                                                            @PathVariable("subcategoryId") Long subcategoryId,
-                                                            @Valid @RequestBody SubcategoryDto subCategoryDto) {
+    public ResponseEntity<SubcategoryRequest> updateSubcategory(@PathVariable("categoryId") Long categoryId,
+                                                                @PathVariable("subcategoryId") Long subcategoryId,
+                                                                @Valid @RequestBody SubcategoryRequest subCategoryRequest) {
         return ResponseEntity.status(HttpStatus.ACCEPTED)
-                .body(subcategoryService.update(categoryId, subcategoryId, subCategoryDto));
+                .body(subcategoryService.update(categoryId, subcategoryId, subCategoryRequest));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")

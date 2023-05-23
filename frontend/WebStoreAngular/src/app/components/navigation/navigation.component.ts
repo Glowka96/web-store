@@ -7,7 +7,7 @@ import {
   FormGroupDirective,
   Validators,
 } from '@angular/forms';
-import { Category } from 'src/app/models/category';
+import { CategoryResponse } from 'src/app/models/category-response';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { FormLoginService } from 'src/app/services/form-login.service';
 import { CategoryService } from 'src/app/services/category.service';
@@ -25,7 +25,7 @@ import { ProductService } from 'src/app/services/product.service';
   ],
 })
 export class NavigationComponent implements OnInit {
-  private categories: Category[] = [];
+  private categories: CategoryResponse[] = [];
   private loggedIn: boolean = false;
 
   public searchForm = new FormGroup({
@@ -51,7 +51,7 @@ export class NavigationComponent implements OnInit {
 
   ngOnInit() {}
 
-  public get getCategories(): Category[] {
+  public get getCategories(): CategoryResponse[] {
     return this.categories;
   }
 

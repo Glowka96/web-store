@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Category } from 'src/app/models/category';
-import { Subcategory } from 'src/app/models/subcategory';
+import { CategoryResponse } from 'src/app/models/category-response';
+import { SubcategoryResponse } from 'src/app/models/subcategory-response';
 import { SubcategoryRequest } from 'src/app/models/subcategory-request';
 import { SubcategoryService } from 'src/app/services/subcategory.service';
 
@@ -12,9 +12,9 @@ import { SubcategoryService } from 'src/app/services/subcategory.service';
 })
 export class ModSubcategoryComponent implements OnInit {
   @Input()
-  categories!: Category[];
+  categories!: CategoryResponse[];
   @Input()
-  subcategories!: Subcategory[];
+  subcategories!: SubcategoryResponse[];
   private errorAddMsg = '';
   private errorUpdateMsg = '';
   private errorDeleteMsg = '';

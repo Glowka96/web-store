@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Account } from 'src/app/models/account';
+import { AccountResponse } from 'src/app/models/account-response';
 import { AccountService } from 'src/app/services/account.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 
@@ -10,7 +10,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 })
 export class AccountComponent implements OnInit {
   private accountId!: string;
-  private account!: Account;
+  private account!: AccountResponse;
 
   constructor(
     private authService: AuthenticationService,

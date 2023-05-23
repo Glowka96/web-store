@@ -9,8 +9,8 @@ import com.example.porfolio.webstorespring.mappers.ShipmentMapper;
 import com.example.porfolio.webstorespring.model.dto.accounts.AccountRequest;
 import com.example.porfolio.webstorespring.model.dto.orders.OrderRequest;
 import com.example.porfolio.webstorespring.model.dto.orders.OrderResponse;
-import com.example.porfolio.webstorespring.model.dto.orders.ShipmentDto;
-import com.example.porfolio.webstorespring.model.dto.products.ProductDto;
+import com.example.porfolio.webstorespring.model.dto.orders.ShipmentResponse;
+import com.example.porfolio.webstorespring.model.dto.products.ProductRequest;
 import com.example.porfolio.webstorespring.model.entity.accounts.Account;
 import com.example.porfolio.webstorespring.model.entity.accounts.AccountAddress;
 import com.example.porfolio.webstorespring.model.entity.orders.Order;
@@ -61,7 +61,7 @@ class OrderServiceTest {
     private AccountRequest accountRequest;
     private Account account;
     private OrderRequest orderRequest;
-    private List<ShipmentDto> shipmentsDto;
+    private List<ShipmentResponse> shipmentsDto;
 
     @BeforeEach
     void initialization() {
@@ -89,18 +89,18 @@ class OrderServiceTest {
         account.setLastName("Name");
         account.setAddress(accountAddress);
 
-        ProductDto productDto = new ProductDto();
-        productDto.setId(1L);
-        productDto.setPrice(10.5);
-        productDto.setName("Product Test");
+        ProductRequest productRequest = new ProductRequest();
+        productRequest.setId(1L);
+        productRequest.setPrice(10.5);
+        productRequest.setName("Product Test");
 
-        ShipmentDto shipmentDto = new ShipmentDto();
-        shipmentDto.setId(1L);
-        shipmentDto.setProductDto(productDto);
-        shipmentDto.setQuantity(3);
-        shipmentDto.setPrice(31.5);
+        ShipmentResponse shipmentResponse = new ShipmentResponse();
+        shipmentResponse.setId(1L);
+        shipmentResponse.setProductRequest(productRequest);
+        shipmentResponse.setQuantity(3);
+        shipmentResponse.setPrice(31.5);
 
-        shipmentsDto = new ArrayList<>(Arrays.asList(shipmentDto, shipmentDto));
+        shipmentsDto = new ArrayList<>(Arrays.asList(shipmentResponse, shipmentResponse));
 
         orderResponse = new OrderResponse();
         orderResponse.setId(1L);
@@ -154,7 +154,7 @@ class OrderServiceTest {
         Double expectedDouble = 63.0;
 
         // when
-        when(shipmentService.save(any(ShipmentDto.class))).thenReturn(shipmentsDto.get(0));
+        when(shipmentService.save(any(ShipmentResponse.class))).thenReturn(shipmentsDto.get(0));
         orderResponse = underTest.saveOrder(1L, orderRequest);
 
         // then

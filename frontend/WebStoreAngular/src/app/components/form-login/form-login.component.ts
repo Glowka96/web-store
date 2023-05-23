@@ -86,8 +86,8 @@ export class FormLoginComponent implements OnInit {
   );
 
   passwordMatchValidator(formGroup: FormGroup) {
-    const passwordControl = formGroup.get('password');
-    const confirmPasswordControl = formGroup.get('confirmPassword');
+    let passwordControl = formGroup.get('password');
+    let confirmPasswordControl = formGroup.get('confirmPassword');
 
     if (passwordControl?.value !== confirmPasswordControl?.value) {
       confirmPasswordControl?.setErrors({ passwordMatch: true });

@@ -1,6 +1,6 @@
 package com.example.porfolio.webstorespring.controllers.products;
 
-import com.example.porfolio.webstorespring.model.dto.products.ProducerDto;
+import com.example.porfolio.webstorespring.model.dto.products.ProducerResponse;
 import com.example.porfolio.webstorespring.services.products.ProducerService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,7 +33,7 @@ class ProducerControllerTest {
     private MockMvc mvc;
     private ObjectMapper mapper;
     private static final String URL = "/api/v1/producers";
-    private ProducerDto producerDto;
+    private ProducerResponse producerResponse;
 
     @BeforeEach
     void initialization() {
@@ -41,14 +41,14 @@ class ProducerControllerTest {
 
         mapper = new ObjectMapper();
 
-        producerDto = new ProducerDto();
-        producerDto.setId(1L);
-        producerDto.setName("Test");
+        producerResponse = new ProducerResponse();
+        producerResponse.setId(1L);
+        producerResponse.setName("Test");
     }
 
     @Test
     void shouldGetAllProducer() throws Exception {
-        given(producerService.getAllProducer()).willReturn(Arrays.asList(producerDto, new ProducerDto()));
+        given(producerService.getAllProducer()).willReturn(Arrays.asList(producerResponse, new ProducerResponse()));
 
         mvc.perform(get(URL)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -60,7 +60,7 @@ class ProducerControllerTest {
 
     @Test
     void shouldGetProducerById() throws Exception {
-        given(producerService.getProducerById(1L)).willReturn(producerDto);
+        given(producerService.getProducerById(1L)).willReturn(producerResponse);
 
         mvc.perform(get(URL + "/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -72,12 +72,12 @@ class ProducerControllerTest {
 
     @Test
     void shouldSaveProducer() throws Exception {
-        given(producerService.save(producerDto)).willReturn(producerDto);
+        given(producerService.save(producerResponse)).willReturn(producerResponse);
 
         mvc.perform(post(URL)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(producerDto)))
+                        .content(mapper.writeValueAsString(producerResponse)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.name", is("Test")))
@@ -86,12 +86,12 @@ class ProducerControllerTest {
 
     @Test
     void shouldUpdateProducer() throws Exception {
-        given(producerService.update(1L, producerDto)).willReturn(producerDto);
+        given(producerService.update(1L, producerResponse)).willReturn(producerResponse);
 
         mvc.perform(put(URL + "/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(producerDto)))
+                        .content(mapper.writeValueAsString(producerResponse)))
                 .andExpect(status().isAccepted())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.name", is("Test")))
