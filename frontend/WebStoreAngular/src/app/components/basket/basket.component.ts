@@ -19,7 +19,11 @@ export class BasketComponent implements OnInit {
 
   public changeForm = new FormGroup({
     quantity: new FormControl('', {
-      validators: [Validators.min(1), Validators.max(100)],
+      validators: [
+        Validators.min(1),
+        Validators.max(100),
+        Validators.pattern('\\d*'),
+      ],
       updateOn: 'change',
     }),
   });

@@ -18,7 +18,7 @@
             </div>
         </div>
     </div>
-    <div class="account-data">
+    <div class="account-data" *ngIf="user">
         <p><span class="data">First name: </span>{{user.firstName}} </p>
         <p><span class="data">Last name: </span>{{user.lastName}} </p>
         <p><span class="data">Email: </span>{{user.email}}</p>
