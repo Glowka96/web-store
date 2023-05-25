@@ -6,27 +6,29 @@
         <div class="shipment" *ngFor="let shipment of shipments">
             <div class="wprapper-product">
                 <div class="product-text">
-                    <span class="title">Product name: </span><span>{{shipment.product.name}}</span>
-                    <span class="title description">Product
-                        description:</span><span>{{shipment.product.description}}</span>
+                    <p><span class="title">Product name: </span>{{shipment.product.name}}</p>
+                    <p><span class="title description">Product
+                            description: </span>{{shipment.product.description}}</p>
                 </div>
                 <span class="product-img"><img src={{shipment.product.imageUrl}} alt="{{shipment.product.name}}">
                 </span>
             </div>
             <div class="shipment-products">
                 <div class="shipment-quantity" *ngIf="!isUpdate(shipment.product.id)">
-                    <span class="title">Quantity: </span><span>{{shipment.quantity}}</span>
+                    <p><span class="title">Quantity: </span>{{shipment.quantity}}</p>
                 </div>
                 <form class="quantity-change" [formGroup]="changeForm" (ngSubmit)="onSumbitChange(shipment.product.id)"
                     *ngIf="isUpdate(shipment.product.id)">
                     <input formControlName="quantity" class="change" type="text" placeholder="Quantity">
                     <div class="error" *ngIf="changeForm.get('quantity')?.invalid">
                         <small *ngIf="changeForm.get('quantity')?.errors?.['min'] || ['max']">The quantity must be
-                            beetwen 1 nad 100.</small>
+                            beetwen 1 nad 100.<br></small>
+                        <small *ngIf="changeForm.get('quantity')?.errors?.['pattern']">The quantity must be a
+                            number</small>
                     </div>
                 </form>
                 <div class="shipment-price">
-                    <span class="title">Price for the product:</span><span> {{shipment.price}}</span>
+                    <p><span class="title">Price for the product: </span> {{shipment.price}} PLN</p>
                 </div>
             </div>
             <button class="btn-delete" (click)="deleteProductFromBasket(shipment.product.id)"><i
