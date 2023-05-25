@@ -2,7 +2,7 @@ package com.example.porfolio.webstorespring.controllers.orders;
 
 import com.example.porfolio.webstorespring.model.dto.orders.OrderRequest;
 import com.example.porfolio.webstorespring.model.dto.orders.OrderResponse;
-import com.example.porfolio.webstorespring.model.dto.orders.ShipmentResponse;
+import com.example.porfolio.webstorespring.model.dto.orders.ShipmentRequest;
 import com.example.porfolio.webstorespring.services.orders.OrderService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -53,9 +53,13 @@ class OrderControllerTest {
         orderResponse = new OrderResponse();
         orderResponse.setId(1L);
 
+        ShipmentRequest shipmentRequest = new ShipmentRequest();
+        shipmentRequest.setQuantity(3);
+        shipmentRequest.setPrice(3.00);
+
         orderRequest = new OrderRequest();
-        orderRequest.setDeliveryAddress("City: test, postcode: 99-999, address: test 59/55");
-        orderRequest.setShipmentsDto(Arrays.asList(new ShipmentResponse()));
+        orderRequest.setDeliveryAddress("Test");
+        orderRequest.setShipmentRequests(new ArrayList<>(List.of(shipmentRequest)));
     }
 
 
@@ -88,7 +92,7 @@ class OrderControllerTest {
 
     @Test
     void shouldSaveOrder() throws Exception {
-        given(orderService.saveOrder(1L, orderRequest)).willReturn(orderResponse);
+        given(orderService.saveOrder(anyLong(), any(OrderRequest.class))).willReturn(orderResponse);
 
         mvc.perform(post(URL + "/orders", 1)
                         .contentType(MediaType.APPLICATION_JSON)

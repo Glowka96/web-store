@@ -5,7 +5,6 @@ import com.example.porfolio.webstorespring.model.entity.accounts.AuthToken;
 import com.example.porfolio.webstorespring.repositories.accounts.AuthTokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -33,11 +32,6 @@ class LogoutServiceTest {
     private Authentication authentication;
     @InjectMocks
     private LogoutService underTest;
-
-    @BeforeEach
-    void initialization() {
-
-    }
 
     @Test
     void shouldLogout() {
@@ -92,12 +86,11 @@ class LogoutServiceTest {
     void willThrowWhenNotFoundAuthToken() {
         // given
         String jwt = "Bearer 7777";
-        String authHeader = jwt;
         AuthToken authToken = new AuthToken();
         authToken.setToken(jwt);
 
         // when
-        when(request.getHeader("Authorization")).thenReturn(authHeader);
+        when(request.getHeader("Authorization")).thenReturn(jwt);
         when(authTokenRepository.findByToken(any())).thenReturn(Optional.empty());
 
         //then

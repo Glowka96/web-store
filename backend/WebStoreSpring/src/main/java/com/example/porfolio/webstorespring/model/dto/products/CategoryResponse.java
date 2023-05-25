@@ -19,5 +19,5 @@ public class CategoryResponse {
     private String name;
 
     @JsonProperty("subcategories")
-    private List<SubcategoryRequest> subcategoriesDto;
+    private List<SubcategoryResponse> subcategoryResponses;
 }

@@ -1,4 +1,4 @@
-package com.example.porfolio.webstorespring.services;
+package com.example.porfolio.webstorespring.services.orders;
 
 import com.example.porfolio.webstorespring.exceptions.OrderCanNotModifiedException;
 import com.example.porfolio.webstorespring.exceptions.ResourceNotFoundException;
@@ -9,8 +9,7 @@ import com.example.porfolio.webstorespring.mappers.ShipmentMapper;
 import com.example.porfolio.webstorespring.model.dto.accounts.AccountRequest;
 import com.example.porfolio.webstorespring.model.dto.orders.OrderRequest;
 import com.example.porfolio.webstorespring.model.dto.orders.OrderResponse;
-import com.example.porfolio.webstorespring.model.dto.orders.ShipmentResponse;
-import com.example.porfolio.webstorespring.model.dto.products.ProductRequest;
+import com.example.porfolio.webstorespring.model.dto.orders.ShipmentRequest;
 import com.example.porfolio.webstorespring.model.entity.accounts.Account;
 import com.example.porfolio.webstorespring.model.entity.accounts.AccountAddress;
 import com.example.porfolio.webstorespring.model.entity.orders.Order;
@@ -18,8 +17,6 @@ import com.example.porfolio.webstorespring.model.entity.orders.OrderStatus;
 import com.example.porfolio.webstorespring.model.entity.orders.Shipment;
 import com.example.porfolio.webstorespring.repositories.accounts.AccountRepository;
 import com.example.porfolio.webstorespring.repositories.orders.OrderRepository;
-import com.example.porfolio.webstorespring.services.orders.OrderService;
-import com.example.porfolio.webstorespring.services.orders.ShipmentService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,10 +35,10 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith({MockitoExtension.class})
 class OrderServiceTest {
@@ -49,19 +46,15 @@ class OrderServiceTest {
     private OrderRepository orderRepository;
     @Mock
     private AccountRepository accountRepository;
-    @Mock
-    private ShipmentService shipmentService;
     @Spy
     private OrderMapper orderMapper = Mappers.getMapper(OrderMapper.class);
     @InjectMocks
     private OrderService underTest;
 
     private Order order;
-    private OrderResponse orderResponse;
     private AccountRequest accountRequest;
     private Account account;
     private OrderRequest orderRequest;
-    private List<ShipmentResponse> shipmentsDto;
 
     @BeforeEach
     void initialization() {
@@ -89,36 +82,23 @@ class OrderServiceTest {
         account.setLastName("Name");
         account.setAddress(accountAddress);
 
-        ProductRequest productRequest = new ProductRequest();
-        productRequest.setId(1L);
-        productRequest.setPrice(10.5);
-        productRequest.setName("Product Test");
+        ShipmentRequest shipmentRequest = new ShipmentRequest();
+        shipmentRequest.setQuantity(3);
+        shipmentRequest.setPrice(31.5);
 
-        ShipmentResponse shipmentResponse = new ShipmentResponse();
-        shipmentResponse.setId(1L);
-        shipmentResponse.setProductRequest(productRequest);
-        shipmentResponse.setQuantity(3);
-        shipmentResponse.setPrice(31.5);
+        List<ShipmentRequest> shipmentRequests = new ArrayList<>(Arrays.asList(shipmentRequest, shipmentRequest));
 
-        shipmentsDto = new ArrayList<>(Arrays.asList(shipmentResponse, shipmentResponse));
+        orderRequest = new OrderRequest();
+        orderRequest.setShipmentRequests(shipmentRequests);
+        orderRequest.setDeliveryAddress("");
 
-        orderResponse = new OrderResponse();
-        orderResponse.setId(1L);
-        orderResponse.setShipmentsDto(shipmentsDto);
-        orderResponse.setStatus(OrderStatus.OPEN);
-        orderResponse.setDeliveryAddress("Test");
-
-        List<Shipment> shipments = shipmentMapper.mapToEntity(shipmentsDto);
+        List<Shipment> shipments = shipmentMapper.mapToEntity(shipmentRequests);
 
         order = new Order();
         order.setId(1L);
         order.setShipments(shipments);
         order.setStatus(OrderStatus.OPEN);
         order.setAccount(account);
-
-        orderRequest = new OrderRequest();
-        orderRequest.setShipmentsDto(shipmentsDto);
-        orderRequest.setDeliveryAddress("");
     }
 
     @Test
@@ -127,11 +107,11 @@ class OrderServiceTest {
         given(orderRepository.findAllByAccountId(anyLong())).willReturn(Arrays.asList(order, new Order()));
 
         // when
-        List<OrderResponse> orderResponses = underTest.getAllOrderDtoByAccountId(1L);
+        List<OrderResponse> foundOrderResponses = underTest.getAllOrderDtoByAccountId(1L);
 
         // then
-        assertThat(orderResponses).isNotNull();
-        assertThat(orderResponses.size()).isEqualTo(2);
+        assertThat(foundOrderResponses).isNotNull();
+        assertThat(foundOrderResponses.size()).isEqualTo(2);
     }
 
     @Test
@@ -154,12 +134,12 @@ class OrderServiceTest {
         Double expectedDouble = 63.0;
 
         // when
-        when(shipmentService.save(any(ShipmentResponse.class))).thenReturn(shipmentsDto.get(0));
-        orderResponse = underTest.saveOrder(1L, orderRequest);
+        OrderResponse savedOrderResponse = underTest.saveOrder(1L, orderRequest);
 
         // then
-        assertThat(orderResponse.getNameUser()).isEqualTo(expectedNameUser);
-        assertThat(orderResponse.getProductsPrice()).isEqualTo(expectedDouble);
+        assertThat(expectedNameUser).isEqualTo(savedOrderResponse.getNameUser());
+        assertThat(expectedDouble).isEqualTo(savedOrderResponse.getProductsPrice());
+        assertThat(account.getAddress().toString()).isEqualTo(savedOrderResponse.getDeliveryAddress());
     }
 
     @Test
@@ -169,7 +149,7 @@ class OrderServiceTest {
         given(orderRepository.findById(anyLong())).willReturn(Optional.of(order));
 
         // when
-        orderResponse = underTest.updateOrder(1L, 1L, orderRequest);
+        OrderResponse orderResponse = underTest.updateOrder(1L, 1L, orderRequest);
 
         // then
         ArgumentCaptor<Order> orderArgumentCaptor =

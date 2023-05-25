@@ -25,5 +25,5 @@ public final class OrderResponse {
     private OrderStatus status;
 
     @JsonProperty("shipments")
-    private List<ShipmentResponse> shipmentsDto;
+    private List<ShipmentResponse> shipmentResponses;
 }

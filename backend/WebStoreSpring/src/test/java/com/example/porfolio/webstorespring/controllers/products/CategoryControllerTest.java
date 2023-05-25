@@ -1,6 +1,7 @@
 package com.example.porfolio.webstorespring.controllers.products;
 
 
+import com.example.porfolio.webstorespring.model.dto.products.CategoryRequest;
 import com.example.porfolio.webstorespring.model.dto.products.CategoryResponse;
 import com.example.porfolio.webstorespring.services.products.CategoryService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,6 +19,8 @@ import java.util.Arrays;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -64,7 +67,7 @@ class CategoryControllerTest {
     @Test
     void shouldGetCategoryById() throws Exception {
         // given
-        given(categoryService.getCategoryDtoById(1L)).willReturn(categoryResponse);
+        given(categoryService.getCategoryDtoById(anyLong())).willReturn(categoryResponse);
 
         // when
         // then
@@ -81,7 +84,7 @@ class CategoryControllerTest {
     @Test
     void shouldSaveCategory() throws Exception {
         // given
-        given(categoryService.save(categoryResponse)).willReturn(categoryResponse);
+        given(categoryService.save(any(CategoryRequest.class))).willReturn(categoryResponse);
 
         // when
         // then
@@ -97,7 +100,7 @@ class CategoryControllerTest {
     @Test
     void shouldUpdateCategory() throws Exception {
         // given
-        given(categoryService.update(1L, categoryResponse)).willReturn(categoryResponse);
+        given(categoryService.update(anyLong(), any(CategoryRequest.class))).willReturn(categoryResponse);
 
         // when
         // then

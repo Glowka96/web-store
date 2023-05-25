@@ -1,13 +1,11 @@
-package com.example.porfolio.webstorespring.services;
+package com.example.porfolio.webstorespring.services.accounts;
 
 import com.example.porfolio.webstorespring.exceptions.ResourceNotFoundException;
-import com.example.porfolio.webstorespring.mappers.AccountAddressMapper;
 import com.example.porfolio.webstorespring.mappers.AccountMapper;
 import com.example.porfolio.webstorespring.model.dto.accounts.AccountRequest;
 import com.example.porfolio.webstorespring.model.dto.accounts.AccountResponse;
 import com.example.porfolio.webstorespring.model.entity.accounts.Account;
 import com.example.porfolio.webstorespring.repositories.accounts.AccountRepository;
-import com.example.porfolio.webstorespring.services.accounts.AccountService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,7 +16,6 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Optional;
 
@@ -41,14 +38,10 @@ class AccountServiceTest {
     @InjectMocks
     private AccountService underTest;
     private Account account;
-    private AccountResponse accountResponse;
     private AccountRequest accountRequest;
 
     @BeforeEach()
     void initialization() {
-        AccountAddressMapper addressMapper = Mappers.getMapper(AccountAddressMapper.class);
-        ReflectionTestUtils.setField(accountMapper, "accountAddressMapper", addressMapper);
-
         account = new Account();
         account.setId(1L);
         account.setFirstName("Test");
@@ -58,11 +51,6 @@ class AccountServiceTest {
         accountRequest.setFirstName("Test");
         accountRequest.setLastName("Dev");
         accountRequest.setPassword("Abcd123$");
-
-        accountResponse = new AccountResponse();
-        accountResponse.setId(1L);
-        accountResponse.setFirstName("Test");
-        accountResponse.setLastName("Dev");
     }
 
     @Test
@@ -71,13 +59,13 @@ class AccountServiceTest {
         given(accountRepository.findById(anyLong())).willReturn(Optional.of(account));
 
         // when
-        accountResponse = underTest.getAccountById(1L);
+        AccountResponse foundAccountResponse = underTest.getAccountById(1L);
 
         // then
-        assertThat(accountResponse).isNotNull();
-        assertThat(accountResponse.getId()).isEqualTo(1L);
-        assertThat(accountResponse.getFirstName()).isEqualTo("Test");
-        assertThat(accountResponse.getLastName()).isEqualTo("Dev");
+        assertThat(foundAccountResponse).isNotNull();
+        assertThat(foundAccountResponse.getId()).isEqualTo(1L);
+        assertThat(foundAccountResponse.getFirstName()).isEqualTo("Test");
+        assertThat(foundAccountResponse.getLastName()).isEqualTo("Dev");
     }
 
     @Test
@@ -98,7 +86,7 @@ class AccountServiceTest {
         given(accountRepository.findById(anyLong())).willReturn(Optional.of(account));
 
         // when
-        accountResponse = underTest.updateAccount(1L, accountRequest);
+        AccountResponse updatedAccountResponse = underTest.updateAccount(1L, accountRequest);
 
         // then
         ArgumentCaptor<Account> accountArgumentCaptor =
@@ -108,7 +96,7 @@ class AccountServiceTest {
         Account captureAccount = accountArgumentCaptor.getValue();
         AccountResponse mappedAccount = accountMapper.mapToDto(captureAccount);
 
-        assertThat(mappedAccount).isEqualTo(accountResponse);
+        assertThat(mappedAccount).isEqualTo(updatedAccountResponse);
     }
 
     @Test

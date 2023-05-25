@@ -22,9 +22,11 @@ public interface ShipmentMapper {
     @Mapping(target = "productResponse", source = "products")
     List<ShipmentResponse> mapToDto(List<Shipment> shipments);
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "order", ignore = true)
     @Mapping(target = "product", source = "productRequest")
     Shipment mapToEntity(ShipmentRequest shipmentRequest);
 
     @Mapping(target = "product", source = "productRequest")
-    List<Shipment> mapToEntity(List<ShipmentResponse> shipmentResponses);
+    List<Shipment> mapToEntity(List<ShipmentRequest> shipmentResponses);
 }

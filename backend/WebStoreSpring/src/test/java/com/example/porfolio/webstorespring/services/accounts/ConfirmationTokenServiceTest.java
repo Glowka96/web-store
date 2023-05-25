@@ -1,10 +1,9 @@
-package com.example.porfolio.webstorespring.services;
+package com.example.porfolio.webstorespring.services.accounts;
 
 import com.example.porfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.porfolio.webstorespring.model.entity.accounts.Account;
 import com.example.porfolio.webstorespring.model.entity.accounts.ConfirmationToken;
 import com.example.porfolio.webstorespring.repositories.accounts.ConfirmationTokenRepository;
-import com.example.porfolio.webstorespring.services.accounts.ConfirmationTokenService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,7 +34,7 @@ class ConfirmationTokenServiceTest {
     @InjectMocks
     private ConfirmationTokenService underTest;
 
-    private ZonedDateTime zonedDateTime = ZonedDateTime.of(
+    private final ZonedDateTime zonedDateTime = ZonedDateTime.of(
             2023,
             3,
             9,
@@ -121,30 +120,54 @@ class ConfirmationTokenServiceTest {
 
     @Test
     void shouldFailConfirmed() {
+        // given
+        // when
         boolean isNotConfirmed = underTest.isConfirmed(confirmationToken);
 
+        // then
         assertThat(isNotConfirmed).isFalse();
     }
 
     @Test
     void shouldSuccessTokenExpired() {
+        // given
+        // when
         boolean isExpired = underTest.isTokenExpired(confirmationToken);
 
+        // then
+        assertThat(isExpired).isTrue();
+    }
+
+    @Test
+    void shouldFailTokenExpired() {
+        // given
+        confirmationToken.setExpiresAt(LocalDateTime.now(clock).plusMinutes(15));
+
+        // when
+        boolean isExpired = underTest.isTokenExpired(confirmationToken);
+
+        // then
         assertThat(isExpired).isTrue();
     }
 
     @Test
     void shouldSetConfirmedAtAndSaveConfirmationToken() {
+        // given
+        // when
         underTest.setConfirmedAtAndSaveConfirmationToken(confirmationToken);
 
+        // then
         verify(tokenRepository, times(1)).save(confirmationToken);
         assertThat(confirmationToken.getConfirmedAt()).isNotNull();
     }
 
     @Test
     void shouldDeleteToken() {
+        // given
+        // when
         underTest.deleteConfirmationToken(confirmationToken);
 
+        // then
         verify(tokenRepository, times(1)).delete(confirmationToken);
     }
 }

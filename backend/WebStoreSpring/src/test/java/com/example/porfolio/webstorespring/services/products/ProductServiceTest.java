@@ -1,18 +1,16 @@
-package com.example.porfolio.webstorespring.services;
+package com.example.porfolio.webstorespring.services.products;
 
 import com.example.porfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.porfolio.webstorespring.mappers.ProducerMapper;
 import com.example.porfolio.webstorespring.mappers.ProductMapper;
-import com.example.porfolio.webstorespring.model.dto.products.ProducerResponse;
 import com.example.porfolio.webstorespring.model.dto.products.ProductRequest;
-import com.example.porfolio.webstorespring.model.dto.products.SubcategoryRequest;
+import com.example.porfolio.webstorespring.model.dto.products.ProductResponse;
 import com.example.porfolio.webstorespring.model.entity.products.Producer;
 import com.example.porfolio.webstorespring.model.entity.products.Product;
 import com.example.porfolio.webstorespring.model.entity.products.Subcategory;
 import com.example.porfolio.webstorespring.repositories.products.ProducerRepository;
 import com.example.porfolio.webstorespring.repositories.products.ProductRepository;
 import com.example.porfolio.webstorespring.repositories.products.SubcategoryRepository;
-import com.example.porfolio.webstorespring.services.products.ProductService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -55,9 +53,7 @@ class ProductServiceTest {
     private ProductRequest productRequest2;
     private ProductRequest productRequest3;
     private Subcategory subCategory;
-    private SubcategoryRequest subcategoryRequest;
     private Producer producer;
-    private ProducerResponse producerResponse;
 
     @BeforeEach
     void initialization() {
@@ -67,14 +63,8 @@ class ProductServiceTest {
         subCategory = new Subcategory();
         subCategory.setId(1L);
 
-        subcategoryRequest = new SubcategoryRequest();
-        subcategoryRequest.setId(1L);
-
         producer = new Producer();
         producer.setId(1L);
-
-        producerResponse = new ProducerResponse();
-        producerResponse.setId(1L);
 
         product = new Product();
         product.setId(1L);
@@ -101,28 +91,19 @@ class ProductServiceTest {
         product3.setProducer(producer);
 
         productRequest = new ProductRequest();
-        productRequest.setId(1L);
         productRequest.setName("Test");
         productRequest.setPrice(29.99);
         productRequest.setDescription("This is description");
-        productRequest.setSubcategoryDto(subcategoryRequest);
-        productRequest.setProducerResponse(producerResponse);
 
         productRequest2 = new ProductRequest();
-        productRequest2.setId(2L);
         productRequest2.setName("Test");
         productRequest2.setPrice(25.99);
         productRequest2.setDescription("This is description");
-        productRequest2.setSubcategoryDto(subcategoryRequest);
-        productRequest2.setProducerResponse(producerResponse);
 
         productRequest3 = new ProductRequest();
-        productRequest3.setId(3L);
         productRequest3.setName("Test");
         productRequest3.setPrice(22.99);
         productRequest3.setDescription("This is description");
-        productRequest3.setSubcategoryDto(subcategoryRequest);
-        productRequest3.setProducerResponse(producerResponse);
     }
 
 
@@ -132,13 +113,22 @@ class ProductServiceTest {
         given(productRepository.findById(product.getId())).willReturn(Optional.of(product));
 
         // when
-        productRequest = underTest.getProductDtoById(1L);
+        ProductResponse foundProductResponse = underTest.getProductDtoById(1L);
 
         // then
-        assertThat(productRequest).isNotNull();
-        assertThat(productRequest.getName()).isEqualTo(product.getName());
-        assertThat(productRequest.getDescription()).isEqualTo(product.getDescription());
-        assertThat(productRequest.getPrice()).isEqualTo(product.getPrice());
+        assertThat(foundProductResponse).isNotNull();
+        assertThat(foundProductResponse.getName()).isEqualTo(product.getName());
+        assertThat(foundProductResponse.getDescription()).isEqualTo(product.getDescription());
+        assertThat(foundProductResponse.getPrice()).isEqualTo(product.getPrice());
+    }
+
+    @Test
+    void shouldGetAllProducts() {
+        // when
+        underTest.getAllProducts();
+        // then
+        verify(productRepository, times(1)).findAll();
+        verifyNoMoreInteractions(productRepository);
     }
 
     @Test
@@ -149,17 +139,15 @@ class ProductServiceTest {
 
         Page<Product> productPage = new PageImpl<>(productList, pageable, productList.size());
 
-        List<ProductRequest> exceptedProductRequestList = Arrays.asList(productRequest, productRequest2, productRequest3);
-
         given(productRepository.findProductBySubcategory_Id(anyLong(), any(Pageable.class)))
                 .willReturn(Optional.of(productPage));
 
         // when
-        List<ProductRequest> actualProductRequestList = underTest.getAllProductsBySubcategoryId(subCategory.getId(), 0, 5);
+        List<ProductResponse> foundProductResponses = underTest.getAllProductsBySubcategoryId(subCategory.getId(), 0, 5);
 
         // then
-        assertThat(actualProductRequestList).isNotNull();
-        assertThat(actualProductRequestList).isEqualTo(exceptedProductRequestList);
+        assertThat(foundProductResponses).isNotNull();
+        assertThat(foundProductResponses.size()).isEqualTo(3);
         verify(productRepository, times(1)).findProductBySubcategory_Id(subCategory.getId(), pageable);
     }
 
@@ -170,17 +158,15 @@ class ProductServiceTest {
 
         Page<Product> productPage = new PageImpl<>(productList, pageable, productList.size());
 
-        List<ProductRequest> exceptedProductRequestList = Arrays.asList(productRequest3, productRequest2, productRequest);
-
         given(productRepository.findProductBySubcategory_Id(anyLong(), any(Pageable.class)))
                 .willReturn(Optional.of(productPage));
 
         // when
-        List<ProductRequest> actualProductRequestList = underTest.getAllProductsBySubcategoryId(subCategory.getId(), 0, 5, "price");
+        List<ProductResponse> foundProductResponses = underTest.getAllProductsBySubcategoryId(subCategory.getId(), 0, 5, "price");
 
         // then
-        assertThat(actualProductRequestList).isNotNull();
-        assertThat(actualProductRequestList).isEqualTo(exceptedProductRequestList);
+        assertThat(foundProductResponses).isNotNull();
+        assertThat(foundProductResponses.size()).isEqualTo(3);
         verify(productRepository, times(1)).findProductBySubcategory_Id(subCategory.getId(), pageable);
     }
 
@@ -205,17 +191,15 @@ class ProductServiceTest {
 
         Page<Product> productPage = new PageImpl<>(productList, pageable, productList.size());
 
-        List<ProductRequest> exceptedProductRequestList = Arrays.asList(productRequest, productRequest2, productRequest3);
-
         given(productRepository.searchProductByNameContainsIgnoreCaseOrDescriptionContainsIgnoreCaseOrProducerName(anyString(), anyString(), anyString(), any(Pageable.class)))
                 .willReturn(Optional.of(productPage));
 
         // when
-        List<ProductRequest> actualProductRequestList = underTest.getSearchProducts("test", 0, 5, "id");
+        List<ProductResponse> foundProductResponses = underTest.getSearchProducts("test", 0, 5, "id");
 
         // then
-        assertThat(actualProductRequestList).isNotNull();
-        assertThat(actualProductRequestList).isEqualTo(exceptedProductRequestList);
+        assertThat(foundProductResponses).isNotNull();
+        assertThat(foundProductResponses.size()).isEqualTo(3);
         verify(productRepository, times(1)).searchProductByNameContainsIgnoreCaseOrDescriptionContainsIgnoreCaseOrProducerName("test", "test", "test", pageable);
     }
 
@@ -240,7 +224,7 @@ class ProductServiceTest {
         given(subCategoryRepository.findById(anyLong())).willReturn(Optional.of(subCategory));
 
         // when
-        underTest.save(subCategory.getId(), producer.getId(), productRequest);
+        ProductResponse savedProductResponse = underTest.save(subCategory.getId(), producer.getId(), productRequest);
 
         // then
         ArgumentCaptor<Product> productArgumentCaptor =
@@ -248,9 +232,9 @@ class ProductServiceTest {
         verify(productRepository).save(productArgumentCaptor.capture());
 
         Product capturedProduct = productArgumentCaptor.getValue();
-        ProductRequest mappedProductRequest = productMapper.mapToDto(capturedProduct);
+        ProductResponse mappedProductRequest = productMapper.mapToDto(capturedProduct);
 
-        assertThat(mappedProductRequest).isEqualTo(productRequest);
+        assertThat(mappedProductRequest).isEqualTo(savedProductResponse);
     }
 
     @Test
@@ -290,7 +274,7 @@ class ProductServiceTest {
         given(productRepository.findById(anyLong())).willReturn(Optional.of(product));
 
         // when
-        underTest.updateProduct(subCategory.getId(), producer.getId(), product.getId(), productRequest);
+        ProductResponse updatedProductResponse = underTest.updateProduct(subCategory.getId(), producer.getId(), product.getId(), productRequest);
 
         // then
         ArgumentCaptor<Product> productArgumentCaptor =
@@ -298,9 +282,9 @@ class ProductServiceTest {
         verify(productRepository).save(productArgumentCaptor.capture());
 
         Product capturedProduct = productArgumentCaptor.getValue();
-        ProductRequest mappedProductRequest = productMapper.mapToDto(capturedProduct);
+        ProductResponse mappedProductRequest = productMapper.mapToDto(capturedProduct);
 
-        assertThat(mappedProductRequest).isEqualTo(productRequest);
+        assertThat(mappedProductRequest).isEqualTo(updatedProductResponse);
     }
 
     @Test

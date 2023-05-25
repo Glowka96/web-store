@@ -13,6 +13,6 @@ public class SubcategoryResponse {
     private String name;
 
     @JsonProperty("products")
-    private List<ProductRequest> productsDto;
+    private List<ProductResponse> productResponses;
 
 }

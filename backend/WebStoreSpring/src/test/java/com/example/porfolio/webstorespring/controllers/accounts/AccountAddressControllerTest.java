@@ -2,6 +2,7 @@ package com.example.porfolio.webstorespring.controllers.accounts;
 
 import com.example.porfolio.webstorespring.exceptions.GlobalExceptionHandler;
 import com.example.porfolio.webstorespring.model.dto.accounts.AccountAddressRequest;
+import com.example.porfolio.webstorespring.model.dto.accounts.AccountAddressResponse;
 import com.example.porfolio.webstorespring.model.dto.accounts.AccountResponse;
 import com.example.porfolio.webstorespring.services.accounts.AccountAddressService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,7 +35,7 @@ class AccountAddressControllerTest {
     private final static String URL = "/api/v1/accounts/{accountId}/address";
     private ObjectMapper mapper;
     private MockMvc mvc;
-    private AccountAddressRequest address;
+    private AccountAddressResponse address;
 
     @BeforeEach
     void initialization() {
@@ -47,7 +48,7 @@ class AccountAddressControllerTest {
         AccountResponse account = new AccountResponse();
         account.setId(1L);
 
-        address = new AccountAddressRequest();
+        address = new AccountAddressResponse();
         address.setId(1L);
         address.setCity("Test");
         address.setStreet("test 59/2");

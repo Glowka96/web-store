@@ -1,7 +1,9 @@
 package com.example.porfolio.webstorespring.controllers.orders;
 
+import com.example.porfolio.webstorespring.model.dto.orders.ShipmentRequest;
 import com.example.porfolio.webstorespring.model.dto.orders.ShipmentResponse;
 import com.example.porfolio.webstorespring.model.dto.products.ProductRequest;
+import com.example.porfolio.webstorespring.model.dto.products.ProductResponse;
 import com.example.porfolio.webstorespring.services.orders.ShipmentService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,9 +37,9 @@ class ShipmentControllerTest {
 
     private ObjectMapper mapper;
     private MockMvc mvc;
-
     private final static String URL = "/api/v1/shipments";
     private ShipmentResponse shipmentResponse;
+    private ShipmentRequest shipmentRequest;
 
     @BeforeEach
     void initialization() {
@@ -46,16 +48,27 @@ class ShipmentControllerTest {
         mapper = new ObjectMapper();
 
         ProductRequest productRequest = new ProductRequest();
-        productRequest.setId(1L);
         productRequest.setPrice(20.0);
         productRequest.setName("Test");
         productRequest.setDescription("Test description");
         productRequest.setImageUrl("https://www.trefl.com/media/catalog/product/cache/550c1e1c568f7ff4e3f4d09dfa9b2306/3/7/37459_150_01.png");
 
+        shipmentRequest = new ShipmentRequest();
+        shipmentRequest.setProductRequest(productRequest);
+        shipmentRequest.setQuantity(3);
+        shipmentRequest.setPrice(60.0);
+
+        ProductResponse productResponse = new ProductResponse();
+        productResponse.setId(1L);
+        productResponse.setPrice(20.0);
+        productResponse.setName("Test");
+        productResponse.setDescription("Test description");
+        productResponse.setImageUrl("https://www.trefl.com/media/catalog/product/cache/550c1e1c568f7ff4e3f4d09dfa9b2306/3/7/37459_150_01.png");
+
         shipmentResponse = new ShipmentResponse();
         shipmentResponse.setId(1L);
         shipmentResponse.setQuantity(3);
-        shipmentResponse.setProductRequest(productRequest);
+        shipmentResponse.setProductResponse(productResponse);
     }
 
     @Test
@@ -92,14 +105,14 @@ class ShipmentControllerTest {
     @Test
     void shouldSaveShipment() throws Exception {
         // given
-        given(shipmentService.save(any(ShipmentResponse.class))).willReturn(shipmentResponse);
+        given(shipmentService.save(any(ShipmentRequest.class))).willReturn(shipmentResponse);
 
         // when
         // then
         mvc.perform(post(URL)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(shipmentResponse)))
+                        .content(mapper.writeValueAsString(shipmentRequest)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.quantity", is(3)))
@@ -109,14 +122,14 @@ class ShipmentControllerTest {
     @Test
     void shouldUpdateShipment() throws Exception {
         // given
-        given(shipmentService.update(anyLong(), any(ShipmentResponse.class))).willReturn(shipmentResponse);
+        given(shipmentService.update(anyLong(), any(ShipmentRequest.class))).willReturn(shipmentResponse);
 
         // when
         // then
         mvc.perform(put(URL + "/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(shipmentResponse)))
+                        .content(mapper.writeValueAsString(shipmentRequest)))
                 .andExpect(status().isAccepted())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.quantity", is(3)))
