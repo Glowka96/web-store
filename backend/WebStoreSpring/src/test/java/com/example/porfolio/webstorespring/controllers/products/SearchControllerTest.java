@@ -1,6 +1,6 @@
 package com.example.porfolio.webstorespring.controllers.products;
 
-import com.example.porfolio.webstorespring.model.dto.products.ProductRequest;
+import com.example.porfolio.webstorespring.model.dto.products.ProductResponse;
 import com.example.porfolio.webstorespring.services.products.ProductService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,34 +37,20 @@ class SearchControllerTest {
     private MockMvc mvc;
     private ObjectMapper mapper;
     private final static String URL = "/api/v1/products/search";
-    private List<ProductRequest> productRequestList;
+    private List<ProductResponse> productResponses;
 
-   @BeforeEach
+    @BeforeEach
     void initialization() {
         mvc = MockMvcBuilders.standaloneSetup(underTest).build();
         mapper = new ObjectMapper();
-        ProductRequest productRequest = new ProductRequest();
-        productRequest.setId(1L);
-        productRequest.setName("Test");
-        productRequest.setPrice(20.0);
-        productRequest.setDescription("Description test");
-        ProductRequest productRequest1 = new ProductRequest();
-        productRequest1.setId(2L);
-        productRequest1.setName("Test2");
-        productRequest1.setPrice(21.0);
-        productRequest1.setDescription("Description test2");
-        ProductRequest productRequest2 = new ProductRequest();
-        productRequest2.setId(3L);
-        productRequest2.setName("Test3");
-        productRequest2.setPrice(22.0);
-        productRequest2.setDescription("Description test3");
-        productRequestList = new ArrayList<>(Arrays.asList(productRequest, productRequest1, productRequest2));
+
+        productResponses = new ArrayList<>(Arrays.asList(new ProductResponse(), new ProductResponse(), new ProductResponse()));
     }
 
     @Test
     void shouldGetSearchProductsByText() throws Exception {
         given(productService.getSearchProducts(anyString(), anyInt(), anyInt(), anyString()))
-                .willReturn(productRequestList);
+                .willReturn(productResponses);
 
         mvc.perform(get(URL + "/{search}", "test")
                         .param("page", "0")
@@ -72,7 +58,7 @@ class SearchControllerTest {
                         .param("sort", "price")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(productRequestList)))
+                        .content(mapper.writeValueAsString(productResponses)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(3)))
                 .andDo(print());
@@ -88,7 +74,7 @@ class SearchControllerTest {
                         .param("sort", "price")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(productRequestList)))
+                        .content(mapper.writeValueAsString(productResponses)))
                 .andExpect(jsonPath("$", is(12)))
                 .andDo(print());
     }

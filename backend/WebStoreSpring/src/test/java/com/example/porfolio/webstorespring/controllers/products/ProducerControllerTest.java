@@ -1,5 +1,6 @@
 package com.example.porfolio.webstorespring.controllers.products;
 
+import com.example.porfolio.webstorespring.model.dto.products.ProducerRequest;
 import com.example.porfolio.webstorespring.model.dto.products.ProducerResponse;
 import com.example.porfolio.webstorespring.services.products.ProducerService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,6 +18,8 @@ import java.util.Arrays;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -60,7 +63,7 @@ class ProducerControllerTest {
 
     @Test
     void shouldGetProducerById() throws Exception {
-        given(producerService.getProducerById(1L)).willReturn(producerResponse);
+        given(producerService.getProducerById(anyLong())).willReturn(producerResponse);
 
         mvc.perform(get(URL + "/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -72,7 +75,7 @@ class ProducerControllerTest {
 
     @Test
     void shouldSaveProducer() throws Exception {
-        given(producerService.save(producerResponse)).willReturn(producerResponse);
+        given(producerService.save(any(ProducerRequest.class))).willReturn(producerResponse);
 
         mvc.perform(post(URL)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -86,7 +89,7 @@ class ProducerControllerTest {
 
     @Test
     void shouldUpdateProducer() throws Exception {
-        given(producerService.update(1L, producerResponse)).willReturn(producerResponse);
+        given(producerService.update(anyLong(), any(ProducerRequest.class))).willReturn(producerResponse);
 
         mvc.perform(put(URL + "/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON)

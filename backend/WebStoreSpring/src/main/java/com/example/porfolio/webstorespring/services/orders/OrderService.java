@@ -27,7 +27,6 @@ import java.util.List;
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final ShipmentService shipmentService;
     private final OrderMapper orderMapper;
     private final AccountRepository accountRepository;
     private final Clock clock = Clock.systemUTC();
@@ -107,7 +106,7 @@ public class OrderService {
 
         order.setStatus(OrderStatus.OPEN);
 
-        if (order.getDeliveryAddress().isEmpty() || order.getDeliveryAddress().isBlank()) {
+        if (order.getDeliveryAddress().isEmpty() || order.getDeliveryAddress().isBlank() || order.getDeliveryAddress() == null) {
             String deliveryAddress = account.getAddress().toString();
             order.setDeliveryAddress(deliveryAddress);
         }

@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.context.request.WebRequest;
@@ -34,20 +35,23 @@ public class GlobalExceptionHandlerTest {
     @Mock
     private SearchNotFoundException searchNotFoundException;
     @Mock
+    private BadCredentialsException badCredentialsException;
+    @Mock
     private WebRequest webRequest;
     @InjectMocks
     private GlobalExceptionHandler underTest;
 
     @Test
-    void testResourceNotFoundException() {
+    void shouldHandleResourceNotFoundException() {
         // given
-        ErrorResponse expectedErrorResponse = new ErrorResponse(HttpStatus.NOT_FOUND.value(),
+        ErrorResponse expectedErrorResponse = new ErrorResponse(
+                HttpStatus.NOT_FOUND.value(),
                 resourceNotFoundException.getMessage(),
                 webRequest.getDescription(false));
 
         // when
         ResponseEntity<Object> responseEntity = underTest
-                .resourceNotFoundException(resourceNotFoundException, webRequest);
+                .handleResourceNotFoundException(resourceNotFoundException, webRequest);
 
         // then
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(expectedErrorResponse.getStatusCode());
@@ -55,22 +59,40 @@ public class GlobalExceptionHandlerTest {
     }
 
     @Test
-    void testSearchNotFoundException() {
+    void shouldHandleBadCredentialsException() {
         // given
-        ErrorResponse expectedErrorResponse = new ErrorResponse(HttpStatus.NOT_FOUND.value(),
+        ErrorResponse exceptedErrorResponse = new ErrorResponse(
+                HttpStatus.UNAUTHORIZED.value(),
+                badCredentialsException.getMessage(),
+                webRequest.getDescription(false));
+
+        // when
+        ResponseEntity<Object> responseEntity = underTest
+                .handleBadCredentialsException(badCredentialsException, webRequest);
+
+        // then
+        assertThat(responseEntity.getStatusCode().value()).isEqualTo(exceptedErrorResponse.getStatusCode());
+        assertThat(responseEntity.getBody()).isEqualTo(exceptedErrorResponse);
+    }
+
+    @Test
+    void shouldHandleSearchNotFoundException() {
+        // given
+        ErrorResponse expectedErrorResponse = new ErrorResponse(
+                HttpStatus.NOT_FOUND.value(),
                 searchNotFoundException.getMessage(),
                 webRequest.getDescription(false));
 
         // when
         ResponseEntity<Object> responseEntity = underTest
-                .resourceNotFoundException(searchNotFoundException, webRequest);
+                .handleResourceNotFoundException(searchNotFoundException, webRequest);
 
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(expectedErrorResponse.getStatusCode());
         assertThat(responseEntity.getBody()).isEqualTo(expectedErrorResponse);
     }
 
     @Test
-    void testMethodArgumentNotValidException() {
+    void shouldHandleArgumentNotValidException() {
         // given
         List<String> excepted = new ArrayList<>();
         excepted.add("Error message 1");
@@ -82,12 +104,13 @@ public class GlobalExceptionHandlerTest {
         // when
         when(argumentNotValidException.getAllErrors()).thenReturn(Arrays.asList(fieldError1, fieldError2));
 
-        ErrorResponse expectedErrorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(),
+        ErrorResponse expectedErrorResponse = new ErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
                 excepted,
                 webRequest.getDescription(false));
 
         ResponseEntity<Object> responseEntity = underTest
-                .argumentNotValidException(argumentNotValidException, webRequest);
+                .handleArgumentNotValidException(argumentNotValidException, webRequest);
 
         // then
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(expectedErrorResponse.getStatusCode());
@@ -95,15 +118,16 @@ public class GlobalExceptionHandlerTest {
     }
 
     @Test
-    void testMethodCanNotModifiedExceptionWhenOrderCanNotModifiedException() {
+    void shouldHandleCanNotModifiedExceptionWhenOrderCanNotModifiedException() {
         // given
-        ErrorResponse exceptedErrorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(),
+        ErrorResponse exceptedErrorResponse = new ErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
                 orderCanNotModifiedException.getMessage(),
                 webRequest.getDescription(false));
 
         // when
         ResponseEntity<Object> responseEntity = underTest
-                .canNotModifiedException(orderCanNotModifiedException, webRequest);
+                .handleCanNotModifiedException(orderCanNotModifiedException, webRequest);
 
         // then
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(exceptedErrorResponse.getStatusCode());
@@ -111,15 +135,16 @@ public class GlobalExceptionHandlerTest {
     }
 
     @Test
-    void testMethodCanNotModifiedWhenEmailAlreadyConfirmedException() {
+    void shouldHandleCanNotModifiedWhenEmailAlreadyConfirmedException() {
         // given
-        ErrorResponse exceptedErrorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(),
+        ErrorResponse exceptedErrorResponse = new ErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
                 emailAlreadyConfirmedException.getMessage(),
                 webRequest.getDescription(false));
 
         // when
         ResponseEntity<Object> responseEntity = underTest
-                .canNotModifiedException(emailAlreadyConfirmedException, webRequest);
+                .handleCanNotModifiedException(emailAlreadyConfirmedException, webRequest);
 
         // then
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(exceptedErrorResponse.getStatusCode());
@@ -128,15 +153,16 @@ public class GlobalExceptionHandlerTest {
 
 
     @Test
-    void testMethodAccessDeniedException() {
+    void shouldHandleAccessDeniedException() {
         // given
-        ErrorResponse exceptedErrorResponse = new ErrorResponse(HttpStatus.FORBIDDEN.value(),
+        ErrorResponse exceptedErrorResponse = new ErrorResponse(
+                HttpStatus.FORBIDDEN.value(),
                 accountCanNotModifiedException.getMessage(),
                 webRequest.getDescription(false));
 
         // when
         ResponseEntity<Object> responseEntity = underTest
-                .accessDeniedException(accountCanNotModifiedException, webRequest);
+                .handleAccessDeniedException(accountCanNotModifiedException, webRequest);
 
         // then
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(exceptedErrorResponse.getStatusCode());

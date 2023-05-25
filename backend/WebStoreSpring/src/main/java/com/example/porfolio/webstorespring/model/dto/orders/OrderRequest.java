@@ -15,5 +15,5 @@ public class OrderRequest {
     private String deliveryAddress;
 
     @JsonProperty("shipments")
-    private List<ShipmentResponse> shipmentsDto;
+    private List<ShipmentRequest> shipmentRequests;
 }

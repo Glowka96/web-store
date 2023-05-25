@@ -1,13 +1,13 @@
-package com.example.porfolio.webstorespring.services;
+package com.example.porfolio.webstorespring.services.accounts;
 
 import com.example.porfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.porfolio.webstorespring.mappers.AccountAddressMapper;
 import com.example.porfolio.webstorespring.model.dto.accounts.AccountAddressRequest;
+import com.example.porfolio.webstorespring.model.dto.accounts.AccountAddressResponse;
 import com.example.porfolio.webstorespring.model.entity.accounts.Account;
 import com.example.porfolio.webstorespring.model.entity.accounts.AccountAddress;
 import com.example.porfolio.webstorespring.repositories.accounts.AccountAddressRepository;
 import com.example.porfolio.webstorespring.repositories.accounts.AccountRepository;
-import com.example.porfolio.webstorespring.services.accounts.AccountAddressService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -57,6 +57,9 @@ class AccountAddressServiceTest {
         accountAddress.setAccount(account);
 
         accountAddressRequest = new AccountAddressRequest();
+        accountAddressRequest.setStreet("test 59/2");
+        accountAddressRequest.setCity("test");
+        accountAddressRequest.setPostcode("99-999");
     }
 
     @Test
@@ -65,14 +68,14 @@ class AccountAddressServiceTest {
         given(addressRepository.findAccountAddressByAccount_Id(anyLong())).willReturn(Optional.of(accountAddress));
 
         // when
-        accountAddressRequest = underTest.getAccountAddressByAccountId(1L);
+        AccountAddressResponse foundAccountAddressResponse = underTest.getAccountAddressByAccountId(1L);
 
         // then
-        assertThat(accountAddressRequest).isNotNull();
-        assertThat(accountAddressRequest.getId()).isEqualTo(1);
-        assertThat(accountAddressRequest.getStreet()).isEqualTo("test 59/2");
-        assertThat(accountAddressRequest.getCity()).isEqualTo("test");
-        assertThat(accountAddressRequest.getPostcode()).isEqualTo("99-999");
+        assertThat(foundAccountAddressResponse).isNotNull();
+        assertThat(foundAccountAddressResponse.getId()).isEqualTo(1);
+        assertThat(foundAccountAddressResponse.getStreet()).isEqualTo("test 59/2");
+        assertThat(foundAccountAddressResponse.getCity()).isEqualTo("test");
+        assertThat(foundAccountAddressResponse.getPostcode()).isEqualTo("99-999");
     }
 
     @Test
@@ -94,7 +97,7 @@ class AccountAddressServiceTest {
         when(accountRepository.findById(anyLong())).thenReturn(Optional.of(account));
         when(addressRepository.save(any(AccountAddress.class))).thenReturn(accountAddress);
 
-        accountAddressRequest = underTest.saveAccountAddress(1L, accountAddressRequest);
+        AccountAddressResponse savedAccountAddressResponse = underTest.saveAccountAddress(1L, accountAddressRequest);
 
         // then
         ArgumentCaptor<AccountAddress> accountAddressArgumentCaptor =
@@ -102,9 +105,9 @@ class AccountAddressServiceTest {
         verify(addressRepository).save(accountAddressArgumentCaptor.capture());
 
         AccountAddress captureAddress = accountAddressArgumentCaptor.getValue();
-        AccountAddressRequest mappedAddress = addressMapper.mapToDto(captureAddress);
+        AccountAddressResponse mappedAddress = addressMapper.mapToDto(captureAddress);
 
-        assertThat(mappedAddress).isEqualTo(accountAddressRequest);
+        assertThat(mappedAddress).isEqualTo(savedAccountAddressResponse);
     }
 
     @Test
@@ -113,7 +116,7 @@ class AccountAddressServiceTest {
         given(addressRepository.findAccountAddressByAccount_Id(anyLong())).willReturn(Optional.of(accountAddress));
 
         // when
-        accountAddressRequest = underTest.updateAccountAddress(1L, accountAddressRequest);
+        AccountAddressResponse updatedAccountAddressResponse = underTest.updateAccountAddress(1L, accountAddressRequest);
 
         // then
         ArgumentCaptor<AccountAddress> accountAddressArgumentCaptor =
@@ -121,8 +124,8 @@ class AccountAddressServiceTest {
         verify(addressRepository).save(accountAddressArgumentCaptor.capture());
 
         AccountAddress captureAddress = accountAddressArgumentCaptor.getValue();
-        AccountAddressRequest mappedAccount = addressMapper.mapToDto(captureAddress);
+        AccountAddressResponse mappedAccount = addressMapper.mapToDto(captureAddress);
 
-        assertThat(mappedAccount).isEqualTo(accountAddressRequest);
+        assertThat(mappedAccount).isEqualTo(updatedAccountAddressResponse);
     }
 }

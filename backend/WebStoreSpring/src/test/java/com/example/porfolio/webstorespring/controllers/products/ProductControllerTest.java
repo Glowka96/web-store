@@ -1,6 +1,7 @@
 package com.example.porfolio.webstorespring.controllers.products;
 
 import com.example.porfolio.webstorespring.model.dto.products.ProductRequest;
+import com.example.porfolio.webstorespring.model.dto.products.ProductResponse;
 import com.example.porfolio.webstorespring.model.entity.products.ProductType;
 import com.example.porfolio.webstorespring.services.products.ProductService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,7 +21,7 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -38,8 +39,8 @@ class ProductControllerTest {
     private MockMvc mvc;
     private ObjectMapper mapper;
     private static final String URL = "/api/v1/subcategories";
-    private ProductRequest productRequest;
-    private List<ProductRequest> productRequestList;
+    private ProductResponse productResponse;
+    private List<ProductResponse> productResponses;
 
 
     @BeforeEach
@@ -48,33 +49,21 @@ class ProductControllerTest {
 
         mapper = new ObjectMapper();
 
-        productRequest = new ProductRequest();
-        productRequest.setId(1L);
-        productRequest.setName("Test");
-        productRequest.setPrice(20.0);
-        productRequest.setDescription("Description test");
-        productRequest.setImageUrl("https://i.imgur.com/a23SANX.png");
-        productRequest.setType(ProductType.PUZZLE);
+        productResponse = new ProductResponse();
+        productResponse.setId(1L);
+        productResponse.setName("Test");
+        productResponse.setPrice(20.0);
+        productResponse.setDescription("Description test");
+        productResponse.setImageUrl("https://i.imgur.com/a23SANX.png");
+        productResponse.setType(ProductType.PUZZLE);
 
-        ProductRequest productRequest1 = new ProductRequest();
-        productRequest1.setId(2L);
-        productRequest1.setName("Test2");
-        productRequest1.setPrice(21.0);
-        productRequest1.setDescription("Description test2");
-
-        ProductRequest productRequest2 = new ProductRequest();
-        productRequest2.setId(3L);
-        productRequest2.setName("Test3");
-        productRequest2.setPrice(22.0);
-        productRequest2.setDescription("Description test3");
-
-        productRequestList = new ArrayList<>(Arrays.asList(productRequest, productRequest1, productRequest2));
+        productResponses = new ArrayList<>(Arrays.asList(productResponse, new ProductResponse(), new ProductResponse()));
     }
 
     @Test
     void shouldGetAllProductsBySubCategoryIdPaginationNoSort() throws Exception {
-        given(productService.getAllProductsBySubcategoryId(1L, 0, 3))
-                .willReturn(productRequestList);
+        given(productService.getAllProductsBySubcategoryId(anyLong(), anyInt(), anyInt()))
+                .willReturn(productResponses);
 
         mvc.perform(get(URL + "/{subcategoryId}/products", 1)
                         .param("page", "0")
@@ -88,8 +77,8 @@ class ProductControllerTest {
 
     @Test
     void shouldGetAllProductsBySubCategoryIdPaginationWithSort() throws Exception {
-        given(productService.getAllProductsBySubcategoryId(1L, 0, 3, "price"))
-                .willReturn(productRequestList);
+        given(productService.getAllProductsBySubcategoryId(anyLong(), anyInt(), anyInt(), anyString()))
+                .willReturn(productResponses);
 
         mvc.perform(get(URL + "/{subcategoryId}/products", 1)
                         .param("page", "0")
@@ -107,8 +96,8 @@ class ProductControllerTest {
         given(productService.getQuantityOfProductsBySubcategoryId(anyLong())).willReturn(12L);
 
         mvc.perform(get(URL + "/{subcategoryId}/products/amount", 1)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", is(12)))
                 .andDo(print());
@@ -116,13 +105,13 @@ class ProductControllerTest {
 
     @Test
     void shouldSaveProduct() throws Exception {
-        given(productService.save(1L, 1L, productRequest))
-                .willReturn(productRequest);
+        given(productService.save(anyLong(), anyLong(), any(ProductRequest.class)))
+                .willReturn(productResponse);
 
         mvc.perform(post(URL + "/{subcategoryId}/producers/{producerId}/products", 1, 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(productRequest)))
+                        .content(mapper.writeValueAsString(productResponse)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.name", is("Test")))
@@ -133,13 +122,13 @@ class ProductControllerTest {
 
     @Test
     void shouldUpdateProduct() throws Exception {
-        given(productService.updateProduct(1L, 1L, 1L, productRequest))
-                .willReturn(productRequest);
+        given(productService.updateProduct(anyLong(), anyLong(), anyLong(), any(ProductRequest.class)))
+                .willReturn(productResponse);
 
         mvc.perform(put(URL + "/{subcategoryId}/producers/{producerId}/products/{productId}", 1, 1, 1)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(productRequest)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(productResponse)))
                 .andExpect(status().isAccepted())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.name", is("Test")))
@@ -150,7 +139,7 @@ class ProductControllerTest {
 
     @Test
     void shouldDeleteProductById() throws Exception {
-        mvc.perform(delete(URL + "/products/{productId}" , 1))
+        mvc.perform(delete(URL + "/products/{productId}", 1))
                 .andExpect(status().isNoContent())
                 .andDo(print());
     }

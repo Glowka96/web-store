@@ -1,11 +1,11 @@
-package com.example.porfolio.webstorespring.services;
+package com.example.porfolio.webstorespring.services.products;
 
 import com.example.porfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.porfolio.webstorespring.mappers.ProducerMapper;
+import com.example.porfolio.webstorespring.model.dto.products.ProducerRequest;
 import com.example.porfolio.webstorespring.model.dto.products.ProducerResponse;
 import com.example.porfolio.webstorespring.model.entity.products.Producer;
 import com.example.porfolio.webstorespring.repositories.products.ProducerRepository;
-import com.example.porfolio.webstorespring.services.products.ProducerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,7 +32,7 @@ class ProducerServiceTest {
     @InjectMocks
     private ProducerService underTest;
 
-    private ProducerResponse producerResponse;
+    private ProducerRequest producerRequest;
     private Producer producer;
 
     @BeforeEach
@@ -41,22 +41,22 @@ class ProducerServiceTest {
         producer.setId(1L);
         producer.setName("ProducerTest");
 
-        producerResponse = new ProducerResponse();
-        producerResponse.setId(3L);
-        producerResponse.setName("Test");
+        producerRequest = new ProducerRequest();
+        producerRequest.setName("Test");
     }
 
     @Test
     void shouldGetProducerById() {
         // given
-        given(producerRepository.findById(producer.getId())).willReturn(Optional.of(producer));
+        given(producerRepository.findById(anyLong())).willReturn(Optional.of(producer));
 
         // when
-        producerResponse = underTest.getProducerById(1L);
+        ProducerResponse foundProducerResponse = underTest.getProducerById(1L);
 
         // then
-        assertThat(producerResponse).isNotNull();
-        assertThat(producerResponse.getName()).isNotNull();
+        assertThat(foundProducerResponse.getId()).isEqualTo(1L);
+        assertThat(foundProducerResponse).isNotNull();
+        assertThat(foundProducerResponse.getName()).isNotNull();
     }
 
     @Test
@@ -86,7 +86,7 @@ class ProducerServiceTest {
     void shouldSaveProducer() {
         // given
         // when
-        underTest.save(producerResponse);
+        ProducerResponse savedProducerResponse = underTest.save(producerRequest);
 
         // then
         ArgumentCaptor<Producer> producerArgumentCaptor =
@@ -96,7 +96,7 @@ class ProducerServiceTest {
         Producer captureProducer = producerArgumentCaptor.getValue();
         ProducerResponse mappedProducerResponse = producerMapper.mapToDto(captureProducer);
 
-        assertThat(mappedProducerResponse).isEqualTo(producerResponse);
+        assertThat(mappedProducerResponse).isEqualTo(savedProducerResponse);
     }
 
     @Test
@@ -105,17 +105,18 @@ class ProducerServiceTest {
         given(producerRepository.findById(producer.getId())).willReturn(Optional.of(producer));
 
         // when
-        ProducerResponse savedProducer = underTest.update(producer.getId(), producerResponse);
+        ProducerResponse updatedProducer = underTest.update(producer.getId(), producerRequest);
 
         // then
-        assertThat(savedProducer.getName()).isEqualTo(producerResponse.getName());
-        assertThat(savedProducer.getId()).isEqualTo(producer.getId());
+        assertThat(updatedProducer.getName()).isEqualTo(producerRequest.getName());
+        assertThat(updatedProducer.getId()).isEqualTo(producer.getId());
     }
 
     @Test
     void shouldDeleteProducerById() {
         // given
         given(producerRepository.findById(producer.getId())).willReturn(Optional.of(producer));
+
         // when
         underTest.deleteById(producer.getId());
 

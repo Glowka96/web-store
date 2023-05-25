@@ -13,9 +13,11 @@ import java.util.List;
 )
 public interface CategoryMapper {
 
-    @Mapping(target = "subcategoriesDto", source = "subcategories")
+    @Mapping(target = "subcategoryResponses", source = "subcategories")
     CategoryResponse mapToDto(Category category);
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "subcategories", ignore = true)
     Category mapToEntity(CategoryRequest categoryRequest);
 
     List<CategoryResponse> mapToDto(List<Category> categories);

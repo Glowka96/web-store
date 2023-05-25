@@ -1,12 +1,12 @@
-package com.example.porfolio.webstorespring.services;
+package com.example.porfolio.webstorespring.services.products;
 
 
 import com.example.porfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.porfolio.webstorespring.mappers.CategoryMapper;
+import com.example.porfolio.webstorespring.model.dto.products.CategoryRequest;
 import com.example.porfolio.webstorespring.model.dto.products.CategoryResponse;
 import com.example.porfolio.webstorespring.model.entity.products.Category;
 import com.example.porfolio.webstorespring.repositories.products.CategoryRepository;
-import com.example.porfolio.webstorespring.services.products.CategoryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,7 +33,7 @@ class CategoryServiceTest {
     @InjectMocks
     private CategoryService underTest;
 
-    private CategoryResponse categoryResponse;
+    private CategoryRequest categoryRequest;
     private Category category;
 
     @BeforeEach
@@ -42,8 +42,8 @@ class CategoryServiceTest {
         category.setId(1L);
         category.setName("CategoryTest");
 
-        categoryResponse = new CategoryResponse();
-        categoryResponse.setName("Test");
+        categoryRequest = new CategoryRequest();
+        categoryRequest.setName("Test");
     }
 
     @Test
@@ -53,13 +53,12 @@ class CategoryServiceTest {
         // then
         verify(categoryRepository, times(1)).findAll();
         verifyNoMoreInteractions(categoryRepository);
-
     }
 
     @Test
     void shouldGetCategoryById() {
         // given
-        given(categoryRepository.findById(category.getId())).willReturn(Optional.of(category));
+        given(categoryRepository.findById(anyLong())).willReturn(Optional.of(category));
 
         // when
         CategoryResponse foundCategory = underTest.getCategoryDtoById(category.getId());
@@ -72,19 +71,7 @@ class CategoryServiceTest {
     @Test
     void willThrowWhenCategoryIdIsNotFound() {
         // given
-        given(categoryRepository.findById(2L)).willReturn(Optional.empty());
-
-        // when
-        // then
-        assertThatThrownBy(() -> underTest.getCategoryDtoById(2L))
-                .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessageContaining("Category with id 2 not found");
-    }
-
-    @Test
-    void willThrowWhenCategoryNameIsNotFound() {
-        // given
-        given(categoryRepository.findById(2L)).willReturn(Optional.empty());
+        given(categoryRepository.findById(anyLong())).willReturn(Optional.empty());
 
         // when
         // then
@@ -97,7 +84,7 @@ class CategoryServiceTest {
     void shouldSaveCategory() {
         // given
         // when
-        underTest.save(categoryResponse);
+        CategoryResponse savedCategoryResponse = underTest.save(categoryRequest);
 
         // then
         ArgumentCaptor<Category> categoryArgumentCaptor =
@@ -107,16 +94,16 @@ class CategoryServiceTest {
         Category capturedCategory = categoryArgumentCaptor.getValue();
         CategoryResponse mappedCategoryResponse = categoryMapper.mapToDto(capturedCategory);
 
-        assertThat(mappedCategoryResponse).isEqualTo(categoryResponse);
+        assertThat(mappedCategoryResponse).isEqualTo(savedCategoryResponse);
     }
 
     @Test
     void shouldUpdateCategory() {
         // given
-        given(categoryRepository.findById(category.getId())).willReturn(Optional.of(category));
+        given(categoryRepository.findById(anyLong())).willReturn(Optional.of(category));
 
         // when
-        underTest.update(category.getId(), categoryResponse);
+        CategoryResponse updatedCategoryResponse = underTest.update(category.getId(), categoryRequest);
 
         // then
         ArgumentCaptor<Category> categoryArgumentCaptor =
@@ -126,8 +113,7 @@ class CategoryServiceTest {
         Category capturedCategory = categoryArgumentCaptor.getValue();
         CategoryResponse mappedCategoryResponse = categoryMapper.mapToDto(capturedCategory);
 
-        assertThat(mappedCategoryResponse.getName()).isEqualTo(categoryResponse.getName());
-        assertThat(mappedCategoryResponse.getId()).isEqualTo(category.getId());
+        assertThat(mappedCategoryResponse).isEqualTo(updatedCategoryResponse);
     }
 
     @Test

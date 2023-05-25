@@ -3,6 +3,7 @@ package com.example.porfolio.webstorespring.services.products;
 import com.example.porfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.porfolio.webstorespring.mappers.SubcategoryMapper;
 import com.example.porfolio.webstorespring.model.dto.products.SubcategoryRequest;
+import com.example.porfolio.webstorespring.model.dto.products.SubcategoryResponse;
 import com.example.porfolio.webstorespring.model.entity.products.Category;
 import com.example.porfolio.webstorespring.model.entity.products.Subcategory;
 import com.example.porfolio.webstorespring.repositories.products.CategoryRepository;
@@ -20,16 +21,16 @@ public class SubcategoryService {
     private final CategoryRepository categoryRepository;
     private final SubcategoryMapper subcategoryMapper;
 
-    public SubcategoryRequest getSubcategoryDtoById(Long id) {
+    public SubcategoryResponse getSubcategoryDtoById(Long id) {
         Subcategory foundSubcategory = findSubcategoryById(id);
         return subcategoryMapper.mapToDto(foundSubcategory);
     }
 
-    public List<SubcategoryRequest> getAllSubcategoryDto() {
+    public List<SubcategoryResponse> getAllSubcategoryResponse() {
         return subcategoryMapper.mapToDto(subcategoryRepository.findAll());
     }
 
-    public SubcategoryRequest save(Long categoryId,
+    public SubcategoryResponse save(Long categoryId,
                                    SubcategoryRequest subCategoryRequest) {
         Category foundCategory = findCategoryById(categoryId);
         Subcategory subcategory = subcategoryMapper.mapToEntity(subCategoryRequest);
@@ -39,7 +40,7 @@ public class SubcategoryService {
         return subcategoryMapper.mapToDto(subcategory);
     }
 
-    public SubcategoryRequest update(Long categoryId,
+    public SubcategoryResponse update(Long categoryId,
                                      Long subCategoryId,
                                      SubcategoryRequest subCategoryRequest) {
         Category foundCategory = findCategoryById(categoryId);
