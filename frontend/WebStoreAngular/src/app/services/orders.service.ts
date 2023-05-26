@@ -30,7 +30,7 @@ export class OrdersService {
     );
   }
 
-  public deleteOrder(accountId: string, orderId: string) {
+  public deleteOrder(accountId: string, orderId: string): Observable<any> {
     return this.http.delete(
       `${this.apiServerUrl}/accounts/${accountId}/orders/${orderId}`
     );

@@ -53,13 +53,10 @@ export class PurchaseComponent implements OnInit {
 
   constructor(
     private accountService: AccountService,
-    private authService: AuthenticationService,
     private shopService: ShopService,
     private router: Router
   ) {
-    this.authService.loggedId$().subscribe((id) => {
-      this.accountId = id;
-    });
+    this.accountId = sessionStorage.getItem('id') || '';
     this.accountService.getAccountAddress(this.accountId).subscribe({
       next: (response) => {
         this.accountAddress = response;
@@ -105,10 +102,11 @@ export class PurchaseComponent implements OnInit {
       };
       this.shopService.purchase(this.accountId, request).subscribe({
         next: () => {
+          this.shopService.basket$.next([]);
           this.router.navigate(['/accounts']);
         },
         error: (error) => {
-          if (error.status === 400) {
+          if (error.status === 404) {
             this.submitPurchase = true;
             this.message = error.error.errors;
           }

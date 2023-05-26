@@ -14,7 +14,11 @@
             </div>
             <div class="order-options">
                 <button class="btn-update">Update</button>
-                <button class="btn-delete">Delete</button>
+                <button class="btn-delete" (click)="deleteOrder(order.id)">Delete</button>
+            </div>
+            <div *ngIf="isViewErorr(order.id)" class="errors" role="alert">
+                <br>
+                <small [innerHTML]="errorMsg"></small>
             </div>
         </div>
     </div>

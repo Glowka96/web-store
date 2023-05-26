@@ -11,14 +11,11 @@ import { OrdersService } from 'src/app/services/orders.service';
 export class OrdersComponent implements OnInit {
   private accountId!: string;
   private orders!: OrderResponse[];
+  private errorMessage!: string;
+  private selectedId!: string;
 
-  constructor(
-    private authService: AuthenticationService,
-    private ordersService: OrdersService
-  ) {
-    this.authService.loggedId$().subscribe((id) => {
-      this.accountId = id;
-    });
+  constructor(private ordersService: OrdersService) {
+    this.accountId = sessionStorage.getItem('id') || '';
     this.ordersService
       .getAllAccountOrders(this.accountId)
       .subscribe((orders) => {
@@ -29,7 +26,28 @@ export class OrdersComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  public deleteOrder(orderId: string) {
+    this.ordersService.deleteOrder(this.accountId, orderId).subscribe({
+      next: () => {
+        window.location.reload();
+      },
+      error: (error) => {
+        this.selectedId = orderId;
+        let errorMessage = error.error.errors;
+        this.errorMessage = errorMessage;
+      },
+    });
+  }
+
   public get listOrder() {
     return this.orders;
+  }
+
+  public isViewErorr(orderId: string) {
+    return this.selectedId === orderId;
+  }
+
+  public get errorMsg() {
+    return this.errorMessage;
   }
 }

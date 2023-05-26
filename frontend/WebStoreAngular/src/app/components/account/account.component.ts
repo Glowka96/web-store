@@ -12,13 +12,8 @@ export class AccountComponent implements OnInit {
   private accountId!: string;
   private account!: AccountResponse;
 
-  constructor(
-    private authService: AuthenticationService,
-    private accountService: AccountService
-  ) {
-    this.authService.loggedId$().subscribe((id) => {
-      this.accountId = id;
-    });
+  constructor(private accountService: AccountService) {
+    this.accountId = sessionStorage.getItem('id') || '';
   }
 
   ngOnInit(): void {

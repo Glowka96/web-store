@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { LoginRequest } from '../models/login-request';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, Observable, filter, map } from 'rxjs';
+import { BehaviorSubject, Observable, ReplaySubject, filter, map } from 'rxjs';
 import { __values } from 'tslib';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
@@ -15,7 +15,6 @@ export class AuthenticationService {
   private loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
     false
   );
-  private loggedId: BehaviorSubject<string> = new BehaviorSubject<string>('');
   currentRoute: any;
 
   constructor(
@@ -36,7 +35,8 @@ export class AuthenticationService {
 
         let decodedJWT = this.getDecodedJWT(token);
         this.loggedRole.next(decodedJWT.role);
-        this.loggedId.next(decodedJWT.id);
+
+        sessionStorage.setItem('id', decodedJWT.id);
 
         this.checkAdminRouteNav();
 
@@ -95,9 +95,5 @@ export class AuthenticationService {
 
   public loggedIn$(): Observable<boolean> {
     return this.loggedIn.asObservable();
-  }
-
-  public loggedId$(): Observable<string> {
-    return this.loggedId.asObservable();
   }
 }
