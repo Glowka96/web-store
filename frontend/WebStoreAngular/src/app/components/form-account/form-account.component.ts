@@ -81,14 +81,11 @@ export class FormAccountComponent implements OnInit {
   }
 
   constructor(
-    private authService: AuthenticationService,
     private accountService: AccountService,
     private formBuilder: FormBuilder,
     private router: Router
   ) {
-    this.authService.loggedId$().subscribe((id) => {
-      this.accountId = id;
-    });
+    this.accountId = sessionStorage.getItem('id') || '';
   }
 
   ngOnInit(): void {}

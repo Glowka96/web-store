@@ -43,14 +43,8 @@ export class FormAccountAddressComponent implements OnInit {
     }),
   });
 
-  constructor(
-    private authService: AuthenticationService,
-    private accountService: AccountService,
-    private router: Router
-  ) {
-    this.authService.loggedId$().subscribe((id) => {
-      this.accountId = id;
-    });
+  constructor(private accountService: AccountService, private router: Router) {
+    this.accountId = sessionStorage.getItem('id') || '';
   }
 
   ngOnInit(): void {}
