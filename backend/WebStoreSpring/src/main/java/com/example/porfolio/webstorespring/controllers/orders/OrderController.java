@@ -60,6 +60,6 @@ public class OrderController {
     public void deleteOrderById(@PathVariable("accountId") Long accountId,
                                 @PathVariable("orderId") Long orderId,
                                 @RequestHeader("Authorization") String authHeader) {
-        orderService.deleteOrderById(accountId, orderId);
+        orderService.deleteOrderById(orderId);
     }
 }

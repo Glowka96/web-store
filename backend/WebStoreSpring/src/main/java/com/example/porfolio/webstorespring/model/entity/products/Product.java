@@ -1,9 +1,12 @@
 package com.example.porfolio.webstorespring.model.entity.products;
 
+import com.example.porfolio.webstorespring.model.entity.orders.Shipment;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -32,11 +35,15 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private ProductType type;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
     @JoinColumn(name = "subcategory_id")
     private Subcategory subcategory;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
     @JoinColumn(name = "producer_id")
     private Producer producer;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<Shipment> shipment;
+
 }

@@ -103,7 +103,7 @@ export class PurchaseComponent implements OnInit {
         shipments: this.basket,
         deliveryAddress: city + ', ' + postcode + ', ' + address,
       };
-      this.shopService.purchase(request, this.accountId).subscribe({
+      this.shopService.purchase(this.accountId, request).subscribe({
         next: () => {
           this.router.navigate(['/accounts']);
         },

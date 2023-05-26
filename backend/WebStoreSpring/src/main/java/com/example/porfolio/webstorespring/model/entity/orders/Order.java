@@ -43,7 +43,7 @@ public class Order {
     @JoinColumn(name = "account_id")
     private Account account;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Shipment> shipments;
 }
 

@@ -22,7 +22,6 @@ public interface ProductMapper {
     @Mapping(target = "producerResponse", source = "producer")
     List<ProductResponse> mapToDto(List<Product> products);
 
-    @Mapping(target = "id", ignore = true)
     @Mapping(target = "subcategory", ignore = true)
     @Mapping(target = "producer", ignore = true)
     Product mapToEntity(ProductRequest productRequest);

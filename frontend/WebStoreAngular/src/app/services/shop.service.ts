@@ -29,7 +29,7 @@ export class ShopService {
     this.basket.next(cart);
   }
 
-  public purchase(request: OrderRequest, accountId: string): Observable<any> {
+  public purchase(accountId: string, request: OrderRequest): Observable<any> {
     return this.http
       .post<any>(`${this.apiServerUrl}/accounts/${accountId}/orders`, request)
       .pipe(tap((response) => console.log('Server response:', response)));
