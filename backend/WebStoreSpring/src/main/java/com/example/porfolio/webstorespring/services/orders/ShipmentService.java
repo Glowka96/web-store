@@ -31,9 +31,9 @@ public class ShipmentService {
     public ShipmentResponse save(ShipmentRequest shipmentRequest) {
         Shipment shipment = shipmentMapper.mapToEntity(shipmentRequest);
 
-        BigDecimal price = BigDecimal.valueOf(
-                shipment.getProduct().getPrice() * shipment.getQuantity());
-        shipment.setPrice(price.doubleValue());
+        shipment.setPrice(BigDecimal.valueOf(
+                shipment.getProduct().getPrice() * shipment.getQuantity()
+        ).doubleValue());
 
         shipmentRepository.save(shipment);
         return shipmentMapper.mapToDto(shipment);

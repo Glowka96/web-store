@@ -181,7 +181,7 @@ class OrderServiceTest {
         given(orderRepository.findById(anyLong())).willReturn(Optional.of(order));
 
         // when
-        underTest.deleteOrderById(1L, 1L);
+        underTest.deleteOrderById(1L);
 
         // then
         verify(orderRepository, times(1)).findById(1L);
@@ -195,7 +195,7 @@ class OrderServiceTest {
 
         // when
         // then
-        assertThatThrownBy(() -> underTest.deleteOrderById(1L, 1L))
+        assertThatThrownBy(() -> underTest.deleteOrderById(1L))
                 .isInstanceOf(OrderCanNotModifiedException.class)
                 .hasMessageContaining("The order cannot be delete because the order is being prepared");
     }

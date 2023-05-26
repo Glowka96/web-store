@@ -10,6 +10,8 @@ import lombok.Data;
 @Data
 public class ProductRequest {
 
+    private Long id;
+
     @NotNull(message = "The name can't be null")
     @NotBlank(message = "The name can't be blank")
     @Size(min = 3, max = 20, message = "The name must between min 3 and max 20 letters")

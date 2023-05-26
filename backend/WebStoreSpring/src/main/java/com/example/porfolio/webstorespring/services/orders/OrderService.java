@@ -8,6 +8,7 @@ import com.example.porfolio.webstorespring.model.dto.orders.OrderResponse;
 import com.example.porfolio.webstorespring.model.entity.accounts.Account;
 import com.example.porfolio.webstorespring.model.entity.orders.Order;
 import com.example.porfolio.webstorespring.model.entity.orders.OrderStatus;
+import com.example.porfolio.webstorespring.model.entity.orders.Shipment;
 import com.example.porfolio.webstorespring.repositories.accounts.AccountRepository;
 import com.example.porfolio.webstorespring.repositories.orders.OrderRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -42,16 +44,14 @@ public class OrderService {
         return orderMapper.mapToDto(order);
     }
 
-    //TODO save shipments
     public OrderResponse saveOrder(Long accountId, OrderRequest orderRequest) {
         Account foundAccount = findAccountById(accountId);
-        log.info("order request: " + orderRequest.toString());
-
         Order order = orderMapper.mapToEntity(orderRequest);
-        log.info("order: "+ order.toString());
+
         setupNewOrder(foundAccount, order);
 
         orderRepository.save(order);
+
         return orderMapper.mapToDto(order);
     }
 
@@ -70,7 +70,7 @@ public class OrderService {
         return orderMapper.mapToDto(order);
     }
 
-    public void deleteOrderById(Long accountId, Long id) {
+    public void deleteOrderById(Long id) {
         Order foundOrder = findOrderById(id);
 
         if (foundOrder.getStatus() != OrderStatus.OPEN) {
@@ -113,12 +113,22 @@ public class OrderService {
 
         order.setShipmentAddress(SHIPMENT_ADDRESS);
 
-        Double productsPrice = order.getShipments()
-                .stream()
-                .map(shipment -> BigDecimal.valueOf(shipment.getPrice()))
-                .mapToDouble(BigDecimal::doubleValue)
-                .sum();
-        order.setProductsPrice(productsPrice);
+        order.getShipments().forEach(shipment -> {
+                    shipment.setPrice(
+                            BigDecimal.valueOf(
+                                            shipment.getQuantity() * shipment.getProduct().getPrice())
+                                    .setScale(2, RoundingMode.HALF_UP).doubleValue());
+                    shipment.setOrder(order);
+                }
+        );
+
+        order.setProductsPrice(BigDecimal.valueOf(
+                        order.getShipments()
+                                .stream()
+                                .mapToDouble(Shipment::getPrice)
+                                .sum())
+                .setScale(2, RoundingMode.HALF_UP)
+                .doubleValue());
     }
 
     private void setupUpdateOrder(Account foundAccount,
