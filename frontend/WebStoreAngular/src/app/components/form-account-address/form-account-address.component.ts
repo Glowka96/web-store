@@ -3,7 +3,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AccountAddress } from 'src/app/models/account-address';
 import { AccountService } from 'src/app/services/account.service';
-import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-form-account-address',
@@ -15,7 +14,7 @@ export class FormAccountAddressComponent implements OnInit {
   private errorMessage!: string;
   private postcodePattern = /^\d{2}-\d{3}$/;
   private addressPattern =
-    /^(ul(.)\s)?[A-Z]?[a-z]*\s[0-9]{1,3}(\/[0-9]{1,3})|(\sm\.?\s[0-9]{1,3})[a-z]?$/;
+    /^(ul(.)?\s)?[A-Z]?[a-z]*\s\d{1,3}((\/\d{1,3})?|(\sm(.)?\s)\d{1,3})[a-z]?$/;
 
   public accountAddressForm = new FormGroup({
     city: new FormControl('', {

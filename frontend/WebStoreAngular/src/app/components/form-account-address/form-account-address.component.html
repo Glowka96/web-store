@@ -13,8 +13,8 @@
                 <small *ngIf="accountAddressForm.get('city')?.errors?.['required']">The city is
                     required.
                     <br></small>
-                <small *ngIf="accountAddressForm.get('city')?.errors?.['minLength'] || ['maxLength']">The first
-                    name must be between min 2 and max 32 letters.<br></small>
+                <small *ngIf="accountAddressForm.get('city')?.errors?.['minLength'] || ['maxLength']">The city must be
+                    between min 2 and max 32 letters.<br></small>
                 <small *ngIf="accountAddressForm.get('city')?.errors?.['pattern']">
                     The city cannot have numbers or special char.
                 </small>
@@ -43,7 +43,7 @@
                 <small *ngIf="accountAddressForm.get('street')?.errors?.['required']">The street is
                     required.<br></small>
                 <small *ngIf="accountAddressForm.get('street')?.errors?.['pattern']">The street is invalid.
-                    <br>The correct forms is e.g: street 50/21, ul. street 50 m21, ul street 50 m.20a
+                    <br>The correct forms is e.g: street 50/21, ul. street 50 m 21, ul street 50 m. 20a
                 </small>
             </div>
         </div>

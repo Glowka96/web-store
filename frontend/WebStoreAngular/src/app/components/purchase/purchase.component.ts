@@ -95,10 +95,11 @@ export class PurchaseComponent implements OnInit {
     if (this.deliveryAddressForm.valid) {
       let city = this.deliveryAddressForm.controls['city']?.value ?? '';
       let postcode = this.deliveryAddressForm.controls['postcode']?.value ?? '';
-      let address = this.deliveryAddressForm.controls['street']?.value ?? '';
+      let street = this.deliveryAddressForm.controls['street']?.value ?? '';
       let request: OrderRequest = {
         shipments: this.basket,
-        deliveryAddress: city + ', ' + postcode + ', ' + address,
+        deliveryAddress:
+          'City: ' + city + ', Postcode: ' + postcode + ', Street ' + street,
       };
       this.shopService.purchase(this.accountId, request).subscribe({
         next: () => {
