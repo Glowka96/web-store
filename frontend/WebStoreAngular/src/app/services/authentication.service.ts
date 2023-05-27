@@ -78,6 +78,7 @@ export class AuthenticationService {
       let decodedJWT = this.getDecodedJWT(token);
       this.loggedRole.next(decodedJWT.role);
       this.loggedIn.next(true);
+      sessionStorage.setItem('id', decodedJWT.id);
     }
   }
 

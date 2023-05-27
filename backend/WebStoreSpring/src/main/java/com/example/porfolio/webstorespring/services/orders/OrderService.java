@@ -32,7 +32,7 @@ public class OrderService {
     private final OrderMapper orderMapper;
     private final AccountRepository accountRepository;
     private final Clock clock = Clock.systemUTC();
-    private final static String SHIPMENT_ADDRESS = "City: Lodz, Postcode: 91-473, Adress: Julianowska 41/2";
+    private final static String SHIPMENT_ADDRESS = "City: Lodz, Postcode: 91-473, Street: Julianowska 41/2";
 
     public List<OrderResponse> getAllOrderDtoByAccountId(Long accountId) {
         List<Order> orders = orderRepository.findAllByAccountId(accountId);
@@ -106,7 +106,9 @@ public class OrderService {
 
         order.setStatus(OrderStatus.OPEN);
 
-        if (order.getDeliveryAddress().isEmpty() || order.getDeliveryAddress().isBlank() || order.getDeliveryAddress() == null) {
+        if (order.getDeliveryAddress().isEmpty() ||
+            order.getDeliveryAddress().isBlank() ||
+            order.getDeliveryAddress() == null) {
             String deliveryAddress = account.getAddress().toString();
             order.setDeliveryAddress(deliveryAddress);
         }
@@ -151,6 +153,12 @@ public class OrderService {
         }
         if (order.getShipmentAddress() == null) {
             order.setShipmentAddress(foundOrder.getShipmentAddress());
+        }
+        if(order.getShipments() == null || order.getShipments().isEmpty()) {
+            order.setShipments(foundOrder.getShipments());
+        }
+        if(order.getStatus() == null) {
+            order.setStatus(foundOrder.getStatus());
         }
     }
 }
