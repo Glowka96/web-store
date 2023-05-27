@@ -4,7 +4,7 @@
       <img src="/assets/images/logo2.png" alt="logo" width="230px" height="80px">
     </a>
   </div>
-  <nav class="nav-menu">
+  <nav class="nav-menu" *ngIf="!isModbileWidth">
     <ul class="nav-category" *ngFor="let category of getCategories">
       <li>{{category.name}}</li>
       <ul class="nav-submenu">
@@ -13,6 +13,15 @@
             [queryParams]="{ page: 1 }">{{subcategory.name}}</a>
         </li>
       </ul>
+    </ul>
+  </nav>
+  <nav class="nav-mobile-menu icon-menu" *ngIf="isModbileWidth">
+    <ul *ngFor="let category of getCategories">
+      <p>{{category.name}}</p>
+      <li *ngFor="let subcategory of category.subcategories">
+        <a [routerLink]="[subcategory.name, subcategory.id, 'products']"
+          [queryParams]="{ page: 1 }">{{subcategory.name}}</a>
+      </li>
     </ul>
   </nav>
   <div class="nav-user">
