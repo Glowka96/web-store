@@ -23,6 +23,7 @@ import { FormLoginComponent } from './components/form-login/form-login.component
 import { FormAccountComponent } from './components/form-account/form-account.component';
 import { FormAccountAddressComponent } from './components/form-account-address/form-account-address.component';
 import { OrdersComponent } from './components/orders/orders.component';
+import { LayoutModule } from '@angular/cdk/layout';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { OrdersComponent } from './components/orders/orders.component';
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
+    LayoutModule,
   ],
   providers: [
     ShopService,

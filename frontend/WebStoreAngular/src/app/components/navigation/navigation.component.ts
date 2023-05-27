@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 
 import {
   ControlContainer,
@@ -12,6 +12,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 import { FormLoginService } from 'src/app/services/form-login.service';
 import { CategoryService } from 'src/app/services/category.service';
 import { ProductService } from 'src/app/services/product.service';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-navigation',
@@ -27,6 +28,7 @@ import { ProductService } from 'src/app/services/product.service';
 export class NavigationComponent implements OnInit {
   private categories: CategoryResponse[] = [];
   private loggedIn: boolean = false;
+  private isMobile: boolean = false;
 
   public searchForm = new FormGroup({
     search: new FormControl('', {
@@ -39,7 +41,8 @@ export class NavigationComponent implements OnInit {
     private productService: ProductService,
     private formLoginService: FormLoginService,
     private authService: AuthenticationService,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private breakpointObserver: BreakpointObserver
   ) {
     categoryService.categories$.subscribe((categories) => {
       this.categories = categories;
@@ -50,7 +53,13 @@ export class NavigationComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.breakpointObserver
+      .observe([Breakpoints.Small, Breakpoints.Medium])
+      .subscribe((result) => {
+        this.isMobile = result.matches;
+      });
+  }
 
   public get getCategories(): CategoryResponse[] {
     return this.categories;
@@ -73,5 +82,14 @@ export class NavigationComponent implements OnInit {
 
   public changeStatusLogginForm() {
     this.formLoginService.changeStatusFormLogin();
+  }
+
+  public get isModbileWidth() {
+    return this.isMobile;
+  }
+
+  @HostListener('window:resize')
+  onWindowResize() {
+    this.isMobile = window.innerWidth <= 768;
   }
 }
