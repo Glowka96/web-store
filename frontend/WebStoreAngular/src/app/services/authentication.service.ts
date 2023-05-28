@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { LoginRequest } from '../models/login-request';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, Observable, ReplaySubject, filter, map } from 'rxjs';
+import { BehaviorSubject, Observable, map } from 'rxjs';
 import { __values } from 'tslib';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -17,24 +17,20 @@ export class AuthenticationService {
   );
   currentRoute: any;
 
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {
+  constructor(private http: HttpClient, private router: Router) {
     this.checkLogged();
   }
 
   authenticate(request: LoginRequest) {
     return this.http.post<any>(`${this.apiServerUrl}/login`, request).pipe(
       map((userData) => {
-        sessionStorage.setItem('username', request.email);
-
         let token = 'Bearer ' + userData.token;
         sessionStorage.setItem('token', token);
 
         let decodedJWT = this.getDecodedJWT(token);
         this.loggedRole.next(decodedJWT.role);
+
+        this.loggedIn.next(true);
 
         sessionStorage.setItem('id', decodedJWT.id);
 
@@ -88,10 +84,6 @@ export class AuthenticationService {
 
   public loggedRole$(): Observable<string> {
     return this.loggedRole.asObservable();
-  }
-
-  public setLoggedIn(loggedIn: boolean): void {
-    this.loggedIn.next(loggedIn);
   }
 
   public loggedIn$(): Observable<boolean> {

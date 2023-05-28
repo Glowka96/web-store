@@ -91,7 +91,7 @@ export class BasketComponent implements OnInit {
     }
   }
 
-  public onRegister() {
+  public onLoginForm() {
     this.formLoginService.changeStatusFormLogin();
   }
 

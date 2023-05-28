@@ -114,7 +114,6 @@ export class FormLoginComponent implements OnInit {
       this.authenticationService.authenticate(request).subscribe({
         next: () => {
           this.formService.changeStatusFormLogin();
-          this.authenticationService.setLoggedIn(true);
         },
         error: (error) => {
           this.successMessage = null;
