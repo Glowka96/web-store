@@ -1,27 +1,20 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FormLoginService {
   private isActiveFormLogin = false;
-  private opacity: number = 1;
-  private opacitySubject = new BehaviorSubject<number>(this.opacity);
+  private formLogin = new BehaviorSubject<boolean>(this.isActiveFormLogin);
   constructor() {}
 
   public changeStatusFormLogin() {
     this.isActiveFormLogin = !this.isActiveFormLogin;
-    this.isActiveFormLogin ? (this.opacity = 0.1) : (this.opacity = 1);
-    this.opacitySubject.next(this.opacity);
+    this.formLogin.next(this.isActiveFormLogin);
   }
 
-  public getOpacitySubject() {
-    return this.opacitySubject;
-  }
-
-  public setOpacity(opacity: number) {
-    this.opacitySubject.next(opacity);
-    this.opacity = opacity;
+  public getIsFromLogin$(): Observable<boolean> {
+    return this.formLogin;
   }
 }
