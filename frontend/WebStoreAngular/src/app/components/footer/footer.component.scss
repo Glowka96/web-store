@@ -1,12 +1,24 @@
 .footer {
-  background-color: black;
   display: flex;
-  align-items: center;
   justify-content: center;
   margin-top: auto;
-  height: 60px;
-  span {
-    text-align: center;
-    color: aliceblue;
+  border-top: 1px solid white;
+  background-color: black;
+  color: white;
+  gap: 2rem;
+  text-align: left;
+  .box {
+    .title {
+      font-size: 26px;
+      margin-bottom: 0;
+    }
+    p {
+      margin: 4px 0;
+    }
+    ul {
+      li {
+        list-style: none;
+      }
+    }
   }
 }

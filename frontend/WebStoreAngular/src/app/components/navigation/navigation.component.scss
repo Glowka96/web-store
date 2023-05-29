@@ -44,9 +44,13 @@
         position: absolute;
         visibility: hidden;
         z-index: 2;
+        min-width: 100%;
         li {
           text-align: center;
+          padding: 0;
           a {
+            display: block;
+            padding: 16px 0;
             color: rgb(255, 255, 255);
           }
           &:hover {
@@ -151,12 +155,15 @@
       padding-left: 0;
       margin-left: 5px;
       p {
+        cursor: context-menu;
         font-weight: 700;
+        padding: 12px;
       }
       li {
         a {
           color: rgb(255, 255, 255);
           text-decoration: none;
+          padding: 4px 0;
         }
       }
     }
