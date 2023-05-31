@@ -1,10 +1,7 @@
 package com.example.porfolio.webstorespring.model.dto.products;
 
 import com.example.porfolio.webstorespring.model.entity.products.ProductType;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Data
@@ -28,6 +25,7 @@ public class ProductRequest {
             message = "This is not image url")
     private String imageUrl;
 
+    @Digits(integer = 8, fraction = 2, message = "The price is invalid")
     private Double price;
 
     private ProductType type;

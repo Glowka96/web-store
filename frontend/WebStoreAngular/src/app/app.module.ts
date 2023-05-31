@@ -24,6 +24,7 @@ import { FormAccountComponent } from './components/form-account/form-account.com
 import { FormAccountAddressComponent } from './components/form-account-address/form-account-address.component';
 import { OrdersComponent } from './components/orders/orders.component';
 import { LayoutModule } from '@angular/cdk/layout';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { LayoutModule } from '@angular/cdk/layout';
     FormAccountComponent,
     FormAccountAddressComponent,
     OrdersComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
