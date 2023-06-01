@@ -111,6 +111,8 @@ public class OrderService {
             order.getDeliveryAddress() == null) {
             String deliveryAddress = account.getAddress().toString();
             order.setDeliveryAddress(deliveryAddress);
+        } else {
+            formatDeliveryAddress(order);
         }
 
         order.setShipmentAddress(SHIPMENT_ADDRESS);
@@ -153,12 +155,26 @@ public class OrderService {
         }
         if (order.getShipmentAddress() == null) {
             order.setShipmentAddress(foundOrder.getShipmentAddress());
+        } else {
+            formatDeliveryAddress(order);
         }
-        if(order.getShipments() == null || order.getShipments().isEmpty()) {
+        if (order.getShipments() == null || order.getShipments().isEmpty()) {
             order.setShipments(foundOrder.getShipments());
         }
-        if(order.getStatus() == null) {
+        if (order.getStatus() == null) {
             order.setStatus(foundOrder.getStatus());
         }
+    }
+
+    private void formatDeliveryAddress(Order order) {
+        String[] address = order.getDeliveryAddress().split(", ");
+        StringBuilder formattedAddress = new StringBuilder();
+        formattedAddress.append("City: ")
+                .append(address[0])
+                .append(", Postcode: ")
+                .append(address[1])
+                .append(", Street: ")
+                .append(address[2]);
+        order.setDeliveryAddress(formattedAddress.toString());
     }
 }

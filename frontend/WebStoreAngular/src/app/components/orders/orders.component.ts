@@ -18,7 +18,7 @@ export class OrdersComponent implements OnInit {
 
   private postcodePattern = /^\d{2}-\d{3}$/;
   private addressPattern =
-    /^(ul(.)?\s)?[A-Z]?[a-z]*\s\d{1,3}((\/\d{1,3})?|(\sm(.)?\s)\d{1,3})[a-z]?$/;
+    /^(ul(.)?\s)?[A-Z]?[a-z]+\s\d{1,3}((\/\d{1,3})?|(\sm(.)?\s)\d{1,3})[a-z]?$/;
 
   public deliveryAddressForm = new FormGroup({
     city: new FormControl('', {
@@ -92,8 +92,7 @@ export class OrdersComponent implements OnInit {
           this.deliveryAddressForm.controls['postcode']?.value ?? '';
         let street = this.deliveryAddressForm.controls['street']?.value ?? '';
         let request: OrderRequest = {
-          deliveryAddress:
-            'City: ' + city + ', Postcode: ' + postcode + ', Street: ' + street,
+          deliveryAddress: city + ', ' + postcode + ', ' + street,
           shipments: [],
         };
         this.ordersService
