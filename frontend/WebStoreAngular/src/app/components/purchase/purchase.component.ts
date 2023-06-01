@@ -23,7 +23,7 @@ export class PurchaseComponent implements OnInit {
   private message!: string;
   private postcodePattern = /^\d{2}-\d{3}$/;
   private addressPattern =
-    /^(ul(.)\s)?[A-Z]?[a-z]*\s[0-9]{1,3}(\/[0-9]{1,3})|(\sm\.?\s[0-9]{1,3})[a-z]?$/;
+    /^(ul(.)\s)?[A-Z]?[a-z]+\s[0-9]{1,3}(\/[0-9]{1,3})|(\sm\.?\s[0-9]{1,3})[a-z]?$/;
 
   public deliveryAddressForm = new FormGroup({
     city: new FormControl('', {
@@ -103,7 +103,7 @@ export class PurchaseComponent implements OnInit {
       this.shopService.purchase(this.accountId, request).subscribe({
         next: () => {
           this.shopService.basket$.next([]);
-          this.router.navigate(['/accounts']);
+          this.router.navigate(['/accounts/orders']);
         },
         error: (error) => {
           if (error.status === 404) {
