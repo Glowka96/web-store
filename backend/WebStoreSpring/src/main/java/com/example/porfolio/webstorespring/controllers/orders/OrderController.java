@@ -38,10 +38,10 @@ public class OrderController {
     @PostMapping()
     @PreAuthorize("@authServiceImpl.checkAuthorization(#accountId, #authHeader)")
     public ResponseEntity<OrderResponse> saveOrder(@PathVariable("accountId") Long accountId,
-                                                   @Valid @RequestBody OrderRequest orderDto,
+                                                   @Valid @RequestBody OrderRequest orderRequest,
                                                    @RequestHeader("Authorization") String authHeader) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(orderService.saveOrder(accountId, orderDto));
+                .body(orderService.saveOrder(accountId, orderRequest));
     }
 
     @PutMapping("/{orderId}")

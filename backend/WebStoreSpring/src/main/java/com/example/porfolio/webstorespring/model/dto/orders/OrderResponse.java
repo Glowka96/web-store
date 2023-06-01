@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-public final class OrderResponse {
+public class OrderResponse {
 
     private Long id;
 

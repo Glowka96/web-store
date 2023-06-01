@@ -22,7 +22,7 @@ export class BasketComponent implements OnInit {
       validators: [
         Validators.min(1),
         Validators.max(100),
-        Validators.pattern('\\d*'),
+        Validators.pattern('\\d+'),
       ],
       updateOn: 'change',
     }),

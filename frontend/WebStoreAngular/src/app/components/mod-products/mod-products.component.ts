@@ -21,8 +21,7 @@ export class ModProductsComponent implements OnInit {
   private errorAddMsg = '';
   private errorUpdateMsg = '';
   private errorDeleteMsg = '';
-  private urlPattern =
-    '^(http|https)://((w{3}).)?[w]*.[a-z]{2,6}(/w*)+(.[a-z]{3,4})$';
+  private imageUrlPattern = 'https?://.*.(?:png|jpg)';
   private pricePattern = '^[1-9]+(.[0-9]{1,2})*$';
 
   public addForm = new FormGroup({
@@ -42,7 +41,10 @@ export class ModProductsComponent implements OnInit {
       updateOn: 'change',
     }),
     imageUrl: new FormControl('', {
-      validators: [Validators.required, Validators.pattern(this.urlPattern)],
+      validators: [
+        Validators.required,
+        Validators.pattern(this.imageUrlPattern),
+      ],
       updateOn: 'change',
     }),
     price: new FormControl('', {
@@ -81,7 +83,10 @@ export class ModProductsComponent implements OnInit {
       updateOn: 'change',
     }),
     imageUrl: new FormControl('', {
-      validators: [Validators.required, Validators.pattern(this.urlPattern)],
+      validators: [
+        Validators.required,
+        Validators.pattern(this.imageUrlPattern),
+      ],
       updateOn: 'change',
     }),
     price: new FormControl('', {

@@ -14,7 +14,7 @@ export class FormAccountAddressComponent implements OnInit {
   private errorMessage!: string;
   private postcodePattern = /^\d{2}-\d{3}$/;
   private addressPattern =
-    /^(ul(.)?\s)?[A-Z]?[a-z]*\s\d{1,3}((\/\d{1,3})?|(\sm(.)?\s)\d{1,3})[a-z]?$/;
+    /^(ul.?\s)?[A-Z]?[a-z]+\s\d{1,3}((\/\d{1,3})?|(\sm.?\s)\d{1,3})[a-z]?$/;
 
   public accountAddressForm = new FormGroup({
     city: new FormControl('', {
@@ -22,7 +22,7 @@ export class FormAccountAddressComponent implements OnInit {
         Validators.required,
         Validators.min(2),
         Validators.max(32),
-        Validators.pattern('[a-zA-z]*'),
+        Validators.pattern('[a-zA-z]+'),
       ],
       updateOn: 'change',
     }),

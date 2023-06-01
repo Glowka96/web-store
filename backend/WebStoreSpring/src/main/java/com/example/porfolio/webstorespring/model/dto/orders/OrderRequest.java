@@ -13,7 +13,7 @@ public class OrderRequest {
 
     @NotNull(message = "The delivery address can't be null")
     @NotBlank(message = "The delivery address can't be blank")
-    @Pattern(regexp = "^(ul(.)?\\s)?[A-Z]?[a-z]*\\s\\d{1,3}((/\\d{1,3})?|(\\sm(.)?\\s)\\d{1,3})[a-z]?$",
+    @Pattern(regexp = "^[A-Za-z]+(, )\\d{2}-\\d{3}(, )(ul(.)?\\s)?[A-Z]?[a-z]+\\s\\d{1,3}((/\\d{1,3})?|(\\sm(.)?\\s)\\d{1,3})[a-z]?$",
             message = "The delivery address format is invalid")
     private String deliveryAddress;
 
