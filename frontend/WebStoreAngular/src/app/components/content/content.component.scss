@@ -13,17 +13,27 @@
   }
 }
 
-@media only screen and (max-width: 570px) {
+@media only screen and (min-width: 766px) and (max-width: 1108px) {
   .main {
-    width: 85%;
+    width: 95%;
     .content {
       min-height: calc(100vh - 190px);
     }
   }
 }
 
-@media only screen and (max-width: 341px) {
+@media only screen and (max-width: 620px) {
   .main {
+    width: 95%;
+    .content {
+      min-height: calc(100vh - 190px);
+    }
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .main {
+    width: 95%;
     .content {
       min-height: calc(100vh - 220px);
     }

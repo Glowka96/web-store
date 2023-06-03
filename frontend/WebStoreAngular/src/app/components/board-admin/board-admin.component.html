@@ -3,11 +3,11 @@
         <h1>Admin board</h1>
     </div>
     <div class="board" *ngIf="isAdmin()">
-        <div class="options">
+        <div class="options pad">
             <h2>Modification Category</h2>
             <app-mod-category [categories]="listCategories"></app-mod-category>
         </div>
-        <div class="options">
+        <div class="options pad">
             <h2>Modification Subategory</h2>
             <app-mod-subcategory [subcategories]="listSubcategories"
                 [categories]="listCategories"></app-mod-subcategory>
@@ -16,7 +16,7 @@
             <h2>Modification Products</h2>
             <app-mod-products [subcategories]="listSubcategories"></app-mod-products>
         </div>
-        <div class="options">
+        <div class="options pad">
             <h2>Modification Producer</h2>
             <app-mod-producer></app-mod-producer>
         </div>

@@ -123,3 +123,11 @@ input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
 }
+
+@media only screen and (max-width: 341px) {
+  .wrapper-products {
+    .title-products {
+      width: 90%;
+    }
+  }
+}
