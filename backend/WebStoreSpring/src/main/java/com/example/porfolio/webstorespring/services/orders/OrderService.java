@@ -109,8 +109,7 @@ public class OrderService {
         if (order.getDeliveryAddress().isEmpty() ||
             order.getDeliveryAddress().isBlank() ||
             order.getDeliveryAddress() == null) {
-            String deliveryAddress = account.getAddress().toString();
-            order.setDeliveryAddress(deliveryAddress);
+            order.setDeliveryAddress(account.getAddress().toString());
         } else {
             formatDeliveryAddress(order);
         }

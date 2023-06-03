@@ -12,6 +12,7 @@
   .box-orders {
     display: flex;
     flex-flow: row wrap;
+    margin: 10px;
     .order {
       display: flex;
       flex-direction: column;

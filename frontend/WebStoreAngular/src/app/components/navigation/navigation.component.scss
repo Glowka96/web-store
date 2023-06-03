@@ -174,3 +174,14 @@
     }
   }
 }
+
+@media only screen and (max-width: 400px) {
+  .navigation {
+    .nav-user {
+      form {
+        width: 100%;
+        margin-left: 40px;
+      }
+    }
+  }
+}

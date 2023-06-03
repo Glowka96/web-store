@@ -55,7 +55,13 @@ export class NavigationComponent implements OnInit {
 
   ngOnInit() {
     this.breakpointObserver
-      .observe([Breakpoints.Small, Breakpoints.Medium])
+      .observe([
+        Breakpoints.XSmall,
+        Breakpoints.Small,
+        Breakpoints.Medium,
+        Breakpoints.Tablet,
+        Breakpoints.TabletLandscape,
+      ])
       .subscribe((result) => {
         this.isMobile = result.matches;
       });
