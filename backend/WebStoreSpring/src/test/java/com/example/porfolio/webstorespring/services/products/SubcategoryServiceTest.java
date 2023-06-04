@@ -43,7 +43,8 @@ class SubcategoryServiceTest {
 
     @BeforeEach
     public void initialization() {
-        category = new Category("Category");
+        category = new Category();
+        category.setName("Test");
         category.setId(1L);
 
         subCategory = new Subcategory("SubCategory");

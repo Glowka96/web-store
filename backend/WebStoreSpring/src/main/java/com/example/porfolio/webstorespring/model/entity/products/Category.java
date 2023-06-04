@@ -26,8 +26,4 @@ public class Category {
 
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private List<Subcategory> subcategories;
-
-    public Category(String name) {
-        this.name = name;
-    }
 }
