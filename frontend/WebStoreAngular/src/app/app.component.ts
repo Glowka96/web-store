@@ -8,7 +8,6 @@ import { FormLoginService } from './services/form-login.service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  title = 'WebStore';
   private formLogin: boolean = false;
 
   constructor(private formLoginService: FormLoginService) {

@@ -15,7 +15,6 @@ export class AuthenticationService {
   private loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
     false
   );
-  currentRoute: any;
 
   constructor(private http: HttpClient, private router: Router) {
     this.checkLogged();
@@ -29,7 +28,6 @@ export class AuthenticationService {
 
         let decodedJWT = this.getDecodedJWT(token);
         this.loggedRole.next(decodedJWT.role);
-
         this.loggedIn.next(true);
 
         sessionStorage.setItem('id', decodedJWT.id);
@@ -37,9 +35,7 @@ export class AuthenticationService {
         this.checkAdminRouteNav();
 
         let headers = new HttpHeaders();
-        if (token) {
-          headers.set('Authorization', token);
-        }
+        headers.set('Authorization', token);
       })
     );
   }
