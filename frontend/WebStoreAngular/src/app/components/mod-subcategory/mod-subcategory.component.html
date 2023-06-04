@@ -6,8 +6,8 @@
             <select name="category" formControlName="choiceCategory">
                 <option *ngFor="let category of categories" value="{{category.id}}">{{category.name}}</option>
             </select>
-            <label for="subcategoryName">Subcategory name:</label>
-            <input type="text" formControlName="subcategoryName" placeholder="Category name">
+            <label for="add-subcategory-name">Subcategory name:</label>
+            <input id="add-subcategory-name" type="text" formControlName="subcategoryName">
             <br>
             <div *ngIf="errorAddMessage" class="alert" role="alert">
                 <span [innerHTML]="errorAddMessage"></span>
@@ -28,8 +28,8 @@
                 <option *ngFor="let subcategory of subcategories" value="{{subcategory.id}}">{{subcategory.name}}
                 </option>
             </select>
-            <label for="category-name">Subcategory name:</label>
-            <input type="text" formControlName="subcategoryName" placeholder="Category name">
+            <label for="update-subcategory-name">Subcategory name:</label>
+            <input id="update-subcategory-name" type="text" formControlName="subcategoryName">
             <br>
             <div *ngIf="errorUpdateMessage" class="alert" role="alert">
                 <span [innerHTML]="errorUpdateMessage"></span>

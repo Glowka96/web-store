@@ -65,11 +65,11 @@
         font-weight: bold;
       }
 
-      .amount-product {
+      .quantity-product {
         .product-price {
           margin-right: 5px;
         }
-        .button-change-amount {
+        .button-change-quantity {
           cursor: pointer;
         }
       }
@@ -107,7 +107,7 @@
     background-color: aliceblue;
     margin: 25px 50px;
     border-radius: 15px;
-    ul {
+    .page {
       margin: 15px;
       padding: 0;
       row-gap: 2em;

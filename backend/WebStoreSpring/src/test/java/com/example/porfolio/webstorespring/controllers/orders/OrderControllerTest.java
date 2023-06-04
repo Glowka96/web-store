@@ -58,7 +58,7 @@ class OrderControllerTest {
         shipmentRequest.setPrice(3.00);
 
         orderRequest = new OrderRequest();
-        orderRequest.setDeliveryAddress("Test");
+        orderRequest.setDeliveryAddress("Test, 99-999, test 59/2");
         orderRequest.setShipmentRequests(new ArrayList<>(List.of(shipmentRequest)));
     }
 

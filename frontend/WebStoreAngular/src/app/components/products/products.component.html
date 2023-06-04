@@ -6,18 +6,21 @@
     <div class="list-product">
         <div class="product" *ngFor="let product of listProduct">
             <span class="product-name">{{product.name}}</span>
-            <span class="product-img"><img src={{product.imageUrl}} alt="{{product.name}}">
+            <span class="product-img"><img src={{product.imageUrl}} alt="{{product.name}}" width="240" height="240"
+                    fetchpriority="high">
                 <span class="product-description">{{product.description}}</span>
             </span>
-            <div class="amount-product">
+            <div class="quantity-product">
                 <span class="product-price">{{getPrice(product)}} PLN</span>
-                <input #box (keyup.enter)="changeProductQuantity(product.id, box.value)"
+                <input aria-label="quantity-product" #box (keyup.enter)="changeProductQuantity(product.id, box.value)"
                     (blur)="changeProductQuantity(product.id, box.value)" type="number"
                     value="{{getProductQuantity(product.id)}}" min="1" max="100">
-                <button class="button-change-amount" (click)="increaseProductQuantity(product.id)">
+                <button class="button-change-quantity" aria-label="increase product quantity"
+                    (click)="increaseProductQuantity(product.id)">
                     <i class="icon-plus"></i>
                 </button>
-                <button class="button-change-amount" (click)="decreaseProductQuantity(product.id)">
+                <button class="button-change-quantity" aria-label="decrease product quantity"
+                    (click)="decreaseProductQuantity(product.id)">
                     <i class="icon-minus"></i>
                 </button>
             </div>
@@ -30,8 +33,8 @@
         </div>
     </div>
     <nav class="pagination">
-        <ul *ngFor="let count of countPagesArray">
+        <div class="page" *ngFor="let count of countPagesArray">
             <button class="btn-page" (click)="getPageProducts(count)">{{count+1}}</button>
-        </ul>
+        </div>
     </nav>
 </section>

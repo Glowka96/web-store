@@ -2,8 +2,8 @@
     <div class="box">
         <h3>Add Category</h3>
         <form class="form-box" [formGroup]="addForm" (ngSubmit)="onSumbitAdd()">
-            <label for="category-name">Category name:</label>
-            <input type="text" formControlName="name" placeholder="Category name">
+            <label for="add-category-name">Category name:</label>
+            <input id="add-category-name" type="text" formControlName="name">
             <br>
             <div *ngIf="errorAddMessage" class="alert" role="alert">
                 <span [innerHTML]="errorAddMessage"></span>
@@ -19,8 +19,8 @@
             <select name="category" formControlName="choiceCategory">
                 <option *ngFor="let category of categories" value="{{category.id}}">{{category.name}}</option>
             </select>
-            <label for="category-name">Category name:</label>
-            <input type="text" formControlName="name" placeholder="Category name">
+            <label for="update-category-name">Category name:</label>
+            <input id="update-category-name" type="text" formControlName="name">
             <br>
             <div *ngIf="errorUpdateMessage" class="alert" role="alert">
                 <span [innerHTML]="errorUpdateMessage"></span>

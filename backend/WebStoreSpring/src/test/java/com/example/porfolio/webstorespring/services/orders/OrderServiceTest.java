@@ -10,6 +10,7 @@ import com.example.porfolio.webstorespring.model.dto.accounts.AccountRequest;
 import com.example.porfolio.webstorespring.model.dto.orders.OrderRequest;
 import com.example.porfolio.webstorespring.model.dto.orders.OrderResponse;
 import com.example.porfolio.webstorespring.model.dto.orders.ShipmentRequest;
+import com.example.porfolio.webstorespring.model.dto.products.ProductRequest;
 import com.example.porfolio.webstorespring.model.entity.accounts.Account;
 import com.example.porfolio.webstorespring.model.entity.accounts.AccountAddress;
 import com.example.porfolio.webstorespring.model.entity.orders.Order;
@@ -82,9 +83,13 @@ class OrderServiceTest {
         account.setLastName("Name");
         account.setAddress(accountAddress);
 
+        ProductRequest productRequest = new ProductRequest();
+        productRequest.setDescription("test");
+        productRequest.setPrice(20.00);
+
         ShipmentRequest shipmentRequest = new ShipmentRequest();
         shipmentRequest.setQuantity(3);
-        shipmentRequest.setPrice(31.5);
+        shipmentRequest.setProductRequest(productRequest);
 
         List<ShipmentRequest> shipmentRequests = new ArrayList<>(Arrays.asList(shipmentRequest, shipmentRequest));
 
@@ -131,7 +136,7 @@ class OrderServiceTest {
         // given
         given(accountRepository.findById(anyLong())).willReturn(Optional.of(account));
         String expectedNameUser = accountRequest.getFirstName() + " " + accountRequest.getLastName();
-        Double expectedDouble = 63.0;
+        Double expectedDouble = 120.0;
 
         // when
         OrderResponse savedOrderResponse = underTest.saveOrder(1L, orderRequest);
