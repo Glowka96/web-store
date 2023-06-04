@@ -2,8 +2,8 @@
     <div class="box">
         <h3>Add Producer</h3>
         <form class="form-box" [formGroup]="addForm" (ngSubmit)="onSumbitAdd()">
-            <label for="category-name">Producer name:</label>
-            <input type="text" formControlName="name" placeholder="Producer name">
+            <label for="add-producer-name">Producer name:</label>
+            <input id="add-producer-name" type="text" formControlName="name" placeholder="Producer name">
             <br>
             <div *ngIf="errorAddMessage" class="alert" role="alert">
                 <span [innerHTML]="errorAddMessage"></span>
@@ -15,12 +15,12 @@
     <div class="box">
         <h3>Update Producer</h3>
         <form class="form-box" [formGroup]="updateForm" (ngSubmit)="onSumbitUpdate()">
-            <label for="category">Choise a producer</label>
-            <select name="category" formControlName="choiceProducer">
+            <label for="producer">Choise a producer</label>
+            <select name="producer" formControlName="choiceProducer">
                 <option *ngFor="let category of listProducer" value="{{category.id}}">{{category.name}}</option>
             </select>
-            <label for="category-name">Producer name:</label>
-            <input type="text" formControlName="name" placeholder="Producer name">
+            <label for="update-producer-name">Producer name:</label>
+            <input id="update-producer-name" type="text" formControlName="name" placeholder="Producer name">
             <br>
             <div *ngIf="errorUpdateMessage" class="alert" role="alert">
                 <span [innerHTML]="errorUpdateMessage"></span>
@@ -32,8 +32,8 @@
     <div class="box">
         <h3>Delete Producer</h3>
         <form class="form-box" [formGroup]="deleteForm" (ngSubmit)="onSumbitDelete()">
-            <label for="category">Choise a producer</label>
-            <select name="category" formControlName="choiceProducer">
+            <label for="producer">Choise a producer</label>
+            <select name="producer" formControlName="choiceProducer">
                 <option *ngFor="let category of listProducer" value="{{category.id}}">{{category.name}}</option>
             </select>
             <br>

@@ -1,7 +1,7 @@
 <header class="navigation">
   <div class="nav-logo">
     <a [routerLink]="'/'" alt="home">
-      <img src="/assets/images/logo2.png" alt="logo" width="230px" height="80px">
+      <img src="/assets/images/logo2.png" alt="logo" width="252px" height="80px" fetchpriority="high">
     </a>
   </div>
   <nav class="nav-menu" *ngIf="!isModbileWidth">
@@ -27,12 +27,12 @@
   <div class="nav-user" [ngStyle]="{'margin-bottom': isModbileWidth? '12px' : 0}">
     <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
       <input formControlName="search" type="search" class="search" placeholder="search">
-      <button class="btn-search"><i class="icon-search-1"></i></button>
+      <button class="btn-search" aria-label="searchs"><i class="icon-search-1"></i></button>
     </form>
-    <a [routerLink]="['basket']"><i class="icon-basket"></i></a>
+    <a [routerLink]="['basket']" aria-label="basket"><i class="icon-basket"></i></a>
     <button *ngIf="!isLoggedIn()" (click)="changeStatusLogginForm()" class="btn-log">Login</button>
     <div *ngIf="isLoggedIn()" class="menu-user">
-      <a [routerLink]="['accounts']"><i class="icon-user"></i></a>
+      <a [routerLink]="['accounts']" aria-label="account"><i class="icon-user"></i></a>
       <button class="btn-log" (click)="logout()">Logout</button>
     </div>
   </div>

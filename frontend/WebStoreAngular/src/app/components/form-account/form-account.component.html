@@ -5,8 +5,8 @@
     <form class="box" [formGroup]="accountForm" (ngSubmit)="onSumbitUpdate()">
         <div class="form-group">
             <div class="input-box">
-                <label for="firstName">First name: </label>
-                <input formControlName="firstName" type="text" />
+                <label for="first-name">First name: </label>
+                <input id="first-name" formControlName="firstName" type="text" />
             </div>
             <div *ngIf="accountForm.get('firstName')?.invalid && accountForm.get('firstName')?.dirty" class="errors">
                 <small *ngIf="accountForm.get('firstName')?.errors?.['required']">The first name is
@@ -20,8 +20,8 @@
         </div>
         <div class="form-group">
             <div class="input-box">
-                <label for="lastName">Last name: </label>
-                <input formControlName="lastName" type="text" />
+                <label for="last-name">Last name: </label>
+                <input id="last-name" formControlName="lastName" type="text" />
             </div>
             <div *ngIf="accountForm.get('lastName')?.invalid && accountForm.get('lastName')?.dirty" class="errors">
                 <small *ngIf="accountForm.get('lastName')?.errors?.['required']">The last name is
@@ -35,7 +35,7 @@
         <div class="form-group">
             <div class="input-box">
                 <label for="password">Password: </label>
-                <input formControlName="password" type="password">
+                <input id="password" formControlName="password" type="password">
             </div>
             <div class="errors" *ngIf="accountForm.get('password')?.invalid && accountForm.get('password')?.dirty">
                 <small *ngIf="accountForm.get('password')?.errors?.['required']">The password is
@@ -49,8 +49,8 @@
         </div>
         <div class="form-group">
             <div class="input-box">
-                <label for="confirmPassword">Confirm password: </label>
-                <input formControlName="confirmPassword" type="password">
+                <label for="confirm-password">Confirm password: </label>
+                <input id="confirm-password" formControlName="confirmPassword" type="password">
             </div>
             <div class="errors"
                 *ngIf="accountForm.get('confirmPassword')?.invalid && accountForm.get('confirmPassword')?.dirty">
@@ -64,7 +64,7 @@
         <div class="form-group">
             <div class="input-box">
                 <label for="imageUrl">Image url: </label>
-                <input formControlName="imageUrl" type="text">
+                <input id="imageUrl" formControlName="imageUrl" type="text">
             </div>
             <div class="errors" *ngIf="accountForm.get('imageUrl')?.invalid && accountForm.get('imageUrl')?.dirty">
                 <small *ngIf="accountForm.get('imageUrl')?.errors?.['required']">The image url is
