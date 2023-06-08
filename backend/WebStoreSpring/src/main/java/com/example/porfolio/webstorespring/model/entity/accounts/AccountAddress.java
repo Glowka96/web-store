@@ -23,9 +23,14 @@ public class AccountAddress {
     private String postcode;
 
     @Column(nullable = false)
-    private String address;
+    private String street;
 
     @OneToOne
     @JoinColumn(name = "account_id")
     private Account account;
+
+    @Override
+    public String toString() {
+        return "City: " + city + ", Postcode: " + postcode + ", Street: " + street;
+    }
 }

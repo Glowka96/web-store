@@ -9,4 +9,14 @@ import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
     Optional<Page<Product>> findProductBySubcategory_Id(Long subcategory_id, Pageable pageable);
+    Long countProductBySubcategory_Id(Long subcategoryId);
+
+    Optional<Page<Product>> searchProductByNameContainsIgnoreCaseOrDescriptionContainsIgnoreCaseOrProducerName(String name,
+                                                                                             String description,
+                                                                                             String producer_name,
+                                                                                             Pageable pageable);
+
+    Long countProductByNameContainsIgnoreCaseOrDescriptionContainsIgnoreCaseOrProducerName(String name,
+                                                                         String description,
+                                                                         String producer_name);
 }

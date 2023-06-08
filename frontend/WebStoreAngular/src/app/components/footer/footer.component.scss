@@ -1,0 +1,25 @@
+.footer {
+  display: flex;
+  justify-content: center;
+  margin-top: auto;
+  border-top: 1px solid white;
+  background-color: black;
+  color: white;
+  gap: 2rem;
+  text-align: left;
+  cursor: default;
+  .box {
+    .title {
+      font-size: 26px;
+      margin-bottom: 0;
+    }
+    p {
+      margin: 4px 0;
+    }
+    ul {
+      li {
+        list-style: none;
+      }
+    }
+  }
+}

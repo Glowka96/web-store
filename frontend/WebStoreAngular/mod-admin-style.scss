@@ -1,0 +1,48 @@
+.form-section {
+  display: flex;
+  flex-flow: column wrap;
+  margin: 0 21px;
+  .box {
+    margin: 10px 0;
+    border-radius: 10px;
+    box-shadow: 5px 10px 18px #888888;
+    .form-box {
+      display: flex;
+      flex-direction: column;
+      margin: 15px;
+      label {
+        font-size: 18px;
+      }
+      input {
+        padding: 5px;
+        border-radius: 5px;
+        border: 0.5px solid;
+      }
+      select {
+        padding: 5px;
+        border-radius: 5px;
+        border: 0.5px solid;
+      }
+      .alert {
+        color: red;
+      }
+      .clkbtn {
+        padding: 5px;
+        border-radius: 5px;
+        cursor: pointer;
+        &:active {
+          transform: scale(0.9);
+        }
+      }
+      .disabled-btn {
+        cursor: not-allowed;
+        &:active {
+          transform: none;
+        }
+      }
+    }
+    h3 {
+      font-size: 20px;
+    }
+  }
+}

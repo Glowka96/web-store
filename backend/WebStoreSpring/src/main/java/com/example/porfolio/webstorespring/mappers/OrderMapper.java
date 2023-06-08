@@ -1,6 +1,7 @@
 package com.example.porfolio.webstorespring.mappers;
 
-import com.example.porfolio.webstorespring.model.dto.orders.OrderDto;
+import com.example.porfolio.webstorespring.model.dto.orders.OrderRequest;
+import com.example.porfolio.webstorespring.model.dto.orders.OrderResponse;
 import com.example.porfolio.webstorespring.model.entity.orders.Order;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -13,18 +14,21 @@ import java.util.List;
                 ShipmentMapper.class
         }
 )
-
 public interface OrderMapper {
 
-    @Mapping(target = "accountDto", source = "account")
-    @Mapping(target = "shipmentsDto", source = "shipments")
-    OrderDto mapToDto(Order order);
+    @Mapping(target = "shipmentResponses", source = "shipments")
+    OrderResponse mapToDto(Order order);
 
-    @Mapping(target = "accountDto", source = "account")
-    @Mapping(target = "shipmentsDto", source = "shipments")
-    List<OrderDto> mapToDto(List<Order> orders);
+    @Mapping(target = "shipmentsResponses", source = "shipments")
+    List<OrderResponse> mapToDto(List<Order> orders);
 
-    @Mapping(target = "account", source = "accountDto")
-    @Mapping(target = "shipments", source = "shipmentsDto")
-    Order mapToEntity(OrderDto orderDto);
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "status", ignore = true)
+    @Mapping(target = "shipmentAddress", ignore = true)
+    @Mapping(target = "productsPrice", ignore = true)
+    @Mapping(target = "nameUser", ignore = true)
+    @Mapping(target = "dateOfCreated", ignore = true)
+    @Mapping(target = "account", ignore = true)
+    @Mapping(target = "shipments", source = "shipmentRequests")
+    Order mapToEntity(OrderRequest orderRequest);
 }

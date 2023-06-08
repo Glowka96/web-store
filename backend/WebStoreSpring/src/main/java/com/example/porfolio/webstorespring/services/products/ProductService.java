@@ -1,8 +1,10 @@
 package com.example.porfolio.webstorespring.services.products;
 
 import com.example.porfolio.webstorespring.exceptions.ResourceNotFoundException;
+import com.example.porfolio.webstorespring.exceptions.SearchNotFoundException;
 import com.example.porfolio.webstorespring.mappers.ProductMapper;
-import com.example.porfolio.webstorespring.model.dto.products.ProductDto;
+import com.example.porfolio.webstorespring.model.dto.products.ProductRequest;
+import com.example.porfolio.webstorespring.model.dto.products.ProductResponse;
 import com.example.porfolio.webstorespring.model.entity.products.Producer;
 import com.example.porfolio.webstorespring.model.entity.products.Product;
 import com.example.porfolio.webstorespring.model.entity.products.Subcategory;
@@ -10,6 +12,7 @@ import com.example.porfolio.webstorespring.repositories.products.ProducerReposit
 import com.example.porfolio.webstorespring.repositories.products.ProductRepository;
 import com.example.porfolio.webstorespring.repositories.products.SubcategoryRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class ProductService {
 
@@ -27,35 +31,55 @@ public class ProductService {
     private final ProducerRepository producerRepository;
     private final SubcategoryRepository subcategoryRepository;
 
-    public ProductDto getProductDtoById(Long id) {
+    public ProductResponse getProductDtoById(Long id) {
         Product foundProduct = findProductById(id);
         return productMapper.mapToDto(foundProduct);
     }
 
-    public List<ProductDto> getAllProductsBySubCategoryId(Long subcategoryId,
-                                                          Integer pageNo,
-                                                          Integer pageSize) {
+    public List<ProductResponse> getAllProducts() {
+        return productMapper.mapToDto(productRepository.findAll());
+    }
+
+    public List<ProductResponse> getAllProductsBySubcategoryId(Long subcategoryId,
+                                                              Integer pageNo,
+                                                              Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.ASC, "id"));
 
         Page<Product> productPage = findPageProductsBySubcategoryId(subcategoryId, pageable);
         return productPage.map(productMapper::mapToDto).getContent();
     }
 
-    public List<ProductDto> getAllProductsBySubCategoryId(Long subcategoryId,
-                                                          Integer pageNo,
-                                                          Integer pageSize,
-                                                          String sortBy) {
+    public List<ProductResponse> getAllProductsBySubcategoryId(Long subcategoryId,
+                                                              Integer pageNo,
+                                                              Integer pageSize,
+                                                              String sortBy) {
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.ASC, sortBy));
 
         Page<Product> productPage = findPageProductsBySubcategoryId(subcategoryId, pageable);
         return productPage.map(productMapper::mapToDto).getContent();
     }
 
-    public ProductDto save(Long subcategoryId, Long producerId, ProductDto productDto) {
+    public Long getQuantityOfProductsBySubcategoryId(Long subcategoryId) {
+        return productRepository.countProductBySubcategory_Id(subcategoryId);
+    }
+
+    public List<ProductResponse> getSearchProducts(String text, Integer pageNo, Integer pageSize, String sortBy) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.ASC, sortBy));
+
+        Page<Product> productPage = searchProductsByText(text, pageable);
+        return productPage.map(productMapper::mapToDto).getContent();
+    }
+
+    public Long getAmountSearchProducts(String text) {
+        return productRepository
+                .countProductByNameContainsIgnoreCaseOrDescriptionContainsIgnoreCaseOrProducerName(text, text, text);
+    }
+
+    public ProductResponse save(Long subcategoryId, Long producerId, ProductRequest productRequest) {
         Subcategory foundSubcategory = findSubcategoryById(subcategoryId);
         Producer foundProducer = findProducerById(producerId);
 
-        Product product = productMapper.mapToEntity(productDto);
+        Product product = productMapper.mapToEntity(productRequest);
         product.setSubcategory(foundSubcategory);
         product.setProducer(foundProducer);
 
@@ -63,14 +87,14 @@ public class ProductService {
         return productMapper.mapToDto(product);
     }
 
-    public ProductDto updateProduct(Long subcategoryId,
-                                    Long producerId,
-                                    Long productId,
-                                    ProductDto productDto) {
+    public ProductResponse updateProduct(Long subcategoryId,
+                                        Long producerId,
+                                        Long productId,
+                                        ProductRequest productRequest) {
         Subcategory foundSubcategory = findSubcategoryById(subcategoryId);
         Producer foundProducer = findProducerById(producerId);
         Product foundProduct = findProductById(productId);
-        Product product = productMapper.mapToEntity(productDto);
+        Product product = productMapper.mapToEntity(productRequest);
 
         setupProduct(foundSubcategory, foundProducer, foundProduct, product);
 
@@ -92,6 +116,15 @@ public class ProductService {
         return productRepository.findProductBySubcategory_Id(subCategoryId, pageable)
                 .orElseThrow(() -> new ResourceNotFoundException("Products", "page number", pageable.getPageNumber()));
 
+    }
+
+    private Page<Product> searchProductsByText(String text, Pageable pageable) {
+        return productRepository
+                .searchProductByNameContainsIgnoreCaseOrDescriptionContainsIgnoreCaseOrProducerName(text,
+                        text,
+                        text,
+                        pageable)
+                .orElseThrow(SearchNotFoundException::new);
     }
 
     private Subcategory findSubcategoryById(Long id) {

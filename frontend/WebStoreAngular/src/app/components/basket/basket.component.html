@@ -1,0 +1,55 @@
+<section class="wrapper-shipments">
+    <div class="title-shipments">
+        <h1>Your basket</h1>
+    </div>
+    <div class="list-shipments">
+        <div class="shipment" *ngFor="let shipment of shipments">
+            <div class="wprapper-product">
+                <div class="product-text">
+                    <p><span class="title">Product name: </span>{{shipment.product.name}}</p>
+                    <p><span class="title description">Product
+                            description: </span>{{shipment.product.description}}</p>
+                </div>
+                <span class="product-img"><img src={{shipment.product.imageUrl}} alt="{{shipment.product.name}}"
+                        width="256" height="256">
+                </span>
+            </div>
+            <div class="shipment-products">
+                <div class="shipment-quantity" *ngIf="!isUpdate(shipment.product.id)">
+                    <p><span class="title">Quantity: </span>{{shipment.quantity}}</p>
+                </div>
+                <form class="quantity-change" [formGroup]="changeForm" (ngSubmit)="onSumbitChange(shipment.product.id)"
+                    *ngIf="isUpdate(shipment.product.id)">
+                    <input formControlName="quantity" class="change" type="text" placeholder="Quantity">
+                    <div class="error" *ngIf="changeForm.get('quantity')?.invalid">
+                        <small *ngIf="changeForm.get('quantity')?.errors?.['min'] || ['max']">The quantity must be
+                            beetwen 1 nad 100.<br></small>
+                        <small *ngIf="changeForm.get('quantity')?.errors?.['pattern']">The quantity must be a
+                            number</small>
+                    </div>
+                </form>
+                <div class="shipment-price">
+                    <p><span class="title">Price for the product: </span> {{shipment.price}} PLN</p>
+                </div>
+            </div>
+            <button class="btn-delete" (click)="deleteProductFromBasket(shipment.product.id)"><i
+                    class="icon-cancel"></i></button>
+            <button class="btn-change" (click)="change(shipment.product.id)">Change</button>
+        </div>
+    </div>
+    <div class="purchase-box">
+        <div class="sumbit-box" *ngIf="isBasketEmpty">
+            <p>Do you want to buy these products?</p>
+            <button class="btn-continue" (click)="onSumbitBuy()" type="submit">Continue purchase</button>
+            <div class="continue-box" *ngIf="!isLoggedIn && isBuyBtnClicked">
+                <p>If you don't have an account, you need create account to buy these products. <br> You only spend one
+                    minutes on it.</p>
+                <p>Click on the button for the login or register an account.</p>
+                <button class="btn-register" (click)="onLoginForm()">Login/Signup</button>
+            </div>
+        </div>
+        <div class="message-box" *ngIf="!isBasketEmpty">
+            <p>Your basker is empty</p>
+        </div>
+    </div>
+</section>
