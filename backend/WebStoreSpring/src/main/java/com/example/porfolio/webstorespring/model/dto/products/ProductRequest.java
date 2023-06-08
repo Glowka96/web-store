@@ -11,12 +11,12 @@ public class ProductRequest {
 
     @NotNull(message = "The name can't be null")
     @NotBlank(message = "The name can't be blank")
-    @Size(min = 3, max = 20, message = "The name must between min 3 and max 20 letters")
+    @Size(min = 3, max = 32, message = "The name must between min 3 and max 32 letters")
     private String name;
 
     @NotNull(message = "The description can't be null")
     @NotBlank(message = "The description can't be blank")
-    @Size(min = 3, max = 256, message = "The description must between min 3 and max 256 letters")
+    @Size(min = 3, max = 512, message = "The description must between min 3 and max 512 letters")
     private String description;
 
     @NotNull(message = "The image url can't be null")

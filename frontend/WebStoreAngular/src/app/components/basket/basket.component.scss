@@ -34,10 +34,7 @@
           display: flex;
           flex-direction: column;
           height: max-content;
-          padding: 15px;
-          .description {
-            max-width: 150px;
-          }
+          max-width: 256px;
         }
       }
       .btn-delete {
@@ -107,8 +104,16 @@
   }
 }
 
-@media only screen and (max-width: 640px) {
-  .wprapper-product {
+@media only screen and (max-width: 726px) {
+  .wrapper-shipments {
     justify-content: center;
+    .list-shipments {
+      .shipment {
+        max-width: calc(100% - 20px);
+        .wprapper-product {
+          max-width: 100%;
+        }
+      }
+    }
   }
 }
