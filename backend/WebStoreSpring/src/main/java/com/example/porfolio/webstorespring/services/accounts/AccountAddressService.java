@@ -2,7 +2,8 @@ package com.example.porfolio.webstorespring.services.accounts;
 
 import com.example.porfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.porfolio.webstorespring.mappers.AccountAddressMapper;
-import com.example.porfolio.webstorespring.model.dto.accounts.AccountAddressDto;
+import com.example.porfolio.webstorespring.model.dto.accounts.AccountAddressRequest;
+import com.example.porfolio.webstorespring.model.dto.accounts.AccountAddressResponse;
 import com.example.porfolio.webstorespring.model.entity.accounts.Account;
 import com.example.porfolio.webstorespring.model.entity.accounts.AccountAddress;
 import com.example.porfolio.webstorespring.repositories.accounts.AccountAddressRepository;
@@ -18,26 +19,26 @@ public class AccountAddressService{
     private final AccountAddressMapper addressMapper;
     private final AccountRepository accountRepository;
 
-    public AccountAddressDto getAccountAddressByAccountId(Long accountId) {
+    public AccountAddressResponse getAccountAddressByAccountId(Long accountId) {
         AccountAddress foundAddress = findAccountAddressByAccountId(accountId);
 
         return addressMapper.mapToDto(foundAddress);
     }
 
-    public AccountAddressDto saveAccountAddress(Long accountId, AccountAddressDto accountAddressDto) {
+    public AccountAddressResponse saveAccountAddress(Long accountId, AccountAddressRequest accountAddressRequest) {
         Account foundAccount = findAccountById(accountId);
 
-        AccountAddress accountAddress = addressMapper.mapToEntity(accountAddressDto);
+        AccountAddress accountAddress = addressMapper.mapToEntity(accountAddressRequest);
 
         accountAddress.setAccount(foundAccount);
         addressRepository.save(accountAddress);
         return addressMapper.mapToDto(accountAddress);
     }
 
-    public AccountAddressDto updateAccountAddress(Long accountId, AccountAddressDto accountAddressDto) {
+    public AccountAddressResponse updateAccountAddress(Long accountId, AccountAddressRequest accountAddressRequest) {
         AccountAddress foundAddress = findAccountAddressByAccountId(accountId);
 
-        AccountAddress accountAddress = addressMapper.mapToEntity(accountAddressDto);
+        AccountAddress accountAddress = addressMapper.mapToEntity(accountAddressRequest);
 
         setupUpdateAddress(foundAddress, accountAddress);
         addressRepository.save(accountAddress);
@@ -57,8 +58,8 @@ public class AccountAddressService{
     private void setupUpdateAddress(AccountAddress foundAddress, AccountAddress accountAddress) {
         accountAddress.setAccount(foundAddress.getAccount());
 
-        if (accountAddress.getAddress() == null) {
-            accountAddress.setAddress(foundAddress.getAddress());
+        if (accountAddress.getStreet() == null) {
+            accountAddress.setStreet(foundAddress.getStreet());
         }
         if (accountAddress.getCity() == null) {
             accountAddress.setCity(foundAddress.getCity());

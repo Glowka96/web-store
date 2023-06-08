@@ -49,4 +49,7 @@ public class Account {
 
     @OneToMany(mappedBy = "account")
     private List<AuthToken> authTokens;
+
+    @OneToMany(mappedBy = "account")
+    private List<ConfirmationToken> confirmationTokens;
 }

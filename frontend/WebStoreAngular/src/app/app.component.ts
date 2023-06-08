@@ -8,26 +8,17 @@ import { FormLoginService } from './services/form-login.service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  title = 'WebStore';
-  private opacity: number = 1;
+  private formLogin: boolean = false;
 
   constructor(private formLoginService: FormLoginService) {
-    formLoginService.getOpacitySubject().subscribe((value) => {
-      this.opacity = value;
+    formLoginService.getIsFromLogin$().subscribe((value) => {
+      this.formLogin = value;
     });
   }
 
   ngOnInit(): void {}
 
-  public get getOpacity() {
-    return this.opacity;
-  }
-
-  public get getOpacity2() {
-    return this.opacity;
-  }
-
-  public get showLoginForm(): boolean {
-    return this.showLoginForm;
+  public get isFormLogin() {
+    return this.formLogin;
   }
 }

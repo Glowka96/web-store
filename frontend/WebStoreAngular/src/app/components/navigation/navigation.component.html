@@ -1,0 +1,39 @@
+<header class="navigation">
+  <div class="nav-logo">
+    <a [routerLink]="'/'" alt="home">
+      <img src="/assets/images/logo2.png" alt="logo" width="252px" height="80px" fetchpriority="high">
+    </a>
+  </div>
+  <nav class="nav-menu" *ngIf="!isModbileWidth">
+    <ul class="nav-category" *ngFor="let category of getCategories">
+      <li>{{category.name}}</li>
+      <ul class="nav-submenu">
+        <li *ngFor="let subcategory of category.subcategories">
+          <a [routerLink]="[category.name, subcategory.name, subcategory.id, 'products']"
+            [queryParams]="{ page: 1 }">{{subcategory.name}}</a>
+        </li>
+      </ul>
+    </ul>
+  </nav>
+  <nav class="nav-mobile-menu icon-menu" *ngIf="isModbileWidth">
+    <ul *ngFor="let category of getCategories">
+      <p>{{category.name}}</p>
+      <li *ngFor="let subcategory of category.subcategories">
+        <a [routerLink]="[category.name,subcategory.name, subcategory.id, 'products']"
+          [queryParams]="{ page: 1 }">{{subcategory.name}}</a>
+      </li>
+    </ul>
+  </nav>
+  <div class="nav-user" [ngStyle]="{'margin-bottom': isModbileWidth? '12px' : 0}">
+    <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
+      <input formControlName="search" type="search" class="search" placeholder="search">
+      <button class="btn-search" aria-label="searchs"><i class="icon-search-1"></i></button>
+    </form>
+    <a [routerLink]="['basket']" aria-label="basket"><i class="icon-basket"></i></a>
+    <button *ngIf="!isLoggedIn()" (click)="changeStatusLogginForm()" class="btn-log">Login</button>
+    <div *ngIf="isLoggedIn()" class="menu-user">
+      <a [routerLink]="['accounts']" aria-label="account"><i class="icon-user"></i></a>
+      <button class="btn-log" (click)="logout()">Logout</button>
+    </div>
+  </div>
+</header>

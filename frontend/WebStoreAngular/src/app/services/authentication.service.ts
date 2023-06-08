@@ -4,54 +4,47 @@ import { LoginRequest } from '../models/login-request';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 import { __values } from 'tslib';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthenticationService {
   private apiServerUrl = environment.apiBaseUrl;
-  private loggedRole!: BehaviorSubject<string>;
+  private loggedRole: BehaviorSubject<string> = new BehaviorSubject<string>('');
   private loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
     false
   );
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {
+    this.checkLogged();
+  }
 
   authenticate(request: LoginRequest) {
     return this.http.post<any>(`${this.apiServerUrl}/login`, request).pipe(
       map((userData) => {
-        sessionStorage.setItem('username', request.email);
+        let token = 'Bearer ' + userData.token;
+        sessionStorage.setItem('token', token);
 
-        let tokenStr = 'Bearer ' + userData.token;
-        sessionStorage.setItem('token', tokenStr);
+        let decodedJWT = this.getDecodedJWT(token);
+        this.loggedRole.next(decodedJWT.role);
+        this.loggedIn.next(true);
 
-        let decodedJWT = JSON.parse(window.atob(tokenStr.split('.')[1]));
-        this.loggedRole = decodedJWT.role;
+        sessionStorage.setItem('id', decodedJWT.id);
+
+        this.checkAdminRouteNav();
 
         let headers = new HttpHeaders();
-        if (tokenStr) {
-          console.log('setup headers');
-          headers.set('Authorization', tokenStr);
-          console.log(headers.get('Authorization'));
-          console.log('end setup');
-        }
+        headers.set('Authorization', token);
       })
     );
   }
 
-  isLoggedRole(): Observable<string> {
-    return this.loggedRole.asObservable();
-  }
-
-  setLoggedIn(loggedIn: boolean): void {
-    this.loggedIn.next(loggedIn);
-  }
-
-  isLoggedIn(): Observable<boolean> {
-    return this.loggedIn.asObservable();
-  }
-
   logout(): void {
+    this.router.navigate([''], {
+      queryParams: {},
+      queryParamsHandling: 'merge',
+    });
     let headers = new HttpHeaders().set(
       'Authorization',
       'Bearer ' + sessionStorage.getItem('token')
@@ -60,26 +53,36 @@ export class AuthenticationService {
       .post(`${this.apiServerUrl}/logout`, { headers: headers })
       .subscribe(() => {
         this.loggedIn.next(false);
-        sessionStorage.removeItem('token');
+        this.loggedRole.next('');
+        sessionStorage.clear();
       });
-
-    // // Send an HTTP GET request to the logout endpoint in your backend API
-    // this.http.post(`${this.apiServerUrl}/logout`, this.http.options).subscribe(
-    //   () => {
-    //     // Logout successful, update your app's state or perform other actions
-    //     this.loggedIn.next(false);
-    //     sessionStorage.removeItem('token');
-
-    //     window.location.reload();
-    //   },
-    //   (error) => {
-    //     // Handle error if logout request fails
-    //     console.error('Logout failed:', error);
-    //   }
-    // );
   }
 
-  isAuthenticated(): boolean {
-    return !!localStorage.getItem('token');
+  private checkAdminRouteNav(): void {
+    if (this.loggedRole.value === 'ROLE_ADMIN') {
+      this.router.navigate(['/admin-board'], {});
+    }
+  }
+
+  private checkLogged() {
+    let token = sessionStorage.getItem('token');
+    if (token) {
+      let decodedJWT = this.getDecodedJWT(token);
+      this.loggedRole.next(decodedJWT.role);
+      this.loggedIn.next(true);
+      sessionStorage.setItem('id', decodedJWT.id);
+    }
+  }
+
+  private getDecodedJWT(token: string) {
+    return JSON.parse(window.atob(token.split('.')[1]));
+  }
+
+  public loggedRole$(): Observable<string> {
+    return this.loggedRole.asObservable();
+  }
+
+  public loggedIn$(): Observable<boolean> {
+    return this.loggedIn.asObservable();
   }
 }

@@ -24,10 +24,6 @@ public class Category {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private List<Subcategory> subcategories;
-
-    public Category(String name) {
-        this.name = name;
-    }
 }

@@ -1,6 +1,7 @@
 package com.example.porfolio.webstorespring.mappers;
 
-import com.example.porfolio.webstorespring.model.dto.products.SubcategoryDto;
+import com.example.porfolio.webstorespring.model.dto.products.SubcategoryRequest;
+import com.example.porfolio.webstorespring.model.dto.products.SubcategoryResponse;
 import com.example.porfolio.webstorespring.model.entity.products.Subcategory;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -16,13 +17,13 @@ import java.util.List;
 )
 public interface SubcategoryMapper {
 
-    @Mapping(target = "categoryDto", source = "category")
-    @Mapping(target = "productsDto", source = "products")
-    SubcategoryDto mapToDto(Subcategory subcategory);
+    @Mapping(target = "productResponses", ignore = true)
+    SubcategoryResponse mapToDto(Subcategory subcategory);
 
-    @Mapping(target = "category", source = "categoryDto")
-    @Mapping(target = "products", source = "productsDto")
-    Subcategory mapToEntity(SubcategoryDto subCategoryDto);
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "products", ignore = true)
+    @Mapping(target = "category", ignore = true)
+    Subcategory mapToEntity(SubcategoryRequest subCategoryRequest);
 
-    List<SubcategoryDto> mapToDto(List<Subcategory> subcategories);
+    List<SubcategoryResponse> mapToDto(List<Subcategory> subcategories);
 }

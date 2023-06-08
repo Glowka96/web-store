@@ -5,7 +5,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +15,6 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
-@Slf4j
 public class JwtService {
 
     private static final String SECRET_KEY = "5970337336763979244226452948404D6351665468576D5A7134743777217A25";
@@ -39,8 +37,10 @@ public class JwtService {
             UserDetails userDetails
     ) {
         String role = userDetails.getAuthorities().toString().replaceAll("[\\[\\]]", "");
-        log.info(role);
+        AccountDetails accountDetails = (AccountDetails) userDetails;
+        Long id = accountDetails.getAccount().getId();
         extraClaims.put("role", role);
+        extraClaims.put("id", id);
         return Jwts
                 .builder()
                 .setClaims(extraClaims)

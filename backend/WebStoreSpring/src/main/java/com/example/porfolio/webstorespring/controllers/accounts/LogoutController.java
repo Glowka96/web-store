@@ -17,9 +17,8 @@ public class LogoutController {
     private final LogoutService logoutService;
 
     @PostMapping("")
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseStatus(HttpStatus.OK)
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         logoutService.logout(request, response, authentication);
-       // return ResponseEntity.ok().;
     }
 }

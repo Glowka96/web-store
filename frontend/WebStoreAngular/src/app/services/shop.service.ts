@@ -1,41 +1,41 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { Category } from '../models/category';
-import { Product } from '../models/product';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { ShipmentRequest } from '../models/shipment-request';
+import { OrderRequest } from '../models/order-request';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ShopService {
   private apiServerUrl = environment.apiBaseUrl;
-  private listCategory: Observable<Category[]>;
+  private basket: BehaviorSubject<ShipmentRequest[]> = new BehaviorSubject(
+    [] as ShipmentRequest[]
+  );
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) {
-    this.listCategory = this.getCategories();
+  public addToBasket(shipment: ShipmentRequest) {
+    let cart = this.basket.value;
+    let findShipment = cart.find((s) => s.product.id == shipment.product.id);
+    if (findShipment) {
+      findShipment.price = (
+        Number(findShipment.price) + Number(shipment.price)
+      ).toFixed(2);
+      findShipment.quantity += shipment.quantity;
+    } else {
+      cart.push(shipment);
+    }
+    this.basket.next(cart);
   }
 
-  private getCategories(): Observable<Category[]> {
-    console.log('start');
-    return this.http.get<Category[]>(`${this.apiServerUrl}/categories`);
+  public purchase(accountId: string, request: OrderRequest): Observable<any> {
+    return this.http
+      .post<any>(`${this.apiServerUrl}/accounts/${accountId}/orders`, request)
+      .pipe(tap((response) => console.log('Server response:', response)));
   }
 
-  public get categories(): Observable<Category[]> {
-    return this.listCategory;
-  }
-
-  public getProductsBySubcategory(
-    subcategoryId: string,
-    page: number = 0,
-    size: number = 12
-  ): Observable<Product[]> {
-    const params = new HttpParams()
-      .set('page', page.toString())
-      .set('size', size.toString());
-    return this.http.get<Product[]>(
-      `${this.apiServerUrl}/subcategories/${subcategoryId}/products`,
-      { params }
-    );
+  public get basket$() {
+    return this.basket;
   }
 }

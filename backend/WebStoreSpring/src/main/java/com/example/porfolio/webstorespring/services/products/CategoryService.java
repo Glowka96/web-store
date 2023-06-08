@@ -2,7 +2,8 @@ package com.example.porfolio.webstorespring.services.products;
 
 import com.example.porfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.porfolio.webstorespring.mappers.CategoryMapper;
-import com.example.porfolio.webstorespring.model.dto.products.CategoryDto;
+import com.example.porfolio.webstorespring.model.dto.products.CategoryRequest;
+import com.example.porfolio.webstorespring.model.dto.products.CategoryResponse;
 import com.example.porfolio.webstorespring.model.entity.products.Category;
 import com.example.porfolio.webstorespring.repositories.products.CategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,26 +18,26 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
 
-    public List<CategoryDto> getAllCategoryDto() {
+    public List<CategoryResponse> getAllCategoryDto() {
         return categoryMapper.mapToDto(
                 categoryRepository.findAll());
     }
 
-    public CategoryDto getCategoryDtoById(Long id) {
+    public CategoryResponse getCategoryDtoById(Long id) {
         Category foundCategory = findCategoryById(id);
         return categoryMapper.mapToDto(foundCategory);
     }
 
-    public CategoryDto save(CategoryDto categoryDto) {
-        Category category = categoryMapper.mapToEntity(categoryDto);
+    public CategoryResponse save(CategoryRequest categoryRequest) {
+        Category category = categoryMapper.mapToEntity(categoryRequest);
         categoryRepository.save(category);
         return categoryMapper.mapToDto(category);
     }
 
-    public CategoryDto update(Long id, CategoryDto categoryDto) {
+    public CategoryResponse update(Long id, CategoryRequest categoryRequest) {
         Category foundCategory = findCategoryById(id);
 
-        Category category = categoryMapper.mapToEntity(categoryDto);
+        Category category = categoryMapper.mapToEntity(categoryRequest);
         setupCategory(foundCategory, category);
 
         categoryRepository.save(category);

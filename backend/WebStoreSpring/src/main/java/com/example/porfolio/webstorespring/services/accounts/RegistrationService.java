@@ -65,6 +65,7 @@ public class RegistrationService {
         account.setPassword(encoder.encode(registrationRequest.getPassword()));
         account.setAccountRoles(AccountRoles.ROLE_USER);
         account.setEnabled(false);
+        account.setImageUrl("https://i.imgur.com/a23SANX.png");
         return account;
     }
 }

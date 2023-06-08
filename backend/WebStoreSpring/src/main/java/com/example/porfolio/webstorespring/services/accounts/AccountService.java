@@ -2,7 +2,8 @@ package com.example.porfolio.webstorespring.services.accounts;
 
 import com.example.porfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.porfolio.webstorespring.mappers.AccountMapper;
-import com.example.porfolio.webstorespring.model.dto.accounts.AccountDto;
+import com.example.porfolio.webstorespring.model.dto.accounts.AccountRequest;
+import com.example.porfolio.webstorespring.model.dto.accounts.AccountResponse;
 import com.example.porfolio.webstorespring.model.entity.accounts.Account;
 import com.example.porfolio.webstorespring.repositories.accounts.AccountRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,16 +17,16 @@ public class AccountService {
     private final AccountRepository accountRepository;
     private final AccountMapper accountMapper;
     private final BCryptPasswordEncoder encoder;
-
-    public AccountDto getAccountById(Long accountId) {
+    
+    public AccountResponse getAccountById(Long accountId) {
         Account foundAccount = findAccountById(accountId);
         return accountMapper.mapToDto(foundAccount);
     }
 
-    public AccountDto updateAccount(Long accountId, AccountDto accountDto) {
+    public AccountResponse updateAccount(Long accountId, AccountRequest accountRequest) {
         Account foundAccount = findAccountById(accountId);
 
-        Account updatedAccount = accountMapper.mapToEntity(accountDto);
+        Account updatedAccount = accountMapper.mapToEntity(accountRequest);
         setupUpdateAccount(foundAccount, updatedAccount);
 
         accountRepository.save(updatedAccount);
