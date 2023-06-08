@@ -11,7 +11,10 @@ import { OrdersComponent } from './components/orders/orders.component';
 import { HomeComponent } from './components/home/home.component';
 
 const routes: Routes = [
-  { path: ':subcategoryName/:id/products', component: ProductsComponent },
+  {
+    path: ':categoryName/:subcategoryName/:id/products',
+    component: ProductsComponent,
+  },
   { path: 'search', component: ProductsComponent },
   { path: 'admin-board', component: BoardAdminComponent },
   { path: 'accounts', component: AccountComponent },

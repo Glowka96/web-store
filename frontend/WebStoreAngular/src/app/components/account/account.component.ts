@@ -26,10 +26,8 @@ export class AccountComponent implements OnInit {
   }
 
   public getUserImageUrl() {
-    if (this.account) {
-      return this.account.imageUrl;
-    } else {
-      return 'https://i.imgur.com/a23SANX.png';
-    }
+    return this.account.imageUrl === null
+      ? 'https://ik.imagekit.io/glowacki/a23SANX.png?updatedAt=1686001892311'
+      : this.account.imageUrl;
   }
 }

@@ -9,7 +9,7 @@
       <li>{{category.name}}</li>
       <ul class="nav-submenu">
         <li *ngFor="let subcategory of category.subcategories">
-          <a [routerLink]="[subcategory.name, subcategory.id, 'products']"
+          <a [routerLink]="[category.name, subcategory.name, subcategory.id, 'products']"
             [queryParams]="{ page: 1 }">{{subcategory.name}}</a>
         </li>
       </ul>
@@ -19,7 +19,7 @@
     <ul *ngFor="let category of getCategories">
       <p>{{category.name}}</p>
       <li *ngFor="let subcategory of category.subcategories">
-        <a [routerLink]="[subcategory.name, subcategory.id, 'products']"
+        <a [routerLink]="[category.name,subcategory.name, subcategory.id, 'products']"
           [queryParams]="{ page: 1 }">{{subcategory.name}}</a>
       </li>
     </ul>

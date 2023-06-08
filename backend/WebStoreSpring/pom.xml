@@ -18,7 +18,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.target>11</maven.compiler.target>
         <maven.compiler.source>11</maven.compiler.source>
-        <version.lombok>1.18.18</version.lombok>
+        <version.lombok>1.18.24</version.lombok>
         <version.mapstruct>1.5.3.Final</version.mapstruct>
         <version.mapstruct-lombok>0.2.0</version.mapstruct-lombok>
     </properties>
@@ -137,4 +137,15 @@
             </plugin>
         </plugins>
     </build>
+<!--    <profiles>-->
+<!--        <profile>-->
+<!--            <id>aws</id>-->
+<!--            <build></build>-->
+<!--            <properties>-->
+<!--                <spring.profiles.active>-->
+<!--                    aws-->
+<!--                </spring.profiles.active>-->
+<!--            </properties>-->
+<!--        </profile>-->
+<!--    </profiles>-->
 </project>

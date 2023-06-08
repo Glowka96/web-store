@@ -129,9 +129,12 @@ export class ModProductsComponent implements OnInit {
         name: this.addForm.controls['name']?.value ?? '',
         description: this.addForm.controls['description']?.value ?? '',
         imageUrl: this.addForm.controls['imageUrl']?.value ?? '',
-        price: this.addForm.controls['price']?.value ?? '',
+        price: parseFloat(
+          this.addForm.controls['price']?.value?.toString() ?? ''
+        ),
         type: this.addForm.controls['choiceType']?.value ?? '',
       };
+      console.log('price: ' + request.price);
       let subcategoryId = this.addForm.controls['choiceSubcategory']?.value;
       let producerId = this.addForm.controls['choiceProducer']?.value;
       if (subcategoryId && producerId) {
@@ -153,7 +156,9 @@ export class ModProductsComponent implements OnInit {
         name: this.updateForm.controls['name']?.value ?? '',
         description: this.updateForm.controls['description']?.value ?? '',
         imageUrl: this.updateForm.controls['imageUrl']?.value ?? '',
-        price: this.updateForm.controls['price']?.value ?? '',
+        price: parseFloat(
+          this.updateForm.controls['price']?.value?.toString() ?? ''
+        ),
         type: this.updateForm.controls['choiceType']?.value ?? '',
       };
       let subcategoryId = this.updateForm.controls['choiceSubcategory']?.value;
