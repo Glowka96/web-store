@@ -4,13 +4,298 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ca58252e-ff90-4d97-b9c7-691b32594a2d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/exceptions/OrderCanNotBeUpdated.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/services/OrderServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/dto/orders/ShipmentDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/dto/orders/ShipmentDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/services/OrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/services/OrderService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/services/ShipmentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/services/ShipmentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/services/ShipmentServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/services/ShipmentServiceTest.java" afterDir="false" />
+    <list default="true" id="1904ae5c-8571-49c8-af22-dbb1ab46b3ae" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/resources/application-mysql.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/WebStoreSpringApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/.mvn/wrapper/maven-wrapper.jar" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/mvnw" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/mvnw" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/mvnw.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/mvnw.cmd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/WebStoreSpringApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/WebStoreSpringApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/annotations/Password.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/annotations/Password.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/annotations/PasswordConstraintsValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/annotations/PasswordConstraintsValidator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/annotations/UniqueEmail.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/annotations/UniqueEmail.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/annotations/UniqueEmailConstraintsValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/annotations/UniqueEmailConstraintsValidator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/controllers/accounts/AccountAddressController.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/controllers/accounts/AccountAddressController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/controllers/accounts/AccountController.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/controllers/accounts/AccountController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/controllers/accounts/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/controllers/accounts/LoginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/controllers/accounts/LogoutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/controllers/accounts/LogoutController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/controllers/accounts/RegistrationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/controllers/accounts/RegistrationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/controllers/orders/OrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/controllers/orders/OrderController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/controllers/products/CategoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/controllers/products/CategoryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/controllers/products/ProducerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/controllers/products/ProducerController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/controllers/products/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/controllers/products/ProductController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/controllers/products/SearchController.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/controllers/products/SearchController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/controllers/products/SubcategoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/controllers/products/SubcategoryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/exceptions/AccountCanNotModifiedException.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/exceptions/AccountCanNotModifiedException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/exceptions/EmailAlreadyConfirmedException.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/exceptions/EmailAlreadyConfirmedException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/exceptions/ErrorResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/exceptions/ErrorResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/exceptions/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/exceptions/GlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/exceptions/OrderCanNotModifiedException.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/exceptions/OrderCanNotModifiedException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/exceptions/ResourceNotFoundException.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/exceptions/ResourceNotFoundException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/exceptions/SearchNotFoundException.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/exceptions/SearchNotFoundException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/mappers/AccountAddressMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/mappers/AccountAddressMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/mappers/AccountMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/mappers/AccountMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/mappers/CategoryMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/mappers/CategoryMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/mappers/OrderMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/mappers/OrderMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/mappers/ProducerMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/mappers/ProducerMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/mappers/ProductMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/mappers/ProductMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/mappers/ShipmentMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/mappers/ShipmentMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/mappers/SubcategoryMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/mappers/SubcategoryMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/dto/accounts/AccountAddressRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/dto/accounts/AccountAddressRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/dto/accounts/AccountAddressResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/dto/accounts/AccountAddressResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/dto/accounts/AccountRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/dto/accounts/AccountRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/dto/accounts/AccountResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/dto/accounts/AccountResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/dto/accounts/AuthenticationResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/dto/accounts/AuthenticationResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/dto/accounts/LoginRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/dto/accounts/LoginRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/dto/accounts/RegistrationRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/dto/accounts/RegistrationRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/dto/orders/OrderRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/dto/orders/OrderRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/dto/orders/OrderResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/dto/orders/OrderResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/dto/orders/ShipmentRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/dto/orders/ShipmentRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/dto/orders/ShipmentResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/dto/orders/ShipmentResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/dto/products/CategoryRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/dto/products/CategoryRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/dto/products/CategoryResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/dto/products/CategoryResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/dto/products/ProducerRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/dto/products/ProducerRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/dto/products/ProducerResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/dto/products/ProducerResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/dto/products/ProductRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/dto/products/ProductRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/dto/products/ProductResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/dto/products/ProductResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/dto/products/SubcategoryRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/dto/products/SubcategoryRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/dto/products/SubcategoryResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/dto/products/SubcategoryResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/entity/accounts/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/entity/accounts/Account.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/entity/accounts/AccountAddress.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/entity/accounts/AccountAddress.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/entity/accounts/AccountRoles.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/entity/accounts/AccountRoles.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/entity/accounts/AuthToken.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/entity/accounts/AuthToken.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/entity/accounts/AuthTokenType.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/entity/accounts/AuthTokenType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/entity/accounts/ConfirmationToken.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/entity/accounts/ConfirmationToken.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/entity/orders/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/entity/orders/Order.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/entity/orders/OrderStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/entity/orders/OrderStatus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/entity/orders/Shipment.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/entity/orders/Shipment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/entity/products/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/entity/products/Category.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/entity/products/Producer.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/entity/products/Producer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/entity/products/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/entity/products/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/entity/products/ProductType.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/entity/products/ProductType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/entity/products/Subcategory.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/model/entity/products/Subcategory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/repositories/accounts/AccountAddressRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/repositories/accounts/AccountAddressRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/repositories/accounts/AccountRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/repositories/accounts/AccountRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/repositories/accounts/AuthTokenRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/repositories/accounts/AuthTokenRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/repositories/accounts/ConfirmationTokenRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/repositories/accounts/ConfirmationTokenRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/repositories/orders/OrderRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/repositories/orders/OrderRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/repositories/products/CategoryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/repositories/products/CategoryRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/repositories/products/ProducerRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/repositories/products/ProducerRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/repositories/products/ProductRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/repositories/products/ProductRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/repositories/products/SubcategoryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/repositories/products/SubcategoryRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/security/PasswordEncoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/security/PasswordEncoder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/security/WebSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/security/WebSecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/security/auth/AccountDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/security/auth/AccountDetails.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/security/auth/AccountDetailsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/security/auth/AccountDetailsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/security/auth/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/security/auth/AuthService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/security/auth/AuthServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/security/auth/AuthServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/security/auth/JwtAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/security/auth/JwtAuthenticationFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/security/auth/JwtService.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/security/auth/JwtService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/services/accounts/AccountAddressService.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/services/accounts/AccountAddressService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/services/accounts/AccountService.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/services/accounts/AccountService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/services/accounts/ConfirmationTokenService.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/services/accounts/ConfirmationTokenService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/services/accounts/EmailSenderConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/services/accounts/EmailSenderConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/services/accounts/LoginService.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/services/accounts/LoginService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/services/accounts/LogoutService.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/services/accounts/LogoutService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/services/accounts/RegistrationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/services/accounts/RegistrationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/services/orders/OrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/services/orders/OrderService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/services/products/CategoryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/services/products/CategoryService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/services/products/ProducerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/services/products/ProducerService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/services/products/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/services/products/ProductService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/services/products/SubcategoryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/java/com/example/porfolio/webstorespring/services/products/SubcategoryService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/WebStoreSpringApplicationTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/controllers/accounts/AccountAddressControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/controllers/accounts/AccountAddressControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/controllers/accounts/AccountControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/controllers/accounts/AccountControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/controllers/accounts/LoginControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/controllers/accounts/LoginControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/controllers/accounts/RegistrationControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/controllers/accounts/RegistrationControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/controllers/orders/OrderControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/controllers/orders/OrderControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/controllers/products/CategoryControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/controllers/products/CategoryControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/controllers/products/ProducerControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/controllers/products/ProducerControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/controllers/products/ProductControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/controllers/products/ProductControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/controllers/products/SearchControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/controllers/products/SearchControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/controllers/products/SubcategoryControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/controllers/products/SubcategoryControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/exceptions/GlobalExceptionHandlerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/exceptions/GlobalExceptionHandlerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/security/auth/AccountDetailsServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/security/auth/AccountDetailsServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/security/auth/AuthServiceImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/security/auth/AuthServiceImplTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/services/accounts/AccountAddressServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/services/accounts/AccountAddressServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/services/accounts/AccountServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/services/accounts/AccountServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/services/accounts/ConfirmationTokenServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/services/accounts/ConfirmationTokenServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/services/accounts/EmailSenderConfigurationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/services/accounts/EmailSenderConfigurationTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/services/accounts/LoginServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/services/accounts/LoginServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/services/accounts/LogoutServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/services/accounts/LogoutServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/services/accounts/RegistrationServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/services/accounts/RegistrationServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/services/orders/OrderServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/services/orders/OrderServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/services/products/CategoryServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/services/products/CategoryServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/services/products/ProducerServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/services/products/ProducerServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/services/products/ProductServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/services/products/ProductServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/services/products/SubcategoryServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/services/products/SubcategoryServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/WebStoreSpring/src/test/resources/application-test.properties" beforeDir="false" afterPath="$PROJECT_DIR$/WebStoreSpring/src/test/resources/application-test.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/.browserslistrc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/.editorconfig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/.vscode/extensions.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/.vscode/launch.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/.vscode/tasks.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/angular.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/form-update-style.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/karma.conf.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/mod-admin-style.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/app-routing.module.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/app.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/app.component.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/app.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/app.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/app.module.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/account/account.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/account/account.component.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/account/account.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/account/account.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/basket/basket.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/basket/basket.component.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/basket/basket.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/basket/basket.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/board-admin/board-admin.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/board-admin/board-admin.component.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/board-admin/board-admin.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/board-admin/board-admin.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/content/content.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/content/content.component.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/content/content.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/content/content.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/footer/footer.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/footer/footer.component.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/footer/footer.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/footer/footer.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/form-account-address/form-account-address.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/form-account-address/form-account-address.component.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/form-account-address/form-account-address.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/form-account-address/form-account-address.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/form-account/form-account.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/form-account/form-account.component.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/form-account/form-account.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/form-account/form-account.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/form-login/form-login.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/form-login/form-login.component.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/form-login/form-login.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/form-login/form-login.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/home/home.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/home/home.component.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/home/home.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/home/home.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/mod-category/mod-category.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/mod-category/mod-category.component.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/mod-category/mod-category.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/mod-category/mod-category.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/mod-producer/mod-producer.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/mod-producer/mod-producer.component.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/mod-producer/mod-producer.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/mod-producer/mod-producer.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/mod-products/mod-products.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/mod-products/mod-products.component.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/mod-products/mod-products.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/mod-products/mod-products.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/mod-subcategory/mod-subcategory.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/mod-subcategory/mod-subcategory.component.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/mod-subcategory/mod-subcategory.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/mod-subcategory/mod-subcategory.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/navigation/navigation.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/navigation/navigation.component.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/navigation/navigation.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/navigation/navigation.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/orders/orders.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/orders/orders.component.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/orders/orders.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/orders/orders.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/products/products.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/products/products.component.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/products/products.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/products/products.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/purchase/purchase.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/purchase/purchase.component.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/purchase/purchase.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/components/purchase/purchase.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/models/account-address.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/models/account-request.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/models/account-response.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/models/category-request.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/models/category-response.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/models/login-request.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/models/order-request.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/models/order-response.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/models/producer-request.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/models/producer-response.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/models/product-request.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/models/product-response.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/models/product-type.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/models/registration-request.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/models/shipment-request.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/models/shipment-response.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/models/subcategory-request.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/models/subcategory-response.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/services/account.service.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/services/account.service.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/services/auth-http-interceptor.service.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/services/auth-http-interceptor.service.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/services/authentication.service.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/services/authentication.service.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/services/category.service.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/services/category.service.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/services/form-login.service.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/services/form-login.service.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/services/orders.service.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/services/orders.service.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/services/producer.service.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/services/producer.service.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/services/product.service.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/services/product.service.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/services/registration.service.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/services/registration.service.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/services/shop.service.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/services/shop.service.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/services/subcategory.service.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/app/services/subcategory.service.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/assets/.gitkeep" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/assets/fontello-d591989a/LICENSE.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/assets/fontello-d591989a/README.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/assets/fontello-d591989a/config.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/assets/fontello-d591989a/css/animation.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/assets/fontello-d591989a/css/fontello-codes.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/assets/fontello-d591989a/css/fontello-embedded.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/assets/fontello-d591989a/css/fontello-ie7-codes.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/assets/fontello-d591989a/css/fontello-ie7.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/assets/fontello-d591989a/css/fontello.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/assets/fontello-d591989a/demo.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/assets/fontello-d591989a/font/fontello.eot" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/assets/fontello-d591989a/font/fontello.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/assets/fontello-d591989a/font/fontello.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/assets/fontello-d591989a/font/fontello.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/assets/fontello-d591989a/font/fontello.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/assets/images/logo-bg.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/assets/images/logo-left.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/assets/images/logo-nobg.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/assets/images/logo-right.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/assets/images/logo-right2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/assets/images/logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/assets/images/logo2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/environments/environment.prod.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/environments/environment.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/main.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/polyfills.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/styles.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/src/test.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/tsconfig.app.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/tsconfig.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/WebStoreAngular/tsconfig.spec.json" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,19 +305,31 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
-        <option value="JUnit5 Test Class" />
-        <option value="Class" />
+        <option value="Dockerfile" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="feature/WBSA-1.0" />
+        <entry key="$PROJECT_DIR$" value="test" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="0d8cfdf4-3fb8-41d8-a520-846ac07fe65b" />
+        <option name="url" value="https://github.com/Glowka96/web-store.git" />
+      </UrlAndAccount>
+    </option>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -47,105 +344,170 @@
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
-  <component name="ProjectId" id="2LIECtzaDHNRnvkeN8FMfdPCkPJ" />
+  <component name="ProjectId" id="2RTetuv89iZ2XWjakudIKNkETFU" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;last_opened_file_path&quot;: &quot;E:/Programowanie/Portfolio/Web-store/backend/WebStoreSpring&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.jsonOptions&quot;,
-    &quot;spring.configuration.checksum&quot;: &quot;30e509d246827f3a7659ec1e1acf7e6c&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ACTIVE_CLOUD_PROJECT_ACCOUNT": "glowackisebastian.it@gmail.com",
+    "ACTIVE_CLOUD_PROJECT_ID": "webstore-sg",
+    "ACTIVE_CLOUD_PROJECT_NAME": "webstore-sg",
+    "ACTIVE_CLOUD_PROJECT_NUMBER": "280352620789",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "ToolWindowKubernetes Explorer.ShowToolbar": "false",
+    "WebServerToolWindowFactoryState": "false",
+    "com.google.cloudcode.ide_session_index": "20230628_0001",
+    "jdk.selected.JAVA_MODULE": "17",
+    "last_opened_file_path": "E:/Programowanie/Portfolio/Web-store/WebStoreSpring",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "spring.configuration.checksum": "30e509d246827f3a7659ec1e1acf7e6c",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;mysql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
-    <key name="CreateTestDialog.Recents.Supers">
-      <recent name="" />
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\Programowanie\Portfolio\Web-store\WebStoreSpring\src\main\resources" />
+      <recent name="E:\Programowanie\Portfolio\Web-store\WebStoreSpring" />
+      <recent name="E:\Programowanie\Portfolio\Web-store\backend\WebStoreSpring\src\main\resources" />
     </key>
-    <key name="CreateTestDialog.RecentsKey">
-      <recent name="com.example.porfolio.webstorespring.services" />
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\Programowanie\Portfolio\Web-store" />
+      <recent name="E:\Programowanie\Portfolio\Web-store\backend" />
+      <recent name="E:\Programowanie\Portfolio\Web-store\backend\WebStoreSpring\target" />
+      <recent name="E:\Programowanie\Portfolio\Web-store\secrets\cloudsql" />
+      <recent name="E:\Programowanie\Portfolio\Web-store\backend\WebStoreSpring" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.ProducerServiceTest.shouldGetProducerById">
-    <configuration name="All in WebStoreSpring" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="WebStoreSpring" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="TEST_OBJECT" value="package" />
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="mvn -DskipTests spring-boot:run" />
+      <command value="mvn clean package" />
+      <command value="mvn clean build" />
+      <command value="mvn clean install -DskipTests package" />
+      <command value="mvn clean install -DskipTests" />
+      <command value="mvn -e" />
+      <command value="mvn " />
+      <command value="mvn clean package -Dskiptest" />
+      <command value="mvn clean" />
+      <command value="mvn -Dskiptest package" />
+    </option>
+  </component>
+  <component name="RunManager" selected="Spring Boot.WebStoreSpringApplication">
+    <configuration name="Cloud Run: Deploy" type="CloudCodeCloudRunConfigurationType" factoryName="CloudCodeCloudDeployRunConfigurationFactory" show_console_on_std_err="false" show_console_on_std_out="false" gcpProject="{&quot;googleUsername&quot;:&quot;glowackisebastian.it@gmail.com&quot;,&quot;projectId&quot;:&quot;webstore-sg&quot;,&quot;projectName&quot;:&quot;webstore-sg&quot;,&quot;projectNumber&quot;:280352620789}" imageBuilder="{&quot;name&quot;:&quot;Buildpacks&quot;,&quot;payload&quot;:{&quot;path&quot;:&quot;pom.xml&quot;,&quot;builder&quot;:&quot;gcr.io/buildpacks/builder:v1&quot;}}" gcbSettings="{}">
+      <option name="allowRunningInParallel" value="false" />
+      <option name="buildEnvironment" value="Local" />
+      <option name="buildpacksEnv" />
+      <option name="cloudSqlConnections" />
+      <option name="concurrency" value="80" />
+      <option name="cpuAllocated" value="1" />
+      <option name="dockerBuildArgs" />
+      <option name="dockerTarget" />
+      <option name="environmentVariables" />
+      <option name="imagePath" value="gcr.io/webstore-sg/web-store" />
+      <option name="loadingAvailableBuilders" value="false" />
+      <option name="managedAuthentication" value="ALLOW_UNAUTHENTICATED" />
+      <option name="managedRegion" value="us-central1" />
+      <option name="maxInstances" value="1000" />
+      <option name="memoryAllocated" value="MIB_256" />
+      <option name="platform" value="FULLY_MANAGED" />
+      <option name="projectPathOnTarget" />
+      <option name="selectedOptions">
+        <list />
+      </option>
+      <option name="serviceAccount" />
+      <option name="serviceName" value="web-store" />
+      <option name="timeout" value="300" />
+      <option name="vpcConnector" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Cloud Run: Run Locally" type="CloudCodeCloudRunConfigurationType" factoryName="CloudCodeCloudRunDevelopConfigurationFactory" show_console_on_std_err="false" show_console_on_std_out="false" imageBuilder="{&quot;name&quot;:&quot;Buildpacks&quot;,&quot;payload&quot;:{&quot;path&quot;:&quot;pom.xml&quot;,&quot;builder&quot;:&quot;gcr.io/buildpacks/builder:v1&quot;}}">
+      <option name="allowRunningInParallel" value="false" />
+      <option name="buildpacksEnv" />
+      <option name="cloudSqlConnections" />
+      <option name="cpuAllocated" value="NO_LIMIT" />
+      <option name="dockerBuildArgs" />
+      <option name="dockerTarget" />
+      <option name="environmentVariables" />
+      <option name="loadingAvailableBuilders" value="false" />
+      <option name="mappings">
+        <list />
+      </option>
+      <option name="memoryAllocated" value="MIB_256" />
+      <option name="projectPathOnTarget" />
+      <option name="selectedOptions">
+        <list />
+      </option>
+      <option name="serviceAccount" />
+      <option name="serviceName" value="web-store" />
+      <option name="skaffoldWatchMode" value="ON_DEMAND" />
+      <method v="2" />
+    </configuration>
+    <configuration name="WebStoreSpring-0.0.1-SNAPSHOT.jar" type="JarApplication" temporary="true">
+      <option name="JAR_PATH" value="$PROJECT_DIR$/WebStoreSpring/target/WebStoreSpring-0.0.1-SNAPSHOT.jar" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="aws" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="CategoryControllerTest.shouldSaveCategory" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="WebStoreSpring" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.example.porfolio.webstorespring.controllers.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.example.porfolio.webstorespring.controllers" />
-      <option name="MAIN_CLASS_NAME" value="com.example.porfolio.webstorespring.controllers.CategoryControllerTest" />
-      <option name="METHOD_NAME" value="shouldSaveCategory" />
-      <option name="TEST_OBJECT" value="method" />
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="aws" />
+      <option name="filePath" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="CategoryControllerTest.willThrowWhenSendPostForCategoryNameIsShortOrLong" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="WebStoreSpring" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.example.porfolio.webstorespring.controllers.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
+    <configuration name="WebStoreSpring [package]" type="MavenRunConfiguration" factoryName="Maven">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list>
+                <option value="package" />
+                <option value="-Dskiptest=true" />
+              </list>
+            </option>
+            <option name="pomFileName" value="pom.xml" />
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="$PROJECT_DIR$/WebStoreSpring" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <extension name="software.aws.toolkits.jetbrains.core.execution.JavaAwsConnectionExtension">
+        <option name="credential" />
+        <option name="region" />
+        <option name="useCurrentConnection" value="false" />
       </extension>
-      <option name="PACKAGE_NAME" value="com.example.porfolio.webstorespring.controllers" />
-      <option name="MAIN_CLASS_NAME" value="com.example.porfolio.webstorespring.controllers.CategoryControllerTest" />
-      <option name="METHOD_NAME" value="willThrowWhenSendPostForCategoryNameIsShortOrLong" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ProducerServiceTest.shouldGetProducerById" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="WebStoreSpring" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.example.porfolio.webstorespring.services.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.example.porfolio.webstorespring.services" />
-      <option name="MAIN_CLASS_NAME" value="com.example.porfolio.webstorespring.services.ProducerServiceTest" />
-      <option name="METHOD_NAME" value="shouldGetProducerById" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
+      <method v="2" />
     </configuration>
     <configuration name="WebStoreSpringApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <module name="WebStoreSpring" />
@@ -160,61 +522,91 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="WebStoreSpring/Dockerfile (1)" type="docker-deploy" factoryName="dockerfile" temporary="true" server-name="Docker">
+      <deployment type="dockerfile">
+        <settings>
+          <option name="sourceFilePath" value="WebStoreSpring/Dockerfile" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
+      <deployment type="docker-compose.yml">
+        <settings />
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="docker-deploy" factoryName="dockerfile" temporary="true">
+      <deployment type="dockerfile">
+        <settings />
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <configuration name="docker-compose.yml: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="sourceFilePath" value="docker-compose.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <configuration name="docker-compose.yml.database: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="services">
+            <list>
+              <option value="database" />
+            </list>
+          </option>
+          <option name="sourceFilePath" value="docker-compose.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Cloud Code: Cloud Run.Cloud Run: Deploy" />
+      <item itemvalue="Cloud Code: Cloud Run.Cloud Run: Run Locally" />
+      <item itemvalue="Docker.WebStoreSpring/Dockerfile (1)" />
+      <item itemvalue="Docker.docker-compose.yml.database: Compose Deployment" />
+      <item itemvalue="Docker.docker-compose.yml: Compose Deployment" />
+      <item itemvalue="JAR Application.WebStoreSpring-0.0.1-SNAPSHOT.jar" />
+      <item itemvalue="Maven.WebStoreSpring [package]" />
+      <item itemvalue="Spring Boot.WebStoreSpringApplication" />
+    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.ProducerServiceTest.shouldGetProducerById" />
         <item itemvalue="Spring Boot.WebStoreSpringApplication" />
-        <item itemvalue="JUnit.All in WebStoreSpring" />
-        <item itemvalue="JUnit.CategoryControllerTest.willThrowWhenSendPostForCategoryNameIsShortOrLong" />
-        <item itemvalue="JUnit.CategoryControllerTest.shouldSaveCategory" />
+        <item itemvalue="JAR Application.WebStoreSpring-0.0.1-SNAPSHOT.jar" />
+        <item itemvalue="Docker.WebStoreSpring/Dockerfile (1)" />
+        <item itemvalue="Docker.docker-compose.yml: Compose Deployment" />
+        <item itemvalue="Docker.docker-compose.yml.database: Compose Deployment" />
       </list>
     </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
-  <component name="SpringBeansView">
-    <option name="showFilesets" value="false" />
-    <option name="beanDetailsProportion" value="0.3" />
-  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="ca58252e-ff90-4d97-b9c7-691b32594a2d" name="Changes" comment="" />
-      <created>1675550071132</created>
+      <changelist id="1904ae5c-8571-49c8-af22-dbb1ab46b3ae" name="Changes" comment="" />
+      <created>1687278718938</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1675550071132</updated>
-      <workItem from="1675550072415" duration="19535000" />
-      <workItem from="1675691380100" duration="45000" />
-      <workItem from="1675777789218" duration="8780000" />
-      <workItem from="1675866109246" duration="121000" />
-      <workItem from="1675866323487" duration="7603000" />
-      <workItem from="1675957549414" duration="1832000" />
-      <workItem from="1676192022976" duration="5062000" />
-      <workItem from="1676270171406" duration="2700000" />
-      <workItem from="1676348711519" duration="3655000" />
-      <workItem from="1677167502925" duration="33000" />
+      <updated>1687278718938</updated>
+      <workItem from="1687278724617" duration="252000" />
+      <workItem from="1687278987941" duration="1997000" />
+      <workItem from="1687354046344" duration="7593000" />
+      <workItem from="1687437254066" duration="6349000" />
+      <workItem from="1687444201596" duration="344000" />
+      <workItem from="1687444720647" duration="36000" />
+      <workItem from="1687444855211" duration="15000" />
+      <workItem from="1687448799808" duration="24000" />
+      <workItem from="1687595966005" duration="2598000" />
+      <workItem from="1687607599816" duration="16302000" />
+      <workItem from="1687638463284" duration="1797000" />
+      <workItem from="1687662904106" duration="4760000" />
+      <workItem from="1687791702317" duration="4335000" />
+      <workItem from="1687797292459" duration="17926000" />
+      <workItem from="1687924995209" duration="1892000" />
     </task>
-    <task id="LOCAL-00001" summary="feature: CategoryControllerTest and MethodAgumentNotValidation in GlobalExceptionHandler, change: rest url name -&gt; id method and test method,">
-      <created>1675575372107</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1675575372107</updated>
-    </task>
-    <task id="LOCAL-00002" summary="feature: ProductService, ProducerService, fix: method update(...) in category and subCategory services">
-      <created>1675787358912</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1675787358912</updated>
-    </task>
-    <task id="LOCAL-00003" summary="feature: annotation field in dto class, basic method OrderService and ShipmentService, pagination method ProductService. change: naming argument method, Intiger -&gt; Double price in shipment">
-      <created>1676193812311</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1676193812311</updated>
-    </task>
-    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -230,33 +622,6 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="feature: CategoryControllerTest and MethodAgumentNotValidation in GlobalExceptionHandler, change: rest url name -&gt; id method and test method," />
-    <MESSAGE value="feature: ProductService, ProducerService, fix: method update(...) in category and subCategory services" />
-    <MESSAGE value="feature: annotation field in dto class, basic method OrderService and ShipmentService, pagination method ProductService. change: naming argument method" />
-    <MESSAGE value="feature: annotation field in dto class, basic method OrderService and ShipmentService, pagination method ProductService. change: naming parameters method, Integer -&gt; Double price in shipment" />
-    <option name="LAST_COMMIT_MESSAGE" value="feature: annotation field in dto class, basic method OrderService and ShipmentService, pagination method ProductService. change: naming parameters method, Integer -&gt; Double price in shipment" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/backend/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/controllers/CategoryControllerTest.java</url>
-          <line>62</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/backend/WebStoreSpring/src/test/java/com/example/porfolio/webstorespring/services/ProducerServiceTest.java</url>
-          <line>53</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
-  </component>
-  <component name="XSLT-Support.FileAssociations.UIState">
-    <expand />
-    <select />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Web_store$All_in_WebStoreSpring.ic" NAME="All in WebStoreSpring Coverage Results" MODIFIED="1675790167381" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
