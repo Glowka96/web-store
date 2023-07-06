@@ -5,7 +5,6 @@ import { AccountAddress } from 'src/app/models/account-address';
 import { OrderRequest } from 'src/app/models/order-request';
 import { ShipmentRequest } from 'src/app/models/shipment-request';
 import { AccountService } from 'src/app/services/account.service';
-import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ShopService } from 'src/app/services/shop.service';
 
 @Component({
@@ -23,7 +22,7 @@ export class PurchaseComponent implements OnInit {
   private message!: string;
   private postcodePattern = /^\d{2}-\d{3}$/;
   private addressPattern =
-    /^(ul(.)\s)?[A-Z]?[a-z]+\s[0-9]{1,3}(\/[0-9]{1,3})|(\sm\.?\s[0-9]{1,3})[a-z]?$/;
+    /^(ul(.)\s)?[A-Z]?[a-z]+\s[0-9]{1,3}((\/[0-9]{1,3})|(\sm\.?\s[0-9]{1,3})?[a-z])?$/;
 
   public deliveryAddressForm = new FormGroup({
     city: new FormControl('', {
