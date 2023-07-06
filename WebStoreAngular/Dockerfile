@@ -12,3 +12,16 @@ RUN cd /app && npm set progress=false && npm install
 # Copy project files into the docker image
 COPY .  /app
 RUN cd /app && npm run build
+
+# STEP 2 build a small nginx image with static website
+FROM nginx:alpine
+# Remove default nginx website
+RUN rm -rf /usr/share/nginx/html/*
+# From 'builder' copy website to default nginx public folder
+COPY --from=builder /app/dist/web-store-angular /usr/share/nginx/html
+# From 'builder' copy default nginx configuration to the configuration conf.d folder of nginx
+RUN rm -rf /etc/nginx/conf.d/default.conf
+COPY --from=builder /app/nginx/etc/conf.d/default.conf /etc/nginx/conf.d/default.conf
+#expose
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

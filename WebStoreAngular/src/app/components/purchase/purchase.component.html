@@ -48,7 +48,7 @@
                     *ngIf="deliveryAddressForm.get('street')?.invalid && deliveryAddressForm.get('street')?.dirty">
                     <small *ngIf="deliveryAddressForm.get('street')?.errors?.['required']">The address is
                         required.<br></small>
-                    <small *ngIf="deliveryAddressForm.get('street')?.errors?.['pattern']">The postcode is invalid.
+                    <small *ngIf="deliveryAddressForm.get('street')?.errors?.['pattern']">The address is invalid.
                         <br>The correct forms is e.g: street 50/21, ul. street 50 m21, ul street 50 m.20a
                     </small>
                 </div>

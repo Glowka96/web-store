@@ -19,7 +19,7 @@ public class EmailSenderConfiguration {
         mailMessage.setTo(email);
         mailMessage.setSubject(subject);
         mailMessage.setText("To confirm your account, please click here : "
-                + "http://localhost:4200/registration/confirm?token=" + token);
+                + "https://app-lazlbfo5va-lm.a.run.app/registration/confirm?token=" + token);
         mailMessage.setFrom("glowackisebastian.it@gmail.com");
         javaMailSender.send(mailMessage);
 
