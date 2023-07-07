@@ -46,7 +46,6 @@ export class NavigationComponent implements OnInit {
   ) {
     categoryService.categories$.subscribe((categories) => {
       this.categories = categories;
-      console.log(categories);
     });
     authService.loggedIn$().subscribe((value) => {
       this.loggedIn = value;

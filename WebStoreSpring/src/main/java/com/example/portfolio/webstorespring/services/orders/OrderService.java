@@ -13,6 +13,7 @@ import com.example.portfolio.webstorespring.repositories.accounts.AccountReposit
 import com.example.portfolio.webstorespring.repositories.orders.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -151,11 +152,11 @@ public class OrderService {
         }
         if (order.getDeliveryAddress() == null) {
             order.setDeliveryAddress(foundOrder.getDeliveryAddress());
+        } else {
+            formatDeliveryAddress(order);
         }
         if (order.getShipmentAddress() == null) {
             order.setShipmentAddress(foundOrder.getShipmentAddress());
-        } else {
-            formatDeliveryAddress(order);
         }
         if (order.getShipments() == null || order.getShipments().isEmpty()) {
             order.setShipments(foundOrder.getShipments());
@@ -165,7 +166,7 @@ public class OrderService {
         }
     }
 
-    private void formatDeliveryAddress(Order order) {
+    private void formatDeliveryAddress(@NotNull Order order) {
         String[] address = order.getDeliveryAddress().split(", ");
         StringBuilder formattedAddress = new StringBuilder();
         formattedAddress.append("City: ")

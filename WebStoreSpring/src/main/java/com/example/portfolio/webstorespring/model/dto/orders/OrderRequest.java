@@ -2,6 +2,7 @@ package com.example.portfolio.webstorespring.model.dto.orders;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
@@ -20,5 +21,6 @@ public class OrderRequest {
     private String deliveryAddress;
 
     @JsonProperty("shipments")
+    @NotEmpty(message = "The shipments can't be empty")
     private List<ShipmentRequest> shipmentRequests;
 }
