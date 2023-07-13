@@ -37,8 +37,8 @@ I started working on this project after finishing sdacademy bootcamp. I wanted t
 
 ## API Reference
 
-| Method | Path      | Permision              | Description |
-| :-------- | :------- | | :------- | :------------------------- |
+| Method        | Path           | Permision  | Description |
+| ------------- |:-------------| -----------| -----------|
 | `GET` | `/api/v1/categories`| User  | Get all categories |
 | `POST` | `/api/v1/categories` |Admin | Add category | 
 | `PUT` | `/api/v1/categories/{id}` |Admin | Update category | 
