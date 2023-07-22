@@ -52,7 +52,6 @@ export class OrdersComponent implements OnInit {
       .getAllAccountOrders(this.accountId)
       .subscribe((orders) => {
         this.orders = orders;
-        console.log(orders);
       });
   }
 
@@ -86,7 +85,6 @@ export class OrdersComponent implements OnInit {
         return order.id === orderId;
       });
       if (findOrder) {
-        console.log(findOrder);
         const city = this.deliveryAddressForm.controls['city']?.value ?? '';
         const postcode =
           this.deliveryAddressForm.controls['postcode']?.value ?? '';
