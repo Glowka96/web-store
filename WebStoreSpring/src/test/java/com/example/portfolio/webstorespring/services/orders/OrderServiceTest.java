@@ -95,7 +95,7 @@ class OrderServiceTest {
 
         orderRequest = new OrderRequest();
         orderRequest.setShipmentRequests(shipmentRequests);
-        orderRequest.setDeliveryAddress("");
+        orderRequest.setDeliveryAddress("test, 99-999, test 59/55");
 
         List<Shipment> shipments = shipmentMapper.mapToEntity(shipmentRequests);
 
@@ -136,6 +136,7 @@ class OrderServiceTest {
         // given
         given(accountRepository.findById(anyLong())).willReturn(Optional.of(account));
         String expectedNameUser = accountRequest.getFirstName() + " " + accountRequest.getLastName();
+        orderRequest.setDeliveryAddress("");
         Double expectedDouble = 120.0;
 
         // when

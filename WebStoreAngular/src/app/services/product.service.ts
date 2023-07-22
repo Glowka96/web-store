@@ -39,7 +39,7 @@ export class ProductService {
 
   public getQuantityOfProducts(subcategoryId: string): Observable<number> {
     return this.http.get<number>(
-      `${this.apiServerUrl}/subcategories/${subcategoryId}/products/amount`
+      `${this.apiServerUrl}/subcategories/${subcategoryId}/products/quantity`
     );
   }
 
@@ -65,7 +65,7 @@ export class ProductService {
 
   public getQuanititySearchProducts(text: string): Observable<number> {
     return this.http.get<number>(
-      `${this.apiServerUrl}/products/search/${text}/amount`
+      `${this.apiServerUrl}/products/search/${text}/quantity`
     );
   }
 

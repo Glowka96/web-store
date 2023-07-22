@@ -51,6 +51,11 @@ export class ProductsComponent implements OnInit {
       .subscribe((products) => {
         products.forEach((product) => (this.cart[product.id] = 1));
         this.products = products;
+        window.scroll({
+          top: 0,
+          left: 0,
+          behavior: 'smooth',
+        });
       });
   }
 
@@ -85,6 +90,11 @@ export class ProductsComponent implements OnInit {
         .subscribe((products) => {
           products.forEach((product) => (this.cart[product.id] = 1));
           this.products = products;
+          window.scroll({
+            top: 0,
+            left: 0,
+            behavior: 'smooth',
+          });
         });
     } else {
       this.productService
@@ -92,6 +102,11 @@ export class ProductsComponent implements OnInit {
         .subscribe((products) => {
           products.forEach((product) => (this.cart[product.id] = 1));
           this.products = products;
+          window.scroll({
+            top: 0,
+            left: 0,
+            behavior: 'smooth',
+          });
         });
     }
   }

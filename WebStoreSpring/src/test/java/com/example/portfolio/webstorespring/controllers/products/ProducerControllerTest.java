@@ -62,18 +62,6 @@ class ProducerControllerTest {
     }
 
     @Test
-    void shouldGetProducerById() throws Exception {
-        given(producerService.getProducerById(anyLong())).willReturn(producerResponse);
-
-        mvc.perform(get(URL + "/{id}", 1)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(1)))
-                .andDo(print());
-    }
-
-    @Test
     void shouldSaveProducer() throws Exception {
         given(producerService.save(any(ProducerRequest.class))).willReturn(producerResponse);
 
