@@ -60,7 +60,6 @@ export class PurchaseComponent implements OnInit {
       next: (response) => {
         this.accountAddress = response;
         this.foundAddress = true;
-        console.log(this.accountAddress);
       },
       error: (error) => {
         if (error.status === 404) {
@@ -106,10 +105,8 @@ export class PurchaseComponent implements OnInit {
           this.router.navigate(['/accounts/orders']);
         },
         error: (error) => {
-          if (error.status === 404) {
-            this.submitPurchase = true;
-            this.message = error.error.errors;
-          }
+          this.submitPurchase = true;
+          this.message = error.error.errors;
         },
       });
     }
