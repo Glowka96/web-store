@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiBaseUrl: 'https://toys-v1-lazlbfo5va-uc.a.run.app/api/v1',
+  apiBaseUrl: 'http://localhost:8080/api/v1',
 };
 
 /*
