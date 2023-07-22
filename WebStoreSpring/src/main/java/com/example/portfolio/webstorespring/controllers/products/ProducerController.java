@@ -20,14 +20,10 @@ public class ProducerController {
 
     private final ProducerService producerService;
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping()
     public ResponseEntity<List<ProducerResponse>> getAllProducer() {
         return ResponseEntity.ok(producerService.getAllProducer());
-    }
-
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<ProducerResponse> getProducerById(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(producerService.getProducerById(id));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")

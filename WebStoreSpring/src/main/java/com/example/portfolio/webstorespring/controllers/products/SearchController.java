@@ -24,7 +24,7 @@ public class SearchController {
         return ResponseEntity.ok(productService.getSearchProducts(text, page, size, sort));
     }
 
-    @GetMapping(value = "/search/{text}/amount")
+    @GetMapping(value = "/search/{text}/quantity")
     public ResponseEntity<Long> getQuantityOfSearchProducts(@PathVariable("text") String text) {
         return ResponseEntity.ok((productService.getAmountSearchProducts(text)));
     }

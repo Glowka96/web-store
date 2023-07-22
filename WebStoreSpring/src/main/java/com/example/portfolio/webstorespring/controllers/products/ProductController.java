@@ -48,7 +48,7 @@ public class ProductController {
         return ResponseEntity.ok(productService.getAllProductsBySubcategoryId(subcategoryId, page, size, sort));
     }
 
-    @GetMapping(value = "/{subcategoryId}/products/amount")
+    @GetMapping(value = "/{subcategoryId}/products/quantity")
     public ResponseEntity<Long> getQuantityOfProductsBySubcategoryId(@PathVariable("subcategoryId") Long subcategoryId) {
         return ResponseEntity.ok(productService.getQuantityOfProductsBySubcategoryId(subcategoryId));
     }

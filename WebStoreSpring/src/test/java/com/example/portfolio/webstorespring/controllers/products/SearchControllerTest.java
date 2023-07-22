@@ -65,10 +65,10 @@ class SearchControllerTest {
     }
 
     @Test
-    void shouldGetAmountSearchProducts() throws Exception {
+    void shouldGetQuantitySearchProducts() throws Exception {
         given(productService.getAmountSearchProducts(anyString())).willReturn(12L);
 
-        mvc.perform(get(URL + "/{search}/amount", "test")
+        mvc.perform(get(URL + "/{search}/quantity", "test")
                         .param("page", "0")
                         .param("size", "3")
                         .param("sort", "price")

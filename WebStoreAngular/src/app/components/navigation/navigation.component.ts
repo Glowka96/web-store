@@ -82,6 +82,11 @@ export class NavigationComponent implements OnInit {
     if (this.searchForm.valid) {
       const text = this.searchForm.controls['search']?.value ?? '';
       this.productService.getSearchProducts(text);
+      window.scroll({
+        top: 0,
+        left: 0,
+        behavior: 'smooth',
+      });
     }
   }
 
@@ -91,10 +96,5 @@ export class NavigationComponent implements OnInit {
 
   public get isModbileWidth() {
     return this.isMobile;
-  }
-
-  @HostListener('window:resize')
-  onWindowResize() {
-    this.isMobile = window.innerWidth <= 768;
   }
 }
