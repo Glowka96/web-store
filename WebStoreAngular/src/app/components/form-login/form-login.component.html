@@ -43,9 +43,9 @@
                     class="errors">
                     <small *ngIf="registrationForm.get('lastName')?.errors?.['required']">The last name is
                         required.<br></small>
-                    <small *ngIf="registrationForm.get('firstName')?.errors?.['minLength'] || ['maxLength']">The last
+                    <small *ngIf="registrationForm.get('lastName')?.errors?.['minLength'] || ['maxLength']">The last
                         name must be between min 3 and max 20 letters.<br></small>
-                    <small *ngIf="registrationForm.get('firstName')?.errors?.['pattern']">The last name cannot have
+                    <small *ngIf="registrationForm.get('lastName')?.errors?.['pattern']">The last name cannot have
                         numbers.</small>
                 </div>
             </div>
