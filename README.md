@@ -4,7 +4,7 @@ This is simple web-store created with java and angular with database
 
 ![App Screenshot](https://ik.imagekit.io/glowacki/Zrzut_ekranu_2023-07-12_102052.png?updatedAt=1689150176647)
 ## Introduction 
-I started working on this project after finishing sdacademy bootcamp. I wanted to consolidate knowledge from the course, test my knowlage in practice. While working on the project I got to know a lot of new solutions that were not on the course.
+I started working on this project after finishing sdacademy course. I wanted to consolidate knowledge from the course, test my knowlage in practice. While working on the project I got to know a lot of new solutions that were not on the course.
 
 ## Technologies
 **Java:** 17
