@@ -1,0 +1,267 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > ProductService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.portfolio.webstorespring.services.products</a>
+</div>
+
+<h1>Coverage Summary for Class: ProductService (com.example.portfolio.webstorespring.services.products)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ProductService</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (18/18)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    94,7%
+  </span>
+  <span class="absValue">
+    (54/57)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.portfolio.webstorespring.services.products;
+&nbsp;
+&nbsp;import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
+&nbsp;import com.example.portfolio.webstorespring.exceptions.SearchNotFoundException;
+&nbsp;import com.example.portfolio.webstorespring.mappers.ProductMapper;
+&nbsp;import com.example.portfolio.webstorespring.model.dto.products.ProductRequest;
+&nbsp;import com.example.portfolio.webstorespring.model.dto.products.ProductResponse;
+&nbsp;import com.example.portfolio.webstorespring.model.entity.products.Producer;
+&nbsp;import com.example.portfolio.webstorespring.model.entity.products.Product;
+&nbsp;import com.example.portfolio.webstorespring.model.entity.products.Subcategory;
+&nbsp;import com.example.portfolio.webstorespring.repositories.products.ProducerRepository;
+&nbsp;import com.example.portfolio.webstorespring.repositories.products.ProductRepository;
+&nbsp;import com.example.portfolio.webstorespring.repositories.products.SubcategoryRepository;
+&nbsp;import lombok.RequiredArgsConstructor;
+&nbsp;import lombok.extern.slf4j.Slf4j;
+&nbsp;import org.springframework.data.domain.Page;
+&nbsp;import org.springframework.data.domain.PageRequest;
+&nbsp;import org.springframework.data.domain.Pageable;
+&nbsp;import org.springframework.data.domain.Sort;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;@Service
+<b class="fc">&nbsp;@Slf4j</b>
+<b class="fc">&nbsp;@RequiredArgsConstructor</b>
+&nbsp;public class ProductService {
+&nbsp;
+&nbsp;    private final ProductRepository productRepository;
+&nbsp;    private final ProductMapper productMapper;
+&nbsp;    private final ProducerRepository producerRepository;
+&nbsp;    private final SubcategoryRepository subcategoryRepository;
+&nbsp;
+&nbsp;    public ProductResponse getProductDtoById(Long id) {
+<b class="fc">&nbsp;        Product foundProduct = findProductById(id);</b>
+<b class="fc">&nbsp;        return productMapper.mapToDto(foundProduct);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public List&lt;ProductResponse&gt; getAllProducts() {
+<b class="fc">&nbsp;        return productMapper.mapToDto(productRepository.findAll());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public List&lt;ProductResponse&gt; getAllProductsBySubcategoryId(Long subcategoryId,
+&nbsp;                                                              Integer pageNo,
+&nbsp;                                                              Integer pageSize) {
+<b class="fc">&nbsp;        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.ASC, &quot;id&quot;));</b>
+&nbsp;
+<b class="fc">&nbsp;        Page&lt;Product&gt; productPage = findPageProductsBySubcategoryId(subcategoryId, pageable);</b>
+<b class="fc">&nbsp;        return productPage.map(productMapper::mapToDto).getContent();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public List&lt;ProductResponse&gt; getAllProductsBySubcategoryId(Long subcategoryId,
+&nbsp;                                                              Integer pageNo,
+&nbsp;                                                              Integer pageSize,
+&nbsp;                                                              String sortBy) {
+<b class="fc">&nbsp;        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.ASC, sortBy));</b>
+&nbsp;
+<b class="fc">&nbsp;        Page&lt;Product&gt; productPage = findPageProductsBySubcategoryId(subcategoryId, pageable);</b>
+<b class="fc">&nbsp;        return productPage.map(productMapper::mapToDto).getContent();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Long getQuantityOfProductsBySubcategoryId(Long subcategoryId) {
+<b class="fc">&nbsp;        return productRepository.countProductBySubcategory_Id(subcategoryId);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public List&lt;ProductResponse&gt; getSearchProducts(String text, Integer pageNo, Integer pageSize, String sortBy) {
+<b class="fc">&nbsp;        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.ASC, sortBy));</b>
+&nbsp;
+<b class="fc">&nbsp;        Page&lt;Product&gt; productPage = searchProductsByText(text, pageable);</b>
+<b class="fc">&nbsp;        return productPage.map(productMapper::mapToDto).getContent();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Long getAmountSearchProducts(String text) {
+<b class="fc">&nbsp;        return productRepository</b>
+<b class="fc">&nbsp;                .countProductByNameContainsIgnoreCaseOrDescriptionContainsIgnoreCaseOrProducerName(text, text, text);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public ProductResponse save(Long subcategoryId, Long producerId, ProductRequest productRequest) {
+<b class="fc">&nbsp;        Subcategory foundSubcategory = findSubcategoryById(subcategoryId);</b>
+<b class="fc">&nbsp;        Producer foundProducer = findProducerById(producerId);</b>
+&nbsp;
+<b class="fc">&nbsp;        Product product = productMapper.mapToEntity(productRequest);</b>
+<b class="fc">&nbsp;        product.setSubcategory(foundSubcategory);</b>
+<b class="fc">&nbsp;        product.setProducer(foundProducer);</b>
+&nbsp;
+<b class="fc">&nbsp;        productRepository.save(product);</b>
+<b class="fc">&nbsp;        return productMapper.mapToDto(product);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public ProductResponse updateProduct(Long subcategoryId,
+&nbsp;                                        Long producerId,
+&nbsp;                                        Long productId,
+&nbsp;                                        ProductRequest productRequest) {
+<b class="fc">&nbsp;        Subcategory foundSubcategory = findSubcategoryById(subcategoryId);</b>
+<b class="fc">&nbsp;        Producer foundProducer = findProducerById(producerId);</b>
+<b class="fc">&nbsp;        Product foundProduct = findProductById(productId);</b>
+<b class="fc">&nbsp;        Product product = productMapper.mapToEntity(productRequest);</b>
+&nbsp;
+<b class="fc">&nbsp;        setupUpdateProduct(foundSubcategory, foundProducer, foundProduct, product);</b>
+&nbsp;
+<b class="fc">&nbsp;        productRepository.save(product);</b>
+<b class="fc">&nbsp;        return productMapper.mapToDto(product);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void deleteById(Long id) {
+<b class="fc">&nbsp;        Product foundProduct = findProductById(id);</b>
+<b class="fc">&nbsp;        productRepository.delete(foundProduct);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private Product findProductById(Long id) {
+<b class="fc">&nbsp;        return productRepository.findById(id)</b>
+<b class="fc">&nbsp;                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Product&quot;, &quot;id&quot;, id));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private Page&lt;Product&gt; findPageProductsBySubcategoryId(Long subCategoryId, Pageable pageable) {
+<b class="fc">&nbsp;        return productRepository.findProductBySubcategory_Id(subCategoryId, pageable)</b>
+<b class="fc">&nbsp;                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Products&quot;, &quot;page number&quot;, pageable.getPageNumber()));</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    private Page&lt;Product&gt; searchProductsByText(String text, Pageable pageable) {
+<b class="fc">&nbsp;        return productRepository</b>
+<b class="fc">&nbsp;                .searchProductByNameContainsIgnoreCaseOrDescriptionContainsIgnoreCaseOrProducerName(text,</b>
+&nbsp;                        text,
+&nbsp;                        text,
+&nbsp;                        pageable)
+<b class="fc">&nbsp;                .orElseThrow(SearchNotFoundException::new);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private Subcategory findSubcategoryById(Long id) {
+<b class="fc">&nbsp;        return subcategoryRepository.findById(id)</b>
+<b class="fc">&nbsp;                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;SubCategory&quot;, &quot;id&quot;, id));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private Producer findProducerById(Long id) {
+<b class="fc">&nbsp;        return producerRepository.findById(id)</b>
+<b class="fc">&nbsp;                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Producer&quot;, &quot;id&quot;, id));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void setupUpdateProduct(Subcategory foundSubcategory,
+&nbsp;                                    Producer foundProducer,
+&nbsp;                                    Product foundProduct,
+&nbsp;                                    Product updatedProduct) {
+<b class="fc">&nbsp;        updatedProduct.setSubcategory(foundSubcategory);</b>
+<b class="fc">&nbsp;        updatedProduct.setProducer(foundProducer);</b>
+<b class="fc">&nbsp;        updatedProduct.setId(foundProduct.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        if (updatedProduct.getName() == null) {</b>
+<b class="nc">&nbsp;            updatedProduct.setName(foundProduct.getName());</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (updatedProduct.getDescription() == null) {</b>
+<b class="nc">&nbsp;            updatedProduct.setDescription(foundProduct.getDescription());</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (updatedProduct.getImageUrl() == null) {</b>
+<b class="fc">&nbsp;            updatedProduct.setImageUrl(foundProduct.getImageUrl());</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (updatedProduct.getPrice() == null) {</b>
+<b class="nc">&nbsp;            updatedProduct.setPrice(foundProduct.getPrice());</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (updatedProduct.getType() == null) {</b>
+<b class="fc">&nbsp;            updatedProduct.setType(foundProduct.getType());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-08-08 23:41</div>
+</div>
+</body>
+</html>
