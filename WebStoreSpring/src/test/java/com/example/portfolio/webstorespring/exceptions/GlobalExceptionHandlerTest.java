@@ -37,6 +37,10 @@ public class GlobalExceptionHandlerTest {
     @Mock
     private BadCredentialsException badCredentialsException;
     @Mock
+    private TokenExpiredException tokenExpiredException;
+    @Mock
+    private TokenConfirmedException tokenConfirmedException;
+    @Mock
     private WebRequest webRequest;
     @InjectMocks
     private GlobalExceptionHandler underTest;
@@ -151,6 +155,39 @@ public class GlobalExceptionHandlerTest {
         assertThat(responseEntity.getBody()).isEqualTo(exceptedErrorResponse);
     }
 
+    @Test
+    void shouldHandleCanNotModifiedWhenTokenIsConfirmedException() {
+        // given
+        ErrorResponse exceptedErrorResponse = new ErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                tokenConfirmedException.getMessage(),
+                webRequest.getDescription(false));
+
+        //when
+        ResponseEntity<Object> responseEntity = underTest
+                .handleCanNotModifiedException(tokenConfirmedException, webRequest);
+
+        // then
+        assertThat(responseEntity.getStatusCode().value()).isEqualTo(exceptedErrorResponse.getStatusCode());
+        assertThat(responseEntity.getBody()).isEqualTo(exceptedErrorResponse);
+    }
+
+    @Test
+    void shouldHandleCanNotModificationWhenTokenIsExpiredException() {
+        // given
+        ErrorResponse exceptedErrorResponse = new ErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                tokenExpiredException.getMessage(),
+                webRequest.getDescription(false));
+
+        // when
+        ResponseEntity<Object> responseEntity = underTest
+                .handleCanNotModifiedException(tokenExpiredException, webRequest);
+
+        // then
+        assertThat(responseEntity.getStatusCode().value()).isEqualTo(exceptedErrorResponse.getStatusCode());
+        assertThat(responseEntity.getBody()).isEqualTo(exceptedErrorResponse);
+    }
 
     @Test
     void shouldHandleAccessDeniedException() {

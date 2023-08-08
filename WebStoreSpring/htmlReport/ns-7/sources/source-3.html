@@ -1,0 +1,191 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > CategoryMapperImpl</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.portfolio.webstorespring.mappers</a>
+</div>
+
+<h1>Coverage Summary for Class: CategoryMapperImpl (com.example.portfolio.webstorespring.mappers)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CategoryMapperImpl</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    83,3%
+  </span>
+  <span class="absValue">
+    (5/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    51,5%
+  </span>
+  <span class="absValue">
+    (17/33)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.portfolio.webstorespring.mappers;
+&nbsp;
+&nbsp;import com.example.portfolio.webstorespring.model.dto.products.CategoryRequest;
+&nbsp;import com.example.portfolio.webstorespring.model.dto.products.CategoryResponse;
+&nbsp;import com.example.portfolio.webstorespring.model.dto.products.SubcategoryResponse;
+&nbsp;import com.example.portfolio.webstorespring.model.entity.products.Category;
+&nbsp;import com.example.portfolio.webstorespring.model.entity.products.Subcategory;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;import javax.annotation.processing.Generated;
+&nbsp;import org.springframework.stereotype.Component;
+&nbsp;
+&nbsp;@Generated(
+&nbsp;    value = &quot;org.mapstruct.ap.MappingProcessor&quot;,
+&nbsp;    date = &quot;2023-08-08T17:36:33+0200&quot;,
+&nbsp;    comments = &quot;version: 1.5.3.Final, compiler: javac, environment: Java 17.0.2 (Oracle Corporation)&quot;
+&nbsp;)
+&nbsp;@Component
+<b class="fc">&nbsp;public class CategoryMapperImpl implements CategoryMapper {</b>
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public CategoryResponse mapToDto(Category category) {
+<b class="fc">&nbsp;        if ( category == null ) {</b>
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        CategoryResponse categoryResponse = new CategoryResponse();</b>
+&nbsp;
+<b class="fc">&nbsp;        categoryResponse.setSubcategoryResponses( subcategoryListToSubcategoryResponseList( category.getSubcategories() ) );</b>
+<b class="fc">&nbsp;        categoryResponse.setId( category.getId() );</b>
+<b class="fc">&nbsp;        categoryResponse.setName( category.getName() );</b>
+&nbsp;
+<b class="fc">&nbsp;        return categoryResponse;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Category mapToEntity(CategoryRequest categoryRequest) {
+<b class="fc">&nbsp;        if ( categoryRequest == null ) {</b>
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        Category category = new Category();</b>
+&nbsp;
+<b class="fc">&nbsp;        category.setName( categoryRequest.getName() );</b>
+&nbsp;
+<b class="fc">&nbsp;        return category;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public List&lt;CategoryResponse&gt; mapToDto(List&lt;Category&gt; categories) {
+<b class="fc">&nbsp;        if ( categories == null ) {</b>
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        List&lt;CategoryResponse&gt; list = new ArrayList&lt;CategoryResponse&gt;( categories.size() );</b>
+<b class="fc">&nbsp;        for ( Category category : categories ) {</b>
+<b class="nc">&nbsp;            list.add( mapToDto( category ) );</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        return list;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    protected SubcategoryResponse subcategoryToSubcategoryResponse(Subcategory subcategory) {
+<b class="nc">&nbsp;        if ( subcategory == null ) {</b>
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        SubcategoryResponse subcategoryResponse = new SubcategoryResponse();</b>
+&nbsp;
+<b class="nc">&nbsp;        subcategoryResponse.setId( subcategory.getId() );</b>
+<b class="nc">&nbsp;        subcategoryResponse.setName( subcategory.getName() );</b>
+&nbsp;
+<b class="nc">&nbsp;        return subcategoryResponse;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    protected List&lt;SubcategoryResponse&gt; subcategoryListToSubcategoryResponseList(List&lt;Subcategory&gt; list) {
+<b class="fc">&nbsp;        if ( list == null ) {</b>
+<b class="fc">&nbsp;            return null;</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        List&lt;SubcategoryResponse&gt; list1 = new ArrayList&lt;SubcategoryResponse&gt;( list.size() );</b>
+<b class="nc">&nbsp;        for ( Subcategory subcategory : list ) {</b>
+<b class="nc">&nbsp;            list1.add( subcategoryToSubcategoryResponse( subcategory ) );</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+<b class="nc">&nbsp;        return list1;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-08-08 23:41</div>
+</div>
+</body>
+</html>

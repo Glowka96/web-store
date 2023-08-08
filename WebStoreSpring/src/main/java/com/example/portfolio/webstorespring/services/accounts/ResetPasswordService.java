@@ -24,7 +24,7 @@ public class ResetPasswordService {
     private final EmailSenderService emailSenderService;
     private final AccountRepository accountRepository;
 
-    public Map<String, Object> resetPassword(String email) {
+    public Map<String, Object> resetPasswordByEmail(String email) {
         Account account = accountRepository.findByEmail(email)
                 .orElseThrow(() ->  new ResourceNotFoundException("Account", "email", email));
 

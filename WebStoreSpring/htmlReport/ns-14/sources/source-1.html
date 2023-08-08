@@ -1,0 +1,170 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > CategoryService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.portfolio.webstorespring.services.products</a>
+</div>
+
+<h1>Coverage Summary for Class: CategoryService (com.example.portfolio.webstorespring.services.products)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CategoryService</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    95,5%
+  </span>
+  <span class="absValue">
+    (21/22)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.portfolio.webstorespring.services.products;
+&nbsp;
+&nbsp;import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
+&nbsp;import com.example.portfolio.webstorespring.mappers.CategoryMapper;
+&nbsp;import com.example.portfolio.webstorespring.model.dto.products.CategoryRequest;
+&nbsp;import com.example.portfolio.webstorespring.model.dto.products.CategoryResponse;
+&nbsp;import com.example.portfolio.webstorespring.model.entity.products.Category;
+&nbsp;import com.example.portfolio.webstorespring.repositories.products.CategoryRepository;
+&nbsp;import lombok.RequiredArgsConstructor;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;@Service
+<b class="fc">&nbsp;@RequiredArgsConstructor</b>
+&nbsp;public class CategoryService {
+&nbsp;
+&nbsp;    private final CategoryRepository categoryRepository;
+&nbsp;    private final CategoryMapper categoryMapper;
+&nbsp;
+&nbsp;    public List&lt;CategoryResponse&gt; getAllCategoryDto() {
+<b class="fc">&nbsp;        return categoryMapper.mapToDto(</b>
+<b class="fc">&nbsp;                categoryRepository.findAll());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public CategoryResponse getCategoryDtoById(Long id) {
+<b class="fc">&nbsp;        Category foundCategory = findCategoryById(id);</b>
+<b class="fc">&nbsp;        return categoryMapper.mapToDto(foundCategory);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public CategoryResponse save(CategoryRequest categoryRequest) {
+<b class="fc">&nbsp;        Category category = categoryMapper.mapToEntity(categoryRequest);</b>
+<b class="fc">&nbsp;        categoryRepository.save(category);</b>
+<b class="fc">&nbsp;        return categoryMapper.mapToDto(category);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public CategoryResponse update(Long id, CategoryRequest categoryRequest) {
+<b class="fc">&nbsp;        Category foundCategory = findCategoryById(id);</b>
+&nbsp;
+<b class="fc">&nbsp;        Category category = categoryMapper.mapToEntity(categoryRequest);</b>
+<b class="fc">&nbsp;        setupUpdateCategory(foundCategory, category);</b>
+&nbsp;
+<b class="fc">&nbsp;        categoryRepository.save(category);</b>
+<b class="fc">&nbsp;        return categoryMapper.mapToDto(category);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void deleteById(Long id) {
+<b class="fc">&nbsp;        Category category = findCategoryById(id);</b>
+<b class="fc">&nbsp;        categoryRepository.delete(category);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private Category findCategoryById(Long id) {
+<b class="fc">&nbsp;        return categoryRepository.findById(id)</b>
+<b class="fc">&nbsp;                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Category&quot;, &quot;id&quot;, id));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void setupUpdateCategory(Category foundCategory, Category updatedCategory){
+<b class="fc">&nbsp;        updatedCategory.setId(foundCategory.getId());</b>
+&nbsp;
+<b class="fc">&nbsp;        if(updatedCategory.getName() == null) {</b>
+<b class="nc">&nbsp;            updatedCategory.setName(foundCategory.getName());</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if(updatedCategory.getSubcategories() == null){</b>
+<b class="fc">&nbsp;            updatedCategory.setSubcategories(foundCategory.getSubcategories());</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-08-08 23:41</div>
+</div>
+</body>
+</html>

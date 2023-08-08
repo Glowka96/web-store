@@ -1,0 +1,184 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > ShipmentMapperImpl</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.portfolio.webstorespring.mappers</a>
+</div>
+
+<h1>Coverage Summary for Class: ShipmentMapperImpl (com.example.portfolio.webstorespring.mappers)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ShipmentMapperImpl</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    90%
+  </span>
+  <span class="absValue">
+    (27/30)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.portfolio.webstorespring.mappers;
+&nbsp;
+&nbsp;import com.example.portfolio.webstorespring.model.dto.orders.ShipmentRequest;
+&nbsp;import com.example.portfolio.webstorespring.model.dto.orders.ShipmentResponse;
+&nbsp;import com.example.portfolio.webstorespring.model.entity.orders.Shipment;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;import javax.annotation.processing.Generated;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.stereotype.Component;
+&nbsp;
+&nbsp;@Generated(
+&nbsp;    value = &quot;org.mapstruct.ap.MappingProcessor&quot;,
+&nbsp;    date = &quot;2023-08-08T17:36:33+0200&quot;,
+&nbsp;    comments = &quot;version: 1.5.3.Final, compiler: javac, environment: Java 17.0.2 (Oracle Corporation)&quot;
+&nbsp;)
+&nbsp;@Component
+<b class="fc">&nbsp;public class ShipmentMapperImpl implements ShipmentMapper {</b>
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private ProductMapper productMapper;
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public ShipmentResponse mapToDto(Shipment shipment) {
+<b class="fc">&nbsp;        if ( shipment == null ) {</b>
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        ShipmentResponse shipmentResponse = new ShipmentResponse();</b>
+&nbsp;
+<b class="fc">&nbsp;        shipmentResponse.setProductResponse( productMapper.mapToDto( shipment.getProduct() ) );</b>
+<b class="fc">&nbsp;        shipmentResponse.setId( shipment.getId() );</b>
+<b class="fc">&nbsp;        shipmentResponse.setQuantity( shipment.getQuantity() );</b>
+<b class="fc">&nbsp;        shipmentResponse.setPrice( shipment.getPrice() );</b>
+&nbsp;
+<b class="fc">&nbsp;        return shipmentResponse;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public List&lt;ShipmentResponse&gt; mapToDto(List&lt;Shipment&gt; shipments) {
+<b class="fc">&nbsp;        if ( shipments == null ) {</b>
+<b class="fc">&nbsp;            return null;</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        List&lt;ShipmentResponse&gt; list = new ArrayList&lt;ShipmentResponse&gt;( shipments.size() );</b>
+<b class="fc">&nbsp;        for ( Shipment shipment : shipments ) {</b>
+<b class="fc">&nbsp;            list.add( mapToDto( shipment ) );</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        return list;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Shipment mapToEntity(ShipmentRequest shipmentRequest) {
+<b class="fc">&nbsp;        if ( shipmentRequest == null ) {</b>
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        Shipment shipment = new Shipment();</b>
+&nbsp;
+<b class="fc">&nbsp;        shipment.setProduct( productMapper.mapToEntity( shipmentRequest.getProductRequest() ) );</b>
+<b class="fc">&nbsp;        shipment.setQuantity( shipmentRequest.getQuantity() );</b>
+<b class="fc">&nbsp;        shipment.setPrice( shipmentRequest.getPrice() );</b>
+&nbsp;
+<b class="fc">&nbsp;        return shipment;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public List&lt;Shipment&gt; mapToEntity(List&lt;ShipmentRequest&gt; shipmentResponses) {
+<b class="fc">&nbsp;        if ( shipmentResponses == null ) {</b>
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        List&lt;Shipment&gt; list = new ArrayList&lt;Shipment&gt;( shipmentResponses.size() );</b>
+<b class="fc">&nbsp;        for ( ShipmentRequest shipmentRequest : shipmentResponses ) {</b>
+<b class="fc">&nbsp;            list.add( mapToEntity( shipmentRequest ) );</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        return list;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-08-08 23:41</div>
+</div>
+</body>
+</html>
