@@ -38,7 +38,7 @@ public class CategoryService {
         Category foundCategory = findCategoryById(id);
 
         Category category = categoryMapper.mapToEntity(categoryRequest);
-        setupCategory(foundCategory, category);
+        setupUpdateCategory(foundCategory, category);
 
         categoryRepository.save(category);
         return categoryMapper.mapToDto(category);
@@ -54,7 +54,7 @@ public class CategoryService {
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "id", id));
     }
 
-    private void setupCategory(Category foundCategory, Category updatedCategory){
+    private void setupUpdateCategory(Category foundCategory, Category updatedCategory){
         updatedCategory.setId(foundCategory.getId());
 
         if(updatedCategory.getName() == null) {
