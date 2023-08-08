@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @Service
@@ -54,9 +53,7 @@ public class RegistrationService {
         account.setEnabled(true);
         accountRepository.save(account);
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("message", "Account confirmed");
-        return response;
+        return Map.of("message", "Account confirmed");
     }
 
     private Account setupNewAccount(RegistrationRequest registrationRequest) {
