@@ -6,7 +6,9 @@ import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.accounts.AccountRoles;
 import com.example.portfolio.webstorespring.model.entity.accounts.ConfirmationToken;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
+import com.example.portfolio.webstorespring.services.email.EmailSenderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,21 +16,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-@RequiredArgsConstructor
+@RequiredArgsConstructor()
 public class RegistrationService {
 
     private final BCryptPasswordEncoder encoder;
     private final ConfirmationTokenService confirmationTokenService;
-    private final EmailSenderConfiguration emailSenderConfiguration;
+    @Qualifier("confirmEmailSender")
+    private final EmailSenderService emailSenderService;
     private final AccountRepository accountRepository;
+
 
     public Map<String, Object> registrationAccount(RegistrationRequest registrationRequest) {
         Account account = setupNewAccount(registrationRequest);
         accountRepository.save(account);
 
         ConfirmationToken savedToken = confirmationTokenService.createConfirmationToken(account);
-        return emailSenderConfiguration.sendEmail(account.getEmail(),
-                "Complete Registration!",
+        return emailSenderService.sendEmail(account.getEmail(),
                 savedToken.getToken());
     }
 
@@ -43,8 +46,7 @@ public class RegistrationService {
         if (!account.getEnabled() && confirmationTokenService.isTokenExpired(confirmationToken)) {
             ConfirmationToken newToken = confirmationTokenService.createConfirmationToken(account);
             confirmationTokenService.deleteConfirmationToken(confirmationToken);
-            return emailSenderConfiguration.sendEmail(account.getEmail(),
-                    "New confirmation token",
+            return emailSenderService.sendEmail(account.getEmail(),
                     newToken.getToken());
         }
 

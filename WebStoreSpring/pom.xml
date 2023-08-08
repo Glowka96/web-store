@@ -14,7 +14,7 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven-compiler-plugin.version>3.5.1</maven-compiler-plugin.version>
         <spring-boot-maven-plugin.version>3.0.5</spring-boot-maven-plugin.version>
-        <version.lombok>1.18.24</version.lombok>
+        <version.lombok>1.18.4</version.lombok>
         <version.mapstruct>1.5.3.Final</version.mapstruct>
         <version.mapstruct-lombok>0.2.0</version.mapstruct-lombok>
         <spring-boot-jpa.version>3.0.4</spring-boot-jpa.version>
@@ -169,6 +169,11 @@ See https://github.com/GoogleCloudPlatform/cloud-opensource-java/wiki/The-Google
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mail</artifactId>
             <version>${spring-boot-mail.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>6.0.9</version>
         </dependency>
     </dependencies>
 
