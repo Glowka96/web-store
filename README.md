@@ -6,6 +6,8 @@ This is simple web-store created with java and angular with database
 ## Introduction 
 I started working on this project after finishing sdacademy course. I wanted to consolidate knowledge from the course, test my knowlage in practice. While working on the project I got to know a lot of new solutions that were not on the course.
 
+Project deployed on GCP: https://app-lazlbfo5va-lm.a.run.app/
+
 ## Technologies
 **Java:** 17
 
@@ -27,6 +29,7 @@ I started working on this project after finishing sdacademy course. I wanted to 
 
 ### To-Do
 
+- Reset password system - (Java complete, Angular uncomplete, not deployed on GCP)
 - Refresh JWT token
 - Sort and fillter product
 - Message box
@@ -61,8 +64,8 @@ I started working on this project after finishing sdacademy course. I wanted to 
 | `DELETE` | `/api/v1/subcategories/products/{productId}` |  Admin |Delete product by id |
 | `GET` | `/api/v1/products/search/{text}` |  User |Get search products with params |
 | `GET` | `/api/v1/products/search/quantity` | User | Get search products quantity|
-| `POST` | `/api/v1/registration` | User | Account registration | 
-| `GET` | `/api/v1/registration/confirm` | User | Confrim registration token | 
+| `POST` | `/api/v1/registration` | User | Account registration send confirm link to email | 
+| `GET` | `/api/v1/registration/confirm` | User | Account enabled and confrim registration token | 
 | `POST` | `/api/v1/login` | User | Login | 
 | `POST` | `/api/v1/logout` | User | Logout | 
 | `GET` | `/api/v1/accounts/{accountId}` | User | Get account data by account id with authorization | 
@@ -76,7 +79,8 @@ I started working on this project after finishing sdacademy course. I wanted to 
 | `POST` | `/api/v1/accounts/{accountId}/orders` | User | Add order to account by account id with authorization | 
 | `PUT` | `/api/v1/accounts/{accountId}/orders` | User | Update order in account by account id with authorization | 
 | `DELETE` | `/api/v1/accounts/{accountId}/orders` | User | Delete order from account by account id with authorization | 
-
+| `GET` | `api/v1/accounts/{email}/reset-password` | User | Send reset password link to email |
+| `PATCH` | `api/v1/accounts/reset-password/confirm` | User | Setup new password and confirm token |
 
 
 ## Database diagram
@@ -84,4 +88,4 @@ I started working on this project after finishing sdacademy course. I wanted to 
 ![App Screenshot](https://ik.imagekit.io/glowacki/Zrzut_ekranu_2023-07-12_192353.png?updatedAt=1689182679226)
 
 ## Tests
-![App Screenshot](https://ik.imagekit.io/glowacki/Tests.jpg?updatedAt=1689219890363)
+![App Screenshot](https://ik.imagekit.io/glowacki/Zrzut%20ekranu%202023-08-09%20002003.png?updatedAt=1691533356035)
