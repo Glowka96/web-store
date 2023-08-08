@@ -1,0 +1,169 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > AccountMapperImpl</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.portfolio.webstorespring.mappers</a>
+</div>
+
+<h1>Coverage Summary for Class: AccountMapperImpl (com.example.portfolio.webstorespring.mappers)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AccountMapperImpl</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    73,1%
+  </span>
+  <span class="absValue">
+    (19/26)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.portfolio.webstorespring.mappers;
+&nbsp;
+&nbsp;import com.example.portfolio.webstorespring.model.dto.accounts.AccountAddressRequest;
+&nbsp;import com.example.portfolio.webstorespring.model.dto.accounts.AccountRequest;
+&nbsp;import com.example.portfolio.webstorespring.model.dto.accounts.AccountResponse;
+&nbsp;import com.example.portfolio.webstorespring.model.entity.accounts.Account;
+&nbsp;import com.example.portfolio.webstorespring.model.entity.accounts.AccountAddress;
+&nbsp;import javax.annotation.processing.Generated;
+&nbsp;import org.springframework.stereotype.Component;
+&nbsp;
+&nbsp;@Generated(
+&nbsp;    value = &quot;org.mapstruct.ap.MappingProcessor&quot;,
+&nbsp;    date = &quot;2023-08-08T17:36:33+0200&quot;,
+&nbsp;    comments = &quot;version: 1.5.3.Final, compiler: javac, environment: Java 17.0.2 (Oracle Corporation)&quot;
+&nbsp;)
+&nbsp;@Component
+<b class="fc">&nbsp;public class AccountMapperImpl implements AccountMapper {</b>
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public AccountResponse mapToDto(Account account) {
+<b class="fc">&nbsp;        if ( account == null ) {</b>
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        AccountResponse accountResponse = new AccountResponse();</b>
+&nbsp;
+<b class="fc">&nbsp;        accountResponse.setAddressDto( accountAddressToAccountAddressRequest( account.getAddress() ) );</b>
+<b class="fc">&nbsp;        accountResponse.setId( account.getId() );</b>
+<b class="fc">&nbsp;        accountResponse.setFirstName( account.getFirstName() );</b>
+<b class="fc">&nbsp;        accountResponse.setLastName( account.getLastName() );</b>
+<b class="fc">&nbsp;        accountResponse.setEmail( account.getEmail() );</b>
+<b class="fc">&nbsp;        accountResponse.setImageUrl( account.getImageUrl() );</b>
+&nbsp;
+<b class="fc">&nbsp;        return accountResponse;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Account mapToEntity(AccountRequest accountRequest) {
+<b class="fc">&nbsp;        if ( accountRequest == null ) {</b>
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        Account.AccountBuilder account = Account.builder();</b>
+&nbsp;
+<b class="fc">&nbsp;        account.firstName( accountRequest.getFirstName() );</b>
+<b class="fc">&nbsp;        account.lastName( accountRequest.getLastName() );</b>
+<b class="fc">&nbsp;        account.password( accountRequest.getPassword() );</b>
+<b class="fc">&nbsp;        account.imageUrl( accountRequest.getImageUrl() );</b>
+&nbsp;
+<b class="fc">&nbsp;        return account.build();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    protected AccountAddressRequest accountAddressToAccountAddressRequest(AccountAddress accountAddress) {
+<b class="fc">&nbsp;        if ( accountAddress == null ) {</b>
+<b class="fc">&nbsp;            return null;</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        AccountAddressRequest accountAddressRequest = new AccountAddressRequest();</b>
+&nbsp;
+<b class="nc">&nbsp;        accountAddressRequest.setCity( accountAddress.getCity() );</b>
+<b class="nc">&nbsp;        accountAddressRequest.setPostcode( accountAddress.getPostcode() );</b>
+<b class="nc">&nbsp;        accountAddressRequest.setStreet( accountAddress.getStreet() );</b>
+&nbsp;
+<b class="nc">&nbsp;        return accountAddressRequest;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-08-08 23:41</div>
+</div>
+</body>
+</html>

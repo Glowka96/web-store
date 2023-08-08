@@ -37,7 +37,7 @@ public class ProducerService {
         Producer foundProducer = findProducerById(id);
 
         Producer producer = producerMapper.mapToEntity(producerRequest);
-        setupProducer(foundProducer, producer);
+        setupUpdateProducer(foundProducer, producer);
 
         producerRepository.save(producer);
         return producerMapper.mapToDto(producer);
@@ -53,8 +53,8 @@ public class ProducerService {
                 .orElseThrow(() -> new ResourceNotFoundException("Producer", "id", id));
     }
 
-    private void setupProducer(Producer foundProducer,
-                               Producer updatedProducer) {
+    private void setupUpdateProducer(Producer foundProducer,
+                                     Producer updatedProducer) {
         updatedProducer.setId(foundProducer.getId());
         if (updatedProducer.getName() == null) {
             updatedProducer.setName(foundProducer.getName());

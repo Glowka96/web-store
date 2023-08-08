@@ -6,29 +6,31 @@ import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.accounts.AccountRoles;
 import com.example.portfolio.webstorespring.model.entity.accounts.ConfirmationToken;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
+import com.example.portfolio.webstorespring.services.email.EmailSenderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @Service
-@RequiredArgsConstructor
+@RequiredArgsConstructor()
 public class RegistrationService {
 
     private final BCryptPasswordEncoder encoder;
     private final ConfirmationTokenService confirmationTokenService;
-    private final EmailSenderConfiguration emailSenderConfiguration;
+    @Qualifier("confirmEmailSender")
+    private final EmailSenderService emailSenderService;
     private final AccountRepository accountRepository;
+
 
     public Map<String, Object> registrationAccount(RegistrationRequest registrationRequest) {
         Account account = setupNewAccount(registrationRequest);
         accountRepository.save(account);
 
         ConfirmationToken savedToken = confirmationTokenService.createConfirmationToken(account);
-        return emailSenderConfiguration.sendEmail(account.getEmail(),
-                "Complete Registration!",
+        return emailSenderService.sendEmail(account.getEmail(),
                 savedToken.getToken());
     }
 
@@ -43,8 +45,7 @@ public class RegistrationService {
         if (!account.getEnabled() && confirmationTokenService.isTokenExpired(confirmationToken)) {
             ConfirmationToken newToken = confirmationTokenService.createConfirmationToken(account);
             confirmationTokenService.deleteConfirmationToken(confirmationToken);
-            return emailSenderConfiguration.sendEmail(account.getEmail(),
-                    "New confirmation token",
+            return emailSenderService.sendEmail(account.getEmail(),
                     newToken.getToken());
         }
 
@@ -52,20 +53,18 @@ public class RegistrationService {
         account.setEnabled(true);
         accountRepository.save(account);
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("message", "Account confirmed");
-        return response;
+        return Map.of("message", "Account confirmed");
     }
 
     private Account setupNewAccount(RegistrationRequest registrationRequest) {
-        Account account = new Account();
-        account.setFirstName(registrationRequest.getFirstName());
-        account.setLastName(registrationRequest.getLastName());
-        account.setEmail(registrationRequest.getEmail());
-        account.setPassword(encoder.encode(registrationRequest.getPassword()));
-        account.setAccountRoles(AccountRoles.ROLE_USER);
-        account.setEnabled(false);
-        account.setImageUrl("https://i.imgur.com/a23SANX.png");
-        return account;
+        return Account.builder()
+                .firstName(registrationRequest.getFirstName())
+                .lastName(registrationRequest.getLastName())
+                .email(registrationRequest.getEmail())
+                .password(encoder.encode(registrationRequest.getPassword()))
+                .accountRoles(AccountRoles.ROLE_USER)
+                .enabled(false)
+                .imageUrl("https://i.imgur.com/a23SANX.png")
+                .build();
     }
 }

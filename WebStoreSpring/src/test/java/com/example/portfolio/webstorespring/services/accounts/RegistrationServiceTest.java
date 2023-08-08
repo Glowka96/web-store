@@ -5,6 +5,8 @@ import com.example.portfolio.webstorespring.model.dto.accounts.RegistrationReque
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.accounts.ConfirmationToken;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
+import com.example.portfolio.webstorespring.services.email.EmailSenderService;
+import com.example.portfolio.webstorespring.services.email.type.ConfirmEmailType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,7 +17,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,17 +32,17 @@ class RegistrationServiceTest {
     private BCryptPasswordEncoder encoder;
 
     @Mock
-    private ConfirmationTokenService tokenService;
+    private ConfirmationTokenService confirmationTokenService;
 
     @Mock
-    private EmailSenderConfiguration emailSenderConfiguration;
+    private EmailSenderService emailSenderService;
 
     @Mock
     private AccountRepository accountRepository;
     @InjectMocks
     private RegistrationService underTest;
 
-    private ConfirmationToken token;
+    private ConfirmationToken confirmationToken;
     private Account account;
     private RegistrationRequest request;
     private Map<String, Object> excepted;
@@ -57,22 +58,20 @@ class RegistrationServiceTest {
         account = new Account();
         account.setEmail(request.getEmail());
 
-        token = new ConfirmationToken();
-        token.setToken("token");
-        token.setCreatedAt(LocalDateTime.now());
-        token.setExpiresAt(LocalDateTime.now().plusDays(1));
-        token.setAccount(account);
-
-        excepted = new HashMap<>();
+        confirmationToken = new ConfirmationToken();
+        confirmationToken.setToken("token");
+        confirmationToken.setCreatedAt(LocalDateTime.now());
+        confirmationToken.setExpiresAt(LocalDateTime.now().plusDays(1));
+        confirmationToken.setAccount(account);
     }
 
     @Test
     void shouldRegistrationAccount() {
         // given
-        excepted.put("message", "Verify email by the link sent on your email address");
+        excepted = Map.of("message", ConfirmEmailType.REGISTRATION.getMessage());
         // when
-        when(tokenService.createConfirmationToken(any(Account.class))).thenReturn(token);
-        when(emailSenderConfiguration.sendEmail(anyString(), anyString(), anyString()))
+        when(confirmationTokenService.createConfirmationToken(any(Account.class))).thenReturn(confirmationToken);
+        when(emailSenderService.sendEmail(anyString(), anyString()))
                 .thenReturn(excepted);
 
         Map<String, Object> result = underTest.registrationAccount(request);
@@ -86,33 +85,32 @@ class RegistrationServiceTest {
         // then
         assertThat(result).isEqualTo(excepted);
         verify(accountRepository).save(captureAccount);
-        verify(emailSenderConfiguration).sendEmail(account.getEmail(),
-                "Complete Registration!",
-                token.getToken());
+        verify(emailSenderService).sendEmail(account.getEmail(),
+                confirmationToken.getToken());
     }
 
     @Test
     void shouldSuccessConfirmToken() {
         // given
-        excepted.put("message","Account confirmed");
+        excepted = Map.of("message","Account confirmed");
         // when
-        token.setConfirmedAt(LocalDateTime.now());
-        when(tokenService.getConfirmationTokenByToken(anyString())).thenReturn(token);
+        confirmationToken.setConfirmedAt(LocalDateTime.now());
+        when(confirmationTokenService.getConfirmationTokenByToken(anyString())).thenReturn(confirmationToken);
 
-        Map<String, Object> result = underTest.confirmToken(token.getToken());
+        Map<String, Object> result = underTest.confirmToken(confirmationToken.getToken());
 
         // then
-        verify(tokenService, times(1)).setConfirmedAtAndSaveConfirmationToken(token);
+        verify(confirmationTokenService, times(1)).setConfirmedAtAndSaveConfirmationToken(confirmationToken);
         verify(accountRepository, times(1)).save(account);
         assertThat(result).isEqualTo(excepted);
     }
 
     @Test
     void willThrowWhenAccountConfirm() {
-        when(tokenService.getConfirmationTokenByToken(anyString())).thenReturn(token);
-        when(tokenService.isConfirmed(any(ConfirmationToken.class))).thenReturn(true);
+        when(confirmationTokenService.getConfirmationTokenByToken(anyString())).thenReturn(confirmationToken);
+        when(confirmationTokenService.isConfirmed(any(ConfirmationToken.class))).thenReturn(true);
 
-        assertThatThrownBy(() -> underTest.confirmToken(token.getToken()))
+        assertThatThrownBy(() -> underTest.confirmToken(confirmationToken.getToken()))
                 .isInstanceOf(EmailAlreadyConfirmedException.class)
                 .hasMessageContaining("Email already confirmed");
     }
@@ -120,13 +118,13 @@ class RegistrationServiceTest {
     @Test
     void shouldSendEmailWhenTokenIsExpired() {
         // given
-        when(tokenService.getConfirmationTokenByToken(anyString())).thenReturn(token);
-        when(tokenService.isTokenExpired(any(ConfirmationToken.class))).thenReturn(true);
-        when(tokenService.createConfirmationToken(any(Account.class))).thenReturn(token);
-        when(emailSenderConfiguration.sendEmail(anyString(), anyString(), anyString()))
+        when(confirmationTokenService.getConfirmationTokenByToken(anyString())).thenReturn(confirmationToken);
+        when(confirmationTokenService.isTokenExpired(any(ConfirmationToken.class))).thenReturn(true);
+        when(confirmationTokenService.createConfirmationToken(any(Account.class))).thenReturn(confirmationToken);
+        when(emailSenderService.sendEmail(anyString(), anyString()))
                 .thenReturn(excepted);
 
-        Map<String, Object> result = underTest.confirmToken(token.getToken());
+        Map<String, Object> result = underTest.confirmToken(confirmationToken.getToken());
 
         // then
         assertThat(result).isEqualTo(excepted);
