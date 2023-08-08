@@ -47,7 +47,7 @@ public class SubcategoryService {
         Subcategory foundSubcategory = findSubcategoryById(subCategoryId);
 
         Subcategory subCategory = subcategoryMapper.mapToEntity(subCategoryRequest);
-        setupSubcategory(foundCategory, foundSubcategory, subCategory);
+        setupUpdateSubcategory(foundCategory, foundSubcategory, subCategory);
 
         subcategoryRepository.save(subCategory);
         return subcategoryMapper.mapToDto(subCategory);
@@ -68,9 +68,9 @@ public class SubcategoryService {
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "id", id));
     }
 
-    private void setupSubcategory(Category foundCategory,
-                                  Subcategory foundSubcategory,
-                                  Subcategory updatedSubcategory) {
+    private void setupUpdateSubcategory(Category foundCategory,
+                                        Subcategory foundSubcategory,
+                                        Subcategory updatedSubcategory) {
         updatedSubcategory.setId(foundSubcategory.getId());
         updatedSubcategory.setCategory(foundCategory);
         if (updatedSubcategory.getName() == null) {

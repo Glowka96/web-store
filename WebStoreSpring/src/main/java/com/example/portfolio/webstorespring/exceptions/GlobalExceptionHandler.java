@@ -17,14 +17,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({ResourceNotFoundException.class, SearchNotFoundException.class})
     public ResponseEntity<Object> handleResourceNotFoundException(RuntimeException exception,
-                                                            WebRequest webRequest) {
+                                                                  WebRequest webRequest) {
         ErrorResponse errorResponse = createErrorResponse(HttpStatus.NOT_FOUND, exception, webRequest);
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class})
     public ResponseEntity<Object> handleArgumentNotValidException(MethodArgumentNotValidException exception,
-                                                            WebRequest webRequest) {
+                                                                  WebRequest webRequest) {
         ErrorResponse errorResponse = createErrorResponseBadRequest(exception, webRequest);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
@@ -35,9 +35,13 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
 
-    @ExceptionHandler({OrderCanNotModifiedException.class, EmailAlreadyConfirmedException.class})
+    @ExceptionHandler({OrderCanNotModifiedException.class,
+            EmailAlreadyConfirmedException.class,
+            TokenConfirmedException.class,
+            TokenExpiredException.class
+    })
     public ResponseEntity<Object> handleCanNotModifiedException(RuntimeException exception,
-                                                          WebRequest webRequest) {
+                                                                WebRequest webRequest) {
         ErrorResponse errorResponse = createErrorResponse(HttpStatus.BAD_REQUEST, exception, webRequest);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }

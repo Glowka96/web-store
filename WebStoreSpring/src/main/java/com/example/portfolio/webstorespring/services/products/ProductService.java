@@ -96,7 +96,7 @@ public class ProductService {
         Product foundProduct = findProductById(productId);
         Product product = productMapper.mapToEntity(productRequest);
 
-        setupProduct(foundSubcategory, foundProducer, foundProduct, product);
+        setupUpdateProduct(foundSubcategory, foundProducer, foundProduct, product);
 
         productRepository.save(product);
         return productMapper.mapToDto(product);
@@ -137,10 +137,10 @@ public class ProductService {
                 .orElseThrow(() -> new ResourceNotFoundException("Producer", "id", id));
     }
 
-    private void setupProduct(Subcategory foundSubcategory,
-                              Producer foundProducer,
-                              Product foundProduct,
-                              Product updatedProduct) {
+    private void setupUpdateProduct(Subcategory foundSubcategory,
+                                    Producer foundProducer,
+                                    Product foundProduct,
+                                    Product updatedProduct) {
         updatedProduct.setSubcategory(foundSubcategory);
         updatedProduct.setProducer(foundProducer);
         updatedProduct.setId(foundProduct.getId());
