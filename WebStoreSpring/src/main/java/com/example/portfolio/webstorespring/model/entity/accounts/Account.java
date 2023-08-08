@@ -2,9 +2,7 @@ package com.example.portfolio.webstorespring.model.entity.accounts;
 
 import com.example.portfolio.webstorespring.model.entity.orders.Order;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -12,6 +10,8 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "accounts")
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class Account {
 
@@ -29,7 +29,6 @@ public class Account {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Setter
     @Column(nullable = false)
     private String password;
 

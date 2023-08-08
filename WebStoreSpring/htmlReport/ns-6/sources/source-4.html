@@ -1,0 +1,171 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > GlobalExceptionHandler</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.portfolio.webstorespring.exceptions</a>
+</div>
+
+<h1>Coverage Summary for Class: GlobalExceptionHandler (com.example.portfolio.webstorespring.exceptions)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GlobalExceptionHandler</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (18/18)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.portfolio.webstorespring.exceptions;
+&nbsp;
+&nbsp;import lombok.RequiredArgsConstructor;
+&nbsp;import org.springframework.context.support.DefaultMessageSourceResolvable;
+&nbsp;import org.springframework.http.HttpStatus;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.security.access.AccessDeniedException;
+&nbsp;import org.springframework.security.authentication.BadCredentialsException;
+&nbsp;import org.springframework.web.bind.MethodArgumentNotValidException;
+&nbsp;import org.springframework.web.bind.annotation.ControllerAdvice;
+&nbsp;import org.springframework.web.bind.annotation.ExceptionHandler;
+&nbsp;import org.springframework.web.context.request.WebRequest;
+&nbsp;
+&nbsp;@ControllerAdvice
+<b class="fc">&nbsp;@RequiredArgsConstructor</b>
+&nbsp;public class GlobalExceptionHandler {
+&nbsp;
+&nbsp;    @ExceptionHandler({ResourceNotFoundException.class, SearchNotFoundException.class})
+&nbsp;    public ResponseEntity&lt;Object&gt; handleResourceNotFoundException(RuntimeException exception,
+&nbsp;                                                                  WebRequest webRequest) {
+<b class="fc">&nbsp;        ErrorResponse errorResponse = createErrorResponse(HttpStatus.NOT_FOUND, exception, webRequest);</b>
+<b class="fc">&nbsp;        return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.NOT_FOUND);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @ExceptionHandler({MethodArgumentNotValidException.class})
+&nbsp;    public ResponseEntity&lt;Object&gt; handleArgumentNotValidException(MethodArgumentNotValidException exception,
+&nbsp;                                                                  WebRequest webRequest) {
+<b class="fc">&nbsp;        ErrorResponse errorResponse = createErrorResponseBadRequest(exception, webRequest);</b>
+<b class="fc">&nbsp;        return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.BAD_REQUEST);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @ExceptionHandler(BadCredentialsException.class)
+&nbsp;    public ResponseEntity&lt;Object&gt; handleBadCredentialsException(BadCredentialsException exception, WebRequest webRequest) {
+<b class="fc">&nbsp;        ErrorResponse errorResponse = createErrorResponse(HttpStatus.UNAUTHORIZED, exception, webRequest);</b>
+<b class="fc">&nbsp;        return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.UNAUTHORIZED);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @ExceptionHandler({OrderCanNotModifiedException.class,
+&nbsp;            EmailAlreadyConfirmedException.class,
+&nbsp;            TokenConfirmedException.class,
+&nbsp;            TokenExpiredException.class
+&nbsp;    })
+&nbsp;    public ResponseEntity&lt;Object&gt; handleCanNotModifiedException(RuntimeException exception,
+&nbsp;                                                                WebRequest webRequest) {
+<b class="fc">&nbsp;        ErrorResponse errorResponse = createErrorResponse(HttpStatus.BAD_REQUEST, exception, webRequest);</b>
+<b class="fc">&nbsp;        return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.BAD_REQUEST);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @ExceptionHandler({AccessDeniedException.class, AccountCanNotModifiedException.class})
+&nbsp;    public ResponseEntity&lt;Object&gt; handleAccessDeniedException(Exception exception, WebRequest webRequest) {
+<b class="fc">&nbsp;        ErrorResponse errorResponse = createErrorResponse(HttpStatus.FORBIDDEN, exception, webRequest);</b>
+<b class="fc">&nbsp;        return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.FORBIDDEN);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private ErrorResponse createErrorResponse(HttpStatus status, Exception exception, WebRequest webRequest) {
+<b class="fc">&nbsp;        return new ErrorResponse(status.value(), exception.getMessage(), webRequest.getDescription(false));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private ErrorResponse createErrorResponseBadRequest(MethodArgumentNotValidException exception,
+&nbsp;                                                        WebRequest webRequest) {
+<b class="fc">&nbsp;        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(),</b>
+<b class="fc">&nbsp;                exception.getAllErrors()</b>
+<b class="fc">&nbsp;                        .stream()</b>
+<b class="fc">&nbsp;                        .map(DefaultMessageSourceResolvable::getDefaultMessage)</b>
+<b class="fc">&nbsp;                        .toList(),</b>
+<b class="fc">&nbsp;                webRequest.getDescription(false));</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-08-08 23:41</div>
+</div>
+</body>
+</html>
