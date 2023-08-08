@@ -60,14 +60,14 @@ public class RegistrationService {
     }
 
     private Account setupNewAccount(RegistrationRequest registrationRequest) {
-        Account account = new Account();
-        account.setFirstName(registrationRequest.getFirstName());
-        account.setLastName(registrationRequest.getLastName());
-        account.setEmail(registrationRequest.getEmail());
-        account.setPassword(encoder.encode(registrationRequest.getPassword()));
-        account.setAccountRoles(AccountRoles.ROLE_USER);
-        account.setEnabled(false);
-        account.setImageUrl("https://i.imgur.com/a23SANX.png");
-        return account;
+        return Account.builder()
+                .firstName(registrationRequest.getFirstName())
+                .lastName(registrationRequest.getLastName())
+                .email(registrationRequest.getEmail())
+                .password(encoder.encode(registrationRequest.getPassword()))
+                .accountRoles(AccountRoles.ROLE_USER)
+                .enabled(false)
+                .imageUrl("https://i.imgur.com/a23SANX.png")
+                .build();
     }
 }

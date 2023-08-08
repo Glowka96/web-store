@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-//@CrossOrigin("*")
 @RequestMapping(value = "api/v1/products")
 @RequiredArgsConstructor
 public class SearchController {
