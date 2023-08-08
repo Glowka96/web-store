@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -25,10 +24,10 @@ public abstract class AbstractEmailSenderService implements EmailSenderService {
         mailMessage.setSubject(emailTypeStrategy.getTitle());
         mailMessage.setText(emailTypeStrategy.getLink() + token);
         mailMessage.setFrom(senderEmail);
+
         javaMailSender.send(mailMessage);
-        Map<String, Object> responseBody = new HashMap<>();
-        responseBody.put("message", emailTypeStrategy.getMessage());
-        return responseBody;
+
+        return Map.of("message", emailTypeStrategy.getMessage());
     }
 
     public void setEmailTypeStrategy(EmailTypeStrategy emailTypeStrategy) {
