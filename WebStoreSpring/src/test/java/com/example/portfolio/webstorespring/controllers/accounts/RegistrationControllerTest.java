@@ -11,13 +11,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -43,15 +43,15 @@ class RegistrationControllerTest {
 
     @Test
     void shouldConfirm() throws Exception {
-        result = new HashMap<>();
-        result.put("message", "Account confirmed");
+        result = Map.of("message", "Account confirmed");
+
         given(registrationService.confirmToken(anyString())).willReturn(result);
 
-        mvc.perform(get("/api/v1/registration/confirm")
+        mvc.perform(get(URL + "/confirm")
                         .param("token", "token123"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath( "$",is(result)));
-
+                .andExpect(jsonPath( "$",is(result)))
+                .andDo(print());
     }
 
 //    //TODO Repair HV000064: Unable to instantiate ConstraintValidator:

@@ -1,0 +1,193 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > AuthServiceImpl</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.portfolio.webstorespring.security.auth</a>
+</div>
+
+<h1>Coverage Summary for Class: AuthServiceImpl (com.example.portfolio.webstorespring.security.auth)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AuthServiceImpl</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (9/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (32/32)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.portfolio.webstorespring.security.auth;
+&nbsp;
+&nbsp;import com.example.portfolio.webstorespring.exceptions.AccountCanNotModifiedException;
+&nbsp;import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
+&nbsp;import com.example.portfolio.webstorespring.model.entity.accounts.Account;
+&nbsp;import com.example.portfolio.webstorespring.model.entity.accounts.AuthToken;
+&nbsp;import com.example.portfolio.webstorespring.model.entity.accounts.AuthTokenType;
+&nbsp;import com.example.portfolio.webstorespring.repositories.accounts.AuthTokenRepository;
+&nbsp;import lombok.RequiredArgsConstructor;
+&nbsp;import org.springframework.security.core.context.SecurityContextHolder;
+&nbsp;import org.springframework.security.core.userdetails.UserDetails;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Map;
+&nbsp;
+&nbsp;@Service
+<b class="fc">&nbsp;@RequiredArgsConstructor</b>
+&nbsp;public class AuthServiceImpl implements AuthService {
+&nbsp;
+&nbsp;    private final AuthTokenRepository authTokenRepository;
+&nbsp;    private final JwtService jwtService;
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void saveAccountAuthToken(Account account, String jwtToken) {
+<b class="fc">&nbsp;        AuthToken token = AuthToken.builder()</b>
+<b class="fc">&nbsp;                .account(account)</b>
+<b class="fc">&nbsp;                .token(jwtToken)</b>
+<b class="fc">&nbsp;                .tokenType(AuthTokenType.BEARER)</b>
+<b class="fc">&nbsp;                .expired(false)</b>
+<b class="fc">&nbsp;                .revoked(false)</b>
+<b class="fc">&nbsp;                .build();</b>
+<b class="fc">&nbsp;        authTokenRepository.save(token);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void revokeAllUserAuthTokens(Account account) {
+<b class="fc">&nbsp;        List&lt;AuthToken&gt; validUserTokens = authTokenRepository.findAllValidTokenByAccountId(account.getId());</b>
+<b class="fc">&nbsp;        if (validUserTokens.isEmpty()) {</b>
+&nbsp;            return;
+&nbsp;        }
+<b class="fc">&nbsp;        validUserTokens.forEach(authToken -&gt; {</b>
+<b class="fc">&nbsp;            authToken.setExpired(true);</b>
+<b class="fc">&nbsp;            authToken.setRevoked(true);</b>
+&nbsp;        });
+<b class="fc">&nbsp;        authTokenRepository.saveAll(validUserTokens);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public String generateJwtToken(UserDetails userDetails) {
+<b class="fc">&nbsp;        return jwtService.generateToken(userDetails);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public String generateJwtToken(Map&lt;String, Object&gt; extraClaims,
+&nbsp;                                   UserDetails userDetails) {
+<b class="fc">&nbsp;        return jwtService.generateToken(extraClaims, userDetails);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Boolean checkAuthorization(Long accountId, String authHeader) {
+<b class="fc">&nbsp;        if (!authHeader.startsWith(&quot;Bearer &quot;)) {</b>
+<b class="fc">&nbsp;            return false;</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        String authToken = authHeader.substring(7);</b>
+&nbsp;
+<b class="fc">&nbsp;        Account foundAccountByAuthToken = findAccountByAuthToken(authToken);</b>
+<b class="fc">&nbsp;        Account account = getAccountPrincipal().getAccount();</b>
+&nbsp;
+<b class="fc">&nbsp;        if (!foundAccountByAuthToken.getId().equals(accountId) &amp;&amp;</b>
+<b class="fc">&nbsp;                !account.getId().equals(accountId)) {</b>
+<b class="fc">&nbsp;            throw new AccountCanNotModifiedException();</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private Account findAccountByAuthToken(String authToken) {
+<b class="fc">&nbsp;        return authTokenRepository.findByToken(authToken)</b>
+<b class="fc">&nbsp;                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Authorization token&quot;, &quot;token&quot;, authToken))</b>
+<b class="fc">&nbsp;                .getAccount();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private AccountDetails getAccountPrincipal() {
+<b class="fc">&nbsp;        return (AccountDetails) SecurityContextHolder.getContext()</b>
+<b class="fc">&nbsp;                .getAuthentication()</b>
+<b class="fc">&nbsp;                .getPrincipal();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-08-08 23:41</div>
+</div>
+</body>
+</html>

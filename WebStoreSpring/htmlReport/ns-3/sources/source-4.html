@@ -1,0 +1,133 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > RegistrationController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.portfolio.webstorespring.controllers.accounts</a>
+</div>
+
+<h1>Coverage Summary for Class: RegistrationController (com.example.portfolio.webstorespring.controllers.accounts)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">RegistrationController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    66,7%
+  </span>
+  <span class="absValue">
+    (2/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (2/4)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.portfolio.webstorespring.controllers.accounts;
+&nbsp;
+&nbsp;import com.example.portfolio.webstorespring.model.dto.accounts.RegistrationRequest;
+&nbsp;import com.example.portfolio.webstorespring.services.accounts.RegistrationService;
+&nbsp;import jakarta.validation.Valid;
+&nbsp;import lombok.RequiredArgsConstructor;
+&nbsp;import org.springframework.http.HttpStatus;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;
+&nbsp;import java.util.Map;
+&nbsp;
+&nbsp;@RestController
+&nbsp;@RequestMapping(&quot;api/v1/registration&quot;)
+<b class="fc">&nbsp;@RequiredArgsConstructor</b>
+&nbsp;public class RegistrationController {
+&nbsp;
+&nbsp;    private final RegistrationService registrationService;
+&nbsp;
+&nbsp;    @GetMapping(value = &quot;/confirm&quot;, params = &quot;token&quot;)
+&nbsp;    public ResponseEntity&lt;Map&lt;String, Object&gt;&gt; confirm(@RequestParam(&quot;token&quot;) String token) {
+<b class="fc">&nbsp;        return ResponseEntity.ok(registrationService.confirmToken(token));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PostMapping
+&nbsp;    public ResponseEntity&lt;Map&lt;String, Object&gt;&gt; registration(@Valid @RequestBody RegistrationRequest request) {
+<b class="nc">&nbsp;        return ResponseEntity.status(HttpStatus.CREATED)</b>
+<b class="nc">&nbsp;                .body(registrationService.registrationAccount(request));</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-08-08 23:41</div>
+</div>
+</body>
+</html>
