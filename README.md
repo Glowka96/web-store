@@ -82,6 +82,8 @@ Project deployed on GCP: https://app-lazlbfo5va-lm.a.run.app/
 | `GET` | `api/v1/accounts/{email}/reset-password` | User | Send reset password link to email |
 | `PATCH` | `api/v1/accounts/reset-password/confirm` | User | Setup new password and confirm token |
 
+## Admin Board
+![App Screenshot](https://ik.imagekit.io/glowacki/Zrzut%20ekranu%202023-08-18%20123044.png?updatedAt=1692354731249)
 
 ## Database diagram
 
