@@ -61,6 +61,8 @@ public class WebSecurityConfig {
                                         "/api/v1/registration/**",
                                         "/api/v1/categories/**",
                                         "/api/v1/subcategories/**",
+                                        "/api/v1/accounts/reset-password/**",
+                                        "/api/v1/subcategories/**/products/quantity",
                                         "/api/v1/products/search/**").permitAll()
                                 .anyRequest().authenticated())
                 .formLogin(form ->
