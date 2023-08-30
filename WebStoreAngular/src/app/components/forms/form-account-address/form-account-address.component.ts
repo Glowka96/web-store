@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AccountAddress } from 'src/app/models/account-address';
-import { AccountService } from 'src/app/services/account.service';
+import { AccountService } from 'src/app/services/accounts/account.service';
 
 @Component({
   selector: 'app-form-account-address',

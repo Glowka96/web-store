@@ -26,9 +26,9 @@
             <div *ngIf="accountForm.get('lastName')?.invalid && accountForm.get('lastName')?.dirty" class="errors">
                 <small *ngIf="accountForm.get('lastName')?.errors?.['required']">The last name is
                     required.<br></small>
-                <small *ngIf="accountForm.get('firstName')?.errors?.['minLength'] || ['maxLength']">The last
+                <small *ngIf="accountForm.get('lastName')?.errors?.['minLength'] || ['maxLength']">The last
                     name must be between min 3 and max 20 letters.<br></small>
-                <small *ngIf="accountForm.get('firstName')?.errors?.['pattern']">The last name cannot have
+                <small *ngIf="accountForm.get('lastName')?.errors?.['pattern']">The last name cannot have
                     numbers or special char.</small>
             </div>
         </div>

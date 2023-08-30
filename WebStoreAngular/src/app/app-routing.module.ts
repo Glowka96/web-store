@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { BoardAdminComponent } from './components/board-admin/board-admin.component';
+import { BoardAdminComponent } from './components/admin/board-admin/board-admin.component';
 import { ProductsComponent } from './components/products/products.component';
-import { AccountComponent } from './components/account/account.component';
+import { AccountComponent } from './components/user/account/account.component';
 import { BasketComponent } from './components/basket/basket.component';
 import { PurchaseComponent } from './components/purchase/purchase.component';
-import { FormAccountComponent } from './components/form-account/form-account.component';
-import { FormAccountAddressComponent } from './components/form-account-address/form-account-address.component';
-import { OrdersComponent } from './components/orders/orders.component';
+import { FormAccountComponent } from './components/forms/form-account/form-account.component';
+import { FormAccountAddressComponent } from './components/forms/form-account-address/form-account-address.component';
+import { OrdersComponent } from './components/user/orders/orders.component';
 import { HomeComponent } from './components/home/home.component';
 import { ConfirmComponent } from './components/confirm/confirm.component';
 
