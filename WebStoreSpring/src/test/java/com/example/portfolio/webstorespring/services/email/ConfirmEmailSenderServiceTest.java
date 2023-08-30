@@ -43,6 +43,6 @@ class ConfirmEmailSenderServiceImplTest {
                 .isPresent();
 
         // then
-        assertThat(actual).isEqualTo(true);
+        assertThat(actual).isTrue();
     }
 }

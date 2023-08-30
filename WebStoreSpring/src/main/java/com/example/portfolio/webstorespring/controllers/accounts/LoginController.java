@@ -1,5 +1,6 @@
 package com.example.portfolio.webstorespring.controllers.accounts;
 
+import com.example.portfolio.webstorespring.model.dto.accounts.AuthenticationResponse;
 import com.example.portfolio.webstorespring.model.dto.accounts.LoginRequest;
 import com.example.portfolio.webstorespring.services.accounts.LoginService;
 import jakarta.validation.Valid;
@@ -18,7 +19,7 @@ public class LoginController {
     private final LoginService loginService;
 
     @PostMapping()
-    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<AuthenticationResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
         return ResponseEntity.ok().body(loginService.login(loginRequest));
     }
 }
