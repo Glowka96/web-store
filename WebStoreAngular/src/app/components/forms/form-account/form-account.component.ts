@@ -7,8 +7,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AccountRequest } from 'src/app/models/account-request';
-import { AccountService } from 'src/app/services/account.service';
-import { AuthenticationService } from 'src/app/services/authentication.service';
+import { AccountService } from 'src/app/services/accounts/account.service';
 
 @Component({
   selector: 'app-form-account',

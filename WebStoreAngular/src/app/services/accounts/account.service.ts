@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { AccountAddress } from 'src/app/models/account-address';
+import { AccountRequest } from 'src/app/models/account-request';
+import { AccountResponse } from 'src/app/models/account-response';
 import { environment } from 'src/environments/environment';
-import { AccountAddress } from '../models/account-address';
-import { AccountResponse } from '../models/account-response';
-import { AccountRequest } from '../models/account-request';
 
 @Injectable({
   providedIn: 'root',

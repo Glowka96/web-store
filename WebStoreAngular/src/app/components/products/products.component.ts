@@ -117,7 +117,10 @@ export class ProductsComponent implements OnInit {
     });
     if (product) {
       const price = this.getPrice(product);
-      const quantity = this.cart[product.id];
+      let quantity = this.cart[product.id];
+      if (quantity < 100) {
+        quantity = 100;
+      }
       const shipment = { product, quantity, price };
       this.shopService.addToBasket(shipment);
     }

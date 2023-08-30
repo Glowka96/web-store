@@ -1,6 +1,6 @@
 {
   "/api": {
-    "target": "http://localhost:8080",
+    "target": "//toysland-spring-v1-0-lazlbfo5va-ew.a.run.app/api/v1",
     "secure": false
   }
 }

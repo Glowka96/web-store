@@ -4,35 +4,34 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ShopService } from './services/shop.service';
-import { ContentComponent } from './components/content/content.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AuthHttpInterceptorService } from './services/auth-http-interceptor.service';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { ProductsComponent } from './components/products/products.component';
-import { ModCategoryComponent } from './components/mod-category/mod-category.component';
-import { BoardAdminComponent } from './components/board-admin/board-admin.component';
-import { ModSubcategoryComponent } from './components/mod-subcategory/mod-subcategory.component';
-import { ModProductsComponent } from './components/mod-products/mod-products.component';
-import { ModProducerComponent } from './components/mod-producer/mod-producer.component';
+import { ModCategoryComponent } from './components/admin/modification/mod-category/mod-category.component';
+import { BoardAdminComponent } from './components/admin/board-admin/board-admin.component';
+import { ModSubcategoryComponent } from './components/admin/modification/mod-subcategory/mod-subcategory.component';
+import { ModProductsComponent } from './components/admin/modification/mod-products/mod-products.component';
+import { ModProducerComponent } from './components/admin/modification/mod-producer/mod-producer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AccountComponent } from './components/account/account.component';
+import { AccountComponent } from './components/user/account/account.component';
 import { BasketComponent } from './components/basket/basket.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { PurchaseComponent } from './components/purchase/purchase.component';
-import { FormLoginComponent } from './components/form-login/form-login.component';
-import { FormAccountComponent } from './components/form-account/form-account.component';
-import { FormAccountAddressComponent } from './components/form-account-address/form-account-address.component';
-import { OrdersComponent } from './components/orders/orders.component';
+import { FormLoginComponent } from './components/forms/form-login/form-login.component';
+import { FormAccountComponent } from './components/forms/form-account/form-account.component';
+import { FormAccountAddressComponent } from './components/forms/form-account-address/form-account-address.component';
+import { OrdersComponent } from './components/user/orders/orders.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { HomeComponent } from './components/home/home.component';
 import { ConfirmComponent } from './components/confirm/confirm.component';
+import { FormResetPasswordComponent } from './components/forms/form-reset-password/form-reset-password.component';
+import { AuthHttpInterceptorService } from './services/accounts/auth-http-interceptor.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavigationComponent,
     ProductsComponent,
-    ContentComponent,
     FormLoginComponent,
     ModCategoryComponent,
     BoardAdminComponent,
@@ -48,6 +47,7 @@ import { ConfirmComponent } from './components/confirm/confirm.component';
     OrdersComponent,
     HomeComponent,
     ConfirmComponent,
+    FormResetPasswordComponent,
   ],
   imports: [
     BrowserModule,

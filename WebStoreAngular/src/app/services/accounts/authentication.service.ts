@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { LoginRequest } from '../models/login-request';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 import { __values } from 'tslib';
 import { Router } from '@angular/router';
+import { LoginRequest } from 'src/app/models/login-request';
 
 @Injectable({
   providedIn: 'root',
