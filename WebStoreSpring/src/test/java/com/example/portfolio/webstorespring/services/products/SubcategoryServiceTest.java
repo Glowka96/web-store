@@ -96,7 +96,6 @@ class SubcategoryServiceTest {
         Subcategory capturedSubcategory = subCategoryArgumentCaptor.getValue();
         SubcategoryResponse mappedSubCategory = subCategoryMapper.mapToDto(capturedSubcategory);
 
-        assertThat(savedSubcategoryResponse).isNotNull();
         assertThat(savedSubcategoryResponse).isEqualTo(mappedSubCategory);
     }
 

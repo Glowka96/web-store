@@ -42,6 +42,6 @@ class ResetPasswordSenderServiceImplTest {
                 .isPresent();
 
         // then
-        assertThat(actual).isEqualTo(true);
+        assertThat(actual).isTrue();
     }
 }

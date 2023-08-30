@@ -13,10 +13,12 @@ public class EmailConfig {
 
     @Value("${sender.email}")
     private String senderEmail;
+
+    private static final String SMTP = "smtp.gmail.com";
     @Bean
     public JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost("smtp.gmail.com");
+        mailSender.setHost(SMTP);
         mailSender.setPort(587);
 
         mailSender.setUsername("email");
@@ -25,11 +27,11 @@ public class EmailConfig {
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");
         props.put("mail.debug", "true");
-        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.host", SMTP);
         props.put("mail.smtp.port", "587");
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+        props.put("mail.smtp.ssl.trust", SMTP);
 
         return mailSender;
     }

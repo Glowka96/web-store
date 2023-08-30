@@ -37,7 +37,7 @@ public class Account {
 
     private String imageUrl;
 
-    private Boolean enabled = false;
+    private Boolean enabled;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
