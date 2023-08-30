@@ -64,7 +64,7 @@ class SubcategoryControllerTest {
 
 
     @Test
-    public void shouldSaveSubCategory() throws Exception {
+    void shouldSaveSubCategory() throws Exception {
         // given
         given(subCategoryService.save(anyLong(), any(SubcategoryRequest.class))).willReturn(subcategoryResponse);
 

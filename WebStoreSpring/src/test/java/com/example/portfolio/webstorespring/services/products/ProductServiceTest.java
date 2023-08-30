@@ -146,8 +146,7 @@ class ProductServiceTest {
         List<ProductResponse> foundProductResponses = underTest.getAllProductsBySubcategoryId(subCategory.getId(), 0, 5);
 
         // then
-        assertThat(foundProductResponses).isNotNull();
-        assertThat(foundProductResponses.size()).isEqualTo(3);
+        assertThat(foundProductResponses).hasSize(3);
         verify(productRepository, times(1)).findProductBySubcategory_Id(subCategory.getId(), pageable);
     }
 
@@ -165,8 +164,7 @@ class ProductServiceTest {
         List<ProductResponse> foundProductResponses = underTest.getAllProductsBySubcategoryId(subCategory.getId(), 0, 5, "price");
 
         // then
-        assertThat(foundProductResponses).isNotNull();
-        assertThat(foundProductResponses.size()).isEqualTo(3);
+        assertThat(foundProductResponses).hasSize(3);
         verify(productRepository, times(1)).findProductBySubcategory_Id(subCategory.getId(), pageable);
     }
 
@@ -198,8 +196,7 @@ class ProductServiceTest {
         List<ProductResponse> foundProductResponses = underTest.getSearchProducts("test", 0, 5, "id");
 
         // then
-        assertThat(foundProductResponses).isNotNull();
-        assertThat(foundProductResponses.size()).isEqualTo(3);
+        assertThat(foundProductResponses).hasSize(3);
         verify(productRepository, times(1)).searchProductByNameContainsIgnoreCaseOrDescriptionContainsIgnoreCaseOrProducerName("test", "test", "test", pageable);
     }
 
