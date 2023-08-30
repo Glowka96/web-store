@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ShipmentRequest } from 'src/app/models/shipment-request';
-import { AuthenticationService } from 'src/app/services/authentication.service';
-import { FormLoginService } from 'src/app/services/form-login.service';
+import { AuthenticationService } from 'src/app/services/accounts/authentication.service';
+import { FormLoginService } from 'src/app/services/accounts/form-login.service';
 import { ShopService } from 'src/app/services/shop.service';
 
 @Component({

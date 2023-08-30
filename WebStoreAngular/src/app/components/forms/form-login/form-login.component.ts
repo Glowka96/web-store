@@ -7,9 +7,9 @@ import {
 } from '@angular/forms';
 import { LoginRequest } from 'src/app/models/login-request';
 import { RegistrationRequest } from 'src/app/models/registration-request';
-import { AuthenticationService } from 'src/app/services/authentication.service';
-import { FormLoginService } from 'src/app/services/form-login.service';
-import { RegistrationService } from 'src/app/services/registration.service';
+import { AuthenticationService } from 'src/app/services/accounts/authentication.service';
+import { FormLoginService } from 'src/app/services/accounts/form-login.service';
+import { RegistrationService } from 'src/app/services/accounts/registration.service';
 
 @Component({
   selector: 'app-form',

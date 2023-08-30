@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
+import { RegistrationRequest } from 'src/app/models/registration-request';
 import { environment } from 'src/environments/environment';
-import { RegistrationRequest } from '../models/registration-request';
 
 @Injectable({
   providedIn: 'root',
@@ -13,9 +13,7 @@ export class RegistrationService {
   constructor(private http: HttpClient) {}
 
   register(request: RegistrationRequest): Observable<any> {
-    return this.http
-      .post<any>(`${this.apiServerUrl}/registration`, request)
-      .pipe(tap((response) => console.log('Server response:', response)));
+    return this.http.post<any>(`${this.apiServerUrl}/registration`, request);
   }
 
   confirmAccount(token: string): Observable<any> {
