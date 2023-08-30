@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum ResetPasswordType implements EmailTypeStrategy {
 
-    PASSWORD("Complete Registration!",
+    PASSWORD("Complete reset password!",
             "To reset your password, please click here:  ",
             "Sent reset password link on your email address");
 

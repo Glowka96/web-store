@@ -1,5 +1,7 @@
 package com.example.portfolio.webstorespring.exceptions;
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -12,15 +14,14 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.context.request.WebRequest;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith({MockitoExtension.class})
-public class GlobalExceptionHandlerTest {
+class GlobalExceptionHandlerTest {
 
     @Mock
     private ResourceNotFoundException resourceNotFoundException;
@@ -40,6 +41,8 @@ public class GlobalExceptionHandlerTest {
     private TokenExpiredException tokenExpiredException;
     @Mock
     private TokenConfirmedException tokenConfirmedException;
+    @Mock
+    private ConstraintViolationException constraintViolationException;
     @Mock
     private WebRequest webRequest;
     @InjectMocks
@@ -114,7 +117,7 @@ public class GlobalExceptionHandlerTest {
                 webRequest.getDescription(false));
 
         ResponseEntity<Object> responseEntity = underTest
-                .handleArgumentNotValidException(argumentNotValidException, webRequest);
+                .handleMethodArgumentNotValidException(argumentNotValidException, webRequest);
 
         // then
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(expectedErrorResponse.getStatusCode());
@@ -204,5 +207,38 @@ public class GlobalExceptionHandlerTest {
         // then
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(exceptedErrorResponse.getStatusCode());
         assertThat(responseEntity.getBody()).isEqualTo(exceptedErrorResponse);
+    }
+
+    @Test
+    void shouldHandleConstraintViolationException() {
+        // given
+        Set<ConstraintViolation<?>> constraintViolations = new HashSet<>();
+        ConstraintViolation mockedViolation = mock(ConstraintViolation.class);
+        ConstraintViolation mockedViolation2 = mock(ConstraintViolation.class);
+
+        constraintViolations.add(mockedViolation);
+        constraintViolations.add(mockedViolation2);
+
+        List<String> messages = List.of("test", "test2");
+
+        ErrorResponse exceptedErrorResponse = new ErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                messages,
+                webRequest.getDescription(false)
+        );
+
+        // when
+        when(mockedViolation.getMessage()).thenReturn(messages.get(0));
+        when(mockedViolation2.getMessage()).thenReturn(messages.get(1));
+        when(constraintViolationException.getConstraintViolations()).thenReturn(constraintViolations);
+
+        ResponseEntity<Object> responseEntity = underTest
+                .handeConstraintViolationException(constraintViolationException, webRequest);
+
+        // then
+
+        assertThat(responseEntity.getStatusCode().value()).isEqualTo(exceptedErrorResponse.getStatusCode());
+        assertThat(responseEntity.getBody()).isEqualTo(exceptedErrorResponse);
+
     }
 }
