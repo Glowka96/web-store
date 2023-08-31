@@ -40,7 +40,7 @@ class OrderControllerTest {
 
     private MockMvc mvc;
     private ObjectMapper mapper;
-    private static final String URL = "/api/v1/accounts/{accountId}";
+    private static final String URI = "/api/v1/accounts/{accountId}";
     private OrderResponse orderResponse;
     private OrderRequest orderRequest;
 
@@ -68,7 +68,7 @@ class OrderControllerTest {
         List<OrderResponse> orderResponses = new ArrayList<>(Arrays.asList(orderResponse, new OrderResponse()));
         given(orderService.getAllOrderDtoByAccountId(anyLong())).willReturn(orderResponses);
 
-        mvc.perform(get(URL + "/orders", 1)
+        mvc.perform(get(URI + "/orders", 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer {JWT_TOKEN}"))
@@ -81,7 +81,7 @@ class OrderControllerTest {
     void shouldGetOrderByAccountIdAndId() throws Exception {
         given(orderService.getOrderByAccountIdAndOrderId(anyLong(), anyLong())).willReturn(orderResponse);
 
-        mvc.perform(get(URL + "/orders/{id}", 1, 1)
+        mvc.perform(get(URI + "/orders/{id}", 1, 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer {JWT_TOKEN}"))
@@ -94,7 +94,7 @@ class OrderControllerTest {
     void shouldSaveOrder() throws Exception {
         given(orderService.saveOrder(anyLong(), any(OrderRequest.class))).willReturn(orderResponse);
 
-        mvc.perform(post(URL + "/orders", 1)
+        mvc.perform(post(URI + "/orders", 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(orderRequest))
@@ -108,7 +108,7 @@ class OrderControllerTest {
     void shouldUpdateOrder() throws Exception {
         given(orderService.updateOrder(anyLong(), anyLong(), any(OrderRequest.class))).willReturn(orderResponse);
 
-        mvc.perform(put(URL + "/orders/{ordersId}", 1, 1)
+        mvc.perform(put(URI + "/orders/{ordersId}", 1, 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(orderRequest))
@@ -120,7 +120,7 @@ class OrderControllerTest {
 
     @Test
     void shouldDeleteOrderById() throws Exception {
-        mvc.perform(delete(URL + "/orders/{orderId}", 1, 1)
+        mvc.perform(delete(URI + "/orders/{orderId}", 1, 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer {JWT_TOKEN}"))

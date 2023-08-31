@@ -36,7 +36,7 @@ class SearchControllerTest {
     private ProductService productService;
     private MockMvc mvc;
     private ObjectMapper mapper;
-    private final static String URL = "/api/v1/products/search";
+    private final static String URI = "/api/v1/products/search";
     private List<ProductResponse> productResponses;
 
     @BeforeEach
@@ -52,7 +52,7 @@ class SearchControllerTest {
         given(productService.getSearchProducts(anyString(), anyInt(), anyInt(), anyString()))
                 .willReturn(productResponses);
 
-        mvc.perform(get(URL + "/{search}", "test")
+        mvc.perform(get(URI + "/{search}", "test")
                         .param("page", "0")
                         .param("size", "3")
                         .param("sort", "price")
@@ -68,7 +68,7 @@ class SearchControllerTest {
     void shouldGetQuantitySearchProducts() throws Exception {
         given(productService.getAmountSearchProducts(anyString())).willReturn(12L);
 
-        mvc.perform(get(URL + "/{search}/quantity", "test")
+        mvc.perform(get(URI + "/{search}/quantity", "test")
                         .param("page", "0")
                         .param("size", "3")
                         .param("sort", "price")

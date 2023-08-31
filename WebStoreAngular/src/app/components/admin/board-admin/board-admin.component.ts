@@ -19,12 +19,9 @@ export class BoardAdminComponent implements OnInit {
   constructor(
     private shopService: CategoryService,
     private subcategoryService: SubcategoryService,
-    private authService: AuthenticationService,
     private router: Router
   ) {
-    authService.loggedRole$().subscribe((value) => {
-      this.loggedRole = value;
-    });
+    this.loggedRole != sessionStorage.getItem('role');
     shopService.categories$.subscribe((categories) => {
       this.categories = categories;
     });

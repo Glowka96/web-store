@@ -27,7 +27,7 @@ import { FormLoginService } from 'src/app/services/accounts/form-login.service';
 })
 export class NavigationComponent implements OnInit {
   private categories: CategoryResponse[] = [];
-  private loggedIn = false;
+  private isLogIn = false;
   private isMobile = false;
 
   public searchForm = new FormGroup({
@@ -47,9 +47,8 @@ export class NavigationComponent implements OnInit {
     categoryService.categories$.subscribe((categories) => {
       this.categories = categories;
     });
-    authService.loggedIn$().subscribe((value) => {
-      this.loggedIn = value;
-    });
+    const isLogIn = sessionStorage.getItem('isLoggedIn');
+    isLogIn === 'true' ? (this.isLogIn = true) : (this.isLogIn = false);
   }
 
   ngOnInit() {
@@ -71,7 +70,7 @@ export class NavigationComponent implements OnInit {
   }
 
   public isLoggedIn(): boolean {
-    return this.loggedIn;
+    return this.isLogIn;
   }
 
   public logout(): void {

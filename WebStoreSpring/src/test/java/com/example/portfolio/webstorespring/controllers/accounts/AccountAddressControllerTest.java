@@ -32,7 +32,7 @@ class AccountAddressControllerTest {
     @InjectMocks
     private AccountAddressController underTest;
 
-    private final static String URL = "/api/v1/accounts/{accountId}/address";
+    private final static String URI = "/api/v1/accounts/{accountId}/address";
     private ObjectMapper mapper;
     private MockMvc mvc;
     private AccountAddressResponse address;
@@ -60,7 +60,7 @@ class AccountAddressControllerTest {
     void getAccountAddressByAccountId() throws Exception {
         given(addressService.getAccountAddressByAccountId(anyLong())).willReturn(address);
 
-        mvc.perform(get(URL, 1L)
+        mvc.perform(get(URI, 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(address))
@@ -77,7 +77,7 @@ class AccountAddressControllerTest {
     void saveAccountAddress() throws Exception {
         given(addressService.saveAccountAddress(anyLong(), any(AccountAddressRequest.class))).willReturn(address);
 
-        mvc.perform(post(URL, 1)
+        mvc.perform(post(URI, 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(address))
@@ -94,7 +94,7 @@ class AccountAddressControllerTest {
     void updateAccountAddress() throws Exception {
         given(addressService.updateAccountAddress(anyLong(), any(AccountAddressRequest.class))).willReturn(address);
 
-        mvc.perform(put(URL, 1)
+        mvc.perform(put(URI, 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(address))
