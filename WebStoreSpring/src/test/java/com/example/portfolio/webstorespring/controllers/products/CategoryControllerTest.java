@@ -35,7 +35,7 @@ class CategoryControllerTest {
     private CategoryService categoryService;
     private MockMvc mvc;
     private ObjectMapper mapper;
-    private final static String URL = "/api/v1/categories";
+    private final static String URI = "/api/v1/categories";
     private CategoryResponse categoryResponse;
 
     @BeforeEach
@@ -56,7 +56,7 @@ class CategoryControllerTest {
 
         // when
         // then
-        mvc.perform(get(URL)
+        mvc.perform(get(URI)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -71,7 +71,7 @@ class CategoryControllerTest {
 
         // when
         // then
-        mvc.perform(get(URL + "/{id}", 1L)
+        mvc.perform(get(URI + "/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(categoryResponse)))
@@ -88,7 +88,7 @@ class CategoryControllerTest {
 
         // when
         // then
-        mvc.perform(post(URL)
+        mvc.perform(post(URI)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(categoryResponse)))
@@ -104,7 +104,7 @@ class CategoryControllerTest {
 
         // when
         // then
-        mvc.perform(put(URL + "/{id}", 1L)
+        mvc.perform(put(URI + "/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(categoryResponse)))
@@ -116,7 +116,7 @@ class CategoryControllerTest {
 
     @Test
     void shouldDeleteCategoryById() throws Exception {
-        mvc.perform(delete(URL + "/{id}", 1L))
+        mvc.perform(delete(URI + "/{id}", 1L))
                 .andExpect(status().isNoContent());
     }
 }

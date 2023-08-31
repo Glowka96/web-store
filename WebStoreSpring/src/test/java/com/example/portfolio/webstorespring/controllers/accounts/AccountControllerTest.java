@@ -35,7 +35,7 @@ class AccountControllerTest {
 
     private MockMvc mvc;
     private ObjectMapper mapper;
-    private final static String URL = "/api/v1/accounts";
+    private final static String URI = "/api/v1/accounts";
     private AccountResponse accountResponse;
     private AccountRequest accountRequest;
 
@@ -64,7 +64,7 @@ class AccountControllerTest {
     void shouldGetAccountById() throws Exception {
         given(accountService.getAccountById(anyLong())).willReturn(accountResponse);
 
-        mvc.perform(get(URL + "/{id}", 1L)
+        mvc.perform(get(URI + "/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer {JWT_TOKEN}"))
                 .andExpect(status().isOk())
@@ -79,7 +79,7 @@ class AccountControllerTest {
     void shouldUpdateAccount() throws Exception {
         given(accountService.updateAccount(anyLong(), any(AccountRequest.class))).willReturn(accountResponse);
 
-        mvc.perform(put(URL + "/{accountId}", 1L)
+        mvc.perform(put(URI + "/{accountId}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(accountRequest))
                         .header("Authorization", "Bearer {JWT_TOKEN}"))
@@ -93,7 +93,7 @@ class AccountControllerTest {
 
     @Test
     void shouldDeleteAccountById() throws Exception {
-        mvc.perform(delete(URL + "/{accountId}", 1L))
+        mvc.perform(delete(URI + "/{accountId}", 1L))
                 .andExpect(status().isNoContent());
     }
 }

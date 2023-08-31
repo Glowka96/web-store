@@ -21,6 +21,9 @@
             </div>
             <button type="sumbit" class="clkbtn" [disabled]="loginForm.invalid"
                 [ngClass]="{'disabled-btn': loginForm.invalid}">Login</button>
+            <div class="forgot-box">
+                <a [routerLink]="['reset-password']" (click)="closeLoginForm()">Forgot password?</a>
+            </div>
         </form>
         <form class="signup-box" [formGroup]="registrationForm" (ngSubmit)="onSubmitRegister()"
             *ngIf="getFormSectionMove">

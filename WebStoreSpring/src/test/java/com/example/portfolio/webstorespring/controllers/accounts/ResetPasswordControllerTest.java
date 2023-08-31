@@ -31,7 +31,7 @@ class ResetPasswordControllerTest {
     private ResetPasswordController underTest;
 
     private MockMvc mvc;
-    private static final String URL = "/api/v1/accounts";
+    private static final String URI = "/api/v1/accounts";
     private Map<String, Object> result;
 
     @BeforeEach
@@ -46,7 +46,7 @@ class ResetPasswordControllerTest {
 
         given(resetPasswordService.resetPasswordByEmail(anyString())).willReturn(result);
 
-        mvc.perform(get(URL + "/reset-password")
+        mvc.perform(get(URI + "/reset-password")
                         .param("email","test@test.pl")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -60,7 +60,7 @@ class ResetPasswordControllerTest {
 
         given(resetPasswordService.confirmResetPassword(anyString(), anyString())).willReturn(result);
 
-        mvc.perform(patch(URL + "/reset-password/confirm")
+        mvc.perform(patch(URI + "/reset-password/confirm")
                         .param("password", "Test123*")
                         .param("token", "Token123")
                         .contentType(MediaType.APPLICATION_JSON)

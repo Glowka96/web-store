@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RegistrationService } from 'src/app/services/registration.service';
+import { RegistrationService } from 'src/app/services/accounts/registration.service';
+import { ResetPasswordService } from 'src/app/services/accounts/reset-password.service';
 
 @Component({
   selector: 'app-confirm',
@@ -13,6 +14,7 @@ export class ConfirmComponent implements OnInit {
 
   constructor(
     private registrationService: RegistrationService,
+    private resetPasswordService: ResetPasswordService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
@@ -34,6 +36,14 @@ export class ConfirmComponent implements OnInit {
       },
       error: () => {
         this.confirmationMessage = 'Account confirmation failed';
+      },
+    });
+  }
+
+  confirmResetPassword(password: string, token: string) {
+    this.resetPasswordService.confirmResetPassword(password, token).subscribe({
+      next: (response) => {
+        this.confirmationMessage = response.message;
       },
     });
   }
