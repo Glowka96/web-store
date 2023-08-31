@@ -35,7 +35,7 @@ class ProducerControllerTest {
     private ProducerController underTest;
     private MockMvc mvc;
     private ObjectMapper mapper;
-    private static final String URL = "/api/v1/producers";
+    private static final String URI = "/api/v1/producers";
     private ProducerResponse producerResponse;
 
     @BeforeEach
@@ -53,7 +53,7 @@ class ProducerControllerTest {
     void shouldGetAllProducer() throws Exception {
         given(producerService.getAllProducer()).willReturn(Arrays.asList(producerResponse, new ProducerResponse()));
 
-        mvc.perform(get(URL)
+        mvc.perform(get(URI)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -65,7 +65,7 @@ class ProducerControllerTest {
     void shouldSaveProducer() throws Exception {
         given(producerService.save(any(ProducerRequest.class))).willReturn(producerResponse);
 
-        mvc.perform(post(URL)
+        mvc.perform(post(URI)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(producerResponse)))
@@ -79,7 +79,7 @@ class ProducerControllerTest {
     void shouldUpdateProducer() throws Exception {
         given(producerService.update(anyLong(), any(ProducerRequest.class))).willReturn(producerResponse);
 
-        mvc.perform(put(URL + "/{id}", 1)
+        mvc.perform(put(URI + "/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(producerResponse)))
@@ -91,7 +91,7 @@ class ProducerControllerTest {
 
     @Test
     void shouldDeleteProducer() throws Exception{
-        mvc.perform(delete(URL + "/{id}", 1))
+        mvc.perform(delete(URI + "/{id}", 1))
                 .andExpect(status().isNoContent())
                 .andDo(print());
     }

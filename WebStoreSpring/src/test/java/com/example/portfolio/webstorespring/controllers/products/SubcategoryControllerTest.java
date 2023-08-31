@@ -32,7 +32,7 @@ class SubcategoryControllerTest {
     private SubcategoryService subCategoryService;
     private MockMvc mvc;
     private ObjectMapper mapper;
-    private final static String URL = "/api/v1/categories";
+    private final static String URI = "/api/v1/categories";
     private SubcategoryResponse subcategoryResponse;
 
     @BeforeEach
@@ -53,7 +53,7 @@ class SubcategoryControllerTest {
 
         // when
         // then
-        mvc.perform(get(URL + "/subcategories/{id}", 1L)
+        mvc.perform(get(URI + "/subcategories/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(subcategoryResponse)))
@@ -70,7 +70,7 @@ class SubcategoryControllerTest {
 
         // when
         // then
-        mvc.perform(post(URL + "/{id}/subcategories", 1)
+        mvc.perform(post(URI + "/{id}/subcategories", 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(subcategoryResponse)))
@@ -87,7 +87,7 @@ class SubcategoryControllerTest {
 
         // when
         // then
-        mvc.perform(put(URL + "/{categoryId}/subcategories/{subcategoryId}", 1, 1)
+        mvc.perform(put(URI + "/{categoryId}/subcategories/{subcategoryId}", 1, 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(subcategoryResponse)))
@@ -99,7 +99,7 @@ class SubcategoryControllerTest {
 
     @Test
     void shouldDeleteSubCategoryByName() throws Exception {
-        mvc.perform(delete(URL + "/subcategories/{subcategoryId}", 1L))
+        mvc.perform(delete(URI + "/subcategories/{subcategoryId}", 1L))
                 .andExpect(status().isNoContent())
                 .andDo(print());
     }

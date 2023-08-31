@@ -45,7 +45,7 @@ export class FormAccountAddressComponent implements OnInit {
   });
 
   constructor(private accountService: AccountService, private router: Router) {
-    this.accountId = sessionStorage.getItem('id') || '';
+    this.accountId != sessionStorage.getItem('id');
     this.accountService.getAccount(this.accountId).subscribe((account) => {
       if (account.address) {
         this.isAccountAddress = true;

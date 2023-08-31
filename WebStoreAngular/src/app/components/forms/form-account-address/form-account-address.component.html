@@ -6,7 +6,7 @@
         <div class="form-group">
             <div class="input-box">
                 <label for="city">City: </label>
-                <input id="city" formControlName="city" type="text">
+                <input id="city ele" formControlName="city" type="text">
             </div>
             <div *ngIf="accountAddressForm.get('city')?.invalid && accountAddressForm.get('city')?.dirty"
                 class="errors">
@@ -23,7 +23,7 @@
         <div class="form-group">
             <div class="input-box">
                 <label for="postcode">Postcode: </label>
-                <input id="postcode" formControlName="postcode" type="text">
+                <input id="postcode ele" formControlName="postcode" type="text">
             </div>
             <div *ngIf="accountAddressForm.get('postcode')?.invalid && accountAddressForm.get('postcode')?.dirty"
                 class="errors">
@@ -36,7 +36,7 @@
         <div class="form-group">
             <div class="input-box">
                 <label for="street">Steet: </label>
-                <input id="street" formControlName="street" type="text">
+                <input id="street ele" formControlName="street" type="text">
             </div>
             <div *ngIf="accountAddressForm.get('street')?.invalid && accountAddressForm.get('street')?.dirty"
                 class="errors">

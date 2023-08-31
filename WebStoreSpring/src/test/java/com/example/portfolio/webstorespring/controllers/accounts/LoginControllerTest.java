@@ -27,7 +27,7 @@ class LoginControllerTest {
     private LoginService loginService;
     @InjectMocks
     private LoginController underTest;
-    private final static String URL = "/api/v1/login";
+    private final static String URI = "/api/v1/login";
 
     @Test
     void login() throws Exception {
@@ -44,7 +44,7 @@ class LoginControllerTest {
         when(loginService.login(loginRequest)).thenReturn(authenticationResponse);
 
         // then
-        mvc.perform(post(URL, loginRequest)
+        mvc.perform(post(URI, loginRequest)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(loginRequest)))

@@ -12,7 +12,7 @@ export class AccountComponent implements OnInit {
   private account!: AccountResponse;
 
   constructor(private accountService: AccountService) {
-    this.accountId = sessionStorage.getItem('id') || '';
+    this.accountId != sessionStorage.getItem('id');
   }
 
   ngOnInit(): void {

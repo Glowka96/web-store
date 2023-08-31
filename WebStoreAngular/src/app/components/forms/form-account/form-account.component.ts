@@ -84,7 +84,7 @@ export class FormAccountComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router
   ) {
-    this.accountId = sessionStorage.getItem('id') || '';
+    this.accountId != sessionStorage.getItem('id');
   }
 
   ngOnInit(): void {}
