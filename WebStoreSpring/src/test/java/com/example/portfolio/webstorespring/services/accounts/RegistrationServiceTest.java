@@ -57,6 +57,7 @@ class RegistrationServiceTest {
 
         account = new Account();
         account.setEmail(request.getEmail());
+        account.setEnabled(false);
 
         confirmationToken = new ConfirmationToken();
         confirmationToken.setToken("token");

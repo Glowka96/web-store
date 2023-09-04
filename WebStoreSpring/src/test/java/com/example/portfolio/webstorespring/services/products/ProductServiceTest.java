@@ -139,7 +139,7 @@ class ProductServiceTest {
 
         Page<Product> productPage = new PageImpl<>(productList, pageable, productList.size());
 
-        given(productRepository.findProductBySubcategory_Id(anyLong(), any(Pageable.class)))
+        given(productRepository.findProductsBySubcategory_Id(anyLong(), any(Pageable.class)))
                 .willReturn(Optional.of(productPage));
 
         // when
@@ -147,7 +147,7 @@ class ProductServiceTest {
 
         // then
         assertThat(foundProductResponses).hasSize(3);
-        verify(productRepository, times(1)).findProductBySubcategory_Id(subCategory.getId(), pageable);
+        verify(productRepository, times(1)).findProductsBySubcategory_Id(subCategory.getId(), pageable);
     }
 
     @Test
@@ -157,7 +157,7 @@ class ProductServiceTest {
 
         Page<Product> productPage = new PageImpl<>(productList, pageable, productList.size());
 
-        given(productRepository.findProductBySubcategory_Id(anyLong(), any(Pageable.class)))
+        given(productRepository.findProductsBySubcategory_Id(anyLong(), any(Pageable.class)))
                 .willReturn(Optional.of(productPage));
 
         // when
@@ -165,14 +165,14 @@ class ProductServiceTest {
 
         // then
         assertThat(foundProductResponses).hasSize(3);
-        verify(productRepository, times(1)).findProductBySubcategory_Id(subCategory.getId(), pageable);
+        verify(productRepository, times(1)).findProductsBySubcategory_Id(subCategory.getId(), pageable);
     }
 
     @Test
     void shouldGetAmountProductsBySubcategoryId() {
         // given
         Long amount = 12L;
-        given(productRepository.countProductBySubcategory_Id(anyLong())).willReturn(amount);
+        given(productRepository.countProductsBySubcategory_Id(anyLong())).willReturn(amount);
 
         // when
         Long actualProductDtoList = underTest.getQuantityOfProductsBySubcategoryId(1L);
@@ -189,7 +189,7 @@ class ProductServiceTest {
 
         Page<Product> productPage = new PageImpl<>(productList, pageable, productList.size());
 
-        given(productRepository.searchProductByNameContainsIgnoreCaseOrDescriptionContainsIgnoreCaseOrProducerName(anyString(), anyString(), anyString(), any(Pageable.class)))
+        given(productRepository.searchProductsByEnteredText(anyString(), any(Pageable.class)))
                 .willReturn(Optional.of(productPage));
 
         // when
@@ -197,17 +197,17 @@ class ProductServiceTest {
 
         // then
         assertThat(foundProductResponses).hasSize(3);
-        verify(productRepository, times(1)).searchProductByNameContainsIgnoreCaseOrDescriptionContainsIgnoreCaseOrProducerName("test", "test", "test", pageable);
+        verify(productRepository, times(1)).searchProductsByEnteredText("test", pageable);
     }
 
     @Test
-    void shouldGetAmountSearchProduct() {
+    void shouldGetQuantitySearchProduct() {
         // given
         Long amount = 12L;
-        given(productRepository.countProductByNameContainsIgnoreCaseOrDescriptionContainsIgnoreCaseOrProducerName(anyString(), anyString(), anyString())).willReturn(amount);
+        given(productRepository.countProductsByEnteredText(anyString())).willReturn(amount);
 
         // when
-        Long actual = underTest.getAmountSearchProducts("test");
+        Long actual = underTest.getQuantitySearchProducts("test");
 
         // then
         assertThat(actual).isEqualTo(amount);

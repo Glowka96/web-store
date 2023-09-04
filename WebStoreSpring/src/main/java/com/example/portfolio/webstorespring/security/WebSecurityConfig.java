@@ -55,21 +55,20 @@ public class WebSecurityConfig {
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers(
+                        auth.requestMatchers("/api/v1/producers/**",
                                         "/api/v1/logout/**",
                                         "/api/v1/login/**",
                                         "/api/v1/registration/**",
                                         "/api/v1/categories/**",
                                         "/api/v1/subcategories/**",
                                         "/api/v1/accounts/reset-password/**",
-                                        "/api/v1/subcategories/**/products/quantity",
                                         "/api/v1/products/search/**").permitAll()
                                 .anyRequest().authenticated())
                 .formLogin(form ->
                         form.defaultSuccessUrl("/api/v1/categories"))
                 .headers().frameOptions().sameOrigin()
                 .and()
-                .logout().logoutUrl("api/v1/logout").permitAll()
+                .logout().logoutUrl("/api/v1/logout").permitAll()
                 .addLogoutHandler(logoutHandler)
                 .logoutSuccessHandler((request,
                                        response,

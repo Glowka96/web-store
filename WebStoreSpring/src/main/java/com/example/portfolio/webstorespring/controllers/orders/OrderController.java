@@ -23,7 +23,7 @@ public class OrderController {
     @PreAuthorize("@authServiceImpl.checkAuthorization(#accountId, #authHeader)")
     public ResponseEntity<List<OrderResponse>> getAllOrdersByAccountId(@PathVariable("accountId") Long accountId,
                                                                        @RequestHeader("Authorization") String authHeader) {
-        return ResponseEntity.ok(orderService.getAllOrderDtoByAccountId(accountId));
+        return ResponseEntity.ok(orderService.getAllOrderByAccountId(accountId));
     }
 
     @GetMapping("/{orderId}")

@@ -11,8 +11,6 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "subcategories")
-@NamedEntityGraph(name = "SubCategory.category",
-        attributeNodes = @NamedAttributeNode("category"))
 @NoArgsConstructor
 public class Subcategory {
     @Id
@@ -20,21 +18,13 @@ public class Subcategory {
     @Column(unique = true, nullable = false)
     private Long id;
 
-    @Setter
     @Column(nullable = false)
     private String name;
 
-    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @Setter
     @OneToMany(mappedBy = "subcategory")
     private List<Product> products;
-
-
-    public Subcategory(String name) {
-        this.name = name;
-    }
 }
