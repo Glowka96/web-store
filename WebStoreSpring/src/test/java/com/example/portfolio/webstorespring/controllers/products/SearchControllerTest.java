@@ -52,7 +52,8 @@ class SearchControllerTest {
         given(productService.getSearchProducts(anyString(), anyInt(), anyInt(), anyString()))
                 .willReturn(productResponses);
 
-        mvc.perform(get(URI + "/{search}", "test")
+        mvc.perform(get(URI)
+                        .param("text", "test")
                         .param("page", "0")
                         .param("size", "3")
                         .param("sort", "price")
@@ -66,9 +67,10 @@ class SearchControllerTest {
 
     @Test
     void shouldGetQuantitySearchProducts() throws Exception {
-        given(productService.getAmountSearchProducts(anyString())).willReturn(12L);
+        given(productService.getQuantitySearchProducts(anyString())).willReturn(12L);
 
-        mvc.perform(get(URI + "/{search}/quantity", "test")
+        mvc.perform(get(URI + "/quantity")
+                        .param("text", "test")
                         .param("page", "0")
                         .param("size", "3")
                         .param("sort", "price")
