@@ -60,7 +60,7 @@ public class SubcategoryService {
 
     private Subcategory findSubcategoryById(Long id) {
         return subcategoryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("SubCategory", "id", id));
+                .orElseThrow(() -> new ResourceNotFoundException("Subcategory", "id", id));
     }
 
     private Category findCategoryById(Long id) {

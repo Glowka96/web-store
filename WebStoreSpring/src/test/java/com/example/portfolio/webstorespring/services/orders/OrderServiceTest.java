@@ -112,7 +112,7 @@ class OrderServiceTest {
         given(orderRepository.findAllByAccountId(anyLong())).willReturn(Arrays.asList(order, new Order()));
 
         // when
-        List<OrderResponse> foundOrderResponses = underTest.getAllOrderDtoByAccountId(1L);
+        List<OrderResponse> foundOrderResponses = underTest.getAllOrderByAccountId(1L);
 
         // then
         assertThat(foundOrderResponses).hasSize(2);

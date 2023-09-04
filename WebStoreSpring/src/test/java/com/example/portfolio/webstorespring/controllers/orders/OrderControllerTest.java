@@ -66,7 +66,7 @@ class OrderControllerTest {
     @Test
     void shouldGetAllOrders() throws Exception {
         List<OrderResponse> orderResponses = new ArrayList<>(Arrays.asList(orderResponse, new OrderResponse()));
-        given(orderService.getAllOrderDtoByAccountId(anyLong())).willReturn(orderResponses);
+        given(orderService.getAllOrderByAccountId(anyLong())).willReturn(orderResponses);
 
         mvc.perform(get(URI + "/orders", 1)
                         .contentType(MediaType.APPLICATION_JSON)

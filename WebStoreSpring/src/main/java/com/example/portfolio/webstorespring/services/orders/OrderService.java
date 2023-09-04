@@ -35,7 +35,7 @@ public class OrderService {
     private final Clock clock = Clock.systemUTC();
     private static final String SHIPMENT_ADDRESS = "City: Lodz, Postcode: 91-473, Street: Julianowska 41/2";
 
-    public List<OrderResponse> getAllOrderDtoByAccountId(Long accountId) {
+    public List<OrderResponse> getAllOrderByAccountId(Long accountId) {
         List<Order> orders = orderRepository.findAllByAccountId(accountId);
         return orderMapper.mapToDto(orders);
     }
