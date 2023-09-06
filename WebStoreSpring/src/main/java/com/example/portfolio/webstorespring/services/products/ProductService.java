@@ -40,15 +40,6 @@ public class ProductService {
 
     public List<ProductResponse> getAllProductsBySubcategoryId(Long subcategoryId,
                                                               Integer pageNo,
-                                                              Integer pageSize) {
-        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.ASC, "id"));
-
-        Page<Product> productPage = findPageProductsBySubcategoryId(subcategoryId, pageable);
-        return productPage.map(productMapper::mapToDto).getContent();
-    }
-
-    public List<ProductResponse> getAllProductsBySubcategoryId(Long subcategoryId,
-                                                              Integer pageNo,
                                                               Integer pageSize,
                                                               String sortBy) {
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.ASC, sortBy));
