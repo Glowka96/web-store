@@ -19,15 +19,15 @@ public class SearchController {
     private final ProductService productService;
 
     @GetMapping(params = {"text", "page", "size", "sort"})
-    public ResponseEntity<List<ProductResponse>> getSearchProductsByText(@RequestParam("text") String text,
-                                                                         @RequestParam("page") Integer page,
-                                                                         @RequestParam("size") Integer size,
-                                                                         @RequestParam("sort") String sort) {
+    public ResponseEntity<List<ProductResponse>> getSearchProductsByText(@RequestParam(value = "text", defaultValue = "puzzle") String text,
+                                                                         @RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                                         @RequestParam(name = "size", defaultValue = "12") Integer size,
+                                                                         @RequestParam(name = "sort", required = false, defaultValue = "id") String sort) {
         return ResponseEntity.ok(productService.getSearchProducts(text, page, size, sort));
     }
 
     @GetMapping(value = "/quantity", params = {"text"})
-    public ResponseEntity<Long> getQuantityOfSearchProducts(@RequestParam("text") String text) {
+    public ResponseEntity<Long> getQuantityOfSearchProducts(@RequestParam(value = "text", defaultValue = "puzzle") String text) {
         return ResponseEntity.ok((productService.getQuantitySearchProducts(text)));
     }
 }

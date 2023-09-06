@@ -50,22 +50,25 @@ export class ProductService {
     sort = 'id'
   ): Observable<ProductResponse[]> {
     this.router.navigate(['/search'], {
-      queryParams: { q: text, page: page + 1, size: size, sort: sort },
+      queryParams: { text: text, page: page + 1, size: size, sort: sort },
       queryParamsHandling: 'merge',
     });
     const params = new HttpParams()
+      .set('text', text.toString())
       .set('page', page.toString())
       .set('size', size.toString())
       .set('sort', sort);
     return this.http.get<ProductResponse[]>(
-      `${this.apiServerUrl}/products/search/${text}`,
+      `${this.apiServerUrl}/products/search`,
       { params }
     );
   }
 
   public getQuanititySearchProducts(text: string): Observable<number> {
+    const params = new HttpParams().set('text', text.toString());
     return this.http.get<number>(
-      `${this.apiServerUrl}/products/search/${text}/quantity`
+      `${this.apiServerUrl}/products/search/quantity`,
+      { params }
     );
   }
 
