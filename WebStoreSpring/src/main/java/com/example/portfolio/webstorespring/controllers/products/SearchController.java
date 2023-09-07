@@ -28,6 +28,6 @@ public class SearchController {
 
     @GetMapping(value = "/quantity", params = {"text"})
     public ResponseEntity<Long> getQuantityOfSearchProducts(@RequestParam(value = "text", defaultValue = "puzzle") String text) {
-        return ResponseEntity.ok((productService.getQuantitySearchProducts(text)));
+        return ResponseEntity.ok((productService.getQuantityOfSearchProducts(text)));
     }
 }

@@ -132,25 +132,6 @@ class ProductServiceTest {
     }
 
     @Test
-    void shouldGetAllProductsBySubCategoryId_WhenGetSubCategoryId_PageNo_PageSize() {
-        // given
-        Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Direction.ASC, "id"));
-        List<Product> productList = Arrays.asList(product, product2, product3);
-
-        Page<Product> productPage = new PageImpl<>(productList, pageable, productList.size());
-
-        given(productRepository.findProductsBySubcategory_Id(anyLong(), any(Pageable.class)))
-                .willReturn(Optional.of(productPage));
-
-        // when
-        List<ProductResponse> foundProductResponses = underTest.getAllProductsBySubcategoryId(subCategory.getId(), 0, 5);
-
-        // then
-        assertThat(foundProductResponses).hasSize(3);
-        verify(productRepository, times(1)).findProductsBySubcategory_Id(subCategory.getId(), pageable);
-    }
-
-    @Test
     void shouldGetAllProductsBySubCategoryId_WhenGetSubCategoryId_PageNo_PageSize_SortBy() {
         Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Direction.ASC, "price"));
         List<Product> productList = Arrays.asList(product3, product2, product);
@@ -207,7 +188,7 @@ class ProductServiceTest {
         given(productRepository.countProductsByEnteredText(anyString())).willReturn(amount);
 
         // when
-        Long actual = underTest.getQuantitySearchProducts("test");
+        Long actual = underTest.getQuantityOfSearchProducts("test");
 
         // then
         assertThat(actual).isEqualTo(amount);
