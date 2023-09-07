@@ -67,7 +67,7 @@ class SearchControllerTest {
 
     @Test
     void shouldGetQuantitySearchProducts() throws Exception {
-        given(productService.getQuantitySearchProducts(anyString())).willReturn(12L);
+        given(productService.getQuantityOfSearchProducts(anyString())).willReturn(12L);
 
         mvc.perform(get(URI + "/quantity")
                         .param("text", "test")
