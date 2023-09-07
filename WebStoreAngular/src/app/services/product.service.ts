@@ -21,16 +21,18 @@ export class ProductService {
   public getProductsBySubcategory(
     subcategoryId: string,
     page = 0,
-    size = 12
+    size = 12,
+    sort = 'id'
   ): Observable<ProductResponse[]> {
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: { page: page + 1, size: size },
+      queryParams: { page: page + 1, size: size, sort: sort },
       queryParamsHandling: 'merge',
     });
     const params = new HttpParams()
       .set('page', page.toString())
-      .set('size', size.toString());
+      .set('size', size.toString())
+      .set('sort', sort.toString());
     return this.http.get<ProductResponse[]>(
       `${this.apiServerUrl}/subcategories/${subcategoryId}/products`,
       { params }

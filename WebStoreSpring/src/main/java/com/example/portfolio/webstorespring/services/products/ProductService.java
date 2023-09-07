@@ -59,7 +59,7 @@ public class ProductService {
         return productPage.map(productMapper::mapToDto).getContent();
     }
 
-    public Long getQuantitySearchProducts(String text) {
+    public Long getQuantityOfSearchProducts(String text) {
         return productRepository.countProductsByEnteredText(text);
     }
 

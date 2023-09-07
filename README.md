@@ -8,7 +8,7 @@ Project deployed on GCP: https://app-lazlbfo5va-lm.a.run.app/
 - [Technologies](#technologies)
 - [How to run](#how-to-run)
 - [Features](#features)
-- [Api Reference](#api-reference)
+- [Api Reference](#spring-boot-api-reference)
 - [Screenshot](#screenshot)
 - [Plugins](#plugins)
 - [Credits](#credits)
@@ -43,6 +43,7 @@ GCP:
 - Spring Cloud GCP Starter SQL MySQL
 
 </details>
+<br>
 
 **Angular:** 16.1.3
 
@@ -50,8 +51,9 @@ GCP:
 
 ## How to run
 
-- [Deploy on GCP](ścieżka/do/twego/pliku)
+- [Deploy on GCP](deploy-on-gcp.md)
 - [Run to locally](ścieżka/do/twego/pliku)
+
 
 ## Features
 
@@ -69,9 +71,14 @@ GCP:
 - Sort and fillter product
 - Message box
 - Newsletter
+- New admin board with more options
 - Better angular pagination
 - Home page - new offerts and promotions
 - ...
+
+<div style="display: flex; justify-content: right;">
+  <a href="#web-store">Back to top</a>
+</div>
 
 ## Spring boot API Reference
 
@@ -123,7 +130,7 @@ GCP:
 | `GET` | `/api/v1/subcategories/{subcategoryId}/products` | Everyone |Get all products by subcategory id with params (page, size, sort) |
 | `GET` | `/api/v1/subcategories//{subcategoryId}/products/quantity` | Everyone | Get products quantity by subcategory id|
 | `POST` | `/api/v1/subcategories/{subcategoryId}/producers/{producerId}/products` | Admin |Add product by subcategory id and producer id | 
-| `PUT` | `/api/v1/subcategories/{subcategoryId}/producers/{producerId}/products/{productId}` | Admin |Update product by subcategory id and producer id |
+| `PUT` | `/api/v1/subcategories/{subcategoryId}/producers/{producerId}/products/{productId}` | Admin |Update product by subcategory id, producer id and product id|
 | `DELETE` | `/api/v1/subcategories/products/{productId}` | Admin |Delete product by id |
 | `GET` | `/api/v1/products/search` | Everyone |Get search products with params (text, page, size, sort) |
 | `GET` | `/api/v1/products/search/quantity` | Everyone | Get search products quantity with params (text)|
@@ -171,6 +178,10 @@ GCP:
 
 </details>
 
+<div style="display: flex; justify-content: right;">
+  <a href="#web-store">Back to top</a>
+</div>
+
 ## Screenshot
 
 ![App Screenshot](https://ik.imagekit.io/glowacki/Zrzut_ekranu_2023-07-12_102052.png?updatedAt=1689150176647)
@@ -185,12 +196,19 @@ GCP:
 ### Tests
 ![App Screenshot](https://ik.imagekit.io/glowacki/Zrzut%20ekranu%202023-08-09%20002003.png?updatedAt=1691533356035)
 
+<div style="display: flex; justify-content: right;">
+  <a href="#web-store">Back to top</a>
+</div>
 
 ## Plugins
 
   **IntellIJ IDEA**: Google Cloud Code, SonarLint, Mapstruct Support, Docker
 
   **VSC**: Angular Language Service, Prettier - Code formatter, Docker
+
+  <div style="display: flex; justify-content: right;">
+  <a href="#web-store">Back to top</a>
+</div>
 
 ## Credits
 
@@ -201,6 +219,10 @@ https://www.youtube.com/watch?v=QwQuro7ekvc
 https://www.youtube.com/watch?v=KxqlJblhzfI
 
 Amigoscode https://github.com/amigoscode
+
+<div style="display: flex; justify-content: right;">
+  <a href="#web-store">Back to top</a>
+</div>
 
 ## License
 MIT License
@@ -225,6 +247,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+<div style="display: flex; justify-content: right;">
+  <a href="#web-store">Back to top</a>
+</div>
+
 ## Contact
 
 Sebastian Głowacki - glowackisebastian.it@gmail.com
+
+<div style="display: flex; justify-content: right;">
+  <a href="#web-store">Back to top</a>
+</div>
