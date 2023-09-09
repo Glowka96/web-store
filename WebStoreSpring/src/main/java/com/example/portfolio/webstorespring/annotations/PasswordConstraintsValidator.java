@@ -23,7 +23,7 @@ public class PasswordConstraintsValidator implements ConstraintValidator<Passwor
             return true;
         }
 
-        context.buildConstraintViolationWithTemplate(validator.getMessages(result).stream().findFirst().get())
+        context.buildConstraintViolationWithTemplate(validator.getMessages(result).stream().findFirst().orElseThrow())
                 .addConstraintViolation()
                 .disableDefaultConstraintViolation();
         return false;

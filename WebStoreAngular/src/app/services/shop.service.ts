@@ -30,9 +30,10 @@ export class ShopService {
   }
 
   public purchase(accountId: string, request: OrderRequest): Observable<any> {
-    return this.http
-      .post<any>(`${this.apiServerUrl}/accounts/${accountId}/orders`, request)
-      .pipe(tap((response) => console.log('Server response:', response)));
+    return this.http.post<any>(
+      `${this.apiServerUrl}/accounts/${accountId}/orders`,
+      request
+    );
   }
 
   public get basket$() {

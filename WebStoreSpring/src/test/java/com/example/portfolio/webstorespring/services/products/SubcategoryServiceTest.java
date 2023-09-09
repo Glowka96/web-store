@@ -47,8 +47,9 @@ class SubcategoryServiceTest {
         category.setName("Test");
         category.setId(1L);
 
-        subCategory = new Subcategory("SubCategory");
+        subCategory = new Subcategory();
         subCategory.setId(1L);
+        subCategory.setName("Subcategory");
         subCategory.setCategory(category);
 
         subCategoryRequest = new SubcategoryRequest();
@@ -89,14 +90,13 @@ class SubcategoryServiceTest {
         SubcategoryResponse savedSubcategoryResponse = underTest.save(category.getId(), subCategoryRequest);
 
         // then
-        ArgumentCaptor<Subcategory> subCategoryArgumentCaptor =
+        ArgumentCaptor<Subcategory> subcategoryArgumentCaptor =
                 ArgumentCaptor.forClass(Subcategory.class);
-        verify(subCategoryRepository).save(subCategoryArgumentCaptor.capture());
+        verify(subCategoryRepository).save(subcategoryArgumentCaptor.capture());
 
-        Subcategory capturedSubcategory = subCategoryArgumentCaptor.getValue();
+        Subcategory capturedSubcategory = subcategoryArgumentCaptor.getValue();
         SubcategoryResponse mappedSubCategory = subCategoryMapper.mapToDto(capturedSubcategory);
 
-        assertThat(savedSubcategoryResponse).isNotNull();
         assertThat(savedSubcategoryResponse).isEqualTo(mappedSubCategory);
     }
 
@@ -109,7 +109,7 @@ class SubcategoryServiceTest {
         // then
         assertThatThrownBy(() -> underTest.getSubcategoryDtoById(anyLong()))
                 .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessageContaining("SubCategory with id 0 not found");
+                .hasMessageContaining("Subcategory with id 0 not found");
     }
 
     @Test

@@ -1,9 +1,7 @@
 package com.example.portfolio.webstorespring.controllers.accounts;
 
-import com.example.portfolio.webstorespring.model.dto.accounts.AccountPasswordRequest;
 import com.example.portfolio.webstorespring.services.accounts.ResetPasswordService;
 import com.example.portfolio.webstorespring.services.email.type.ResetPasswordType;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,23 +31,24 @@ class ResetPasswordControllerTest {
     private ResetPasswordController underTest;
 
     private MockMvc mvc;
-    private ObjectMapper mapper;
-    private static final String URL = "/api/v1/accounts";
-    private Map<String,Object> result;
+    private static final String URI = "/api/v1/accounts";
+    private Map<String, Object> result;
 
     @BeforeEach
     void initialization() {
         mvc = MockMvcBuilders.standaloneSetup(underTest)
                 .build();
-        mapper = new ObjectMapper();
     }
+
     @Test
     void shouldResetPassword() throws Exception {
         result = Map.of("message", ResetPasswordType.PASSWORD.getMessage());
 
         given(resetPasswordService.resetPasswordByEmail(anyString())).willReturn(result);
 
-        mvc.perform(get(URL + "/{email}/reset-password", "test@test.pl"))
+        mvc.perform(get(URI + "/reset-password")
+                        .param("email","test@test.pl")
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", is(result)))
                 .andDo(print());
@@ -58,16 +57,14 @@ class ResetPasswordControllerTest {
     @Test
     void shouldConfirmResetPassword() throws Exception {
         result = Map.of("message", "Your new password has been saved");
-        AccountPasswordRequest accountPasswordRequest = new AccountPasswordRequest();
-        accountPasswordRequest.setPassword("Test123*");
 
         given(resetPasswordService.confirmResetPassword(anyString(), anyString())).willReturn(result);
 
-        mvc.perform(patch(URL + "/reset-password/confirm")
-                .param("token", "token123")
+        mvc.perform(patch(URI + "/reset-password/confirm")
+                        .param("password", "Test123*")
+                        .param("token", "Token123")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(accountPasswordRequest)))
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isAccepted())
                 .andExpect(jsonPath("$", is(result)))
                 .andDo(print());

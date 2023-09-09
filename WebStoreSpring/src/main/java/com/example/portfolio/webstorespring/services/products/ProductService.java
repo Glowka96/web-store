@@ -12,7 +12,6 @@ import com.example.portfolio.webstorespring.repositories.products.ProducerReposi
 import com.example.portfolio.webstorespring.repositories.products.ProductRepository;
 import com.example.portfolio.webstorespring.repositories.products.SubcategoryRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +21,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
 public class ProductService {
 
@@ -42,15 +40,6 @@ public class ProductService {
 
     public List<ProductResponse> getAllProductsBySubcategoryId(Long subcategoryId,
                                                               Integer pageNo,
-                                                              Integer pageSize) {
-        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.ASC, "id"));
-
-        Page<Product> productPage = findPageProductsBySubcategoryId(subcategoryId, pageable);
-        return productPage.map(productMapper::mapToDto).getContent();
-    }
-
-    public List<ProductResponse> getAllProductsBySubcategoryId(Long subcategoryId,
-                                                              Integer pageNo,
                                                               Integer pageSize,
                                                               String sortBy) {
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.ASC, sortBy));
@@ -60,7 +49,7 @@ public class ProductService {
     }
 
     public Long getQuantityOfProductsBySubcategoryId(Long subcategoryId) {
-        return productRepository.countProductBySubcategory_Id(subcategoryId);
+        return productRepository.countProductsBySubcategory_Id(subcategoryId);
     }
 
     public List<ProductResponse> getSearchProducts(String text, Integer pageNo, Integer pageSize, String sortBy) {
@@ -70,9 +59,8 @@ public class ProductService {
         return productPage.map(productMapper::mapToDto).getContent();
     }
 
-    public Long getAmountSearchProducts(String text) {
-        return productRepository
-                .countProductByNameContainsIgnoreCaseOrDescriptionContainsIgnoreCaseOrProducerName(text, text, text);
+    public Long getQuantityOfSearchProducts(String text) {
+        return productRepository.countProductsByEnteredText(text);
     }
 
     public ProductResponse save(Long subcategoryId, Long producerId, ProductRequest productRequest) {
@@ -113,16 +101,14 @@ public class ProductService {
     }
 
     private Page<Product> findPageProductsBySubcategoryId(Long subCategoryId, Pageable pageable) {
-        return productRepository.findProductBySubcategory_Id(subCategoryId, pageable)
+        return productRepository.findProductsBySubcategory_Id(subCategoryId, pageable)
                 .orElseThrow(() -> new ResourceNotFoundException("Products", "page number", pageable.getPageNumber()));
 
     }
 
     private Page<Product> searchProductsByText(String text, Pageable pageable) {
         return productRepository
-                .searchProductByNameContainsIgnoreCaseOrDescriptionContainsIgnoreCaseOrProducerName(text,
-                        text,
-                        text,
+                .searchProductsByEnteredText(text,
                         pageable)
                 .orElseThrow(SearchNotFoundException::new);
     }

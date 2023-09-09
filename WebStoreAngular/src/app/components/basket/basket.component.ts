@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ShipmentRequest } from 'src/app/models/shipment-request';
-import { AuthenticationService } from 'src/app/services/authentication.service';
-import { FormLoginService } from 'src/app/services/form-login.service';
+import { AuthenticationService } from 'src/app/services/accounts/authentication.service';
+import { FormLoginService } from 'src/app/services/accounts/form-login.service';
 import { ShopService } from 'src/app/services/shop.service';
 
 @Component({
@@ -14,8 +14,8 @@ import { ShopService } from 'src/app/services/shop.service';
 export class BasketComponent implements OnInit {
   private basket: ShipmentRequest[] = [];
   private selectedId!: string;
-  private loggedIn = false;
-  private buyBtnClicked = false;
+  private isLogIn = false;
+  private isBuyBtnClicked = false;
 
   public changeForm = new FormGroup({
     quantity: new FormControl('', {
@@ -30,7 +30,6 @@ export class BasketComponent implements OnInit {
 
   constructor(
     private shopService: ShopService,
-    private authService: AuthenticationService,
     private formLoginService: FormLoginService,
     private router: Router
   ) {
@@ -40,9 +39,8 @@ export class BasketComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.authService.loggedIn$().subscribe((isLogged) => {
-      this.loggedIn = isLogged;
-    });
+    const isLogIn = sessionStorage.getItem('isLoggedIn');
+    isLogIn === 'true' ? (this.isLogIn = true) : (this.isLogIn = false);
   }
 
   public get shipments() {
@@ -85,7 +83,7 @@ export class BasketComponent implements OnInit {
   }
 
   public onSumbitBuy() {
-    this.buyBtnClicked = !this.buyBtnClicked;
+    this.isBuyBtnClicked = !this.isBuyBtnClicked;
     if (this.isLoggedIn) {
       this.router.navigate(['/basket/purchase'], {});
     }
@@ -102,10 +100,10 @@ export class BasketComponent implements OnInit {
   }
 
   public get isLoggedIn() {
-    return this.loggedIn;
+    return this.isLogIn;
   }
 
-  public get isBuyBtnClicked() {
-    return this.buyBtnClicked;
+  public get isBuyButtonClicked() {
+    return this.isBuyBtnClicked;
   }
 }

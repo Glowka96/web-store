@@ -32,39 +32,32 @@ public class ProductController {
         return ResponseEntity.ok(productService.getAllProducts());
     }
 
-    @GetMapping(value = "/{subcategoryId}/products", params = {"page", "size"})
-    public ResponseEntity<List<ProductResponse>> getAllProductsBySubCategoryId(@PathVariable("subcategoryId") Long subcategoryId,
-                                                                              @RequestParam("page") Integer page,
-                                                                              @RequestParam("size") Integer size) {
-        return ResponseEntity.ok(productService.getAllProductsBySubcategoryId(subcategoryId, page, size));
-    }
-
     @GetMapping(value = "/{subcategoryId}/products", params = {"page", "size", "sort"})
-    public ResponseEntity<List<ProductResponse>> getAllProductsBySubCategoryId(@PathVariable("subcategoryId") Long subcategoryId,
-                                                                              @RequestParam("page") Integer page,
-                                                                              @RequestParam("size") Integer size,
-                                                                              @RequestParam("sort") String sort) {
+    public ResponseEntity<List<ProductResponse>> getAllProductsBySubCategoryId(@PathVariable(value = "subcategoryId") Long subcategoryId,
+                                                                              @RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                                              @RequestParam(name = "size", defaultValue = "12") Integer size,
+                                                                              @RequestParam(name = "sort", required = false, defaultValue = "id") String sort) {
         return ResponseEntity.ok(productService.getAllProductsBySubcategoryId(subcategoryId, page, size, sort));
     }
 
     @GetMapping(value = "/{subcategoryId}/products/quantity")
-    public ResponseEntity<Long> getQuantityOfProductsBySubcategoryId(@PathVariable("subcategoryId") Long subcategoryId) {
+    public ResponseEntity<Long> getQuantityOfProductsBySubcategoryId(@PathVariable(value = "subcategoryId") Long subcategoryId) {
         return ResponseEntity.ok(productService.getQuantityOfProductsBySubcategoryId(subcategoryId));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping(value = "/{subcategoryId}/producers/{producerId}/products")
-    public ResponseEntity<ProductResponse> saveProduct(@PathVariable("subcategoryId") Long subcategoryId,
-                                                      @PathVariable("producerId") Long producerId,
+    public ResponseEntity<ProductResponse> saveProduct(@PathVariable(value = "subcategoryId") Long subcategoryId,
+                                                      @PathVariable(value = "producerId") Long producerId,
                                                       @Valid @RequestBody ProductRequest productRequest) {
         return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(subcategoryId, producerId, productRequest));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping(value = "/{subcategoryId}/producers/{producerId}/products/{productId}")
-    public ResponseEntity<ProductResponse> updateProduct(@PathVariable Long subcategoryId,
-                                                        @PathVariable Long producerId,
-                                                        @PathVariable Long productId,
+    public ResponseEntity<ProductResponse> updateProduct(@PathVariable(value = "subcategoryId") Long subcategoryId,
+                                                        @PathVariable(value = "producerId") Long producerId,
+                                                        @PathVariable(value = "productId") Long productId,
                                                         @Valid @RequestBody ProductRequest productRequest) {
         return ResponseEntity.status(HttpStatus.ACCEPTED)
                 .body(productService.updateProduct(subcategoryId, producerId, productId, productRequest));
@@ -73,7 +66,7 @@ public class ProductController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping(value = "/products/{productId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteProductById(@PathVariable("productId") Long id) {
+    public void deleteProductById(@PathVariable(value = "productId") Long id) {
         productService.deleteById(id);
     }
 }

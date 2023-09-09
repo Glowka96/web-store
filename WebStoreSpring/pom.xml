@@ -24,37 +24,15 @@
         <spring-boot-mail.version>3.0.4</spring-boot-mail.version>
         <spring-boot-test.version>3.1.0</spring-boot-test.version>
         <spring-security-test.version>6.0.2</spring-security-test.version>
-        <spring-security-core.version>6.0.2</spring-security-core.version>
-        <spring-cloud-gcp-dependencies.version>4.1.1</spring-cloud-gcp-dependencies.version>
-        <spring-cloud.version>2022.0.1</spring-cloud.version>
-        <spring-cloud-gcp-starter.version>4.1.2</spring-cloud-gcp-starter.version>
-        <spring-cloud-gcp-mysql.version>4.1.2</spring-cloud-gcp-mysql.version>
-        <libraries-bom.version>25.1.0</libraries-bom.version>
+        <spring-cloud-gcp-dependencies.version>4.1.2</spring-cloud-gcp-dependencies.version>
         <passay.version>1.0</passay.version>
         <mysql-connector.version>8.0.32</mysql-connector.version>
-        <mysql-socket-factory-connector-j-8.version>1.12.0</mysql-socket-factory-connector-j-8.version>
         <jsonwebtoken.version>0.11.5</jsonwebtoken.version>
         <jetbrains-annotations.version>24.0.1</jetbrains-annotations.version>
     </properties>
-    <!--  Using libraries-bom to manage versions.
-See https://github.com/GoogleCloudPlatform/cloud-opensource-java/wiki/The-Google-Cloud-Platform-Libraries-BOM -->
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>com.google.cloud</groupId>
-                <artifactId>libraries-bom</artifactId>
-                <version>${libraries-bom.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
             <dependency>
                 <groupId>com.google.cloud</groupId>
                 <artifactId>spring-cloud-gcp-dependencies</artifactId>
@@ -66,29 +44,14 @@ See https://github.com/GoogleCloudPlatform/cloud-opensource-java/wiki/The-Google
     </dependencyManagement>
     <dependencies>
         <dependency>
-            <groupId>com.google.cloud.sql</groupId>
-            <artifactId>mysql-socket-factory-connector-j-8</artifactId>
-            <version>${mysql-socket-factory-connector-j-8.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.cloud</groupId>
-            <artifactId>spring-cloud-gcp-starter</artifactId>
-            <version>${spring-cloud-gcp-starter.version}</version>
-        </dependency>
-        <dependency>
             <groupId>com.google.cloud</groupId>
             <artifactId>spring-cloud-gcp-starter-sql-mysql</artifactId>
-            <version>${spring-cloud-gcp-mysql.version}</version>
+            <version>4.1.2</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
             <version>${spring-boot-jpa.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-            <version>${spring-boot-security.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -149,6 +112,11 @@ See https://github.com/GoogleCloudPlatform/cloud-opensource-java/wiki/The-Google
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+            <version>${spring-boot-security.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
             <version>${spring-security-test.version}</version>
@@ -161,19 +129,14 @@ See https://github.com/GoogleCloudPlatform/cloud-opensource-java/wiki/The-Google
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-core</artifactId>
-            <version>${spring-security-core.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mail</artifactId>
             <version>${spring-boot-mail.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-beans</artifactId>
-            <version>6.0.9</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+            <version>3.1.2</version>
         </dependency>
     </dependencies>
 

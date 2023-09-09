@@ -29,25 +29,23 @@ class RegistrationControllerTest {
     private RegistrationController underTest;
 
     private MockMvc mvc;
-    private ObjectMapper mapper;
-    private static final String URL = "/api/v1/registration";
-    private Map<String, Object> result;
+    private static final String URI = "/api/v1/registration";
 
     @BeforeEach
     void initialization() {
         mvc = MockMvcBuilders.standaloneSetup(underTest)
                 .build();
 
-        mapper = new ObjectMapper();
+        ObjectMapper mapper = new ObjectMapper();
     }
 
     @Test
     void shouldConfirm() throws Exception {
-        result = Map.of("message", "Account confirmed");
+        Map<String, Object> result = Map.of("message", "Account confirmed");
 
         given(registrationService.confirmToken(anyString())).willReturn(result);
 
-        mvc.perform(get(URL + "/confirm")
+        mvc.perform(get(URI + "/confirm")
                         .param("token", "token123"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath( "$",is(result)))

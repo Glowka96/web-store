@@ -132,49 +132,28 @@ class ProductServiceTest {
     }
 
     @Test
-    void shouldGetAllProductsBySubCategoryId_WhenGetSubCategoryId_PageNo_PageSize() {
-        // given
-        Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Direction.ASC, "id"));
-        List<Product> productList = Arrays.asList(product, product2, product3);
-
-        Page<Product> productPage = new PageImpl<>(productList, pageable, productList.size());
-
-        given(productRepository.findProductBySubcategory_Id(anyLong(), any(Pageable.class)))
-                .willReturn(Optional.of(productPage));
-
-        // when
-        List<ProductResponse> foundProductResponses = underTest.getAllProductsBySubcategoryId(subCategory.getId(), 0, 5);
-
-        // then
-        assertThat(foundProductResponses).isNotNull();
-        assertThat(foundProductResponses.size()).isEqualTo(3);
-        verify(productRepository, times(1)).findProductBySubcategory_Id(subCategory.getId(), pageable);
-    }
-
-    @Test
     void shouldGetAllProductsBySubCategoryId_WhenGetSubCategoryId_PageNo_PageSize_SortBy() {
         Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Direction.ASC, "price"));
         List<Product> productList = Arrays.asList(product3, product2, product);
 
         Page<Product> productPage = new PageImpl<>(productList, pageable, productList.size());
 
-        given(productRepository.findProductBySubcategory_Id(anyLong(), any(Pageable.class)))
+        given(productRepository.findProductsBySubcategory_Id(anyLong(), any(Pageable.class)))
                 .willReturn(Optional.of(productPage));
 
         // when
         List<ProductResponse> foundProductResponses = underTest.getAllProductsBySubcategoryId(subCategory.getId(), 0, 5, "price");
 
         // then
-        assertThat(foundProductResponses).isNotNull();
-        assertThat(foundProductResponses.size()).isEqualTo(3);
-        verify(productRepository, times(1)).findProductBySubcategory_Id(subCategory.getId(), pageable);
+        assertThat(foundProductResponses).hasSize(3);
+        verify(productRepository, times(1)).findProductsBySubcategory_Id(subCategory.getId(), pageable);
     }
 
     @Test
     void shouldGetAmountProductsBySubcategoryId() {
         // given
         Long amount = 12L;
-        given(productRepository.countProductBySubcategory_Id(anyLong())).willReturn(amount);
+        given(productRepository.countProductsBySubcategory_Id(anyLong())).willReturn(amount);
 
         // when
         Long actualProductDtoList = underTest.getQuantityOfProductsBySubcategoryId(1L);
@@ -191,26 +170,25 @@ class ProductServiceTest {
 
         Page<Product> productPage = new PageImpl<>(productList, pageable, productList.size());
 
-        given(productRepository.searchProductByNameContainsIgnoreCaseOrDescriptionContainsIgnoreCaseOrProducerName(anyString(), anyString(), anyString(), any(Pageable.class)))
+        given(productRepository.searchProductsByEnteredText(anyString(), any(Pageable.class)))
                 .willReturn(Optional.of(productPage));
 
         // when
         List<ProductResponse> foundProductResponses = underTest.getSearchProducts("test", 0, 5, "id");
 
         // then
-        assertThat(foundProductResponses).isNotNull();
-        assertThat(foundProductResponses.size()).isEqualTo(3);
-        verify(productRepository, times(1)).searchProductByNameContainsIgnoreCaseOrDescriptionContainsIgnoreCaseOrProducerName("test", "test", "test", pageable);
+        assertThat(foundProductResponses).hasSize(3);
+        verify(productRepository, times(1)).searchProductsByEnteredText("test", pageable);
     }
 
     @Test
-    void shouldGetAmountSearchProduct() {
+    void shouldGetQuantitySearchProduct() {
         // given
         Long amount = 12L;
-        given(productRepository.countProductByNameContainsIgnoreCaseOrDescriptionContainsIgnoreCaseOrProducerName(anyString(), anyString(), anyString())).willReturn(amount);
+        given(productRepository.countProductsByEnteredText(anyString())).willReturn(amount);
 
         // when
-        Long actual = underTest.getAmountSearchProducts("test");
+        Long actual = underTest.getQuantityOfSearchProducts("test");
 
         // then
         assertThat(actual).isEqualTo(amount);

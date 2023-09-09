@@ -4,27 +4,30 @@ import com.example.portfolio.webstorespring.model.dto.products.ProductResponse;
 import com.example.portfolio.webstorespring.services.products.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "api/v1/products")
+@RequestMapping(value = "api/v1/products/search")
 @RequiredArgsConstructor
 public class SearchController {
 
     private final ProductService productService;
 
-    @GetMapping(value = "/search/{text}", params = {"page", "size", "sort"})
-    public ResponseEntity<List<ProductResponse>> getSearchProductsByText(@PathVariable("text") String text,
-                                                                         @RequestParam("page") Integer page,
-                                                                         @RequestParam("size") Integer size,
-                                                                         @RequestParam("sort") String sort) {
+    @GetMapping(params = {"text", "page", "size", "sort"})
+    public ResponseEntity<List<ProductResponse>> getSearchProductsByText(@RequestParam(value = "text", defaultValue = "puzzle") String text,
+                                                                         @RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                                         @RequestParam(name = "size", defaultValue = "12") Integer size,
+                                                                         @RequestParam(name = "sort", required = false, defaultValue = "id") String sort) {
         return ResponseEntity.ok(productService.getSearchProducts(text, page, size, sort));
     }
 
-    @GetMapping(value = "/search/{text}/quantity")
-    public ResponseEntity<Long> getQuantityOfSearchProducts(@PathVariable("text") String text) {
-        return ResponseEntity.ok((productService.getAmountSearchProducts(text)));
+    @GetMapping(value = "/quantity", params = {"text"})
+    public ResponseEntity<Long> getQuantityOfSearchProducts(@RequestParam(value = "text", defaultValue = "puzzle") String text) {
+        return ResponseEntity.ok((productService.getQuantityOfSearchProducts(text)));
     }
 }

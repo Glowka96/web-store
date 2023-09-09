@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { __values } from 'tslib';
-import { FormLoginService } from './services/form-login.service';
+import { FormLoginService } from './services/accounts/form-login.service';
 
 @Component({
   selector: 'app-root',
