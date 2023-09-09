@@ -14,6 +14,9 @@ public class EmailConfig {
     @Value("${sender.email}")
     private String senderEmail;
 
+    @Value("${sender.password}")
+    private String senderPassword;
+
     private static final String SMTP = "smtp.gmail.com";
     @Bean
     public JavaMailSender getJavaMailSender() {
@@ -22,7 +25,7 @@ public class EmailConfig {
         mailSender.setPort(587);
 
         mailSender.setUsername(senderEmail);
-        mailSender.setPassword("ruvmgcsysrddffpd");
+        mailSender.setPassword(senderPassword);
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");

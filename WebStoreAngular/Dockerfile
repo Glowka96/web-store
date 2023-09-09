@@ -1,27 +1,30 @@
-# STEP 1 build static website
-FROM node:alpine as builder
-RUN apk update && apk add --no-cache make git
+# STEP 1: Build static website
+FROM gcr.io/google-appengine/nodejs AS builder
+
 # Create app directory
 WORKDIR /app
-# Create app/nginx directory and copy default.conf to it
-WORKDIR /app/nginx
-COPY nginx/etc/conf.d/default.conf /app/nginx/
+
 # Install app dependencies
 COPY package.json package-lock.json /app/
-RUN cd /app && npm set progress=false && npm install
-# Copy project files into the docker image
-COPY .  /app
-RUN cd /app && npm run build
+RUN npm set progress=false && npm install
 
-# STEP 2 build a small nginx image with static website
+# Copy project files into the docker image
+COPY . /app
+
+# Build the Angular app
+RUN npm run build
+
+# STEP 2: Build a small nginx image with the static website
 FROM nginx:alpine
+
 # Remove default nginx website
 RUN rm -rf /usr/share/nginx/html/*
-# From 'builder' copy website to default nginx public folder
+
+# From 'builder' copy the website to the default nginx public folder
 COPY --from=builder /app/dist/web-store-angular /usr/share/nginx/html
-# From 'builder' copy default nginx configuration to the configuration conf.d folder of nginx
-RUN rm -rf /etc/nginx/conf.d/default.conf
-COPY --from=builder /app/nginx/etc/conf.d/default.conf /etc/nginx/conf.d/default.conf
-#expose
+
+# Expose port
 EXPOSE 80
+
+# Start nginx with daemon off
 CMD ["nginx", "-g", "daemon off;"]

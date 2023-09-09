@@ -24,7 +24,7 @@
         <spring-boot-mail.version>3.0.4</spring-boot-mail.version>
         <spring-boot-test.version>3.1.0</spring-boot-test.version>
         <spring-security-test.version>6.0.2</spring-security-test.version>
-        <spring-cloud-gcp-dependencies.version>4.1.1</spring-cloud-gcp-dependencies.version>
+        <spring-cloud-gcp-dependencies.version>4.1.2</spring-cloud-gcp-dependencies.version>
         <passay.version>1.0</passay.version>
         <mysql-connector.version>8.0.32</mysql-connector.version>
         <jsonwebtoken.version>0.11.5</jsonwebtoken.version>
@@ -46,6 +46,7 @@
         <dependency>
             <groupId>com.google.cloud</groupId>
             <artifactId>spring-cloud-gcp-starter-sql-mysql</artifactId>
+            <version>4.1.2</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
