@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiBaseUrl: '//toysland-spring-v1-0-lazlbfo5va-ew.a.run.app/api/v1',
+  apiBaseUrl: '//localhost:8080/api/v1',
 };
 
 /*
