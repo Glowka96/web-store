@@ -12,7 +12,7 @@ Project deployed on GCP: https://app-lazlbfo5va-lm.a.run.app/
 - [Screenshot](#screenshot)
 - [Plugins](#plugins)
 - [Credits](#credits)
-- [License](#lisense)
+- [License](#license)
 - [Contact](#contact)
 
 ## Technologies
