@@ -62,7 +62,7 @@ class ProductControllerTest {
 
     @Test
     void shouldGetAllProductsBySubCategoryIdPaginationNoSort() throws Exception {
-        given(productService.getAllProductsBySubcategoryId(anyLong(), anyInt(), anyInt()))
+        given(productService.getAllProductsBySubcategoryId(anyLong(), anyInt(), anyInt(), anyString()))
                 .willReturn(productResponses);
 
         mvc.perform(get(URI + "/{subcategoryId}/products", 1)
