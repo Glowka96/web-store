@@ -14,9 +14,9 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven-compiler-plugin.version>3.5.1</maven-compiler-plugin.version>
         <spring-boot-maven-plugin.version>3.0.5</spring-boot-maven-plugin.version>
-        <version.lombok>1.18.4</version.lombok>
-        <version.mapstruct>1.5.3.Final</version.mapstruct>
-        <version.mapstruct-lombok>0.2.0</version.mapstruct-lombok>
+        <lombok.version>1.18.28</lombok.version>
+        <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
+        <mapstruct-lombok.version>0.2.0</mapstruct-lombok.version>
         <spring-boot-jpa.version>3.0.4</spring-boot-jpa.version>
         <spring-boot-security.version>3.0.4</spring-boot-security.version>
         <spring-boot-validation.version>3.0.4</spring-boot-validation.version>
@@ -25,6 +25,7 @@
         <spring-boot-test.version>3.1.0</spring-boot-test.version>
         <spring-security-test.version>6.0.2</spring-security-test.version>
         <spring-cloud-gcp-dependencies.version>4.1.2</spring-cloud-gcp-dependencies.version>
+        <spring-cloud-gcp-mysql.version>4.1.4</spring-cloud-gcp-mysql.version>
         <passay.version>1.0</passay.version>
         <mysql-connector.version>8.0.32</mysql-connector.version>
         <jsonwebtoken.version>0.11.5</jsonwebtoken.version>
@@ -46,7 +47,6 @@
         <dependency>
             <groupId>com.google.cloud</groupId>
             <artifactId>spring-cloud-gcp-starter-sql-mysql</artifactId>
-            <version>4.1.2</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -77,18 +77,18 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>${version.lombok}</version>
+            <version>${lombok.version}</version>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
-            <version>${version.mapstruct}</version>
+            <version>${org.mapstruct.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok-mapstruct-binding</artifactId>
-            <version>${version.mapstruct-lombok}</version>
+            <version>${mapstruct-lombok.version}</version>
         </dependency>
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
@@ -153,19 +153,24 @@
                         <path>
                             <groupId>org.mapstruct</groupId>
                             <artifactId>mapstruct-processor</artifactId>
-                            <version>${version.mapstruct}</version>
+                            <version>${org.mapstruct.version}</version>
                         </path>
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
-                            <version>${version.lombok}</version>
+                            <version>${lombok.version}</version>
                         </path>
-                        <path>
+                        <dependency>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok-mapstruct-binding</artifactId>
-                            <version>${version.mapstruct-lombok}</version>
-                        </path>
+                            <version>${mapstruct-lombok.version}</version>
+                        </dependency>
                     </annotationProcessorPaths>
+                    <compilerArgs>
+                        <compilerArg>
+                            -Amapstruct.defaultComponentModel=spring
+                        </compilerArg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
             <plugin>
