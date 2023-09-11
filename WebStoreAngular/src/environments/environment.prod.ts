@@ -1,4 +1,7 @@
+const dotenv = require('dotenv');
+dotenv.config();
+
 export const environment = {
   production: true,
-  apiBaseUrl: '//toysland-spring-v1-0-lazlbfo5va-ew.a.run.app/api/v1',
+  apiBaseUrl: process.env.API_BASE_URL,
 };
