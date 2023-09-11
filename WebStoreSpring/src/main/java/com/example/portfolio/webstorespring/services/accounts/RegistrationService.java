@@ -7,7 +7,7 @@ import com.example.portfolio.webstorespring.model.entity.accounts.AccountRoles;
 import com.example.portfolio.webstorespring.model.entity.accounts.ConfirmationToken;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
 import com.example.portfolio.webstorespring.services.email.EmailSenderService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,15 +15,23 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 
 @Service
-@RequiredArgsConstructor()
 public class RegistrationService {
 
     private final BCryptPasswordEncoder encoder;
     private final ConfirmationTokenService confirmationTokenService;
-    @Qualifier("confirmEmailSender")
     private final EmailSenderService emailSenderService;
     private final AccountRepository accountRepository;
 
+    @Autowired
+    public RegistrationService(BCryptPasswordEncoder encoder,
+                               ConfirmationTokenService confirmationTokenService,
+                               @Qualifier(value = "confirmEmailSender") EmailSenderService emailSenderService,
+                               AccountRepository accountRepository) {
+        this.encoder = encoder;
+        this.confirmationTokenService = confirmationTokenService;
+        this.emailSenderService = emailSenderService;
+        this.accountRepository = accountRepository;
+    }
 
     public Map<String, Object> registrationAccount(RegistrationRequest registrationRequest) {
         Account account = setupNewAccount(registrationRequest);

@@ -5,8 +5,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-@Service
-@Qualifier("resetPasswordSender")
+@Service()
+@Qualifier(value = "resetPasswordSender")
 public class ResetPasswordSenderServiceImpl extends AbstractEmailSenderService {
 
     public ResetPasswordSenderServiceImpl(JavaMailSender javaMailSender) {

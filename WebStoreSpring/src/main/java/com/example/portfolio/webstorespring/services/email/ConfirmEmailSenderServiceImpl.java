@@ -6,7 +6,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 @Service()
-@Qualifier("confirmEmailSender")
+@Qualifier(value = "confirmEmailSender")
 public class ConfirmEmailSenderServiceImpl extends AbstractEmailSenderService {
 
     public ConfirmEmailSenderServiceImpl(JavaMailSender javaMailSender) {
