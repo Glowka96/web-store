@@ -1,5 +1,5 @@
 # STEP 1: Build static website
-FROM gcr.io/google-appengine/nodejs AS builder
+FROM node:alpine as builder
 
 # Create app directory
 WORKDIR /app
@@ -12,7 +12,7 @@ RUN npm set progress=false && npm install
 COPY . /app
 
 # Build the Angular app
-RUN npm run build --configuration=production
+RUN npm run build --c=production
 
 # STEP 2: Build a small nginx image with the static website
 FROM nginx:alpine
