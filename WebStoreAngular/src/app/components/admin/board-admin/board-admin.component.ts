@@ -21,7 +21,7 @@ export class BoardAdminComponent implements OnInit {
     private subcategoryService: SubcategoryService,
     private router: Router
   ) {
-    this.loggedRole != sessionStorage.getItem('role');
+    this.loggedRole = sessionStorage.getItem('role')!;
     shopService.categories$.subscribe((categories) => {
       this.categories = categories;
     });
@@ -37,7 +37,7 @@ export class BoardAdminComponent implements OnInit {
   }
 
   public isAdmin() {
-    return this.loggedRole == 'ROLE_ADMIN';
+    return this.loggedRole === 'ROLE_ADMIN';
   }
 
   public get listCategories() {

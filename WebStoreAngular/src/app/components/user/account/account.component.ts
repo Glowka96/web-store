@@ -11,11 +11,10 @@ export class AccountComponent implements OnInit {
   private accountId!: string;
   private account!: AccountResponse;
 
-  constructor(private accountService: AccountService) {
-    this.accountId != sessionStorage.getItem('id');
-  }
+  constructor(private accountService: AccountService) {}
 
   ngOnInit(): void {
+    this.accountId = sessionStorage.getItem('id')!;
     this.accountService.getAccount(this.accountId).subscribe((account) => {
       this.account = account;
     });
@@ -26,9 +25,9 @@ export class AccountComponent implements OnInit {
   }
 
   public getUserImageUrl() {
-    return this.account?.imageUrl
-      ? 'https://ik.imagekit.io/glowacki/a23SANX.png?updatedAt=1686001892311'
-      : this.account.imageUrl;
+    return this.account
+      ? this.account.imageUrl
+      : 'https://ik.imagekit.io/glowacki/a23SANX.png?updatedAt=1686001892311';
   }
 
   public get titleButton() {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { BehaviorSubject, map } from 'rxjs';
 import { __values } from 'tslib';
 import { Router } from '@angular/router';
 import { LoginRequest } from 'src/app/models/login-request';
@@ -11,6 +11,8 @@ import { LoginRequest } from 'src/app/models/login-request';
 })
 export class AuthenticationService {
   private apiServerUrl = environment.apiBaseUrl;
+  private _isAuthenticated$ = new BehaviorSubject<boolean>(false);
+  public readonly isAuthenticated$ = this._isAuthenticated$.asObservable();
 
   constructor(private http: HttpClient, private router: Router) {
     this.checkLogged();
@@ -28,10 +30,8 @@ export class AuthenticationService {
         sessionStorage.setItem('role', decodedJWT.role);
         sessionStorage.setItem('isLoggedIn', 'true');
 
+        this._isAuthenticated$.next(true);
         this.checkAdminRouteNav();
-
-        const headers = new HttpHeaders();
-        headers.set('Authorization', token);
       })
     );
   }
@@ -39,7 +39,6 @@ export class AuthenticationService {
   logout(): void {
     this.router.navigate([''], {
       queryParams: {},
-      queryParamsHandling: 'merge',
     });
     const headers = new HttpHeaders().set(
       'Authorization',
@@ -49,6 +48,7 @@ export class AuthenticationService {
       .post(`${this.apiServerUrl}/logout`, { headers: headers })
       .subscribe(() => {
         sessionStorage.clear();
+        this._isAuthenticated$.next(false);
       });
   }
 
@@ -59,6 +59,7 @@ export class AuthenticationService {
   }
 
   private checkLogged() {
+    console.log('check logged');
     const token = sessionStorage.getItem('token');
     if (token) {
       const decodedJWT = this.getDecodedJWT(token);
