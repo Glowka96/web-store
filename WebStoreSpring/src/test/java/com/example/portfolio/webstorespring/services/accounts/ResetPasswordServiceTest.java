@@ -67,7 +67,7 @@ class ResetPasswordServiceTest {
     @Test
     void shouldResetPassword() {
         // given
-        excepted = Map.of("message", ResetPasswordType.PASSWORD.getMessage());
+        excepted = Map.of("message", ResetPasswordType.PASSWORD.getInformationMessage());
 
         // when
         when(accountRepository.findByEmail(anyString())).thenReturn(Optional.ofNullable(account));
