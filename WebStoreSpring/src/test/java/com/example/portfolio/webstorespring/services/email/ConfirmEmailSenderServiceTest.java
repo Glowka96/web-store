@@ -32,7 +32,7 @@ class ConfirmEmailSenderServiceImplTest {
         String token = "test1234";
 
         Map<String, Object> excepted = new HashMap<>();
-        excepted.put("message", ConfirmEmailType.REGISTRATION.getMessage());
+        excepted.put("message", ConfirmEmailType.REGISTRATION.getInformationMessage());
 
         // when
         doNothing().when(javaMailSender).send(any(SimpleMailMessage.class));

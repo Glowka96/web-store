@@ -69,7 +69,7 @@ class RegistrationServiceTest {
     @Test
     void shouldRegistrationAccount() {
         // given
-        excepted = Map.of("message", ConfirmEmailType.REGISTRATION.getMessage());
+        excepted = Map.of("message", ConfirmEmailType.REGISTRATION.getInformationMessage());
         // when
         when(confirmationTokenService.createConfirmationToken(any(Account.class))).thenReturn(confirmationToken);
         when(emailSenderService.sendEmail(anyString(), anyString()))

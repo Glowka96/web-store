@@ -22,12 +22,12 @@ public abstract class AbstractEmailSenderService implements EmailSenderService {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(email);
         mailMessage.setSubject(emailTypeStrategy.getTitle());
-        mailMessage.setText(emailTypeStrategy.getLink() + token);
+        mailMessage.setText(emailTypeStrategy.getEmailMessageWithLink() + token);
         mailMessage.setFrom(senderEmail);
 
         javaMailSender.send(mailMessage);
 
-        return Map.of("message", emailTypeStrategy.getMessage());
+        return Map.of("message", emailTypeStrategy.getInformationMessage());
     }
 
     public void setEmailTypeStrategy(EmailTypeStrategy emailTypeStrategy) {
