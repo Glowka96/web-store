@@ -42,7 +42,7 @@ class ResetPasswordControllerTest {
 
     @Test
     void shouldResetPassword() throws Exception {
-        result = Map.of("message", ResetPasswordType.PASSWORD.getMessage());
+        result = Map.of("message", ResetPasswordType.PASSWORD.getInformationMessage());
 
         given(resetPasswordService.resetPasswordByEmail(anyString())).willReturn(result);
 

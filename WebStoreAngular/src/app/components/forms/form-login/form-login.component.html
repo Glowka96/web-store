@@ -1,13 +1,13 @@
 <div class="login-container">
     <div class="btn-box">
-        <button class="btn-close" (click)="closeLoginForm()">
+        <button class="btn-close" (click)="closeLoginForm()" aria-label="close">
             <i class="icon-cancel"></i>
         </button>
     </div>
     <div class="slider"></div>
     <div class="btn">
-        <button class="login" (click)="onLogin()">Login</button>
-        <button class="signup" (click)="onSignup()">Signup</button>
+        <button class="login" (click)="onLogin()" aria-label="login">Login</button>
+        <button class="signup" (click)="onSignup()" aria-label="signup">Signup</button>
     </div>
     <div class="form-section">
         <form class="login-box" [formGroup]="loginForm" (ngSubmit)="onSumbitLogin()" *ngIf="!getFormSectionMove">

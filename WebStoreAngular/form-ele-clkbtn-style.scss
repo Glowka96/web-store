@@ -49,3 +49,12 @@
     transform: none;
   }
 }
+
+@media only screen and (max-width: 532px) {
+  .ele {
+    max-width: 260px;
+  }
+  .btn-close {
+    left: 90%;
+  }
+}

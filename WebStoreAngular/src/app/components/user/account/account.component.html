@@ -22,8 +22,10 @@
         <p><span class="data">First name: </span>{{user.firstName}} </p>
         <p><span class="data">Last name: </span>{{user.lastName}} </p>
         <p><span class="data">Email: </span>{{user.email}}</p>
-        <p><span class="data">City: </span>{{user.address.city}}</p>
-        <p><span class="data">Postcode: </span>{{user.address.postcode}}</p>
-        <p><span class="data">Street: </span>{{user.address.street}}</p>
+        <span *ngIf="user.address">
+            <p><span class="data">City: </span>{{user.address.city}}</p>
+            <p><span class="data">Postcode: </span>{{user.address.postcode}}</p>
+            <p><span class="data">Street: </span>{{user.address.street}}</p>
+        </span>
     </div>
 </section>

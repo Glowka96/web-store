@@ -47,8 +47,9 @@ export class NavigationComponent implements OnInit {
     categoryService.categories$.subscribe((categories) => {
       this.categories = categories;
     });
-    const isLogIn = sessionStorage.getItem('isLoggedIn');
-    isLogIn === 'true' ? (this.isLogIn = true) : (this.isLogIn = false);
+    authService.isAuthenticated$.subscribe((isLogIn) => {
+      this.isLogIn = isLogIn;
+    });
   }
 
   ngOnInit() {
