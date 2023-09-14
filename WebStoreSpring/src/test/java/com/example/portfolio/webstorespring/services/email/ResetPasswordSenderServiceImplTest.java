@@ -31,7 +31,7 @@ class ResetPasswordSenderServiceImplTest {
         String token = "test1234";
 
         Map<String, Object> excepted = new HashMap<>();
-        excepted.put("message", ResetPasswordType.PASSWORD.getMessage());
+        excepted.put("message", ResetPasswordType.PASSWORD.getInformationMessage());
 
         // when
         doNothing().when(javaMailSender).send(any(SimpleMailMessage.class));
