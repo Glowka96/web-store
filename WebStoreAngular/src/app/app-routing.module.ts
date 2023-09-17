@@ -9,8 +9,9 @@ import { FormAccountComponent } from './components/forms/form-account/form-accou
 import { FormAccountAddressComponent } from './components/forms/form-account-address/form-account-address.component';
 import { OrdersComponent } from './components/user/orders/orders.component';
 import { HomeComponent } from './components/home/home.component';
-import { ConfirmComponent } from './components/confirm/confirm.component';
 import { FormResetPasswordComponent } from './components/forms/form-reset-password/form-reset-password.component';
+import { ConfirmAccountComponent } from './components/confirms/confirm-account/confirm-account.component';
+import { ConfirmResetPasswordComponent } from './components/confirms/confirm-reset-password/confirm-reset-password.component';
 
 const routes: Routes = [
   {
@@ -26,8 +27,9 @@ const routes: Routes = [
   { path: 'accounts/address/update', component: FormAccountAddressComponent },
   { path: 'accounts/orders', component: OrdersComponent },
   { path: '', component: HomeComponent },
-  { path: 'registration/confirm', component: ConfirmComponent },
+  { path: 'registration/confirm', component: ConfirmAccountComponent },
   { path: 'reset-password', component: FormResetPasswordComponent },
+  { path: 'reset-password/confirm', component: ConfirmResetPasswordComponent },
 ];
 
 @NgModule({

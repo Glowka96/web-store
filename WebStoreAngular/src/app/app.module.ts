@@ -23,9 +23,10 @@ import { FormAccountAddressComponent } from './components/forms/form-account-add
 import { OrdersComponent } from './components/user/orders/orders.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { HomeComponent } from './components/home/home.component';
-import { ConfirmComponent } from './components/confirm/confirm.component';
 import { FormResetPasswordComponent } from './components/forms/form-reset-password/form-reset-password.component';
 import { AuthHttpInterceptorService } from './services/accounts/auth-http-interceptor.service';
+import { ConfirmAccountComponent } from './components/confirms/confirm-account/confirm-account.component';
+import { ConfirmResetPasswordComponent } from './components/confirms/confirm-reset-password/confirm-reset-password.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { AuthHttpInterceptorService } from './services/accounts/auth-http-interc
     FormAccountAddressComponent,
     OrdersComponent,
     HomeComponent,
-    ConfirmComponent,
+    ConfirmAccountComponent,
+    ConfirmResetPasswordComponent,
     FormResetPasswordComponent,
   ],
   imports: [
