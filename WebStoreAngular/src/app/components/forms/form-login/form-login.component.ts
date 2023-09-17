@@ -10,6 +10,7 @@ import { RegistrationRequest } from 'src/app/models/registration-request';
 import { AuthenticationService } from 'src/app/services/accounts/authentication.service';
 import { FormLoginService } from 'src/app/services/accounts/form-login.service';
 import { RegistrationService } from 'src/app/services/accounts/registration.service';
+import { PasswordMatchValidatorService } from 'src/app/services/password-match-validator.service';
 
 @Component({
   selector: 'app-form',
@@ -81,26 +82,16 @@ export class FormLoginComponent implements OnInit {
       }),
     },
     {
-      validators: this.passwordMatchValidator,
+      validators: this.passwordMatchValidatorService.validatePasswordMatch,
     }
   );
-
-  passwordMatchValidator(formGroup: FormGroup) {
-    const passwordControl = formGroup.get('password');
-    const confirmPasswordControl = formGroup.get('confirmPassword');
-
-    if (passwordControl?.value !== confirmPasswordControl?.value) {
-      confirmPasswordControl?.setErrors({ passwordMatch: true });
-    } else {
-      confirmPasswordControl?.setErrors(null);
-    }
-  }
 
   constructor(
     private registrationService: RegistrationService,
     private authenticationService: AuthenticationService,
     private formBuilder: FormBuilder,
-    private formService: FormLoginService
+    private formService: FormLoginService,
+    private passwordMatchValidatorService: PasswordMatchValidatorService
   ) {}
 
   ngOnInit(): void {}
