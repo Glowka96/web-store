@@ -109,14 +109,11 @@
       max-width: 500px;
       padding: 0px 20px;
       font-family: "Baloo 2", cursive;
-      .form-group .alert {
+      .form-control-box .alert {
         display: flex;
         flex-direction: column;
         margin-left: 30px;
         margin-top: 10px;
-      }
-      .form-group .errors {
-        color: red;
       }
     }
   }
