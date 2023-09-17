@@ -10,7 +10,7 @@ import { RegistrationRequest } from 'src/app/models/registration-request';
 import { AuthenticationService } from 'src/app/services/accounts/authentication.service';
 import { FormLoginService } from 'src/app/services/accounts/form-login.service';
 import { RegistrationService } from 'src/app/services/accounts/registration.service';
-import { PasswordMatchValidatorService } from 'src/app/services/password-match-validator.service';
+import { PasswordFormBuilderService } from 'src/app/services/forms/password-form-builder.service';
 
 @Component({
   selector: 'app-form',
@@ -21,8 +21,7 @@ export class FormLoginComponent implements OnInit {
   private formSectionMove = false;
   private successMessage?: string | null;
   private errorMessage?: string | null;
-  private passwordPattern =
-    /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/;
+
   private emailPattern = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
 
   public loginForm = new FormGroup({
@@ -36,62 +35,38 @@ export class FormLoginComponent implements OnInit {
     }),
   });
 
-  public registrationForm = this.formBuilder.group(
-    {
-      firstName: new FormControl('', {
-        validators: [
-          Validators.minLength(3),
-          Validators.maxLength(20),
-          Validators.pattern('[a-zA-Z ]*'),
-          Validators.required,
-        ],
-        updateOn: 'change',
-      }),
-      lastName: new FormControl('', {
-        validators: [
-          Validators.minLength(3),
-          Validators.maxLength(20),
-          Validators.pattern('[a-zA-Z ]*'),
-          Validators.required,
-        ],
-        updateOn: 'change',
-      }),
-      email: new FormControl('', {
-        validators: [
-          Validators.required,
-          Validators.pattern(this.emailPattern),
-        ],
-        updateOn: 'change',
-      }),
-      password: new FormControl('', {
-        validators: [
-          Validators.required,
-          Validators.pattern(this.passwordPattern),
-          Validators.minLength(8),
-          Validators.maxLength(30),
-        ],
-      }),
-      confirmPassword: new FormControl('', {
-        validators: [
-          Validators.required,
-          Validators.pattern(this.passwordPattern),
-          Validators.minLength(8),
-          Validators.maxLength(30),
-        ],
-        updateOn: 'change',
-      }),
-    },
-    {
-      validators: this.passwordMatchValidatorService.validatePasswordMatch,
-    }
-  );
+  public registrationForm = this.formBuilder.group({
+    firstName: new FormControl('', {
+      validators: [
+        Validators.minLength(3),
+        Validators.maxLength(20),
+        Validators.pattern('[a-zA-Z ]*'),
+        Validators.required,
+      ],
+      updateOn: 'change',
+    }),
+    lastName: new FormControl('', {
+      validators: [
+        Validators.minLength(3),
+        Validators.maxLength(20),
+        Validators.pattern('[a-zA-Z ]*'),
+        Validators.required,
+      ],
+      updateOn: 'change',
+    }),
+    email: new FormControl('', {
+      validators: [Validators.required, Validators.pattern(this.emailPattern)],
+      updateOn: 'change',
+    }),
+    passwordGroup: this.passwordFormControlService.createPasswordFormGroup(),
+  });
 
   constructor(
     private registrationService: RegistrationService,
     private authenticationService: AuthenticationService,
     private formBuilder: FormBuilder,
     private formService: FormLoginService,
-    private passwordMatchValidatorService: PasswordMatchValidatorService
+    private passwordFormControlService: PasswordFormBuilderService
   ) {}
 
   ngOnInit(): void {}
@@ -118,10 +93,10 @@ export class FormLoginComponent implements OnInit {
   onSubmitRegister() {
     if (this.registrationForm.valid) {
       const request: RegistrationRequest = {
-        firstName: this.registrationForm.controls['firstName']?.value,
-        lastName: this.registrationForm.controls['lastName']?.value,
-        email: this.registrationForm.controls['email']?.value,
-        password: this.registrationForm.controls['password'].value,
+        firstName: this.registrationForm.controls['firstName']?.value ?? '',
+        lastName: this.registrationForm.controls['lastName']?.value ?? '',
+        email: this.registrationForm.controls['email']?.value ?? '',
+        password: this.registrationForm.get('passwordGroup.password')?.value ?? '',
       };
       this.registrationService.register(request).subscribe({
         next: (response) => {
