@@ -8,6 +8,7 @@ import {
 import { Router } from '@angular/router';
 import { AccountRequest } from 'src/app/models/account-request';
 import { AccountService } from 'src/app/services/accounts/account.service';
+import { PasswordMatchValidatorService } from 'src/app/services/password-match-validator.service';
 
 @Component({
   selector: 'app-form-account',
@@ -64,25 +65,15 @@ export class FormAccountComponent implements OnInit {
       updateOn: 'change',
     },
     {
-      validators: this.passwordMatchValidator,
+      validators: this.passwordMatchValidatorService.validatePasswordMatch,
     }
   );
-
-  passwordMatchValidator(formGroup: FormGroup) {
-    const passwordControl = formGroup.get('password');
-    const confirmPasswordControl = formGroup.get('confirmPassword');
-
-    if (passwordControl?.value !== confirmPasswordControl?.value) {
-      confirmPasswordControl?.setErrors({ passwordMatch: true });
-    } else {
-      confirmPasswordControl?.setErrors(null);
-    }
-  }
 
   constructor(
     private accountService: AccountService,
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private passwordMatchValidatorService: PasswordMatchValidatorService
   ) {
     this.accountId != sessionStorage.getItem('id');
   }
