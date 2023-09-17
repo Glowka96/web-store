@@ -1,55 +1,58 @@
-<section class="wrapper-form">
-    <div class="title">
-        <h1>Modification account address data</h1>
+<section class="form-container">
+    <div class="form-wrapper">
+        <div class="title-box">
+            <h1>Modification account address data</h1>
+        </div>
+        <form class="form-group-box" [formGroup]="accountAddressForm" (ngSubmit)="onSumbite()">
+            <div class="form-control-box">
+                <div class="input-box">
+                    <label for="city">City: </label>
+                    <input id="city" class="ele" formControlName="city" type="text">
+                </div>
+                <div *ngIf="accountAddressForm.get('city')?.invalid && accountAddressForm.get('city')?.dirty"
+                    class="errors">
+                    <small *ngIf="accountAddressForm.get('city')?.errors?.['required']">The city is
+                        required.
+                        <br></small>
+                    <small *ngIf="accountAddressForm.get('city')?.errors?.['minLength'] || ['maxLength']">The city must
+                        be
+                        between min 2 and max 32 letters.<br></small>
+                    <small *ngIf="accountAddressForm.get('city')?.errors?.['pattern']">
+                        The city cannot have numbers or special char.
+                    </small>
+                </div>
+            </div>
+            <div class="form-control-box">
+                <div class="input-box">
+                    <label for="postcode">Postcode: </label>
+                    <input id="postcode" class="ele" formControlName="postcode" type="text">
+                </div>
+                <div *ngIf="accountAddressForm.get('postcode')?.invalid && accountAddressForm.get('postcode')?.dirty"
+                    class="errors">
+                    <small *ngIf="accountAddressForm.get('postcode')?.errors?.['required']">The postcode is
+                        required<br></small>
+                    <small *ngIf="accountAddressForm.get('postcode')?.errors?.['pattern']">The postcode is invalid.
+                        <br>The correct form is e.g 99-999</small>
+                </div>
+            </div>
+            <div class="form-control-box">
+                <div class="input-box">
+                    <label for="street">Steet: </label>
+                    <input id="street" class="ele" formControlName="street" type="text">
+                </div>
+                <div *ngIf="accountAddressForm.get('street')?.invalid && accountAddressForm.get('street')?.dirty"
+                    class="errors">
+                    <small *ngIf="accountAddressForm.get('street')?.errors?.['required']">The street is
+                        required.<br></small>
+                    <small *ngIf="accountAddressForm.get('street')?.errors?.['pattern']">The street is invalid.
+                        <br>The correct forms is e.g: street 50/21, ul. street 50 m 21, ul street 50 m. 20a
+                    </small>
+                </div>
+            </div>
+            <button type="submit" class="clkbtn">{{titleBtn}}</button>
+            <div *ngIf="getErrorMessage" class="errors" role="alert">
+                <span [innerHTML]="getErrorMessage"></span>
+            </div>
+        </form>
     </div>
-    <form class="box" [formGroup]="accountAddressForm" (ngSubmit)="onSumbite()">
-        <div class="form-group">
-            <div class="input-box">
-                <label for="city">City: </label>
-                <input id="city" class="ele" formControlName="city" type="text">
-            </div>
-            <div *ngIf="accountAddressForm.get('city')?.invalid && accountAddressForm.get('city')?.dirty"
-                class="errors">
-                <small *ngIf="accountAddressForm.get('city')?.errors?.['required']">The city is
-                    required.
-                    <br></small>
-                <small *ngIf="accountAddressForm.get('city')?.errors?.['minLength'] || ['maxLength']">The city must be
-                    between min 2 and max 32 letters.<br></small>
-                <small *ngIf="accountAddressForm.get('city')?.errors?.['pattern']">
-                    The city cannot have numbers or special char.
-                </small>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="input-box">
-                <label for="postcode">Postcode: </label>
-                <input id="postcode" class="ele" formControlName="postcode" type="text">
-            </div>
-            <div *ngIf="accountAddressForm.get('postcode')?.invalid && accountAddressForm.get('postcode')?.dirty"
-                class="errors">
-                <small *ngIf="accountAddressForm.get('postcode')?.errors?.['required']">The postcode is
-                    required<br></small>
-                <small *ngIf="accountAddressForm.get('postcode')?.errors?.['pattern']">The postcode is invalid.
-                    <br>The correct form is e.g 99-999</small>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="input-box">
-                <label for="street">Steet: </label>
-                <input id="street" class="ele" formControlName="street" type="text">
-            </div>
-            <div *ngIf="accountAddressForm.get('street')?.invalid && accountAddressForm.get('street')?.dirty"
-                class="errors">
-                <small *ngIf="accountAddressForm.get('street')?.errors?.['required']">The street is
-                    required.<br></small>
-                <small *ngIf="accountAddressForm.get('street')?.errors?.['pattern']">The street is invalid.
-                    <br>The correct forms is e.g: street 50/21, ul. street 50 m 21, ul street 50 m. 20a
-                </small>
-            </div>
-        </div>
-        <button type="submit" class="clkbtn">{{titleBtn}}</button>
-        <div *ngIf="getErrorMessage" class="errors" role="alert">
-            <span [innerHTML]="getErrorMessage"></span>
-        </div>
-    </form>
 </section>

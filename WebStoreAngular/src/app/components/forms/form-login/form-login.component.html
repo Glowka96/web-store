@@ -27,7 +27,7 @@
         </form>
         <form class="signup-box" [formGroup]="registrationForm" (ngSubmit)="onSubmitRegister()"
             *ngIf="getFormSectionMove">
-            <div class="form-group">
+            <div class="form-control-box">
                 <input formControlName="firstName" type="text" class="name ele" placeholder="Name" />
                 <div *ngIf="registrationForm.get('firstName')?.invalid && (registrationForm.get('firstName')?.dirty)"
                     class="errors">
@@ -41,7 +41,7 @@
                         The first name cannot have numbers.</small>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-control-box">
                 <input formControlName="lastName" type="text" class="email ele" placeholder="Last name" />
                 <div *ngIf="registrationForm.get('lastName')?.invalid && (registrationForm.get('lastName')?.dirty)"
                     class="errors">
@@ -56,7 +56,7 @@
                     </small>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-control-box">
                 <input formControlName="email" type="email" class="email ele" placeholder="Email" />
                 <div *ngIf="registrationForm.get('email')?.invalid && (registrationForm.get('email')?.dirty)"
                     class="errors">
@@ -68,7 +68,7 @@
                     </small>
                 </div>
             </div>
-            <div class="form-group" formGroupName="passwordGroup">
+            <div class="form-control-box" formGroupName="passwordGroup">
                 <input formControlName="password" type="password" class="password ele" placeholder="Password" />
                 <div *ngIf="registrationForm.get('passwordGroup.password')?.invalid && (registrationForm.get('passwordGroup.password')?.dirty)"
                     class="errors">
@@ -84,7 +84,7 @@
                     </small>
                 </div>
             </div>
-            <div class="form-group" formGroupName="passwordGroup">
+            <div class="form-control-box" formGroupName="passwordGroup">
                 <input formControlName="confirmPassword" type="password" class="password ele"
                     placeholder="Confirm password" />
                 <div *ngIf="registrationForm.get('passwordGroup.confirmPassword')?.invalid && (registrationForm.get('passwordGroup.confirmPassword')?.dirty)"
@@ -93,7 +93,7 @@
                         The confirm password is required.<br>
                     </small>
                     <small *ngIf="registrationForm.hasError('passwordMatch', 'passwordGroup')">
-                        Passwords do not match.
+                        The passwords are diffrent.
                     </small>
                 </div>
             </div>

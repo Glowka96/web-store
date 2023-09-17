@@ -8,7 +8,7 @@ import { ResetPasswordService } from 'src/app/services/accounts/reset-password.s
   styleUrls: ['./form-reset-password.component.scss'],
 })
 export class FormResetPasswordComponent {
-  private message?: string;
+  private responseMessage?: string;
   private emailPattern = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
 
   public resetPasswordForm = new FormGroup({
@@ -25,16 +25,16 @@ export class FormResetPasswordComponent {
       const email = this.resetPasswordForm.controls['email'].value ?? '';
       this.resetPasswordService.sendResetPasswordLink(email).subscribe({
         next: (response) => {
-          this.message = response.message;
+          this.responseMessage = response.message;
         },
         error: (error) => {
-          this.message = error.error.errors.join('<br>');
+          this.responseMessage = error.error.errors.join('<br>');
         },
       });
     }
   }
 
-  public get getMessage() {
-    return this.message;
+  public get responseMsg() {
+    return this.responseMessage;
   }
 }
