@@ -8,7 +8,7 @@ import {
 import { Router } from '@angular/router';
 import { AccountRequest } from 'src/app/models/account-request';
 import { AccountService } from 'src/app/services/accounts/account.service';
-import { PasswordMatchValidatorService } from 'src/app/services/password-match-validator.service';
+import { PasswordFormBuilderService } from 'src/app/services/forms/password-form-builder.service';
 
 @Component({
   selector: 'app-form-account',
@@ -18,62 +18,39 @@ import { PasswordMatchValidatorService } from 'src/app/services/password-match-v
 export class FormAccountComponent implements OnInit {
   private accountId!: string;
   private errorMessage!: string;
-  private passwordPattern =
-    /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/;
   private imageUrlPattern = /https?:\/\/.*\.(?:png|jpg)/;
 
-  public accountForm = this.formBuilder.group(
-    {
-      firstName: new FormControl('', {
-        validators: [
-          Validators.required,
-          Validators.minLength(3),
-          Validators.maxLength(20),
-          Validators.pattern('[a-zA-Z]+'),
-        ],
-        updateOn: 'change',
-      }),
-      lastName: new FormControl('', {
-        validators: [
-          Validators.required,
-          Validators.minLength(3),
-          Validators.maxLength(20),
-          Validators.pattern('[a-zA-Z]+'),
-        ],
-        updateOn: 'change',
-      }),
-      password: new FormControl('', {
-        validators: [
-          Validators.required,
-          Validators.pattern(this.passwordPattern),
-          Validators.minLength(8),
-          Validators.maxLength(30),
-        ],
-        updateOn: 'change',
-      }),
-      confirmPassword: new FormControl('', {
-        validators: [
-          Validators.pattern(this.passwordPattern),
-          Validators.minLength(8),
-          Validators.maxLength(30),
-        ],
-        updateOn: 'change',
-      }),
-      imageUrl: new FormControl('', {
-        validators: [Validators.pattern(this.imageUrlPattern)],
-      }),
+  public accountForm = this.formBuilder.group({
+    firstName: new FormControl('', {
+      validators: [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(20),
+        Validators.pattern('[a-zA-Z]+'),
+      ],
       updateOn: 'change',
-    },
-    {
-      validators: this.passwordMatchValidatorService.validatePasswordMatch,
-    }
-  );
+    }),
+    lastName: new FormControl('', {
+      validators: [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(20),
+        Validators.pattern('[a-zA-Z]+'),
+      ],
+      updateOn: 'change',
+    }),
+    passwordGroup: this.passwordFormControlService.createPasswordFormGroup(),
+    imageUrl: new FormControl('', {
+      validators: [Validators.pattern(this.imageUrlPattern)],
+    }),
+    updateOn: 'change',
+  });
 
   constructor(
     private accountService: AccountService,
     private formBuilder: FormBuilder,
     private router: Router,
-    private passwordMatchValidatorService: PasswordMatchValidatorService
+    private passwordFormControlService: PasswordFormBuilderService
   ) {
     this.accountId != sessionStorage.getItem('id');
   }
@@ -83,10 +60,10 @@ export class FormAccountComponent implements OnInit {
   onSumbitUpdate() {
     if (this.accountForm.valid) {
       const request: AccountRequest = {
-        firstName: this.accountForm.controls['firstName']?.value,
-        lastName: this.accountForm.controls['lastName']?.value,
-        password: this.accountForm.controls['password']?.value,
-        imageUrl: this.accountForm.controls['imageUrl']?.value,
+        firstName: this.accountForm.controls['firstName']?.value ?? '',
+        lastName: this.accountForm.controls['lastName']?.value ?? '',
+        password: this.accountForm.get('passwordGroup.password')?.value ?? '',
+        imageUrl: this.accountForm.controls['imageUrl']?.value ?? '',
       };
       this.accountService.updateAccount(this.accountId, request).subscribe({
         next: () => {
