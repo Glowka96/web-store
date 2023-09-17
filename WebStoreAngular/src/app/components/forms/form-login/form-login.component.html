@@ -31,60 +31,70 @@
                 <input formControlName="firstName" type="text" class="name ele" placeholder="Name" />
                 <div *ngIf="registrationForm.get('firstName')?.invalid && (registrationForm.get('firstName')?.dirty)"
                     class="errors">
-                    <small *ngIf="registrationForm.get('firstName')?.errors?.['required']">The first name is
-                        required.
-                        <br></small>
-                    <small *ngIf="registrationForm.get('firstName')?.errors?.['minLength'] || ['maxLength']">The first
-                        name must be between min 3 and max 20 letters.<br></small>
-                    <small *ngIf="registrationForm.get('firstName')?.errors?.['pattern']">The first name cannot have
-                        numbers.</small>
+                    <small *ngIf="registrationForm.get('firstName')?.errors?.['required']">
+                        The first name is required.<br>
+                    </small>
+                    <small *ngIf="registrationForm.get('firstName')?.errors?.['minLength'] || ['maxLength']">
+                        The first name must be between min 3 and max 20 letters.<br>
+                    </small>
+                    <small *ngIf="registrationForm.get('firstName')?.errors?.['pattern']">
+                        The first name cannot have numbers.</small>
                 </div>
             </div>
             <div class="form-group">
                 <input formControlName="lastName" type="text" class="email ele" placeholder="Last name" />
                 <div *ngIf="registrationForm.get('lastName')?.invalid && (registrationForm.get('lastName')?.dirty)"
                     class="errors">
-                    <small *ngIf="registrationForm.get('lastName')?.errors?.['required']">The last name is
-                        required.<br></small>
-                    <small *ngIf="registrationForm.get('lastName')?.errors?.['minLength'] || ['maxLength']">The last
-                        name must be between min 3 and max 20 letters.<br></small>
-                    <small *ngIf="registrationForm.get('lastName')?.errors?.['pattern']">The last name cannot have
-                        numbers.</small>
+                    <small *ngIf="registrationForm.get('lastName')?.errors?.['required']">
+                        The last name is required.<br>
+                    </small>
+                    <small *ngIf="registrationForm.get('lastName')?.errors?.['minLength'] || ['maxLength']">
+                        The last name must be between min 3 and max 20 letters.<br>
+                    </small>
+                    <small *ngIf="registrationForm.get('lastName')?.errors?.['pattern']">
+                        The last name cannot havenumbers.
+                    </small>
                 </div>
             </div>
             <div class="form-group">
                 <input formControlName="email" type="email" class="email ele" placeholder="Email" />
                 <div *ngIf="registrationForm.get('email')?.invalid && (registrationForm.get('email')?.dirty)"
                     class="errors">
-                    <small *ngIf="registrationForm.get('email')?.errors?.['required']">The email is
-                        required.<br></small>
-                    <small *ngIf="registrationForm.get('email')?.errors?.['pattern']">Invalid the email
-                        format.<br></small>
-                </div>
-            </div>
-            <div class="form-group">
-                <input formControlName="password" type="password" class="password ele" placeholder="Password" />
-                <div *ngIf="registrationForm.get('password')?.invalid && (registrationForm.get('password')?.dirty)"
-                    class="errors">
-                    <small *ngIf="registrationForm.get('password')?.errors?.['required']">The password is
-                        required.<br></small>
-                    <small *ngIf="registrationForm.get('password')?.errors?.['minLength'] || ['maxLength']">The password
-                        must be between min 8 and max 30 letters.<br></small>
-                    <small *ngIf="registrationForm.get('password')?.errors?.['pattern']">The password must contain at
-                        least: <br> - one uppercase letter <br> - one lowercase letter <br> - one special character
+                    <small *ngIf="registrationForm.get('email')?.errors?.['required']">
+                        The email is required.<br>
+                    </small>
+                    <small *ngIf="registrationForm.get('email')?.errors?.['pattern']">
+                        Invalid the email format.<br>
                     </small>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" formGroupName="passwordGroup">
+                <input formControlName="password" type="password" class="password ele" placeholder="Password" />
+                <div *ngIf="registrationForm.get('passwordGroup.password')?.invalid && (registrationForm.get('passwordGroup.password')?.dirty)"
+                    class="errors">
+                    <small *ngIf="registrationForm.get('passwordGroup.password')?.errors?.['required']">
+                        The password is required.<br></small>
+                    <small
+                        *ngIf="registrationForm.get('passwordGroup.password')?.errors?.['minLength'] || ['maxLength']">
+                        The password must be between min 8 and max 30 letters.<br>
+                    </small>
+                    <small *ngIf="registrationForm.get('passwordGroup.password')?.errors?.['pattern']">
+                        The password must contain at least: <br>
+                        - one uppercase letter <br> - one lowercase letter <br> - one special character
+                    </small>
+                </div>
+            </div>
+            <div class="form-group" formGroupName="passwordGroup">
                 <input formControlName="confirmPassword" type="password" class="password ele"
                     placeholder="Confirm password" />
-                <div *ngIf="registrationForm.get('confirmPassword')?.invalid && (registrationForm.get('confirmPassword')?.dirty)"
+                <div *ngIf="registrationForm.get('passwordGroup.confirmPassword')?.invalid && (registrationForm.get('passwordGroup.confirmPassword')?.dirty)"
                     class="errors">
-                    <small *ngIf="registrationForm.get('confirmPassword')?.errors?.['required']">The confirm password is
-                        required.<br>
+                    <small *ngIf="registrationForm.get('passwordGroup.confirmPassword')?.errors?.['required']">
+                        The confirm password is required.<br>
                     </small>
-                    <small *ngIf="registrationForm.get('confirmPassword')?.errors?.['passwordMatch']">The passwords are
-                        diffrent.</small>
+                    <small *ngIf="registrationForm.hasError('passwordMatch', 'passwordGroup')">
+                        Passwords do not match.
+                    </small>
                 </div>
             </div>
             <div *ngIf="getSuccessMessage" class="alert" role="alert">
