@@ -31,10 +31,12 @@
   &:active {
     transform: scale(0.9);
   }
-  a {
-    text-decoration: none;
-    color: black;
-  }
+}
+
+a {
+  text-decoration: none;
+  color: black;
+  font-weight: 600;
 }
 
 .disabled-btn {
@@ -48,6 +50,10 @@
   &:active {
     transform: none;
   }
+}
+
+.errors {
+  color: red;
 }
 
 @media only screen and (max-width: 532px) {

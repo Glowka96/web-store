@@ -1,36 +1,22 @@
 @import "form-ele-clkbtn-style.scss";
+@import "container-wrapper-titlebox-style.scss";
 
-.wrapper-form {
+.form-group-box {
   display: flex;
   flex-direction: column;
-  width: 95%;
-  border-radius: 15px;
-  margin: 15px auto;
-  background-color: aliceblue;
-  padding-bottom: 20px;
-  .title {
-    border-bottom: 1px solid black;
-    font-size: 32px;
-  }
-  .box {
+  margin-top: 15px;
+  .form-control-box {
     display: flex;
     flex-direction: column;
-    .form-group {
+    padding: 15px;
+    margin: 0 auto;
+    .input-box {
+      margin: 0 auto;
       display: flex;
       flex-direction: column;
-      padding: 15px;
-      margin: 0 auto;
-      .input-box {
-        margin: 0 auto;
-        display: flex;
-        flex-direction: column;
-        label {
-          font-weight: 600;
-          text-align: left;
-        }
-      }
-      .errors {
-        color: red;
+      label {
+        font-weight: 600;
+        text-align: left;
       }
     }
   }
