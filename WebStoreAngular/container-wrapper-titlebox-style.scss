@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+  justify-content: center;
+  margin-top: 1em;
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    background-color: aliceblue;
+    border-radius: 25px;
+    padding: 2em;
+    .title-box {
+      margin-left: -2rem;
+      margin-right: -2rem;
+      border-bottom: 1px solid black;
+      font-size: 28px;
+      h1 {
+        margin-top: 5px;
+        margin-bottom: 5px;
+      }
+    }
+  }
+}
