@@ -9,6 +9,7 @@ import com.example.portfolio.webstorespring.repositories.accounts.AccountReposit
 import com.example.portfolio.webstorespring.services.email.EmailSenderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,10 @@ public class RegistrationService {
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailSenderService emailSenderService;
     private final AccountRepository accountRepository;
+
+    @Value("${email.confirmation.link}")
+    private String confirmLink;
+
 
     @Autowired
     public RegistrationService(BCryptPasswordEncoder encoder,
@@ -39,7 +44,7 @@ public class RegistrationService {
 
         ConfirmationToken savedToken = confirmationTokenService.createConfirmationToken(account);
         return emailSenderService.sendEmail(account.getEmail(),
-                savedToken.getToken());
+                confirmLink + savedToken.getToken());
     }
 
     public Map<String, Object> confirmToken(String token) {
@@ -54,7 +59,7 @@ public class RegistrationService {
             ConfirmationToken newToken = confirmationTokenService.createConfirmationToken(account);
             confirmationTokenService.deleteConfirmationToken(confirmationToken);
             return emailSenderService.sendEmail(account.getEmail(),
-                    newToken.getToken());
+                    confirmLink + newToken.getToken());
         }
 
         confirmationTokenService.setConfirmedAtAndSaveConfirmationToken(confirmationToken);

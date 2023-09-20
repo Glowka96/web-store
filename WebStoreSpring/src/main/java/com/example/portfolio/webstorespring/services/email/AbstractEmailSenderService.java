@@ -18,11 +18,11 @@ public abstract class AbstractEmailSenderService implements EmailSenderService {
     private String senderEmail;
 
     @Override
-    public Map<String, Object> sendEmail(String email, String token) {
+    public Map<String, Object> sendEmail(String email, String linkWithToken) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(email);
         mailMessage.setSubject(emailTypeStrategy.getTitle());
-        mailMessage.setText(emailTypeStrategy.getEmailMessageWithLink() + token);
+        mailMessage.setText(emailTypeStrategy.getEmailMessage() + linkWithToken);
         mailMessage.setFrom(senderEmail);
 
         javaMailSender.send(mailMessage);

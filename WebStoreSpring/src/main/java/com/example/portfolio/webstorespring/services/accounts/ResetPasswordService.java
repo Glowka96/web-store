@@ -9,6 +9,7 @@ import com.example.portfolio.webstorespring.repositories.accounts.AccountReposit
 import com.example.portfolio.webstorespring.services.email.EmailSenderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,9 @@ public class ResetPasswordService {
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailSenderService emailSenderService;
     private final AccountRepository accountRepository;
+
+    @Value("${reset-password.confirmation.link}")
+    private String confirmLink;
 
     @Autowired
     public ResetPasswordService(BCryptPasswordEncoder encoder,
@@ -35,11 +39,11 @@ public class ResetPasswordService {
 
     public Map<String, Object> resetPasswordByEmail(String email) {
         Account account = accountRepository.findByEmail(email)
-                .orElseThrow(() ->  new ResourceNotFoundException("Account", "email", email));
+                .orElseThrow(() -> new ResourceNotFoundException("Account", "email", email));
 
         ConfirmationToken savedToken = confirmationTokenService.createConfirmationToken(account);
         return emailSenderService.sendEmail(account.getEmail(),
-                savedToken.getToken());
+                confirmLink + savedToken.getToken());
     }
 
     public Map<String, Object> confirmResetPassword(String password, String token) {
