@@ -1,7 +1,4 @@
-const dotenv = require('dotenv');
-dotenv.config();
-
 export const environment = {
   production: true,
-  apiBaseUrl: process.env.API_BASE_URL,
+  apiBaseUrl: 'https://<YOUR_SPRING_SERVICE_DOMAIN>/api/v1',
 };

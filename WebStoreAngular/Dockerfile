@@ -12,7 +12,7 @@ RUN npm set progress=false && npm install
 COPY . /app
 
 # Build the Angular app
-RUN npm run build --c=production
+RUN npm run build-prod
 
 # STEP 2: Build a small nginx image with the static website
 FROM nginx:alpine
