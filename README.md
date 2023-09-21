@@ -76,7 +76,7 @@ GCP:
 - Better angular pagination
 - ...
 
-<div style="display: flex; justify-content: right;">
+<div align="right">
   <a href="#web-store">Back to top</a>
 </div>
 
@@ -178,7 +178,7 @@ GCP:
 
 </details>
 
-<div style="display: flex; justify-content: right;">
+<div align="right">
   <a href="#web-store">Back to top</a>
 </div>
 
@@ -196,8 +196,8 @@ GCP:
 ### Tests
 ![App Screenshot](https://ik.imagekit.io/glowacki/Zrzut%20ekranu%202023-08-09%20002003.png?updatedAt=1691533356035)
 
-<div style="display: flex; justify-content: right;">
-  <a href="#web-store">Back to top</a>
+<div align="right">
+    <a href="#web-store">Back to top</a>
 </div>
 
 ## Plugins
@@ -206,8 +206,8 @@ GCP:
 
   **VSC**: Angular Language Service, Prettier - Code formatter, Docker
 
-  <div style="display: flex; justify-content: right;">
-  <a href="#web-store">Back to top</a>
+<div align="right">
+    <a href="#web-store">Back to top</a>
 </div>
 
 ## Credits
@@ -247,14 +247,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-<div style="display: flex; justify-content: right;">
-  <a href="#web-store">Back to top</a>
+<div align="right">
+    <a href="#web-store">Back to top</a>
 </div>
 
 ## Contact
 
 Sebastian Głowacki - glowackisebastian.it@gmail.com
 
-<div style="display: flex; justify-content: right;">
-  <a href="#web-store">Back to top</a>
+<div align="right">
+    <a href="#web-store">Back to top</a>
 </div>
