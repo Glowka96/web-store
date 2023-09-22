@@ -52,8 +52,7 @@ GCP:
 ## How to run
 
 - [Deploy on GCP](deploy-on-gcp.md)
-- [Run to locally](ścieżka/do/twego/pliku)
-
+- [Run locally](run-locally.md)
 
 ## Features
 

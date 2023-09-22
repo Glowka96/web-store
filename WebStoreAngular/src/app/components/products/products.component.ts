@@ -118,7 +118,7 @@ export class ProductsComponent implements OnInit {
     if (product) {
       const price = this.getPrice(product);
       let quantity = this.cart[product.id];
-      if (quantity < 100) {
+      if (quantity > 100) {
         quantity = 100;
       }
       const shipment = { product, quantity, price };

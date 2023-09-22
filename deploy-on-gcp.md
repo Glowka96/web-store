@@ -12,7 +12,7 @@ This readme.md describes the steps necessary to run a project on the Google Clou
 
 ## Preliminary Steps
 
-Log in to your Google Cloud account: https://console.cloud.google.com/.
+Log in to your Google Cloud account: [Link](https://console.cloud.google.com/).
 
 Create a new project or select an existing project where you want to deploy your application.
 
@@ -32,19 +32,19 @@ Navigate to the Google Cloud Console: [Link](https://console.cloud.google.com/)
 cloudsql_iam_authentication
 ```
 
-- After creating the database instance, create a new database and give it a name  [(Documentation)](https://cloud.google.com/sql/docs/mysql/create-manage-databases)
+- After creating the database instance, create a new database and give it a name.  [(Documentation)](https://cloud.google.com/sql/docs/mysql/create-manage-databases)
 
-- Create a service account with the editor role and Cloud SQL Instance User role  [(Dokumentacja)](https://cloud.google.com/iam/docs/service-accounts-create#iam-service-accounts-create-console)
+- Create a service account with the editor role and Cloud SQL Instance User role.  [(Documentation)](https://cloud.google.com/iam/docs/service-accounts-create#iam-service-accounts-create-console)
 
 - Create a key for the service account in JSON format. Once created, the key will be downloaded. [(Documentation)](https://cloud.google.com/iam/docs/keys-create-delete)
 
 - Create a database user. [(Documentation)](https://cloud.google.com/sql/docs/mysql/create-manage-users)
 
 <details>
-<summary style=font-size:18px> Run Locally with a Google Cloud SQL Connection (Windows)</h3></summary>
+<summary style=font-size:18px> Run Locally with a Google Cloud SQL Connection (Windows)</summary>
 
 
-- Download the Cloud SQL Auth Proxy [(Link)](https://cloud.google.com/sql/docs/mysql/sql-proxy)
+- Download the Cloud SQL Auth Proxy: [(Link)](https://cloud.google.com/sql/docs/mysql/sql-proxy)
 
 - Rename the file to:
 ```
@@ -104,7 +104,7 @@ email.confirmation.link = ${EMAIL_CONFIRMATION_LINK:http://localhost:4200/regist
 reset-password.confirmation.link = ${RESET_PASSWORD_CONFIRMATION_LINK:http://localhost:4200/reset-password/confirm?token=}
 
 ```
-How to create a Google-generated app password [link](https://support.google.com/accounts/answer/185833?hl=en)
+How to create a Google-generated app password: [link](https://support.google.com/accounts/answer/185833?hl=en)
 Use it for `SENDER_PASSWORD`
 
 - You can now run the application locally with a Google Cloud SQL connection.
