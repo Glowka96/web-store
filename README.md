@@ -63,12 +63,13 @@ GCP:
 - View orders
 - Modification account data
 - Admin board - modification: category, subcategory, product, producer
-- Reset password system
+- Reset password system- send email with a link
 
 ### To-Do
 
 - Home page - new offerts and promotions (currently working on it)
-- Sort and fillter product
+- Refresh the product purchasing system - choose the delivery method, refresh the view
+- Sort and fillter products
 - Message box
 - Newsletter
 - New admin board with more options
@@ -183,17 +184,22 @@ GCP:
 
 ## Screenshot
 
-![App Screenshot](https://ik.imagekit.io/glowacki/Zrzut_ekranu_2023-07-12_102052.png?updatedAt=1689150176647)
+![app image](https://ik.imagekit.io/glowacki/Zrzut_ekranu_2023-07-12_102052.png?updatedAt=1689150176647)
+
+### Products Page
+
+![app image](https://ik.imagekit.io/glowacki/products.png?updatedAt=1695434185323)
+
 ### Admin Board
 
-![App Screenshot](https://ik.imagekit.io/glowacki/Zrzut%20ekranu%202023-08-18%20123044.png?updatedAt=1692354731249)
+![app image](https://ik.imagekit.io/glowacki/Zrzut%20ekranu%202023-08-18%20123044.png?updatedAt=1692354731249)
 
 ### Database diagram
 
-![App Screenshot](https://ik.imagekit.io/glowacki/Zrzut_ekranu_2023-07-12_192353.png?updatedAt=1689182679226)
+![app image](https://ik.imagekit.io/glowacki/Zrzut_ekranu_2023-07-12_192353.png?updatedAt=1689182679226)
 
 ### Tests
-![App Screenshot](https://ik.imagekit.io/glowacki/Zrzut%20ekranu%202023-08-09%20002003.png?updatedAt=1691533356035)
+![app imaget](https://ik.imagekit.io/glowacki/Zrzut%20ekranu%202023-08-09%20002003.png?updatedAt=1691533356035)
 
 <div align="right">
     <a href="#web-store">Back to top</a>
