@@ -181,7 +181,7 @@ Follow the steps below for Angular and Spring Boot:
 
 - Set the service options and add environment variables as in the image - region and maximum number of instances can be diffrent
 
-![App Screenshot](https://ik.imagekit.io/glowacki/SetupGCPRUN.png?updatedAt=1695047392401)
+![App Screenshot](https://ik.imagekit.io/glowacki/SetupGCPRUN.png?updatedAt=1695910895556)
 
 <details>
   <summary>Environment variables</summary>
