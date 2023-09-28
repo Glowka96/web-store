@@ -40,7 +40,7 @@ export class ConfirmResetPasswordComponent implements OnInit {
             this.resposneMessage = response.message;
             setTimeout(() => {
               this.router.navigate(['/']);
-            }, 2000);
+            }, 3500);
           },
           error: (error) => {
             const errorMessage = error.error.errors.join('<br>');

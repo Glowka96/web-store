@@ -70,8 +70,7 @@
               "browserTarget": "WebStoreAngular:build:development"
             }
           },
-          "defaultConfiguration": "development",
-          "proxyConfig": "proxy.config.json"
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",

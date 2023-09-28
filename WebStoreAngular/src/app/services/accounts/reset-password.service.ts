@@ -23,6 +23,7 @@ export class ResetPasswordService {
       .set('token', token);
     return this.http.patch<any>(
       `${this.apiServerUrl}/accounts/reset-password/confirm`,
+      {},
       { params }
     );
   }
