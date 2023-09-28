@@ -59,13 +59,13 @@ export class AuthenticationService {
   }
 
   private checkLogged() {
-    console.log('check logged');
     const token = sessionStorage.getItem('token');
     if (token) {
       const decodedJWT = this.getDecodedJWT(token);
       sessionStorage.setItem('id', decodedJWT.id);
       sessionStorage.setItem('role', decodedJWT.role);
       sessionStorage.setItem('isLoggedIn', 'true');
+      this._isAuthenticated$.next(true);
     }
   }
 
