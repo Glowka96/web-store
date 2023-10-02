@@ -28,7 +28,7 @@ public class LoginService {
         );
 
         UserDetails userDetails = (AccountDetails) authentication.getPrincipal();
-        Account account = ((AccountDetails) authentication.getPrincipal()).account();
+        Account account = ((AccountDetails) authentication.getPrincipal()).getAccount();
         String jwtToken = authService.generateJwtToken(userDetails);
 
         authService.revokeAllUserAuthTokens(account);

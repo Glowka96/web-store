@@ -13,6 +13,4 @@ public interface AuthService {
     String generateJwtToken(UserDetails userDetails);
 
     String generateJwtToken(Map<String, Object> extraClaims, UserDetails userDetails);
-
-    Boolean checkAuthorization(Long accountId, String authToken);
 }
