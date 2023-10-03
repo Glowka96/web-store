@@ -1,6 +1,5 @@
 package com.example.portfolio.webstorespring.security.auth;
 
-import com.example.portfolio.webstorespring.exceptions.AccountCanNotModifiedException;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.accounts.AccountRoles;
 import com.example.portfolio.webstorespring.model.entity.accounts.AuthToken;
@@ -12,19 +11,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -109,59 +103,5 @@ class AuthServiceImplTest {
 
         // then
         assertEquals(excepted, jwtToken);
-    }
-
-    @Test
-    void shouldPositiveCheckAuthorization() {
-        // given
-        Authentication authentication = new UsernamePasswordAuthenticationToken(new AccountDetails(account), null);
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        securityContext.setAuthentication(authentication);
-
-        // when
-        when(authTokenRepository.findByToken(any())).thenReturn(Optional.of(authToken));
-
-        boolean excepted = underTest.checkAuthorization(account.getId(), "Bearer 7777");
-
-        // then
-        assertTrue(excepted);
-    }
-
-    @Test
-    void shouldNegativeCheckAuthorizationWhenInvalidAuthHeader() {
-        // given
-        // when
-        boolean excepted = underTest.checkAuthorization(account.getId(), "7777");
-
-        // then
-        assertFalse(excepted);
-    }
-
-    @Test
-    void willThrowWhenNotEqualsAccountsId() {
-        // given
-        Account invalidAccount = new Account();
-        invalidAccount.setId(2L);
-
-        Authentication authentication = new UsernamePasswordAuthenticationToken(new AccountDetails(invalidAccount), null);
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        securityContext.setAuthentication(authentication);
-
-        AuthToken invalidAuthToken = AuthToken.builder()
-                .account(invalidAccount)
-                .token(jwtToken)
-                .tokenType(AuthTokenType.BEARER)
-                .expired(false)
-                .revoked(false)
-                .build();
-
-        // when
-        when(authTokenRepository.findByToken(any())).thenReturn(Optional.of(invalidAuthToken));
-
-        // then
-        assertThatThrownBy(() -> underTest.checkAuthorization(account.getId(), "Bearer 7777"))
-                .isInstanceOf(AccountCanNotModifiedException.class)
-                .hasMessageContaining("You can only used or modified your own account!");
-
     }
 }

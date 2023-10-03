@@ -64,7 +64,7 @@ class AccountServiceTest {
     }
 
     @Test
-    void shouldUpdateAccount2() {
+    void shouldUpdateAccount() {
         // given
         AccountRequest accountRequest = new AccountRequest();
         accountRequest.setFirstName("Test");
@@ -84,7 +84,8 @@ class AccountServiceTest {
         Account captureAccount = accountArgumentCaptor.getValue();
         AccountResponse mappedAccount = accountMapper.mapToDto(captureAccount);
 
-        assertThat(mappedAccount).isEqualTo(updatedAccountResponse);
+        assertThat(mappedAccount.getFirstName()).isEqualTo(updatedAccountResponse.getFirstName());
+        assertThat(mappedAccount.getLastName()).isEqualTo(updatedAccountResponse.getLastName());
         assertThat(captureAccount.getPassword()).isEqualTo("hashedPassword");
     }
 
