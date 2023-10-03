@@ -17,7 +17,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -62,9 +61,9 @@ class AccountControllerTest {
 
     @Test
     void shouldGetAccountById() throws Exception {
-        given(accountService.getAccountById(anyLong())).willReturn(accountResponse);
+        given(accountService.getAccount()).willReturn(accountResponse);
 
-        mvc.perform(get(URI + "/{id}", 1L)
+        mvc.perform(get(URI)
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer {JWT_TOKEN}"))
                 .andExpect(status().isOk())
@@ -77,9 +76,9 @@ class AccountControllerTest {
 
     @Test
     void shouldUpdateAccount() throws Exception {
-        given(accountService.updateAccount(anyLong(), any(AccountRequest.class))).willReturn(accountResponse);
+        given(accountService.updateAccount(any(AccountRequest.class))).willReturn(accountResponse);
 
-        mvc.perform(put(URI + "/{accountId}", 1L)
+        mvc.perform(put(URI)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(accountRequest))
                         .header("Authorization", "Bearer {JWT_TOKEN}"))
@@ -93,7 +92,7 @@ class AccountControllerTest {
 
     @Test
     void shouldDeleteAccountById() throws Exception {
-        mvc.perform(delete(URI + "/{accountId}", 1L))
+        mvc.perform(delete(URI))
                 .andExpect(status().isNoContent());
     }
 }

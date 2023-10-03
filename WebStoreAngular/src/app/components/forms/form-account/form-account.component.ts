@@ -16,7 +16,6 @@ import { PasswordFormBuilderService } from 'src/app/services/forms/password-form
   styleUrls: ['./form-account.component.scss'],
 })
 export class FormAccountComponent implements OnInit {
-  private accountId!: string;
   private errorMessage!: string;
   private imageUrlPattern = /https?:\/\/.*\.(?:png|jpg)/;
 
@@ -51,9 +50,7 @@ export class FormAccountComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private passwordFormControlService: PasswordFormBuilderService
-  ) {
-    this.accountId != sessionStorage.getItem('id');
-  }
+  ) {}
 
   ngOnInit(): void {}
 
@@ -65,7 +62,7 @@ export class FormAccountComponent implements OnInit {
         password: this.accountForm.get('passwordGroup.password')?.value ?? '',
         imageUrl: this.accountForm.controls['imageUrl']?.value ?? '',
       };
-      this.accountService.updateAccount(this.accountId, request).subscribe({
+      this.accountService.updateAccount(request).subscribe({
         next: () => {
           this.router.navigate(['/accounts'], {});
         },
