@@ -7,58 +7,44 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/accounts/{accountId}/orders")
+@RequestMapping("api/v1/accounts/orders")
 @RequiredArgsConstructor
 public class OrderController {
 
     private final OrderService orderService;
 
     @GetMapping()
-    @PreAuthorize("@authServiceImpl.checkAuthorization(#accountId, #authHeader)")
-    public ResponseEntity<List<OrderResponse>> getAllOrdersByAccountId(@PathVariable("accountId") Long accountId,
-                                                                       @RequestHeader("Authorization") String authHeader) {
-        return ResponseEntity.ok(orderService.getAllOrderByAccountId(accountId));
+    public ResponseEntity<List<OrderResponse>> getAllAccountOrders() {
+        return ResponseEntity.ok(orderService.getAllAccountOrder());
     }
 
     @GetMapping("/{orderId}")
-    @PreAuthorize("@authServiceImpl.checkAuthorization(#accountId, #authHeader)")
-    public ResponseEntity<OrderResponse> getOrderByAccountIdAndOrderId(@PathVariable("accountId") Long accountId,
-                                                                       @PathVariable("orderId") Long orderId,
-                                                                       @RequestHeader("Authorization") String authHeader) {
-        return ResponseEntity.ok(orderService.getOrderByAccountIdAndOrderId(accountId, orderId));
+    public ResponseEntity<OrderResponse> getOrderByAccountIdAndOrderId(@PathVariable("orderId") Long orderId) {
+        return ResponseEntity.ok(orderService.getAccountOrderByOrderId(orderId));
     }
 
     @PostMapping()
-    @PreAuthorize("@authServiceImpl.checkAuthorization(#accountId, #authHeader)")
-    public ResponseEntity<OrderResponse> saveOrder(@PathVariable("accountId") Long accountId,
-                                                   @Valid @RequestBody OrderRequest orderRequest,
-                                                   @RequestHeader("Authorization") String authHeader) {
+    public ResponseEntity<OrderResponse> saveOrder(@Valid @RequestBody OrderRequest orderRequest) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(orderService.saveOrder(accountId, orderRequest));
+                .body(orderService.saveOrder(orderRequest));
     }
 
     @PutMapping("/{orderId}")
-    @PreAuthorize("@authServiceImpl.checkAuthorization(#accountId, #authHeader)")
-    public ResponseEntity<OrderResponse> updateOrder(@PathVariable("accountId") Long accountId,
-                                                     @PathVariable("orderId") Long orderId,
-                                                     @Valid @RequestBody OrderRequest orderRequest,
-                                                     @RequestHeader("Authorization") String authHeader) {
+    public ResponseEntity<OrderResponse> updateOrder(@PathVariable("orderId") Long orderId,
+                                                     @Valid @RequestBody OrderRequest orderRequest) {
         return ResponseEntity.status(HttpStatus.ACCEPTED)
-                .body(orderService.updateOrder(accountId, orderId, orderRequest));
+                .body(orderService.updateOrder(orderId, orderRequest));
     }
 
     @DeleteMapping("/{orderId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("@authServiceImpl.checkAuthorization(#accountId, #authHeader)")
-    public void deleteOrderById(@PathVariable("accountId") Long accountId,
-                                @PathVariable("orderId") Long orderId,
-                                @RequestHeader("Authorization") String authHeader) {
+    public ResponseEntity<Void> deleteOrderById(@PathVariable("orderId") Long orderId) {
         orderService.deleteOrderById(orderId);
+        return ResponseEntity.noContent().build();
     }
 }

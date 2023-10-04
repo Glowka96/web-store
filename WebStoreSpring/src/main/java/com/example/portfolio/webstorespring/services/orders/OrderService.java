@@ -9,11 +9,13 @@ import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.orders.Order;
 import com.example.portfolio.webstorespring.model.entity.orders.OrderStatus;
 import com.example.portfolio.webstorespring.model.entity.orders.Shipment;
-import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
 import com.example.portfolio.webstorespring.repositories.orders.OrderRepository;
+import com.example.portfolio.webstorespring.security.auth.AccountDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -31,42 +33,46 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
-    private final AccountRepository accountRepository;
     private final Clock clock = Clock.systemUTC();
-    private static final String SHIPMENT_ADDRESS = "City: Lodz, Postcode: 91-473, Street: Julianowska 41/2";
 
-    public List<OrderResponse> getAllOrderByAccountId(Long accountId) {
-        List<Order> orders = orderRepository.findAllByAccountId(accountId);
-        return orderMapper.mapToDto(orders);
+    @Value("${shipment.address}")
+    private String shipmentAddress;
+
+    public List<OrderResponse> getAllAccountOrder() {
+        return orderMapper.mapToDto(
+                orderRepository.findAllByAccountId(
+                        getAccountDetails()
+                                .getAccount()
+                                .getId()
+                )
+        );
     }
 
-    public OrderResponse getOrderByAccountIdAndOrderId(Long accountId, Long orderId) {
-        Order order = findOrderByAccountIdAndOrderId(accountId, orderId);
-        return orderMapper.mapToDto(order);
+    public OrderResponse getAccountOrderByOrderId(Long orderId) {
+        return orderMapper.mapToDto(findOrderById(orderId));
     }
 
-    public OrderResponse saveOrder(Long accountId, OrderRequest orderRequest) {
-        Account foundAccount = findAccountById(accountId);
+    public OrderResponse saveOrder(OrderRequest orderRequest) {
+        Account loggedAccount = getAccountDetails().getAccount();
         Order order = orderMapper.mapToEntity(orderRequest);
 
-        setupNewOrder(foundAccount, order);
+        setupNewOrder(loggedAccount, order);
 
         orderRepository.save(order);
 
         return orderMapper.mapToDto(order);
     }
 
-    public OrderResponse updateOrder(Long accountId, Long orderId, OrderRequest orderRequest) {
+    public OrderResponse updateOrder(Long orderId, OrderRequest orderRequest) {
         Order foundOrder = findOrderById(orderId);
 
         if (foundOrder.getStatus() != OrderStatus.OPEN) {
             throw new OrderCanNotModifiedException("update");
         }
 
-        Account foundAccount = findAccountById(accountId);
         Order order = orderMapper.mapToEntity(orderRequest);
 
-        setupUpdateOrder(foundAccount, foundOrder, order);
+        setupUpdateOrder(foundOrder, order);
         orderRepository.save(order);
         return orderMapper.mapToDto(order);
     }
@@ -85,47 +91,54 @@ public class OrderService {
                 .orElseThrow(() -> new ResourceNotFoundException("Order", "id", id));
     }
 
-    private Order findOrderByAccountIdAndOrderId(Long accountId, Long orderId) {
-        String msgErrorAccountId = "accountId " + accountId;
-        String msgErrorOrderId = "or orderId " + orderId;
-        return orderRepository.findOrderByAccountIdAndId(accountId, orderId)
-                .orElseThrow(() -> new ResourceNotFoundException("Order", msgErrorAccountId, msgErrorOrderId));
+    private AccountDetails getAccountDetails() {
+        return (AccountDetails) SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getPrincipal();
     }
 
-    private Account findAccountById(Long id) {
-        return accountRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Account", "id", id));
-    }
-
-    private void setupNewOrder(Account account, Order order) {
-        order.setAccount(account);
-        order.setNameUser(account.getFirstName() +
-                          " " + account.getLastName());
-
-        order.setDateOfCreated(Date.from(LocalDateTime.now(clock)
-                .atZone(ZoneId.systemDefault()).toInstant()));
-
+    private void setupNewOrder(Account loggedAccount, Order order) {
+        order.setAccount(loggedAccount);
+        order.setNameUser(loggedAccount.getFirstName() +
+                          " " + loggedAccount.getLastName());
+        order.setDateOfCreated(getCurrentDate());
         order.setStatus(OrderStatus.OPEN);
 
-        if (order.getDeliveryAddress().isEmpty() ||
-            order.getDeliveryAddress().isBlank() ||
-            order.getDeliveryAddress() == null) {
-            order.setDeliveryAddress(account.getAddress().toString());
+        if (order.getDeliveryAddress().isEmpty() || order.getDeliveryAddress().isBlank()) {
+            order.setDeliveryAddress(loggedAccount.getAddress().toString());
         } else {
             formatDeliveryAddress(order);
         }
 
-        order.setShipmentAddress(SHIPMENT_ADDRESS);
+        order.setShipmentAddress(shipmentAddress);
+        setupPriceAndOrderIdInShipments(order);
+        setupTotalPrice(order);
+    }
 
+    private void setupUpdateOrder(Order currentOrder, Order updateOrder) {
+        setupPriceAndOrderIdInShipments(updateOrder);
+
+        currentOrder.setShipments(updateOrder.getShipments());
+        currentOrder.setDateOfCreated(getCurrentDate());
+        currentOrder.setDeliveryAddress(updateOrder.getDeliveryAddress());
+
+        setupTotalPrice(currentOrder);
+    }
+
+    private void setupPriceAndOrderIdInShipments(Order order) {
         order.getShipments().forEach(shipment -> {
-                    shipment.setPrice(
-                            BigDecimal.valueOf(
-                                            shipment.getQuantity() * shipment.getProduct().getPrice())
-                                    .setScale(2, RoundingMode.HALF_UP).doubleValue());
-                    shipment.setOrder(order);
-                }
-        );
+            shipment.setOrder(order);
+            shipment.setPrice(calculateShipmentPrice(shipment));
+        });
+    }
 
+    private double calculateShipmentPrice(Shipment shipment) {
+        return BigDecimal.valueOf(shipment.getQuantity() * shipment.getProduct().getPrice())
+                .setScale(2, RoundingMode.HALF_UP)
+                .doubleValue();
+    }
+
+    private void setupTotalPrice(Order order) {
         order.setProductsPrice(BigDecimal.valueOf(
                         order.getShipments()
                                 .stream()
@@ -135,35 +148,10 @@ public class OrderService {
                 .doubleValue());
     }
 
-    private void setupUpdateOrder(Account foundAccount,
-                                  Order foundOrder,
-                                  Order order) {
-        order.setId(foundOrder.getId());
-        order.setAccount(foundAccount);
-        order.setDateOfCreated(Date.from(LocalDateTime.now(clock)
-                .atZone(ZoneId.systemDefault()).toInstant()));
-
-        if (order.getNameUser() == null) {
-            order.setNameUser(foundAccount.getFirstName() +
-                              " " + foundAccount.getLastName());
-        }
-        if (order.getProductsPrice() == null) {
-            order.setProductsPrice(foundOrder.getProductsPrice());
-        }
-        if (order.getDeliveryAddress() == null) {
-            order.setDeliveryAddress(foundOrder.getDeliveryAddress());
-        } else {
-            formatDeliveryAddress(order);
-        }
-        if (order.getShipmentAddress() == null) {
-            order.setShipmentAddress(foundOrder.getShipmentAddress());
-        }
-        if (order.getShipments() == null || order.getShipments().isEmpty()) {
-            order.setShipments(foundOrder.getShipments());
-        }
-        if (order.getStatus() == null) {
-            order.setStatus(foundOrder.getStatus());
-        }
+    @NotNull
+    private Date getCurrentDate() {
+        return Date.from(LocalDateTime.now(clock)
+                .atZone(ZoneId.systemDefault()).toInstant());
     }
 
     private void formatDeliveryAddress(@NotNull Order order) {
