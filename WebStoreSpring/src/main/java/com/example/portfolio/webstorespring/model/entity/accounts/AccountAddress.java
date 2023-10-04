@@ -1,14 +1,14 @@
 package com.example.portfolio.webstorespring.model.entity.accounts;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "account_addresses")
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class AccountAddress {
     @Id

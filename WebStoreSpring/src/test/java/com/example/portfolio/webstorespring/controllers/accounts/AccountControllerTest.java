@@ -42,17 +42,19 @@ class AccountControllerTest {
     void initialization() {
         mapper = new ObjectMapper();
 
-        accountResponse = new AccountResponse();
-        accountResponse.setId(1L);
-        accountResponse.setFirstName("Test");
-        accountResponse.setLastName("Dev");
-        accountResponse.setEmail("test@test.pl");
+        accountResponse = AccountResponse.builder()
+                .id(1L)
+                .firstName("Test")
+                .lastName("Dev")
+                .email("test@test.pl")
+                .build();
 
-        accountRequest = new AccountRequest();
-        accountRequest.setFirstName("Test");
-        accountRequest.setLastName("Dev");
-        accountRequest.setPassword("Abcd123$");
-        accountRequest.setImageUrl("https://i.imgur.com/a23SANX.png");
+        accountRequest = AccountRequest.builder()
+                .firstName("Test")
+                .lastName("Dev")
+                .password("Abcd123$")
+                .imageUrl("https://i.imgur.com/a23SANX.png")
+                .build();
 
         mvc = MockMvcBuilders.standaloneSetup(underTest)
                 .setControllerAdvice(new GlobalExceptionHandler())
@@ -91,7 +93,7 @@ class AccountControllerTest {
     }
 
     @Test
-    void shouldDeleteAccountById() throws Exception {
+    void shouldDeleteAccount() throws Exception {
         mvc.perform(delete(URI))
                 .andExpect(status().isNoContent());
     }

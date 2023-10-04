@@ -20,23 +20,21 @@ public class AccountService {
     private final BCryptPasswordEncoder encoder;
 
     public AccountResponse getAccount() {
-        AccountDetails accountDetails = getAccountDetails();
-        return accountMapper.mapToDto(accountDetails.getAccount());
+        return accountMapper.mapToDto(getAccountDetails().getAccount());
     }
 
     public AccountResponse updateAccount(AccountRequest accountRequest) {
-        Account account = getAccountDetails().getAccount();
+        Account loggedAccount = getAccountDetails().getAccount();
 
         Account updatedAccount = accountMapper.mapToEntity(accountRequest);
-        setupAccount(account, updatedAccount);
+        setupAccount(loggedAccount, updatedAccount);
 
-        accountRepository.save(account);
+        accountRepository.save(loggedAccount);
         return accountMapper.mapToDto(updatedAccount);
     }
 
     public void deleteAccount() {
-        Account foundAccount = getAccountDetails().getAccount();
-        accountRepository.delete(foundAccount);
+        accountRepository.delete(getAccountDetails().getAccount());
     }
 
     private AccountDetails getAccountDetails() {

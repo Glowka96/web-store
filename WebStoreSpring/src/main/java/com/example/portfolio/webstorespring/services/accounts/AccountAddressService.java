@@ -1,71 +1,61 @@
 package com.example.portfolio.webstorespring.services.accounts;
 
-import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.AccountAddressMapper;
 import com.example.portfolio.webstorespring.model.dto.accounts.AccountAddressRequest;
 import com.example.portfolio.webstorespring.model.dto.accounts.AccountAddressResponse;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.accounts.AccountAddress;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountAddressRepository;
-import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
+import com.example.portfolio.webstorespring.security.auth.AccountDetails;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AccountAddressService{
+public class AccountAddressService {
 
     private final AccountAddressRepository addressRepository;
     private final AccountAddressMapper addressMapper;
-    private final AccountRepository accountRepository;
 
-    public AccountAddressResponse getAccountAddressByAccountId(Long accountId) {
-        AccountAddress foundAddress = findAccountAddressByAccountId(accountId);
-
-        return addressMapper.mapToDto(foundAddress);
+    public AccountAddressResponse getAccountAddress() {
+        return addressMapper.mapToDto(
+                getAccountDetails()
+                        .getAccount()
+                        .getAddress()
+        );
     }
 
-    public AccountAddressResponse saveAccountAddress(Long accountId, AccountAddressRequest accountAddressRequest) {
-        Account foundAccount = findAccountById(accountId);
+    public AccountAddressResponse saveAccountAddress(AccountAddressRequest accountAddressRequest) {
+        Account loggedAccount = getAccountDetails().getAccount();
 
         AccountAddress accountAddress = addressMapper.mapToEntity(accountAddressRequest);
 
-        accountAddress.setAccount(foundAccount);
+        accountAddress.setAccount(loggedAccount);
         addressRepository.save(accountAddress);
         return addressMapper.mapToDto(accountAddress);
     }
 
-    public AccountAddressResponse updateAccountAddress(Long accountId, AccountAddressRequest accountAddressRequest) {
-        AccountAddress foundAddress = findAccountAddressByAccountId(accountId);
+    public AccountAddressResponse updateAccountAddress(AccountAddressRequest accountAddressRequest) {
+        AccountAddress loggedAccountAddress = getAccountDetails().getAccount().getAddress();
 
         AccountAddress accountAddress = addressMapper.mapToEntity(accountAddressRequest);
 
-        setupUpdateAddress(foundAddress, accountAddress);
-        addressRepository.save(accountAddress);
-        return addressMapper.mapToDto(accountAddress);
+        setupUpdateAddress(loggedAccountAddress, accountAddress);
+        addressRepository.save(loggedAccountAddress);
+        return addressMapper.mapToDto(loggedAccountAddress);
     }
 
-    private AccountAddress findAccountAddressByAccountId(Long accountId) {
-        return addressRepository.findAccountAddressByAccount_Id(accountId)
-                .orElseThrow(() -> new ResourceNotFoundException("Address", "account id", accountId));
+    private AccountDetails getAccountDetails() {
+        return (AccountDetails) SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getPrincipal();
     }
 
-    private Account findAccountById(Long accountId) {
-        return accountRepository.findById(accountId)
-                .orElseThrow(() -> new ResourceNotFoundException("Account", "id", accountId));
-    }
+    private void setupUpdateAddress(AccountAddress loggedAccountAddress, AccountAddress accountAddress) {
+        loggedAccountAddress.setCity(accountAddress.getCity());
+        loggedAccountAddress.setPostcode(accountAddress.getPostcode());
+        loggedAccountAddress.setStreet(accountAddress.getStreet());
 
-    private void setupUpdateAddress(AccountAddress foundAddress, AccountAddress accountAddress) {
-        accountAddress.setAccount(foundAddress.getAccount());
-
-        if (accountAddress.getStreet() == null) {
-            accountAddress.setStreet(foundAddress.getStreet());
-        }
-        if (accountAddress.getCity() == null) {
-            accountAddress.setCity(foundAddress.getCity());
-        }
-        if (accountAddress.getPostcode() == null) {
-            accountAddress.setPostcode(foundAddress.getPostcode());
-        }
     }
 }

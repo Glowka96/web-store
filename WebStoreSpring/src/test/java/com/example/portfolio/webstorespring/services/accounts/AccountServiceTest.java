@@ -42,10 +42,11 @@ class AccountServiceTest {
 
     @BeforeEach()
     void initialization() {
-        account = new Account();
-        account.setId(1L);
-        account.setFirstName("Test");
-        account.setLastName("Dev");
+        account = Account.builder()
+                .id(1L)
+                .firstName("Test")
+                .lastName("Dev")
+                .build();
 
         mockAuthentication();
     }
@@ -66,10 +67,11 @@ class AccountServiceTest {
     @Test
     void shouldUpdateAccount() {
         // given
-        AccountRequest accountRequest = new AccountRequest();
-        accountRequest.setFirstName("Test");
-        accountRequest.setLastName("Dev");
-        accountRequest.setPassword("Abcd123$");
+        AccountRequest accountRequest = AccountRequest.builder()
+                .firstName("Test")
+                .lastName("Dev")
+                .password("Abcd123$")
+                .build();
 
         when(encoder.encode(anyString())).thenReturn("hashedPassword");
         when(accountRepository.save(any(Account.class))).thenReturn(account);
