@@ -2,9 +2,15 @@ package com.example.portfolio.webstorespring.model.dto.products;
 
 import com.example.portfolio.webstorespring.model.entity.products.ProductType;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductRequest {
 
     private Long id;

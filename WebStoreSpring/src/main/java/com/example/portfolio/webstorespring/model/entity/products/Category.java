@@ -24,7 +24,7 @@ public class Category {
     @Column(nullable = false)
     private String name;
 
-    @OrderBy("id ASC")
+    @OrderBy("id")
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Subcategory> subcategories;
 }

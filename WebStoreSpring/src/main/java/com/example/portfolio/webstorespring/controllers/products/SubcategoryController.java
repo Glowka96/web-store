@@ -26,7 +26,7 @@ public class SubcategoryController {
 
     @GetMapping(value = "/subcategories")
     public ResponseEntity<List<SubcategoryResponse>> getAllSubcategory() {
-        return ResponseEntity.ok(subcategoryService.getAllSubcategoryResponse());
+        return ResponseEntity.ok(subcategoryService.getAllSubcategory());
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")

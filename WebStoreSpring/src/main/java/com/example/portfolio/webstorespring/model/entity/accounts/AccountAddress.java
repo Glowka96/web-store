@@ -28,9 +28,4 @@ public class AccountAddress {
     @OneToOne
     @JoinColumn(name = "account_id")
     private Account account;
-
-    @Override
-    public String toString() {
-        return "City: " + city + ", Postcode: " + postcode + ", Street: " + street;
-    }
 }

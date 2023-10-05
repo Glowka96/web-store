@@ -2,15 +2,15 @@ package com.example.portfolio.webstorespring.model.entity.orders;
 
 import com.example.portfolio.webstorespring.model.entity.products.Product;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "shipments")
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Shipment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

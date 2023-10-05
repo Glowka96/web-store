@@ -26,7 +26,7 @@ public class SubcategoryService {
         return subcategoryMapper.mapToDto(foundSubcategory);
     }
 
-    public List<SubcategoryResponse> getAllSubcategoryResponse() {
+    public List<SubcategoryResponse> getAllSubcategory() {
         return subcategoryMapper.mapToDto(subcategoryRepository.findAll());
     }
 

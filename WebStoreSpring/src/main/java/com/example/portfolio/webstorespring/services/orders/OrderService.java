@@ -1,5 +1,6 @@
 package com.example.portfolio.webstorespring.services.orders;
 
+import com.example.portfolio.webstorespring.enums.AccessDeniedExceptionMessage;
 import com.example.portfolio.webstorespring.exceptions.OrderCanNotModifiedException;
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.OrderMapper;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -49,7 +51,13 @@ public class OrderService {
     }
 
     public OrderResponse getAccountOrderByOrderId(Long orderId) {
-        return orderMapper.mapToDto(findOrderById(orderId));
+        Order foundOrder = findOrderById(orderId);
+
+        if(!foundOrder.getAccount().getId().equals(getAccountDetails().getAccount().getId())){
+            throw new AccessDeniedException(AccessDeniedExceptionMessage.GET.getMessage());
+        }
+
+        return orderMapper.mapToDto(foundOrder);
     }
 
     public OrderResponse saveOrder(OrderRequest orderRequest) {
@@ -66,6 +74,10 @@ public class OrderService {
     public OrderResponse updateOrder(Long orderId, OrderRequest orderRequest) {
         Order foundOrder = findOrderById(orderId);
 
+        if(!foundOrder.getAccount().getId().equals(getAccountDetails().getAccount().getId())){
+            throw new AccessDeniedException(AccessDeniedExceptionMessage.UPDATE.getMessage());
+        }
+
         if (foundOrder.getStatus() != OrderStatus.OPEN) {
             throw new OrderCanNotModifiedException("update");
         }
@@ -73,12 +85,16 @@ public class OrderService {
         Order order = orderMapper.mapToEntity(orderRequest);
 
         setupUpdateOrder(foundOrder, order);
-        orderRepository.save(order);
-        return orderMapper.mapToDto(order);
+        orderRepository.save(foundOrder);
+        return orderMapper.mapToDto(foundOrder);
     }
 
     public void deleteOrderById(Long id) {
         Order foundOrder = findOrderById(id);
+
+        if(!foundOrder.getAccount().getId().equals(getAccountDetails().getAccount().getId())){
+            throw new AccessDeniedException(AccessDeniedExceptionMessage.DELETE.getMessage());
+        }
 
         if (foundOrder.getStatus() != OrderStatus.OPEN) {
             throw new OrderCanNotModifiedException("delete");
@@ -120,6 +136,7 @@ public class OrderService {
 
         currentOrder.setShipments(updateOrder.getShipments());
         currentOrder.setDateOfCreated(getCurrentDate());
+        formatDeliveryAddress(updateOrder);
         currentOrder.setDeliveryAddress(updateOrder.getDeliveryAddress());
 
         setupTotalPrice(currentOrder);

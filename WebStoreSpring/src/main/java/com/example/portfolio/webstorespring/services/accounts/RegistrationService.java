@@ -26,7 +26,6 @@ public class RegistrationService {
     @Value("${email.confirmation.link}")
     private String confirmLink;
 
-
     @Autowired
     public RegistrationService(BCryptPasswordEncoder encoder,
                                ConfirmationTokenService confirmationTokenService,
@@ -55,7 +54,7 @@ public class RegistrationService {
             throw new EmailAlreadyConfirmedException();
         }
 
-        if (!account.getEnabled() && confirmationTokenService.isTokenExpired(confirmationToken)) {
+        if (Boolean.TRUE.equals(!account.getEnabled()) && confirmationTokenService.isTokenExpired(confirmationToken)) {
             ConfirmationToken newToken = confirmationTokenService.createConfirmationToken(account);
             confirmationTokenService.deleteConfirmationToken(confirmationToken);
             return emailSenderService.sendEmail(account.getEmail(),

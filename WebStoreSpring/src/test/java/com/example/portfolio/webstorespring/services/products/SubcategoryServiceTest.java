@@ -74,7 +74,7 @@ class SubcategoryServiceTest {
     void shouldGetAllSubcategoryResponse() {
         // given
         // when
-        underTest.getAllSubcategoryResponse();
+        underTest.getAllSubcategory();
 
         // then
         verify(subCategoryRepository, times(1)).findAll();

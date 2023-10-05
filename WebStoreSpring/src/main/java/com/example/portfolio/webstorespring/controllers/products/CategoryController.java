@@ -21,7 +21,7 @@ public class CategoryController {
 
     @GetMapping()
     public ResponseEntity<List<CategoryResponse>> getAllCategory() {
-        return ResponseEntity.ok(categoryService.getAllCategoryDto());
+        return ResponseEntity.ok(categoryService.getAllCategory());
     }
 
     @GetMapping(value = "/{categoryId}")

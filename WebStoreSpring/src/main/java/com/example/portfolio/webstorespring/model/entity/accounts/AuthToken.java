@@ -1,13 +1,11 @@
 package com.example.portfolio.webstorespring.model.entity.accounts;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+@Getter
+@Setter
 @Entity
-@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

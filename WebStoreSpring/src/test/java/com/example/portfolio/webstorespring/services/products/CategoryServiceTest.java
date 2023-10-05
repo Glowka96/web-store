@@ -49,7 +49,7 @@ class CategoryServiceTest {
     @Test
     void shouldGetAllCategoryDto() {
         // when
-        underTest.getAllCategoryDto();
+        underTest.getAllCategory();
         // then
         verify(categoryRepository, times(1)).findAll();
         verifyNoMoreInteractions(categoryRepository);

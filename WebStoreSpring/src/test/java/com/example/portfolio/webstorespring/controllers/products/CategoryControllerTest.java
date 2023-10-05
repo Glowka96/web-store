@@ -52,7 +52,7 @@ class CategoryControllerTest {
     @Test
     void shouldGetAllCategory() throws Exception {
         // given
-        given(categoryService.getAllCategoryDto()).willReturn(Arrays.asList(categoryResponse, new CategoryResponse()));
+        given(categoryService.getAllCategory()).willReturn(Arrays.asList(categoryResponse, new CategoryResponse()));
 
         // when
         // then
