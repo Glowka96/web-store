@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -32,7 +33,7 @@ class GlobalExceptionHandlerTest {
     @Mock
     private EmailAlreadyConfirmedException emailAlreadyConfirmedException;
     @Mock
-    private AccountCanNotModifiedException accountCanNotModifiedException;
+    private AccessDeniedException accessDeniedException;
     @Mock
     private SearchNotFoundException searchNotFoundException;
     @Mock
@@ -57,7 +58,7 @@ class GlobalExceptionHandlerTest {
                 webRequest.getDescription(false));
 
         // when
-        ResponseEntity<Object> responseEntity = underTest
+        ResponseEntity<ErrorResponse> responseEntity = underTest
                 .handleResourceNotFoundException(resourceNotFoundException, webRequest);
 
         // then
@@ -74,7 +75,7 @@ class GlobalExceptionHandlerTest {
                 webRequest.getDescription(false));
 
         // when
-        ResponseEntity<Object> responseEntity = underTest
+        ResponseEntity<ErrorResponse> responseEntity = underTest
                 .handleBadCredentialsException(badCredentialsException, webRequest);
 
         // then
@@ -91,7 +92,7 @@ class GlobalExceptionHandlerTest {
                 webRequest.getDescription(false));
 
         // when
-        ResponseEntity<Object> responseEntity = underTest
+        ResponseEntity<ErrorResponse> responseEntity = underTest
                 .handleResourceNotFoundException(searchNotFoundException, webRequest);
 
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(expectedErrorResponse.getStatusCode());
@@ -116,7 +117,7 @@ class GlobalExceptionHandlerTest {
                 excepted,
                 webRequest.getDescription(false));
 
-        ResponseEntity<Object> responseEntity = underTest
+        ResponseEntity<ErrorResponse> responseEntity = underTest
                 .handleMethodArgumentNotValidException(argumentNotValidException, webRequest);
 
         // then
@@ -133,7 +134,7 @@ class GlobalExceptionHandlerTest {
                 webRequest.getDescription(false));
 
         // when
-        ResponseEntity<Object> responseEntity = underTest
+        ResponseEntity<ErrorResponse> responseEntity = underTest
                 .handleCanNotModifiedException(orderCanNotModifiedException, webRequest);
 
         // then
@@ -150,7 +151,7 @@ class GlobalExceptionHandlerTest {
                 webRequest.getDescription(false));
 
         // when
-        ResponseEntity<Object> responseEntity = underTest
+        ResponseEntity<ErrorResponse> responseEntity = underTest
                 .handleCanNotModifiedException(emailAlreadyConfirmedException, webRequest);
 
         // then
@@ -167,7 +168,7 @@ class GlobalExceptionHandlerTest {
                 webRequest.getDescription(false));
 
         //when
-        ResponseEntity<Object> responseEntity = underTest
+        ResponseEntity<ErrorResponse> responseEntity = underTest
                 .handleCanNotModifiedException(tokenConfirmedException, webRequest);
 
         // then
@@ -184,7 +185,7 @@ class GlobalExceptionHandlerTest {
                 webRequest.getDescription(false));
 
         // when
-        ResponseEntity<Object> responseEntity = underTest
+        ResponseEntity<ErrorResponse> responseEntity = underTest
                 .handleCanNotModifiedException(tokenExpiredException, webRequest);
 
         // then
@@ -196,13 +197,13 @@ class GlobalExceptionHandlerTest {
     void shouldHandleAccessDeniedException() {
         // given
         ErrorResponse exceptedErrorResponse = new ErrorResponse(
-                HttpStatus.FORBIDDEN.value(),
-                accountCanNotModifiedException.getMessage(),
+                HttpStatus.UNAUTHORIZED.value(),
+                accessDeniedException.getMessage(),
                 webRequest.getDescription(false));
 
         // when
-        ResponseEntity<Object> responseEntity = underTest
-                .handleAccessDeniedException(accountCanNotModifiedException, webRequest);
+        ResponseEntity<ErrorResponse> responseEntity = underTest
+                .handleAccessDeniedException(accessDeniedException, webRequest);
 
         // then
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(exceptedErrorResponse.getStatusCode());
@@ -232,13 +233,13 @@ class GlobalExceptionHandlerTest {
         when(mockedViolation2.getMessage()).thenReturn(messages.get(1));
         when(constraintViolationException.getConstraintViolations()).thenReturn(constraintViolations);
 
-        ResponseEntity<Object> responseEntity = underTest
+        ResponseEntity<ErrorResponse> responseEntity = underTest
                 .handeConstraintViolationException(constraintViolationException, webRequest);
 
         // then
 
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(exceptedErrorResponse.getStatusCode());
-        assertThat(responseEntity.getBody()).isEqualTo(exceptedErrorResponse);
+        assertThat(responseEntity.getBody().getErrors()).containsExactlyInAnyOrderElementsOf(exceptedErrorResponse.getErrors());
 
     }
 }

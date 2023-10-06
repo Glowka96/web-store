@@ -68,6 +68,7 @@ class ProductControllerTest {
         mvc.perform(get(URI + "/{subcategoryId}/products", 1)
                         .param("page", "0")
                         .param("size", "3")
+                        .param("sort", "id")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())

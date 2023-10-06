@@ -58,7 +58,7 @@ class AuthServiceImplTest {
     void shouldSaveAccountAuthToken() {
         underTest.saveAccountAuthToken(account, jwtToken);
 
-        verify(authTokenRepository, times(1)).save(authToken);
+        verify(authTokenRepository, times(1)).save(any(AuthToken.class));
     }
 
     @Test

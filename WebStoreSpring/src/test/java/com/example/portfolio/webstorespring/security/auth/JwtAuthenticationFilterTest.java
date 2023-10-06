@@ -62,13 +62,13 @@ class JwtAuthenticationFilterTest {
                 .build();
         AccountDetails accountDetails = new AccountDetails(account);
 
+        // when
         when(request.getHeader("Authorization")).thenReturn(authHeader);
         when(jwtService.extractUsername(anyString())).thenReturn(account.getEmail());
         when(accountDetailsService.loadUserByUsername(anyString())).thenReturn(accountDetails);
         when(tokenRepository.findByToken(anyString())).thenReturn(Optional.ofNullable(authToken));
         when(jwtService.isTokenValid(anyString(), any(UserDetails.class))).thenReturn(true);
 
-        // when
         underTest.doFilterInternal(request, response, filterChain);
 
         // then

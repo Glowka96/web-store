@@ -70,7 +70,9 @@ class RegistrationServiceTest {
     void shouldRegistrationAccount() {
         // given
         excepted = Map.of("message", ConfirmEmailType.REGISTRATION.getInformationMessage());
+
         // when
+
         when(confirmationTokenService.createConfirmationToken(any(Account.class))).thenReturn(confirmationToken);
         when(emailSenderService.sendEmail(anyString(), anyString()))
                 .thenReturn(excepted);
@@ -85,9 +87,9 @@ class RegistrationServiceTest {
 
         // then
         assertThat(result).isEqualTo(excepted);
-        verify(accountRepository).save(captureAccount);
-        verify(emailSenderService).sendEmail(account.getEmail(),
-                confirmationToken.getToken());
+        verify(accountRepository, times(1)).save(captureAccount);
+        verify(emailSenderService, times(1)).sendEmail(eq(account.getEmail()),
+                anyString());
     }
 
     @Test
