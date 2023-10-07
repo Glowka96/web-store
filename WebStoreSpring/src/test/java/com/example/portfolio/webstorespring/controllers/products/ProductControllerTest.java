@@ -60,6 +60,26 @@ class ProductControllerTest {
         productResponses = new ArrayList<>(Arrays.asList(productResponse, new ProductResponse(), new ProductResponse()));
     }
 
+
+    @Test
+    void shouldGetAllProductTypes() throws Exception {
+        mvc.perform(get(URI  + "/products/types")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(ProductType.values().length)))
+                .andDo(print());
+    }
+    @Test
+    void shouldGetAllProducts() throws Exception {
+        given(productService.getAllProducts()).willReturn(productResponses);
+
+        mvc.perform(get(URI + "/products")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(3)))
+                .andDo(print());
+    }
+
     @Test
     void shouldGetAllProductsBySubCategoryIdPaginationNoSort() throws Exception {
         given(productService.getAllProductsBySubcategoryId(anyLong(), anyInt(), anyInt(), anyString()))

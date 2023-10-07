@@ -6,6 +6,7 @@ import com.example.portfolio.webstorespring.model.dto.accounts.AccountResponse;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
 import com.example.portfolio.webstorespring.security.auth.AccountDetails;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -49,6 +50,11 @@ class AccountServiceTest {
                 .build();
 
         mockAuthentication();
+    }
+
+    @AfterEach
+    void resetSecurityContext() {
+        SecurityContextHolder.clearContext();
     }
 
     @Test

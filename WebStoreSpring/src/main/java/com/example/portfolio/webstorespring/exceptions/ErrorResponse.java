@@ -3,14 +3,12 @@ package com.example.portfolio.webstorespring.exceptions;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.util.Collections;
 import java.util.List;
 
 @Getter
 @Setter
-@ToString
 @EqualsAndHashCode
 public final class ErrorResponse {
     private final Integer statusCode;

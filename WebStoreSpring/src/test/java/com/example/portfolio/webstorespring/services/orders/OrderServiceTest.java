@@ -19,6 +19,7 @@ import com.example.portfolio.webstorespring.model.entity.orders.Shipment;
 import com.example.portfolio.webstorespring.model.entity.products.Product;
 import com.example.portfolio.webstorespring.repositories.orders.OrderRepository;
 import com.example.portfolio.webstorespring.security.auth.AccountDetails;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -105,6 +106,11 @@ class OrderServiceTest {
                 .build();
 
         order.setAccount(account);
+    }
+
+    @AfterEach
+    void resetSecurityContext() {
+        SecurityContextHolder.clearContext();
     }
 
     @Test
@@ -212,6 +218,7 @@ class OrderServiceTest {
     @Test
     void willThrowWhenUpdateOrderStatusIsNotOpen() {
         // given
+        mockAuthentication();
         order.setStatus(OrderStatus.COMPLETED);
         given(orderRepository.findById(anyLong())).willReturn(Optional.of(order));
 
@@ -254,6 +261,7 @@ class OrderServiceTest {
     @Test
     void willThrowWhenDeleteOrderStatusIsNotOpen() {
         order.setStatus(OrderStatus.COMPLETED);
+        mockAuthentication();
         given(orderRepository.findById(anyLong())).willReturn(Optional.of(order));
 
         // when

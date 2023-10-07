@@ -14,7 +14,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.Arrays;
+
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
@@ -44,6 +47,17 @@ class SubcategoryControllerTest {
         subcategoryResponse = new SubcategoryResponse();
         subcategoryResponse.setId(1L);
         subcategoryResponse.setName("Test");
+    }
+
+    @Test
+    void shouldGetAllSubcategory() throws Exception {
+        given(subCategoryService.getAllSubcategory()).willReturn(Arrays.asList(subcategoryResponse, subcategoryResponse));
+
+        mvc.perform(get(URI + "/subcategories")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andDo(print());
     }
 
     @Test

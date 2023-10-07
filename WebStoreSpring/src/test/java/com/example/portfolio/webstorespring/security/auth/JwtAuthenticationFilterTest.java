@@ -1,6 +1,5 @@
 package com.example.portfolio.webstorespring.security.auth;
 
-import com.example.portfolio.webstorespring.enums.AuthTokenType;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.accounts.AccountRoles;
 import com.example.portfolio.webstorespring.model.entity.accounts.AuthToken;
@@ -15,8 +14,10 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 
@@ -42,7 +43,7 @@ class JwtAuthenticationFilterTest {
     @Test
     void shouldDoFilterInternalWithValidToken() throws ServletException, IOException {
         // given
-        String jwt = "validToken";
+        String jwt = "valid-jwt-token";
         String authHeader = "Bearer " + jwt;
 
         Account account = Account.builder()
@@ -50,24 +51,24 @@ class JwtAuthenticationFilterTest {
                 .password("test123$")
                 .accountRoles(AccountRoles.ROLE_USER)
                 .build();
-        AuthToken authToken = AuthToken.builder()
-                .id(1L)
-                .tokenType(AuthTokenType.BEARER)
-                .token(jwt)
-                .account(account)
-                .expired(false)
-                .revoked(false)
-                .build();
-        AccountDetails accountDetails = new AccountDetails(account);
+        UserDetails userDetails = new AccountDetails(account);
 
         // when
         when(request.getHeader("Authorization")).thenReturn(authHeader);
         when(jwtService.extractUsername(anyString())).thenReturn(account.getEmail());
+        when(accountDetailsService.loadUserByUsername(anyString())).thenReturn(userDetails);
+        when(jwtService.isTokenValid(anyString(), any(UserDetails.class))).thenReturn(true);
+        when(tokenRepository.findByToken(anyString())).thenReturn(Optional.of(new AuthToken()));
 
         underTest.doFilterInternal(request, response, filterChain);
 
         // then
-        verify(filterChain, times(1)).doFilter(request, response);
+        verify(request).getHeader("Authorization");
+        verify(jwtService).extractUsername(jwt);
+        verify(accountDetailsService).loadUserByUsername("test@test.pl");
+        verify(jwtService).isTokenValid(jwt, userDetails);
+        verify(tokenRepository).findByToken(jwt);
+        verify(filterChain).doFilter(request, response);
     }
 
     @Test

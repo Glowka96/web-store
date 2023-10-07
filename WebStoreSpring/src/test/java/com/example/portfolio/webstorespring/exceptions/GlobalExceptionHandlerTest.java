@@ -35,8 +35,6 @@ class GlobalExceptionHandlerTest {
     @Mock
     private AccessDeniedException accessDeniedException;
     @Mock
-    private SearchNotFoundException searchNotFoundException;
-    @Mock
     private BadCredentialsException badCredentialsException;
     @Mock
     private TokenExpiredException tokenExpiredException;
@@ -81,22 +79,6 @@ class GlobalExceptionHandlerTest {
         // then
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(exceptedErrorResponse.getStatusCode());
         assertThat(responseEntity.getBody()).isEqualTo(exceptedErrorResponse);
-    }
-
-    @Test
-    void shouldHandleSearchNotFoundException() {
-        // given
-        ErrorResponse expectedErrorResponse = new ErrorResponse(
-                HttpStatus.NOT_FOUND.value(),
-                searchNotFoundException.getMessage(),
-                webRequest.getDescription(false));
-
-        // when
-        ResponseEntity<ErrorResponse> responseEntity = underTest
-                .handleResourceNotFoundException(searchNotFoundException, webRequest);
-
-        assertThat(responseEntity.getStatusCode().value()).isEqualTo(expectedErrorResponse.getStatusCode());
-        assertThat(responseEntity.getBody()).isEqualTo(expectedErrorResponse);
     }
 
     @Test
