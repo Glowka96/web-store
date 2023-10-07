@@ -1,12 +1,12 @@
 package com.example.portfolio.webstorespring.services.accounts;
 
+import com.example.portfolio.webstorespring.enums.emailtypes.ResetPasswordType;
 import com.example.portfolio.webstorespring.exceptions.TokenConfirmedException;
 import com.example.portfolio.webstorespring.exceptions.TokenExpiredException;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.accounts.ConfirmationToken;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
 import com.example.portfolio.webstorespring.services.email.EmailSenderService;
-import com.example.portfolio.webstorespring.services.email.type.ResetPasswordType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -40,7 +40,7 @@ class OrderControllerTest {
 
     private MockMvc mvc;
     private ObjectMapper mapper;
-    private static final String URI = "/api/v1/accounts/{accountId}";
+    private static final String URI = "/api/v1/accounts";
     private OrderResponse orderResponse;
     private OrderRequest orderRequest;
 
@@ -66,9 +66,9 @@ class OrderControllerTest {
     @Test
     void shouldGetAllOrders() throws Exception {
         List<OrderResponse> orderResponses = new ArrayList<>(Arrays.asList(orderResponse, new OrderResponse()));
-        given(orderService.getAllOrderByAccountId(anyLong())).willReturn(orderResponses);
+        given(orderService.getAllAccountOrder()).willReturn(orderResponses);
 
-        mvc.perform(get(URI + "/orders", 1)
+        mvc.perform(get(URI + "/orders")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer {JWT_TOKEN}"))
@@ -79,9 +79,9 @@ class OrderControllerTest {
 
     @Test
     void shouldGetOrderByAccountIdAndId() throws Exception {
-        given(orderService.getOrderByAccountIdAndOrderId(anyLong(), anyLong())).willReturn(orderResponse);
+        given(orderService.getAccountOrderByOrderId(anyLong())).willReturn(orderResponse);
 
-        mvc.perform(get(URI + "/orders/{id}", 1, 1)
+        mvc.perform(get(URI + "/orders/{id}",  1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer {JWT_TOKEN}"))
@@ -92,7 +92,7 @@ class OrderControllerTest {
 
     @Test
     void shouldSaveOrder() throws Exception {
-        given(orderService.saveOrder(anyLong(), any(OrderRequest.class))).willReturn(orderResponse);
+        given(orderService.saveOrder(any(OrderRequest.class))).willReturn(orderResponse);
 
         mvc.perform(post(URI + "/orders", 1)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -106,9 +106,9 @@ class OrderControllerTest {
 
     @Test
     void shouldUpdateOrder() throws Exception {
-        given(orderService.updateOrder(anyLong(), anyLong(), any(OrderRequest.class))).willReturn(orderResponse);
+        given(orderService.updateOrder(anyLong(), any(OrderRequest.class))).willReturn(orderResponse);
 
-        mvc.perform(put(URI + "/orders/{ordersId}", 1, 1)
+        mvc.perform(put(URI + "/orders/{ordersId}",  1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(orderRequest))
@@ -120,7 +120,7 @@ class OrderControllerTest {
 
     @Test
     void shouldDeleteOrderById() throws Exception {
-        mvc.perform(delete(URI + "/orders/{orderId}", 1, 1)
+        mvc.perform(delete(URI + "/orders/{orderId}",  1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer {JWT_TOKEN}"))

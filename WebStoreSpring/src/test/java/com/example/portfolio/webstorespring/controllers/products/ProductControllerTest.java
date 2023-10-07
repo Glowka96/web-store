@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.controllers.products;
 
+import com.example.portfolio.webstorespring.enums.ProductType;
 import com.example.portfolio.webstorespring.model.dto.products.ProductRequest;
 import com.example.portfolio.webstorespring.model.dto.products.ProductResponse;
-import com.example.portfolio.webstorespring.model.entity.products.ProductType;
 import com.example.portfolio.webstorespring.services.products.ProductService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;

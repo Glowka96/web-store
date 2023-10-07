@@ -1,5 +1,6 @@
 package com.example.portfolio.webstorespring.model.entity.accounts;
 
+import com.example.portfolio.webstorespring.enums.AuthTokenType;
 import jakarta.persistence.*;
 import lombok.*;
 

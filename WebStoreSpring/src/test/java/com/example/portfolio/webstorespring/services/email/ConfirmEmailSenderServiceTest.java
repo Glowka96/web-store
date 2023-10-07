@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.services.email;
 
-import com.example.portfolio.webstorespring.services.email.type.ConfirmEmailType;
+import com.example.portfolio.webstorespring.enums.emailtypes.ConfirmEmailType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

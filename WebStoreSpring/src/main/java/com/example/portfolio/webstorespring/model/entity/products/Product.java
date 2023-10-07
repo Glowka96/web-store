@@ -1,5 +1,6 @@
 package com.example.portfolio.webstorespring.model.entity.products;
 
+import com.example.portfolio.webstorespring.enums.ProductType;
 import com.example.portfolio.webstorespring.model.entity.orders.Shipment;
 import jakarta.persistence.*;
 import lombok.*;

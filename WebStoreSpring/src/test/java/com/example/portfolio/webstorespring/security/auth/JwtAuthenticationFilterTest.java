@@ -1,9 +1,9 @@
 package com.example.portfolio.webstorespring.security.auth;
 
+import com.example.portfolio.webstorespring.enums.AuthTokenType;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.accounts.AccountRoles;
 import com.example.portfolio.webstorespring.model.entity.accounts.AuthToken;
-import com.example.portfolio.webstorespring.model.entity.accounts.AuthTokenType;
 import com.example.portfolio.webstorespring.repositories.accounts.AuthTokenRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -15,10 +15,8 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.IOException;
-import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 
@@ -65,9 +63,6 @@ class JwtAuthenticationFilterTest {
         // when
         when(request.getHeader("Authorization")).thenReturn(authHeader);
         when(jwtService.extractUsername(anyString())).thenReturn(account.getEmail());
-        when(accountDetailsService.loadUserByUsername(anyString())).thenReturn(accountDetails);
-        when(tokenRepository.findByToken(anyString())).thenReturn(Optional.ofNullable(authToken));
-        when(jwtService.isTokenValid(anyString(), any(UserDetails.class))).thenReturn(true);
 
         underTest.doFilterInternal(request, response, filterChain);
 

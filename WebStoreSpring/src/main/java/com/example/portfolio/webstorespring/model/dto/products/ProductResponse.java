@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.model.dto.products;
 
-import com.example.portfolio.webstorespring.model.entity.products.ProductType;
+import com.example.portfolio.webstorespring.enums.ProductType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 

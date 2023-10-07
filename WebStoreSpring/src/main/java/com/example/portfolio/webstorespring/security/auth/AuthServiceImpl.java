@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.security.auth;
 
+import com.example.portfolio.webstorespring.enums.AuthTokenType;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.accounts.AuthToken;
-import com.example.portfolio.webstorespring.model.entity.accounts.AuthTokenType;
 import com.example.portfolio.webstorespring.repositories.accounts.AuthTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
