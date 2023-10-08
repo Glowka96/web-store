@@ -3,9 +3,9 @@ package com.example.portfolio.webstorespring.services.accounts;
 import com.example.portfolio.webstorespring.exceptions.EmailAlreadyConfirmedException;
 import com.example.portfolio.webstorespring.model.dto.accounts.RegistrationRequest;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
-import com.example.portfolio.webstorespring.model.entity.accounts.AccountRoles;
 import com.example.portfolio.webstorespring.model.entity.accounts.ConfirmationToken;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
+import com.example.portfolio.webstorespring.repositories.accounts.RoleRepository;
 import com.example.portfolio.webstorespring.services.email.EmailSenderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,6 +22,9 @@ public class RegistrationService {
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailSenderService emailSenderService;
     private final AccountRepository accountRepository;
+    private final RoleRepository roleRepository;
+
+    private static final String ROLE_USER = "ROLE_USER";
 
     @Value("${email.confirmation.link}")
     private String confirmLink;
@@ -30,11 +33,12 @@ public class RegistrationService {
     public RegistrationService(BCryptPasswordEncoder encoder,
                                ConfirmationTokenService confirmationTokenService,
                                @Qualifier(value = "confirmEmailSender") EmailSenderService emailSenderService,
-                               AccountRepository accountRepository) {
+                               AccountRepository accountRepository, RoleRepository roleRepository) {
         this.encoder = encoder;
         this.confirmationTokenService = confirmationTokenService;
         this.emailSenderService = emailSenderService;
         this.accountRepository = accountRepository;
+        this.roleRepository = roleRepository;
     }
 
     public Map<String, Object> registrationAccount(RegistrationRequest registrationRequest) {
@@ -63,6 +67,7 @@ public class RegistrationService {
 
         confirmationTokenService.setConfirmedAtAndSaveConfirmationToken(confirmationToken);
         account.setEnabled(true);
+        account.setRoles(roleRepository.findByName(ROLE_USER));
         accountRepository.save(account);
 
         return Map.of("message", "Account confirmed");
@@ -74,7 +79,7 @@ public class RegistrationService {
                 .lastName(registrationRequest.getLastName())
                 .email(registrationRequest.getEmail())
                 .password(encoder.encode(registrationRequest.getPassword()))
-                .accountRoles(AccountRoles.ROLE_USER)
+                .roles(roleRepository.findByName(ROLE_USER))
                 .enabled(false)
                 .imageUrl("https://i.imgur.com/a23SANX.png")
                 .build();

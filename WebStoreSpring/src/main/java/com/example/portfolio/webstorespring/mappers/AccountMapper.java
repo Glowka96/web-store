@@ -24,7 +24,7 @@ public interface AccountMapper {
     @Mapping(target = "confirmationTokens", ignore = true)
     @Mapping(target = "authTokens", ignore = true)
     @Mapping(target = "address", ignore = true)
-    @Mapping(target = "accountRoles", ignore = true)
+    @Mapping(target = "roles", ignore = true)
     @Mapping(target = "enabled", ignore = true)
     Account mapToEntity(AccountRequest accountRequest);
 }

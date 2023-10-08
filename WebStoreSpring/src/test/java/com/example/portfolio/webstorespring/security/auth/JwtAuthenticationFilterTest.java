@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.security.auth;
 
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
-import com.example.portfolio.webstorespring.model.entity.accounts.AccountRoles;
 import com.example.portfolio.webstorespring.model.entity.accounts.AuthToken;
+import com.example.portfolio.webstorespring.model.entity.accounts.Role;
 import com.example.portfolio.webstorespring.repositories.accounts.AuthTokenRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.mockito.Mockito.*;
 
@@ -49,7 +50,10 @@ class JwtAuthenticationFilterTest {
         Account account = Account.builder()
                 .email("test@test.pl")
                 .password("test123$")
-                .accountRoles(AccountRoles.ROLE_USER)
+                .roles(Set.of(
+                        Role.builder()
+                                .name("ROLE_USER")
+                                .build()))
                 .build();
         UserDetails userDetails = new AccountDetails(account);
 
@@ -89,7 +93,6 @@ class JwtAuthenticationFilterTest {
     @Test
     void shouldDoFilterInternalWhenNoAuthHeader() throws ServletException, IOException {
         // given
-
         when(request.getHeader("Authorization")).thenReturn(null);
 
         // when

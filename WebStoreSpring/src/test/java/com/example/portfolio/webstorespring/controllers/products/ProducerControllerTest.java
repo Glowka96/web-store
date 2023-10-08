@@ -14,7 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.Arrays;
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
@@ -51,7 +51,7 @@ class ProducerControllerTest {
 
     @Test
     void shouldGetAllProducer() throws Exception {
-        given(producerService.getAllProducer()).willReturn(Arrays.asList(producerResponse, new ProducerResponse()));
+        given(producerService.getAllProducer()).willReturn(List.of(producerResponse, new ProducerResponse()));
 
         mvc.perform(get(URI)
                         .contentType(MediaType.APPLICATION_JSON)

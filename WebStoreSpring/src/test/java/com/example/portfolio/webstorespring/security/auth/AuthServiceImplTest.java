@@ -2,8 +2,8 @@ package com.example.portfolio.webstorespring.security.auth;
 
 import com.example.portfolio.webstorespring.enums.AuthTokenType;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
-import com.example.portfolio.webstorespring.model.entity.accounts.AccountRoles;
 import com.example.portfolio.webstorespring.model.entity.accounts.AuthToken;
+import com.example.portfolio.webstorespring.model.entity.accounts.Role;
 import com.example.portfolio.webstorespring.repositories.accounts.AuthTokenRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -37,11 +38,14 @@ class AuthServiceImplTest {
 
     @BeforeEach
     void initialization() {
-        account = new Account();
-        account.setId(1L);
-        account.setFirstName("Test");
-        account.setLastName("Jwt");
-        account.setAccountRoles(AccountRoles.ROLE_USER);
+        account = Account.builder()
+                .id(1L)
+                .firstName("Test")
+                .lastName("Jwt")
+                .roles(Set.of(Role.builder()
+                        .name("USER")
+                        .build()))
+                .build();
 
         jwtToken = "777";
 

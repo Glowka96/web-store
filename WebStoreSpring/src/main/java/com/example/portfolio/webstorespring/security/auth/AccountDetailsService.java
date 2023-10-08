@@ -13,15 +13,15 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AccountDetailsService implements UserDetailsService {
 
-    private final AccountRepository repository;
+    private final AccountRepository accountRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) {
-        Account account = repository.findByEmail(email)
+        Account account = accountRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Account", "email", email));
 
         if (Boolean.FALSE.equals(account.getEnabled())) {
-            throw new DisabledException("Account is disabled");
+            throw new DisabledException("Your account is disabled");
         }
 
         return new AccountDetails(account);

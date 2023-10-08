@@ -59,7 +59,7 @@ class OrderControllerTest {
 
         orderRequest = new OrderRequest();
         orderRequest.setDeliveryAddress("Test, 99-999, test 59/2");
-        orderRequest.setShipmentRequests(new ArrayList<>(List.of(shipmentRequest)));
+        orderRequest.setShipmentRequests(List.of(shipmentRequest));
     }
 
 
