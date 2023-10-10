@@ -11,6 +11,10 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "accounts")
+@NamedEntityGraph(name = "account-with-roles-and-address-entity-graph",
+        attributeNodes = {
+                @NamedAttributeNode(value = "roles"),
+                @NamedAttributeNode(value = "address")})
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -40,7 +44,7 @@ public class Account {
 
     private Boolean enabled;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany()
     @JoinTable(name = "account_roles",
             joinColumns = @JoinColumn(name = "account_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")

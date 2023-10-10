@@ -189,7 +189,7 @@ class ProductServiceTest {
         given(subCategoryRepository.findById(anyLong())).willReturn(Optional.of(subCategory));
 
         // when
-        ProductResponse savedProductResponse = underTest.save(subCategory.getId(), producer.getId(), productRequest);
+        ProductResponse savedProductResponse = underTest.saveProduct(subCategory.getId(), producer.getId(), productRequest);
 
         // then
         ArgumentCaptor<Product> productArgumentCaptor =
@@ -209,7 +209,7 @@ class ProductServiceTest {
 
         // when
         // then
-        assertThatThrownBy(() -> underTest.save(2L, 1L, productRequest))
+        assertThatThrownBy(() -> underTest.saveProduct(2L, 1L, productRequest))
                 .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessageContaining("SubCategory with id 2 not found");
     }
@@ -222,7 +222,7 @@ class ProductServiceTest {
 
         // when
         // then
-        assertThatThrownBy(() -> underTest.save(1L, 2L, productRequest))
+        assertThatThrownBy(() -> underTest.saveProduct(1L, 2L, productRequest))
                 .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessageContaining("Producer with id 2 not found");
     }

@@ -29,22 +29,22 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.getCategoryDtoById(categoryId));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping()
     public ResponseEntity<CategoryResponse> saveCategory(@Valid @RequestBody CategoryRequest categoryRequest) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(categoryService.save(categoryRequest));
+                .body(categoryService.saveCategory(categoryRequest));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping(value = "/{categoryId}")
     public ResponseEntity<CategoryResponse> updateCategory(@PathVariable(value = "categoryId") Long categoryId,
                                                            @Valid @RequestBody CategoryRequest categoryRequest){
         return ResponseEntity.status(HttpStatus.ACCEPTED)
-                .body(categoryService.update(categoryId, categoryRequest));
+                .body(categoryService.updateCategory(categoryId, categoryRequest));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping(value = "/{categoryId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCategoryById(@PathVariable(value = "categoryId") Long categoryId) {

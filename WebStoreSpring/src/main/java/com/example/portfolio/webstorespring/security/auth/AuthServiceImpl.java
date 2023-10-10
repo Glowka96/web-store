@@ -31,8 +31,8 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void revokeAllUserAuthTokens(Account account) {
-        List<AuthToken> validUserTokens = authTokenRepository.findAllValidTokenByAccountId(account.getId());
+    public void revokeAllAccountAuthTokensByAccountId(Long accountId) {
+        List<AuthToken> validUserTokens = authTokenRepository.findAllValidTokenByAccountId(accountId);
         if (validUserTokens.isEmpty()) {
             return;
         }

@@ -86,7 +86,7 @@ class ProducerServiceTest {
     void shouldSaveProducer() {
         // given
         // when
-        ProducerResponse savedProducerResponse = underTest.save(producerRequest);
+        ProducerResponse savedProducerResponse = underTest.saveProducer(producerRequest);
 
         // then
         ArgumentCaptor<Producer> producerArgumentCaptor =
@@ -105,7 +105,7 @@ class ProducerServiceTest {
         given(producerRepository.findById(producer.getId())).willReturn(Optional.of(producer));
 
         // when
-        ProducerResponse updatedProducer = underTest.update(producer.getId(), producerRequest);
+        ProducerResponse updatedProducer = underTest.updateProducer(producer.getId(), producerRequest);
 
         // then
         assertThat(updatedProducer.getName()).isEqualTo(producerRequest.getName());

@@ -28,13 +28,13 @@ public class CategoryService {
         return categoryMapper.mapToDto(foundCategory);
     }
 
-    public CategoryResponse save(CategoryRequest categoryRequest) {
+    public CategoryResponse saveCategory(CategoryRequest categoryRequest) {
         Category category = categoryMapper.mapToEntity(categoryRequest);
         categoryRepository.save(category);
         return categoryMapper.mapToDto(category);
     }
 
-    public CategoryResponse update(Long id, CategoryRequest categoryRequest) {
+    public CategoryResponse updateCategory(Long id, CategoryRequest categoryRequest) {
         Category foundCategory = findCategoryById(id);
 
         Category category = categoryMapper.mapToEntity(categoryRequest);

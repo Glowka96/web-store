@@ -126,7 +126,7 @@ class ProductControllerTest {
 
     @Test
     void shouldSaveProduct() throws Exception {
-        given(productService.save(anyLong(), anyLong(), any(ProductRequest.class)))
+        given(productService.saveProduct(anyLong(), anyLong(), any(ProductRequest.class)))
                 .willReturn(productResponse);
 
         mvc.perform(post(URI + "/{subcategoryId}/producers/{producerId}/products", 1, 1)

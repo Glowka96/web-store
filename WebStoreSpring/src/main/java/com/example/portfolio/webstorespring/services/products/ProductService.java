@@ -62,7 +62,7 @@ public class ProductService {
         return productRepository.countProductsByEnteredText(text);
     }
 
-    public ProductResponse save(Long subcategoryId, Long producerId, ProductRequest productRequest) {
+    public ProductResponse saveProduct(Long subcategoryId, Long producerId, ProductRequest productRequest) {
         Subcategory foundSubcategory = findSubcategoryById(subcategoryId);
         Producer foundProducer = findProducerById(producerId);
 

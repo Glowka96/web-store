@@ -29,24 +29,24 @@ public class SubcategoryController {
         return ResponseEntity.ok(subcategoryService.getAllSubcategory());
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/{categoryId}/subcategories")
     public ResponseEntity<SubcategoryResponse> saveSubcategory(@PathVariable("categoryId") Long id,
                                                               @Valid @RequestBody SubcategoryRequest subcategoryRequest) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(subcategoryService.save(id, subcategoryRequest));
+                .body(subcategoryService.saveSubcategory(id, subcategoryRequest));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping(value = "/{categoryId}/subcategories/{subcategoryId}")
     public ResponseEntity<SubcategoryResponse> updateSubcategory(@PathVariable("categoryId") Long categoryId,
                                                                 @PathVariable("subcategoryId") Long subcategoryId,
                                                                 @Valid @RequestBody SubcategoryRequest subCategoryRequest) {
         return ResponseEntity.status(HttpStatus.ACCEPTED)
-                .body(subcategoryService.update(categoryId, subcategoryId, subCategoryRequest));
+                .body(subcategoryService.updateSubcategory(categoryId, subcategoryId, subCategoryRequest));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping(value = "/subcategories/{subcategoryId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteSubcategoryById(@PathVariable ("subcategoryId") Long id){

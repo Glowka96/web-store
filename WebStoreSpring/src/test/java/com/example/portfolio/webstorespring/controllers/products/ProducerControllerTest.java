@@ -63,7 +63,7 @@ class ProducerControllerTest {
 
     @Test
     void shouldSaveProducer() throws Exception {
-        given(producerService.save(any(ProducerRequest.class))).willReturn(producerResponse);
+        given(producerService.saveProducer(any(ProducerRequest.class))).willReturn(producerResponse);
 
         mvc.perform(post(URI)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -77,7 +77,7 @@ class ProducerControllerTest {
 
     @Test
     void shouldUpdateProducer() throws Exception {
-        given(producerService.update(anyLong(), any(ProducerRequest.class))).willReturn(producerResponse);
+        given(producerService.updateProducer(anyLong(), any(ProducerRequest.class))).willReturn(producerResponse);
 
         mvc.perform(put(URI + "/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON)

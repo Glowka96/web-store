@@ -27,13 +27,13 @@ public class ProducerService {
         return producerMapper.mapToDto(producerRepository.findAll());
     }
 
-    public ProducerResponse save(ProducerRequest producerRequest) {
+    public ProducerResponse saveProducer(ProducerRequest producerRequest) {
         Producer producer = producerMapper.mapToEntity(producerRequest);
         producerRepository.save(producer);
         return producerMapper.mapToDto(producer);
     }
 
-    public ProducerResponse update(Long id, ProducerRequest producerRequest) {
+    public ProducerResponse updateProducer(Long id, ProducerRequest producerRequest) {
         Producer foundProducer = findProducerById(id);
 
         Producer producer = producerMapper.mapToEntity(producerRequest);

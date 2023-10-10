@@ -20,13 +20,13 @@ public class ProductController {
 
     private final ProductService productService;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(value = "products/types")
     public ResponseEntity<ProductType[]> getAllProductTyp() {
         return ResponseEntity.ok(ProductType.values());
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(value = "/products")
     public ResponseEntity<List<ProductResponse>> getAllProducts() {
         return ResponseEntity.ok(productService.getAllProducts());
@@ -45,15 +45,15 @@ public class ProductController {
         return ResponseEntity.ok(productService.getQuantityOfProductsBySubcategoryId(subcategoryId));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/{subcategoryId}/producers/{producerId}/products")
     public ResponseEntity<ProductResponse> saveProduct(@PathVariable(value = "subcategoryId") Long subcategoryId,
                                                       @PathVariable(value = "producerId") Long producerId,
                                                       @Valid @RequestBody ProductRequest productRequest) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(subcategoryId, producerId, productRequest));
+        return ResponseEntity.status(HttpStatus.CREATED).body(productService.saveProduct(subcategoryId, producerId, productRequest));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping(value = "/{subcategoryId}/producers/{producerId}/products/{productId}")
     public ResponseEntity<ProductResponse> updateProduct(@PathVariable(value = "subcategoryId") Long subcategoryId,
                                                         @PathVariable(value = "producerId") Long producerId,
@@ -63,7 +63,7 @@ public class ProductController {
                 .body(productService.updateProduct(subcategoryId, producerId, productId, productRequest));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping(value = "/products/{productId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteProductById(@PathVariable(value = "productId") Long id) {

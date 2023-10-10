@@ -80,7 +80,7 @@ class SubcategoryControllerTest {
     @Test
     void shouldSaveSubCategory() throws Exception {
         // given
-        given(subCategoryService.save(anyLong(), any(SubcategoryRequest.class))).willReturn(subcategoryResponse);
+        given(subCategoryService.saveSubcategory(anyLong(), any(SubcategoryRequest.class))).willReturn(subcategoryResponse);
 
         // when
         // then
@@ -97,7 +97,7 @@ class SubcategoryControllerTest {
     @Test
     void shouldUpdateSubCategory() throws Exception {
         // given
-        given(subCategoryService.update(anyLong(), anyLong(), any(SubcategoryRequest.class))).willReturn(subcategoryResponse);
+        given(subCategoryService.updateSubcategory(anyLong(), anyLong(), any(SubcategoryRequest.class))).willReturn(subcategoryResponse);
 
         // when
         // then

@@ -19,28 +19,28 @@ public class ProducerController {
 
     private final ProducerService producerService;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping()
     public ResponseEntity<List<ProducerResponse>> getAllProducer() {
         return ResponseEntity.ok(producerService.getAllProducer());
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping()
     public ResponseEntity<ProducerResponse> saveProducer(@Valid @RequestBody ProducerRequest producerRequest) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(producerService.save(producerRequest));
+                .body(producerService.saveProducer(producerRequest));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping(value = "/{id}")
     public ResponseEntity<ProducerResponse> updateProducer(@PathVariable("id") Long id,
                                                            @Valid @RequestBody ProducerRequest producerRequest) {
         return ResponseEntity.status(HttpStatus.ACCEPTED)
-                .body(producerService.update(id, producerRequest));
+                .body(producerService.updateProducer(id, producerRequest));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteProducer(@PathVariable("id") Long id) {

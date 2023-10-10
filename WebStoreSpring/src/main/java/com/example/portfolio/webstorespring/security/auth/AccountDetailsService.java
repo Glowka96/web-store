@@ -17,7 +17,7 @@ public class AccountDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) {
-        Account account = accountRepository.findByEmail(email)
+        Account account = accountRepository.findAccountByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Account", "email", email));
 
         if (Boolean.FALSE.equals(account.getEnabled())) {

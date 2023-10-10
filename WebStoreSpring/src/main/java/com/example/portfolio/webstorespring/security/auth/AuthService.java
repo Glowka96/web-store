@@ -8,7 +8,7 @@ import java.util.Map;
 public interface AuthService {
     void saveAccountAuthToken(Account account, String jwtToken);
 
-    void revokeAllUserAuthTokens(Account account);
+    void revokeAllAccountAuthTokensByAccountId(Long accountId);
 
     String generateJwtToken(UserDetails userDetails);
 

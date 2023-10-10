@@ -84,7 +84,7 @@ class CategoryControllerTest {
     @Test
     void shouldSaveCategory() throws Exception {
         // given
-        given(categoryService.save(any(CategoryRequest.class))).willReturn(categoryResponse);
+        given(categoryService.saveCategory(any(CategoryRequest.class))).willReturn(categoryResponse);
 
         // when
         // then
@@ -100,7 +100,7 @@ class CategoryControllerTest {
     @Test
     void shouldUpdateCategory() throws Exception {
         // given
-        given(categoryService.update(anyLong(), any(CategoryRequest.class))).willReturn(categoryResponse);
+        given(categoryService.updateCategory(anyLong(), any(CategoryRequest.class))).willReturn(categoryResponse);
 
         // when
         // then

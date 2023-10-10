@@ -73,7 +73,7 @@ class AuthServiceImplTest {
 
         // when
         when(authTokenRepository.findAllValidTokenByAccountId(anyLong())).thenReturn(authTokens);
-        underTest.revokeAllUserAuthTokens(account);
+        underTest.revokeAllAccountAuthTokensByAccountId(account.getId());
 
         // then
         verify(authTokenRepository, times(1)).saveAll(authTokens);

@@ -13,7 +13,6 @@ import { ShopService } from 'src/app/services/shop.service';
   styleUrls: ['./purchase.component.scss'],
 })
 export class PurchaseComponent implements OnInit {
-  private accountId!: string;
   private accountAddress!: AccountAddress;
   private foundAddress!: boolean;
   private basket!: ShipmentRequest[];
@@ -55,8 +54,7 @@ export class PurchaseComponent implements OnInit {
     private shopService: ShopService,
     private router: Router
   ) {
-    this.accountId = sessionStorage.getItem('id') || '';
-    this.accountService.getAccountAddress(this.accountId).subscribe({
+    this.accountService.getAccountAddress().subscribe({
       next: (response) => {
         this.accountAddress = response;
         this.foundAddress = true;
@@ -99,7 +97,7 @@ export class PurchaseComponent implements OnInit {
         shipments: this.basket,
         deliveryAddress: city + ', ' + postcode + ', ' + street,
       };
-      this.shopService.purchase(this.accountId, request).subscribe({
+      this.shopService.purchase(request).subscribe({
         next: () => {
           this.shopService.basket$.next([]);
           this.router.navigate(['/accounts/orders']);
