@@ -13,31 +13,31 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "api/v1/categories")
+@RequestMapping(value = "api/v1")
 @RequiredArgsConstructor
 public class CategoryController {
 
     private final CategoryService categoryService;
 
-    @GetMapping()
+    @GetMapping(value = "/categories")
     public ResponseEntity<List<CategoryResponse>> getAllCategory() {
         return ResponseEntity.ok(categoryService.getAllCategory());
     }
 
-    @GetMapping(value = "/{categoryId}")
+    @GetMapping(value = "/categories/{categoryId}")
     public ResponseEntity<CategoryResponse> getCategoryById(@PathVariable(value = "categoryId") Long categoryId) {
         return ResponseEntity.ok(categoryService.getCategoryDtoById(categoryId));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping()
+    @PostMapping("/admin/categories")
     public ResponseEntity<CategoryResponse> saveCategory(@Valid @RequestBody CategoryRequest categoryRequest) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(categoryService.saveCategory(categoryRequest));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping(value = "/{categoryId}")
+    @PutMapping(value = "/admin/categories/{categoryId}")
     public ResponseEntity<CategoryResponse> updateCategory(@PathVariable(value = "categoryId") Long categoryId,
                                                            @Valid @RequestBody CategoryRequest categoryRequest){
         return ResponseEntity.status(HttpStatus.ACCEPTED)
@@ -45,7 +45,7 @@ public class CategoryController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping(value = "/{categoryId}")
+    @DeleteMapping(value = "/admin/categories/{categoryId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCategoryById(@PathVariable(value = "categoryId") Long categoryId) {
         categoryService.deleteById(categoryId);

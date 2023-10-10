@@ -5,6 +5,7 @@ import com.example.portfolio.webstorespring.security.auth.JwtAuthenticationFilte
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -48,22 +49,27 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.headers().cacheControl();
-        http.cors();
-        return http.csrf(AbstractHttpConfigurer::disable)
+        return http.cors()
+                .and()
+                .csrf(AbstractHttpConfigurer::disable)
                 .authenticationProvider(authenticationProvider())
-                .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/api/v1/producers/**",
-                                        "/api/v1/logout/**",
-                                        "/api/v1/login/**",
-                                        "/api/v1/registration/**",
-                                        "/api/v1/categories/**",
-                                        "/api/v1/subcategories/**",
-                                        "/api/v1/accounts/reset-password/**",
-                                        "/api/v1/products/search/**").permitAll()
-                                .anyRequest().authenticated())
+                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.GET,
+                                "/api/v1/logout/**",
+                                "/api/v1/categories",
+                                "/api/v1/products/search/**",
+                                "/api/v1/registration/**",
+                                "api/v1/accounts/reset-password/**").permitAll()
+                        .requestMatchers(HttpMethod.POST,
+                                "/api/v1/login/**",
+                                "/api/v1/registration").permitAll()
+                        .requestMatchers(HttpMethod.PATCH,
+                                "/api/v1/accounts/reset-password/**").permitAll()
+                        .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/accounts/**",
+                                "/api/v1/account/address/**",
+                                "/api/v1/account/orders/**").hasAnyRole("ADMIN", "USER")
+                        .anyRequest().authenticated()
+                )
                 .formLogin(form ->
                         form.defaultSuccessUrl("/api/v1/categories"))
                 .headers().frameOptions().sameOrigin()
@@ -75,6 +81,8 @@ public class WebSecurityConfig {
                                        authentication) -> SecurityContextHolder.clearContext())
                 .and()
                 .authenticationProvider(authenticationProvider())
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

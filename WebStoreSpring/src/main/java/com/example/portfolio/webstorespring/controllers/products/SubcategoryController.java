@@ -13,24 +13,24 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "api/v1/categories/")
+@RequestMapping(value = "api/v1")
 @RequiredArgsConstructor
 public class SubcategoryController {
 
     private final SubcategoryService subcategoryService;
 
-    @GetMapping(value = "/subcategories/{subCategoryId}")
+    @GetMapping(value = "/categories/subcategories/{subCategoryId}")
     public ResponseEntity<SubcategoryResponse> getSubcategoryById(@PathVariable("subCategoryId") Long id) {
         return ResponseEntity.ok(subcategoryService.getSubcategoryDtoById(id));
     }
 
-    @GetMapping(value = "/subcategories")
+    @GetMapping(value = "/categories/subcategories")
     public ResponseEntity<List<SubcategoryResponse>> getAllSubcategory() {
         return ResponseEntity.ok(subcategoryService.getAllSubcategory());
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping(value = "/{categoryId}/subcategories")
+    @PostMapping(value = "/admin/categories/{categoryId}/subcategories")
     public ResponseEntity<SubcategoryResponse> saveSubcategory(@PathVariable("categoryId") Long id,
                                                               @Valid @RequestBody SubcategoryRequest subcategoryRequest) {
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -38,7 +38,7 @@ public class SubcategoryController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping(value = "/{categoryId}/subcategories/{subcategoryId}")
+    @PutMapping(value = "/admin/categories/{categoryId}/subcategories/{subcategoryId}")
     public ResponseEntity<SubcategoryResponse> updateSubcategory(@PathVariable("categoryId") Long categoryId,
                                                                 @PathVariable("subcategoryId") Long subcategoryId,
                                                                 @Valid @RequestBody SubcategoryRequest subCategoryRequest) {
@@ -47,7 +47,7 @@ public class SubcategoryController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping(value = "/subcategories/{subcategoryId}")
+    @DeleteMapping(value = "/admin/categories/subcategories/{subcategoryId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteSubcategoryById(@PathVariable ("subcategoryId") Long id){
         subcategoryService.deleteSubcategoryById(id);
