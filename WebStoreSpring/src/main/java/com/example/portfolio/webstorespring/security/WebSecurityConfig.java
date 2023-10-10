@@ -80,7 +80,6 @@ public class WebSecurityConfig {
                                        response,
                                        authentication) -> SecurityContextHolder.clearContext())
                 .and()
-                .authenticationProvider(authenticationProvider())
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
