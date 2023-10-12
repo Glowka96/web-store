@@ -36,6 +36,7 @@ class AccountDetailsServiceTest {
         account = new Account();
         account.setId(1L);
         account.setEmail("test@test.pl");
+        account.setEnabled(true);
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(new AccountDetails(account), null);
         SecurityContext securityContext = SecurityContextHolder.getContext();
@@ -44,21 +45,21 @@ class AccountDetailsServiceTest {
 
     @Test
     void shouldLoadUserByUsername() {
-        when(accountRepository.findByEmail(anyString())).thenReturn(Optional.of(account));
+        when(accountRepository.findAccountByEmail(anyString())).thenReturn(Optional.of(account));
 
-        UserDetails userDetails = underTest.loadUserByUsername(account.getEmail());
+        UserDetails userDetails = underTest.loadUserByUsername("test@test.pl");
 
         assertThat(userDetails).isNotNull();
     }
 
     @Test
-    void willThrowWhenAccountIsDisable() {
+    void willThrowWhenAccountIsDisabled() {
         account.setEnabled(false);
 
-        when(accountRepository.findByEmail(anyString())).thenReturn(Optional.of(account));
+        when(accountRepository.findAccountByEmail(anyString())).thenReturn(Optional.of(account));
 
-        assertThatThrownBy(() -> underTest.loadUserByUsername(anyString()))
+        assertThatThrownBy(() -> underTest.loadUserByUsername("test@test.pl"))
                 .isInstanceOf(DisabledException.class)
-                .hasMessageContaining("Account is disabled");
+                .hasMessageContaining("Your account is disabled");
     }
 }

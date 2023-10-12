@@ -16,7 +16,9 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
@@ -47,6 +49,12 @@ public class WebSecurityConfig {
         return authConfig.getAuthenticationManager();
     }
 
+
+    @Bean
+    public AuthenticationEntryPoint http403ForbiddenEntryPoint() {
+        return new Http403ForbiddenEntryPoint();
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.cors()
@@ -70,6 +78,8 @@ public class WebSecurityConfig {
                                 "/api/v1/account/orders/**").hasAnyRole("ADMIN", "USER")
                         .anyRequest().authenticated()
                 )
+                .httpBasic()
+                .and()
                 .formLogin(form ->
                         form.defaultSuccessUrl("/api/v1/categories"))
                 .headers().frameOptions().sameOrigin()
@@ -83,6 +93,8 @@ public class WebSecurityConfig {
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling().authenticationEntryPoint(http403ForbiddenEntryPoint())
+                .and()
                 .build();
     }
 }

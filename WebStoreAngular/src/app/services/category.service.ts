@@ -25,14 +25,20 @@ export class CategoryService {
   }
 
   public addCategory(request: CategoryRequest): Observable<any> {
-    return this.http.post<any>(`${this.apiServerUrl}/categories`, request);
+    return this.http.post<any>(
+      `${this.apiServerUrl}/admin/categories`,
+      request
+    );
   }
 
   public updateCategory(id: string, request: CategoryRequest): Observable<any> {
-    return this.http.put<any>(`${this.apiServerUrl}/categories/${id}`, request);
+    return this.http.put<any>(
+      `${this.apiServerUrl}/admin/categories/${id}`,
+      request
+    );
   }
 
   public deleteCategory(id: string): Observable<any> {
-    return this.http.delete<any>(`${this.apiServerUrl}/categories/${id}`);
+    return this.http.delete<any>(`${this.apiServerUrl}/admin/categories/${id}`);
   }
 }

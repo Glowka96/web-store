@@ -67,7 +67,6 @@ public class RegistrationService {
 
         confirmationTokenService.setConfirmedAtAndSaveConfirmationToken(confirmationToken);
         account.setEnabled(true);
-        account.setRoles(roleRepository.findByName(ROLE_USER));
         accountRepository.save(account);
 
         return Map.of("message", "Account confirmed");

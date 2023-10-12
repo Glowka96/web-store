@@ -38,7 +38,7 @@ class ProductControllerTest {
 
     private MockMvc mvc;
     private ObjectMapper mapper;
-    private static final String URI = "/api/v1/subcategories";
+    private static final String URI = "/api/v1";
     private ProductResponse productResponse;
     private List<ProductResponse> productResponses;
 
@@ -63,7 +63,7 @@ class ProductControllerTest {
 
     @Test
     void shouldGetAllProductTypes() throws Exception {
-        mvc.perform(get(URI  + "/products/types")
+        mvc.perform(get(URI  + "/admin/products/types")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(ProductType.values().length)))
@@ -73,7 +73,7 @@ class ProductControllerTest {
     void shouldGetAllProducts() throws Exception {
         given(productService.getAllProducts()).willReturn(productResponses);
 
-        mvc.perform(get(URI + "/products")
+        mvc.perform(get(URI + "/admin/products")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(3)))
@@ -81,27 +81,11 @@ class ProductControllerTest {
     }
 
     @Test
-    void shouldGetAllProductsBySubCategoryIdPaginationNoSort() throws Exception {
+    void shouldGetAllProductsBySubCategoryIdPagination() throws Exception {
         given(productService.getAllProductsBySubcategoryId(anyLong(), anyInt(), anyInt(), anyString()))
                 .willReturn(productResponses);
 
-        mvc.perform(get(URI + "/{subcategoryId}/products", 1)
-                        .param("page", "0")
-                        .param("size", "3")
-                        .param("sort", "id")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(3)))
-                .andDo(print());
-    }
-
-    @Test
-    void shouldGetAllProductsBySubCategoryIdPaginationWithSort() throws Exception {
-        given(productService.getAllProductsBySubcategoryId(anyLong(), anyInt(), anyInt(), anyString()))
-                .willReturn(productResponses);
-
-        mvc.perform(get(URI + "/{subcategoryId}/products", 1)
+        mvc.perform(get(URI + "/subcategories/{subcategoryId}/products", 1)
                         .param("page", "0")
                         .param("size", "3")
                         .param("sort", "price")
@@ -116,7 +100,7 @@ class ProductControllerTest {
     void shouldGetQuantityProductsBySubcategoryId() throws Exception {
         given(productService.getQuantityOfProductsBySubcategoryId(anyLong())).willReturn(12L);
 
-        mvc.perform(get(URI + "/{subcategoryId}/products/quantity", 1)
+        mvc.perform(get(URI + "/subcategories/{subcategoryId}/products/quantity", 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -129,7 +113,7 @@ class ProductControllerTest {
         given(productService.saveProduct(anyLong(), anyLong(), any(ProductRequest.class)))
                 .willReturn(productResponse);
 
-        mvc.perform(post(URI + "/{subcategoryId}/producers/{producerId}/products", 1, 1)
+        mvc.perform(post(URI + "/admin/subcategories/{subcategoryId}/producers/{producerId}/products", 1, 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(productResponse)))
@@ -146,7 +130,7 @@ class ProductControllerTest {
         given(productService.updateProduct(anyLong(), anyLong(), anyLong(), any(ProductRequest.class)))
                 .willReturn(productResponse);
 
-        mvc.perform(put(URI + "/{subcategoryId}/producers/{producerId}/products/{productId}", 1, 1, 1)
+        mvc.perform(put(URI + "/admin/subcategories/{subcategoryId}/producers/{producerId}/products/{productId}", 1, 1, 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(productResponse)))
@@ -160,7 +144,7 @@ class ProductControllerTest {
 
     @Test
     void shouldDeleteProductById() throws Exception {
-        mvc.perform(delete(URI + "/products/{productId}", 1))
+        mvc.perform(delete(URI + "/admin/subcategories/products/{productId}", 1))
                 .andExpect(status().isNoContent())
                 .andDo(print());
     }

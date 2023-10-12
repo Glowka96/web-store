@@ -76,13 +76,13 @@ export class ProductService {
 
   public getAllProducts(): Observable<ProductResponse[]> {
     return this.http.get<ProductResponse[]>(
-      `${this.apiServerUrl}/subcategories/products`
+      `${this.apiServerUrl}/admin/subcategories/products`
     );
   }
 
   public getProductTypes(): Observable<string[]> {
     return this.http.get<string[]>(
-      `${this.apiServerUrl}/subcategories/products/types`
+      `${this.apiServerUrl}/admin/subcategories/products/types`
     );
   }
 
@@ -92,7 +92,7 @@ export class ProductService {
     request: ProductRequest
   ): Observable<any> {
     return this.http.post<any>(
-      `${this.apiServerUrl}/subcategories/${subcategoryId}/producers/${producerId}/products`,
+      `${this.apiServerUrl}/admin/subcategories/${subcategoryId}/producers/${producerId}/products`,
       request
     );
   }
@@ -103,14 +103,14 @@ export class ProductService {
     request: ProductRequest
   ): Observable<any> {
     return this.http.put<any>(
-      `${this.apiServerUrl}/subcategories/${subcategoryId}/producers/${producerId}/products`,
+      `${this.apiServerUrl}/admin/subcategories/${subcategoryId}/producers/${producerId}/products`,
       request
     );
   }
 
   public deleteProduct(productId: string): Observable<any> {
     return this.http.delete<any>(
-      `${this.apiServerUrl}/subcategories/products/${productId}`
+      `${this.apiServerUrl}/admin/subcategories/products/${productId}`
     );
   }
 }

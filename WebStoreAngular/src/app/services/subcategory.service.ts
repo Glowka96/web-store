@@ -31,7 +31,7 @@ export class SubcategoryService {
     request: SubcategoryRequest
   ): Observable<any> {
     return this.http.post<any>(
-      `${this.apiServerUrl}/categories/${categoryId}/subcategories`,
+      `${this.apiServerUrl}/admin/categories/${categoryId}/subcategories`,
       request
     );
   }
@@ -42,14 +42,14 @@ export class SubcategoryService {
     request: SubcategoryRequest
   ): Observable<any> {
     return this.http.put<any>(
-      `${this.apiServerUrl}/categories/${categoryId}/subcategories/${subcategoryId}`,
+      `${this.apiServerUrl}/admin/categories/${categoryId}/subcategories/${subcategoryId}`,
       request
     );
   }
 
   public deleteSubcategory(subcategoryId: string): Observable<any> {
     return this.http.delete<any>(
-      `${this.apiServerUrl}/categories/subcategories/${subcategoryId}`
+      `${this.apiServerUrl}/admin/categories/subcategories/${subcategoryId}`
     );
   }
 }

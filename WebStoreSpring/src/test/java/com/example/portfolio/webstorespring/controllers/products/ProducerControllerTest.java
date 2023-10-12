@@ -35,7 +35,7 @@ class ProducerControllerTest {
     private ProducerController underTest;
     private MockMvc mvc;
     private ObjectMapper mapper;
-    private static final String URI = "/api/v1/producers";
+    private static final String URI = "/api/v1/admin/producers";
     private ProducerResponse producerResponse;
 
     @BeforeEach

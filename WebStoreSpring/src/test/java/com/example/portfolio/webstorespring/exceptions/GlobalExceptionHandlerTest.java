@@ -179,7 +179,7 @@ class GlobalExceptionHandlerTest {
     void shouldHandleAccessDeniedException() {
         // given
         ErrorResponse exceptedErrorResponse = new ErrorResponse(
-                HttpStatus.UNAUTHORIZED.value(),
+                HttpStatus.FORBIDDEN.value(),
                 accessDeniedException.getMessage(),
                 webRequest.getDescription(false));
 

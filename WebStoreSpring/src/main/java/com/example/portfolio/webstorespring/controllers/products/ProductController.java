@@ -32,7 +32,7 @@ public class ProductController {
         return ResponseEntity.ok(productService.getAllProducts());
     }
 
-    @GetMapping(value = "/subcategories//{subcategoryId}/products", params = {"page", "size", "sort"})
+    @GetMapping(value = "/subcategories/{subcategoryId}/products", params = {"page", "size", "sort"})
     public ResponseEntity<List<ProductResponse>> getAllProductsBySubCategoryId(@PathVariable(value = "subcategoryId") Long subcategoryId,
                                                                               @RequestParam(name = "page", defaultValue = "0") Integer page,
                                                                               @RequestParam(name = "size", defaultValue = "12") Integer size,
