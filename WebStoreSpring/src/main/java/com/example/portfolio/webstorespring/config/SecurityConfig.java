@@ -1,24 +1,18 @@
-package com.example.portfolio.webstorespring.security;
+package com.example.portfolio.webstorespring.config;
 
-import com.example.portfolio.webstorespring.security.auth.AccountDetailsService;
-import com.example.portfolio.webstorespring.security.auth.JwtAuthenticationFilter;
+import com.example.portfolio.webstorespring.services.authentication.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
@@ -27,40 +21,17 @@ import org.springframework.security.web.authentication.logout.LogoutHandler;
 @EnableWebSecurity
 @EnableMethodSecurity()
 @RequiredArgsConstructor
-public class WebSecurityConfig {
+public class SecurityConfig {
 
-    private final AccountDetailsService accountDetailsService;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final LogoutHandler logoutHandler;
-
-    @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-
-        authProvider.setUserDetailsService(accountDetailsService);
-        authProvider.setPasswordEncoder(bCryptPasswordEncoder);
-
-        return authProvider;
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
-        return authConfig.getAuthenticationManager();
-    }
-
-
-    @Bean
-    public AuthenticationEntryPoint http403ForbiddenEntryPoint() {
-        return new Http403ForbiddenEntryPoint();
-    }
+    private final AuthenticationProvider authenticationProvider;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.cors()
                 .and()
                 .csrf(AbstractHttpConfigurer::disable)
-                .authenticationProvider(authenticationProvider())
                 .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.GET,
                                 "/api/v1/logout/**",
                                 "/api/v1/categories",
@@ -78,23 +49,17 @@ public class WebSecurityConfig {
                                 "/api/v1/account/orders/**").hasAnyRole("ADMIN", "USER")
                         .anyRequest().authenticated()
                 )
-                .httpBasic()
-                .and()
-                .formLogin(form ->
-                        form.defaultSuccessUrl("/api/v1/categories"))
-                .headers().frameOptions().sameOrigin()
-                .and()
-                .logout().logoutUrl("/api/v1/logout").permitAll()
-                .addLogoutHandler(logoutHandler)
-                .logoutSuccessHandler((request,
-                                       response,
-                                       authentication) -> SecurityContextHolder.clearContext())
-                .and()
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling().authenticationEntryPoint(http403ForbiddenEntryPoint())
-                .and()
+                .logout(logout -> {
+                    logout.logoutUrl("/api/v1/logout");
+                    logout.addLogoutHandler(logoutHandler);
+                    logout.logoutSuccessHandler((request,
+                                                 response,
+                                                 authentication) -> SecurityContextHolder.clearContext());
+                })
                 .build();
     }
 }

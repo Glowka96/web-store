@@ -8,7 +8,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,13 +19,11 @@ public class ProductController {
 
     private final ProductService productService;
 
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(value = "/admin/products/types")
     public ResponseEntity<ProductType[]> getAllProductTyp() {
         return ResponseEntity.ok(ProductType.values());
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(value = "/admin/products")
     public ResponseEntity<List<ProductResponse>> getAllProducts() {
         return ResponseEntity.ok(productService.getAllProducts());
@@ -45,7 +42,6 @@ public class ProductController {
         return ResponseEntity.ok(productService.getQuantityOfProductsBySubcategoryId(subcategoryId));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/admin/subcategories/{subcategoryId}/producers/{producerId}/products")
     public ResponseEntity<ProductResponse> saveProduct(@PathVariable(value = "subcategoryId") Long subcategoryId,
                                                       @PathVariable(value = "producerId") Long producerId,
@@ -53,20 +49,19 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED).body(productService.saveProduct(subcategoryId, producerId, productRequest));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping(value = "/admin/subcategories/{subcategoryId}/producers/{producerId}/products/{productId}")
     public ResponseEntity<ProductResponse> updateProduct(@PathVariable(value = "subcategoryId") Long subcategoryId,
                                                         @PathVariable(value = "producerId") Long producerId,
                                                         @PathVariable(value = "productId") Long productId,
                                                         @Valid @RequestBody ProductRequest productRequest) {
-        return ResponseEntity.status(HttpStatus.ACCEPTED)
+        return ResponseEntity.accepted()
                 .body(productService.updateProduct(subcategoryId, producerId, productId, productRequest));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping(value = "/admin/subcategories/products/{productId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteProductById(@PathVariable(value = "productId") Long id) {
+    public ResponseEntity<Void> deleteProductById(@PathVariable(value = "productId") Long id) {
         productService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }

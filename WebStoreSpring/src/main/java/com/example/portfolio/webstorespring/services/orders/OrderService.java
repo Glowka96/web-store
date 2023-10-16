@@ -11,7 +11,7 @@ import com.example.portfolio.webstorespring.model.entity.orders.Order;
 import com.example.portfolio.webstorespring.model.entity.orders.OrderStatus;
 import com.example.portfolio.webstorespring.model.entity.orders.Shipment;
 import com.example.portfolio.webstorespring.repositories.orders.OrderRepository;
-import com.example.portfolio.webstorespring.security.auth.AccountDetails;
+import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;

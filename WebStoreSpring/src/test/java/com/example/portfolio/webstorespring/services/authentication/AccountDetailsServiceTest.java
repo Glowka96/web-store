@@ -1,7 +1,8 @@
-package com.example.portfolio.webstorespring.security.auth;
+package com.example.portfolio.webstorespring.services.authentication;
 
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,6 +42,11 @@ class AccountDetailsServiceTest {
         Authentication authentication = new UsernamePasswordAuthenticationToken(new AccountDetails(account), null);
         SecurityContext securityContext = SecurityContextHolder.getContext();
         securityContext.setAuthentication(authentication);
+    }
+
+    @AfterEach
+    void resetSecurityContext() {
+        SecurityContextHolder.clearContext();
     }
 
     @Test

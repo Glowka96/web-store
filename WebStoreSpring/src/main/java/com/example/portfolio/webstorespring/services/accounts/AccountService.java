@@ -5,10 +5,10 @@ import com.example.portfolio.webstorespring.model.dto.accounts.AccountRequest;
 import com.example.portfolio.webstorespring.model.dto.accounts.AccountResponse;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
-import com.example.portfolio.webstorespring.security.auth.AccountDetails;
+import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,7 +17,7 @@ public class AccountService {
 
     private final AccountRepository accountRepository;
     private final AccountMapper accountMapper;
-    private final BCryptPasswordEncoder encoder;
+    private final PasswordEncoder encoder;
 
     public AccountResponse getAccount() {
         return accountMapper.mapToDto(getAccountDetails().getAccount());

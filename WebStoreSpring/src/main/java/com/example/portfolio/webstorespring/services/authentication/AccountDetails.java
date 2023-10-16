@@ -1,4 +1,4 @@
-package com.example.portfolio.webstorespring.security.auth;
+package com.example.portfolio.webstorespring.services.authentication;
 
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import lombok.EqualsAndHashCode;

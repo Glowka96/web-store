@@ -3,8 +3,9 @@ package com.example.portfolio.webstorespring.services.accounts;
 import com.example.portfolio.webstorespring.model.dto.accounts.AuthenticationResponse;
 import com.example.portfolio.webstorespring.model.dto.accounts.LoginRequest;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
-import com.example.portfolio.webstorespring.security.auth.AccountDetails;
-import com.example.portfolio.webstorespring.security.auth.AuthService;
+import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
+import com.example.portfolio.webstorespring.services.authentication.AuthService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -29,6 +30,11 @@ class LoginServiceTest {
     private AuthService authService;
     @InjectMocks
     private LoginService underTest;
+
+    @AfterEach
+    void resetSecurityContext() {
+        SecurityContextHolder.clearContext();
+    }
 
     @Test
     void shouldLogin() {

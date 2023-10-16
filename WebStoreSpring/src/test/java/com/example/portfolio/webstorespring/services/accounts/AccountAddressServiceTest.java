@@ -6,7 +6,7 @@ import com.example.portfolio.webstorespring.model.dto.accounts.AccountAddressRes
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.accounts.AccountAddress;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountAddressRepository;
-import com.example.portfolio.webstorespring.security.auth.AccountDetails;
+import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

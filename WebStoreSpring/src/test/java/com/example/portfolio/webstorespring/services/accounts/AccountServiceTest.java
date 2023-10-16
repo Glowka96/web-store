@@ -5,7 +5,7 @@ import com.example.portfolio.webstorespring.model.dto.accounts.AccountRequest;
 import com.example.portfolio.webstorespring.model.dto.accounts.AccountResponse;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
-import com.example.portfolio.webstorespring.security.auth.AccountDetails;
+import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

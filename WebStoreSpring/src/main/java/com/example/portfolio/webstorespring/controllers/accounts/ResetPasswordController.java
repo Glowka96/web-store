@@ -4,7 +4,6 @@ import com.example.portfolio.webstorespring.annotations.Password;
 import com.example.portfolio.webstorespring.services.accounts.ResetPasswordService;
 import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping("api/v1/accounts/reset-password")
+@RequestMapping(value = "api/v1/accounts/reset-password")
 @RequiredArgsConstructor
 @Validated
 public class ResetPasswordController {
@@ -26,7 +25,7 @@ public class ResetPasswordController {
     @PatchMapping(value = "confirm", params = {"password", "token"})
     public ResponseEntity<Map<String, Object>> confirmResetPassword(@RequestParam("password") @Password String password,
                                                                     @RequestParam("token") String token) {
-        return ResponseEntity.status(HttpStatus.ACCEPTED)
+        return ResponseEntity.accepted()
                 .body(resetPasswordService.confirmResetPassword(password, token));
     }
 }

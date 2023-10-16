@@ -7,7 +7,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,7 +28,6 @@ public class SubcategoryController {
         return ResponseEntity.ok(subcategoryService.getAllSubcategory());
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/admin/categories/{categoryId}/subcategories")
     public ResponseEntity<SubcategoryResponse> saveSubcategory(@PathVariable("categoryId") Long id,
                                                               @Valid @RequestBody SubcategoryRequest subcategoryRequest) {
@@ -37,19 +35,19 @@ public class SubcategoryController {
                 .body(subcategoryService.saveSubcategory(id, subcategoryRequest));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping(value = "/admin/categories/{categoryId}/subcategories/{subcategoryId}")
     public ResponseEntity<SubcategoryResponse> updateSubcategory(@PathVariable("categoryId") Long categoryId,
                                                                 @PathVariable("subcategoryId") Long subcategoryId,
                                                                 @Valid @RequestBody SubcategoryRequest subCategoryRequest) {
-        return ResponseEntity.status(HttpStatus.ACCEPTED)
+        return ResponseEntity.accepted()
                 .body(subcategoryService.updateSubcategory(categoryId, subcategoryId, subCategoryRequest));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping(value = "/admin/categories/subcategories/{subcategoryId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteSubcategoryById(@PathVariable ("subcategoryId") Long id){
+    public ResponseEntity<Void> deleteSubcategoryById(@PathVariable ("subcategoryId") Long id){
         subcategoryService.deleteSubcategoryById(id);
+        return ResponseEntity.noContent().build();
+
     }
 }

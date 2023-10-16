@@ -10,7 +10,7 @@ import com.example.portfolio.webstorespring.services.email.EmailSenderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -18,7 +18,7 @@ import java.util.Map;
 @Service
 public class RegistrationService {
 
-    private final BCryptPasswordEncoder encoder;
+    private final PasswordEncoder encoder;
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailSenderService emailSenderService;
     private final AccountRepository accountRepository;
@@ -29,8 +29,11 @@ public class RegistrationService {
     @Value("${email.confirmation.link}")
     private String confirmLink;
 
+    @Value("${account.image.url}")
+    private String accountImageURL;
+
     @Autowired
-    public RegistrationService(BCryptPasswordEncoder encoder,
+    public RegistrationService(PasswordEncoder encoder,
                                ConfirmationTokenService confirmationTokenService,
                                @Qualifier(value = "confirmEmailSender") EmailSenderService emailSenderService,
                                AccountRepository accountRepository, RoleRepository roleRepository) {
@@ -80,7 +83,7 @@ public class RegistrationService {
                 .password(encoder.encode(registrationRequest.getPassword()))
                 .roles(roleRepository.findByName(ROLE_USER))
                 .enabled(false)
-                .imageUrl("https://i.imgur.com/a23SANX.png")
+                .imageUrl(accountImageURL)
                 .build();
     }
 }
