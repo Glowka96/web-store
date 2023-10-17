@@ -2,9 +2,7 @@ package com.example.portfolio.webstorespring.model.entity.orders;
 
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 import java.util.List;
@@ -13,7 +11,9 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "orders")
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

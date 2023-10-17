@@ -57,6 +57,7 @@ sender.password = ${SENDER_PASSWORD:your_password}
 cors.allowed-origin-patterns=${CORS_ALLOWED_ORIGIN_PATTERNS:http://localhost:4200}
 email.confirmation.link = ${EMAIL_CONFIRMATION_LINK:http://localhost:4200/registration/confirm?token=}
 reset-password.confirmation.link = ${RESET_PASSWORD_CONFIRMATION_LINK:http://localhost:4200/reset-password/confirm?token=}
+shipment.address = ${SHIPMENT_ADDRESS:your_shipment_address}
 ```
 How to create a Google-generated app password [link](https://support.google.com/accounts/answer/185833?hl=en).
 Use it for `SENDER_PASSWORD`.

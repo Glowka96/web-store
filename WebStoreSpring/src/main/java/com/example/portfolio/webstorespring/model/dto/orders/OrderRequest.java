@@ -5,11 +5,17 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class OrderRequest {
     private static final String DELIVERY_ADDRESS_PATTERN =
             "^[A-Za-z]+(, )\\d{2}-\\d{3}(, )(ul(.)?\\s)?[A-Z]?[a-z]+\\s\\d{1,3}((/\\d{1,3})?|(\\sm(.)?\\s)\\d{1,3})[a-z]?$";

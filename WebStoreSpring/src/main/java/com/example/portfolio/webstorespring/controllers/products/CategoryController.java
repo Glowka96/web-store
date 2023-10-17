@@ -7,47 +7,43 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "api/v1/categories")
+@RequestMapping(value = "api/v1")
 @RequiredArgsConstructor
 public class CategoryController {
 
     private final CategoryService categoryService;
 
-    @GetMapping()
+    @GetMapping(value = "/categories")
     public ResponseEntity<List<CategoryResponse>> getAllCategory() {
-        return ResponseEntity.ok(categoryService.getAllCategoryDto());
+        return ResponseEntity.ok(categoryService.getAllCategory());
     }
 
-    @GetMapping(value = "/{categoryId}")
+    @GetMapping(value = "/categories/{categoryId}")
     public ResponseEntity<CategoryResponse> getCategoryById(@PathVariable(value = "categoryId") Long categoryId) {
         return ResponseEntity.ok(categoryService.getCategoryDtoById(categoryId));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PostMapping()
+    @PostMapping(value = "/admin/categories")
     public ResponseEntity<CategoryResponse> saveCategory(@Valid @RequestBody CategoryRequest categoryRequest) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(categoryService.save(categoryRequest));
+                .body(categoryService.saveCategory(categoryRequest));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PutMapping(value = "/{categoryId}")
+    @PutMapping(value = "/admin/categories/{categoryId}")
     public ResponseEntity<CategoryResponse> updateCategory(@PathVariable(value = "categoryId") Long categoryId,
                                                            @Valid @RequestBody CategoryRequest categoryRequest){
-        return ResponseEntity.status(HttpStatus.ACCEPTED)
-                .body(categoryService.update(categoryId, categoryRequest));
+        return ResponseEntity.accepted()
+                .body(categoryService.updateCategory(categoryId, categoryRequest));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @DeleteMapping(value = "/{categoryId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteCategoryById(@PathVariable(value = "categoryId") Long categoryId) {
+    @DeleteMapping(value = "/admin/categories/{categoryId}")
+    public ResponseEntity<Void> deleteCategoryById(@PathVariable(value = "categoryId") Long categoryId) {
         categoryService.deleteById(categoryId);
+        return ResponseEntity.noContent().build();
     }
 }

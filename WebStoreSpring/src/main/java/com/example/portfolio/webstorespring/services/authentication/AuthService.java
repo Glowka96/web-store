@@ -1,4 +1,4 @@
-package com.example.portfolio.webstorespring.security.auth;
+package com.example.portfolio.webstorespring.services.authentication;
 
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,11 +8,9 @@ import java.util.Map;
 public interface AuthService {
     void saveAccountAuthToken(Account account, String jwtToken);
 
-    void revokeAllUserAuthTokens(Account account);
+    void revokeAllAccountAuthTokensByAccountId(Long accountId);
 
     String generateJwtToken(UserDetails userDetails);
 
     String generateJwtToken(Map<String, Object> extraClaims, UserDetails userDetails);
-
-    Boolean checkAuthorization(Long accountId, String authToken);
 }

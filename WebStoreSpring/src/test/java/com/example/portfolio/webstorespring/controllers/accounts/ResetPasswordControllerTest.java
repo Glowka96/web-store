@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.controllers.accounts;
 
+import com.example.portfolio.webstorespring.enums.emailtypes.ResetPasswordType;
 import com.example.portfolio.webstorespring.services.accounts.ResetPasswordService;
-import com.example.portfolio.webstorespring.services.email.type.ResetPasswordType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

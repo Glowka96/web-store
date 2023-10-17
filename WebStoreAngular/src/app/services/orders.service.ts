@@ -13,26 +13,25 @@ export class OrdersService {
 
   constructor(private http: HttpClient) {}
 
-  public getAllAccountOrders(accountId: string): Observable<OrderResponse[]> {
+  public getAllAccountOrders(): Observable<OrderResponse[]> {
     return this.http.get<OrderResponse[]>(
-      `${this.apiServerUrl}/accounts/${accountId}/orders`
+      `${this.apiServerUrl}/accounts/orders`
     );
   }
 
   public updateOrder(
-    accountId: string,
     orderId: string,
     request: OrderRequest
   ) {
     return this.http.put<OrderResponse>(
-      `${this.apiServerUrl}/accounts/${accountId}/orders/${orderId}`,
+      `${this.apiServerUrl}/accounts/orders/${orderId}`,
       request
     );
   }
 
-  public deleteOrder(accountId: string, orderId: string): Observable<any> {
+  public deleteOrder(orderId: string): Observable<any> {
     return this.http.delete(
-      `${this.apiServerUrl}/accounts/${accountId}/orders/${orderId}`
+      `${this.apiServerUrl}/accounts/orders/${orderId}`
     );
   }
 }

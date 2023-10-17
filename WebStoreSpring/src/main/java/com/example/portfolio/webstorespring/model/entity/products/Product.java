@@ -1,10 +1,9 @@
 package com.example.portfolio.webstorespring.model.entity.products;
 
+import com.example.portfolio.webstorespring.enums.ProductType;
 import com.example.portfolio.webstorespring.model.entity.orders.Shipment;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -14,7 +13,9 @@ import java.util.List;
 @Table(name = "products")
 @NamedEntityGraph(name = "Product.producer",
         attributeNodes = @NamedAttributeNode("producer"))
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,5 +46,4 @@ public class Product {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<Shipment> shipment;
-
 }

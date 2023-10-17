@@ -1,4 +1,4 @@
-package com.example.portfolio.webstorespring.services.email;
+package com.example.portfolio.webstorespring.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

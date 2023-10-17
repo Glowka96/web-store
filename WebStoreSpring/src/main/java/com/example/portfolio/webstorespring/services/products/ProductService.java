@@ -1,7 +1,6 @@
 package com.example.portfolio.webstorespring.services.products;
 
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
-import com.example.portfolio.webstorespring.exceptions.SearchNotFoundException;
 import com.example.portfolio.webstorespring.mappers.ProductMapper;
 import com.example.portfolio.webstorespring.model.dto.products.ProductRequest;
 import com.example.portfolio.webstorespring.model.dto.products.ProductResponse;
@@ -63,7 +62,7 @@ public class ProductService {
         return productRepository.countProductsByEnteredText(text);
     }
 
-    public ProductResponse save(Long subcategoryId, Long producerId, ProductRequest productRequest) {
+    public ProductResponse saveProduct(Long subcategoryId, Long producerId, ProductRequest productRequest) {
         Subcategory foundSubcategory = findSubcategoryById(subcategoryId);
         Producer foundProducer = findProducerById(producerId);
 
@@ -109,8 +108,7 @@ public class ProductService {
     private Page<Product> searchProductsByText(String text, Pageable pageable) {
         return productRepository
                 .searchProductsByEnteredText(text,
-                        pageable)
-                .orElseThrow(SearchNotFoundException::new);
+                        pageable).orElse(Page.empty());
     }
 
     private Subcategory findSubcategoryById(Long id) {

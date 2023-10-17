@@ -1,4 +1,4 @@
-package com.example.portfolio.webstorespring.security.auth;
+package com.example.portfolio.webstorespring.services.authentication;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -37,16 +37,13 @@ public class JwtService {
             UserDetails userDetails
     ) {
         String role = userDetails.getAuthorities().toString().replaceAll("[\\[\\]]", "");
-        AccountDetails accountDetails = (AccountDetails) userDetails;
-        Long id = accountDetails.getAccount().getId();
         extraClaims.put("role", role);
-        extraClaims.put("id", id);
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24 * 10))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

@@ -8,14 +8,12 @@ import { AccountService } from 'src/app/services/accounts/account.service';
   styleUrls: ['./account.component.scss'],
 })
 export class AccountComponent implements OnInit {
-  private accountId!: string;
   private account!: AccountResponse;
 
   constructor(private accountService: AccountService) {}
 
   ngOnInit(): void {
-    this.accountId = sessionStorage.getItem('id')!;
-    this.accountService.getAccount(this.accountId).subscribe((account) => {
+    this.accountService.getAccount().subscribe((account) => {
       this.account = account;
     });
   }

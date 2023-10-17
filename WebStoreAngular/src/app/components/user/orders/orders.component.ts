@@ -10,7 +10,6 @@ import { OrdersService } from 'src/app/services/orders.service';
   styleUrls: ['./orders.component.scss'],
 })
 export class OrdersComponent implements OnInit {
-  private accountId!: string;
   private orders!: OrderResponse[];
   private errorMessage!: string;
   private selectedErrorId!: string;
@@ -47,12 +46,9 @@ export class OrdersComponent implements OnInit {
   });
 
   constructor(private ordersService: OrdersService) {
-    this.accountId = sessionStorage.getItem('id') || '';
-    this.ordersService
-      .getAllAccountOrders(this.accountId)
-      .subscribe((orders) => {
-        this.orders = orders;
-      });
+    this.ordersService.getAllAccountOrders().subscribe((orders) => {
+      this.orders = orders;
+    });
   }
 
   ngOnInit(): void {}
@@ -67,7 +63,7 @@ export class OrdersComponent implements OnInit {
   }
 
   public deleteOrder(orderId: string) {
-    this.ordersService.deleteOrder(this.accountId, orderId).subscribe({
+    this.ordersService.deleteOrder(orderId).subscribe({
       next: () => {
         window.location.reload();
       },
@@ -93,18 +89,16 @@ export class OrdersComponent implements OnInit {
           deliveryAddress: city + ', ' + postcode + ', ' + street,
           shipments: [],
         };
-        this.ordersService
-          .updateOrder(this.accountId, findOrder.id, request)
-          .subscribe({
-            next: () => {
-              window.location.reload();
-            },
-            error: (error) => {
-              this.selectedErrorId = orderId;
-              const errorMessage = error.error.errors;
-              this.errorMessage = errorMessage;
-            },
-          });
+        this.ordersService.updateOrder(findOrder.id, request).subscribe({
+          next: () => {
+            window.location.reload();
+          },
+          error: (error) => {
+            this.selectedErrorId = orderId;
+            const errorMessage = error.error.errors;
+            this.errorMessage = errorMessage;
+          },
+        });
       }
     }
   }

@@ -17,11 +17,13 @@ export class ProducerService {
   }
 
   private getAllProducers(): Observable<ProducerResponse[]> {
-    return this.http.get<ProducerResponse[]>(`${this.apiServerUrl}/producers`);
+    return this.http.get<ProducerResponse[]>(
+      `${this.apiServerUrl}/admin/producers`
+    );
   }
 
   public addProducer(request: ProducerRequest): Observable<any> {
-    return this.http.post<any>(`${this.apiServerUrl}/producers`, request);
+    return this.http.post<any>(`${this.apiServerUrl}/admin/producers`, request);
   }
 
   public updateProducer(
@@ -29,14 +31,14 @@ export class ProducerService {
     request: ProducerRequest
   ): Observable<any> {
     return this.http.put<any>(
-      `${this.apiServerUrl}/producers/${producerId}`,
+      `${this.apiServerUrl}/admin/producers/${producerId}`,
       request
     );
   }
 
   public deleteProducer(producerId: string): Observable<any> {
     return this.http.delete<any>(
-      `${this.apiServerUrl}/producers/${producerId}`
+      `${this.apiServerUrl}/admin/producers/${producerId}`
     );
   }
 

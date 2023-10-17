@@ -1,13 +1,10 @@
-package com.example.portfolio.webstorespring.security.auth;
+package com.example.portfolio.webstorespring.services.authentication;
 
-import com.example.portfolio.webstorespring.exceptions.AccountCanNotModifiedException;
-import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
+import com.example.portfolio.webstorespring.enums.AuthTokenType;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.accounts.AuthToken;
-import com.example.portfolio.webstorespring.model.entity.accounts.AuthTokenType;
 import com.example.portfolio.webstorespring.repositories.accounts.AuthTokenRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -34,8 +31,8 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void revokeAllUserAuthTokens(Account account) {
-        List<AuthToken> validUserTokens = authTokenRepository.findAllValidTokenByAccountId(account.getId());
+    public void revokeAllAccountAuthTokensByAccountId(Long accountId) {
+        List<AuthToken> validUserTokens = authTokenRepository.findAllValidTokenByAccountId(accountId);
         if (validUserTokens.isEmpty()) {
             return;
         }
@@ -55,36 +52,5 @@ public class AuthServiceImpl implements AuthService {
     public String generateJwtToken(Map<String, Object> extraClaims,
                                    UserDetails userDetails) {
         return jwtService.generateToken(extraClaims, userDetails);
-    }
-
-    @Override
-    public Boolean checkAuthorization(Long accountId, String authHeader) {
-        if (!authHeader.startsWith("Bearer ")) {
-            return false;
-        }
-
-        String authToken = authHeader.substring(7);
-
-        Account foundAccountByAuthToken = findAccountByAuthToken(authToken);
-        Account account = getAccountPrincipal().getAccount();
-
-        if (!foundAccountByAuthToken.getId().equals(accountId) &&
-                !account.getId().equals(accountId)) {
-            throw new AccountCanNotModifiedException();
-        }
-
-        return true;
-    }
-
-    private Account findAccountByAuthToken(String authToken) {
-        return authTokenRepository.findByToken(authToken)
-                .orElseThrow(() -> new ResourceNotFoundException("Authorization token", "token", authToken))
-                .getAccount();
-    }
-
-    private AccountDetails getAccountPrincipal() {
-        return (AccountDetails) SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getPrincipal();
     }
 }

@@ -1,14 +1,14 @@
 package com.example.portfolio.webstorespring.model.entity.accounts;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "account_addresses")
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class AccountAddress {
     @Id
@@ -28,9 +28,4 @@ public class AccountAddress {
     @OneToOne
     @JoinColumn(name = "account_id")
     private Account account;
-
-    @Override
-    public String toString() {
-        return "City: " + city + ", Postcode: " + postcode + ", Street: " + street;
-    }
 }

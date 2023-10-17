@@ -74,7 +74,7 @@ class SubcategoryServiceTest {
     void shouldGetAllSubcategoryResponse() {
         // given
         // when
-        underTest.getAllSubcategoryResponse();
+        underTest.getAllSubcategory();
 
         // then
         verify(subCategoryRepository, times(1)).findAll();
@@ -87,7 +87,7 @@ class SubcategoryServiceTest {
         given(categoryRepository.findById(anyLong())).willReturn(Optional.of(category));
 
         // when
-        SubcategoryResponse savedSubcategoryResponse = underTest.save(category.getId(), subCategoryRequest);
+        SubcategoryResponse savedSubcategoryResponse = underTest.saveSubcategory(category.getId(), subCategoryRequest);
 
         // then
         ArgumentCaptor<Subcategory> subcategoryArgumentCaptor =
@@ -119,7 +119,7 @@ class SubcategoryServiceTest {
         given(subCategoryRepository.findById(subCategory.getId())).willReturn(Optional.of(subCategory));
 
         // when
-        SubcategoryResponse updatedSubcategoryRequest = underTest.update(category.getId(), subCategory.getId(), subCategoryRequest);
+        SubcategoryResponse updatedSubcategoryRequest = underTest.updateSubcategory(category.getId(), subCategory.getId(), subCategoryRequest);
 
         // then
         ArgumentCaptor<Subcategory> subCategoryArgumentCaptor =

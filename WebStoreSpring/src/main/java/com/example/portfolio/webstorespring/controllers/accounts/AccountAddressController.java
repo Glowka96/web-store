@@ -7,38 +7,28 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/v1/accounts/{accountId}")
+@RequestMapping(value = "api/v1/accounts/address")
 @RequiredArgsConstructor
 public class AccountAddressController {
 
     private final AccountAddressService addressService;
 
-    @GetMapping("/address")
-    @PreAuthorize("@authServiceImpl.checkAuthorization(#accountId, #authHeader)")
-    public ResponseEntity<AccountAddressResponse> getAccountAddressByAccountId(@PathVariable("accountId") Long accountId,
-                                                                               @RequestHeader("Authorization") String authHeader) {
-        return ResponseEntity.ok(addressService.getAccountAddressByAccountId(accountId));
+    @GetMapping()
+    public ResponseEntity<AccountAddressResponse> getAccountAddress() {
+        return ResponseEntity.ok(addressService.getAccountAddress());
     }
 
-    @PostMapping("/address")
-    @PreAuthorize("@authServiceImpl.checkAuthorization(#accountId, #authHeader)")
-    public ResponseEntity<AccountAddressResponse> saveAccountAddress(@PathVariable("accountId") Long accountId,
-                                                                    @Valid @RequestBody AccountAddressRequest accountAddressRequest,
-                                                                    @RequestHeader("Authorization") String authHeader) {
+    @PostMapping()
+    public ResponseEntity<AccountAddressResponse> saveAccountAddress(@Valid @RequestBody AccountAddressRequest accountAddressRequest) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(addressService.saveAccountAddress(accountId, accountAddressRequest));
+                .body(addressService.saveAccountAddress(accountAddressRequest));
     }
-
-    @PutMapping("/address")
-    @PreAuthorize("@authServiceImpl.checkAuthorization(#accountId, #authHeader)")
-    public ResponseEntity<AccountAddressResponse> updateAccountAddress(@PathVariable("accountId") Long accountId,
-                                                                      @Valid @RequestBody AccountAddressRequest accountAddressRequest,
-                                                                      @RequestHeader("Authorization") String authHeader) {
-        return ResponseEntity.status(HttpStatus.ACCEPTED)
-                .body(addressService.updateAccountAddress(accountId, accountAddressRequest));
+    @PutMapping()
+    public ResponseEntity<AccountAddressResponse> updateAccountAddress(@Valid @RequestBody AccountAddressRequest accountAddressRequest) {
+        return ResponseEntity.accepted()
+                .body(addressService.updateAccountAddress(accountAddressRequest));
     }
 }

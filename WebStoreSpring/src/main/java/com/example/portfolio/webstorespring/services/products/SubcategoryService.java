@@ -26,12 +26,12 @@ public class SubcategoryService {
         return subcategoryMapper.mapToDto(foundSubcategory);
     }
 
-    public List<SubcategoryResponse> getAllSubcategoryResponse() {
+    public List<SubcategoryResponse> getAllSubcategory() {
         return subcategoryMapper.mapToDto(subcategoryRepository.findAll());
     }
 
-    public SubcategoryResponse save(Long categoryId,
-                                   SubcategoryRequest subCategoryRequest) {
+    public SubcategoryResponse saveSubcategory(Long categoryId,
+                                               SubcategoryRequest subCategoryRequest) {
         Category foundCategory = findCategoryById(categoryId);
         Subcategory subcategory = subcategoryMapper.mapToEntity(subCategoryRequest);
 
@@ -40,9 +40,9 @@ public class SubcategoryService {
         return subcategoryMapper.mapToDto(subcategory);
     }
 
-    public SubcategoryResponse update(Long categoryId,
-                                     Long subCategoryId,
-                                     SubcategoryRequest subCategoryRequest) {
+    public SubcategoryResponse updateSubcategory(Long categoryId,
+                                                 Long subCategoryId,
+                                                 SubcategoryRequest subCategoryRequest) {
         Category foundCategory = findCategoryById(categoryId);
         Subcategory foundSubcategory = findSubcategoryById(subCategoryId);
 

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping("api/v1/registration")
+@RequestMapping(value = "api/v1/registration")
 @RequiredArgsConstructor
 public class RegistrationController {
 

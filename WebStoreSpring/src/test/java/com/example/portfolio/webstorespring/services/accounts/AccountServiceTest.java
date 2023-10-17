@@ -1,11 +1,12 @@
 package com.example.portfolio.webstorespring.services.accounts;
 
-import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.AccountMapper;
 import com.example.portfolio.webstorespring.model.dto.accounts.AccountRequest;
 import com.example.portfolio.webstorespring.model.dto.accounts.AccountResponse;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
+import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,16 +16,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class AccountServiceTest {
@@ -33,81 +31,86 @@ class AccountServiceTest {
     private AccountRepository accountRepository;
     @Mock
     private BCryptPasswordEncoder encoder;
+    @Mock
+    private Authentication authentication;
+    @Mock
+    private SecurityContext securityContext;
     @Spy
     private AccountMapper accountMapper = Mappers.getMapper(AccountMapper.class);
     @InjectMocks
     private AccountService underTest;
     private Account account;
-    private AccountRequest accountRequest;
 
     @BeforeEach()
     void initialization() {
-        account = new Account();
-        account.setId(1L);
-        account.setFirstName("Test");
-        account.setLastName("Dev");
+        account = Account.builder()
+                .id(1L)
+                .firstName("Test")
+                .lastName("Dev")
+                .build();
 
-        accountRequest = new AccountRequest();
-        accountRequest.setFirstName("Test");
-        accountRequest.setLastName("Dev");
-        accountRequest.setPassword("Abcd123$");
+        mockAuthentication();
+    }
+
+    @AfterEach
+    void resetSecurityContext() {
+        SecurityContextHolder.clearContext();
     }
 
     @Test
-    void shouldGetAccountById() {
+    void shouldGetAccount() {
         // given
-        given(accountRepository.findById(anyLong())).willReturn(Optional.of(account));
-
         // when
-        AccountResponse foundAccountResponse = underTest.getAccountById(1L);
+        AccountResponse actualAccount = underTest.getAccount();
 
         // then
-        assertThat(foundAccountResponse).isNotNull();
-        assertThat(foundAccountResponse.getId()).isEqualTo(1L);
-        assertThat(foundAccountResponse.getFirstName()).isEqualTo("Test");
-        assertThat(foundAccountResponse.getLastName()).isEqualTo("Dev");
-    }
-
-    @Test
-    void willThrowWhenAccountIdNotFound() {
-        // given
-        given(accountRepository.findById(anyLong())).willReturn(Optional.empty());
-
-        // when
-        // then
-        assertThatThrownBy(() -> underTest.getAccountById(1L))
-                .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessageContaining("Account with id 1 not found");
+        assertThat(actualAccount).isNotNull();
+        assertThat(actualAccount.getId()).isEqualTo(1L);
+        assertThat(actualAccount.getFirstName()).isEqualTo("Test");
+        assertThat(actualAccount.getLastName()).isEqualTo("Dev");
     }
 
     @Test
     void shouldUpdateAccount() {
         // given
-        given(accountRepository.findById(anyLong())).willReturn(Optional.of(account));
+        AccountRequest accountRequest = AccountRequest.builder()
+                .firstName("Test")
+                .lastName("Dev")
+                .password("Abcd123$")
+                .build();
+
+        when(encoder.encode(anyString())).thenReturn("hashedPassword");
+        when(accountRepository.save(any(Account.class))).thenReturn(account);
 
         // when
-        AccountResponse updatedAccountResponse = underTest.updateAccount(1L, accountRequest);
+        AccountResponse updatedAccountResponse = underTest.updateAccount(accountRequest);
 
         // then
-        ArgumentCaptor<Account> accountArgumentCaptor =
-                ArgumentCaptor.forClass(Account.class);
+        ArgumentCaptor<Account> accountArgumentCaptor = ArgumentCaptor.forClass(Account.class);
         verify(accountRepository).save(accountArgumentCaptor.capture());
 
         Account captureAccount = accountArgumentCaptor.getValue();
         AccountResponse mappedAccount = accountMapper.mapToDto(captureAccount);
 
-        assertThat(mappedAccount).isEqualTo(updatedAccountResponse);
+        assertThat(mappedAccount.getFirstName()).isEqualTo(updatedAccountResponse.getFirstName());
+        assertThat(mappedAccount.getLastName()).isEqualTo(updatedAccountResponse.getLastName());
+        assertThat(captureAccount.getPassword()).isEqualTo("hashedPassword");
     }
 
     @Test
-    void shouldDeleteAccountById() {
+    void shouldDeleteAccount() {
         // given
-        given(accountRepository.findById(anyLong())).willReturn(Optional.of(account));
-
         // when
-        underTest.deleteAccountById(1L);
+        underTest.deleteAccount();
 
-        verify(accountRepository, times(1)).findById(1L);
+        // then
         verify(accountRepository, times(1)).delete(account);
+    }
+
+    private void mockAuthentication() {
+        AccountDetails accountDetails = new AccountDetails(account);
+        when(authentication.getPrincipal()).thenReturn(accountDetails);
+        SecurityContextHolder.setContext(securityContext);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
     }
 }

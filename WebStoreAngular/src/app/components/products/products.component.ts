@@ -35,8 +35,8 @@ export class ProductsComponent implements OnInit {
       }
     });
     this.route.queryParams.subscribe((params: Params) => {
-      if (params['q'] && !this.pageClicked) {
-        this.searchQuery = params['q'];
+      if (params['text'] && !this.pageClicked) {
+        this.searchQuery = params['text'];
         this.getSearchProducts(this.searchQuery);
         this.getQuanititySearchProducts(this.searchQuery);
         this.title = 'Result of search';

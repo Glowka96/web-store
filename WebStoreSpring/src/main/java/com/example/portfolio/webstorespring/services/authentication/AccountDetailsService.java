@@ -1,4 +1,4 @@
-package com.example.portfolio.webstorespring.security.auth;
+package com.example.portfolio.webstorespring.services.authentication;
 
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
@@ -13,15 +13,15 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AccountDetailsService implements UserDetailsService {
 
-    private final AccountRepository repository;
+    private final AccountRepository accountRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) {
-        Account account = repository.findByEmail(email)
+        Account account = accountRepository.findAccountByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Account", "email", email));
 
         if (Boolean.FALSE.equals(account.getEnabled())) {
-            throw new DisabledException("Account is disabled");
+            throw new DisabledException("Your account is disabled");
         }
 
         return new AccountDetails(account);

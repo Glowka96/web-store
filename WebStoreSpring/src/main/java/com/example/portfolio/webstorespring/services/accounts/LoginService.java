@@ -3,8 +3,8 @@ package com.example.portfolio.webstorespring.services.accounts;
 import com.example.portfolio.webstorespring.model.dto.accounts.AuthenticationResponse;
 import com.example.portfolio.webstorespring.model.dto.accounts.LoginRequest;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
-import com.example.portfolio.webstorespring.security.auth.AccountDetails;
-import com.example.portfolio.webstorespring.security.auth.AuthService;
+import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
+import com.example.portfolio.webstorespring.services.authentication.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,10 +28,10 @@ public class LoginService {
         );
 
         UserDetails userDetails = (AccountDetails) authentication.getPrincipal();
-        Account account = ((AccountDetails) authentication.getPrincipal()).account();
+        Account account = ((AccountDetails) authentication.getPrincipal()).getAccount();
         String jwtToken = authService.generateJwtToken(userDetails);
 
-        authService.revokeAllUserAuthTokens(account);
+        authService.revokeAllAccountAuthTokensByAccountId(account.getId());
         authService.saveAccountAuthToken(account, jwtToken);
 
         return new AuthenticationResponse(jwtToken);

@@ -1,13 +1,12 @@
 package com.example.portfolio.webstorespring.services.accounts;
 
-import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.AccountAddressMapper;
 import com.example.portfolio.webstorespring.model.dto.accounts.AccountAddressRequest;
 import com.example.portfolio.webstorespring.model.dto.accounts.AccountAddressResponse;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.accounts.AccountAddress;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountAddressRepository;
-import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
+import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,14 +16,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.Optional;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -36,39 +32,36 @@ class AccountAddressServiceTest {
     @Spy
     private AccountAddressMapper addressMapper = Mappers.getMapper(AccountAddressMapper.class);
     @Mock
-    private AccountRepository accountRepository;
+    private Authentication authentication;
+    @Mock
+    private SecurityContext securityContext;
     @InjectMocks
     private AccountAddressService underTest;
 
-    private AccountAddress accountAddress;
-    private AccountAddressRequest accountAddressRequest;
     private Account account;
 
     @BeforeEach
     void initialization() {
-        account = new Account();
-        account.setId(1L);
+        AccountAddress accountAddress = AccountAddress.builder()
+                .id(1L)
+                .street("test 59/2")
+                .postcode("99-999")
+                .city("test")
+                .build();
 
-        accountAddress = new AccountAddress();
-        accountAddress.setId(1L);
-        accountAddress.setStreet("test 59/2");
-        accountAddress.setCity("test");
-        accountAddress.setPostcode("99-999");
-        accountAddress.setAccount(account);
+        account = Account.builder()
+                .id(1L)
+                .address(accountAddress)
+                .build();
 
-        accountAddressRequest = new AccountAddressRequest();
-        accountAddressRequest.setStreet("test 59/2");
-        accountAddressRequest.setCity("test");
-        accountAddressRequest.setPostcode("99-999");
+        mockAuthentication();
     }
 
     @Test
-    void shouldGetAccountAddressByAccountId() {
+    void shouldGetAccountAddress() {
         // given
-        given(addressRepository.findAccountAddressByAccount_Id(anyLong())).willReturn(Optional.of(accountAddress));
-
         // when
-        AccountAddressResponse foundAccountAddressResponse = underTest.getAccountAddressByAccountId(1L);
+        AccountAddressResponse foundAccountAddressResponse = underTest.getAccountAddress();
 
         // then
         assertThat(foundAccountAddressResponse).isNotNull();
@@ -79,25 +72,12 @@ class AccountAddressServiceTest {
     }
 
     @Test
-    void willThrowWhenAccountAddressIdNotFound() {
-        // given
-        given(addressRepository.findAccountAddressByAccount_Id(anyLong())).willReturn(Optional.empty());
-
-        // when
-        // then
-        assertThatThrownBy(() -> underTest.getAccountAddressByAccountId(1L))
-                .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessageContaining("Address with account id 1 not found");
-    }
-
-    @Test
     void saveAccountAddress() {
         // given
-        // when
-        when(accountRepository.findById(anyLong())).thenReturn(Optional.of(account));
-        when(addressRepository.save(any(AccountAddress.class))).thenReturn(accountAddress);
+        AccountAddressRequest accountAddressRequest = createAccountAddressRequest();
 
-        AccountAddressResponse savedAccountAddressResponse = underTest.saveAccountAddress(1L, accountAddressRequest);
+        // when
+        AccountAddressResponse savedAccountAddressResponse = underTest.saveAccountAddress(accountAddressRequest);
 
         // then
         ArgumentCaptor<AccountAddress> accountAddressArgumentCaptor =
@@ -113,10 +93,10 @@ class AccountAddressServiceTest {
     @Test
     void updateAccountAddress() {
         // given
-        given(addressRepository.findAccountAddressByAccount_Id(anyLong())).willReturn(Optional.of(accountAddress));
+        AccountAddressRequest accountAddressRequest = createAccountAddressRequest();
 
         // when
-        AccountAddressResponse updatedAccountAddressResponse = underTest.updateAccountAddress(1L, accountAddressRequest);
+        AccountAddressResponse updatedAccountAddressResponse = underTest.updateAccountAddress(accountAddressRequest);
 
         // then
         ArgumentCaptor<AccountAddress> accountAddressArgumentCaptor =
@@ -127,5 +107,20 @@ class AccountAddressServiceTest {
         AccountAddressResponse mappedAccount = addressMapper.mapToDto(captureAddress);
 
         assertThat(mappedAccount).isEqualTo(updatedAccountAddressResponse);
+    }
+
+    private void mockAuthentication() {
+        AccountDetails accountDetails = new AccountDetails(account);
+        when(authentication.getPrincipal()).thenReturn(accountDetails);
+        SecurityContextHolder.setContext(securityContext);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+    }
+
+    private AccountAddressRequest createAccountAddressRequest() {
+        return AccountAddressRequest.builder()
+                .street("test 59/2")
+                .city("test")
+                .postcode("99-999")
+                .build();
     }
 }

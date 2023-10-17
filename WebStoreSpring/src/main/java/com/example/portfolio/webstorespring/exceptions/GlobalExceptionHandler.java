@@ -18,24 +18,30 @@ import org.springframework.web.context.request.WebRequest;
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler({ResourceNotFoundException.class, SearchNotFoundException.class})
-    public ResponseEntity<Object> handleResourceNotFoundException(RuntimeException exception,
+    @ExceptionHandler({ResourceNotFoundException.class})
+    public ResponseEntity<ErrorResponse> handleResourceNotFoundException(RuntimeException exception,
                                                                   WebRequest webRequest) {
         ErrorResponse errorResponse = createErrorResponse(HttpStatus.NOT_FOUND, exception, webRequest);
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class})
-    public ResponseEntity<Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception,
+    public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception,
                                                                         WebRequest webRequest) {
         ErrorResponse errorResponse = createErrorResponse(exception, webRequest);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({BadCredentialsException.class, DisabledException.class})
-    public ResponseEntity<Object> handleBadCredentialsException(RuntimeException exception, WebRequest webRequest) {
+    public ResponseEntity<ErrorResponse> handleBadCredentialsException(RuntimeException exception, WebRequest webRequest) {
         ErrorResponse errorResponse = createErrorResponse(HttpStatus.UNAUTHORIZED, exception, webRequest);
         return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler({AccessDeniedException.class})
+    public ResponseEntity<ErrorResponse> handleAccessDeniedException(Exception exception, WebRequest webRequest) {
+        ErrorResponse errorResponse = createErrorResponse(HttpStatus.FORBIDDEN, exception, webRequest);
+        return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler({OrderCanNotModifiedException.class,
@@ -43,23 +49,17 @@ public class GlobalExceptionHandler {
             TokenConfirmedException.class,
             TokenExpiredException.class,
     })
-    public ResponseEntity<Object> handleCanNotModifiedException(RuntimeException exception,
+    public ResponseEntity<ErrorResponse> handleCanNotModifiedException(RuntimeException exception,
                                                                 WebRequest webRequest) {
         ErrorResponse errorResponse = createErrorResponse(HttpStatus.BAD_REQUEST, exception, webRequest);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<Object> handeConstraintViolationException(ConstraintViolationException exception,
+    public ResponseEntity<ErrorResponse> handeConstraintViolationException(ConstraintViolationException exception,
                                                                     WebRequest webRequest) {
         ErrorResponse errorResponse = createErrorResponse(exception, webRequest);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler({AccessDeniedException.class, AccountCanNotModifiedException.class})
-    public ResponseEntity<Object> handleAccessDeniedException(Exception exception, WebRequest webRequest) {
-        ErrorResponse errorResponse = createErrorResponse(HttpStatus.FORBIDDEN, exception, webRequest);
-        return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
     }
 
     private ErrorResponse createErrorResponse(HttpStatus status, Exception exception, WebRequest webRequest) {

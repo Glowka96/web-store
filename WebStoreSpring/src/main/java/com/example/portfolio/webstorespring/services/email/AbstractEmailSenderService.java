@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.services.email;
 
-import com.example.portfolio.webstorespring.services.email.type.EmailTypeStrategy;
+import com.example.portfolio.webstorespring.enums.emailtypes.EmailTypeStrategy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;

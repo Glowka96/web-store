@@ -14,44 +14,33 @@ export class AccountService {
 
   constructor(private http: HttpClient) {}
 
-  public getAccount(accountId: string): Observable<AccountResponse> {
-    return this.http.get<AccountResponse>(
-      `${this.apiServerUrl}/accounts/${accountId}`
-    );
+  public getAccount(): Observable<AccountResponse> {
+    return this.http.get<AccountResponse>(`${this.apiServerUrl}/accounts`);
   }
 
-  public getAccountAddress(accountId: string): Observable<AccountAddress> {
+  public getAccountAddress(): Observable<AccountAddress> {
     return this.http.get<AccountAddress>(
-      `${this.apiServerUrl}/accounts/${accountId}/address`
+      `${this.apiServerUrl}/accounts/address`
     );
   }
 
-  public updateAccount(
-    accountId: string,
-    request: AccountRequest
-  ): Observable<AccountResponse> {
+  public updateAccount(request: AccountRequest): Observable<AccountResponse> {
     return this.http.put<AccountResponse>(
-      `${this.apiServerUrl}/accounts/${accountId}`,
+      `${this.apiServerUrl}/accounts`,
       request
     );
   }
 
-  public addAddress(
-    accountId: string,
-    request: AccountAddress
-  ): Observable<AccountAddress> {
+  public addAddress(request: AccountAddress): Observable<AccountAddress> {
     return this.http.post<AccountAddress>(
-      `${this.apiServerUrl}/accounts/${accountId}/address`,
+      `${this.apiServerUrl}/accounts/address`,
       request
     );
   }
 
-  public updateAddress(
-    accountId: string,
-    request: AccountAddress
-  ): Observable<AccountAddress> {
+  public updateAddress(request: AccountAddress): Observable<AccountAddress> {
     return this.http.put<AccountAddress>(
-      `${this.apiServerUrl}/accounts/${accountId}/address`,
+      `${this.apiServerUrl}/accounts/address`,
       request
     );
   }

@@ -14,7 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.Arrays;
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
@@ -35,7 +35,7 @@ class ProducerControllerTest {
     private ProducerController underTest;
     private MockMvc mvc;
     private ObjectMapper mapper;
-    private static final String URI = "/api/v1/producers";
+    private static final String URI = "/api/v1/admin/producers";
     private ProducerResponse producerResponse;
 
     @BeforeEach
@@ -51,7 +51,7 @@ class ProducerControllerTest {
 
     @Test
     void shouldGetAllProducer() throws Exception {
-        given(producerService.getAllProducer()).willReturn(Arrays.asList(producerResponse, new ProducerResponse()));
+        given(producerService.getAllProducer()).willReturn(List.of(producerResponse, new ProducerResponse()));
 
         mvc.perform(get(URI)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -63,7 +63,7 @@ class ProducerControllerTest {
 
     @Test
     void shouldSaveProducer() throws Exception {
-        given(producerService.save(any(ProducerRequest.class))).willReturn(producerResponse);
+        given(producerService.saveProducer(any(ProducerRequest.class))).willReturn(producerResponse);
 
         mvc.perform(post(URI)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -77,7 +77,7 @@ class ProducerControllerTest {
 
     @Test
     void shouldUpdateProducer() throws Exception {
-        given(producerService.update(anyLong(), any(ProducerRequest.class))).willReturn(producerResponse);
+        given(producerService.updateProducer(anyLong(), any(ProducerRequest.class))).willReturn(producerResponse);
 
         mvc.perform(put(URI + "/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON)

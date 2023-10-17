@@ -1,12 +1,14 @@
 package com.example.portfolio.webstorespring.services.accounts;
 
+import com.example.portfolio.webstorespring.enums.emailtypes.ConfirmEmailType;
 import com.example.portfolio.webstorespring.exceptions.EmailAlreadyConfirmedException;
 import com.example.portfolio.webstorespring.model.dto.accounts.RegistrationRequest;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.accounts.ConfirmationToken;
+import com.example.portfolio.webstorespring.model.entity.accounts.Role;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
+import com.example.portfolio.webstorespring.repositories.accounts.RoleRepository;
 import com.example.portfolio.webstorespring.services.email.EmailSenderService;
-import com.example.portfolio.webstorespring.services.email.type.ConfirmEmailType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,6 +20,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -30,13 +33,12 @@ class RegistrationServiceTest {
 
     @Mock
     private BCryptPasswordEncoder encoder;
-
     @Mock
     private ConfirmationTokenService confirmationTokenService;
-
     @Mock
     private EmailSenderService emailSenderService;
-
+    @Mock
+    private RoleRepository roleRepository;
     @Mock
     private AccountRepository accountRepository;
     @InjectMocks
@@ -70,10 +72,16 @@ class RegistrationServiceTest {
     void shouldRegistrationAccount() {
         // given
         excepted = Map.of("message", ConfirmEmailType.REGISTRATION.getInformationMessage());
+        Role role = Role.builder()
+                .name("ROLE_USER")
+                .build();
         // when
+
         when(confirmationTokenService.createConfirmationToken(any(Account.class))).thenReturn(confirmationToken);
         when(emailSenderService.sendEmail(anyString(), anyString()))
                 .thenReturn(excepted);
+        when(roleRepository.findByName("ROLE_USER")).thenReturn(Set.of(role));
+        when(encoder.encode(anyString())).thenReturn("hashPassword");
 
         Map<String, Object> result = underTest.registrationAccount(request);
 
@@ -85,15 +93,17 @@ class RegistrationServiceTest {
 
         // then
         assertThat(result).isEqualTo(excepted);
-        verify(accountRepository).save(captureAccount);
-        verify(emailSenderService).sendEmail(account.getEmail(),
-                confirmationToken.getToken());
+        assertThat(captureAccount.getPassword()).isEqualTo("hashPassword");
+        verify(accountRepository, times(1)).save(captureAccount);
+        verify(emailSenderService, times(1)).sendEmail(eq(account.getEmail()),
+                anyString());
     }
 
     @Test
     void shouldSuccessConfirmToken() {
         // given
         excepted = Map.of("message","Account confirmed");
+
         // when
         confirmationToken.setConfirmedAt(LocalDateTime.now());
         when(confirmationTokenService.getConfirmationTokenByToken(anyString())).thenReturn(confirmationToken);

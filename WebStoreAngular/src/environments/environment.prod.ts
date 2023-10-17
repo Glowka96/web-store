@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiBaseUrl: 'https://<YOUR_SPRING_SERVICE_DOMAIN>/api/v1',
+  apiBaseUrl: 'https://webstore-hixicpf4xa-lm.a.run.app',
 };

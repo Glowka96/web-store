@@ -10,7 +10,6 @@ import { AccountService } from 'src/app/services/accounts/account.service';
   styleUrls: ['./form-account-address.component.scss'],
 })
 export class FormAccountAddressComponent implements OnInit {
-  private accountId!: string;
   private isAccountAddress = false;
   private titleButton = 'Add';
   private errorMessage!: string;
@@ -45,8 +44,7 @@ export class FormAccountAddressComponent implements OnInit {
   });
 
   constructor(private accountService: AccountService, private router: Router) {
-    this.accountId = sessionStorage.getItem('id')!;
-    this.accountService.getAccount(this.accountId).subscribe((account) => {
+    this.accountService.getAccount().subscribe((account) => {
       if (account.address) {
         this.isAccountAddress = true;
         this.titleButton = 'Update';
@@ -64,7 +62,7 @@ export class FormAccountAddressComponent implements OnInit {
         street: this.accountAddressForm.controls['street']?.value ?? '',
       };
       if (this.isAccountAddress) {
-        this.accountService.updateAddress(this.accountId, request).subscribe({
+        this.accountService.updateAddress(request).subscribe({
           next: () => {
             this.router.navigate(['/accounts'], {});
           },
@@ -74,7 +72,7 @@ export class FormAccountAddressComponent implements OnInit {
           },
         });
       } else {
-        this.accountService.addAddress(this.accountId, request).subscribe({
+        this.accountService.addAddress(request).subscribe({
           next: () => {
             this.router.navigate(['/accounts'], {});
           },

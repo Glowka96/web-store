@@ -216,6 +216,9 @@ DATABASE_USER_NAME
 ```
 DATABASE_USER_PASSWORD
 ```
+```
+SHIPMENT_ADDRESS
+```
 
 Cross origination patterns, email confirmation link and password reset completed after creating the service for Angular. Or you already know the URL of the domain you want to use. (Domain mapping for services)
 

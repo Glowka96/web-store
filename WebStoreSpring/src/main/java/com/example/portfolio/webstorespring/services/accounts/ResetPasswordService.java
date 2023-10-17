@@ -10,7 +10,7 @@ import com.example.portfolio.webstorespring.services.email.EmailSenderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -18,7 +18,7 @@ import java.util.Map;
 @Service
 public class ResetPasswordService {
 
-    private final BCryptPasswordEncoder encoder;
+    private final PasswordEncoder encoder;
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailSenderService emailSenderService;
     private final AccountRepository accountRepository;
@@ -27,7 +27,7 @@ public class ResetPasswordService {
     private String confirmLink;
 
     @Autowired
-    public ResetPasswordService(BCryptPasswordEncoder encoder,
+    public ResetPasswordService(PasswordEncoder encoder,
                                 ConfirmationTokenService confirmationTokenService,
                                 @Qualifier(value = "resetPasswordSender") EmailSenderService emailSenderService,
                                 AccountRepository accountRepository) {

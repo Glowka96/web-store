@@ -23,7 +23,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.*;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,8 +49,6 @@ class ProductServiceTest {
     private Product product2;
     private Product product3;
     private ProductRequest productRequest;
-    private ProductRequest productRequest2;
-    private ProductRequest productRequest3;
     private Subcategory subCategory;
     private Producer producer;
 
@@ -94,16 +91,6 @@ class ProductServiceTest {
         productRequest.setName("Test");
         productRequest.setPrice(29.99);
         productRequest.setDescription("This is description");
-
-        productRequest2 = new ProductRequest();
-        productRequest2.setName("Test");
-        productRequest2.setPrice(25.99);
-        productRequest2.setDescription("This is description");
-
-        productRequest3 = new ProductRequest();
-        productRequest3.setName("Test");
-        productRequest3.setPrice(22.99);
-        productRequest3.setDescription("This is description");
     }
 
 
@@ -134,7 +121,7 @@ class ProductServiceTest {
     @Test
     void shouldGetAllProductsBySubCategoryId_WhenGetSubCategoryId_PageNo_PageSize_SortBy() {
         Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Direction.ASC, "price"));
-        List<Product> productList = Arrays.asList(product3, product2, product);
+        List<Product> productList = List.of(product3, product2, product);
 
         Page<Product> productPage = new PageImpl<>(productList, pageable, productList.size());
 
@@ -166,7 +153,7 @@ class ProductServiceTest {
     void shouldGetSearchProductsByText() {
         // given
         Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Direction.ASC, "id"));
-        List<Product> productList = Arrays.asList(product, product2, product3);
+        List<Product> productList = List.of(product, product2, product3);
 
         Page<Product> productPage = new PageImpl<>(productList, pageable, productList.size());
 
@@ -202,7 +189,7 @@ class ProductServiceTest {
         given(subCategoryRepository.findById(anyLong())).willReturn(Optional.of(subCategory));
 
         // when
-        ProductResponse savedProductResponse = underTest.save(subCategory.getId(), producer.getId(), productRequest);
+        ProductResponse savedProductResponse = underTest.saveProduct(subCategory.getId(), producer.getId(), productRequest);
 
         // then
         ArgumentCaptor<Product> productArgumentCaptor =
@@ -222,7 +209,7 @@ class ProductServiceTest {
 
         // when
         // then
-        assertThatThrownBy(() -> underTest.save(2L, 1L, productRequest))
+        assertThatThrownBy(() -> underTest.saveProduct(2L, 1L, productRequest))
                 .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessageContaining("SubCategory with id 2 not found");
     }
@@ -235,7 +222,7 @@ class ProductServiceTest {
 
         // when
         // then
-        assertThatThrownBy(() -> underTest.save(1L, 2L, productRequest))
+        assertThatThrownBy(() -> underTest.saveProduct(1L, 2L, productRequest))
                 .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessageContaining("Producer with id 2 not found");
     }

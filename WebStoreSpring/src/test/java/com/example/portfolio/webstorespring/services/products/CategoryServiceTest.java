@@ -49,7 +49,7 @@ class CategoryServiceTest {
     @Test
     void shouldGetAllCategoryDto() {
         // when
-        underTest.getAllCategoryDto();
+        underTest.getAllCategory();
         // then
         verify(categoryRepository, times(1)).findAll();
         verifyNoMoreInteractions(categoryRepository);
@@ -84,7 +84,7 @@ class CategoryServiceTest {
     void shouldSaveCategory() {
         // given
         // when
-        CategoryResponse savedCategoryResponse = underTest.save(categoryRequest);
+        CategoryResponse savedCategoryResponse = underTest.saveCategory(categoryRequest);
 
         // then
         ArgumentCaptor<Category> categoryArgumentCaptor =
@@ -103,7 +103,7 @@ class CategoryServiceTest {
         given(categoryRepository.findById(anyLong())).willReturn(Optional.of(category));
 
         // when
-        CategoryResponse updatedCategoryResponse = underTest.update(category.getId(), categoryRequest);
+        CategoryResponse updatedCategoryResponse = underTest.updateCategory(category.getId(), categoryRequest);
 
         // then
         ArgumentCaptor<Category> categoryArgumentCaptor =

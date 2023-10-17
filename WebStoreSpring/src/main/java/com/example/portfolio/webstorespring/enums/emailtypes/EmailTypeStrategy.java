@@ -1,4 +1,4 @@
-package com.example.portfolio.webstorespring.services.email.type;
+package com.example.portfolio.webstorespring.enums.emailtypes;
 
 public interface EmailTypeStrategy {
     String getTitle();
