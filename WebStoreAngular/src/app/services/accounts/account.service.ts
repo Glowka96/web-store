@@ -26,7 +26,7 @@ export class AccountService {
 
   public updateAccount(request: AccountRequest): Observable<AccountResponse> {
     return this.http.put<AccountResponse>(
-      `${this.apiServerUrl}/accounts/`,
+      `${this.apiServerUrl}/accounts`,
       request
     );
   }

@@ -76,14 +76,12 @@ export class ProductService {
 
   public getAllProducts(): Observable<ProductResponse[]> {
     return this.http.get<ProductResponse[]>(
-      `${this.apiServerUrl}/admin/subcategories/products`
+      `${this.apiServerUrl}/admin/products`
     );
   }
 
   public getProductTypes(): Observable<string[]> {
-    return this.http.get<string[]>(
-      `${this.apiServerUrl}/admin/subcategories/products/types`
-    );
+    return this.http.get<string[]>(`${this.apiServerUrl}/admin/products/types`);
   }
 
   public addProduct(
