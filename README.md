@@ -2,7 +2,7 @@
 
 This is a web store project created in Java using Spring Boot and Angular. The website is fully responsive, allowing users to browse and search for products, create an account with email verification, log in, add their shipping address, make purchases, view orders, and reset their password (with a password reset link sent to their email). The admin can add, modify, or delete categories, subcategories, products, and producers. I am continually expanding my knowledge and developing the project in my spare time.
 
-Project deployed on GCP: [Link](https://toysland-hixicpf4xa-lm.a.run.app/)
+Project deployed on GCP: [Link](https://toys-angular-hixicpf4xa-lm.a.run.app/)
 
 ## Table of contents
 - [Technologies](#technologies)
