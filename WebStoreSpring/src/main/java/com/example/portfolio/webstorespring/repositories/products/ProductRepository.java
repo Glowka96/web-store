@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    @EntityGraph(value = "Product.producer")
+    @EntityGraph(value = "product-with-producer-and-price-promotion-entity-graph")
     Optional<Page<Product>> findProductsBySubcategory_Id(Long subcategoryId, Pageable pageable);
 
     Long countProductsBySubcategory_Id(Long subcategoryId);
@@ -24,9 +24,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             OR LOWER(p_1.description) LIKE LOWER(CONCAT('%', :text, '%'))
             OR LOWER(p_2.name) LIKE LOWER(CONCAT('%', :text, '%'))
             """)
-    @EntityGraph(value = "Product.producer")
+    @EntityGraph(value = "product-with-producer-and-price-promotion-entity-graph")
     Optional<Page<Product>> searchProductsByEnteredText(@Param("text") String text,
                                                         Pageable pageable);
+
 
     @Query(value = """
             SELECT COUNT(p_1) AS id FROM Product p_1

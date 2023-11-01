@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -32,7 +34,7 @@ public class ProductRequest {
     private String imageUrl;
 
     @Digits(integer = 8, fraction = 2, message = "The price is invalid")
-    private Double price;
+    private BigDecimal price;
 
     private ProductType type;
 }

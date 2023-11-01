@@ -10,7 +10,7 @@ import java.util.List;
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     @Override
-    @EntityGraph(value = "Category.subcategories")
+    @EntityGraph(value = "category-with-subcategories-entity-graph")
     @NotNull
     List<Category> findAll();
 }

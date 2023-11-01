@@ -4,6 +4,8 @@ import com.example.portfolio.webstorespring.model.dto.products.ProductResponse;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 public class ShipmentResponse {
 
@@ -14,5 +16,5 @@ public class ShipmentResponse {
 
     private Integer quantity;
 
-    private Double price;
+    private BigDecimal price;
 }

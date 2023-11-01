@@ -16,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -62,6 +63,7 @@ public class ProductService {
         return productRepository.countProductsByEnteredText(text);
     }
 
+    @Transactional
     public ProductResponse saveProduct(Long subcategoryId, Long producerId, ProductRequest productRequest) {
         Subcategory foundSubcategory = findSubcategoryById(subcategoryId);
         Producer foundProducer = findProducerById(producerId);
@@ -70,10 +72,11 @@ public class ProductService {
         product.setSubcategory(foundSubcategory);
         product.setProducer(foundProducer);
 
-        productRepository.save(product);
-        return productMapper.mapToDto(product);
+        Product savedProduct = productRepository.save(product);
+        return productMapper.mapToDto(savedProduct);
     }
 
+    @Transactional
     public ProductResponse updateProduct(Long subcategoryId,
                                         Long producerId,
                                         Long productId,

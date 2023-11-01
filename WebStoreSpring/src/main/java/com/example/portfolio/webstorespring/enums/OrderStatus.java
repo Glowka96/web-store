@@ -1,4 +1,4 @@
-package com.example.portfolio.webstorespring.model.entity.orders;
+package com.example.portfolio.webstorespring.enums;
 
 public enum OrderStatus {
     OPEN,

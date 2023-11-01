@@ -1,9 +1,10 @@
 package com.example.portfolio.webstorespring.model.dto.orders;
 
-import com.example.portfolio.webstorespring.model.entity.orders.OrderStatus;
+import com.example.portfolio.webstorespring.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -14,7 +15,7 @@ public class OrderResponse {
 
     private String nameUser;
 
-    private Double productsPrice;
+    private BigDecimal productsPrice;
 
     private String deliveryAddress;
 

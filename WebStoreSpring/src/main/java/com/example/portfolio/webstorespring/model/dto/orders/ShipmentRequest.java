@@ -11,6 +11,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -27,5 +29,5 @@ public class ShipmentRequest {
     private Integer quantity;
 
     @Digits(integer = 8, fraction = 2, message = "The price is invalid")
-    private Double price;
+    private BigDecimal price;
 }

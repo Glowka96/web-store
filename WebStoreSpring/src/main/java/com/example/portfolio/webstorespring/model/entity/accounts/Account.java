@@ -37,7 +37,7 @@ public class Account {
     @Column(nullable = false)
     private String password;
 
-    @OneToOne(mappedBy = "account")
+    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private AccountAddress address;
 
     private String imageUrl;

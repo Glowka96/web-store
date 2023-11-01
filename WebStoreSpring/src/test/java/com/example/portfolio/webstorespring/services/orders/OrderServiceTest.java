@@ -1,6 +1,7 @@
 package com.example.portfolio.webstorespring.services.orders;
 
 import com.example.portfolio.webstorespring.enums.AccessDeniedExceptionMessage;
+import com.example.portfolio.webstorespring.enums.OrderStatus;
 import com.example.portfolio.webstorespring.exceptions.OrderCanNotModifiedException;
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.OrderMapper;
@@ -14,7 +15,6 @@ import com.example.portfolio.webstorespring.model.dto.products.ProductRequest;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.accounts.AccountAddress;
 import com.example.portfolio.webstorespring.model.entity.orders.Order;
-import com.example.portfolio.webstorespring.model.entity.orders.OrderStatus;
 import com.example.portfolio.webstorespring.model.entity.orders.Shipment;
 import com.example.portfolio.webstorespring.model.entity.products.Product;
 import com.example.portfolio.webstorespring.repositories.orders.OrderRepository;

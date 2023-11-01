@@ -1,9 +1,11 @@
 package com.example.portfolio.webstorespring.model.entity.orders;
 
+import com.example.portfolio.webstorespring.enums.OrderStatus;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -24,7 +26,7 @@ public class Order {
     private String nameUser;
 
     @Column(nullable = false)
-    private Double productsPrice;
+    private BigDecimal productsPrice;
 
     @Column(nullable = false)
     private String deliveryAddress;
