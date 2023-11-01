@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.services.accounts;
 
 import com.example.portfolio.webstorespring.mappers.AccountAddressMapper;
-import com.example.portfolio.webstorespring.model.dto.accounts.AccountAddressRequest;
-import com.example.portfolio.webstorespring.model.dto.accounts.AccountAddressResponse;
+import com.example.portfolio.webstorespring.model.dto.accounts.request.AccountAddressRequest;
+import com.example.portfolio.webstorespring.model.dto.accounts.response.AccountAddressResponse;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.accounts.AccountAddress;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountAddressRepository;

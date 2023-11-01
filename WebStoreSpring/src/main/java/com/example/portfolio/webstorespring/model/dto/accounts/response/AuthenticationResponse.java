@@ -1,4 +1,4 @@
-package com.example.portfolio.webstorespring.model.dto.accounts;
+package com.example.portfolio.webstorespring.model.dto.accounts.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,11 +1,8 @@
-package com.example.portfolio.webstorespring.model.dto.orders;
+package com.example.portfolio.webstorespring.model.dto.orders.request;
 
-import com.example.portfolio.webstorespring.model.dto.products.ProductRequest;
+import com.example.portfolio.webstorespring.model.dto.products.request.ProductRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,7 +17,7 @@ import java.math.BigDecimal;
 public class ShipmentRequest {
 
     @NotNull(message = "The product can't be null")
-    @JsonProperty("product")
+    @JsonProperty(value = "product")
     private ProductRequest productRequest;
 
     @NotNull(message = "The quantity can't be null")
@@ -28,6 +25,7 @@ public class ShipmentRequest {
     @Max(value = 100, message = "The quantity must be less than or equal to hundred")
     private Integer quantity;
 
-    @Digits(integer = 8, fraction = 2, message = "The price is invalid")
+    @DecimalMin(value = "0.01", message = "The price must be greater than or equal to 0.01")
+    @DecimalMax(value = "99999999.99", message = "The price must be less than or equal to 99999999.99")
     private BigDecimal price;
 }

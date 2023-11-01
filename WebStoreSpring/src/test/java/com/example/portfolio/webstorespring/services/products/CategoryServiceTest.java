@@ -3,8 +3,8 @@ package com.example.portfolio.webstorespring.services.products;
 
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.CategoryMapper;
-import com.example.portfolio.webstorespring.model.dto.products.CategoryRequest;
-import com.example.portfolio.webstorespring.model.dto.products.CategoryResponse;
+import com.example.portfolio.webstorespring.model.dto.products.request.CategoryRequest;
+import com.example.portfolio.webstorespring.model.dto.products.response.CategoryResponse;
 import com.example.portfolio.webstorespring.model.entity.products.Category;
 import com.example.portfolio.webstorespring.repositories.products.CategoryRepository;
 import org.junit.jupiter.api.BeforeEach;

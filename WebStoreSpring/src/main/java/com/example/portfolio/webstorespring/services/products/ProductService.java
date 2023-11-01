@@ -2,8 +2,8 @@ package com.example.portfolio.webstorespring.services.products;
 
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.ProductMapper;
-import com.example.portfolio.webstorespring.model.dto.products.ProductRequest;
-import com.example.portfolio.webstorespring.model.dto.products.ProductResponse;
+import com.example.portfolio.webstorespring.model.dto.products.request.ProductRequest;
+import com.example.portfolio.webstorespring.model.dto.products.response.ProductResponse;
 import com.example.portfolio.webstorespring.model.entity.products.Producer;
 import com.example.portfolio.webstorespring.model.entity.products.Product;
 import com.example.portfolio.webstorespring.model.entity.products.Subcategory;

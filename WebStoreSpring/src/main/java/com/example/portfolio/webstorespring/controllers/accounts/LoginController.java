@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.controllers.accounts;
 
-import com.example.portfolio.webstorespring.model.dto.accounts.AuthenticationResponse;
-import com.example.portfolio.webstorespring.model.dto.accounts.LoginRequest;
+import com.example.portfolio.webstorespring.model.dto.accounts.request.LoginRequest;
+import com.example.portfolio.webstorespring.model.dto.accounts.response.AuthenticationResponse;
 import com.example.portfolio.webstorespring.services.accounts.LoginService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

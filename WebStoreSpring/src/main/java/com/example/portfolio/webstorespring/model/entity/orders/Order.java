@@ -35,7 +35,8 @@ public class Order {
     private String shipmentAddress;
 
     @Column(nullable = false)
-    private Date dateOfCreated;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateOfCreation;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

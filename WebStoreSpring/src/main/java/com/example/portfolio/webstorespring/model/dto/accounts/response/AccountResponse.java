@@ -1,5 +1,6 @@
-package com.example.portfolio.webstorespring.model.dto.accounts;
+package com.example.portfolio.webstorespring.model.dto.accounts.response;
 
+import com.example.portfolio.webstorespring.model.dto.accounts.request.AccountAddressRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,7 +20,7 @@ public class AccountResponse {
 
     private String email;
 
-    @JsonProperty("address")
+    @JsonProperty(value = "address")
     private AccountAddressRequest addressDto;
 
     private String imageUrl;

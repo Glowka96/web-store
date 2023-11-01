@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.mappers;
 
-import com.example.portfolio.webstorespring.model.dto.products.ProducerRequest;
-import com.example.portfolio.webstorespring.model.dto.products.ProducerResponse;
+import com.example.portfolio.webstorespring.model.dto.products.request.ProducerRequest;
+import com.example.portfolio.webstorespring.model.dto.products.response.ProducerResponse;
 import com.example.portfolio.webstorespring.model.entity.products.Producer;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

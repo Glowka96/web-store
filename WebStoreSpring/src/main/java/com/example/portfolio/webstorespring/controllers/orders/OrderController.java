@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.controllers.orders;
 
-import com.example.portfolio.webstorespring.model.dto.orders.OrderRequest;
-import com.example.portfolio.webstorespring.model.dto.orders.OrderResponse;
+import com.example.portfolio.webstorespring.model.dto.orders.request.OrderRequest;
+import com.example.portfolio.webstorespring.model.dto.orders.response.OrderResponse;
 import com.example.portfolio.webstorespring.services.orders.OrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

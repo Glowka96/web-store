@@ -42,6 +42,7 @@ public class Product {
     @Column(nullable = false)
     private BigDecimal price;
 
+    @Column(nullable = false)
     private Long quantity;
 
     @Enumerated(EnumType.STRING)
@@ -60,14 +61,9 @@ public class Product {
 
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
-    private Date createdDate;
+    private Date dateOfCreation;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private Set<ProductPricePromotion> pricePromotions;
 }
-//    @ElementCollection
-//    @CollectionTable(name = "product_price_promotions", joinColumns = @JoinColumn(name = "product_id"))
-//    @MapKeyColumn(name = "date_of_change_price")
-//    @Column(name = "product_price")
-//    @MapKeyTemporal(TemporalType.TIMESTAMP)
-//    private Map<Date, Double> pricePromotions;
+

@@ -1,14 +1,14 @@
 package com.example.portfolio.webstorespring.services.orders;
 
 import com.example.portfolio.webstorespring.enums.AccessDeniedExceptionMessage;
+import com.example.portfolio.webstorespring.enums.OrderStatus;
 import com.example.portfolio.webstorespring.exceptions.OrderCanNotModifiedException;
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.OrderMapper;
-import com.example.portfolio.webstorespring.model.dto.orders.OrderRequest;
-import com.example.portfolio.webstorespring.model.dto.orders.OrderResponse;
+import com.example.portfolio.webstorespring.model.dto.orders.request.OrderRequest;
+import com.example.portfolio.webstorespring.model.dto.orders.response.OrderResponse;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.orders.Order;
-import com.example.portfolio.webstorespring.model.entity.orders.OrderStatus;
 import com.example.portfolio.webstorespring.model.entity.orders.Shipment;
 import com.example.portfolio.webstorespring.repositories.orders.OrderRepository;
 import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
@@ -117,7 +117,7 @@ public class OrderService {
         order.setAccount(loggedAccount);
         order.setNameUser(loggedAccount.getFirstName() +
                           " " + loggedAccount.getLastName());
-        order.setDateOfCreated(getCurrentDate());
+        order.setDateOfCreation(getCurrentDate());
         order.setStatus(OrderStatus.OPEN);
 
         if (order.getDeliveryAddress().isEmpty() || order.getDeliveryAddress().isBlank()) {
@@ -135,7 +135,7 @@ public class OrderService {
         setupPriceAndOrderIdInShipments(updateOrder);
 
         currentOrder.setShipments(updateOrder.getShipments());
-        currentOrder.setDateOfCreated(getCurrentDate());
+        currentOrder.setDateOfCreation(getCurrentDate());
         formatDeliveryAddress(updateOrder);
         currentOrder.setDeliveryAddress(updateOrder.getDeliveryAddress());
 
@@ -149,20 +149,18 @@ public class OrderService {
         });
     }
 
-    private double calculateShipmentPrice(Shipment shipment) {
-        return BigDecimal.valueOf(shipment.getQuantity() * shipment.getProduct().getPrice())
-                .setScale(2, RoundingMode.HALF_UP)
-                .doubleValue();
+    private BigDecimal calculateShipmentPrice(Shipment shipment) {
+        return BigDecimal.valueOf(shipment.getQuantity())
+                .multiply(shipment.getProduct().getPrice())
+                .setScale(2, RoundingMode.HALF_UP);
     }
 
     private void setupTotalPrice(Order order) {
-        order.setProductsPrice(BigDecimal.valueOf(
-                        order.getShipments()
-                                .stream()
-                                .mapToDouble(Shipment::getPrice)
-                                .sum())
-                .setScale(2, RoundingMode.HALF_UP)
-                .doubleValue());
+        order.setProductsPrice(order.getShipments()
+                .stream()
+                .map(Shipment::getPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add)
+                .setScale(2, RoundingMode.HALF_UP));
     }
 
     @NotNull

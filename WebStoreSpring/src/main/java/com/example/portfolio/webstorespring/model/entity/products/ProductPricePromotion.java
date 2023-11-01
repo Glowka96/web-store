@@ -23,7 +23,7 @@ public class ProductPricePromotion {
     @ManyToOne(fetch = FetchType.LAZY)
     private Product product;
 
-    private BigDecimal newPrice;
+    private BigDecimal promotionPrice;
 
     private Date startDate;
 

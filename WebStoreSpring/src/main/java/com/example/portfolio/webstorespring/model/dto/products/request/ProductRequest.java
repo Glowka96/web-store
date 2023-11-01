@@ -1,4 +1,4 @@
-package com.example.portfolio.webstorespring.model.dto.products;
+package com.example.portfolio.webstorespring.model.dto.products.request;
 
 import com.example.portfolio.webstorespring.enums.ProductType;
 import jakarta.validation.constraints.*;
@@ -33,8 +33,13 @@ public class ProductRequest {
             message = "This is not image url")
     private String imageUrl;
 
-    @Digits(integer = 8, fraction = 2, message = "The price is invalid")
+    @DecimalMin(value = "0.01", message = "The price must be greater than or equal to 0.01")
+    @DecimalMax(value = "99999.99", message = "The price must be less than or equal to 99999999.99")
     private BigDecimal price;
+
+    @Min(value = 1, message = "The quantity must be greater than or equal to one")
+    @Max(value = 10_000, message = "The quantity must be less than or equal to one hundred")
+    private Long quantity;
 
     private ProductType type;
 }

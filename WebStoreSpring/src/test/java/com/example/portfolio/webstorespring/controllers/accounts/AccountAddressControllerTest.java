@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.controllers.accounts;
 
 import com.example.portfolio.webstorespring.exceptions.GlobalExceptionHandler;
-import com.example.portfolio.webstorespring.model.dto.accounts.AccountAddressRequest;
-import com.example.portfolio.webstorespring.model.dto.accounts.AccountAddressResponse;
+import com.example.portfolio.webstorespring.model.dto.accounts.request.AccountAddressRequest;
+import com.example.portfolio.webstorespring.model.dto.accounts.response.AccountAddressResponse;
 import com.example.portfolio.webstorespring.services.accounts.AccountAddressService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;

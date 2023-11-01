@@ -1,4 +1,4 @@
-package com.example.portfolio.webstorespring.model.dto.accounts;
+package com.example.portfolio.webstorespring.model.dto.accounts.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

@@ -1,4 +1,4 @@
-package com.example.portfolio.webstorespring.model.dto.accounts;
+package com.example.portfolio.webstorespring.model.dto.accounts.request;
 
 import com.example.portfolio.webstorespring.annotations.Password;
 import jakarta.validation.constraints.Pattern;

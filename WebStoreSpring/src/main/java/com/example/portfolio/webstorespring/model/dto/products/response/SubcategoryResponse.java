@@ -1,4 +1,4 @@
-package com.example.portfolio.webstorespring.model.dto.products;
+package com.example.portfolio.webstorespring.model.dto.products.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
@@ -12,7 +12,7 @@ public class SubcategoryResponse {
 
     private String name;
 
-    @JsonProperty("products")
+    @JsonProperty(value = "products")
     private List<ProductResponse> productResponses;
 
 }

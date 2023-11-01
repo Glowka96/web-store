@@ -1,4 +1,4 @@
-package com.example.portfolio.webstorespring.model.dto.products;
+package com.example.portfolio.webstorespring.model.dto.products.response;
 
 import com.example.portfolio.webstorespring.enums.ProductType;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -19,8 +19,10 @@ public class ProductResponse {
 
     private BigDecimal price;
 
+    private Long quantity;
+
     private ProductType type;
 
-    @JsonProperty("producer")
+    @JsonProperty(value = "producer")
     private ProducerResponse producerResponse;
 }

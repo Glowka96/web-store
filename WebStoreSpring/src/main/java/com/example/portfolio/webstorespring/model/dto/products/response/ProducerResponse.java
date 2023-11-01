@@ -1,4 +1,4 @@
-package com.example.portfolio.webstorespring.model.dto.products;
+package com.example.portfolio.webstorespring.model.dto.products.response;
 
 import lombok.Data;
 

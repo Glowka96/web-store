@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.mappers;
 
-import com.example.portfolio.webstorespring.model.dto.products.CategoryRequest;
-import com.example.portfolio.webstorespring.model.dto.products.CategoryResponse;
+import com.example.portfolio.webstorespring.model.dto.products.request.CategoryRequest;
+import com.example.portfolio.webstorespring.model.dto.products.response.CategoryResponse;
 import com.example.portfolio.webstorespring.model.entity.products.Category;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

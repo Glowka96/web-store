@@ -1,4 +1,4 @@
-package com.example.portfolio.webstorespring.model.dto.orders;
+package com.example.portfolio.webstorespring.model.dto.orders.response;
 
 import com.example.portfolio.webstorespring.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -21,10 +21,10 @@ public class OrderResponse {
 
     private String shipmentAddress;
 
-    private Date dateOfCreated;
+    private Date dateOfCreation;
 
     private OrderStatus status;
 
-    @JsonProperty("shipments")
+    @JsonProperty(value = "shipments")
     private List<ShipmentResponse> shipmentResponses;
 }

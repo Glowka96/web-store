@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.controllers.orders;
 
-import com.example.portfolio.webstorespring.model.dto.orders.OrderRequest;
-import com.example.portfolio.webstorespring.model.dto.orders.OrderResponse;
-import com.example.portfolio.webstorespring.model.dto.orders.ShipmentRequest;
+import com.example.portfolio.webstorespring.model.dto.orders.request.OrderRequest;
+import com.example.portfolio.webstorespring.model.dto.orders.request.ShipmentRequest;
+import com.example.portfolio.webstorespring.model.dto.orders.response.OrderResponse;
 import com.example.portfolio.webstorespring.services.orders.OrderService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
