@@ -25,7 +25,9 @@ public class ProductPricePromotion {
 
     private BigDecimal promotionPrice;
 
+    @Temporal(TemporalType.TIMESTAMP)
     private Date startDate;
 
+    @Temporal(TemporalType.TIMESTAMP)
     private Date endDate;
 }

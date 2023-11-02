@@ -11,9 +11,8 @@ public interface ProductPricePromotionMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "product", ignore = true)
-    @Mapping(target = "startDate", ignore = true)
     ProductPricePromotion mapToEntity(ProductPricePromotionRequest promotionRequest);
 
-    @Mapping(target = "productResponse", ignore = true)
+    @Mapping(target = "productResponse", source = "product")
     ProductPricePromotionResponse mapToDto(ProductPricePromotion pricePromotion);
 }

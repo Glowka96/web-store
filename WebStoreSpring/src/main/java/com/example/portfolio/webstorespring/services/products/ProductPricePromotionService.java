@@ -1,5 +1,6 @@
 package com.example.portfolio.webstorespring.services.products;
 
+import com.example.portfolio.webstorespring.exceptions.PromotionPriceGreaterThanBasePriceException;
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.ProductPricePromotionMapper;
 import com.example.portfolio.webstorespring.model.dto.products.request.ProductPricePromotionRequest;
@@ -24,6 +25,10 @@ public class ProductPricePromotionService {
     @Transactional
     public ProductPricePromotionResponse saveProductPricePromotion(@NotNull ProductPricePromotionRequest promotionRequest) {
         Product product = findProductById(promotionRequest.getProductId());
+
+        if(product.getPrice().compareTo(promotionRequest.getPromotionPrice()) < 0) {
+            throw new PromotionPriceGreaterThanBasePriceException();
+        }
 
         ProductPricePromotion promotion = promotionMapper.mapToEntity(promotionRequest);
         promotion.setProduct(product);
