@@ -16,11 +16,6 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "products")
-@NamedEntityGraph(name = "product-with-producer-and-price-promotion-entity-graph",
-        attributeNodes = {
-                @NamedAttributeNode("producer"),
-                @NamedAttributeNode("pricePromotions")
-        })
 @Builder
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
@@ -46,24 +41,25 @@ public class Product {
     private Long quantity;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "product_type")
     private ProductType type;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subcategory_id")
     private Subcategory subcategory;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "producer_id")
     private Producer producer;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product")
     private List<Shipment> shipment;
 
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
     private Date dateOfCreation;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ProductPricePromotion> pricePromotions;
 }
 

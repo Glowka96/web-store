@@ -2,6 +2,8 @@ package com.example.portfolio.webstorespring.services.products;
 
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.ProductMapper;
+import com.example.portfolio.webstorespring.model.dto.products.PageProductsWithPromotionDTO;
+import com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionAndLowestPriceDTO;
 import com.example.portfolio.webstorespring.model.dto.products.request.ProductRequest;
 import com.example.portfolio.webstorespring.model.dto.products.response.ProductResponse;
 import com.example.portfolio.webstorespring.model.entity.products.Producer;
@@ -29,7 +31,7 @@ public class ProductService {
     private final ProducerRepository producerRepository;
     private final SubcategoryRepository subcategoryRepository;
 
-    public ProductResponse getProductDtoById(Long id) {
+    public ProductResponse getProductById(Long id) {
         Product foundProduct = findProductById(id);
         return productMapper.mapToDto(foundProduct);
     }
@@ -38,29 +40,34 @@ public class ProductService {
         return productMapper.mapToDto(productRepository.findAll());
     }
 
-    public List<ProductResponse> getAllProductsBySubcategoryId(Long subcategoryId,
-                                                              Integer pageNo,
-                                                              Integer pageSize,
-                                                              String sortBy) {
+    @Transactional
+    public PageProductsWithPromotionDTO getPageProductsBySubcategoryId(Long subcategoryId,
+                                                                       Integer pageNo,
+                                                                       Integer pageSize,
+                                                                       String sortBy) {
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.ASC, sortBy));
 
-        Page<Product> productPage = findPageProductsBySubcategoryId(subcategoryId, pageable);
-        return productPage.map(productMapper::mapToDto).getContent();
+        Page<ProductWithPromotionAndLowestPriceDTO> productPage = getProductsBySubcategoryId(subcategoryId, pageable);
+
+        return new PageProductsWithPromotionDTO(
+                productPage.getTotalElements(),
+                productPage.getTotalPages(),
+                productPage.getContent());
     }
 
-    public Long getQuantityOfProductsBySubcategoryId(Long subcategoryId) {
-        return productRepository.countProductsBySubcategory_Id(subcategoryId);
-    }
-
-    public List<ProductResponse> getSearchProducts(String text, Integer pageNo, Integer pageSize, String sortBy) {
+    @Transactional
+    public PageProductsWithPromotionDTO getSearchProducts(String text,
+                                                          Integer pageNo,
+                                                          Integer pageSize,
+                                                          String sortBy) {
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.ASC, sortBy));
 
-        Page<Product> productPage = searchProductsByText(text, pageable);
-        return productPage.map(productMapper::mapToDto).getContent();
-    }
+        Page<ProductWithPromotionAndLowestPriceDTO> productPage = searchProductsByText(text, pageable);
 
-    public Long getQuantityOfSearchProducts(String text) {
-        return productRepository.countProductsByEnteredText(text);
+        return new PageProductsWithPromotionDTO(
+                productPage.getTotalElements(),
+                productPage.getTotalPages(),
+                productPage.getContent());
     }
 
     @Transactional
@@ -78,9 +85,9 @@ public class ProductService {
 
     @Transactional
     public ProductResponse updateProduct(Long subcategoryId,
-                                        Long producerId,
-                                        Long productId,
-                                        ProductRequest productRequest) {
+                                         Long producerId,
+                                         Long productId,
+                                         ProductRequest productRequest) {
         Subcategory foundSubcategory = findSubcategoryById(subcategoryId);
         Producer foundProducer = findProducerById(producerId);
         Product foundProduct = findProductById(productId);
@@ -92,26 +99,19 @@ public class ProductService {
         return productMapper.mapToDto(product);
     }
 
-    public void deleteById(Long id) {
-        Product foundProduct = findProductById(id);
-        productRepository.delete(foundProduct);
-    }
-
     private Product findProductById(Long id) {
         return productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "id", id));
     }
 
-    private Page<Product> findPageProductsBySubcategoryId(Long subCategoryId, Pageable pageable) {
-        return productRepository.findProductsBySubcategory_Id(subCategoryId, pageable)
-                .orElseThrow(() -> new ResourceNotFoundException("Products", "page number", pageable.getPageNumber()));
-
+    private Page<ProductWithPromotionAndLowestPriceDTO> getProductsBySubcategoryId(Long subcategoryId, Pageable pageable) {
+        return productRepository.findProductsBySubcategory_Id(subcategoryId, pageable)
+                .orElse(Page.empty());
     }
 
-    private Page<Product> searchProductsByText(String text, Pageable pageable) {
-        return productRepository
-                .searchProductsByEnteredText(text,
-                        pageable).orElse(Page.empty());
+    private Page<ProductWithPromotionAndLowestPriceDTO> searchProductsByText(String text, Pageable pageable) {
+        return productRepository.searchProductsByEnteredText(text, pageable)
+                .orElse(Page.empty());
     }
 
     private Subcategory findSubcategoryById(Long id) {
@@ -147,5 +147,10 @@ public class ProductService {
         if (updatedProduct.getType() == null) {
             updatedProduct.setType(foundProduct.getType());
         }
+    }
+
+    public void deleteById(Long id) {
+        Product foundProduct = findProductById(id);
+        productRepository.delete(foundProduct);
     }
 }
