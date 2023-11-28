@@ -19,7 +19,6 @@ public interface OrderMapper {
     @Mapping(target = "shipmentResponses", source = "shipments")
     OrderResponse mapToDto(Order order);
 
-    @Mapping(target = "shipmentsResponses", source = "shipments")
     List<OrderResponse> mapToDto(List<Order> orders);
 
     @Mapping(target = "id", ignore = true)

@@ -9,10 +9,10 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface ProductPricePromotionMapper {
 
+    @Mapping(target = "productResponse", ignore = true)
+    ProductPricePromotionResponse mapToDto(ProductPricePromotion pricePromotion);
+
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "product", ignore = true)
     ProductPricePromotion mapToEntity(ProductPricePromotionRequest promotionRequest);
-
-    @Mapping(target = "productResponse", source = "product")
-    ProductPricePromotionResponse mapToDto(ProductPricePromotion pricePromotion);
 }

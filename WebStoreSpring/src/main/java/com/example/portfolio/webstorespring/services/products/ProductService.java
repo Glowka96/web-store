@@ -13,6 +13,7 @@ import com.example.portfolio.webstorespring.repositories.products.ProducerReposi
 import com.example.portfolio.webstorespring.repositories.products.ProductRepository;
 import com.example.portfolio.webstorespring.repositories.products.SubcategoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +21,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -30,6 +35,7 @@ public class ProductService {
     private final ProductMapper productMapper;
     private final ProducerRepository producerRepository;
     private final SubcategoryRepository subcategoryRepository;
+    private final Clock clock = Clock.systemUTC();
 
     public ProductResponse getProductById(Long id) {
         Product foundProduct = findProductById(id);
@@ -40,14 +46,17 @@ public class ProductService {
         return productMapper.mapToDto(productRepository.findAll());
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public PageProductsWithPromotionDTO getPageProductsBySubcategoryId(Long subcategoryId,
                                                                        Integer pageNo,
                                                                        Integer pageSize,
-                                                                       String sortBy) {
-        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.ASC, sortBy));
+                                                                       String sortBy,
+                                                                       String sortDirection) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.fromString(sortDirection), sortBy));
 
-        Page<ProductWithPromotionAndLowestPriceDTO> productPage = getProductsBySubcategoryId(subcategoryId, pageable);
+        Date date30DaysAgo = getDate30DaysAgo();
+
+        Page<ProductWithPromotionAndLowestPriceDTO> productPage = getProductsBySubcategoryId(subcategoryId, date30DaysAgo, pageable);
 
         return new PageProductsWithPromotionDTO(
                 productPage.getTotalElements(),
@@ -55,14 +64,17 @@ public class ProductService {
                 productPage.getContent());
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public PageProductsWithPromotionDTO getSearchProducts(String text,
                                                           Integer pageNo,
                                                           Integer pageSize,
-                                                          String sortBy) {
-        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.ASC, sortBy));
+                                                          String sortBy,
+                                                          String sortDirection) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.fromString(sortDirection), sortBy));
 
-        Page<ProductWithPromotionAndLowestPriceDTO> productPage = searchProductsByText(text, pageable);
+        Date date30DaysAgo = getDate30DaysAgo();
+
+        Page<ProductWithPromotionAndLowestPriceDTO> productPage = searchProductsByText(text, date30DaysAgo, pageable);
 
         return new PageProductsWithPromotionDTO(
                 productPage.getTotalElements(),
@@ -104,13 +116,19 @@ public class ProductService {
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "id", id));
     }
 
-    private Page<ProductWithPromotionAndLowestPriceDTO> getProductsBySubcategoryId(Long subcategoryId, Pageable pageable) {
-        return productRepository.findProductsBySubcategory_Id(subcategoryId, pageable)
+    @NotNull
+    private Date getDate30DaysAgo() {
+        return Date.from(LocalDateTime.now(clock).minusDays(30)
+                .atZone(ZoneId.systemDefault()).toInstant());
+    }
+
+    private Page<ProductWithPromotionAndLowestPriceDTO> getProductsBySubcategoryId(Long subcategoryId, Date date30DaysAgo, Pageable pageable) {
+        return productRepository.findProductsBySubcategory_Id(subcategoryId, date30DaysAgo, pageable)
                 .orElse(Page.empty());
     }
 
-    private Page<ProductWithPromotionAndLowestPriceDTO> searchProductsByText(String text, Pageable pageable) {
-        return productRepository.searchProductsByEnteredText(text, pageable)
+    private Page<ProductWithPromotionAndLowestPriceDTO> searchProductsByText(String text, Date date30DaysAgo, Pageable pageable) {
+        return productRepository.searchProductsByEnteredText(text, date30DaysAgo, pageable)
                 .orElse(Page.empty());
     }
 

@@ -1,6 +1,7 @@
 package com.example.portfolio.webstorespring.controllers.products;
 
 import com.example.portfolio.webstorespring.enums.ProductType;
+import com.example.portfolio.webstorespring.model.dto.products.PageProductsWithPromotionDTO;
 import com.example.portfolio.webstorespring.model.dto.products.request.ProductRequest;
 import com.example.portfolio.webstorespring.model.dto.products.response.ProductResponse;
 import com.example.portfolio.webstorespring.services.products.ProductService;
@@ -29,17 +30,13 @@ public class ProductController {
         return ResponseEntity.ok(productService.getAllProducts());
     }
 
-    @GetMapping(value = "/subcategories/{subcategoryId}/products", params = {"page", "size", "sort"})
-    public ResponseEntity<List<ProductResponse>> getAllProductsBySubCategoryId(@PathVariable(value = "subcategoryId") Long subcategoryId,
-                                                                              @RequestParam(name = "page", defaultValue = "0") Integer page,
-                                                                              @RequestParam(name = "size", defaultValue = "12") Integer size,
-                                                                              @RequestParam(name = "sort", required = false, defaultValue = "id") String sort) {
-        return ResponseEntity.ok(productService.getAllProductsBySubcategoryId(subcategoryId, page, size, sort));
-    }
-
-    @GetMapping(value = "/subcategories/{subcategoryId}/products/quantity")
-    public ResponseEntity<Long> getQuantityOfProductsBySubcategoryId(@PathVariable(value = "subcategoryId") Long subcategoryId) {
-        return ResponseEntity.ok(productService.getQuantityOfProductsBySubcategoryId(subcategoryId));
+    @GetMapping(value = "/subcategories/{subcategoryId}/products", params = {"page", "size", "sort", "direction"})
+    public ResponseEntity<PageProductsWithPromotionDTO> getAllProductsBySubCategoryId(@PathVariable(value = "subcategoryId") Long subcategoryId,
+                                                                                      @RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                                                      @RequestParam(name = "size", defaultValue = "12") Integer size,
+                                                                                      @RequestParam(name = "sort", required = false, defaultValue = "id") String sort,
+                                                                                      @RequestParam(name= "direction", required = false, defaultValue = "asc") String sortDirection) {
+        return ResponseEntity.ok(productService.getPageProductsBySubcategoryId(subcategoryId, page, size, sort, sortDirection));
     }
 
     @PostMapping(value = "/admin/subcategories/{subcategoryId}/producers/{producerId}/products")

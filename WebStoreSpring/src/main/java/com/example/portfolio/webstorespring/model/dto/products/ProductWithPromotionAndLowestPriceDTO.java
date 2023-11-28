@@ -12,7 +12,8 @@ public record ProductWithPromotionAndLowestPriceDTO(
         String imageUrl,
         Long quantity,
         ProductType productType,
-        Date endDate,
+        BigDecimal price,
         BigDecimal promotionPrice,
-        BigDecimal lowestPrice) implements Serializable {
+        BigDecimal lowestPrice,
+        Date endDate) implements Serializable {
 }

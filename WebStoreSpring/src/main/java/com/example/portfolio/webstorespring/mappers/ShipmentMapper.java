@@ -19,7 +19,6 @@ public interface ShipmentMapper {
     @Mapping(target = "productResponse", source = "product")
     ShipmentResponse mapToDto(Shipment shipment);
 
-    @Mapping(target = "productResponse", source = "products")
     List<ShipmentResponse> mapToDto(List<Shipment> shipments);
 
     @Mapping(target = "id", ignore = true)
@@ -27,6 +26,5 @@ public interface ShipmentMapper {
     @Mapping(target = "product", source = "productRequest")
     Shipment mapToEntity(ShipmentRequest shipmentRequest);
 
-    @Mapping(target = "product", source = "productRequest")
     List<Shipment> mapToEntity(List<ShipmentRequest> shipmentResponses);
 }

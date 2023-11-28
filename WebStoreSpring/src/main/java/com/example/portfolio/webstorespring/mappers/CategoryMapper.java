@@ -16,9 +16,9 @@ public interface CategoryMapper {
     @Mapping(target = "subcategoryResponses", source = "subcategories")
     CategoryResponse mapToDto(Category category);
 
+    List<CategoryResponse> mapToDto(List<Category> categories);
+
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "subcategories", ignore = true)
     Category mapToEntity(CategoryRequest categoryRequest);
-
-    List<CategoryResponse> mapToDto(List<Category> categories);
 }
