@@ -52,12 +52,11 @@ public class ProductService {
                                                                        Integer pageSize,
                                                                        String sortBy,
                                                                        String sortDirection) {
-        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.fromString(sortDirection), sortBy));
+        Pageable pageable = createPageable(pageNo, pageSize, sortBy, sortDirection);
 
         Date date30DaysAgo = getDate30DaysAgo();
 
         Page<ProductWithPromotionAndLowestPriceDTO> productPage = getProductsBySubcategoryId(subcategoryId, date30DaysAgo, pageable);
-
         return new PageProductsWithPromotionDTO(
                 productPage.getTotalElements(),
                 productPage.getTotalPages(),
@@ -65,17 +64,32 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public PageProductsWithPromotionDTO getSearchProducts(String text,
-                                                          Integer pageNo,
-                                                          Integer pageSize,
-                                                          String sortBy,
-                                                          String sortDirection) {
-        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.fromString(sortDirection), sortBy));
+    public PageProductsWithPromotionDTO getPageSearchProducts(String text,
+                                                              Integer pageNo,
+                                                              Integer pageSize,
+                                                              String sortBy,
+                                                              String sortDirection) {
+        Pageable pageable = createPageable(pageNo, pageSize, sortBy, sortDirection);
 
         Date date30DaysAgo = getDate30DaysAgo();
 
         Page<ProductWithPromotionAndLowestPriceDTO> productPage = searchProductsByText(text, date30DaysAgo, pageable);
+        return new PageProductsWithPromotionDTO(
+                productPage.getTotalElements(),
+                productPage.getTotalPages(),
+                productPage.getContent());
+    }
 
+    @Transactional(readOnly = true)
+    public PageProductsWithPromotionDTO getPagePromotionProduct(Integer pageNo,
+                                                                Integer pageSize,
+                                                                String sortBy,
+                                                                String sortDirection) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.fromString(sortDirection), sortBy));
+
+        Date date30DaysAgo = getDate30DaysAgo();
+
+        Page<ProductWithPromotionAndLowestPriceDTO> productPage = getPromotionProducts(date30DaysAgo, pageable);
         return new PageProductsWithPromotionDTO(
                 productPage.getTotalElements(),
                 productPage.getTotalPages(),
@@ -122,13 +136,26 @@ public class ProductService {
                 .atZone(ZoneId.systemDefault()).toInstant());
     }
 
-    private Page<ProductWithPromotionAndLowestPriceDTO> getProductsBySubcategoryId(Long subcategoryId, Date date30DaysAgo, Pageable pageable) {
+    private Pageable createPageable(Integer pageNo, Integer pageSize, String sortBy, String sortDirection) {
+        return PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.fromString(sortDirection), sortBy));
+    }
+
+    private Page<ProductWithPromotionAndLowestPriceDTO> getProductsBySubcategoryId(Long subcategoryId,
+                                                                                   Date date30DaysAgo,
+                                                                                   Pageable pageable) {
         return productRepository.findProductsBySubcategory_Id(subcategoryId, date30DaysAgo, pageable)
                 .orElse(Page.empty());
     }
 
-    private Page<ProductWithPromotionAndLowestPriceDTO> searchProductsByText(String text, Date date30DaysAgo, Pageable pageable) {
+    private Page<ProductWithPromotionAndLowestPriceDTO> searchProductsByText(String text,
+                                                                             Date date30DaysAgo,
+                                                                             Pageable pageable) {
         return productRepository.searchProductsByEnteredText(text, date30DaysAgo, pageable)
+                .orElse(Page.empty());
+    }
+
+    private Page<ProductWithPromotionAndLowestPriceDTO> getPromotionProducts(Date date30DaysAgo, Pageable pageable) {
+        return productRepository.findPromotionProducts(date30DaysAgo, pageable)
                 .orElse(Page.empty());
     }
 

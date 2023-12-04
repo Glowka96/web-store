@@ -31,13 +31,22 @@ public class ProductController {
     }
 
     @GetMapping(value = "/subcategories/{subcategoryId}/products", params = {"page", "size", "sort", "direction"})
-    public ResponseEntity<PageProductsWithPromotionDTO> getAllProductsBySubCategoryId(@PathVariable(value = "subcategoryId") Long subcategoryId,
+    public ResponseEntity<PageProductsWithPromotionDTO> getPageProductsBySubCategoryId(@PathVariable(value = "subcategoryId") Long subcategoryId,
                                                                                       @RequestParam(name = "page", defaultValue = "0") Integer page,
                                                                                       @RequestParam(name = "size", defaultValue = "12") Integer size,
                                                                                       @RequestParam(name = "sort", required = false, defaultValue = "id") String sort,
                                                                                       @RequestParam(name= "direction", required = false, defaultValue = "asc") String sortDirection) {
         return ResponseEntity.ok(productService.getPageProductsBySubcategoryId(subcategoryId, page, size, sort, sortDirection));
     }
+
+     @GetMapping(value = "/promotions/products", params = {"page", "size", "sort", "direction"})
+     public ResponseEntity<PageProductsWithPromotionDTO> getPagePromotionProduct(
+                                                                                       @RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                                                       @RequestParam(name = "size", defaultValue = "12") Integer size,
+                                                                                       @RequestParam(name = "sort", required = false, defaultValue = "id") String sort,
+                                                                                       @RequestParam(name= "direction", required = false, defaultValue = "asc") String sortDirection) {
+         return ResponseEntity.ok(productService.getPagePromotionProduct(page, size, sort, sortDirection));
+     }
 
     @PostMapping(value = "/admin/subcategories/{subcategoryId}/producers/{producerId}/products")
     public ResponseEntity<ProductResponse> saveProduct(@PathVariable(value = "subcategoryId") Long subcategoryId,

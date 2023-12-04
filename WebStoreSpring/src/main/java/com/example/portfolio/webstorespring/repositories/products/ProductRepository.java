@@ -41,4 +41,17 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Optional<Page<ProductWithPromotionAndLowestPriceDTO>> searchProductsByEnteredText(@Param("text") String text,
                                                                                       @Param("date30DaysAgo") Date date30DaysAgo,
                                                                                       Pageable pageable);
+
+    @Query(value = """
+            SELECT NEW com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionAndLowestPriceDTO(
+                                 p.id, p.name, p.imageUrl, p.quantity, p.type, p.price, ppp_1.promotionPrice, MIN(ppp_2.promotionPrice), ppp_1.endDate)
+            FROM Product p
+            Left JOIN p.pricePromotions ppp_1
+            LEFT JOIN p.pricePromotions ppp_2
+            WHERE (CURRENT_DATE between ppp_1.startDate AND ppp_1.endDate)
+            AND ppp_2.endDate >= :date30DaysAgo
+            GROUP BY p.id
+                        """)
+    Optional<Page<ProductWithPromotionAndLowestPriceDTO>> findPromotionProducts(@Param("date30DaysAgo") Date date30DaysAgo,
+                                                                                Pageable pageable);
 }

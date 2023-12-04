@@ -22,6 +22,6 @@ public class SearchController {
                                                                                 @RequestParam(name = "size", defaultValue = "12") Integer size,
                                                                                 @RequestParam(name = "sort", required = false, defaultValue = "id") String sort,
                                                                                 @RequestParam(name = "direction", required = false, defaultValue = "asc") String sortDirection) {
-        return ResponseEntity.ok(productService.getSearchProducts(text, page, size, sort, sortDirection));
+        return ResponseEntity.ok(productService.getPageSearchProducts(text, page, size, sort, sortDirection));
     }
 }
