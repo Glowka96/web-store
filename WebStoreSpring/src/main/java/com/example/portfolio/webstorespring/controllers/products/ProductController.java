@@ -32,34 +32,41 @@ public class ProductController {
 
     @GetMapping(value = "/subcategories/{subcategoryId}/products", params = {"page", "size", "sort", "direction"})
     public ResponseEntity<PageProductsWithPromotionDTO> getPageProductsBySubCategoryId(@PathVariable(value = "subcategoryId") Long subcategoryId,
-                                                                                      @RequestParam(name = "page", defaultValue = "0") Integer page,
-                                                                                      @RequestParam(name = "size", defaultValue = "12") Integer size,
-                                                                                      @RequestParam(name = "sort", required = false, defaultValue = "id") String sort,
-                                                                                      @RequestParam(name= "direction", required = false, defaultValue = "asc") String sortDirection) {
-        return ResponseEntity.ok(productService.getPageProductsBySubcategoryId(subcategoryId, page, size, sort, sortDirection));
-    }
-
-     @GetMapping(value = "/promotions/products", params = {"page", "size", "sort", "direction"})
-     public ResponseEntity<PageProductsWithPromotionDTO> getPagePromotionProduct(
                                                                                        @RequestParam(name = "page", defaultValue = "0") Integer page,
                                                                                        @RequestParam(name = "size", defaultValue = "12") Integer size,
                                                                                        @RequestParam(name = "sort", required = false, defaultValue = "id") String sort,
-                                                                                       @RequestParam(name= "direction", required = false, defaultValue = "asc") String sortDirection) {
-         return ResponseEntity.ok(productService.getPagePromotionProduct(page, size, sort, sortDirection));
-     }
+                                                                                       @RequestParam(name = "direction", required = false, defaultValue = "asc") String sortDirection) {
+        return ResponseEntity.ok(productService.getPageProductsBySubcategoryId(subcategoryId, page, size, sort, sortDirection));
+    }
+
+    @GetMapping(value = "/promotions/products", params = {"page", "size", "sort", "direction"})
+    public ResponseEntity<PageProductsWithPromotionDTO> getPagePromotionProduct(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                                                @RequestParam(name = "size", defaultValue = "12") Integer size,
+                                                                                @RequestParam(name = "sort", required = false, defaultValue = "id") String sort,
+                                                                                @RequestParam(name = "direction", required = false, defaultValue = "asc") String sortDirection) {
+        return ResponseEntity.ok(productService.getPagePromotionProduct(page, size, sort, sortDirection));
+    }
+
+    @GetMapping(value = "/new-products", params = {"page", "size", "sort", "direction"})
+    public ResponseEntity<PageProductsWithPromotionDTO> getPageNewProduct(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                                          @RequestParam(name = "size", defaultValue = "12") Integer size,
+                                                                          @RequestParam(name = "sort", required = false) String sort,
+                                                                          @RequestParam(name = "direction", required = false) String sortDirection) {
+        return ResponseEntity.ok(productService.getPageNewProduct(page, size, sort, sortDirection));
+    }
 
     @PostMapping(value = "/admin/subcategories/{subcategoryId}/producers/{producerId}/products")
     public ResponseEntity<ProductResponse> saveProduct(@PathVariable(value = "subcategoryId") Long subcategoryId,
-                                                      @PathVariable(value = "producerId") Long producerId,
-                                                      @Valid @RequestBody ProductRequest productRequest) {
+                                                       @PathVariable(value = "producerId") Long producerId,
+                                                       @Valid @RequestBody ProductRequest productRequest) {
         return ResponseEntity.status(HttpStatus.CREATED).body(productService.saveProduct(subcategoryId, producerId, productRequest));
     }
 
     @PutMapping(value = "/admin/subcategories/{subcategoryId}/producers/{producerId}/products/{productId}")
     public ResponseEntity<ProductResponse> updateProduct(@PathVariable(value = "subcategoryId") Long subcategoryId,
-                                                        @PathVariable(value = "producerId") Long producerId,
-                                                        @PathVariable(value = "productId") Long productId,
-                                                        @Valid @RequestBody ProductRequest productRequest) {
+                                                         @PathVariable(value = "producerId") Long producerId,
+                                                         @PathVariable(value = "productId") Long productId,
+                                                         @Valid @RequestBody ProductRequest productRequest) {
         return ResponseEntity.accepted()
                 .body(productService.updateProduct(subcategoryId, producerId, productId, productRequest));
     }

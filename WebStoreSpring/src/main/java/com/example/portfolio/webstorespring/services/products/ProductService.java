@@ -26,6 +26,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor
@@ -52,15 +53,10 @@ public class ProductService {
                                                                        Integer pageSize,
                                                                        String sortBy,
                                                                        String sortDirection) {
-        Pageable pageable = createPageable(pageNo, pageSize, sortBy, sortDirection);
-
-        Date date30DaysAgo = getDate30DaysAgo();
-
-        Page<ProductWithPromotionAndLowestPriceDTO> productPage = getProductsBySubcategoryId(subcategoryId, date30DaysAgo, pageable);
-        return new PageProductsWithPromotionDTO(
-                productPage.getTotalElements(),
-                productPage.getTotalPages(),
-                productPage.getContent());
+        return getPageProduct(
+                pageable -> getProductsBySubcategoryId(subcategoryId, getDate30DaysAgo(), pageable),
+                pageNo, pageSize, sortBy, sortDirection
+        );
     }
 
     @Transactional(readOnly = true)
@@ -69,15 +65,10 @@ public class ProductService {
                                                               Integer pageSize,
                                                               String sortBy,
                                                               String sortDirection) {
-        Pageable pageable = createPageable(pageNo, pageSize, sortBy, sortDirection);
-
-        Date date30DaysAgo = getDate30DaysAgo();
-
-        Page<ProductWithPromotionAndLowestPriceDTO> productPage = searchProductsByText(text, date30DaysAgo, pageable);
-        return new PageProductsWithPromotionDTO(
-                productPage.getTotalElements(),
-                productPage.getTotalPages(),
-                productPage.getContent());
+        return getPageProduct(
+                pageable -> searchProductsByText(text, getDate30DaysAgo(), pageable),
+                pageNo, pageSize, sortBy, sortDirection
+        );
     }
 
     @Transactional(readOnly = true)
@@ -85,11 +76,29 @@ public class ProductService {
                                                                 Integer pageSize,
                                                                 String sortBy,
                                                                 String sortDirection) {
-        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.fromString(sortDirection), sortBy));
+        return getPageProduct(
+                pageable -> getPromotionProducts(getDate30DaysAgo(), pageable),
+                pageNo, pageSize, sortBy, sortDirection
+        );
+    }
 
-        Date date30DaysAgo = getDate30DaysAgo();
+    @Transactional(readOnly = true)
+    public PageProductsWithPromotionDTO getPageNewProduct(Integer pageNo,
+                                                          Integer pageSize,
+                                                          String sortBy,
+                                                          String sortDirection) {
+        return getPageProduct(
+                pageable -> getNewProducts(getDate30DaysAgo(), pageable),
+                pageNo, pageSize, sortBy, sortDirection);
+    }
 
-        Page<ProductWithPromotionAndLowestPriceDTO> productPage = getPromotionProducts(date30DaysAgo, pageable);
+    private PageProductsWithPromotionDTO getPageProduct(Function<Pageable, Page<ProductWithPromotionAndLowestPriceDTO>> function,
+                                                        Integer pageNo,
+                                                        Integer pageSize,
+                                                        String sortBy,
+                                                        String sortDirection) {
+        Pageable pageable = createPageable(pageNo, pageSize, sortBy, sortDirection);
+        Page<ProductWithPromotionAndLowestPriceDTO> productPage = function.apply(pageable);
         return new PageProductsWithPromotionDTO(
                 productPage.getTotalElements(),
                 productPage.getTotalPages(),
@@ -159,9 +168,14 @@ public class ProductService {
                 .orElse(Page.empty());
     }
 
+    private Page<ProductWithPromotionAndLowestPriceDTO> getNewProducts(Date date30DaysAgo, Pageable pageable) {
+        return productRepository.findNewProducts(date30DaysAgo, pageable)
+                .orElse(Page.empty());
+    }
+
     private Subcategory findSubcategoryById(Long id) {
         return subcategoryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("SubCategory", "id", id));
+                .orElseThrow(() -> new ResourceNotFoundException("Subcategory", "id", id));
     }
 
     private Producer findProducerById(Long id) {
