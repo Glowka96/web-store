@@ -25,7 +25,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             WHERE p.id = :productId
             """)
     ProductWithProducerAndPromotionDTO findProductById(@Param("productId") Long productId,
-                                                                 @Param("date30DaysAgo") Date date30DaysAgo);
+                                                       @Param("date30DaysAgo") Date date30DaysAgo);
 
     @Query("""
             SELECT NEW com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionAndLowestPriceDTO(
@@ -70,14 +70,14 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                                                                                 Pageable pageable);
 
     @Query(value = """
-            SELECT NEW com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionAndLowestPriceDTO(
-                                 p.id, p.name, p.imageUrl, p.quantity, p.type, p.price, ppp_1.promotionPrice, MIN(ppp_2.promotionPrice), ppp_1.endDate)
-            FROM Product p
-            LEFT JOIN p.pricePromotions ppp_1 ON (CURRENT_DATE BETWEEN ppp_1.startDate AND ppp_1.endDate)
-            LEFT JOIN p.pricePromotions ppp_2 ON (ppp_2.endDate >= :date30DaysAgo AND ppp_1.id IS NOT NULL)
-            WHERE p.dateOfCreation >= :date30DaysAgo
-            GROUP BY p.id
-""")
+                        SELECT NEW com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionAndLowestPriceDTO(
+                                             p.id, p.name, p.imageUrl, p.quantity, p.type, p.price, ppp_1.promotionPrice, MIN(ppp_2.promotionPrice), ppp_1.endDate)
+                        FROM Product p
+                        LEFT JOIN p.pricePromotions ppp_1 ON (CURRENT_DATE BETWEEN ppp_1.startDate AND ppp_1.endDate)
+                        LEFT JOIN p.pricePromotions ppp_2 ON (ppp_2.endDate >= :date30DaysAgo AND ppp_1.id IS NOT NULL)
+                        WHERE p.dateOfCreation >= :date30DaysAgo
+                        GROUP BY p.id
+            """)
     Optional<Page<ProductWithPromotionAndLowestPriceDTO>> findNewProducts(@Param("date30DaysAgo") Date date30DaysAgo,
                                                                           Pageable pageable);
 }

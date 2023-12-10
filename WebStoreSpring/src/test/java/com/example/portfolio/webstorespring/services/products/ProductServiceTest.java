@@ -1,7 +1,11 @@
 package com.example.portfolio.webstorespring.services.products;
 
+import com.example.portfolio.webstorespring.enums.ProductType;
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.ProductMapper;
+import com.example.portfolio.webstorespring.model.dto.products.PageProductsWithPromotionDTO;
+import com.example.portfolio.webstorespring.model.dto.products.ProductWithProducerAndPromotionDTO;
+import com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionAndLowestPriceDTO;
 import com.example.portfolio.webstorespring.model.dto.products.request.ProductRequest;
 import com.example.portfolio.webstorespring.model.dto.products.response.ProductResponse;
 import com.example.portfolio.webstorespring.model.entity.products.Producer;
@@ -10,6 +14,7 @@ import com.example.portfolio.webstorespring.model.entity.products.Subcategory;
 import com.example.portfolio.webstorespring.repositories.products.ProducerRepository;
 import com.example.portfolio.webstorespring.repositories.products.ProductRepository;
 import com.example.portfolio.webstorespring.repositories.products.SubcategoryRepository;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,12 +24,21 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.*;
 
 import java.math.BigDecimal;
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
@@ -39,6 +53,8 @@ class ProductServiceTest {
     private SubcategoryRepository subcategoryRepository;
     @Mock
     private ProducerRepository producerRepository;
+    @Mock
+    private Clock clock;
     @InjectMocks
     private ProductService underTest;
 
@@ -49,11 +65,19 @@ class ProductServiceTest {
     private Subcategory subcategory;
     private Producer producer;
 
+    private final ZonedDateTime zonedDateTime = ZonedDateTime.of(
+            2023,
+            3,
+            9,
+            12,
+            30,
+            30,
+            0,
+            ZoneId.of("GMT")
+    );
+
     @BeforeEach
     void initialization() {
-       // ProducerMapper producerMapper = Mappers.getMapper(ProducerMapper.class);
-       // ReflectionTestUtils.setField(productMapper, "producerMapper", producerMapper);
-
         subcategory = new Subcategory();
         subcategory.setId(1L);
 
@@ -90,21 +114,52 @@ class ProductServiceTest {
         productRequest.setDescription("This is description");
     }
 
+    @Test
+    void shouldGetProductById() {
+        // given
+        when(clock.getZone()).thenReturn(zonedDateTime.getZone());
+        when(clock.instant()).thenReturn(zonedDateTime.toInstant());
 
-//    @Test
-//    void shouldGetProductDtoById() {
-//        // given
-//        given(productRepository.findById(product.getId())).willReturn(Optional.of(product));
-//
-//        // when
-//        ProductResponse foundProductResponse = underTest.getProductDtoById(1L);
-//
-//        // then
-//        assertThat(foundProductResponse).isNotNull();
-//        assertThat(foundProductResponse.getName()).isEqualTo(product.getName());
-//        assertThat(foundProductResponse.getDescription()).isEqualTo(product.getDescription());
-//        assertThat(foundProductResponse.getPrice()).isEqualTo(product.getPrice());
-//    }
+        ProductWithProducerAndPromotionDTO productDTO = new ProductWithProducerAndPromotionDTO(1L,
+                "Test",
+                "test.pl/test.png",
+                1L, ProductType.TEST,
+                BigDecimal.valueOf(100L),
+                BigDecimal.valueOf(90L),
+                BigDecimal.valueOf(70L),
+                Date.from(LocalDateTime.now(clock).plusDays(15).atZone(ZoneId.systemDefault()).toInstant()),
+                "Test description",
+                "Test producer");
+
+        given(productRepository.findProductById(anyLong(), any())).willReturn(productDTO);
+
+        // when
+        ProductWithProducerAndPromotionDTO result = underTest.getProductById(1L);
+
+        // then
+        assertThat(result).isNotNull().isEqualTo(productDTO);
+    }
+
+    @Test
+    void willThrowWhenProductIdNotFound() {
+        // given
+        given(productRepository.findProductById(anyLong(), any())).willReturn(new ProductWithProducerAndPromotionDTO(null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null));
+
+        // when
+        // then
+        assertThrows(ResourceNotFoundException.class, () -> underTest.getProductById(1L));
+        verify(productRepository, times(1)).findProductById(eq(1L), any());
+    }
 
     @Test
     void shouldGetAllProducts() {
@@ -115,43 +170,146 @@ class ProductServiceTest {
         verifyNoMoreInteractions(productRepository);
     }
 
-//    @Test
-//    void shouldGetAllProductsBySubCategoryId_WhenGetSubCategoryId_PageNo_PageSize_SortBy() {
-//        Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Direction.ASC, "price"));
-//        List<Product> productList = List.of(product3, product2, product);
-//
-//        Page<ProductResponse> productPage = new PageImpl<>(productList, pageable, productList.size());
-//
-//        given(productRepository.findProductsBySubcategory_Id(anyLong(), any(Pageable.class)))
-//                .willReturn(productPage);
-//
-//        // when
-//        List<ProductResponse> foundProductResponses = underTest.getPageProductsBySubcategoryId(subCategory.getId(), 0, 5, "price");
-//
-//        // then
-//        assertThat(foundProductResponses).hasSize(3);
-//        verify(productRepository, times(1)).findProductsBySubcategory_Id(subCategory.getId(), pageable);
-//
+    @Test
+    void shouldGetPageProductsBySubCategoryId() {
+        // given
+        Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Direction.ASC, "id"));
+        List<ProductWithPromotionAndLowestPriceDTO> productList = List.of(getProductDTO(), getProductDTO(), getProductDTO());
+        Page<ProductWithPromotionAndLowestPriceDTO> productPage = new PageImpl<>(productList, pageable, productList.size());
 
-//    @Test
-//    void shouldGetSearchProductsByText() {
-//        // given
-//        Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Direction.ASC, "id"));
-//        List<Product> productList = List.of(product, product2, product3);
-//
-//        Page<Product> productPage = new PageImpl<>(productList, pageable, productList.size());
-//
-//        given(productRepository.searchProductsByEnteredText(anyString(), any(Pageable.class)))
-//                .willReturn(Optional.of(productPage));
-//
-//        // when
-//        List<ProductResponse> foundProductResponses = underTest.getSearchProducts("test", 0, 5, "id");
-//
-//        // then
-//        assertThat(foundProductResponses).hasSize(3);
-//        verify(productRepository, times(1)).searchProductsByEnteredText("test", pageable);
-//    }
+        given(productRepository.findProductsBySubcategory_Id(anyLong(), any(), any())).willReturn(Optional.of(productPage));
 
+        // when
+        PageProductsWithPromotionDTO actual = underTest.getPageProductsBySubcategoryId(1L, 0, 5, "id", "asc");
+
+        // then
+        assertThat(actual.products()).hasSize(productList.size());
+        assertThat(actual.totalPages()).isEqualTo(1);
+        assertThat(actual.totalElements()).isEqualTo(3);
+    }
+
+    @Test
+    void shouldGetPageProductsBySubCategoryIdReturnTwoTotalPages() {
+        // given
+        Pageable pageable = PageRequest.of(0, 2, Sort.by(Sort.Direction.ASC, "id"));
+        List<ProductWithPromotionAndLowestPriceDTO> productList = List.of(getProductDTO(), getProductDTO(), getProductDTO());
+        Page<ProductWithPromotionAndLowestPriceDTO> productPage = new PageImpl<>(productList, pageable, productList.size());
+
+        given(productRepository.findProductsBySubcategory_Id(anyLong(), any(), any())).willReturn(Optional.of(productPage));
+
+        // when
+        PageProductsWithPromotionDTO actual = underTest.getPageProductsBySubcategoryId(1L, 0, 2, "id", "asc");
+
+        // then
+        assertThat(actual.products()).hasSize(productList.size());
+        assertThat(actual.totalPages()).isEqualTo(2);
+        assertThat(actual.totalElements()).isEqualTo(3);
+    }
+
+    @Test
+    void shouldGetPageNewProducts() {
+        // given
+        Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Direction.ASC, "id"));
+        List<ProductWithPromotionAndLowestPriceDTO> productList = List.of(getProductDTO(), getProductDTO(), getProductDTO());
+        Page<ProductWithPromotionAndLowestPriceDTO> productPage = new PageImpl<>(productList, pageable, productList.size());
+
+        given(productRepository.findNewProducts(any(), any())).willReturn(Optional.of(productPage));
+
+        // when
+        PageProductsWithPromotionDTO actual = underTest.getPageNewProduct(0, 5, "id", "asc");
+
+        // then
+        assertThat(actual.products()).hasSize(productList.size());
+        assertThat(actual.totalPages()).isEqualTo(1);
+        assertThat(actual.totalElements()).isEqualTo(3);
+    }
+
+    @Test
+    void shouldGetEmptyPageWhenNoHaveNewProduct() {
+        Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Direction.ASC, "id"));
+        List<ProductWithPromotionAndLowestPriceDTO> emptyList = new ArrayList<>();
+        Page<ProductWithPromotionAndLowestPriceDTO> productPage = new PageImpl<>(emptyList, pageable, emptyList.size());
+
+        given(productRepository.findNewProducts(any(), any())).willReturn(Optional.of(productPage));
+
+        // when
+        PageProductsWithPromotionDTO actual = underTest.getPageNewProduct(0, 5, "id", "asc");
+
+        // then
+        assertThat(actual.products()).hasSize(emptyList.size());
+        assertThat(actual.totalPages()).isEqualTo(0);
+        assertThat(actual.totalElements()).isEqualTo(0);
+    }
+
+    @Test
+    void shouldPageProductsBySubCategoryIdWhenGetSubCategoryId_PageNo_PageSize_SortBy_SortDirection() {
+        // given
+        Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Direction.ASC, "id"));
+        List<ProductWithPromotionAndLowestPriceDTO> productList = List.of(getProductDTO(), getProductDTO(), getProductDTO());
+        Page<ProductWithPromotionAndLowestPriceDTO> productPage = new PageImpl<>(productList, pageable, productList.size());
+
+        given(productRepository.findProductsBySubcategory_Id(anyLong(), any(), any())).willReturn(Optional.of(productPage));
+
+        // when
+        PageProductsWithPromotionDTO actual = underTest.getPageProductsBySubcategoryId(1L, 0, 5, "id", "asc");
+
+        // then
+        assertThat(actual.products()).hasSize(productList.size());
+        assertThat(actual.totalPages()).isEqualTo(1);
+        assertThat(actual.totalElements()).isEqualTo(3);
+    }
+
+    @Test
+    void shouldGetPageProductsBySearchText() {
+        // given
+        Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Direction.ASC, "id"));
+        List<ProductWithPromotionAndLowestPriceDTO> productList = List.of(getProductDTO(), getProductDTO(), getProductDTO());
+        Page<ProductWithPromotionAndLowestPriceDTO> productPage = new PageImpl<>(productList, pageable, productList.size());
+
+        given(productRepository.searchProductsByEnteredText(anyString(), any(), any())).willReturn(Optional.of(productPage));
+
+        // when
+        PageProductsWithPromotionDTO actual = underTest.getPageSearchProducts("test", 0, 5, "id", "asc");
+
+        // then
+        assertThat(actual.products()).hasSize(productList.size());
+        assertThat(actual.totalPages()).isEqualTo(1);
+        assertThat(actual.totalElements()).isEqualTo(3);
+    }
+
+    @Test
+    void shouldGetPromotionProducts() {
+        // given
+        Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Direction.ASC, "id"));
+        List<ProductWithPromotionAndLowestPriceDTO> productList = List.of(getProductDTO(), getProductDTO(), getProductDTO());
+        Page<ProductWithPromotionAndLowestPriceDTO> productPage = new PageImpl<>(productList, pageable, productList.size());
+
+        given(productRepository.findPromotionProducts(any(), any())).willReturn(Optional.of(productPage));
+
+        // when
+        PageProductsWithPromotionDTO actual = underTest.getPagePromotionProduct(0, 5, "id", "asc");
+
+        // then
+        assertThat(actual.products()).hasSize(productList.size());
+        assertThat(actual.totalPages()).isEqualTo(1);
+        assertThat(actual.totalElements()).isEqualTo(3);
+    }
+
+    @NotNull
+    private ProductWithPromotionAndLowestPriceDTO getProductDTO() {
+        when(clock.getZone()).thenReturn(zonedDateTime.getZone());
+        when(clock.instant()).thenReturn(zonedDateTime.toInstant());
+        return new ProductWithPromotionAndLowestPriceDTO(
+                1L,
+                "Test",
+                "test.pl/test.png",
+                1L, ProductType.TEST,
+                BigDecimal.valueOf(100L),
+                BigDecimal.valueOf(90L),
+                BigDecimal.valueOf(70L),
+                Date.from(LocalDateTime.now(clock).plusDays(15).atZone(ZoneId.systemDefault()).toInstant())
+        );
+    }
 
     @Test
     void shouldSaveProduct() {
