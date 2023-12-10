@@ -35,6 +35,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -74,7 +75,7 @@ class OrderServiceTest {
        ReflectionTestUtils.setField(productMapper, "producerMapper", producerMapper);
 
         Product product = Product.builder()
-                .price(20.00)
+                .price(BigDecimal.valueOf(20.00))
                 .build();
 
         Shipment shipment = Shipment.builder()
@@ -287,7 +288,7 @@ class OrderServiceTest {
 
     private OrderRequest createOrderRequest() {
         ProductRequest productRequest = ProductRequest.builder()
-                .price(20.0)
+                .price(BigDecimal.valueOf(20.0))
                 .build();
         ShipmentRequest shipmentRequest = ShipmentRequest.builder()
                 .quantity(3)

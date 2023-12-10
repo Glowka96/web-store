@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -55,7 +56,7 @@ class OrderControllerTest {
 
         ShipmentRequest shipmentRequest = new ShipmentRequest();
         shipmentRequest.setQuantity(3);
-        shipmentRequest.setPrice(3.00);
+        shipmentRequest.setPrice(BigDecimal.valueOf(3.00));
 
         orderRequest = new OrderRequest();
         orderRequest.setDeliveryAddress("Test, 99-999, test 59/2");

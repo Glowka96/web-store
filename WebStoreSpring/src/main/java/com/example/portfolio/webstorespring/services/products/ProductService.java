@@ -3,6 +3,7 @@ package com.example.portfolio.webstorespring.services.products;
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.ProductMapper;
 import com.example.portfolio.webstorespring.model.dto.products.PageProductsWithPromotionDTO;
+import com.example.portfolio.webstorespring.model.dto.products.ProductWithProducerAndPromotionDTO;
 import com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionAndLowestPriceDTO;
 import com.example.portfolio.webstorespring.model.dto.products.request.ProductRequest;
 import com.example.portfolio.webstorespring.model.dto.products.response.ProductResponse;
@@ -38,9 +39,12 @@ public class ProductService {
     private final SubcategoryRepository subcategoryRepository;
     private final Clock clock = Clock.systemUTC();
 
-    public ProductResponse getProductById(Long id) {
-        Product foundProduct = findProductById(id);
-        return productMapper.mapToDto(foundProduct);
+    public ProductWithProducerAndPromotionDTO getProductById(Long id) {
+        ProductWithProducerAndPromotionDTO product =  productRepository.findProductById(id, getDate30DaysAgo());
+        if(product.id() == null) {
+            throw new ResourceNotFoundException("Product", "id", id);
+        }
+        return product;
     }
 
     public List<ProductResponse> getAllProducts() {
@@ -114,8 +118,8 @@ public class ProductService {
         product.setSubcategory(foundSubcategory);
         product.setProducer(foundProducer);
 
-        Product savedProduct = productRepository.save(product);
-        return productMapper.mapToDto(savedProduct);
+        productRepository.save(product);
+        return productMapper.mapToDto(product);
     }
 
     @Transactional

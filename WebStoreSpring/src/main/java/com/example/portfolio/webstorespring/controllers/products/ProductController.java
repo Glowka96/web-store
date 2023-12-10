@@ -2,6 +2,7 @@ package com.example.portfolio.webstorespring.controllers.products;
 
 import com.example.portfolio.webstorespring.enums.ProductType;
 import com.example.portfolio.webstorespring.model.dto.products.PageProductsWithPromotionDTO;
+import com.example.portfolio.webstorespring.model.dto.products.ProductWithProducerAndPromotionDTO;
 import com.example.portfolio.webstorespring.model.dto.products.request.ProductRequest;
 import com.example.portfolio.webstorespring.model.dto.products.response.ProductResponse;
 import com.example.portfolio.webstorespring.services.products.ProductService;
@@ -28,6 +29,11 @@ public class ProductController {
     @GetMapping(value = "/admin/products")
     public ResponseEntity<List<ProductResponse>> getAllProducts() {
         return ResponseEntity.ok(productService.getAllProducts());
+    }
+
+    @GetMapping(value = "/products/{productId}")
+    public ResponseEntity<ProductWithProducerAndPromotionDTO> getProductById(@PathVariable(value = "productId") Long productId){
+        return ResponseEntity.ok(productService.getProductById(productId));
     }
 
     @GetMapping(value = "/subcategories/{subcategoryId}/products", params = {"page", "size", "sort", "direction"})

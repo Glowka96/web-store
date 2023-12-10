@@ -1,5 +1,6 @@
 package com.example.portfolio.webstorespring.repositories.products;
 
+import com.example.portfolio.webstorespring.model.dto.products.ProductWithProducerAndPromotionDTO;
 import com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionAndLowestPriceDTO;
 import com.example.portfolio.webstorespring.model.entity.products.Product;
 import org.springframework.data.domain.Page;
@@ -12,6 +13,19 @@ import java.util.Date;
 import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
+
+    @Query("""
+            SELECT NEW com.example.portfolio.webstorespring.model.dto.products.ProductWithProducerAndPromotionDTO(
+                    p.id, p.name, p.imageUrl, p.quantity, p.type, p.price, ppp_1.promotionPrice, MIN(ppp_2.promotionPrice), ppp_1.endDate,
+                p.description, p.producer.name)
+            FROM Product p
+            INNER JOIN p.producer pr
+            LEFT JOIN p.pricePromotions ppp_1 ON (CURRENT_DATE BETWEEN ppp_1.startDate AND ppp_1.endDate)
+            LEFT JOIN p.pricePromotions ppp_2 ON (ppp_2.endDate >= :date30DaysAgo AND ppp_1.id IS NOT NULL)
+            WHERE p.id = :productId
+            """)
+    ProductWithProducerAndPromotionDTO findProductById(@Param("productId") Long productId,
+                                                                 @Param("date30DaysAgo") Date date30DaysAgo);
 
     @Query("""
             SELECT NEW com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionAndLowestPriceDTO(
