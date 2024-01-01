@@ -1,6 +1,5 @@
 package com.example.portfolio.webstorespring.model.entity.products;
 
-import com.example.portfolio.webstorespring.enums.ProductType;
 import com.example.portfolio.webstorespring.model.entity.orders.Shipment;
 import jakarta.persistence.*;
 import lombok.*;
@@ -40,8 +39,8 @@ public class Product {
     @Column(nullable = false)
     private Long quantity;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "product_type")
+    @ManyToOne()
+    @JoinColumn(name = "product_type_id")
     private ProductType type;
 
     @ManyToOne(fetch = FetchType.LAZY)

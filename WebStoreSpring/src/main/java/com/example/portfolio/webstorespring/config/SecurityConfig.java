@@ -44,8 +44,9 @@ public class SecurityConfig {
                                 "/api/v1/accounts/reset-password/**").permitAll()
                         .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/v1/accounts/**",
-                                "/api/v1/account/address/**",
-                                "/api/v1/account/orders/**").hasAnyRole("ADMIN", "USER")
+                                "/api/v1/accounts/address/**",
+                                "/api/accounts/orders",
+                                "/api/v1/accounts/orders/**").hasAnyRole("ADMIN", "USER")
                         .anyRequest().authenticated()
                 )
                 .headers().frameOptions().sameOrigin()
