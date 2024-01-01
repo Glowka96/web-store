@@ -13,6 +13,8 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "orders")
+@NamedEntityGraph(name = "order-with-delivery-entity-graph",
+        attributeNodes = @NamedAttributeNode("delivery"))
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,11 +30,9 @@ public class Order {
     @Column(nullable = false)
     private BigDecimal productsPrice;
 
-    @Column(nullable = false)
-    private String deliveryAddress;
-
-    @Column(nullable = false)
-    private String shipmentAddress;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "delivery_id")
+    private Delivery delivery;
 
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
