@@ -1,5 +1,8 @@
 package com.example.portfolio.webstorespring.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum SortByType {
     ID("id"),
     NAME("name"),
@@ -11,10 +14,6 @@ public enum SortByType {
 
     SortByType(String fieldName) {
         this.fieldName = fieldName;
-    }
-
-    public String getFieldName() {
-        return fieldName;
     }
 }
 

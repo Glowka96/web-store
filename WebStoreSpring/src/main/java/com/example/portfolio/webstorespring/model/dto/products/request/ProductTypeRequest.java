@@ -5,9 +5,9 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class ProducerRequest {
+public class ProductTypeRequest {
 
-    @NotBlank(message = "The producer name can't be blank")
-    @Size(min = 3, max = 20, message = "The producer name must between min 3 and max 20 letters")
+    @NotBlank(message = "The product type name can't be blank")
+    @Size(min = 3, max = 20, message = "The product type name must between min 3 and max 20 letters")
     private String name;
 }

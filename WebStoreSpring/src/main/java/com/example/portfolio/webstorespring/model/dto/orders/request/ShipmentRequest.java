@@ -2,6 +2,7 @@ package com.example.portfolio.webstorespring.model.dto.orders.request;
 
 import com.example.portfolio.webstorespring.model.dto.products.request.ProductRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,6 +17,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class ShipmentRequest {
 
+    @Valid
     @NotNull(message = "The product can't be null")
     @JsonProperty(value = "product")
     private ProductRequest productRequest;

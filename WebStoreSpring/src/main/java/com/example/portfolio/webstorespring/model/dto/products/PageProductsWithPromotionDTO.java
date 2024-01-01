@@ -6,5 +6,7 @@ import java.util.List;
 public record PageProductsWithPromotionDTO(
         Long totalElements,
         Integer totalPages,
+        List<String> sortByTypes,
+        List<String> sortDirectionTypes,
         List<ProductWithPromotionAndLowestPriceDTO> products) implements Serializable {
 }

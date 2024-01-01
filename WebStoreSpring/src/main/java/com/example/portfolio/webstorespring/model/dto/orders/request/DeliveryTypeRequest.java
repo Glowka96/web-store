@@ -1,6 +1,9 @@
 package com.example.portfolio.webstorespring.model.dto.orders.request;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +17,6 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class DeliveryTypeRequest {
 
-    @NotNull(message = "The delivery type can't be null")
     @NotBlank(message = "The delivery type can't be blank")
     @Size(min=3, max = 20, message = "The delivery type must between min 3 and max 20 letters")
     private String type;

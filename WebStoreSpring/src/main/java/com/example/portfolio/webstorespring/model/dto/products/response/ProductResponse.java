@@ -1,10 +1,10 @@
 package com.example.portfolio.webstorespring.model.dto.products.response;
 
-import com.example.portfolio.webstorespring.enums.ProductType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
 @Data
 public class ProductResponse {
@@ -21,8 +21,12 @@ public class ProductResponse {
 
     private Long quantity;
 
-    private ProductType type;
+    @JsonProperty(value = "productType")
+    private ProductTypeResponse productTypeResponse;
 
     @JsonProperty(value = "producer")
     private ProducerResponse producerResponse;
+
+    @JsonProperty(value = "promotions")
+    private Set<ProductPricePromotionResponse> pricePromotionsResponse;
 }

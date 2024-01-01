@@ -11,7 +11,7 @@ import java.util.Date;
 public class ProductPricePromotionRequest {
 
     @NotNull(message = "The product id can't be null")
-    @NotBlank(message = "The product id can't be blank")
+    @Positive(message = "The product id must be positive number")
     private Long productId;
 
     @DecimalMin(value = "0.01", message = "The price must be greater than or equal to 0.01")
