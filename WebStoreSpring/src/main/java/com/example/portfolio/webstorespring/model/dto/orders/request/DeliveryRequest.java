@@ -3,9 +3,11 @@ package com.example.portfolio.webstorespring.model.dto.orders.request;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class DeliveryRequest {
 
     private static final String DELIVERY_ADDRESS_PATTERN =
