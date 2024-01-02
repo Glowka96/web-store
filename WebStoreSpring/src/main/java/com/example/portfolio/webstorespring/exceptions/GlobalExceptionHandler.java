@@ -48,7 +48,8 @@ public class GlobalExceptionHandler {
             EmailAlreadyConfirmedException.class,
             TokenConfirmedException.class,
             TokenExpiredException.class,
-            PromotionPriceGreaterThanBasePriceException.class
+            PromotionPriceGreaterThanBasePriceException.class,
+            DeliveryAddressCanNotEmpty.class
     })
     public ResponseEntity<ErrorResponse> handleCanNotModifiedException(RuntimeException exception,
                                                                 WebRequest webRequest) {

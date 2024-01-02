@@ -15,7 +15,7 @@ public class OrderResponse {
 
     private String nameUser;
 
-    private BigDecimal productsPrice;
+    private BigDecimal totalPrice;
 
     @JsonProperty(value = "delivery")
     private DeliveryResponse deliveryResponse;

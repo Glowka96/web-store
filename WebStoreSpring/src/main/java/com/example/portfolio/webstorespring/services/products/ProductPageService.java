@@ -29,8 +29,6 @@ public class ProductPageService {
     private final ProductRepository productRepository;
     private final Clock clock = Clock.systemUTC();
 
-
-
     @Transactional(readOnly = true)
     public PageProductsWithPromotionDTO getPageProductsBySubcategoryId(Long subcategoryId,
                                                                        Integer pageNo,

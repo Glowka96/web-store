@@ -15,7 +15,6 @@ import com.example.portfolio.webstorespring.services.authentication.AccountDetai
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -35,27 +34,28 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
+    private final DeliveryService deliveryService;
     private final Clock clock = Clock.systemUTC();
 
-    @Value("${shipment.address}")
-    private String shipmentAddress;
-
     public List<OrderResponse> getAllAccountOrder() {
-        return orderMapper.mapToDto(
-                orderRepository.findAllByAccountId(
+        return orderMapper.mapToDto(orderRepository.findAllByAccountId(
                         getAccountDetails()
-                                .getAccount()
-                                .getId()
+                                .getAccount().getId()
                 )
         );
+    }
+
+    public List<OrderResponse> getLastFiveAccountOrder() {
+        return orderMapper.mapToDto(orderRepository.findLastFiveAccountOrder(
+                getAccountDetails()
+                        .getAccount().getId()
+        ));
     }
 
     public OrderResponse getAccountOrderByOrderId(Long orderId) {
         Order foundOrder = findOrderById(orderId);
 
-        if(!foundOrder.getAccount().getId().equals(getAccountDetails().getAccount().getId())){
-            throw new AccessDeniedException(AccessDeniedExceptionMessage.GET.getMessage());
-        }
+        checkOwnerOfOrder(foundOrder, AccessDeniedExceptionMessage.GET);
 
         return orderMapper.mapToDto(foundOrder);
     }
@@ -74,37 +74,42 @@ public class OrderService {
     public OrderResponse updateOrder(Long orderId, OrderRequest orderRequest) {
         Order foundOrder = findOrderById(orderId);
 
-        if(!foundOrder.getAccount().getId().equals(getAccountDetails().getAccount().getId())){
-            throw new AccessDeniedException(AccessDeniedExceptionMessage.UPDATE.getMessage());
-        }
+        checkOwnerOfOrder(foundOrder, AccessDeniedExceptionMessage.UPDATE);
 
-        if (foundOrder.getStatus() != OrderStatus.OPEN) {
-            throw new OrderCanNotModifiedException("update");
-        }
+        checkOrderStatus(foundOrder, "update");
 
         Order order = orderMapper.mapToEntity(orderRequest);
 
-        setupUpdateOrder(foundOrder, order);
+        setupUpdateOrder(foundOrder, order, foundOrder.getAccount());
         orderRepository.save(foundOrder);
         return orderMapper.mapToDto(foundOrder);
     }
 
+
     public void deleteOrderById(Long id) {
         Order foundOrder = findOrderById(id);
 
-        if(!foundOrder.getAccount().getId().equals(getAccountDetails().getAccount().getId())){
-            throw new AccessDeniedException(AccessDeniedExceptionMessage.DELETE.getMessage());
-        }
+        checkOwnerOfOrder(foundOrder, AccessDeniedExceptionMessage.DELETE);
 
-        if (foundOrder.getStatus() != OrderStatus.OPEN) {
-            throw new OrderCanNotModifiedException("delete");
-        }
+        checkOrderStatus(foundOrder, "delete");
         orderRepository.delete(foundOrder);
     }
 
     private Order findOrderById(Long id) {
         return orderRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Order", "id", id));
+    }
+
+    private void checkOwnerOfOrder(Order foundOrder, AccessDeniedExceptionMessage exceptionMessage) {
+        if (!foundOrder.getAccount().getId().equals(getAccountDetails().getAccount().getId())) {
+            throw new AccessDeniedException(exceptionMessage.getMessage());
+        }
+    }
+
+    private static void checkOrderStatus(Order foundOrder, String update) {
+        if (foundOrder.getStatus() != OrderStatus.OPEN) {
+            throw new OrderCanNotModifiedException(update);
+        }
     }
 
     private AccountDetails getAccountDetails() {
@@ -120,24 +125,20 @@ public class OrderService {
         order.setDateOfCreation(getCurrentDate());
         order.setStatus(OrderStatus.OPEN);
 
-        if (order.getDeliveryAddress().isEmpty() || order.getDeliveryAddress().isBlank()) {
-            order.setDeliveryAddress(loggedAccount.getAddress().toString());
-        } else {
-            formatDeliveryAddress(order);
-        }
+        order.setDelivery(deliveryService.formatDelivery(order.getDelivery(),
+                loggedAccount.getAddress()));
 
-        order.setShipmentAddress(shipmentAddress);
         setupPriceAndOrderIdInShipments(order);
         setupTotalPrice(order);
     }
 
-    private void setupUpdateOrder(Order currentOrder, Order updateOrder) {
+    private void setupUpdateOrder(Order currentOrder, Order updateOrder, Account loggedAccount) {
         setupPriceAndOrderIdInShipments(updateOrder);
 
         currentOrder.setShipments(updateOrder.getShipments());
         currentOrder.setDateOfCreation(getCurrentDate());
-        formatDeliveryAddress(updateOrder);
-        currentOrder.setDeliveryAddress(updateOrder.getDeliveryAddress());
+        currentOrder.setDelivery(deliveryService.formatDelivery(updateOrder.getDelivery(),
+                loggedAccount.getAddress()));
 
         setupTotalPrice(currentOrder);
     }
@@ -156,10 +157,11 @@ public class OrderService {
     }
 
     private void setupTotalPrice(Order order) {
-        order.setProductsPrice(order.getShipments()
+        order.setTotalPrice(order.getShipments()
                 .stream()
                 .map(Shipment::getPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add)
+                        .add(order.getDelivery().getDeliveryType().getPrice())
                 .setScale(2, RoundingMode.HALF_UP));
     }
 
@@ -167,17 +169,5 @@ public class OrderService {
     private Date getCurrentDate() {
         return Date.from(LocalDateTime.now(clock)
                 .atZone(ZoneId.systemDefault()).toInstant());
-    }
-
-    private void formatDeliveryAddress(@NotNull Order order) {
-        String[] address = order.getDeliveryAddress().split(", ");
-        StringBuilder formattedAddress = new StringBuilder();
-        formattedAddress.append("City: ")
-                .append(address[0])
-                .append(", Postcode: ")
-                .append(address[1])
-                .append(", Street: ")
-                .append(address[2]);
-        order.setDeliveryAddress(formattedAddress.toString());
     }
 }

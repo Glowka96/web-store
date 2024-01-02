@@ -28,7 +28,7 @@ public class Order {
     private String nameUser;
 
     @Column(nullable = false)
-    private BigDecimal productsPrice;
+    private BigDecimal totalPrice;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "delivery_id")

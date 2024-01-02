@@ -16,6 +16,7 @@ import java.util.List;
 )
 public interface OrderMapper {
 
+    @Mapping(target = "deliveryResponse", source = "delivery")
     @Mapping(target = "shipmentResponses", source = "shipments")
     OrderResponse mapToDto(Order order);
 
@@ -23,11 +24,11 @@ public interface OrderMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "status", ignore = true)
-    @Mapping(target = "shipmentAddress", ignore = true)
-    @Mapping(target = "productsPrice", ignore = true)
+    @Mapping(target = "totalPrice", ignore = true)
     @Mapping(target = "nameUser", ignore = true)
     @Mapping(target = "dateOfCreation", ignore = true)
     @Mapping(target = "account", ignore = true)
+    @Mapping(target = "delivery", source = "deliveryRequest")
     @Mapping(target = "shipments", source = "shipmentRequests")
     Order mapToEntity(OrderRequest orderRequest);
 }
