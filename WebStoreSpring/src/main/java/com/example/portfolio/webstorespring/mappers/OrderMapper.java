@@ -11,7 +11,8 @@ import java.util.List;
 @Mapper(
         componentModel = "spring",
         uses = {
-                ShipmentMapper.class
+                ShipmentMapper.class,
+                DeliveryMapper.class
         }
 )
 public interface OrderMapper {
