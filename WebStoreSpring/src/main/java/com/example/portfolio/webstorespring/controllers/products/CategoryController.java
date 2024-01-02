@@ -25,7 +25,7 @@ public class CategoryController {
 
     @GetMapping(value = "/categories/{categoryId}")
     public ResponseEntity<CategoryResponse> getCategoryById(@PathVariable(value = "categoryId") Long categoryId) {
-        return ResponseEntity.ok(categoryService.getCategoryDtoById(categoryId));
+        return ResponseEntity.ok(categoryService.getCategoryById(categoryId));
     }
 
     @PostMapping(value = "/admin/categories")
@@ -43,7 +43,7 @@ public class CategoryController {
 
     @DeleteMapping(value = "/admin/categories/{categoryId}")
     public ResponseEntity<Void> deleteCategoryById(@PathVariable(value = "categoryId") Long categoryId) {
-        categoryService.deleteById(categoryId);
+        categoryService.deleteCategoryById(categoryId);
         return ResponseEntity.noContent().build();
     }
 }

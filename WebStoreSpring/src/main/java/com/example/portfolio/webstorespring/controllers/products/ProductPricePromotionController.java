@@ -26,7 +26,7 @@ public class ProductPricePromotionController {
         return ResponseEntity.status(HttpStatus.CREATED).body(promotionService.saveProductPricePromotion(promotionRequest));
     }
 
-    @DeleteMapping("/id")
+    @DeleteMapping(value = "/id")
     public ResponseEntity<Void> deleteProductPricePromotion(@NotNull @Param("id") Long id) {
         promotionService.deleteProductPricePromotionById(id);
         return ResponseEntity.noContent().build();

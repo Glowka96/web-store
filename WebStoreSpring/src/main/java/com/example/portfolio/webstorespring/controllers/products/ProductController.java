@@ -46,9 +46,8 @@ public class ProductController {
     }
 
     @DeleteMapping(value = "/admin/subcategories/products/{productId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteProductById(@PathVariable(value = "productId") Long id) {
-        productService.deleteById(id);
+        productService.deleteProductById(id);
         return ResponseEntity.noContent().build();
     }
 }

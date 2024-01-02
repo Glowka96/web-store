@@ -23,7 +23,7 @@ public class CategoryService {
                 categoryRepository.findAll());
     }
 
-    public CategoryResponse getCategoryDtoById(Long id) {
+    public CategoryResponse getCategoryById(Long id) {
         Category foundCategory = findCategoryById(id);
         return categoryMapper.mapToDto(foundCategory);
     }
@@ -44,7 +44,7 @@ public class CategoryService {
         return categoryMapper.mapToDto(category);
     }
 
-    public void deleteById(Long id) {
+    public void deleteCategoryById(Long id) {
         Category category = findCategoryById(id);
         categoryRepository.delete(category);
     }

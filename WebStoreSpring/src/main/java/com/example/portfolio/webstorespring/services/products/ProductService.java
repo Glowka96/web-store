@@ -73,7 +73,7 @@ public class ProductService {
         return productMapper.mapToDto(product);
     }
 
-    public void deleteById(Long id) {
+    public void deleteProductById(Long id) {
         Product foundProduct = findProductById(id);
         productRepository.delete(foundProduct);
     }

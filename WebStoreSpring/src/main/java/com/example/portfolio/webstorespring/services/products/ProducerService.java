@@ -43,7 +43,7 @@ public class ProducerService {
         return producerMapper.mapToDto(producer);
     }
 
-    public void deleteById(Long id) {
+    public void deleteProducerById(Long id) {
         Producer foundProducer = findProducerById(id);
         producerRepository.delete(foundProducer);
     }
