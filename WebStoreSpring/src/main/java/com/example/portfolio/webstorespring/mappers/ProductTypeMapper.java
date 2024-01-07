@@ -16,6 +16,6 @@ public interface ProductTypeMapper {
     List<ProductTypeResponse> mapToDto(List<ProductType> productTypes);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "product", ignore = true)
+    @Mapping(target = "products", ignore = true)
     ProductType mapToEntity(ProductTypeRequest productTypeRequest);
 }

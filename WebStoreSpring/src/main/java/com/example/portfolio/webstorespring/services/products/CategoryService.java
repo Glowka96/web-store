@@ -38,10 +38,11 @@ public class CategoryService {
         Category foundCategory = findCategoryById(id);
 
         Category category = categoryMapper.mapToEntity(categoryRequest);
-        setupUpdateCategory(foundCategory, category);
 
-        categoryRepository.save(category);
-        return categoryMapper.mapToDto(category);
+        foundCategory.setName(category.getName());
+
+        categoryRepository.save(foundCategory);
+        return categoryMapper.mapToDto(foundCategory);
     }
 
     public void deleteCategoryById(Long id) {
@@ -52,16 +53,5 @@ public class CategoryService {
     private Category findCategoryById(Long id) {
         return categoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "id", id));
-    }
-
-    private void setupUpdateCategory(Category foundCategory, Category updatedCategory){
-        updatedCategory.setId(foundCategory.getId());
-
-        if(updatedCategory.getName() == null) {
-            updatedCategory.setName(foundCategory.getName());
-        }
-        if(updatedCategory.getSubcategories() == null){
-            updatedCategory.setSubcategories(foundCategory.getSubcategories());
-        }
     }
 }

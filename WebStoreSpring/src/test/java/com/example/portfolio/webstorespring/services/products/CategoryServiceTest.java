@@ -7,7 +7,6 @@ import com.example.portfolio.webstorespring.model.dto.products.request.CategoryR
 import com.example.portfolio.webstorespring.model.dto.products.response.CategoryResponse;
 import com.example.portfolio.webstorespring.model.entity.products.Category;
 import com.example.portfolio.webstorespring.repositories.products.CategoryRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
@@ -17,6 +16,8 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,35 +34,32 @@ class CategoryServiceTest {
     @InjectMocks
     private CategoryService underTest;
 
-    private CategoryRequest categoryRequest;
-    private Category category;
-
-    @BeforeEach
-    void initialization() {
-        category = new Category();
-        category.setId(1L);
-        category.setName("CategoryTest");
-
-        categoryRequest = new CategoryRequest();
-        categoryRequest.setName("Test");
-    }
-
     @Test
-    void shouldGetAllCategoryDto() {
+    void shouldGetAllCategory() {
+        // given
+        List<Category> categories = Collections.singletonList(new Category());
+        List<CategoryResponse> exceptedResponses = Collections.singletonList(new CategoryResponse());
+
+        given(categoryRepository.findAll()).willReturn(categories);
+
         // when
-        underTest.getAllCategory();
+        List<CategoryResponse> foundCategoryResponses = underTest.getAllCategory();
+
         // then
+        assertThat(foundCategoryResponses).isEqualTo(exceptedResponses);
         verify(categoryRepository, times(1)).findAll();
         verifyNoMoreInteractions(categoryRepository);
+        verify(categoryMapper, times(1)).mapToDto(categories);
     }
 
     @Test
     void shouldGetCategoryById() {
         // given
+        Category category = createCategory();
         given(categoryRepository.findById(anyLong())).willReturn(Optional.of(category));
 
         // when
-        CategoryResponse foundCategory = underTest.getCategoryDtoById(category.getId());
+        CategoryResponse foundCategory = underTest.getCategoryById(category.getId());
 
         // then
         assertThat(foundCategory).isNotNull();
@@ -75,7 +73,7 @@ class CategoryServiceTest {
 
         // when
         // then
-        assertThatThrownBy(() -> underTest.getCategoryDtoById(2L))
+        assertThatThrownBy(() -> underTest.getCategoryById(2L))
                 .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessageContaining("Category with id 2 not found");
     }
@@ -83,6 +81,7 @@ class CategoryServiceTest {
     @Test
     void shouldSaveCategory() {
         // given
+        CategoryRequest categoryRequest = createCategoryRequest("Test");
         // when
         CategoryResponse savedCategoryResponse = underTest.saveCategory(categoryRequest);
 
@@ -100,6 +99,8 @@ class CategoryServiceTest {
     @Test
     void shouldUpdateCategory() {
         // given
+        Category category = createCategory();
+        CategoryRequest categoryRequest = createCategoryRequest("Test2");
         given(categoryRepository.findById(anyLong())).willReturn(Optional.of(category));
 
         // when
@@ -119,13 +120,27 @@ class CategoryServiceTest {
     @Test
     void shouldDeleteCategoryById() {
         // given
+        Category category = createCategory();
         given(categoryRepository.findById(anyLong())).willReturn(Optional.of(category));
 
         // when
-        underTest.deleteById(1L);
+        underTest.deleteCategoryById(1L);
 
         // then
         verify(categoryRepository, times(1)).findById(1L);
         verify(categoryRepository, times(1)).delete(category);
+    }
+
+    private Category createCategory() {
+        return Category.builder()
+                .id(1L)
+                .name("Test")
+                .build();
+    }
+
+    private CategoryRequest createCategoryRequest(String name) {
+        return CategoryRequest.builder()
+                .name(name)
+                .build();
     }
 }

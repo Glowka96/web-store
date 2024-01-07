@@ -1,9 +1,7 @@
 package com.example.portfolio.webstorespring.model.entity.products;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -13,7 +11,9 @@ import java.util.List;
 @Table(name = "category")
 @NamedEntityGraph(name = "category-with-subcategories-entity-graph",
         attributeNodes = @NamedAttributeNode("subcategories"))
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Category {
 
     @Id

@@ -21,8 +21,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ProductTypeServiceTest {
@@ -43,13 +42,13 @@ class ProductTypeServiceTest {
         given(productTypeRepository.findAll()).willReturn(productTypes);
 
         // when
-        List<ProductTypeResponse> result = underTest.getAllProductType();
+        List<ProductTypeResponse> foundProductTypeResponses = underTest.getAllProductType();
 
         // then
-        assertThat(result).isEqualTo(expectedResponses);
-        verify(productTypeRepository).findAll();
+        assertThat(foundProductTypeResponses).isEqualTo(expectedResponses);
+        verify(productTypeRepository, times(1)).findAll();
+        verifyNoMoreInteractions(productTypeRepository);
         verify(productTypeMapper).mapToDto(productTypes);
-        assertThat(expectedResponses).hasSameSizeAs(result);
     }
 
     @Test
@@ -109,9 +108,9 @@ class ProductTypeServiceTest {
         verify(productTypeRepository, times(1)).delete(foundProductType);
     }
 
-    private ProductTypeRequest createProductTypeRequest(String Test) {
+    private ProductTypeRequest createProductTypeRequest(String test) {
         return ProductTypeRequest.builder()
-                .name(Test)
+                .name(test)
                 .build();
     }
 
