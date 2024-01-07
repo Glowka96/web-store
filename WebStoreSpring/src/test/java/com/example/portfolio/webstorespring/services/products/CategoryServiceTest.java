@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static com.example.portfolio.webstorespring.buildhelpers.CategoryBuilderHelper.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
@@ -37,8 +38,8 @@ class CategoryServiceTest {
     @Test
     void shouldGetAllCategory() {
         // given
-        List<Category> categories = Collections.singletonList(new Category());
-        List<CategoryResponse> exceptedResponses = Collections.singletonList(new CategoryResponse());
+        List<Category> categories = Collections.singletonList(createCategory());
+        List<CategoryResponse> exceptedResponses = Collections.singletonList(createCategoryResponse());
 
         given(categoryRepository.findAll()).willReturn(categories);
 
@@ -129,18 +130,5 @@ class CategoryServiceTest {
         // then
         verify(categoryRepository, times(1)).findById(1L);
         verify(categoryRepository, times(1)).delete(category);
-    }
-
-    private Category createCategory() {
-        return Category.builder()
-                .id(1L)
-                .name("Test")
-                .build();
-    }
-
-    private CategoryRequest createCategoryRequest(String name) {
-        return CategoryRequest.builder()
-                .name(name)
-                .build();
     }
 }

@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Arrays;
 
+import static com.example.portfolio.webstorespring.buildhelpers.CategoryBuilderHelper.createCategoryResponse;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
@@ -36,23 +37,19 @@ class CategoryControllerTest {
     private MockMvc mvc;
     private ObjectMapper mapper;
     private final static String URI = "/api/v1";
-    private CategoryResponse categoryResponse;
 
     @BeforeEach
     public void initialization() {
         mvc = MockMvcBuilders.standaloneSetup(underTest).build();
 
         mapper = new ObjectMapper();
-
-        categoryResponse = new CategoryResponse();
-        categoryResponse.setName("Test");
-        categoryResponse.setId(1L);
     }
 
     @Test
     void shouldGetAllCategory() throws Exception {
         // given
-        given(categoryService.getAllCategory()).willReturn(Arrays.asList(categoryResponse, new CategoryResponse()));
+        CategoryResponse categoryResponse = createCategoryResponse();
+        given(categoryService.getAllCategory()).willReturn(Arrays.asList(categoryResponse, categoryResponse));
 
         // when
         // then
@@ -67,7 +64,8 @@ class CategoryControllerTest {
     @Test
     void shouldGetCategoryById() throws Exception {
         // given
-        given(categoryService.getCategoryDtoById(anyLong())).willReturn(categoryResponse);
+        CategoryResponse categoryResponse = createCategoryResponse();
+        given(categoryService.getCategoryById(anyLong())).willReturn(categoryResponse);
 
         // when
         // then
@@ -84,6 +82,7 @@ class CategoryControllerTest {
     @Test
     void shouldSaveCategory() throws Exception {
         // given
+        CategoryResponse categoryResponse = createCategoryResponse();
         given(categoryService.saveCategory(any(CategoryRequest.class))).willReturn(categoryResponse);
 
         // when
@@ -100,6 +99,7 @@ class CategoryControllerTest {
     @Test
     void shouldUpdateCategory() throws Exception {
         // given
+        CategoryResponse categoryResponse = createCategoryResponse();
         given(categoryService.updateCategory(anyLong(), any(CategoryRequest.class))).willReturn(categoryResponse);
 
         // when

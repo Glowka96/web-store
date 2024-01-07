@@ -46,11 +46,13 @@ public class SubcategoryService {
         Category foundCategory = findCategoryById(categoryId);
         Subcategory foundSubcategory = findSubcategoryById(subCategoryId);
 
-        Subcategory subCategory = subcategoryMapper.mapToEntity(subCategoryRequest);
-        setupUpdateSubcategory(foundCategory, foundSubcategory, subCategory);
+        Subcategory subcategory = subcategoryMapper.mapToEntity(subCategoryRequest);
 
-        subcategoryRepository.save(subCategory);
-        return subcategoryMapper.mapToDto(subCategory);
+        foundSubcategory.setName(subcategory.getName());
+        foundSubcategory.setCategory(foundCategory);
+
+        subcategoryRepository.save(subcategory);
+        return subcategoryMapper.mapToDto(subcategory);
     }
 
     public void deleteSubcategoryById(Long subCategoryId) {
@@ -66,18 +68,5 @@ public class SubcategoryService {
     private Category findCategoryById(Long id) {
         return categoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "id", id));
-    }
-
-    private void setupUpdateSubcategory(Category foundCategory,
-                                        Subcategory foundSubcategory,
-                                        Subcategory updatedSubcategory) {
-        updatedSubcategory.setId(foundSubcategory.getId());
-        updatedSubcategory.setCategory(foundCategory);
-        if (updatedSubcategory.getName() == null) {
-            updatedSubcategory.setName(foundSubcategory.getName());
-        }
-        if (updatedSubcategory.getProducts() == null) {
-            updatedSubcategory.setProducts(foundSubcategory.getProducts());
-        }
     }
 }
