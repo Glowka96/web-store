@@ -23,5 +23,5 @@ public class ProductType {
     private String name;
 
     @OneToMany(mappedBy = "type")
-    private List<Product> product;
+    private List<Product> products;
 }

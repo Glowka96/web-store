@@ -1,0 +1,124 @@
+package com.example.portfolio.webstorespring.services.products;
+
+import com.example.portfolio.webstorespring.mappers.ProductTypeMapper;
+import com.example.portfolio.webstorespring.model.dto.products.request.ProductTypeRequest;
+import com.example.portfolio.webstorespring.model.dto.products.response.ProductTypeResponse;
+import com.example.portfolio.webstorespring.model.entity.products.ProductType;
+import com.example.portfolio.webstorespring.repositories.products.ProductTypeRepository;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mapstruct.factory.Mappers;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Spy;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
+@ExtendWith(MockitoExtension.class)
+class ProductTypeServiceTest {
+
+    @Mock
+    private ProductTypeRepository productTypeRepository;
+    @Spy
+    private ProductTypeMapper productTypeMapper = Mappers.getMapper(ProductTypeMapper.class);
+    @InjectMocks
+    private ProductTypeService underTest;
+
+    @Test
+    void shouldGetAllProductTypes() {
+        // given
+        List<ProductType> productTypes = Collections.singletonList(new ProductType());
+        List<ProductTypeResponse> expectedResponses = Collections.singletonList(new ProductTypeResponse());
+
+        given(productTypeRepository.findAll()).willReturn(productTypes);
+
+        // when
+        List<ProductTypeResponse> result = underTest.getAllProductType();
+
+        // then
+        assertThat(result).isEqualTo(expectedResponses);
+        verify(productTypeRepository).findAll();
+        verify(productTypeMapper).mapToDto(productTypes);
+        assertThat(expectedResponses).hasSameSizeAs(result);
+    }
+
+    @Test
+    void shouldSaveProductType(){
+        // given
+        ProductTypeRequest productTypeRequest = createProductTypeRequest("Test");
+
+        // when
+        ProductTypeResponse result = underTest.saveProductType(productTypeRequest);
+
+        // then
+        ArgumentCaptor<ProductType> productTypeArgumentCaptor =
+                ArgumentCaptor.forClass(ProductType.class);
+        verify(productTypeRepository).save(productTypeArgumentCaptor.capture());
+
+        ProductType capturedProductType = productTypeArgumentCaptor.getValue();
+        ProductTypeResponse mappedProductTypeResponse = productTypeMapper.mapToDto(capturedProductType);
+
+        assertThat(result).isEqualTo(mappedProductTypeResponse);
+    }
+
+    @Test
+    void shouldUpdateProductType() {
+        // given
+        ProductTypeRequest productTypeRequest = createProductTypeRequest("Test2");
+
+        ProductType foundProductType = createFoundProductType();
+
+        given(productTypeRepository.findById(anyLong())).willReturn(Optional.of(foundProductType));
+
+        // when
+        ProductTypeResponse updatedProductTypeResponse = underTest.updateProductType(1L, productTypeRequest);
+
+        // then
+        ArgumentCaptor<ProductType> productTypeArgumentCaptor =
+                ArgumentCaptor.forClass(ProductType.class);
+        verify(productTypeRepository).save(productTypeArgumentCaptor.capture());
+
+        ProductType capturedProductType = productTypeArgumentCaptor.getValue();
+        ProductTypeResponse mappedProductType = productTypeMapper.mapToDto(capturedProductType);
+
+        assertThat(mappedProductType).isEqualTo(updatedProductTypeResponse);
+    }
+
+    @Test
+    void deleteProductTypeById() {
+        // given
+        ProductType foundProductType = createFoundProductType();
+
+        given(productTypeRepository.findById(anyLong())).willReturn(Optional.of(foundProductType));
+
+        // when
+        underTest.deleteProductTypeById(1L);
+
+        // then
+        verify(productTypeRepository, times(1)).findById(1L);
+        verify(productTypeRepository, times(1)).delete(foundProductType);
+    }
+
+    private ProductTypeRequest createProductTypeRequest(String Test) {
+        return ProductTypeRequest.builder()
+                .name(Test)
+                .build();
+    }
+
+    private ProductType createFoundProductType() {
+        return ProductType.builder()
+                .id(1L)
+                .name("Test")
+                .build();
+    }
+}
