@@ -1,13 +1,19 @@
 package com.example.portfolio.webstorespring.model.dto.products.request;
 
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductPricePromotionRequest {
 
     @NotNull(message = "The product id can't be null")
