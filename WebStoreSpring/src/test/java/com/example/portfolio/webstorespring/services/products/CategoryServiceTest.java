@@ -82,7 +82,7 @@ class CategoryServiceTest {
     @Test
     void shouldSaveCategory() {
         // given
-        CategoryRequest categoryRequest = createCategoryRequest("Test");
+        CategoryRequest categoryRequest = createCategoryRequest();
         // when
         CategoryResponse savedCategoryResponse = underTest.saveCategory(categoryRequest);
 
@@ -101,6 +101,7 @@ class CategoryServiceTest {
     void shouldUpdateCategory() {
         // given
         Category category = createCategory();
+        String categoryName = category.getName();
         CategoryRequest categoryRequest = createCategoryRequest("Test2");
         given(categoryRepository.findById(anyLong())).willReturn(Optional.of(category));
 
@@ -116,6 +117,7 @@ class CategoryServiceTest {
         CategoryResponse mappedCategoryResponse = categoryMapper.mapToDto(capturedCategory);
 
         assertThat(mappedCategoryResponse).isEqualTo(updatedCategoryResponse);
+        assertThat(updatedCategoryResponse.getName()).isNotEqualTo(categoryName);
     }
 
     @Test

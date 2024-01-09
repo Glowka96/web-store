@@ -13,6 +13,12 @@ public class CategoryBuilderHelper {
                 .build();
     }
 
+    public static CategoryRequest createCategoryRequest() {
+        return CategoryRequest.builder()
+                .name("Test")
+                .build();
+    }
+
     public static CategoryRequest createCategoryRequest(String name) {
         return CategoryRequest.builder()
                 .name(name)
