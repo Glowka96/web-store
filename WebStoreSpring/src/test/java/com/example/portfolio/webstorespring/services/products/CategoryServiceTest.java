@@ -83,6 +83,7 @@ class CategoryServiceTest {
     void shouldSaveCategory() {
         // given
         CategoryRequest categoryRequest = createCategoryRequest();
+
         // when
         CategoryResponse savedCategoryResponse = underTest.saveCategory(categoryRequest);
 
@@ -92,7 +93,8 @@ class CategoryServiceTest {
         verify(categoryRepository).save(categoryArgumentCaptor.capture());
 
         Category capturedCategory = categoryArgumentCaptor.getValue();
-        CategoryResponse mappedCategoryResponse = categoryMapper.mapToDto(capturedCategory);
+        CategoryResponse mappedCategoryResponse =
+                categoryMapper.mapToDto(capturedCategory);
 
         assertThat(mappedCategoryResponse).isEqualTo(savedCategoryResponse);
     }
@@ -113,8 +115,8 @@ class CategoryServiceTest {
                 ArgumentCaptor.forClass(Category.class);
         verify(categoryRepository).save(categoryArgumentCaptor.capture());
 
-        Category capturedCategory = categoryArgumentCaptor.getValue();
-        CategoryResponse mappedCategoryResponse = categoryMapper.mapToDto(capturedCategory);
+        CategoryResponse mappedCategoryResponse =
+                categoryMapper.mapToDto(categoryArgumentCaptor.getValue());
 
         assertThat(mappedCategoryResponse).isEqualTo(updatedCategoryResponse);
         assertThat(updatedCategoryResponse.getName()).isNotEqualTo(categoryName);

@@ -80,8 +80,8 @@ class SubcategoryServiceTest {
                 ArgumentCaptor.forClass(Subcategory.class);
         verify(subcategoryRepository).save(subcategoryArgumentCaptor.capture());
 
-        Subcategory capturedSubcategory = subcategoryArgumentCaptor.getValue();
-        SubcategoryResponse mappedSubCategory = subCategoryMapper.mapToDto(capturedSubcategory);
+        SubcategoryResponse mappedSubCategory =
+                subCategoryMapper.mapToDto(subcategoryArgumentCaptor.getValue());
 
         assertThat(savedSubcategoryResponse).isEqualTo(mappedSubCategory);
     }
@@ -117,8 +117,8 @@ class SubcategoryServiceTest {
                 ArgumentCaptor.forClass(Subcategory.class);
         verify(subcategoryRepository).save(subCategoryArgumentCaptor.capture());
 
-        Subcategory capturedSubcategory = subCategoryArgumentCaptor.getValue();
-        SubcategoryResponse mappedSubcategoryRequest = subCategoryMapper.mapToDto(capturedSubcategory);
+        SubcategoryResponse mappedSubcategoryRequest =
+                subCategoryMapper.mapToDto(subCategoryArgumentCaptor.getValue());
 
         assertThat(updatedSubcategoryRequest).isEqualTo(mappedSubcategoryRequest);
         assertThat(updatedSubcategoryRequest.getName()).isNotEqualTo(subcategoryName);
