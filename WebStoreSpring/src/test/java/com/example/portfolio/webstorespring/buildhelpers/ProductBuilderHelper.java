@@ -25,6 +25,16 @@ public class ProductBuilderHelper {
                 .build();
     }
 
+    public static ProductRequest createProductRequest() {
+        return ProductRequest.builder()
+                .name("Test")
+                .description("Test description")
+                .price(BigDecimal.valueOf(20.0))
+                .quantity(10L)
+                .imageUrl(IMAGE_URL)
+                .build();
+    }
+
     public static ProductRequest createProductRequest(String name, String description, BigDecimal price, Long quantity) {
         return ProductRequest.builder()
                 .name(name)

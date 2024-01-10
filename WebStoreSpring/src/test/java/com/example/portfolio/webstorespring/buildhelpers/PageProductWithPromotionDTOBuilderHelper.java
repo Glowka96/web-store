@@ -14,7 +14,7 @@ import static com.example.portfolio.webstorespring.buildhelpers.ProductWithPromo
 public class PageProductWithPromotionDTOBuilderHelper {
 
     public static PageProductsWithPromotionDTO createPageProductsWithPromotionDTO() {
-        ProductWithPromotionDTO productWithPromotionDTO = createProductWithPromotionDTO;
+        ProductWithPromotionDTO productWithPromotionDTO = createProductWithPromotionDTO();
 
         List<String> sortByList = getEnumTypes(SortByType.class);
         List<String> sortDirectionList = getEnumTypes(SortDirectionType.class);

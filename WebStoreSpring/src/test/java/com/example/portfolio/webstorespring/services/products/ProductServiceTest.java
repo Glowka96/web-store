@@ -1,15 +1,14 @@
 package com.example.portfolio.webstorespring.services.products;
 
+import com.example.portfolio.webstorespring.buildhelpers.ProductBuilderHelper;
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.ProductMapper;
 import com.example.portfolio.webstorespring.mappers.ProductTypeMapper;
 import com.example.portfolio.webstorespring.model.dto.products.ProductWithProducerAndPromotionDTO;
 import com.example.portfolio.webstorespring.model.dto.products.request.ProductRequest;
-import com.example.portfolio.webstorespring.model.dto.products.request.ProductTypeRequest;
 import com.example.portfolio.webstorespring.model.dto.products.response.ProductResponse;
 import com.example.portfolio.webstorespring.model.entity.products.Producer;
 import com.example.portfolio.webstorespring.model.entity.products.Product;
-import com.example.portfolio.webstorespring.model.entity.products.ProductType;
 import com.example.portfolio.webstorespring.model.entity.products.Subcategory;
 import com.example.portfolio.webstorespring.repositories.products.ProducerRepository;
 import com.example.portfolio.webstorespring.repositories.products.ProductRepository;
@@ -26,13 +25,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.math.BigDecimal;
-import java.time.Clock;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.Date;
 import java.util.Optional;
 
+import static com.example.portfolio.webstorespring.buildhelpers.ProducerBuilderHelper.createProducer;
+import static com.example.portfolio.webstorespring.buildhelpers.ProductBuilderHelper.createProduct;
+import static com.example.portfolio.webstorespring.buildhelpers.ProductBuilderHelper.createProductRequest;
+import static com.example.portfolio.webstorespring.buildhelpers.ProductWithProducerAndPromotionDTOBuilderHelper.createNullProductWithProducerAndPromotionDTO;
+import static com.example.portfolio.webstorespring.buildhelpers.ProductWithProducerAndPromotionDTOBuilderHelper.createProductWithProducerAndPromotionDTO;
+import static com.example.portfolio.webstorespring.buildhelpers.SubcategoryBuilderHelper.createSubcategory;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -50,108 +50,34 @@ class ProductServiceTest {
     private SubcategoryRepository subcategoryRepository;
     @Mock
     private ProducerRepository producerRepository;
-    @Mock
-    private Clock clock;
     @InjectMocks
     private ProductService underTest;
-
-    private Product product;
-    private ProductRequest productRequest;
-    private Subcategory subcategory;
-    private Producer producer;
-    private final ZonedDateTime zonedDateTime = ZonedDateTime.of(
-            2023,
-            3,
-            9,
-            12,
-            30,
-            30,
-            0,
-            ZoneId.of("GMT")
-    );
 
     @BeforeEach
     void initialization() {
         ProductTypeMapper productTypeMapper = Mappers.getMapper(ProductTypeMapper.class);
         ReflectionTestUtils.setField(productMapper, "productTypeMapper", productTypeMapper);
-
-        subcategory = Subcategory.builder()
-                .id(1L)
-                .build();
-        subcategory.setId(1L);
-
-        producer = Producer.builder()
-                .id(1L)
-                .build();
-
-        ProductType productType = ProductType.builder()
-                .name("Test")
-                .build();
-
-        product = Product.builder()
-                .id(1L)
-                .name("Test")
-                .price(BigDecimal.valueOf(29.99))
-                .description("This is description")
-                .subcategory(subcategory)
-                .producer(producer)
-                .type(productType)
-                .build();
-
-        ProductTypeRequest productTypeRequest = ProductTypeRequest
-                .builder()
-                .name("test")
-                .build();
-
-        productRequest = ProductRequest.builder()
-                .name("Test")
-                .price(BigDecimal.valueOf(29.99))
-                .description("This is description")
-                .type(productTypeRequest)
-                .build();
     }
 
     @Test
     void shouldGetProductById() {
         // given
-        when(clock.getZone()).thenReturn(zonedDateTime.getZone());
-        when(clock.instant()).thenReturn(zonedDateTime.toInstant());
-
-        ProductWithProducerAndPromotionDTO productDTO = new ProductWithProducerAndPromotionDTO(1L,
-                "Test",
-                "test.pl/test.png",
-                1L, "Test",
-                BigDecimal.valueOf(100L),
-                BigDecimal.valueOf(90L),
-                BigDecimal.valueOf(70L),
-                Date.from(LocalDateTime.now(clock).plusDays(15).atZone(ZoneId.systemDefault()).toInstant()),
-                "Test description",
-                "Test producer");
-
-        given(productRepository.findProductById(anyLong(), any())).willReturn(productDTO);
+        ProductWithProducerAndPromotionDTO productWithProducerAndPromotionDTO = createProductWithProducerAndPromotionDTO();
+        given(productRepository.findProductById(anyLong(), any())).willReturn(productWithProducerAndPromotionDTO);
 
         // when
         ProductWithProducerAndPromotionDTO result = underTest.getProductById(1L);
 
         // then
-        assertThat(result).isNotNull().isEqualTo(productDTO);
+        assertThat(result).isNotNull().isEqualTo(productWithProducerAndPromotionDTO);
     }
 
     @Test
     void willThrowWhenProductIdNotFound() {
         // given
-        given(productRepository.findProductById(anyLong(), any())).willReturn(new ProductWithProducerAndPromotionDTO(null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null));
+        ProductWithProducerAndPromotionDTO productWithProducerAndPromotionDTO = createNullProductWithProducerAndPromotionDTO();
 
+        given(productRepository.findProductById(anyLong(), any())).willReturn(productWithProducerAndPromotionDTO);
         // when
         // then
         assertThrows(ResourceNotFoundException.class, () -> underTest.getProductById(1L));
@@ -170,6 +96,10 @@ class ProductServiceTest {
     @Test
     void shouldSaveProduct() {
         // given
+        Producer producer = createProducer();
+        Subcategory subcategory = createSubcategory();
+        ProductRequest productRequest = createProductRequest();
+
         given(producerRepository.findById(anyLong())).willReturn(Optional.of(producer));
         given(subcategoryRepository.findById(anyLong())).willReturn(Optional.of(subcategory));
 
@@ -190,6 +120,8 @@ class ProductServiceTest {
     @Test
     void willThrowWhenSubCategoryIdNotFound() {
         // given
+        ProductRequest productRequest = createProductRequest();
+
         given(subcategoryRepository.findById(anyLong())).willReturn(Optional.empty());
 
         // when
@@ -202,6 +134,9 @@ class ProductServiceTest {
     @Test
     void willThrowWhenProducerIdNotFound() {
         // given
+        Subcategory subcategory = createSubcategory();
+        ProductRequest productRequest = createProductRequest();
+
         given(subcategoryRepository.findById(anyLong())).willReturn(Optional.of(subcategory));
         given(producerRepository.findById(anyLong())).willReturn(Optional.empty());
 
@@ -215,9 +150,21 @@ class ProductServiceTest {
     @Test
     void shouldUpdateProduct() {
         // given
-        productRequest.setName("New name");
-        productRequest.setDescription("New description");
-        productRequest.setPrice(BigDecimal.valueOf(10.00));
+        ProductRequest productRequest = ProductBuilderHelper.createProductRequest(
+                "Test 2",
+                "Test description 2",
+                BigDecimal.valueOf(11.0),
+                8L
+        );
+
+        Subcategory subcategory = createSubcategory();
+        Producer producer = createProducer();
+        Product product = createProduct();
+
+        String name = product.getName();
+        String description = product.getDescription();
+        BigDecimal price = product.getPrice();
+        Long quantity = product.getQuantity();
 
         given(subcategoryRepository.findById(anyLong())).willReturn(Optional.of(subcategory));
         given(producerRepository.findById(anyLong())).willReturn(Optional.of(producer));
@@ -231,15 +178,20 @@ class ProductServiceTest {
                 ArgumentCaptor.forClass(Product.class);
         verify(productRepository).save(productArgumentCaptor.capture());
 
-        Product capturedProduct = productArgumentCaptor.getValue();
-        ProductResponse mappedProductRequest = productMapper.mapToDto(capturedProduct);
+        ProductResponse mappedProductRequest =
+                productMapper.mapToDto(productArgumentCaptor.getValue());
 
         assertThat(mappedProductRequest).isEqualTo(updatedProductResponse);
+        assertThat(updatedProductResponse.getName()).isNotEqualTo(name);
+        assertThat(updatedProductResponse.getDescription()).isNotEqualTo(description);
+        assertThat(updatedProductResponse.getPrice()).isNotEqualTo(price);
+        assertThat(updatedProductResponse.getQuantity()).isNotEqualTo(quantity);
     }
 
     @Test
     void shouldDeleteById() {
         // given
+        Product product = createProduct();
         given(productRepository.findById(1L)).willReturn(Optional.of(product));
 
         // when
