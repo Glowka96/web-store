@@ -1,6 +1,5 @@
 package com.example.portfolio.webstorespring.controllers.products;
 
-import com.example.portfolio.webstorespring.enums.ProductType;
 import com.example.portfolio.webstorespring.model.dto.products.request.ProductRequest;
 import com.example.portfolio.webstorespring.model.dto.products.response.ProductResponse;
 import com.example.portfolio.webstorespring.services.products.ProductService;
@@ -15,11 +14,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+import static com.example.portfolio.webstorespring.buildhelpers.ProductBuilderHelper.createProductRequest;
+import static com.example.portfolio.webstorespring.buildhelpers.ProductBuilderHelper.createProductResponse;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
@@ -37,42 +35,21 @@ class ProductControllerTest {
     private ProductService productService;
     @InjectMocks
     private ProductController underTest;
-
     private MockMvc mvc;
     private ObjectMapper mapper;
     private static final String URI = "/api/v1";
-    private ProductResponse productResponse;
-    private List<ProductResponse> productResponses;
-
 
     @BeforeEach
     void initialization() {
         mvc = MockMvcBuilders.standaloneSetup(underTest).build();
-
         mapper = new ObjectMapper();
-
-        productResponse = new ProductResponse();
-        productResponse.setId(1L);
-        productResponse.setName("Test");
-        productResponse.setPrice(BigDecimal.valueOf(20.0));
-        productResponse.setDescription("Description test");
-        productResponse.setImageUrl("https://i.imgur.com/a23SANX.png");
-        productResponse.setType(ProductType.PUZZLE);
-
-        productResponses = new ArrayList<>(Arrays.asList(productResponse, new ProductResponse(), new ProductResponse()));
     }
 
-
-    @Test
-    void shouldGetAllProductTypes() throws Exception {
-        mvc.perform(get(URI  + "/admin/products/types")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(ProductType.values().length)))
-                .andDo(print());
-    }
     @Test
     void shouldGetAllProducts() throws Exception {
+        ProductResponse productResponse = createProductResponse();
+        List<ProductResponse> productResponses = List.of(productResponse,productResponse,productResponse);
+
         given(productService.getAllProducts()).willReturn(productResponses);
 
         mvc.perform(get(URI + "/admin/products")
@@ -81,53 +58,43 @@ class ProductControllerTest {
                 .andExpect(jsonPath("$", hasSize(3)))
                 .andDo(print());
     }
-//
-//    @Test
-//    void shouldGetAllProductsBySubCategoryIdPagination() throws Exception {
-//        given(productService.getPageProductsBySubcategoryId(anyLong(), anyInt(), anyInt(), anyString()))
-//                .willReturn(productResponses);
-//
-//        mvc.perform(get(URI + "/subcategories/{subcategoryId}/products", 1)
-//                        .param("page", "0")
-//                        .param("size", "3")
-//                        .param("sort", "price")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .accept(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$", hasSize(3)))
-//                .andDo(print());
-//    }
 
     @Test
     void shouldSaveProduct() throws Exception {
+        ProductResponse productResponse = createProductResponse();
+        ProductRequest productRequest = createProductRequest();
+
         given(productService.saveProduct(anyLong(), anyLong(), any(ProductRequest.class)))
                 .willReturn(productResponse);
 
         mvc.perform(post(URI + "/admin/subcategories/{subcategoryId}/producers/{producerId}/products", 1, 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(productResponse)))
+                        .content(mapper.writeValueAsString(productRequest)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.name", is("Test")))
-                .andExpect(jsonPath("$.description", is("Description test")))
+                .andExpect(jsonPath("$.description", is("Test description")))
                 .andExpect(jsonPath("$.price", is(20.0)))
                 .andDo(print());
     }
 
     @Test
     void shouldUpdateProduct() throws Exception {
+        ProductResponse productResponse = createProductResponse();
+        ProductRequest productRequest = createProductRequest();
+
         given(productService.updateProduct(anyLong(), anyLong(), anyLong(), any(ProductRequest.class)))
                 .willReturn(productResponse);
 
         mvc.perform(put(URI + "/admin/subcategories/{subcategoryId}/producers/{producerId}/products/{productId}", 1, 1, 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(productResponse)))
+                        .content(mapper.writeValueAsString(productRequest)))
                 .andExpect(status().isAccepted())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.name", is("Test")))
-                .andExpect(jsonPath("$.description", is("Description test")))
+                .andExpect(jsonPath("$.description", is("Test description")))
                 .andExpect(jsonPath("$.price", is(20.0)))
                 .andDo(print());
     }

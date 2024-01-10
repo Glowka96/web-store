@@ -14,8 +14,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.Arrays;
+import java.util.List;
 
+import static com.example.portfolio.webstorespring.buildhelpers.SubcategoryBuilderHelper.createSubcategoryRequest;
+import static com.example.portfolio.webstorespring.buildhelpers.SubcategoryBuilderHelper.createSubcategoryResponse;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
@@ -32,26 +34,22 @@ class SubcategoryControllerTest {
     @InjectMocks
     private SubcategoryController underTest;
     @Mock
-    private SubcategoryService subCategoryService;
+    private SubcategoryService subcategoryService;
     private MockMvc mvc;
     private ObjectMapper mapper;
     private final static String URI = "/api/v1";
-    private SubcategoryResponse subcategoryResponse;
 
     @BeforeEach
     void initialization() {
         mvc = MockMvcBuilders.standaloneSetup(underTest).build();
-
         mapper = new ObjectMapper();
-
-        subcategoryResponse = new SubcategoryResponse();
-        subcategoryResponse.setId(1L);
-        subcategoryResponse.setName("Test");
     }
 
     @Test
     void shouldGetAllSubcategory() throws Exception {
-        given(subCategoryService.getAllSubcategory()).willReturn(Arrays.asList(subcategoryResponse, subcategoryResponse));
+        SubcategoryResponse subcategoryResponse = createSubcategoryResponse();
+
+        given(subcategoryService.getAllSubcategory()).willReturn(List.of(subcategoryResponse, subcategoryResponse));
 
         mvc.perform(get(URI + "/categories/subcategories")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -61,16 +59,18 @@ class SubcategoryControllerTest {
     }
 
     @Test
-    void shouldGetSubCategoryByName() throws Exception {
+    void shouldGetSubcategoryByName() throws Exception {
         // given
-        given(subCategoryService.getSubcategoryDtoById(anyLong())).willReturn(subcategoryResponse);
+        SubcategoryResponse subcategoryResponse = createSubcategoryResponse();
+        SubcategoryRequest subcategoryRequest = createSubcategoryRequest();
+
+        given(subcategoryService.getSubcategoryDtoById(anyLong())).willReturn(subcategoryResponse);
 
         // when
         // then
         mvc.perform(get(URI + "/categories/subcategories/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(subcategoryResponse)))
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", is("Test")))
                 .andDo(print());
@@ -78,16 +78,19 @@ class SubcategoryControllerTest {
 
 
     @Test
-    void shouldSaveSubCategory() throws Exception {
+    void shouldSaveSubcategory() throws Exception {
         // given
-        given(subCategoryService.saveSubcategory(anyLong(), any(SubcategoryRequest.class))).willReturn(subcategoryResponse);
+        SubcategoryResponse subcategoryResponse = createSubcategoryResponse();
+        SubcategoryRequest subcategoryRequest = createSubcategoryRequest();
+
+        given(subcategoryService.saveSubcategory(anyLong(), any(SubcategoryRequest.class))).willReturn(subcategoryResponse);
 
         // when
         // then
         mvc.perform(post(URI + "/admin/categories/{id}/subcategories", 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(subcategoryResponse)))
+                        .content(mapper.writeValueAsString(subcategoryRequest)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.name", is("Test")))
@@ -95,16 +98,19 @@ class SubcategoryControllerTest {
     }
 
     @Test
-    void shouldUpdateSubCategory() throws Exception {
+    void shouldUpdateSubcategory() throws Exception {
         // given
-        given(subCategoryService.updateSubcategory(anyLong(), anyLong(), any(SubcategoryRequest.class))).willReturn(subcategoryResponse);
+        SubcategoryResponse subcategoryResponse = createSubcategoryResponse();
+        SubcategoryRequest subcategoryRequest = createSubcategoryRequest();
+
+        given(subcategoryService.updateSubcategory(anyLong(), anyLong(), any(SubcategoryRequest.class))).willReturn(subcategoryResponse);
 
         // when
         // then
         mvc.perform(put(URI + "/admin/categories/{categoryId}/subcategories/{subcategoryId}", 1, 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(subcategoryResponse)))
+                        .content(mapper.writeValueAsString(subcategoryRequest)))
                 .andExpect(status().isAccepted())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.name", is("Test")))
@@ -112,7 +118,7 @@ class SubcategoryControllerTest {
     }
 
     @Test
-    void shouldDeleteSubCategoryByName() throws Exception {
+    void shouldDeleteSubcategoryByName() throws Exception {
         mvc.perform(delete(URI + "/admin/categories/subcategories/{subcategoryId}", 1L))
                 .andExpect(status().isNoContent())
                 .andDo(print());

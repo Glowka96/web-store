@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Arrays;
 
+import static com.example.portfolio.webstorespring.buildhelpers.CategoryBuilderHelper.createCategoryRequest;
 import static com.example.portfolio.webstorespring.buildhelpers.CategoryBuilderHelper.createCategoryResponse;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
@@ -83,6 +84,8 @@ class CategoryControllerTest {
     void shouldSaveCategory() throws Exception {
         // given
         CategoryResponse categoryResponse = createCategoryResponse();
+        CategoryRequest categoryRequest = createCategoryRequest();
+
         given(categoryService.saveCategory(any(CategoryRequest.class))).willReturn(categoryResponse);
 
         // when
@@ -90,7 +93,7 @@ class CategoryControllerTest {
         mvc.perform(post(URI + "/admin/categories")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(categoryResponse)))
+                        .content(mapper.writeValueAsString(categoryRequest)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.name", is("Test")))
                 .andDo(print());
@@ -100,6 +103,8 @@ class CategoryControllerTest {
     void shouldUpdateCategory() throws Exception {
         // given
         CategoryResponse categoryResponse = createCategoryResponse();
+        CategoryRequest categoryRequest = createCategoryRequest();
+
         given(categoryService.updateCategory(anyLong(), any(CategoryRequest.class))).willReturn(categoryResponse);
 
         // when
@@ -107,7 +112,7 @@ class CategoryControllerTest {
         mvc.perform(put(URI + "/admin/categories/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(categoryResponse)))
+                        .content(mapper.writeValueAsString(categoryRequest)))
                 .andExpect(status().isAccepted())
                 .andExpect(jsonPath("$.name", is("Test")))
                 .andExpect(jsonPath("$.id", is(1)))

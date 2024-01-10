@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.List;
 
+import static com.example.portfolio.webstorespring.buildhelpers.ProducerBuilderHelper.createProducerResponse;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
@@ -36,21 +37,17 @@ class ProducerControllerTest {
     private MockMvc mvc;
     private ObjectMapper mapper;
     private static final String URI = "/api/v1/admin/producers";
-    private ProducerResponse producerResponse;
 
     @BeforeEach
     void initialization() {
         mvc = MockMvcBuilders.standaloneSetup(underTest).build();
-
         mapper = new ObjectMapper();
-
-        producerResponse = new ProducerResponse();
-        producerResponse.setId(1L);
-        producerResponse.setName("Test");
     }
 
     @Test
     void shouldGetAllProducer() throws Exception {
+        ProducerResponse producerResponse = createProducerResponse();
+
         given(producerService.getAllProducer()).willReturn(List.of(producerResponse, new ProducerResponse()));
 
         mvc.perform(get(URI)
@@ -63,6 +60,8 @@ class ProducerControllerTest {
 
     @Test
     void shouldSaveProducer() throws Exception {
+        ProducerResponse producerResponse = createProducerResponse();
+
         given(producerService.saveProducer(any(ProducerRequest.class))).willReturn(producerResponse);
 
         mvc.perform(post(URI)
@@ -77,6 +76,8 @@ class ProducerControllerTest {
 
     @Test
     void shouldUpdateProducer() throws Exception {
+        ProducerResponse producerResponse = createProducerResponse();
+
         given(producerService.updateProducer(anyLong(), any(ProducerRequest.class))).willReturn(producerResponse);
 
         mvc.perform(put(URI + "/{id}", 1)
