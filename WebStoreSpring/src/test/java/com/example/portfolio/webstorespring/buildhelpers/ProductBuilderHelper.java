@@ -6,18 +6,11 @@ import com.example.portfolio.webstorespring.model.entity.products.Product;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
+
+import static com.example.portfolio.webstorespring.buildhelpers.DateForTestBuilderHelper.DATE_OF_CREATED;
 
 public class ProductBuilderHelper {
 
-    private static final LocalDateTime DATE_OF_CREATED = LocalDateTime.of(
-            2024,
-            1,
-            10,
-            20,
-            20,
-            0,
-            0);
     private static final String IMAGE_URL = "https://imagetest.pl/image.jpg";
 
     public static Product createProduct() {

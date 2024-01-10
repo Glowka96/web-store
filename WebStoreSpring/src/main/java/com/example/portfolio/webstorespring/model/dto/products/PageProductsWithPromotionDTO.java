@@ -8,5 +8,5 @@ public record PageProductsWithPromotionDTO(
         Integer totalPages,
         List<String> sortByTypes,
         List<String> sortDirectionTypes,
-        List<ProductWithPromotionAndLowestPriceDTO> products) implements Serializable {
+        List<ProductWithPromotionDTO> products) implements Serializable {
 }

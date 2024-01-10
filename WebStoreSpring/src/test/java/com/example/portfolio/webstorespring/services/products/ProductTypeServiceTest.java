@@ -18,6 +18,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static com.example.portfolio.webstorespring.buildhelpers.ProductTypeBuilderHelper.createProductType;
+import static com.example.portfolio.webstorespring.buildhelpers.ProductTypeBuilderHelper.createProductTypeRequest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
@@ -54,7 +56,7 @@ class ProductTypeServiceTest {
     @Test
     void shouldSaveProductType(){
         // given
-        ProductTypeRequest productTypeRequest = createProductTypeRequest("Test");
+        ProductTypeRequest productTypeRequest = createProductTypeRequest();
 
         // when
         ProductTypeResponse result = underTest.saveProductType(productTypeRequest);
@@ -73,11 +75,11 @@ class ProductTypeServiceTest {
     @Test
     void shouldUpdateProductType() {
         // given
+        ProductType productType = createProductType();
+        String productTypeName = productType.getName();
         ProductTypeRequest productTypeRequest = createProductTypeRequest("Test2");
 
-        ProductType foundProductType = createFoundProductType();
-
-        given(productTypeRepository.findById(anyLong())).willReturn(Optional.of(foundProductType));
+        given(productTypeRepository.findById(anyLong())).willReturn(Optional.of(productType));
 
         // when
         ProductTypeResponse updatedProductTypeResponse = underTest.updateProductType(1L, productTypeRequest);
@@ -87,16 +89,17 @@ class ProductTypeServiceTest {
                 ArgumentCaptor.forClass(ProductType.class);
         verify(productTypeRepository).save(productTypeArgumentCaptor.capture());
 
-        ProductType capturedProductType = productTypeArgumentCaptor.getValue();
-        ProductTypeResponse mappedProductType = productTypeMapper.mapToDto(capturedProductType);
+        ProductTypeResponse mappedProductType =
+                productTypeMapper.mapToDto(productTypeArgumentCaptor.getValue());
 
         assertThat(mappedProductType).isEqualTo(updatedProductTypeResponse);
+        assertThat(updatedProductTypeResponse.getName()).isNotEqualTo(productTypeName);
     }
 
     @Test
     void deleteProductTypeById() {
         // given
-        ProductType foundProductType = createFoundProductType();
+        ProductType foundProductType = createProductType();
 
         given(productTypeRepository.findById(anyLong())).willReturn(Optional.of(foundProductType));
 
@@ -106,18 +109,5 @@ class ProductTypeServiceTest {
         // then
         verify(productTypeRepository, times(1)).findById(1L);
         verify(productTypeRepository, times(1)).delete(foundProductType);
-    }
-
-    private ProductTypeRequest createProductTypeRequest(String test) {
-        return ProductTypeRequest.builder()
-                .name(test)
-                .build();
-    }
-
-    private ProductType createFoundProductType() {
-        return ProductType.builder()
-                .id(1L)
-                .name("Test")
-                .build();
     }
 }

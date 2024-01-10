@@ -5,18 +5,10 @@ import com.example.portfolio.webstorespring.model.entity.products.ProductPricePr
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
+
+import static com.example.portfolio.webstorespring.buildhelpers.DateForTestBuilderHelper.DATE_OF_CREATED;
 
 public class ProductPricePromotionBuilderHelper {
-
-    private static final LocalDateTime DATE_OF_CREATED = LocalDateTime.of(
-            2024,
-            1,
-            10,
-            20,
-            20,
-            0,
-            0);
 
     public static ProductPricePromotion createProductPricePromotion() {
         return ProductPricePromotion.builder()

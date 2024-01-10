@@ -3,7 +3,7 @@ package com.example.portfolio.webstorespring.services.products;
 import com.example.portfolio.webstorespring.enums.SortByType;
 import com.example.portfolio.webstorespring.enums.SortDirectionType;
 import com.example.portfolio.webstorespring.model.dto.products.PageProductsWithPromotionDTO;
-import com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionAndLowestPriceDTO;
+import com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionDTO;
 import com.example.portfolio.webstorespring.repositories.products.ProductRepository;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
@@ -29,13 +29,13 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class ProductPageServiceTest {
+class ProductsPageServiceTest {
     @Mock
     private ProductRepository productRepository;
     @Mock
     private Clock clock;
     @InjectMocks
-    private ProductPageService underTest;
+    private ProductsPageService underTest;
 
     private final ZonedDateTime zonedDateTime = ZonedDateTime.of(
             2023,
@@ -52,8 +52,8 @@ class ProductPageServiceTest {
     void shouldGetPageProductsBySubCategoryId() {
         // given
         Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Direction.ASC, "id"));
-        List<ProductWithPromotionAndLowestPriceDTO> productList = List.of(getProductDTO(), getProductDTO(), getProductDTO());
-        Page<ProductWithPromotionAndLowestPriceDTO> productPage = new PageImpl<>(productList, pageable, productList.size());
+        List<ProductWithPromotionDTO> productList = List.of(getProductDTO(), getProductDTO(), getProductDTO());
+        Page<ProductWithPromotionDTO> productPage = new PageImpl<>(productList, pageable, productList.size());
 
         given(productRepository.findProductsBySubcategory_Id(anyLong(), any(), any())).willReturn(Optional.of(productPage));
 
@@ -70,8 +70,8 @@ class ProductPageServiceTest {
     void shouldGetPageProductsBySubCategoryIdReturnTwoTotalPages() {
         // given
         Pageable pageable = PageRequest.of(0, 2, Sort.by(Sort.Direction.ASC, "id"));
-        List<ProductWithPromotionAndLowestPriceDTO> productList = List.of(getProductDTO(), getProductDTO(), getProductDTO());
-        Page<ProductWithPromotionAndLowestPriceDTO> productPage = new PageImpl<>(productList, pageable, productList.size());
+        List<ProductWithPromotionDTO> productList = List.of(getProductDTO(), getProductDTO(), getProductDTO());
+        Page<ProductWithPromotionDTO> productPage = new PageImpl<>(productList, pageable, productList.size());
 
         given(productRepository.findProductsBySubcategory_Id(anyLong(), any(), any())).willReturn(Optional.of(productPage));
 
@@ -88,8 +88,8 @@ class ProductPageServiceTest {
     void shouldGetPageNewProducts() {
         // given
         Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Direction.ASC, "id"));
-        List<ProductWithPromotionAndLowestPriceDTO> productList = List.of(getProductDTO(), getProductDTO(), getProductDTO());
-        Page<ProductWithPromotionAndLowestPriceDTO> productPage = new PageImpl<>(productList, pageable, productList.size());
+        List<ProductWithPromotionDTO> productList = List.of(getProductDTO(), getProductDTO(), getProductDTO());
+        Page<ProductWithPromotionDTO> productPage = new PageImpl<>(productList, pageable, productList.size());
 
         given(productRepository.findNewProducts(any(), any())).willReturn(Optional.of(productPage));
 
@@ -105,7 +105,7 @@ class ProductPageServiceTest {
     @Test
     void shouldGetEmptyPageWhenNoHaveNewProduct() {
         Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Direction.ASC, "id"));
-        Page<ProductWithPromotionAndLowestPriceDTO> productPage = new PageImpl<>(new ArrayList<>(), pageable, 0);
+        Page<ProductWithPromotionDTO> productPage = new PageImpl<>(new ArrayList<>(), pageable, 0);
 
         given(productRepository.findNewProducts(any(), any())).willReturn(Optional.of(productPage));
 
@@ -122,8 +122,8 @@ class ProductPageServiceTest {
     void shouldPageProductsBySubCategoryIdWhenGetSubCategoryId_PageNo_PageSize_SortBy_SortDirection() {
         // given
         Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Direction.ASC, "id"));
-        List<ProductWithPromotionAndLowestPriceDTO> productList = List.of(getProductDTO(), getProductDTO(), getProductDTO());
-        Page<ProductWithPromotionAndLowestPriceDTO> productPage = new PageImpl<>(productList, pageable, productList.size());
+        List<ProductWithPromotionDTO> productList = List.of(getProductDTO(), getProductDTO(), getProductDTO());
+        Page<ProductWithPromotionDTO> productPage = new PageImpl<>(productList, pageable, productList.size());
 
         given(productRepository.findProductsBySubcategory_Id(anyLong(), any(), any())).willReturn(Optional.of(productPage));
 
@@ -140,8 +140,8 @@ class ProductPageServiceTest {
     void shouldGetPageProductsBySearchText() {
         // given
         Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Direction.ASC, "id"));
-        List<ProductWithPromotionAndLowestPriceDTO> productList = List.of(getProductDTO(), getProductDTO(), getProductDTO());
-        Page<ProductWithPromotionAndLowestPriceDTO> productPage = new PageImpl<>(productList, pageable, productList.size());
+        List<ProductWithPromotionDTO> productList = List.of(getProductDTO(), getProductDTO(), getProductDTO());
+        Page<ProductWithPromotionDTO> productPage = new PageImpl<>(productList, pageable, productList.size());
 
         given(productRepository.searchProductsByEnteredText(anyString(), any(), any())).willReturn(Optional.of(productPage));
 
@@ -158,8 +158,8 @@ class ProductPageServiceTest {
     void shouldGetPromotionProducts() {
         // given
         Pageable pageable= PageRequest.of(0, 5, Sort.by(Sort.Direction.ASC, "id"));
-        List<ProductWithPromotionAndLowestPriceDTO> productList = List.of(getProductDTO(), getProductDTO(), getProductDTO());
-        Page<ProductWithPromotionAndLowestPriceDTO> productPage = new PageImpl<>(productList, pageable, productList.size());
+        List<ProductWithPromotionDTO> productList = List.of(getProductDTO(), getProductDTO(), getProductDTO());
+        Page<ProductWithPromotionDTO> productPage = new PageImpl<>(productList, pageable, productList.size());
 
         given(productRepository.findPromotionProducts(any(), any())).willReturn(Optional.of(productPage));
 
@@ -174,10 +174,10 @@ class ProductPageServiceTest {
 
 
     @NotNull
-    private ProductWithPromotionAndLowestPriceDTO getProductDTO() {
+    private ProductWithPromotionDTO getProductDTO() {
         when(clock.getZone()).thenReturn(zonedDateTime.getZone());
         when(clock.instant()).thenReturn(zonedDateTime.toInstant());
-        return new ProductWithPromotionAndLowestPriceDTO(
+        return new ProductWithPromotionDTO(
                 1L,
                 "Test",
                 "test.pl/test.png",

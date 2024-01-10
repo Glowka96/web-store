@@ -3,7 +3,7 @@ package com.example.portfolio.webstorespring.services.products;
 import com.example.portfolio.webstorespring.enums.SortByType;
 import com.example.portfolio.webstorespring.enums.SortDirectionType;
 import com.example.portfolio.webstorespring.model.dto.products.PageProductsWithPromotionDTO;
-import com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionAndLowestPriceDTO;
+import com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionDTO;
 import com.example.portfolio.webstorespring.repositories.products.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -24,7 +24,7 @@ import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor
-public class ProductPageService {
+public class ProductsPageService {
 
     private final ProductRepository productRepository;
     private final Clock clock = Clock.systemUTC();
@@ -74,13 +74,13 @@ public class ProductPageService {
                 pageNo, pageSize, sortBy, sortDirection);
     }
 
-    private PageProductsWithPromotionDTO getPageProduct(Function<Pageable, Page<ProductWithPromotionAndLowestPriceDTO>> function,
+    private PageProductsWithPromotionDTO getPageProduct(Function<Pageable, Page<ProductWithPromotionDTO>> function,
                                                         Integer pageNo,
                                                         Integer pageSize,
                                                         SortByType sortBy,
                                                         SortDirectionType sortDirection) {
         Pageable pageable = createPageable(pageNo, pageSize, sortBy.getFieldName(), sortDirection.name());
-        Page<ProductWithPromotionAndLowestPriceDTO> productPage = function.apply(pageable);
+        Page<ProductWithPromotionDTO> productPage = function.apply(pageable);
 
         List<String> sortByTypes = getEnumTypes(SortByType.class);
         List<String> sortDirectionTypes = getEnumTypes(SortDirectionType.class);
@@ -102,26 +102,26 @@ public class ProductPageService {
         return PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.fromString(sortDirection), sortBy));
     }
 
-    private Page<ProductWithPromotionAndLowestPriceDTO> getProductsBySubcategoryId(Long subcategoryId,
-                                                                                   Date date30DaysAgo,
-                                                                                   Pageable pageable) {
+    private Page<ProductWithPromotionDTO> getProductsBySubcategoryId(Long subcategoryId,
+                                                                     Date date30DaysAgo,
+                                                                     Pageable pageable) {
         return productRepository.findProductsBySubcategory_Id(subcategoryId, date30DaysAgo, pageable)
                 .orElse(Page.empty());
     }
 
-    private Page<ProductWithPromotionAndLowestPriceDTO> searchProductsByText(String text,
-                                                                             Date date30DaysAgo,
-                                                                             Pageable pageable) {
+    private Page<ProductWithPromotionDTO> searchProductsByText(String text,
+                                                               Date date30DaysAgo,
+                                                               Pageable pageable) {
         return productRepository.searchProductsByEnteredText(text, date30DaysAgo, pageable)
                 .orElse(Page.empty());
     }
 
-    private Page<ProductWithPromotionAndLowestPriceDTO> getPromotionProducts(Date date30DaysAgo, Pageable pageable) {
+    private Page<ProductWithPromotionDTO> getPromotionProducts(Date date30DaysAgo, Pageable pageable) {
         return productRepository.findPromotionProducts(date30DaysAgo, pageable)
                 .orElse(Page.empty());
     }
 
-    private Page<ProductWithPromotionAndLowestPriceDTO> getNewProducts(Date date30DaysAgo, Pageable pageable) {
+    private Page<ProductWithPromotionDTO> getNewProducts(Date date30DaysAgo, Pageable pageable) {
         return productRepository.findNewProducts(date30DaysAgo, pageable)
                 .orElse(Page.empty());
     }

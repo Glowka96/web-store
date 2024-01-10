@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public record ProductWithPromotionAndLowestPriceDTO(
+public record ProductWithPromotionDTO(
         Long id,
         String name,
         String imageUrl,
