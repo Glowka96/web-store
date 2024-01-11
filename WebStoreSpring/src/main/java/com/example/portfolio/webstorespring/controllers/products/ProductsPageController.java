@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "api/v1")
 @RequiredArgsConstructor
-public class ProductPageController {
+public class ProductsPageController {
 
     private final ProductsPageService productsPageService;
 

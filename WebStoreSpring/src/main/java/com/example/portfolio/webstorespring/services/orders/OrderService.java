@@ -106,7 +106,7 @@ public class OrderService {
         }
     }
 
-    private static void checkOrderStatus(Order foundOrder, String update) {
+    private void checkOrderStatus(Order foundOrder, String update) {
         if (foundOrder.getStatus() != OrderStatus.OPEN) {
             throw new OrderCanNotModifiedException(update);
         }
@@ -128,12 +128,12 @@ public class OrderService {
         order.setDelivery(deliveryService.formatDelivery(order.getDelivery(),
                 loggedAccount.getAddress()));
 
-        setupPriceAndOrderIdInShipments(order);
+        setupShipmentsInOrder(order);
         setupTotalPrice(order);
     }
 
     private void setupUpdateOrder(Order currentOrder, Order updateOrder, Account loggedAccount) {
-        setupPriceAndOrderIdInShipments(updateOrder);
+        setupShipmentsInOrder(updateOrder);
 
         currentOrder.setShipments(updateOrder.getShipments());
         currentOrder.setDateOfCreation(getCurrentDate());
@@ -143,10 +143,12 @@ public class OrderService {
         setupTotalPrice(currentOrder);
     }
 
-    private void setupPriceAndOrderIdInShipments(Order order) {
+    private void setupShipmentsInOrder(Order order) {
         order.getShipments().forEach(shipment -> {
             shipment.setOrder(order);
             shipment.setPrice(calculateShipmentPrice(shipment));
+            shipment.getProduct().setQuantity(
+                    shipment.getProduct().getQuantity() - shipment.getQuantity());
         });
     }
 

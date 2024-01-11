@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class DeliveryService {
+class DeliveryService {
 
     @Value("${shipment.address}")
     private String shipmentAddress;
@@ -17,7 +17,7 @@ public class DeliveryService {
     protected Delivery formatDelivery(Delivery delivery, AccountAddress accountAddress) {
         delivery.setShipmentAddress(shipmentAddress);
 
-        if (delivery.getDeliveryAddress().isEmpty() || delivery.getShipmentAddress().isBlank()) {
+        if (delivery.getDeliveryAddress().isEmpty() || delivery.getDeliveryAddress().isBlank()) {
             setupDeliveryAddress(delivery, accountAddress);
             return delivery;
         }
@@ -33,7 +33,7 @@ public class DeliveryService {
         formatDeliveryAddress(delivery,
                 accountAddress.getCity(),
                 accountAddress.getPostcode(),
-                accountAddress.getPostcode());
+                accountAddress.getStreet());
     }
 
     private void formatDeliveryAddress(Delivery delivery, String... address) {
