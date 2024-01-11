@@ -118,7 +118,7 @@ class ProductServiceTest {
     }
 
     @Test
-    void willThrowWhenSubCategoryIdNotFound() {
+    void willThrowWhenSubcategoryIdNotFound() {
         // given
         ProductRequest productRequest = createProductRequest();
 

@@ -31,7 +31,7 @@ public class DeliveryTypeService {
 
     public void deleteDeliveryType(Long deliveryID){
         DeliveryType foundDeliveryType = deliveryTypeRepository.findById(deliveryID)
-                .orElseThrow(() -> new ResourceNotFoundException("Delivery", "id", deliveryID));
+                .orElseThrow(() -> new ResourceNotFoundException("DeliveryType", "id", deliveryID));
 
         deliveryTypeRepository.delete(foundDeliveryType);
     }
