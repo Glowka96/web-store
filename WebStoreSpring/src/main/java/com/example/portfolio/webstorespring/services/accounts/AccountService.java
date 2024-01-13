@@ -30,7 +30,7 @@ public class AccountService {
         setupAccount(loggedAccount, updatedAccount);
 
         accountRepository.save(loggedAccount);
-        return accountMapper.mapToDto(updatedAccount);
+        return accountMapper.mapToDto(loggedAccount);
     }
 
     public void deleteAccount() {
@@ -43,10 +43,10 @@ public class AccountService {
                 .getPrincipal();
     }
 
-    private void setupAccount(Account account, Account updatedAccount) {
-        account.setFirstName(updatedAccount.getFirstName());
-        account.setLastName(updatedAccount.getLastName());
-        account.setPassword(encoder.encode(updatedAccount.getPassword()));
-        account.setImageUrl(updatedAccount.getImageUrl());
+    private void setupAccount(Account loggedAccount, Account updatedAccount) {
+        loggedAccount.setFirstName(updatedAccount.getFirstName());
+        loggedAccount.setLastName(updatedAccount.getLastName());
+        loggedAccount.setPassword(encoder.encode(updatedAccount.getPassword()));
+        loggedAccount.setImageUrl(updatedAccount.getImageUrl());
     }
 }

@@ -1,5 +1,6 @@
 package com.example.portfolio.webstorespring.model.dto.products.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;

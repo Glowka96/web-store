@@ -92,9 +92,7 @@ class AccountServiceTest {
         Account captureAccount = accountArgumentCaptor.getValue();
         AccountResponse mappedAccount = accountMapper.mapToDto(captureAccount);
 
-        assertThat(mappedAccount.getFirstName()).isEqualTo(updatedAccountResponse.getFirstName());
-        assertThat(mappedAccount.getLastName()).isEqualTo(updatedAccountResponse.getLastName());
-        assertThat(captureAccount.getPassword()).isEqualTo("hashedPassword");
+        assertThat(mappedAccount).isEqualTo(updatedAccountResponse);
     }
 
     @Test
