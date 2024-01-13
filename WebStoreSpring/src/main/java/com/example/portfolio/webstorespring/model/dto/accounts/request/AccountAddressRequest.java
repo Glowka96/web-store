@@ -21,7 +21,7 @@ public class AccountAddressRequest {
     @Pattern(regexp = "^\\d{2}-\\d{3}$", message = "The postcode format is invalid")
     private String postcode;
 
-    @Pattern(regexp = "^(ul(.)?\\s)?[A-Z]?[a-z]*\\s[0-9]{1,3}(/[0-9]{1,3})|(\\sm\\.?\\s[0-9]{1,3})[a-z]?$",
+    @Pattern(regexp = "^((ul\\.?\\s)?([A-Z]?[a-z]{3,}(-[A-Z]?[a-z]{3,})?)\\s(\\d{1,3})[a-z]?((/|\\sm.?\\s)\\d{1,3}))$",
             message = "The street format is invalid")
     private String street;
 }
