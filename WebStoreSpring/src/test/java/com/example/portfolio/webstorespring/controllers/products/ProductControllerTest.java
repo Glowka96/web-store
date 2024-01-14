@@ -1,5 +1,6 @@
 package com.example.portfolio.webstorespring.controllers.products;
 
+import com.example.portfolio.webstorespring.model.dto.products.ProductWithProducerAndPromotionDTO;
 import com.example.portfolio.webstorespring.model.dto.products.request.ProductRequest;
 import com.example.portfolio.webstorespring.model.dto.products.response.ProductResponse;
 import com.example.portfolio.webstorespring.services.products.ProductService;
@@ -18,6 +19,7 @@ import java.util.List;
 
 import static com.example.portfolio.webstorespring.buildhelpers.ProductBuilderHelper.createProductRequest;
 import static com.example.portfolio.webstorespring.buildhelpers.ProductBuilderHelper.createProductResponse;
+import static com.example.portfolio.webstorespring.buildhelpers.ProductWithProducerAndPromotionDTOBuilderHelper.createProductWithProducerAndPromotionDTO;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
@@ -60,6 +62,20 @@ class ProductControllerTest {
     }
 
     @Test
+    void shouldGetProductById() throws Exception {
+        ProductWithProducerAndPromotionDTO productWithProducerAndPromotionDTO = createProductWithProducerAndPromotionDTO();
+
+        given(productService.getProductById(anyLong())).willReturn(productWithProducerAndPromotionDTO);
+
+        mvc.perform(get(URI + "/products/{productId}", 1)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(productWithProducerAndPromotionDTO)))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
     void shouldSaveProduct() throws Exception {
         ProductResponse productResponse = createProductResponse();
         ProductRequest productRequest = createProductRequest();
@@ -73,8 +89,8 @@ class ProductControllerTest {
                         .content(mapper.writeValueAsString(productRequest)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.name", is("Test")))
-                .andExpect(jsonPath("$.description", is("Test description")))
+                .andExpect(jsonPath("$.name", is(productRequest.getName())))
+                .andExpect(jsonPath("$.description", is(productRequest.getDescription())))
                 .andExpect(jsonPath("$.price", is(20.0)))
                 .andDo(print());
     }
@@ -93,8 +109,8 @@ class ProductControllerTest {
                         .content(mapper.writeValueAsString(productRequest)))
                 .andExpect(status().isAccepted())
                 .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.name", is("Test")))
-                .andExpect(jsonPath("$.description", is("Test description")))
+                .andExpect(jsonPath("$.name", is(productRequest.getName())))
+                .andExpect(jsonPath("$.description", is(productRequest.getDescription())))
                 .andExpect(jsonPath("$.price", is(20.0)))
                 .andDo(print());
     }
