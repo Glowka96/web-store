@@ -15,6 +15,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static com.example.portfolio.webstorespring.buildhelpers.AccountAddressBuilderHelper.createAccountAddressRequest;
+import static com.example.portfolio.webstorespring.buildhelpers.AccountAddressBuilderHelper.createAccountAddressResponse;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -30,10 +32,9 @@ class AccountAddressControllerTest {
     @InjectMocks
     private AccountAddressController underTest;
 
-    private final static String URI = "/api/v1/accounts/address";
+    private final static String URI = "/api/v1/accounts/addresses";
     private ObjectMapper mapper;
     private MockMvc mvc;
-    private AccountAddressResponse addressResponse;
 
     @BeforeEach
     void initialization() {
@@ -42,64 +43,66 @@ class AccountAddressControllerTest {
                 .build();
 
         mapper = new ObjectMapper();
-
-        addressResponse = AccountAddressResponse.builder()
-                .id(1L)
-                .city("Test")
-                .street("test 59/2")
-                .postcode("99-999")
-                .build();
     }
 
 
     @Test
     void getAccountAddress() throws Exception {
-        given(addressService.getAccountAddress()).willReturn(addressResponse);
+        AccountAddressRequest accountAddressRequest = createAccountAddressRequest();
+        AccountAddressResponse accountAddressResponse = createAccountAddressResponse();
+
+        given(addressService.getAccountAddress()).willReturn(accountAddressResponse);
 
         mvc.perform(get(URI)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(addressResponse))
+                        .content(mapper.writeValueAsString(accountAddressRequest))
                         .header("Authorization", "Bearer {JWT_TOKEN}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.city", is("Test")))
-                .andExpect(jsonPath("$.street", is("test 59/2")))
-                .andExpect(jsonPath("$.postcode", is("99-999")))
+                .andExpect(jsonPath("$.city", is(accountAddressRequest.getCity())))
+                .andExpect(jsonPath("$.street", is(accountAddressRequest.getStreet())))
+                .andExpect(jsonPath("$.postcode", is(accountAddressRequest.getPostcode())))
                 .andDo(print());
     }
 
     @Test
     void saveAccountAddress() throws Exception {
-        given(addressService.saveAccountAddress(any(AccountAddressRequest.class))).willReturn(addressResponse);
+        AccountAddressRequest accountAddressRequest = createAccountAddressRequest();
+        AccountAddressResponse accountAddressResponse = createAccountAddressResponse();
+
+        given(addressService.saveAccountAddress(any(AccountAddressRequest.class))).willReturn(accountAddressResponse);
 
         mvc.perform(post(URI)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(addressResponse))
+                        .content(mapper.writeValueAsString(accountAddressRequest))
                         .header("Authorization", "Bearer {JWT_TOKEN}"))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.city", is("Test")))
-                .andExpect(jsonPath("$.street", is("test 59/2")))
-                .andExpect(jsonPath("$.postcode", is("99-999")))
+                .andExpect(jsonPath("$.city", is(accountAddressRequest.getCity())))
+                .andExpect(jsonPath("$.street", is(accountAddressRequest.getStreet())))
+                .andExpect(jsonPath("$.postcode", is(accountAddressRequest.getPostcode())))
                 .andDo(print());
     }
 
     @Test
     void updateAccountAddress() throws Exception {
-        given(addressService.updateAccountAddress(any(AccountAddressRequest.class))).willReturn(addressResponse);
+        AccountAddressRequest accountAddressRequest = createAccountAddressRequest();
+        AccountAddressResponse accountAddressResponse = createAccountAddressResponse();
+
+        given(addressService.updateAccountAddress(any(AccountAddressRequest.class))).willReturn(accountAddressResponse);
 
         mvc.perform(put(URI, 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(addressResponse))
+                        .content(mapper.writeValueAsString(accountAddressRequest))
                         .header("Authorization", "Bearer {JWT_TOKEN}"))
                 .andExpect(status().isAccepted())
                 .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.city", is("Test")))
-                .andExpect(jsonPath("$.street", is("test 59/2")))
-                .andExpect(jsonPath("$.postcode", is("99-999")))
+                .andExpect(jsonPath("$.city", is(accountAddressRequest.getCity())))
+                .andExpect(jsonPath("$.street", is(accountAddressRequest.getStreet())))
+                .andExpect(jsonPath("$.postcode", is(accountAddressRequest.getPostcode())))
                 .andDo(print());
     }
 }
