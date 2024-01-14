@@ -36,7 +36,7 @@ class ProductTypeControllerTest {
     @InjectMocks
     private ProductTypeController underTest;
 
-    private static final String URI = "/api/v1/product-types";
+    private static final String URI = "/api/v1/admin/product-types";
 
     private MockMvc mvc;
     private ObjectMapper objectMapper;

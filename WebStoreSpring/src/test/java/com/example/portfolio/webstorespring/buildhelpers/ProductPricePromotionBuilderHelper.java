@@ -1,6 +1,7 @@
 package com.example.portfolio.webstorespring.buildhelpers;
 
 import com.example.portfolio.webstorespring.model.dto.products.request.ProductPricePromotionRequest;
+import com.example.portfolio.webstorespring.model.dto.products.response.ProductPricePromotionResponse;
 import com.example.portfolio.webstorespring.model.entity.products.ProductPricePromotion;
 
 import java.math.BigDecimal;
@@ -34,6 +35,15 @@ public class ProductPricePromotionBuilderHelper {
                 .startDate(Timestamp.valueOf(DATE_OF_CREATED))
                 .endDate(Timestamp.valueOf(DATE_OF_CREATED.plusDays(15)))
                 .productId(1L)
+                .build();
+    }
+
+    public static ProductPricePromotionResponse createProductPricePromotionResponse() {
+        return ProductPricePromotionResponse.builder()
+                .id(1L)
+                .promotionPrice(BigDecimal.valueOf(10.0))
+                .startDate(Timestamp.valueOf(DATE_OF_CREATED))
+                .endDate(Timestamp.valueOf(DATE_OF_CREATED.plusDays(15)))
                 .build();
     }
 }
