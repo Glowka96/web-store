@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "api/v1/delivery-type")
+@RequestMapping(value = "api/v1/delivery-types")
 @RequiredArgsConstructor
 public class DeliveryTypeController {
 
     private final DeliveryTypeService deliveryTypeService;
 
-    @GetMapping(value = "/all")
+    @GetMapping()
     public ResponseEntity<List<DeliveryTypeResponse>> getAllDeliveryType(){
         return ResponseEntity.ok(deliveryTypeService.getAllDeliveryType());
     }

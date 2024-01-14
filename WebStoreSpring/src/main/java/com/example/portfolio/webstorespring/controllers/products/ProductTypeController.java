@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "api/v1/products-type")
+@RequestMapping(value = "api/v1/product-types")
 @RequiredArgsConstructor
 public class ProductTypeController {
 
@@ -36,7 +36,7 @@ public class ProductTypeController {
                 .body(productTypeService.updateProductType(productTypeId, productTypeRequest));
     }
 
-    @DeleteMapping(value = "{productTypeId}")
+    @DeleteMapping(value = "/{productTypeId}")
     public ResponseEntity<Void> deleteProductTypeById(@PathVariable("productTypeId") Long productTypeId) {
         productTypeService.deleteProductTypeById(productTypeId);
         return ResponseEntity.noContent().build();

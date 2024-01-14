@@ -23,6 +23,11 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getAllAccountOrder());
     }
 
+    @GetMapping("/last-five")
+    public ResponseEntity<List<OrderResponse>> getLastFiveAccountOrder() {
+        return ResponseEntity.ok(orderService.getLastFiveAccountOrder());
+    }
+
     @GetMapping(value = "/{orderId}")
     public ResponseEntity<OrderResponse> getOrderByAccountIdAndOrderId(@PathVariable("orderId") Long orderId) {
         return ResponseEntity.ok(orderService.getAccountOrderByOrderId(orderId));
