@@ -8,6 +8,7 @@ import com.example.portfolio.webstorespring.model.entity.products.Producer;
 import com.example.portfolio.webstorespring.repositories.products.ProducerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class ProducerService {
         return producerMapper.mapToDto(producer);
     }
 
+    @Transactional
     public ProducerResponse updateProducer(Long id, ProducerRequest producerRequest) {
         Producer foundProducer = findProducerById(id);
 

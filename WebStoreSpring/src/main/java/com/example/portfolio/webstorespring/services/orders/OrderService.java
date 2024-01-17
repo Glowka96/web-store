@@ -18,6 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -60,6 +61,7 @@ public class OrderService {
         return orderMapper.mapToDto(foundOrder);
     }
 
+    @Transactional
     public OrderResponse saveOrder(OrderRequest orderRequest) {
         Account loggedAccount = getAccountDetails().getAccount();
         Order order = orderMapper.mapToEntity(orderRequest);
@@ -71,6 +73,7 @@ public class OrderService {
         return orderMapper.mapToDto(order);
     }
 
+    @Transactional
     public OrderResponse updateOrder(Long orderId, OrderRequest orderRequest) {
         Order foundOrder = findOrderById(orderId);
 

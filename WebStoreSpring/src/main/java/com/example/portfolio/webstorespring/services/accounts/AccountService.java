@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +24,7 @@ public class AccountService {
         return accountMapper.mapToDto(getAccountDetails().getAccount());
     }
 
+    @Transactional
     public AccountResponse updateAccount(AccountRequest accountRequest) {
         Account loggedAccount = getAccountDetails().getAccount();
 

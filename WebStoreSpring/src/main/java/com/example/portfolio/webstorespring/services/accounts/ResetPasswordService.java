@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
@@ -37,6 +38,7 @@ public class ResetPasswordService {
         this.accountRepository = accountRepository;
     }
 
+    @Transactional
     public Map<String, Object> resetPasswordByEmail(String email) {
         Account account = accountRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Account", "email", email));
@@ -46,6 +48,7 @@ public class ResetPasswordService {
                 confirmLink + savedToken.getToken());
     }
 
+    @Transactional
     public Map<String, Object> confirmResetPassword(String password, String token) {
         ConfirmationToken confirmationToken = confirmationTokenService.getConfirmationTokenByToken(token);
         Account account = confirmationToken.getAccount();

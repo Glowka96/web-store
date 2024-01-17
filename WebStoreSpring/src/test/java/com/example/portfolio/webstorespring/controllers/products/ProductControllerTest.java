@@ -50,7 +50,7 @@ class ProductControllerTest {
     @Test
     void shouldGetAllProducts() throws Exception {
         ProductResponse productResponse = createProductResponse();
-        List<ProductResponse> productResponses = List.of(productResponse,productResponse,productResponse);
+        List<ProductResponse> productResponses = List.of(productResponse, productResponse, productResponse);
 
         given(productService.getAllProducts()).willReturn(productResponses);
 
@@ -106,7 +106,8 @@ class ProductControllerTest {
         mvc.perform(put(URI + "/admin/subcategories/{subcategoryId}/producers/{producerId}/products/{productId}", 1, 1, 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(productRequest)))
+                        .content(mapper.writeValueAsString(productRequest))
+                        .header("Authorization", "Bearer {JWT_TOKEN}"))
                 .andExpect(status().isAccepted())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.name", is(productRequest.getName())))

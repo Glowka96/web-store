@@ -10,6 +10,7 @@ import com.example.portfolio.webstorespring.services.authentication.AccountDetai
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +27,7 @@ public class AccountAddressService {
         );
     }
 
+    @Transactional
     public AccountAddressResponse saveAccountAddress(AccountAddressRequest accountAddressRequest) {
         Account loggedAccount = getAccountDetails().getAccount();
 
@@ -36,6 +38,7 @@ public class AccountAddressService {
         return addressMapper.mapToDto(accountAddress);
     }
 
+    @Transactional
     public AccountAddressResponse updateAccountAddress(AccountAddressRequest accountAddressRequest) {
         AccountAddress loggedAccountAddress = getAccountDetails().getAccount().getAddress();
 

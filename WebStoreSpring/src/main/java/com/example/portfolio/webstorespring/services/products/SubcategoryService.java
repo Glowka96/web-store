@@ -10,6 +10,7 @@ import com.example.portfolio.webstorespring.repositories.products.CategoryReposi
 import com.example.portfolio.webstorespring.repositories.products.SubcategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class SubcategoryService {
         return subcategoryMapper.mapToDto(subcategoryRepository.findAll());
     }
 
+    @Transactional
     public SubcategoryResponse saveSubcategory(Long categoryId,
                                                SubcategoryRequest subCategoryRequest) {
         Category foundCategory = findCategoryById(categoryId);
@@ -40,6 +42,7 @@ public class SubcategoryService {
         return subcategoryMapper.mapToDto(subcategory);
     }
 
+    @Transactional
     public SubcategoryResponse updateSubcategory(Long categoryId,
                                                  Long subCategoryId,
                                                  SubcategoryRequest subCategoryRequest) {

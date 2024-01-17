@@ -1,22 +1,17 @@
 package com.example.portfolio.webstorespring.services.orders;
 
+import com.example.portfolio.webstorespring.buildhelpers.AccountBuilderHelper;
 import com.example.portfolio.webstorespring.enums.AccessDeniedExceptionMessage;
 import com.example.portfolio.webstorespring.enums.OrderStatus;
 import com.example.portfolio.webstorespring.exceptions.OrderCanNotModifiedException;
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
-import com.example.portfolio.webstorespring.mappers.OrderMapper;
-import com.example.portfolio.webstorespring.mappers.ProducerMapper;
-import com.example.portfolio.webstorespring.mappers.ProductMapper;
-import com.example.portfolio.webstorespring.mappers.ShipmentMapper;
+import com.example.portfolio.webstorespring.mappers.*;
 import com.example.portfolio.webstorespring.model.dto.orders.request.OrderRequest;
-import com.example.portfolio.webstorespring.model.dto.orders.request.ShipmentRequest;
 import com.example.portfolio.webstorespring.model.dto.orders.response.OrderResponse;
-import com.example.portfolio.webstorespring.model.dto.products.request.ProductRequest;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.accounts.AccountAddress;
+import com.example.portfolio.webstorespring.model.entity.orders.Delivery;
 import com.example.portfolio.webstorespring.model.entity.orders.Order;
-import com.example.portfolio.webstorespring.model.entity.orders.Shipment;
-import com.example.portfolio.webstorespring.model.entity.products.Product;
 import com.example.portfolio.webstorespring.repositories.orders.OrderRepository;
 import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
 import org.junit.jupiter.api.AfterEach;
@@ -35,12 +30,13 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static com.example.portfolio.webstorespring.buildhelpers.DeliveryBuilderHelper.createDelivery;
+import static com.example.portfolio.webstorespring.buildhelpers.OrderBuilderHelper.createOrder;
+import static com.example.portfolio.webstorespring.buildhelpers.OrderBuilderHelper.createOrderRequest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -52,6 +48,8 @@ class OrderServiceTest {
     @Mock
     private OrderRepository orderRepository;
     @Mock
+    private DeliveryService deliveryService;
+    @Mock
     private Authentication authentication;
     @Mock
     private SecurityContext securityContext;
@@ -60,53 +58,22 @@ class OrderServiceTest {
     @InjectMocks
     private OrderService underTest;
 
-    private Order order;
-    private Account account;
-
     @BeforeEach
     void initialization() {
-       ShipmentMapper shipmentMapper = Mappers.getMapper(ShipmentMapper.class);
-       ReflectionTestUtils.setField(orderMapper, "shipmentMapper", shipmentMapper);
+        ShipmentMapper shipmentMapper = Mappers.getMapper(ShipmentMapper.class);
+        ReflectionTestUtils.setField(orderMapper, "shipmentMapper", shipmentMapper);
 
-       ProductMapper productMapper = Mappers.getMapper(ProductMapper.class);
-       ReflectionTestUtils.setField(shipmentMapper, "productMapper", productMapper);
+        DeliveryMapper deliveryMapper = Mappers.getMapper(DeliveryMapper.class);
+        ReflectionTestUtils.setField(orderMapper, "deliveryMapper", deliveryMapper);
 
-       ProducerMapper producerMapper = Mappers.getMapper(ProducerMapper.class);
-       ReflectionTestUtils.setField(productMapper, "producerMapper", producerMapper);
+        DeliveryTypeMapper deliveryTypeMapper = Mappers.getMapper(DeliveryTypeMapper.class);
+        ReflectionTestUtils.setField(deliveryMapper, "deliveryTypeMapper", deliveryTypeMapper);
 
-        Product product = Product.builder()
-                .price(BigDecimal.valueOf(20.00))
-                .build();
+        ProductMapper productMapper = Mappers.getMapper(ProductMapper.class);
+        ReflectionTestUtils.setField(shipmentMapper, "productMapper", productMapper);
 
-        Shipment shipment = Shipment.builder()
-                .product(product)
-                .quantity(1)
-                .build();
-
-        List<Shipment> shipments = new ArrayList<>(Arrays.asList(shipment, shipment));
-
-        order = Order.builder()
-                .id(1L)
-                .shipments(shipments)
-                .status(OrderStatus.OPEN)
-                .build();
-
-        AccountAddress accountAddress = AccountAddress.builder()
-                .city("Test")
-                .postcode("99-999")
-                .street("test 59/2")
-                .build();
-
-        account = Account.builder()
-                .id(1L)
-                .firstName("test")
-                .lastName("dev")
-                .email("test@dev.pl")
-                .address(accountAddress)
-                .orders(Arrays.asList(order, order))
-                .build();
-
-        order.setAccount(account);
+        ProductTypeMapper productTypeMapper = Mappers.getMapper(ProductTypeMapper.class);
+        ReflectionTestUtils.setField(productMapper, "productTypeMapper", productTypeMapper);
     }
 
     @AfterEach
@@ -117,6 +84,8 @@ class OrderServiceTest {
     @Test
     void shouldGetAllAccountsOrder() {
         // given
+        Order order = createOrder();
+
         mockAuthentication();
         given(orderRepository.findAllByAccountId(anyLong())).willReturn(Arrays.asList(order, order));
 
@@ -130,6 +99,8 @@ class OrderServiceTest {
     @Test
     void shouldGetAccountOrderByOrderId() {
         // given
+        Order order = createOrder();
+
         mockAuthentication();
         given(orderRepository.findById(anyLong())).willReturn(Optional.of(order));
 
@@ -144,7 +115,9 @@ class OrderServiceTest {
     @Test
     void willThrowWhenGetAccountOrderNoOwnAuthAccount() {
         // given
-        setupOtherAccountToAuthentication();
+        Order order = createOrder();
+        setupOtherAccountToAuthentication(order);
+
         mockAuthentication();
         given(orderRepository.findById(anyLong())).willReturn(Optional.of(order));
 
@@ -163,27 +136,34 @@ class OrderServiceTest {
     }
 
     @Test
-    void shouldSave() {
+    void shouldSaveOrder() {
         // given
         mockAuthentication();
-        String expectedNameUser = account.getFirstName() + " " + account.getLastName();
 
         OrderRequest orderRequest = createOrderRequest();
-        Double expectedDouble = 120.0;
 
+        Delivery delivery = createDelivery();
+        given(deliveryService.formatDelivery(any(), isNull())).willReturn(delivery);
         // when
         OrderResponse savedOrderResponse = underTest.saveOrder(orderRequest);
 
         // then
-        assertThat(expectedNameUser).isEqualTo(savedOrderResponse.getNameUser());
-        assertThat(expectedDouble).isEqualTo(savedOrderResponse.getProductsPrice());
-        assertThat(savedOrderResponse.getDeliveryAddress()).hasToString("City: Test, Postcode: 99-999, Street: test 59/6");
+        ArgumentCaptor<Order> orderArgumentCaptor =
+                ArgumentCaptor.forClass(Order.class);
+        verify(orderRepository).save(orderArgumentCaptor.capture());
+
+        OrderResponse orderResponse = orderMapper.mapToDto(orderArgumentCaptor.getValue());
+
+        assertThat(savedOrderResponse).isEqualTo(orderResponse);
     }
 
     @Test
     void shouldUpdate() throws OrderCanNotModifiedException {
         // given
+        Order order = createOrder();
         mockAuthentication();
+
+        given(deliveryService.formatDelivery(any(Delivery.class), any(AccountAddress.class))).willReturn(order.getDelivery());
         given(orderRepository.findById(anyLong())).willReturn(Optional.of(order));
 
         // when
@@ -194,18 +174,18 @@ class OrderServiceTest {
                 ArgumentCaptor.forClass(Order.class);
         verify(orderRepository).save(orderArgumentCaptor.capture());
 
-        Order capturedOrder = orderArgumentCaptor.getValue();
-        OrderResponse mappedOrderResponse = orderMapper.mapToDto(capturedOrder);
+        OrderResponse mappedOrderResponse = orderMapper.mapToDto(orderArgumentCaptor.getValue());
 
         assertThat(mappedOrderResponse).isEqualTo(updateOrderResponse);
-        assertThat(updateOrderResponse.getDeliveryAddress()).hasToString("City: Test, Postcode: 99-999, Street: test 59/6");
     }
 
     @Test
     void willThrowWhenUpdateOrderNoOwnAuthAccount() {
         // given
-        setupOtherAccountToAuthentication();
+        Order order = createOrder();
+        setupOtherAccountToAuthentication(order);
         mockAuthentication();
+
         given(orderRepository.findById(anyLong())).willReturn(Optional.of(order));
 
         // when
@@ -219,13 +199,14 @@ class OrderServiceTest {
     @Test
     void willThrowWhenUpdateOrderStatusIsNotOpen() {
         // given
+        Order order = createOrder();
         mockAuthentication();
         order.setStatus(OrderStatus.COMPLETED);
         given(orderRepository.findById(anyLong())).willReturn(Optional.of(order));
 
         // when
         // then
-        assertThatThrownBy(() -> underTest.updateOrder(1L,  createOrderRequest()))
+        assertThatThrownBy(() -> underTest.updateOrder(1L, createOrderRequest()))
                 .isInstanceOf(OrderCanNotModifiedException.class)
                 .hasMessageContaining("The order cannot be update because the order is being prepared");
     }
@@ -233,6 +214,8 @@ class OrderServiceTest {
     @Test
     void shouldDeleteOrderById() {
         // given
+        Order order = createOrder();
+
         mockAuthentication();
         order.setStatus(OrderStatus.OPEN);
         given(orderRepository.findById(anyLong())).willReturn(Optional.of(order));
@@ -246,9 +229,11 @@ class OrderServiceTest {
     }
 
     @Test
-    void willThrowWhenDeleteOrderNotOwnAuthAccount(){
+    void willThrowWhenDeleteOrderNotOwnAuthAccount() {
         // given
-        setupOtherAccountToAuthentication();
+        Order order = createOrder();
+
+        setupOtherAccountToAuthentication(order);
         mockAuthentication();
         given(orderRepository.findById(anyLong())).willReturn(Optional.of(order));
 
@@ -261,6 +246,7 @@ class OrderServiceTest {
 
     @Test
     void willThrowWhenDeleteOrderStatusIsNotOpen() {
+        Order order = createOrder();
         order.setStatus(OrderStatus.COMPLETED);
         mockAuthentication();
         given(orderRepository.findById(anyLong())).willReturn(Optional.of(order));
@@ -273,30 +259,17 @@ class OrderServiceTest {
     }
 
     private void mockAuthentication() {
+        Account account = AccountBuilderHelper.createAccountWithRoleUser();
         AccountDetails accountDetails = new AccountDetails(account);
         when(authentication.getPrincipal()).thenReturn(accountDetails);
         SecurityContextHolder.setContext(securityContext);
         when(securityContext.getAuthentication()).thenReturn(authentication);
     }
 
-    private void setupOtherAccountToAuthentication() {
+    private void setupOtherAccountToAuthentication(Order order) {
         Account otherAccount = Account.builder()
                 .id(2L)
                 .build();
         order.setAccount(otherAccount);
-    }
-
-    private OrderRequest createOrderRequest() {
-        ProductRequest productRequest = ProductRequest.builder()
-                .price(BigDecimal.valueOf(20.0))
-                .build();
-        ShipmentRequest shipmentRequest = ShipmentRequest.builder()
-                .quantity(3)
-                .productRequest(productRequest)
-                .build();
-        return OrderRequest.builder()
-                .deliveryAddress("Test, 99-999, test 59/6")
-                .shipmentRequests(Arrays.asList(shipmentRequest, shipmentRequest))
-                .build();
     }
 }

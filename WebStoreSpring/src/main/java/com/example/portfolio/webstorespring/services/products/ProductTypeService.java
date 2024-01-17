@@ -8,6 +8,7 @@ import com.example.portfolio.webstorespring.model.entity.products.ProductType;
 import com.example.portfolio.webstorespring.repositories.products.ProductTypeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -28,6 +29,7 @@ public class ProductTypeService {
         return productTypeMapper.mapToDto(productType);
     }
 
+    @Transactional
     public ProductTypeResponse updateProductType(Long productTypeId, ProductTypeRequest productTypeRequest) {
         ProductType foundProductType = findProductTypeById(productTypeId);
         ProductType productType = productTypeMapper.mapToEntity(productTypeRequest);

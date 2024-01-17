@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 public class DeliveryTypeRequest {
 
     @NotBlank(message = "The delivery type can't be blank")
-    @Size(min=3, max = 20, message = "The delivery type must between min 3 and max 20 letters")
+    @Size(min=3, max = 32, message = "The delivery type must between min 3 and max 32 letters")
     private String type;
 
     @DecimalMin(value = "0.00", message = "The price must be greater than or equal to 0.00")

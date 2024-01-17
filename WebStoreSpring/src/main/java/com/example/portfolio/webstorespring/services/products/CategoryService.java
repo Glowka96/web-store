@@ -8,6 +8,7 @@ import com.example.portfolio.webstorespring.model.entity.products.Category;
 import com.example.portfolio.webstorespring.repositories.products.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -34,6 +35,7 @@ public class CategoryService {
         return categoryMapper.mapToDto(category);
     }
 
+    @Transactional
     public CategoryResponse updateCategory(Long id, CategoryRequest categoryRequest) {
         Category foundCategory = findCategoryById(id);
 

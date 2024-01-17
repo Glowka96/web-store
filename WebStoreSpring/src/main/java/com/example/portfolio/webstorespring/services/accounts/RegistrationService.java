@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
@@ -44,6 +45,7 @@ public class RegistrationService {
         this.roleRepository = roleRepository;
     }
 
+    @Transactional
     public Map<String, Object> registrationAccount(RegistrationRequest registrationRequest) {
         Account account = setupNewAccount(registrationRequest);
         accountRepository.save(account);
@@ -53,6 +55,7 @@ public class RegistrationService {
                 confirmLink + savedToken.getToken());
     }
 
+    @Transactional
     public Map<String, Object> confirmToken(String token) {
         ConfirmationToken confirmationToken = confirmationTokenService.getConfirmationTokenByToken(token);
         Account account = confirmationToken.getAccount();

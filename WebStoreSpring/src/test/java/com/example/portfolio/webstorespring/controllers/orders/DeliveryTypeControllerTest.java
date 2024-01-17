@@ -27,7 +27,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
 @ExtendWith(MockitoExtension.class)
 class DeliveryTypeControllerTest {
 
@@ -36,7 +35,7 @@ class DeliveryTypeControllerTest {
     @InjectMocks
     private DeliveryTypeController underTest;
 
-    private static final String URI = "/api/v1/delivery-type";
+    private static final String URI = "/api/v1/delivery-types";
     private MockMvc mvc;
     private ObjectMapper mapper;
 
@@ -50,7 +49,7 @@ class DeliveryTypeControllerTest {
         DeliveryTypeResponse deliveryTypeResponse = createDeliveryTypeResponse();
         given(deliveryTypeService.getAllDeliveryType()).willReturn(List.of(deliveryTypeResponse, deliveryTypeResponse));
 
-        mvc.perform(get(URI + "/all")
+        mvc.perform(get(URI)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
