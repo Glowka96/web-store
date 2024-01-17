@@ -81,6 +81,21 @@ class OrderControllerTest {
     }
 
     @Test
+    void shouldGetLastFiveAccountOrders() throws Exception {
+        OrderResponse orderResponse = createOrderResponse();
+
+        given(orderService.getLastFiveAccountOrder())
+                .willReturn(List.of(orderResponse, orderResponse, orderResponse, orderResponse, orderResponse));
+
+        mvc.perform(get(URI + "/orders/last-five")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(5)))
+                .andDo(print());
+    }
+
+    @Test
     void shouldSaveOrder() throws Exception {
         OrderRequest orderRequest = createOrderRequest();
         OrderResponse orderResponse = createOrderResponse();

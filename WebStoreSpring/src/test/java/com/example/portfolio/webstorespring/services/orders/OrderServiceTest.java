@@ -113,6 +113,24 @@ class OrderServiceTest {
     }
 
     @Test
+    void shouldGetLastFiveAccountOrders() {
+        // given
+
+        Order order = createOrder();
+
+        mockAuthentication();
+
+        given(orderRepository.findLastFiveAccountOrder(anyLong()))
+                .willReturn(List.of(order, order, order, order, order));
+
+        // when
+        List<OrderResponse> findOrders = underTest.getLastFiveAccountOrder();
+
+        // then
+        assertThat(findOrders).hasSize(5);
+    }
+
+    @Test
     void willThrowWhenGetAccountOrderNoOwnAuthAccount() {
         // given
         Order order = createOrder();
