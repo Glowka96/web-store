@@ -125,10 +125,6 @@ class RegistrationServiceTest {
         Map<String, Object> excepted = Map.of("message","Account confirmed");
 
         given(confirmationTokenService.getConfirmationTokenByToken(anyString())).willReturn(confirmationToken);
-        given(confirmationTokenService.isTokenExpired(any(ConfirmationToken.class))).willReturn(true);
-        given(confirmationTokenService.createConfirmationToken(any(Account.class))).willReturn(confirmationToken);
-        given(emailSenderService.sendEmail(anyString(), anyString()))
-                .willReturn(excepted);
 
         // when
         Map<String, Object> result = underTest.confirmToken(confirmationToken.getToken());
