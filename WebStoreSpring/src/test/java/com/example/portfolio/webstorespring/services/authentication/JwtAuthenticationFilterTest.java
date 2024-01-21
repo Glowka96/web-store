@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.services.authentication;
 
+import com.example.portfolio.webstorespring.buildhelpers.AccountBuilderHelper;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.accounts.AuthToken;
-import com.example.portfolio.webstorespring.model.entity.accounts.Role;
 import com.example.portfolio.webstorespring.repositories.accounts.AuthTokenRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -18,7 +18,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.IOException;
 import java.util.Optional;
-import java.util.Set;
 
 import static org.mockito.Mockito.*;
 
@@ -47,14 +46,7 @@ class JwtAuthenticationFilterTest {
         String jwt = "valid-jwt-token";
         String authHeader = "Bearer " + jwt;
 
-        Account account = Account.builder()
-                .email("test@test.pl")
-                .password("test123$")
-                .roles(Set.of(
-                        Role.builder()
-                                .name("ROLE_USER")
-                                .build()))
-                .build();
+        Account account = AccountBuilderHelper.createAccountWithRoleUser();
         UserDetails userDetails = new AccountDetails(account);
 
         // when
