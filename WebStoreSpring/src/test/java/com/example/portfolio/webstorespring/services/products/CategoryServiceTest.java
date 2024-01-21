@@ -20,7 +20,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static com.example.portfolio.webstorespring.buildhelpers.CategoryBuilderHelper.*;
+import static com.example.portfolio.webstorespring.buildhelpers.products.CategoryBuilderHelper.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;

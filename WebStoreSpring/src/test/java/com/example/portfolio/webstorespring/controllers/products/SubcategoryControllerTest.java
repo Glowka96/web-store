@@ -16,8 +16,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.List;
 
-import static com.example.portfolio.webstorespring.buildhelpers.SubcategoryBuilderHelper.createSubcategoryRequest;
-import static com.example.portfolio.webstorespring.buildhelpers.SubcategoryBuilderHelper.createSubcategoryResponse;
+import static com.example.portfolio.webstorespring.buildhelpers.products.SubcategoryBuilderHelper.createSubcategoryRequest;
+import static com.example.portfolio.webstorespring.buildhelpers.products.SubcategoryBuilderHelper.createSubcategoryResponse;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;

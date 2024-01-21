@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.services.products;
 
-import com.example.portfolio.webstorespring.buildhelpers.ProductBuilderHelper;
+import com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper;
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.ProductMapper;
 import com.example.portfolio.webstorespring.mappers.ProductTypeMapper;
@@ -27,12 +27,12 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.math.BigDecimal;
 import java.util.Optional;
 
-import static com.example.portfolio.webstorespring.buildhelpers.ProducerBuilderHelper.createProducer;
-import static com.example.portfolio.webstorespring.buildhelpers.ProductBuilderHelper.createProduct;
-import static com.example.portfolio.webstorespring.buildhelpers.ProductBuilderHelper.createProductRequest;
-import static com.example.portfolio.webstorespring.buildhelpers.ProductWithProducerAndPromotionDTOBuilderHelper.createNullProductWithProducerAndPromotionDTO;
-import static com.example.portfolio.webstorespring.buildhelpers.ProductWithProducerAndPromotionDTOBuilderHelper.createProductWithProducerAndPromotionDTO;
-import static com.example.portfolio.webstorespring.buildhelpers.SubcategoryBuilderHelper.createSubcategory;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProducerBuilderHelper.createProducer;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.createProduct;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.createProductRequest;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProductWithProducerAndPromotionDTOBuilderHelper.createNullProductWithProducerAndPromotionDTO;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProductWithProducerAndPromotionDTOBuilderHelper.createProductWithProducerAndPromotionDTO;
+import static com.example.portfolio.webstorespring.buildhelpers.products.SubcategoryBuilderHelper.createSubcategory;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;

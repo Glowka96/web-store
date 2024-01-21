@@ -2,9 +2,9 @@ package com.example.portfolio.webstorespring.buildhelpers;
 
 import java.time.LocalDateTime;
 
-class DateForTestBuilderHelper {
+public class DateForTestBuilderHelper {
 
-    protected static final LocalDateTime DATE_OF_CREATED = LocalDateTime.of(
+    public static final LocalDateTime DATE_OF_CREATED = LocalDateTime.of(
             2024,
             1,
             10,

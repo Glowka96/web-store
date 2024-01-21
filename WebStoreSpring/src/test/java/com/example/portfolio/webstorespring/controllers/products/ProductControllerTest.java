@@ -17,9 +17,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.List;
 
-import static com.example.portfolio.webstorespring.buildhelpers.ProductBuilderHelper.createProductRequest;
-import static com.example.portfolio.webstorespring.buildhelpers.ProductBuilderHelper.createProductResponse;
-import static com.example.portfolio.webstorespring.buildhelpers.ProductWithProducerAndPromotionDTOBuilderHelper.createProductWithProducerAndPromotionDTO;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.createProductRequest;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.createProductResponse;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProductWithProducerAndPromotionDTOBuilderHelper.createProductWithProducerAndPromotionDTO;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;

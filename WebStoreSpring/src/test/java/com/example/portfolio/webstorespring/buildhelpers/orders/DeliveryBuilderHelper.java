@@ -1,4 +1,4 @@
-package com.example.portfolio.webstorespring.buildhelpers;
+package com.example.portfolio.webstorespring.buildhelpers.orders;
 
 import com.example.portfolio.webstorespring.model.dto.orders.request.DeliveryRequest;
 import com.example.portfolio.webstorespring.model.dto.orders.request.DeliveryTypeRequest;
@@ -7,7 +7,7 @@ import com.example.portfolio.webstorespring.model.dto.orders.response.DeliveryTy
 import com.example.portfolio.webstorespring.model.entity.orders.Delivery;
 import com.example.portfolio.webstorespring.model.entity.orders.DeliveryType;
 
-import static com.example.portfolio.webstorespring.buildhelpers.DeliveryTypeBuilderHelper.*;
+import static com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryTypeBuilderHelper.*;
 
 public class DeliveryBuilderHelper {
 

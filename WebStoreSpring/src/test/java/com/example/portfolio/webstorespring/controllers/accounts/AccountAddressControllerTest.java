@@ -15,8 +15,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static com.example.portfolio.webstorespring.buildhelpers.AccountAddressBuilderHelper.createAccountAddressRequest;
-import static com.example.portfolio.webstorespring.buildhelpers.AccountAddressBuilderHelper.createAccountAddressResponse;
+import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountAddressBuilderHelper.createAccountAddressRequest;
+import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountAddressBuilderHelper.createAccountAddressResponse;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;

@@ -1,4 +1,4 @@
-package com.example.portfolio.webstorespring.buildhelpers;
+package com.example.portfolio.webstorespring.buildhelpers.orders;
 
 import com.example.portfolio.webstorespring.model.dto.orders.request.DeliveryTypeRequest;
 import com.example.portfolio.webstorespring.model.dto.orders.response.DeliveryTypeResponse;

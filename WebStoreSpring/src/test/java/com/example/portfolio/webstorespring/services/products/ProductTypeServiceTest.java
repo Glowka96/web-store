@@ -18,8 +18,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static com.example.portfolio.webstorespring.buildhelpers.ProductTypeBuilderHelper.createProductType;
-import static com.example.portfolio.webstorespring.buildhelpers.ProductTypeBuilderHelper.createProductTypeRequest;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProductTypeBuilderHelper.createProductType;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProductTypeBuilderHelper.createProductTypeRequest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;

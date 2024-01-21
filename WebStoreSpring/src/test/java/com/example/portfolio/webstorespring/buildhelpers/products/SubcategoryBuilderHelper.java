@@ -1,4 +1,4 @@
-package com.example.portfolio.webstorespring.buildhelpers;
+package com.example.portfolio.webstorespring.buildhelpers.products;
 
 import com.example.portfolio.webstorespring.model.dto.products.request.SubcategoryRequest;
 import com.example.portfolio.webstorespring.model.dto.products.response.SubcategoryResponse;

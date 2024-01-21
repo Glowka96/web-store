@@ -17,8 +17,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static com.example.portfolio.webstorespring.buildhelpers.ProducerBuilderHelper.createProducer;
-import static com.example.portfolio.webstorespring.buildhelpers.ProducerBuilderHelper.createProducerRequest;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProducerBuilderHelper.createProducer;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProducerBuilderHelper.createProducerRequest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;

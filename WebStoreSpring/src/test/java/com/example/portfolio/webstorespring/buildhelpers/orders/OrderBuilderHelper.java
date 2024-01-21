@@ -1,5 +1,6 @@
-package com.example.portfolio.webstorespring.buildhelpers;
+package com.example.portfolio.webstorespring.buildhelpers.orders;
 
+import com.example.portfolio.webstorespring.buildhelpers.DateForTestBuilderHelper;
 import com.example.portfolio.webstorespring.enums.OrderStatus;
 import com.example.portfolio.webstorespring.model.dto.orders.request.DeliveryRequest;
 import com.example.portfolio.webstorespring.model.dto.orders.request.OrderRequest;
@@ -16,9 +17,9 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 
-import static com.example.portfolio.webstorespring.buildhelpers.AccountBuilderHelper.createAccountWithRoleUserAndAccountAddress;
-import static com.example.portfolio.webstorespring.buildhelpers.DeliveryBuilderHelper.*;
-import static com.example.portfolio.webstorespring.buildhelpers.ShipmentBuilderHelper.*;
+import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.createAccountWithRoleUserAndAccountAddress;
+import static com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryBuilderHelper.*;
+import static com.example.portfolio.webstorespring.buildhelpers.orders.ShipmentBuilderHelper.*;
 
 public class OrderBuilderHelper {
 

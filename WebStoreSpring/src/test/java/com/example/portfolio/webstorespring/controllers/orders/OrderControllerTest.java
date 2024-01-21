@@ -18,8 +18,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.example.portfolio.webstorespring.buildhelpers.OrderBuilderHelper.createOrderRequest;
-import static com.example.portfolio.webstorespring.buildhelpers.OrderBuilderHelper.createOrderResponse;
+import static com.example.portfolio.webstorespring.buildhelpers.orders.OrderBuilderHelper.createOrderRequest;
+import static com.example.portfolio.webstorespring.buildhelpers.orders.OrderBuilderHelper.createOrderResponse;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;

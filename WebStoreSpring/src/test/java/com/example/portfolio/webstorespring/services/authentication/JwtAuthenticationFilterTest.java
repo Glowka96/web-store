@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.services.authentication;
 
-import com.example.portfolio.webstorespring.buildhelpers.AccountBuilderHelper;
+import com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.accounts.AuthToken;
 import com.example.portfolio.webstorespring.repositories.accounts.AuthTokenRepository;

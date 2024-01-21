@@ -14,8 +14,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static com.example.portfolio.webstorespring.buildhelpers.ProductPricePromotionBuilderHelper.createProductPricePromotionRequest;
-import static com.example.portfolio.webstorespring.buildhelpers.ProductPricePromotionBuilderHelper.createProductPricePromotionResponse;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProductPricePromotionBuilderHelper.createProductPricePromotionRequest;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProductPricePromotionBuilderHelper.createProductPricePromotionResponse;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;

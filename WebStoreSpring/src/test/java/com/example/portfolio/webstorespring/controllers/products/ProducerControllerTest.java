@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.List;
 
-import static com.example.portfolio.webstorespring.buildhelpers.ProducerBuilderHelper.createProducerResponse;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProducerBuilderHelper.createProducerResponse;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;

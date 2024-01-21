@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.services.orders;
 
-import com.example.portfolio.webstorespring.buildhelpers.AccountBuilderHelper;
+import com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper;
 import com.example.portfolio.webstorespring.enums.AccessDeniedExceptionMessage;
 import com.example.portfolio.webstorespring.enums.OrderStatus;
 import com.example.portfolio.webstorespring.exceptions.OrderCanNotModifiedException;
@@ -34,9 +34,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static com.example.portfolio.webstorespring.buildhelpers.DeliveryBuilderHelper.createDelivery;
-import static com.example.portfolio.webstorespring.buildhelpers.OrderBuilderHelper.createOrder;
-import static com.example.portfolio.webstorespring.buildhelpers.OrderBuilderHelper.createOrderRequest;
+import static com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryBuilderHelper.createDelivery;
+import static com.example.portfolio.webstorespring.buildhelpers.orders.OrderBuilderHelper.createOrder;
+import static com.example.portfolio.webstorespring.buildhelpers.orders.OrderBuilderHelper.createOrderRequest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.anyLong;

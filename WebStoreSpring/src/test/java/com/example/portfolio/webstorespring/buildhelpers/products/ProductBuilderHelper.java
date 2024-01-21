@@ -1,4 +1,4 @@
-package com.example.portfolio.webstorespring.buildhelpers;
+package com.example.portfolio.webstorespring.buildhelpers.products;
 
 import com.example.portfolio.webstorespring.model.dto.products.request.ProductRequest;
 import com.example.portfolio.webstorespring.model.dto.products.request.ProductTypeRequest;
@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 import static com.example.portfolio.webstorespring.buildhelpers.DateForTestBuilderHelper.DATE_OF_CREATED;
-import static com.example.portfolio.webstorespring.buildhelpers.ProductTypeBuilderHelper.createProductTypeRequest;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProductTypeBuilderHelper.createProductTypeRequest;
 
 public class ProductBuilderHelper {
 

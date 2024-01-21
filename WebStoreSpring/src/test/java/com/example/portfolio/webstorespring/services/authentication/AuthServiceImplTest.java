@@ -14,8 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.example.portfolio.webstorespring.buildhelpers.AccountBuilderHelper.createAccountWithRoleUser;
-import static com.example.portfolio.webstorespring.buildhelpers.AuthTokenBuilderHelper.createAuthToken;
+import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.createAccountWithRoleUser;
+import static com.example.portfolio.webstorespring.buildhelpers.accounts.AuthTokenBuilderHelper.createAuthToken;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;

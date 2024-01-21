@@ -8,9 +8,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static com.example.portfolio.webstorespring.buildhelpers.AccountAddressBuilderHelper.createAccountAddress;
-import static com.example.portfolio.webstorespring.buildhelpers.DeliveryBuilderHelper.createDelivery;
-import static com.example.portfolio.webstorespring.buildhelpers.DeliveryBuilderHelper.createDeliveryWithBlankDeliveryAddress;
+import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountAddressBuilderHelper.createAccountAddress;
+import static com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryBuilderHelper.createDelivery;
+import static com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryBuilderHelper.createDeliveryWithBlankDeliveryAddress;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 

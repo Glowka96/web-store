@@ -1,4 +1,4 @@
-package com.example.portfolio.webstorespring.buildhelpers;
+package com.example.portfolio.webstorespring.buildhelpers.products;
 
 import com.example.portfolio.webstorespring.enums.SortByType;
 import com.example.portfolio.webstorespring.enums.SortDirectionType;
@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.example.portfolio.webstorespring.buildhelpers.ProductWithPromotionDtoBuildHelper.createProductWithPromotionDTO;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProductWithPromotionDtoBuildHelper.createProductWithPromotionDTO;
 
 public class PageProductWithPromotionDTOBuilderHelper {
 

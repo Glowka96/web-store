@@ -19,9 +19,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static com.example.portfolio.webstorespring.buildhelpers.CategoryBuilderHelper.createCategory;
-import static com.example.portfolio.webstorespring.buildhelpers.SubcategoryBuilderHelper.createSubcategory;
-import static com.example.portfolio.webstorespring.buildhelpers.SubcategoryBuilderHelper.createSubcategoryRequest;
+import static com.example.portfolio.webstorespring.buildhelpers.products.CategoryBuilderHelper.createCategory;
+import static com.example.portfolio.webstorespring.buildhelpers.products.SubcategoryBuilderHelper.createSubcategory;
+import static com.example.portfolio.webstorespring.buildhelpers.products.SubcategoryBuilderHelper.createSubcategoryRequest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.anyLong;

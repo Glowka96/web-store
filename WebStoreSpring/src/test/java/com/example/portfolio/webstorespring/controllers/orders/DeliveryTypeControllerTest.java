@@ -16,8 +16,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.List;
 
-import static com.example.portfolio.webstorespring.buildhelpers.DeliveryTypeBuilderHelper.createDeliveryTypeRequest;
-import static com.example.portfolio.webstorespring.buildhelpers.DeliveryTypeBuilderHelper.createDeliveryTypeResponse;
+import static com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryTypeBuilderHelper.createDeliveryTypeRequest;
+import static com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryTypeBuilderHelper.createDeliveryTypeResponse;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;

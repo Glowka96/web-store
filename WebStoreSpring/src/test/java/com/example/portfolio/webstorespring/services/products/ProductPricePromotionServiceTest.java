@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.services.products;
 
-import com.example.portfolio.webstorespring.buildhelpers.ProductBuilderHelper;
+import com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper;
 import com.example.portfolio.webstorespring.exceptions.PromotionPriceGreaterThanBasePriceException;
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.ProductPricePromotionMapper;
@@ -22,8 +22,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.math.BigDecimal;
 import java.util.Optional;
 
-import static com.example.portfolio.webstorespring.buildhelpers.ProductPricePromotionBuilderHelper.createProductPricePromotion;
-import static com.example.portfolio.webstorespring.buildhelpers.ProductPricePromotionBuilderHelper.createProductPricePromotionRequest;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProductPricePromotionBuilderHelper.createProductPricePromotion;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProductPricePromotionBuilderHelper.createProductPricePromotionRequest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;

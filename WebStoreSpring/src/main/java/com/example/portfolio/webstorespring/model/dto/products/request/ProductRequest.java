@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties
 public class ProductRequest {
 
     @NotBlank(message = "The name can't be blank")

@@ -1,4 +1,4 @@
-package com.example.portfolio.webstorespring.buildhelpers;
+package com.example.portfolio.webstorespring.buildhelpers.orders;
 
 import com.example.portfolio.webstorespring.model.dto.orders.request.ShipmentRequest;
 import com.example.portfolio.webstorespring.model.dto.orders.response.ShipmentResponse;
@@ -9,7 +9,7 @@ import com.example.portfolio.webstorespring.model.entity.products.Product;
 
 import java.math.BigDecimal;
 
-import static com.example.portfolio.webstorespring.buildhelpers.ProductBuilderHelper.*;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.*;
 
 public class ShipmentBuilderHelper {
 

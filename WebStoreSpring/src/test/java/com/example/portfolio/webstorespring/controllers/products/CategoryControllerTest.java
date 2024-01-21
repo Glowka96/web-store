@@ -17,8 +17,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Arrays;
 
-import static com.example.portfolio.webstorespring.buildhelpers.CategoryBuilderHelper.createCategoryRequest;
-import static com.example.portfolio.webstorespring.buildhelpers.CategoryBuilderHelper.createCategoryResponse;
+import static com.example.portfolio.webstorespring.buildhelpers.products.CategoryBuilderHelper.createCategoryRequest;
+import static com.example.portfolio.webstorespring.buildhelpers.products.CategoryBuilderHelper.createCategoryResponse;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
