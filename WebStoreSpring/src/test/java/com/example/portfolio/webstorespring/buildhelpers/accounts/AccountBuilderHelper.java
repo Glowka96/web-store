@@ -1,6 +1,7 @@
 package com.example.portfolio.webstorespring.buildhelpers.accounts;
 
 import com.example.portfolio.webstorespring.model.dto.accounts.request.AccountRequest;
+import com.example.portfolio.webstorespring.model.dto.accounts.response.AccountResponse;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.accounts.AccountAddress;
 import com.example.portfolio.webstorespring.model.entity.accounts.Role;
@@ -47,6 +48,16 @@ public class AccountBuilderHelper {
                 .firstName("Name")
                 .lastName("Lastname")
                 .password("Password123*")
+                .build();
+    }
+
+    public static AccountResponse createAccountResponse() {
+        return AccountResponse.builder()
+                .id(1L)
+                .firstName("Name")
+                .lastName("Lastname")
+                .email("test@test.pl")
+                .imageUrl("test.pl/test.png")
                 .build();
     }
 }
