@@ -1,4 +1,4 @@
-import { ProductResponse } from './product-response';
+import { ProductResponse } from './products/product-response';
 
 export interface ShipmentResponse {
   id: string;

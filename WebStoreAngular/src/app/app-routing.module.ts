@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { BoardAdminComponent } from './components/admin/board-admin/board-admin.component';
-import { ProductsComponent } from './components/products/products.component';
 import { AccountComponent } from './components/user/account/account.component';
 import { BasketComponent } from './components/basket/basket.component';
 import { PurchaseComponent } from './components/purchase/purchase.component';
@@ -12,13 +11,14 @@ import { HomeComponent } from './components/home/home.component';
 import { FormResetPasswordComponent } from './components/forms/form-reset-password/form-reset-password.component';
 import { ConfirmAccountComponent } from './components/confirms/confirm-account/confirm-account.component';
 import { ConfirmResetPasswordComponent } from './components/confirms/confirm-reset-password/confirm-reset-password.component';
+import { PageProductsComponent } from './components/page-products/page-products/page-products.component';
 
 const routes: Routes = [
   {
     path: ':categoryName/:subcategoryName/:id/products',
-    component: ProductsComponent,
+    component: PageProductsComponent,
   },
-  { path: 'search', component: ProductsComponent },
+  //{ path: 'search', component: ProductsComponent },
   { path: 'admin-board', component: BoardAdminComponent },
   { path: 'accounts', component: AccountComponent },
   { path: 'basket', component: BasketComponent },

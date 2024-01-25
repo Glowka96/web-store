@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ProducerResponse } from 'src/app/models/producer-response';
-import { ProductResponse } from 'src/app/models/product-response';
-import { ProductRequest } from 'src/app/models/product-request';
+import { ProductResponse } from 'src/app/models/products/product-response';
+import { ProductRequest } from 'src/app/models/products/product-request';
 import { SubcategoryResponse } from 'src/app/models/subcategory-response';
 import { ProducerService } from 'src/app/services/producer.service';
 import { ProductService } from 'src/app/services/product.service';

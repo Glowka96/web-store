@@ -6,7 +6,6 @@ import { AppComponent } from './app.component';
 import { ShopService } from './services/shop.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NavigationComponent } from './components/navigation/navigation.component';
-import { ProductsComponent } from './components/products/products.component';
 import { ModCategoryComponent } from './components/admin/modification/mod-category/mod-category.component';
 import { BoardAdminComponent } from './components/admin/board-admin/board-admin.component';
 import { ModSubcategoryComponent } from './components/admin/modification/mod-subcategory/mod-subcategory.component';
@@ -27,12 +26,13 @@ import { FormResetPasswordComponent } from './components/forms/form-reset-passwo
 import { AuthHttpInterceptorService } from './services/accounts/auth-http-interceptor.service';
 import { ConfirmAccountComponent } from './components/confirms/confirm-account/confirm-account.component';
 import { ConfirmResetPasswordComponent } from './components/confirms/confirm-reset-password/confirm-reset-password.component';
+import { PageProductsComponent } from './components/page-products/page-products/page-products.component';
+import { AbstractPageProductComponent } from './components/page-products/abstract-page-product/abstract-page-product.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavigationComponent,
-    ProductsComponent,
     FormLoginComponent,
     ModCategoryComponent,
     BoardAdminComponent,
@@ -50,6 +50,8 @@ import { ConfirmResetPasswordComponent } from './components/confirms/confirm-res
     ConfirmAccountComponent,
     ConfirmResetPasswordComponent,
     FormResetPasswordComponent,
+    PageProductsComponent,
+    AbstractPageProductComponent,
   ],
   imports: [
     BrowserModule,
