@@ -78,17 +78,17 @@ export class NavigationComponent implements OnInit {
     this.authService.logout();
   }
 
-  public onSearch(): void {
-    if (this.searchForm.valid) {
-      const text = this.searchForm.controls['search']?.value ?? '';
-      this.productService.getSearchProducts(text);
-      window.scroll({
-        top: 0,
-        left: 0,
-        behavior: 'smooth',
-      });
-    }
-  }
+  // public onSearch(): void {
+  //   if (this.searchForm.valid) {
+  //     const text = this.searchForm.controls['search']?.value ?? '';
+  //     this.productService.getSearchProducts(text);
+  //     window.scroll({
+  //       top: 0,
+  //       left: 0,
+  //       behavior: 'smooth',
+  //     });
+  //   }
+  // }
 
   public changeStatusLogginForm() {
     this.formLoginService.changeStatusFormLogin();
