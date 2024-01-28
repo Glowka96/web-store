@@ -1,9 +1,9 @@
 <section class="wrapper-products">
     <div class="title-products">
-        <h1> {{pageTitle }} ({{quantityOfProducts}}) </h1>
+        <h1> {{title}} ({{quantityOfProducts}}) </h1>
     </div>
     <div class="list-product">
-        <div class="product" *ngFor="let product of pageProduct?.products">
+        <div class="product" *ngFor="let product of products">
             <span class="product-name">{{product.name}}</span>
             <span class="product-img"><img src={{product.imageUrl}} alt="{{product.name}}" width="240" height="240"
                     fetchpriority="high">

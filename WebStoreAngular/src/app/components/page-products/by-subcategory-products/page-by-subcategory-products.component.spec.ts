@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PageProductsComponent } from './page-products.component';
+import { PageBySubcategoryProducts } from './page-by-subcategory-products.component';
 
 describe('PageProductsComponent', () => {
-  let component: PageProductsComponent;
-  let fixture: ComponentFixture<PageProductsComponent>;
+  let component: PageBySubcategoryProducts;
+  let fixture: ComponentFixture<PageBySubcategoryProducts>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [PageProductsComponent]
+      declarations: [PageBySubcategoryProducts],
     });
-    fixture = TestBed.createComponent(PageProductsComponent);
+    fixture = TestBed.createComponent(PageBySubcategoryProducts);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

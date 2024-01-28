@@ -1,18 +1,18 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { PageProductsOptions } from 'src/app/models/products/page-products-options';
 import { PageProductsWithPromotion } from 'src/app/models/products/page-products-with-promotion';
 import { AbstractPageProductsService } from './abstract-page-products.service';
-import { PageProductsOptions } from 'src/app/models/products/page-products-options';
 
 @Injectable({
   providedIn: 'root',
 })
-export class SearchProductsService extends AbstractPageProductsService {
+export class NewProductsService extends AbstractPageProductsService {
   public override getPageProducts(
     options: PageProductsOptions
   ): Observable<PageProductsWithPromotion> {
-    this.router.navigate(['/search'], {
+    this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
         page: options.page,
@@ -23,13 +23,12 @@ export class SearchProductsService extends AbstractPageProductsService {
       queryParamsHandling: 'merge',
     });
     const params = new HttpParams()
-      .set('text', options.text || '')
       .set('page', options.page)
       .set('size', options.size)
       .set('sort', options.sort)
       .set('direction', options.direction);
     return this.http.get<PageProductsWithPromotion>(
-      `${this.apiServerUrl}/products/search`,
+      `${this.apiServerUrl}/promotions/products`,
       { params }
     );
   }

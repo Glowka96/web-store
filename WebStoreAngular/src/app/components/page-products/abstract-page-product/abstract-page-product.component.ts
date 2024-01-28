@@ -9,30 +9,38 @@ import { AbstractPageProductsService } from 'src/app/services/page-products/abst
   styleUrls: ['./abstract-page-product.component.scss'],
 })
 export class AbstractPageProductComponent {
-  protected pageProduct!: PageProductsWithPromotion;
-  protected pageTitle!: string;
+  protected _pageProducts!: PageProductsWithPromotion;
+  protected _title!: string;
+  protected _listSortBy!: string[];
+  protected _listSortDirection!: string[];
 
-  constructor(protected pageProductService: AbstractPageProductsService) {
-    console.log('in abstract constr');
-  }
+  constructor(protected pageProductService: AbstractPageProductsService) {}
 
   ngOnInit(): void {}
 
-  protected get listProduct(): ProductWithPromotion[] {
-    return this.pageProduct.products;
+  protected get products(): ProductWithPromotion[] {
+    return this._pageProducts.products;
   }
 
   protected get title(): string {
-    return this.pageTitle ? this.pageTitle.toUpperCase() : '';
+    return this._title ? this._title.toUpperCase() : '';
   }
 
   protected get quantityOfProducts(): number {
-    return this.pageProduct.totalElements;
+    return this._pageProducts.totalElements;
+  }
+
+  protected get listSortBy() {
+    return this._listSortBy;
+  }
+
+  protected get listSortDirection() {
+    return this._listSortDirection;
   }
 
   protected get totalPagesArray(): number[] {
     return Array.from(
-      { length: this.pageProduct.totalPages },
+      { length: this._pageProducts.totalPages },
       (_, index) => index + 1
     );
   }
