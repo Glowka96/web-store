@@ -11,8 +11,10 @@ import { AbstractPageProductsService } from 'src/app/services/page-products/abst
 export class AbstractPageProductComponent {
   protected _pageProducts!: PageProductsWithPromotion;
   protected _title!: string;
-  protected _listSortBy!: string[];
-  protected _listSortDirection!: string[];
+  protected _selectedPageNumber: number = 1;
+  protected _selectedSortBy: string = 'id';
+  protected _selectedSortDirection: string = 'asc';
+  protected _selectedPageSize: number = 12;
 
   constructor(protected pageProductService: AbstractPageProductsService) {}
 
@@ -26,16 +28,20 @@ export class AbstractPageProductComponent {
     return this._title ? this._title.toUpperCase() : '';
   }
 
+  protected setTitle(title: string) {
+    this._title = title;
+  }
+
   protected get quantityOfProducts(): number {
     return this._pageProducts.totalElements;
   }
 
   protected get listSortBy() {
-    return this._listSortBy;
+    return this._pageProducts.sortByTypes;
   }
 
   protected get listSortDirection() {
-    return this._listSortDirection;
+    return this._pageProducts.sortDirectionTypes;
   }
 
   protected get totalPagesArray(): number[] {

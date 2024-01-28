@@ -4,6 +4,6 @@ export interface PageProductsWithPromotion {
   totalElements: number;
   totalPages: number;
   sortByTypes: string[];
-  sortDirectionsTypes: string[];
+  sortDirectionTypes: string[];
   products: ProductWithPromotion[];
 }

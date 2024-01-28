@@ -1,0 +1,37 @@
+<section class="wrapper-products">
+    <div class="title-products">
+        <h1> {{title}} ({{quantityOfProducts}}) </h1>
+        <div class="sort-products">
+            <select class="sort" [(ngModel)]="_selectedSortBy"
+                (change)="getPageProducts(subcategoryId, _selectedPageNumber, _selectedPageSize, _selectedSortBy, _selectedSortDirection)">
+                <option *ngFor="let sortBy of listSortBy">
+                    {{sortBy}}
+                </option>
+            </select>
+            <select class="sort" [(ngModel)]="_selectedSortDirection"
+                (change)="getPageProducts(subcategoryId, _selectedPageNumber, _selectedPageSize, _selectedSortBy, _selectedSortDirection)">
+                <option *ngFor="let sortDirection of listSortDirection">{{sortDirection}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="list-product">
+        <div class="product" *ngFor="let product of products">
+            <span class="product-name">{{product.name}}</span>
+            <span class="product-img"><img src={{product.imageUrl}} alt="{{product.name}}" width="240" height="240"
+                    fetchpriority="high">
+            </span>
+
+            <div class="add-to-cart">
+
+            </div>
+        </div>
+    </div>
+    <nav class="pagination">
+        <div class="page" *ngFor="let pageNumber of totalPagesArray">
+            <button class="btn-page"
+                (click)="getPageProducts(subcategoryId,pageNumber-1,_selectedPageSize,_selectedSortBy,_selectedSortDirection)">
+                {{pageNumber}}
+            </button>
+        </div>
+    </nav>
+</section>

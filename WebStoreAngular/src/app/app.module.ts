@@ -26,7 +26,7 @@ import { FormResetPasswordComponent } from './components/forms/form-reset-passwo
 import { AuthHttpInterceptorService } from './services/accounts/auth-http-interceptor.service';
 import { ConfirmAccountComponent } from './components/confirms/confirm-account/confirm-account.component';
 import { ConfirmResetPasswordComponent } from './components/confirms/confirm-reset-password/confirm-reset-password.component';
-import { PageBySubcategoryProducts } from './components/page-products/by-subcategory-products/page-by-subcategory-products.component';
+import { PageBySubcategoryId } from './components/page-products/by-subcategory-id/page-by-subcategory-id.component';
 import { AbstractPageProductComponent } from './components/page-products/abstract-page-product/abstract-page-product.component';
 
 @NgModule({
@@ -50,7 +50,7 @@ import { AbstractPageProductComponent } from './components/page-products/abstrac
     ConfirmAccountComponent,
     ConfirmResetPasswordComponent,
     FormResetPasswordComponent,
-    PageBySubcategoryProducts,
+    PageBySubcategoryId,
     AbstractPageProductComponent,
   ],
   imports: [

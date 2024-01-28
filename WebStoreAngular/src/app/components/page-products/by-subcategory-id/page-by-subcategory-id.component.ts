@@ -6,10 +6,10 @@ import { AbstractPageProductComponent } from '../abstract-page-product/abstract-
 
 @Component({
   selector: 'app-page-products',
-  templateUrl: './page-by-subcategory-products.component.html',
-  styleUrls: ['./page-by-subcategory-products.component.scss'],
+  templateUrl: './page-by-subcategory-id.component.html',
+  styleUrls: ['./page-by-subcategory-id.component.scss'],
 })
-export class PageBySubcategoryProducts
+export class PageBySubcategoryId
   extends AbstractPageProductComponent
   implements OnInit
 {
@@ -35,7 +35,7 @@ export class PageBySubcategoryProducts
     });
   }
 
-  private getPageProducts(
+  protected getPageProducts(
     subcategoryId: string,
     pageNo = 0,
     pageSize = 12,
@@ -49,15 +49,18 @@ export class PageBySubcategoryProducts
       sort: sortBy,
       direction: sortDirection,
     };
+    this._selectedPageNumber = pageNo;
     this.pageService.getPageProducts(options).subscribe((data) => {
       this._pageProducts = data;
-      console.log('in get products page');
-      console.log(data);
       window.scroll({
         top: 0,
         left: 0,
         behavior: 'smooth',
       });
     });
+  }
+
+  protected get subcategoryId() {
+    return this._subcategoryId;
   }
 }

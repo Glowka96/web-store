@@ -11,12 +11,12 @@ import { HomeComponent } from './components/home/home.component';
 import { FormResetPasswordComponent } from './components/forms/form-reset-password/form-reset-password.component';
 import { ConfirmAccountComponent } from './components/confirms/confirm-account/confirm-account.component';
 import { ConfirmResetPasswordComponent } from './components/confirms/confirm-reset-password/confirm-reset-password.component';
-import { PageBySubcategoryProducts } from './components/page-products/by-subcategory-products/page-by-subcategory-products.component';
+import { PageBySubcategoryId } from './components/page-products/by-subcategory-id/page-by-subcategory-id.component';
 
 const routes: Routes = [
   {
     path: ':categoryName/:subcategoryName/:id/products',
-    component: PageBySubcategoryProducts,
+    component: PageBySubcategoryId,
   },
   { path: 'admin-board', component: BoardAdminComponent },
   { path: 'accounts', component: AccountComponent },
