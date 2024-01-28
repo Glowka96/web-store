@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { ShipmentRequest } from '../models/shipment-request';
-import { OrderRequest } from '../models/order-request';
+import { ShipmentRequest } from '../../models/shipment-request';
+import { OrderRequest } from '../../models/order-request';
 
 @Injectable({
   providedIn: 'root',
@@ -18,17 +18,12 @@ export class ShopService {
   public addToBasket(shipment: ShipmentRequest) {
     const cart = this.basket.value;
     const findShipment = cart.find((s) => s.product.id == shipment.product.id);
-    if (findShipment?.quantity === 100) {
-      return;
-    }
     if (findShipment) {
-      findShipment.price = (
-        Number(findShipment.price) + Number(shipment.price)
-      ).toFixed(2);
       findShipment.quantity += shipment.quantity;
     } else {
       cart.push(shipment);
     }
+    console.log(cart);
     this.basket.next(cart);
   }
 

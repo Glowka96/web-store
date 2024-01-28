@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CategoryRequest } from 'src/app/models/category-request';
 import { ProducerResponse } from 'src/app/models/producer-response';
-import { ProducerService } from 'src/app/services/producer.service';
+import { ProducerService } from 'src/app/services/products/producer.service';
 
 @Component({
   selector: 'app-mod-producer',

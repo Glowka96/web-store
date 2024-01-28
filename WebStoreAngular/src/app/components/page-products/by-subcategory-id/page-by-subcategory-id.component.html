@@ -20,9 +20,28 @@
             <span class="product-img"><img src={{product.imageUrl}} alt="{{product.name}}" width="240" height="240"
                     fetchpriority="high">
             </span>
-
+            <div class="quantity-product">
+                <span class="product-price">{{getPrice(product)}} PLN</span>
+                <input aria-label="quantity-product" #box (keyup.enter)="changeProductQuantity(product, box.value)"
+                    (blur)="changeProductQuantity(product, box.value)" type="number"
+                    value="{{getQuantityOfProduct(product.id)}}" min="1" max={{product.quantity}}>
+                <button class="button-change-quantity" aria-label="increase product quantity"
+                    (click)="increaseProductQuantity(product)">
+                    <i class="icon-plus"></i>
+                </button>
+                <button class="button-change-quantity" aria-label="decrease product quantity"
+                    (click)="decreaseProductQuantity(product)">
+                    <i class="icon-minus"></i>
+                </button>
+                <div *ngIf="isMaxQuantityOfProduct(product)">
+                    <p class="insufficient-quantity-message">Max quantity of this product</p>
+                </div>
+            </div>
             <div class="add-to-cart">
-
+                <button class="button-add" type="submit" (click)="addToBasket(product.id)">
+                    <span>Add to cart</span>
+                    <i class="icon-cart-plus"></i>
+                </button>
             </div>
         </div>
     </div>

@@ -1,7 +1,6 @@
 package com.example.portfolio.webstorespring.model.dto.orders.response;
 
-import com.example.portfolio.webstorespring.model.dto.products.response.ProductResponse;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,8 +16,7 @@ public class ShipmentResponse {
 
     private Long id;
 
-    @JsonProperty(value = "product")
-    private ProductResponse productResponse;
+    private ProductWithPromotionDTO product;
 
     private Integer quantity;
 

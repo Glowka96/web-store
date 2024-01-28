@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { ProducerRequest } from '../models/producer-request';
-import { ProducerResponse } from '../models/producer-response';
+import { ProducerRequest } from '../../models/producer-request';
+import { ProducerResponse } from '../../models/producer-response';
 
 @Injectable({
   providedIn: 'root',

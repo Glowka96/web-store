@@ -3,6 +3,8 @@ import { SubcategoryIdProductsService } from 'src/app/services/page-products/sub
 import { ActivatedRoute } from '@angular/router';
 import { PageProductsWithPromotion } from 'src/app/models/products/page-products-with-promotion';
 import { AbstractPageProductComponent } from '../abstract-page-product/abstract-page-product.component';
+import { ShopService } from 'src/app/services/olders/shop.service';
+import { ProductWithPromotion } from 'src/app/models/products/products-with-promotion';
 
 @Component({
   selector: 'app-page-products',
@@ -18,9 +20,10 @@ export class PageBySubcategoryId
 
   constructor(
     private route: ActivatedRoute,
-    private pageService: SubcategoryIdProductsService
+    private pageService: SubcategoryIdProductsService,
+    protected override shopService: ShopService
   ) {
-    super(pageService);
+    super(pageService, shopService);
     console.log('in page constr');
   }
 
@@ -52,6 +55,9 @@ export class PageBySubcategoryId
     this._selectedPageNumber = pageNo;
     this.pageService.getPageProducts(options).subscribe((data) => {
       this._pageProducts = data;
+      this._pageProducts.products.forEach(
+        (product) => (this._cart[product.id] = 1)
+      );
       window.scroll({
         top: 0,
         left: 0,

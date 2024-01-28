@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.model.dto.orders.request;
 
-import com.example.portfolio.webstorespring.model.dto.products.request.ProductRequest;
+import com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionDTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
@@ -20,7 +20,7 @@ public class ShipmentRequest {
     @Valid
     @NotNull(message = "The product can't be null")
     @JsonProperty(value = "product")
-    private ProductRequest productRequest;
+    private ProductWithPromotionDTO product;
 
     @NotNull(message = "The quantity can't be null")
     @Min(value = 1, message = "The quantity must be greater than or equal to one")

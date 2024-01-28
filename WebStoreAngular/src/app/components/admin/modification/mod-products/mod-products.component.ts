@@ -4,8 +4,8 @@ import { ProducerResponse } from 'src/app/models/producer-response';
 import { ProductResponse } from 'src/app/models/products/product-response';
 import { ProductRequest } from 'src/app/models/products/product-request';
 import { SubcategoryResponse } from 'src/app/models/subcategory-response';
-import { ProducerService } from 'src/app/services/producer.service';
-import { ProductService } from 'src/app/services/product.service';
+import { ProducerService } from 'src/app/services/products/producer.service';
+import { ProductService } from 'src/app/services/products/product.service';
 
 @Component({
   selector: 'app-mod-products',

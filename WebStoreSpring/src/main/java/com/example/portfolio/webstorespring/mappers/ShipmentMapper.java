@@ -16,14 +16,14 @@ import java.util.List;
 )
 public interface ShipmentMapper {
 
-    @Mapping(target = "productResponse", source = "product")
+    @Mapping(target = "product", source = "product")
     ShipmentResponse mapToDto(Shipment shipment);
 
     List<ShipmentResponse> mapToDto(List<Shipment> shipments);
 
+    @Mapping(target = "price", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "order", ignore = true)
-    @Mapping(target = "product", source = "productRequest")
     Shipment mapToEntity(ShipmentRequest shipmentRequest);
 
     List<Shipment> mapToEntity(List<ShipmentRequest> shipmentResponses);

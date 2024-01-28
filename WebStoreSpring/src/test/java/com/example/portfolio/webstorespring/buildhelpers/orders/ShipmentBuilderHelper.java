@@ -2,14 +2,14 @@ package com.example.portfolio.webstorespring.buildhelpers.orders;
 
 import com.example.portfolio.webstorespring.model.dto.orders.request.ShipmentRequest;
 import com.example.portfolio.webstorespring.model.dto.orders.response.ShipmentResponse;
-import com.example.portfolio.webstorespring.model.dto.products.request.ProductRequest;
-import com.example.portfolio.webstorespring.model.dto.products.response.ProductResponse;
+import com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionDTO;
 import com.example.portfolio.webstorespring.model.entity.orders.Shipment;
 import com.example.portfolio.webstorespring.model.entity.products.Product;
 
 import java.math.BigDecimal;
 
-import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.*;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.createProduct;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProductWithPromotionDtoBuildHelper.createProductWithPromotionDTO;
 
 public class ShipmentBuilderHelper {
 
@@ -23,19 +23,19 @@ public class ShipmentBuilderHelper {
     }
 
     public static ShipmentRequest createShipmentRequest() {
-        ProductRequest productRequest = createProductRequest();
+        ProductWithPromotionDTO productRequest = createProductWithPromotionDTO();
         return ShipmentRequest.builder()
                 .quantity(3)
-                .productRequest(productRequest)
+                .product(productRequest)
                 .build();
     }
 
     public static ShipmentResponse createShipmentResponse() {
-        ProductResponse productResponse = createProductResponse();
+        ProductWithPromotionDTO product = createProductWithPromotionDTO();
         return ShipmentResponse.builder()
                 .id(1L)
                 .price(BigDecimal.valueOf(60.0))
-                .productResponse(productResponse)
+                .product(product)
                 .quantity(3)
                 .build();
     }

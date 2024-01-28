@@ -1,7 +1,6 @@
-import { ProductResponse } from './products/product-response';
+import { ProductWithPromotion } from './products/products-with-promotion';
 
 export interface ShipmentRequest {
-  product: ProductResponse;
+  product: ProductWithPromotion;
   quantity: number;
-  price: string;
 }

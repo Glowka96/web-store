@@ -8,8 +8,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { CategoryResponse } from 'src/app/models/category-response';
-import { CategoryService } from 'src/app/services/category.service';
-import { ProductService } from 'src/app/services/product.service';
+import { CategoryService } from 'src/app/services/products/category.service';
+import { ProductService } from 'src/app/services/products/product.service';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { AuthenticationService } from 'src/app/services/accounts/authentication.service';
 import { FormLoginService } from 'src/app/services/accounts/form-login.service';

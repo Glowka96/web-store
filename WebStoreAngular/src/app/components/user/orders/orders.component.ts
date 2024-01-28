@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { OrderRequest } from 'src/app/models/order-request';
 import { OrderResponse } from 'src/app/models/order-response';
-import { OrdersService } from 'src/app/services/orders.service';
+import { OrdersService } from 'src/app/services/olders/orders.service';
 
 @Component({
   selector: 'app-orders',

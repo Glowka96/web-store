@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { SubcategoryRequest } from '../models/subcategory-request';
+import { SubcategoryRequest } from '../../models/subcategory-request';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { SubcategoryResponse } from '../models/subcategory-response';
+import { SubcategoryResponse } from '../../models/subcategory-response';
 
 @Injectable({
   providedIn: 'root',

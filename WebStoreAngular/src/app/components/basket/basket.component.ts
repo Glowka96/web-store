@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { ShipmentRequest } from 'src/app/models/shipment-request';
 import { AuthenticationService } from 'src/app/services/accounts/authentication.service';
 import { FormLoginService } from 'src/app/services/accounts/form-login.service';
-import { ShopService } from 'src/app/services/shop.service';
+import { ShopService } from 'src/app/services/olders/shop.service';
 
 @Component({
   selector: 'app-basket',
@@ -74,9 +74,9 @@ export class BasketComponent implements OnInit {
       const quantity = this.changeForm.controls['quantity']?.value;
 
       this.basket[index].quantity = Number(quantity);
-      this.basket[index].price = (
-        Number(quantity) * Number(this.basket[index].product.price)
-      ).toFixed(2);
+      // this.basket[index].price = (
+      //   Number(quantity) * Number(this.basket[index].product.price)
+      // ).toFixed(2);
       this.change('');
       this.changeForm.controls['quantity'].reset();
     }
@@ -95,7 +95,7 @@ export class BasketComponent implements OnInit {
 
   private getIndexBasket(productId: string) {
     return this.basket.findIndex((shipment) => {
-      return shipment.product.id === productId;
+      //return shipment.product.id === productId;
     });
   }
 

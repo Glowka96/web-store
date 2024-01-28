@@ -5,7 +5,7 @@ import { AccountAddress } from 'src/app/models/account-address';
 import { OrderRequest } from 'src/app/models/order-request';
 import { ShipmentRequest } from 'src/app/models/shipment-request';
 import { AccountService } from 'src/app/services/accounts/account.service';
-import { ShopService } from 'src/app/services/shop.service';
+import { ShopService } from 'src/app/services/olders/shop.service';
 
 @Component({
   selector: 'app-purchase',
@@ -67,9 +67,6 @@ export class PurchaseComponent implements OnInit {
     });
     this.shopService.basket$.subscribe((shipments) => {
       this.basket = shipments;
-      shipments.forEach((shipment) =>
-        (this.shipmentsPrice += Number(shipment.price)).toFixed(2)
-      );
     });
   }
 

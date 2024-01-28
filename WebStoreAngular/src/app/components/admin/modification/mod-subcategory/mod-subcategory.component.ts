@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CategoryResponse } from 'src/app/models/category-response';
 import { SubcategoryResponse } from 'src/app/models/subcategory-response';
 import { SubcategoryRequest } from 'src/app/models/subcategory-request';
-import { SubcategoryService } from 'src/app/services/subcategory.service';
+import { SubcategoryService } from 'src/app/services/products/subcategory.service';
 
 @Component({
   selector: 'app-mod-subcategory',
