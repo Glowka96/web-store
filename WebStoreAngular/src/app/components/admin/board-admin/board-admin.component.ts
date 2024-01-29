@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 import { CategoryResponse } from 'src/app/models/category-response';
 import { SubcategoryResponse } from 'src/app/models/subcategory-response';
 import { AuthenticationService } from 'src/app/services/accounts/authentication.service';
-import { CategoryService } from 'src/app/services/category.service';
-import { SubcategoryService } from 'src/app/services/subcategory.service';
+import { CategoryService } from 'src/app/services/products/category.service';
+import { SubcategoryService } from 'src/app/services/products/subcategory.service';
 
 @Component({
   selector: 'app-board-admin',

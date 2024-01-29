@@ -21,7 +21,23 @@
                     fetchpriority="high">
             </span>
             <div class="quantity-product">
-                <span class="product-price">{{getPrice(product)}} PLN</span>
+                <div class="product-price"
+                    [ngStyle]="{'text-decoration': product.promotionPrice ? 'line-through' : 'none'}">
+                    <span *ngIf="!isPromotions(product)">
+                        {{getPrice(product)}} PLN
+                    </span>
+                    <span *ngIf="isPromotions(product)">
+                        {{product.price}} PLN
+                    </span>
+                </div>
+                <div class="product-price" *ngIf="isPromotions(product)">
+                    <p>
+                        Promotion price: {{getPrice(product)}} PLN
+                    </p>
+                    <p>
+                        Lowest price in the last 30 days: {{product.lowestPrice}} PLN
+                    </p>
+                </div>
                 <input aria-label="quantity-product" #box (keyup.enter)="changeProductQuantity(product, box.value)"
                     (blur)="changeProductQuantity(product, box.value)" type="number"
                     value="{{getQuantityOfProduct(product.id)}}" min="1" max={{product.quantity}}>
@@ -34,7 +50,7 @@
                     <i class="icon-minus"></i>
                 </button>
                 <div *ngIf="isMaxQuantityOfProduct(product)">
-                    <p class="insufficient-quantity-message">Max quantity of this product</p>
+                    <p class="information-window">Max quantity of this product</p>
                 </div>
             </div>
             <div class="add-to-cart">

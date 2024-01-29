@@ -57,20 +57,6 @@
           max-width: 240px;
           max-height: 240px;
         }
-        .product-description {
-          position: absolute;
-          z-index: 0;
-          max-width: 190px;
-          padding: 10px;
-          background-color: rgb(212, 212, 212);
-          border-radius: 10px;
-          visibility: hidden;
-        }
-        &:hover {
-          .product-description {
-            visibility: visible;
-          }
-        }
       }
       .product-name {
         font-size: 22px;
@@ -80,9 +66,27 @@
       .quantity-product {
         .product-price {
           margin-right: 5px;
+          p {
+            margin: 0;
+          }
+        }
+        .information-window {
+          position: absolute;
+          z-index: 0;
+          max-width: 190px;
+          padding: 10px;
+          background-color: rgb(212, 212, 212);
+          border-radius: 10px;
+          opacity: 0;
+          transition: opacity 5s;
         }
         .button-change-quantity {
           cursor: pointer;
+        }
+        &:active {
+          .information-window {
+            opacity: 1;
+          }
         }
       }
       .add-to-cart {

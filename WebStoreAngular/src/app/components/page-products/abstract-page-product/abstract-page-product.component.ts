@@ -49,13 +49,13 @@ export class AbstractPageProductComponent {
     }
   }
 
-  public increaseProductQuantity(product: ProductWithPromotion) {
+  protected increaseProductQuantity(product: ProductWithPromotion) {
     this._cart[product.id] >= product.quantity
       ? (this._cart[product.id] = product.quantity)
       : (this._cart[product.id] += 1);
   }
 
-  public decreaseProductQuantity(product: ProductWithPromotion) {
+  protected decreaseProductQuantity(product: ProductWithPromotion) {
     this._cart[product.id] > 1
       ? (this._cart[product.id] -= 1)
       : (this._cart[product.id] = 1);
@@ -65,7 +65,7 @@ export class AbstractPageProductComponent {
     return this._cart[productId];
   }
 
-  public changeProductQuantity(
+  protected changeProductQuantity(
     product: ProductWithPromotion,
     quantity: string
   ) {
@@ -78,8 +78,12 @@ export class AbstractPageProductComponent {
     this._cart[product.id] = Number(quantity);
   }
 
-  isMaxQuantityOfProduct(product: ProductWithPromotion): boolean {
+  protected isMaxQuantityOfProduct(product: ProductWithPromotion): boolean {
     return product.quantity === this._cart[product.id];
+  }
+
+  protected isPromotions(product: ProductWithPromotion): boolean {
+    return product.promotionPrice ? true : false;
   }
 
   protected get products(): ProductWithPromotion[] {
