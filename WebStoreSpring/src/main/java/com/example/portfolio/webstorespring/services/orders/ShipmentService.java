@@ -1,6 +1,7 @@
 package com.example.portfolio.webstorespring.services.orders;
 
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
+import com.example.portfolio.webstorespring.exceptions.ShipmentQuantityExceedsProductQuantityException;
 import com.example.portfolio.webstorespring.model.dto.orders.request.ShipmentRequest;
 import com.example.portfolio.webstorespring.model.entity.orders.Order;
 import com.example.portfolio.webstorespring.model.entity.orders.Shipment;
@@ -22,17 +23,18 @@ class ShipmentService {
 
     protected void setupOrderShipments(Order order, List<ShipmentRequest> shipmentRequests) {
         List<Shipment> shipments = new ArrayList<>();
-        shipmentRequests.forEach(shipmentRequest -> {
-            shipments.add(
-                    createShipment(
-                            order,
-                            findProductByIdWithPromotion(shipmentRequest.getProductId()),
-                            shipmentRequest.getQuantity()));
-        });
+        shipmentRequests.forEach(shipmentRequest -> shipments.add(
+                createShipment(
+                        order,
+                        findProductByIdWithPromotion(shipmentRequest.getProductId()),
+                        shipmentRequest.getQuantity())));
         order.setShipments(shipments);
     }
 
     private Shipment createShipment(Order order, Product product, Integer quantity) {
+        if(product.getQuantity() < quantity) {
+            throw new ShipmentQuantityExceedsProductQuantityException();
+        }
         return Shipment.builder().product(product)
                 .price(calculateShipmentPrice(product, quantity))
                 .order(order)
