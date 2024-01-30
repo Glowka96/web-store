@@ -55,6 +55,7 @@ export class PageBySubcategoryId
     this._selectedPageNumber = pageNo;
     this.pageService.getPageProducts(options).subscribe((data) => {
       this._pageProducts = data;
+      console.log(data);
       this._pageProducts.products.forEach(
         (product) => (this._cart[product.id] = 1)
       );

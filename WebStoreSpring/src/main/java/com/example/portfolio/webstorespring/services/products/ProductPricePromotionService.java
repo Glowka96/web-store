@@ -1,5 +1,6 @@
 package com.example.portfolio.webstorespring.services.products;
 
+import com.example.portfolio.webstorespring.exceptions.ProductHasAlreadyPromotionException;
 import com.example.portfolio.webstorespring.exceptions.PromotionPriceGreaterThanBasePriceException;
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.ProductPricePromotionMapper;
@@ -26,6 +27,10 @@ public class ProductPricePromotionService {
     public ProductPricePromotionResponse saveProductPricePromotion(@NotNull ProductPricePromotionRequest promotionRequest) {
         Product product = findProductById(promotionRequest.getProductId());
 
+        if(!product.getPricePromotions().isEmpty()) {
+            throw new ProductHasAlreadyPromotionException();
+        }
+
         if(product.getPrice().compareTo(promotionRequest.getPromotionPrice()) < 0) {
             throw new PromotionPriceGreaterThanBasePriceException();
         }
@@ -44,7 +49,7 @@ public class ProductPricePromotionService {
     }
 
     private Product findProductById(Long id) {
-        return productRepository.findById(id)
+        return productRepository.findProductsByIdWithPromotion(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "id", id));
     }
 

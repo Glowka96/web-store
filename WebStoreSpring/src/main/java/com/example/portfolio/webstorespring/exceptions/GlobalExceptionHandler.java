@@ -49,6 +49,7 @@ public class GlobalExceptionHandler {
             TokenConfirmedException.class,
             TokenExpiredException.class,
             PromotionPriceGreaterThanBasePriceException.class,
+            ProductHasAlreadyPromotionException.class,
             DeliveryAddressCanNotEmpty.class
     })
     public ResponseEntity<ErrorResponse> handleCanNotModifiedException(RuntimeException exception,
