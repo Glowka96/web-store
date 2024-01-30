@@ -1,8 +1,5 @@
 package com.example.portfolio.webstorespring.model.dto.orders.request;
 
-import com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionDTO;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -17,13 +14,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ShipmentRequest {
 
-    @Valid
-    @NotNull(message = "The product can't be null")
-    @JsonProperty(value = "product")
-    private ProductWithPromotionDTO product;
+    @NotNull(message = "The product id cannot be null")
+    @Min(value = 1, message = "The product id must be greater than or equal to one")
+    private Long productId;
 
-    @NotNull(message = "The quantity can't be null")
+    @NotNull(message = "The quantity cannot be null")
     @Min(value = 1, message = "The quantity must be greater than or equal to one")
-    @Max(value = 100, message = "The quantity must be less than or equal to hundred")
+    @Max(value = 1000, message = "The quantity must be less than or equal to thousand")
     private Integer quantity;
 }

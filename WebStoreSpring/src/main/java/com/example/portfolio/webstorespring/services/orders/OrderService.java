@@ -6,6 +6,7 @@ import com.example.portfolio.webstorespring.exceptions.OrderCanNotModifiedExcept
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.OrderMapper;
 import com.example.portfolio.webstorespring.model.dto.orders.request.OrderRequest;
+import com.example.portfolio.webstorespring.model.dto.orders.request.ShipmentRequest;
 import com.example.portfolio.webstorespring.model.dto.orders.response.OrderResponse;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.orders.Order;
@@ -35,6 +36,7 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
+    private final ShipmentService shipmentService;
     private final DeliveryService deliveryService;
     private final Clock clock = Clock.systemUTC();
 
@@ -66,7 +68,7 @@ public class OrderService {
         Account loggedAccount = getAccountDetails().getAccount();
         Order order = orderMapper.mapToEntity(orderRequest);
 
-        setupNewOrder(loggedAccount, order);
+        setupNewOrder(order, loggedAccount, orderRequest.getShipmentRequests());
 
         orderRepository.save(order);
 
@@ -83,7 +85,7 @@ public class OrderService {
 
         Order order = orderMapper.mapToEntity(orderRequest);
 
-        setupUpdateOrder(foundOrder, order, foundOrder.getAccount());
+        setupUpdateOrder(foundOrder, order, foundOrder.getAccount(), orderRequest.getShipmentRequests());
         orderRepository.save(foundOrder);
         return orderMapper.mapToDto(foundOrder);
     }
@@ -121,7 +123,9 @@ public class OrderService {
                 .getPrincipal();
     }
 
-    private void setupNewOrder(Account loggedAccount, Order order) {
+    private void setupNewOrder(Order order,
+                               Account loggedAccount,
+                               List<ShipmentRequest> shipmentRequests) {
         order.setAccount(loggedAccount);
         order.setNameUser(loggedAccount.getFirstName() +
                           " " + loggedAccount.getLastName());
@@ -131,12 +135,15 @@ public class OrderService {
         order.setDelivery(deliveryService.formatDelivery(order.getDelivery(),
                 loggedAccount.getAddress()));
 
-        setupShipmentsInOrder(order);
+        shipmentService.setupOrderShipments(order, shipmentRequests);
         setupTotalPrice(order);
     }
 
-    private void setupUpdateOrder(Order currentOrder, Order updateOrder, Account loggedAccount) {
-        setupShipmentsInOrder(updateOrder);
+    private void setupUpdateOrder(Order currentOrder,
+                                  Order updateOrder,
+                                  Account loggedAccount,
+                                  List<ShipmentRequest> shipmentRequests) {
+        shipmentService.setupOrderShipments(updateOrder, shipmentRequests);
 
         currentOrder.setShipments(updateOrder.getShipments());
         currentOrder.setDateOfCreation(getCurrentDate());
@@ -146,27 +153,12 @@ public class OrderService {
         setupTotalPrice(currentOrder);
     }
 
-    private void setupShipmentsInOrder(Order order) {
-        order.getShipments().forEach(shipment -> {
-            shipment.setOrder(order);
-            shipment.setPrice(calculateShipmentPrice(shipment));
-            shipment.getProduct().setQuantity(
-                    shipment.getProduct().getQuantity() - shipment.getQuantity());
-        });
-    }
-
-    private BigDecimal calculateShipmentPrice(Shipment shipment) {
-        return BigDecimal.valueOf(shipment.getQuantity())
-                .multiply(shipment.getProduct().getPrice())
-                .setScale(2, RoundingMode.HALF_UP);
-    }
-
     private void setupTotalPrice(Order order) {
         order.setTotalPrice(order.getShipments()
                 .stream()
                 .map(Shipment::getPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add)
-                        .add(order.getDelivery().getDeliveryType().getPrice())
+                .add(order.getDelivery().getDeliveryType().getPrice())
                 .setScale(2, RoundingMode.HALF_UP));
     }
 

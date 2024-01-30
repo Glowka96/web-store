@@ -30,6 +30,6 @@ public interface OrderMapper {
     @Mapping(target = "dateOfCreation", ignore = true)
     @Mapping(target = "account", ignore = true)
     @Mapping(target = "delivery", source = "deliveryRequest")
-    @Mapping(target = "shipments", source = "shipmentRequests")
+    @Mapping(target = "shipments", ignore = true)
     Order mapToEntity(OrderRequest orderRequest);
 }

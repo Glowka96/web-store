@@ -88,4 +88,12 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             """)
     Optional<Page<ProductWithPromotionDTO>> findNewProducts(@Param("date30DaysAgo") Date date30DaysAgo,
                                                             Pageable pageable);
+
+    @Query("""
+            SELECT p FROM Product p
+            LEFT JOIN p.pricePromotions pp
+            ON (CURRENT_DATE BETWEEN pp.startDate AND pp.endDate)
+            WHERE p.id = :productId
+            """)
+    Optional<Product> findProductsByIdWithPromotion(@Param("productId") Long productId);
 }

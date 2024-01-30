@@ -18,6 +18,7 @@ import java.util.List;
 public class OrderRequest {
 
     @Valid
+    @JsonProperty("delivery")
     @NotNull(message = "The delivery address can't be null")
     private DeliveryRequest deliveryRequest;
 
