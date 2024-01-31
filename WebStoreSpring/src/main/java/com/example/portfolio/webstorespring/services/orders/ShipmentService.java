@@ -20,15 +20,17 @@ import java.util.List;
 class ShipmentService {
 
     private final ProductRepository productRepository;
+    private final ShipmentRepository shipmentRepository;
 
-    protected void setupOrderShipments(Order order, List<ShipmentRequest> shipmentRequests) {
+    protected List<Shipment> getSetupedShipments(Order order, List<ShipmentRequest> shipmentRequests) {
         List<Shipment> shipments = new ArrayList<>();
         shipmentRequests.forEach(shipmentRequest -> shipments.add(
                 createShipment(
                         order,
                         findProductByIdWithPromotion(shipmentRequest.getProductId()),
                         shipmentRequest.getQuantity())));
-        order.setShipments(shipments);
+        shipmentRepository.saveAll(shipments);
+        return shipments;
     }
 
     private Shipment createShipment(Order order, Product product, Integer quantity) {
@@ -45,7 +47,7 @@ class ShipmentService {
     private BigDecimal calculateShipmentPrice(Product product, Integer quantity) {
         BigDecimal priceForShipment = product.getPrice();
 
-        if (!product.getPricePromotions().isEmpty()) {
+        if (product.getPricePromotions() != null) {
             priceForShipment = product.getPricePromotions()
                     .iterator()
                     .next()

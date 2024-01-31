@@ -135,7 +135,7 @@ public class OrderService {
         order.setDelivery(deliveryService.formatDelivery(order.getDelivery(),
                 loggedAccount.getAddress()));
 
-        shipmentService.setupOrderShipments(order, shipmentRequests);
+        order.setShipments(shipmentService.getSetupedShipments(order, shipmentRequests));
         setupTotalPrice(order);
     }
 
@@ -143,12 +143,13 @@ public class OrderService {
                                   Order updateOrder,
                                   Account loggedAccount,
                                   List<ShipmentRequest> shipmentRequests) {
-        shipmentService.setupOrderShipments(updateOrder, shipmentRequests);
+        currentOrder.setShipments(
+                shipmentService.getSetupedShipments(currentOrder, shipmentRequests));
 
-        currentOrder.setShipments(updateOrder.getShipments());
         currentOrder.setDateOfCreation(getCurrentDate());
         currentOrder.setDelivery(deliveryService.formatDelivery(updateOrder.getDelivery(),
                 loggedAccount.getAddress()));
+
 
         setupTotalPrice(currentOrder);
     }

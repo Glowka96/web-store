@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.services.products;
 
-import com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper;
+import com.example.portfolio.webstorespring.exceptions.ProductHasAlreadyPromotionException;
 import com.example.portfolio.webstorespring.exceptions.PromotionPriceGreaterThanBasePriceException;
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.ProductPricePromotionMapper;
@@ -21,7 +21,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.util.Optional;
+import java.util.Set;
 
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.createProduct;
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductPricePromotionBuilderHelper.createProductPricePromotion;
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductPricePromotionBuilderHelper.createProductPricePromotionRequest;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -46,10 +48,10 @@ class ProductPricePromotionServiceTest {
     @Test
     void shouldSaveProductPricePromotion() {
         // given
-        Product product = ProductBuilderHelper.createProduct();
+        Product product = createProduct();
         ProductPricePromotionRequest productPricePromotionRequest = createProductPricePromotionRequest();
 
-        given(productRepository.findById(anyLong())).willReturn(Optional.of(product));
+        given(productRepository.findProductsByIdWithPromotion(anyLong())).willReturn(Optional.of(product));
 
         // when
         ProductPricePromotionResponse savedProductPricePromotionRequest = underTest.saveProductPricePromotion(productPricePromotionRequest);
@@ -68,15 +70,34 @@ class ProductPricePromotionServiceTest {
     @Test
     void willThrowWhenPromotionPriceIsGreaterThanBasePrice() {
         // given
-        Product product = ProductBuilderHelper.createProduct();
+        Product product = createProduct();
         ProductPricePromotionRequest productPricePromotionRequest = createProductPricePromotionRequest(BigDecimal.valueOf(999.99));
 
-        given(productRepository.findById(anyLong())).willReturn(Optional.of(product));
-
         // when
+        when(productRepository.findProductsByIdWithPromotion(anyLong())).thenReturn(Optional.of(product));
+
         // then
         assertThrows(PromotionPriceGreaterThanBasePriceException.class, () -> underTest.saveProductPricePromotion(productPricePromotionRequest));
-        verify(productRepository, times(1)).findById(1L);
+        verify(productRepository, times(1)).findProductsByIdWithPromotion(1L);
+        verifyNoMoreInteractions(productRepository);
+        verifyNoMoreInteractions(promotionRepository);
+    }
+
+    @Test
+    void willThrowWhenProductHasAlreadyPromotion() {
+        // given
+        Product product = createProduct();
+        ProductPricePromotion productPricePromotion = createProductPricePromotion();
+        product.setPricePromotions(Set.of(productPricePromotion));
+
+        ProductPricePromotionRequest productPricePromotionRequest = createProductPricePromotionRequest();
+
+        // when
+        when(productRepository.findProductsByIdWithPromotion(anyLong())).thenReturn(Optional.of(product));
+
+        // then
+        assertThrows(ProductHasAlreadyPromotionException.class, () -> underTest.saveProductPricePromotion(productPricePromotionRequest));
+        verify(productRepository, times(1)).findProductsByIdWithPromotion(1L);
         verifyNoMoreInteractions(productRepository);
         verifyNoMoreInteractions(promotionRepository);
     }

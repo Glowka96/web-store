@@ -3,8 +3,6 @@ package com.example.portfolio.webstorespring.mappers;
 import com.example.portfolio.webstorespring.model.dto.orders.request.ShipmentRequest;
 import com.example.portfolio.webstorespring.model.dto.orders.response.ShipmentResponse;
 import com.example.portfolio.webstorespring.model.entity.orders.Shipment;
-import com.example.portfolio.webstorespring.repositories.products.ProductRepository;
-import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -27,7 +25,7 @@ public interface ShipmentMapper {
     @Mapping(target = "price", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "order", ignore = true)
-    Shipment mapToEntity(ShipmentRequest shipmentRequest, @Context ProductRepository productRepository);
+    Shipment mapToEntity(ShipmentRequest shipmentRequest);
 
 
     List<Shipment> mapToEntity(List<ShipmentRequest> shipmentResponses);

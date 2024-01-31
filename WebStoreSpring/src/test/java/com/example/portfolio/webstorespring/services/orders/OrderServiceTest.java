@@ -5,7 +5,10 @@ import com.example.portfolio.webstorespring.enums.AccessDeniedExceptionMessage;
 import com.example.portfolio.webstorespring.enums.OrderStatus;
 import com.example.portfolio.webstorespring.exceptions.OrderCanNotModifiedException;
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
-import com.example.portfolio.webstorespring.mappers.*;
+import com.example.portfolio.webstorespring.mappers.DeliveryMapper;
+import com.example.portfolio.webstorespring.mappers.DeliveryTypeMapper;
+import com.example.portfolio.webstorespring.mappers.OrderMapper;
+import com.example.portfolio.webstorespring.mappers.ShipmentMapper;
 import com.example.portfolio.webstorespring.model.dto.orders.request.OrderRequest;
 import com.example.portfolio.webstorespring.model.dto.orders.response.OrderResponse;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
@@ -50,6 +53,8 @@ class OrderServiceTest {
     @Mock
     private DeliveryService deliveryService;
     @Mock
+    private ShipmentService shipmentService;
+    @Mock
     private Authentication authentication;
     @Mock
     private SecurityContext securityContext;
@@ -68,12 +73,6 @@ class OrderServiceTest {
 
         DeliveryTypeMapper deliveryTypeMapper = Mappers.getMapper(DeliveryTypeMapper.class);
         ReflectionTestUtils.setField(deliveryMapper, "deliveryTypeMapper", deliveryTypeMapper);
-
-        ProductMapper productMapper = Mappers.getMapper(ProductMapper.class);
-        ReflectionTestUtils.setField(shipmentMapper, "productMapper", productMapper);
-
-        ProductTypeMapper productTypeMapper = Mappers.getMapper(ProductTypeMapper.class);
-        ReflectionTestUtils.setField(productMapper, "productTypeMapper", productTypeMapper);
     }
 
     @AfterEach
@@ -162,6 +161,7 @@ class OrderServiceTest {
 
         Delivery delivery = createDelivery();
         given(deliveryService.formatDelivery(any(), isNull())).willReturn(delivery);
+
         // when
         OrderResponse savedOrderResponse = underTest.saveOrder(orderRequest);
 

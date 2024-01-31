@@ -27,7 +27,7 @@ public class ProductPricePromotionService {
     public ProductPricePromotionResponse saveProductPricePromotion(@NotNull ProductPricePromotionRequest promotionRequest) {
         Product product = findProductById(promotionRequest.getProductId());
 
-        if(!product.getPricePromotions().isEmpty()) {
+        if (product.getPricePromotions() != null) {
             throw new ProductHasAlreadyPromotionException();
         }
 

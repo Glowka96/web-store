@@ -37,6 +37,18 @@ public class OrderBuilderHelper {
                 .build();
     }
 
+    public static Order createOrderWithoutShipments() {
+        Account account = createAccountWithRoleUserAndAccountAddress();
+        Delivery delivery = createDelivery();
+
+        return Order.builder()
+                .id(1L)
+                .status(OrderStatus.OPEN)
+                .account(account)
+                .delivery(delivery)
+                .build();
+    }
+
     public static OrderRequest createOrderRequest() {
         ShipmentRequest shipmentRequest = createShipmentRequest();
         DeliveryRequest deliveryRequest = createDeliveryRequest();

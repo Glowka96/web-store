@@ -23,10 +23,9 @@ public class ShipmentBuilderHelper {
     }
 
     public static ShipmentRequest createShipmentRequest() {
-        ProductWithPromotionDTO productRequest = createProductWithPromotionDTO();
         return ShipmentRequest.builder()
                 .quantity(3)
-                .product(productRequest)
+                .productId(1L)
                 .build();
     }
 

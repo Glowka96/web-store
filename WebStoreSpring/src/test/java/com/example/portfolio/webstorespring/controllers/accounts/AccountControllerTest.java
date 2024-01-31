@@ -58,8 +58,8 @@ class AccountControllerTest {
                         .header("Authorization", "Bearer {JWT_TOKEN}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.firstName", is("Test")))
-                .andExpect(jsonPath("$.lastName", is("Dev")))
+                .andExpect(jsonPath("$.firstName", is("Name")))
+                .andExpect(jsonPath("$.lastName", is("Lastname")))
                 .andExpect(jsonPath("$.email", is("test@test.pl")))
                 .andDo(print());
     }
@@ -77,8 +77,8 @@ class AccountControllerTest {
                         .header("Authorization", "Bearer {JWT_TOKEN}"))
                 .andExpect(status().isAccepted())
                 .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.firstName", is("Test")))
-                .andExpect(jsonPath("$.lastName", is("Dev")))
+                .andExpect(jsonPath("$.firstName", is("Name")))
+                .andExpect(jsonPath("$.lastName", is("Lastname")))
                 .andExpect(jsonPath("$.email", is("test@test.pl")))
                 .andDo(print());
     }
