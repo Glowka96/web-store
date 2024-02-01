@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { PageProductsOptions } from 'src/app/models/products/page-products-options';
 import { PageProductsWithPromotion } from 'src/app/models/products/page-products-with-promotion';
 import { ProductWithPromotion } from 'src/app/models/products/products-with-promotion';
 import { ShopService } from 'src/app/services/olders/shop.service';
@@ -25,6 +26,53 @@ export class AbstractPageProductComponent {
 
   ngOnInit(): void {}
 
+  protected getPageProductsWithText(
+    text: string,
+    pageNo = 0,
+    pageSize = 12,
+    sortBy = 'id',
+    sortDirection = 'asc'
+  ) {
+    const options = {
+      text: text,
+      page: pageNo,
+      size: pageSize,
+      sort: sortBy,
+      direction: sortDirection,
+    };
+    this.getPageProduct(options);
+  }
+
+  protected getPageProducts(
+    pageNo = 0,
+    pageSize = 12,
+    sortBy = 'id',
+    sortDirection = 'asc'
+  ) {
+    const options = {
+      page: pageNo,
+      size: pageSize,
+      sort: sortBy,
+      direction: sortDirection,
+    };
+    this.getPageProduct(options);
+  }
+
+  private getPageProduct(options: PageProductsOptions) {
+    this.pageProductService.getPageProducts(options).subscribe((data) => {
+      this._pageProducts = data;
+      console.log(data);
+      this._pageProducts.products.forEach(
+        (product) => (this._cart[product.id] = 1)
+      );
+      window.scroll({
+        top: 0,
+        left: 0,
+        behavior: 'smooth',
+      });
+    });
+  }
+
   public getPrice(product: ProductWithPromotion): string {
     if (product.promotionPrice) {
       return (
@@ -43,7 +91,7 @@ export class AbstractPageProductComponent {
     if (product) {
       const quantity = this._cart[productId];
       if (quantity < product.quantity) {
-        const shipment = { product, quantity };
+        const shipment = { productId, quantity };
         this.shopService.addToBasket(shipment);
       }
     }

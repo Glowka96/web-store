@@ -3,13 +3,13 @@
         <h1> {{title}} ({{quantityOfProducts}}) </h1>
         <div class="sort-products">
             <select class="sort" [(ngModel)]="_selectedSortBy"
-                (change)="getPageProducts(subcategoryId, _selectedPageNumber, _selectedPageSize, _selectedSortBy, _selectedSortDirection)">
+                (change)="getPageProducts(_selectedPageNumber, _selectedPageSize, _selectedSortBy, _selectedSortDirection)">
                 <option *ngFor="let sortBy of listSortBy">
                     {{sortBy}}
                 </option>
             </select>
             <select class="sort" [(ngModel)]="_selectedSortDirection"
-                (change)="getPageProducts(subcategoryId, _selectedPageNumber, _selectedPageSize, _selectedSortBy, _selectedSortDirection)">
+                (change)="getPageProducts(_selectedPageNumber, _selectedPageSize, _selectedSortBy, _selectedSortDirection)">
                 <option *ngFor="let sortDirection of listSortDirection">{{sortDirection}}</option>
             </select>
         </div>
@@ -64,7 +64,7 @@
     <nav class="pagination">
         <div class="page" *ngFor="let pageNumber of totalPagesArray">
             <button class="btn-page"
-                (click)="getPageProducts(subcategoryId,pageNumber-1,_selectedPageSize,_selectedSortBy,_selectedSortDirection)">
+                (click)="getPageProducts(pageNumber-1,_selectedPageSize,_selectedSortBy,_selectedSortDirection)">
                 {{pageNumber}}
             </button>
         </div>

@@ -77,15 +77,14 @@
           padding: 10px;
           background-color: rgb(212, 212, 212);
           border-radius: 10px;
-          opacity: 0;
-          transition: opacity 5s;
+          display: none;
         }
         .button-change-quantity {
           cursor: pointer;
         }
-        &:active {
+        &:hover {
           .information-window {
-            opacity: 1;
+            display: inline;
           }
         }
       }

@@ -1,6 +1,4 @@
-import { ProductWithPromotion } from './products/products-with-promotion';
-
 export interface ShipmentRequest {
-  product: ProductWithPromotion;
+  productId: number;
   quantity: number;
 }

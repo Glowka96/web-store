@@ -17,7 +17,7 @@ export class ShopService {
 
   public addToBasket(shipment: ShipmentRequest) {
     const cart = this.basket.value;
-    const findShipment = cart.find((s) => s.product.id == shipment.product.id);
+    const findShipment = cart.find((s) => s.productId == shipment.productId);
     if (findShipment) {
       findShipment.quantity += shipment.quantity;
     } else {

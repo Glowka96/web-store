@@ -4,7 +4,6 @@ import { ActivatedRoute } from '@angular/router';
 import { PageProductsWithPromotion } from 'src/app/models/products/page-products-with-promotion';
 import { AbstractPageProductComponent } from '../abstract-page-product/abstract-page-product.component';
 import { ShopService } from 'src/app/services/olders/shop.service';
-import { ProductWithPromotion } from 'src/app/models/products/products-with-promotion';
 
 @Component({
   selector: 'app-page-products',
@@ -24,46 +23,15 @@ export class PageBySubcategoryId
     protected override shopService: ShopService
   ) {
     super(pageService, shopService);
-    console.log('in page constr');
   }
 
   override ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
       if (params.get('id')) {
         this._subcategoryId = params.get('id') as string;
-        this.getPageProducts(this._subcategoryId);
+        this.getPageProductsWithText(this._subcategoryId);
         this._title = params.get('subcategoryName') as string;
-        console.log('change isLoaded');
       }
-    });
-  }
-
-  protected getPageProducts(
-    subcategoryId: string,
-    pageNo = 0,
-    pageSize = 12,
-    sortBy = 'id',
-    sortDirection = 'asc'
-  ) {
-    const options = {
-      text: subcategoryId,
-      page: pageNo,
-      size: pageSize,
-      sort: sortBy,
-      direction: sortDirection,
-    };
-    this._selectedPageNumber = pageNo;
-    this.pageService.getPageProducts(options).subscribe((data) => {
-      this._pageProducts = data;
-      console.log(data);
-      this._pageProducts.products.forEach(
-        (product) => (this._cart[product.id] = 1)
-      );
-      window.scroll({
-        top: 0,
-        left: 0,
-        behavior: 'smooth',
-      });
     });
   }
 

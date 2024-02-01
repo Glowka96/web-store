@@ -11,13 +11,19 @@ import { HomeComponent } from './components/home/home.component';
 import { FormResetPasswordComponent } from './components/forms/form-reset-password/form-reset-password.component';
 import { ConfirmAccountComponent } from './components/confirms/confirm-account/confirm-account.component';
 import { ConfirmResetPasswordComponent } from './components/confirms/confirm-reset-password/confirm-reset-password.component';
-import { PageBySubcategoryId } from './components/page-products/by-subcategory-id/page-by-subcategory-id.component';
+import { PageBySubcategoryId } from './components/page-products/page-by-subcategory-id/page-by-subcategory-id.component';
+import { PageNewProductsComponent } from './components/page-products/page-new-products/page-new-products.component';
+import { PagePromotionsProductsComponent } from './components/page-products/page-promotion-products/page-promotion-products.component';
+import { PageBySearchTextComponent } from './components/page-products/page-by-search-text/page-by-search-text.component';
 
 const routes: Routes = [
   {
     path: ':categoryName/:subcategoryName/:id/products',
     component: PageBySubcategoryId,
   },
+  { path: 'new-products', component: PageNewProductsComponent },
+  { path: 'promotions-products', component: PagePromotionsProductsComponent },
+  { path: 'products/search/:text', component: PageBySearchTextComponent },
   { path: 'admin-board', component: BoardAdminComponent },
   { path: 'accounts', component: AccountComponent },
   { path: 'basket', component: BasketComponent },

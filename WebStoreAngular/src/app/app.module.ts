@@ -26,8 +26,11 @@ import { FormResetPasswordComponent } from './components/forms/form-reset-passwo
 import { AuthHttpInterceptorService } from './services/accounts/auth-http-interceptor.service';
 import { ConfirmAccountComponent } from './components/confirms/confirm-account/confirm-account.component';
 import { ConfirmResetPasswordComponent } from './components/confirms/confirm-reset-password/confirm-reset-password.component';
-import { PageBySubcategoryId } from './components/page-products/by-subcategory-id/page-by-subcategory-id.component';
+import { PageBySubcategoryId } from './components/page-products/page-by-subcategory-id/page-by-subcategory-id.component';
 import { AbstractPageProductComponent } from './components/page-products/abstract-page-product/abstract-page-product.component';
+import { PageNewProductsComponent } from './components/page-products/page-new-products/page-new-products.component';
+import { PagePromotionsProductsComponent } from './components/page-products/page-promotion-products/page-promotion-products.component';
+import { PageBySearchTextComponent } from './components/page-products/page-by-search-text/page-by-search-text.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +55,9 @@ import { AbstractPageProductComponent } from './components/page-products/abstrac
     FormResetPasswordComponent,
     PageBySubcategoryId,
     AbstractPageProductComponent,
+    PageNewProductsComponent,
+    PagePromotionsProductsComponent,
+    PageBySearchTextComponent,
   ],
   imports: [
     BrowserModule,
