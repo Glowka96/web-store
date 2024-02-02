@@ -18,8 +18,8 @@ public class SearchController {
 
     private final ProductsPageService productsPageService;
 
-    @GetMapping(params = {"text", "page", "size", "sort", "direction"})
-    public ResponseEntity<PageProductsWithPromotionDTO> getSearchProductsByText(@RequestParam(value = "text", defaultValue = "puzzle") String text,
+    @GetMapping(params = {"query", "page", "size", "sort", "direction"})
+    public ResponseEntity<PageProductsWithPromotionDTO> getSearchProductsByText(@RequestParam(value = "query", defaultValue = "puzzle") String text,
                                                                                 @RequestParam(name = "page", defaultValue = "0") Integer page,
                                                                                 @RequestParam(name = "size", defaultValue = "12") Integer size,
                                                                                 @RequestParam(name = "sort", required = false, defaultValue = "id") SortByType sort,

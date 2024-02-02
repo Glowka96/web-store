@@ -25,10 +25,10 @@
     </ul>
   </nav>
   <div class="nav-user" [ngStyle]="{'margin-bottom': isModbileWidth? '12px' : 0}">
-    <!-- <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
+    <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
       <input formControlName="search" type="search" class="search" placeholder="search">
       <button class="btn-search" aria-label="searchs"><i class="icon-search-1"></i></button>
-    </form> -->
+    </form>
     <a [routerLink]="['basket']" aria-label="basket"><i class="icon-basket"></i></a>
     <button *ngIf="!isLoggedIn()" (click)="changeStatusLogginForm()" class="btn-log">Login</button>
     <div *ngIf="isLoggedIn()" class="menu-user">

@@ -9,10 +9,11 @@ import {
 } from '@angular/forms';
 import { CategoryResponse } from 'src/app/models/category-response';
 import { CategoryService } from 'src/app/services/products/category.service';
-import { ProductService } from 'src/app/services/products/product.service';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { AuthenticationService } from 'src/app/services/accounts/authentication.service';
 import { FormLoginService } from 'src/app/services/accounts/form-login.service';
+import { SearchProductsService } from 'src/app/services/page-products/search-products.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-navigation',
@@ -38,11 +39,12 @@ export class NavigationComponent implements OnInit {
   });
 
   constructor(
-    private productService: ProductService,
     private formLoginService: FormLoginService,
     private authService: AuthenticationService,
     private categoryService: CategoryService,
-    private breakpointObserver: BreakpointObserver
+    private breakpointObserver: BreakpointObserver,
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     categoryService.categories$.subscribe((categories) => {
       this.categories = categories;
@@ -78,17 +80,21 @@ export class NavigationComponent implements OnInit {
     this.authService.logout();
   }
 
-  // public onSearch(): void {
-  //   if (this.searchForm.valid) {
-  //     const text = this.searchForm.controls['search']?.value ?? '';
-  //     this.productService.getSearchProducts(text);
-  //     window.scroll({
-  //       top: 0,
-  //       left: 0,
-  //       behavior: 'smooth',
-  //     });
-  //   }
-  // }
+  public onSearch(): void {
+    if (this.searchForm.valid) {
+      this.router.navigate(['products/search'], {
+        relativeTo: this.route,
+        queryParams: {
+          query: this.searchForm.controls['search'].value,
+          page: 0,
+          size: 12,
+          sort: 'id',
+          direction: 'asc',
+        },
+        queryParamsHandling: 'merge',
+      });
+    }
+  }
 
   public changeStatusLogginForm() {
     this.formLoginService.changeStatusFormLogin();
