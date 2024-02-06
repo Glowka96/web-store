@@ -29,7 +29,7 @@
       <input formControlName="search" type="search" class="search" placeholder="search">
       <button class="btn-search" aria-label="searchs"><i class="icon-search-1"></i></button>
     </form>
-    <a [routerLink]="['basket']" aria-label="basket"><i class="icon-basket"></i></a>
+    <a [routerLink]="['basket']" aria-label="basket"><i class="icon-basket">{{basket.length}}</i></a>
     <button *ngIf="!isLoggedIn()" (click)="changeStatusLogginForm()" class="btn-log">Login</button>
     <div *ngIf="isLoggedIn()" class="menu-user">
       <a [routerLink]="['accounts']" aria-label="account"><i class="icon-user"></i></a>

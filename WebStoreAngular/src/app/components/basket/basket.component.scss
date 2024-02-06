@@ -28,14 +28,8 @@
       }
       .wprapper-product {
         display: flex;
-        flex-flow: row wrap;
+        flex-flow: column wrap;
         justify-content: center;
-        .product-text {
-          display: flex;
-          flex-direction: column;
-          height: max-content;
-          max-width: 256px;
-        }
         .product-img {
           margin: auto;
         }

@@ -91,7 +91,7 @@ export class AbstractPageProductComponent {
     if (product) {
       const quantity = this._cart[productId];
       if (quantity < product.quantity) {
-        const shipment = { productId, quantity };
+        const shipment = { product, quantity };
         this.shopService.addToBasket(shipment);
       }
     }

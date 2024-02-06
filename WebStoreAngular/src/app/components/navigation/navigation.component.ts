@@ -12,8 +12,9 @@ import { CategoryService } from 'src/app/services/products/category.service';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { AuthenticationService } from 'src/app/services/accounts/authentication.service';
 import { FormLoginService } from 'src/app/services/accounts/form-login.service';
-import { SearchProductsService } from 'src/app/services/page-products/search-products.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ShopService } from 'src/app/services/olders/shop.service';
+import { Shipment } from 'src/app/models/shipment';
 
 @Component({
   selector: 'app-navigation',
@@ -30,6 +31,7 @@ export class NavigationComponent implements OnInit {
   private categories: CategoryResponse[] = [];
   private isLogIn = false;
   private isMobile = false;
+  private _basket: Shipment[] = [];
 
   public searchForm = new FormGroup({
     search: new FormControl('', {
@@ -42,6 +44,7 @@ export class NavigationComponent implements OnInit {
     private formLoginService: FormLoginService,
     private authService: AuthenticationService,
     private categoryService: CategoryService,
+    private shopService: ShopService,
     private breakpointObserver: BreakpointObserver,
     private router: Router,
     private route: ActivatedRoute
@@ -51,6 +54,9 @@ export class NavigationComponent implements OnInit {
     });
     authService.isAuthenticated$.subscribe((isLogIn) => {
       this.isLogIn = isLogIn;
+    });
+    shopService.basket$.subscribe((shipments) => {
+      this._basket = shipments;
     });
   }
 
@@ -102,5 +108,9 @@ export class NavigationComponent implements OnInit {
 
   public get isModbileWidth() {
     return this.isMobile;
+  }
+
+  public get basket() {
+    return this._basket;
   }
 }

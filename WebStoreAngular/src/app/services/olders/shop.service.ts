@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { ShipmentRequest } from '../../models/shipment-request';
+import { Shipment } from '../../models/shipment';
 import { OrderRequest } from '../../models/order-request';
 
 @Injectable({
@@ -10,14 +10,21 @@ import { OrderRequest } from '../../models/order-request';
 })
 export class ShopService {
   private apiServerUrl = environment.apiBaseUrl;
-  private basket: BehaviorSubject<ShipmentRequest[]> = new BehaviorSubject(
-    [] as ShipmentRequest[]
+  private basket: BehaviorSubject<Shipment[]> = new BehaviorSubject(
+    [] as Shipment[]
   );
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    const localStorageData = localStorage.getItem('basket');
+    let localStorageBasket: Shipment[] = [];
+    if (localStorageData) {
+      localStorageBasket = JSON.parse(localStorageData);
+      this.basket = new BehaviorSubject(localStorageBasket);
+    }
+  }
 
-  public addToBasket(shipment: ShipmentRequest) {
+  public addToBasket(shipment: Shipment) {
     const cart = this.basket.value;
-    const findShipment = cart.find((s) => s.productId == shipment.productId);
+    const findShipment = cart.find((s) => s.product.id == shipment.product.id);
     if (findShipment) {
       findShipment.quantity += shipment.quantity;
     } else {
@@ -25,6 +32,7 @@ export class ShopService {
     }
     console.log(cart);
     this.basket.next(cart);
+    localStorage.setItem('basket', JSON.stringify(cart));
   }
 
   public purchase(request: OrderRequest): Observable<any> {

@@ -1,14 +1,12 @@
-<!-- <section class="wrapper-shipments">
+<section class="wrapper-shipments">
     <div class="title-shipments">
         <h1>Your basket</h1>
     </div>
     <div class="list-shipments">
-        <div class="shipment" *ngFor="let shipment of shipments">
+        <div class="shipment" *ngFor="let shipment of basket">
             <div class="wprapper-product">
                 <div class="product-text">
                     <p><span class="title">Product name: </span>{{shipment.product.name}}</p>
-                    <p><span class="title description">Product
-                            description: </span>{{shipment.product.description}}</p>
                 </div>
                 <span class="product-img"><img src={{shipment.product.imageUrl}} alt="{{shipment.product.name}}"
                         width="256" height="256">
@@ -29,7 +27,8 @@
                     </div>
                 </form>
                 <div class="shipment-price">
-                    <p><span class="title">Price for the product: </span> {{shipment.price}} PLN</p>
+                    <p><span class="title">Price for the product: </span> {{getShipmentPrice(shipment.product.id)}} PLN
+                    </p>
                 </div>
             </div>
             <button class="btn-delete" (click)="deleteProductFromBasket(shipment.product.id)"><i
@@ -52,4 +51,4 @@
             <p>Your basker is empty</p>
         </div>
     </div>
-</section> -->
+</section>

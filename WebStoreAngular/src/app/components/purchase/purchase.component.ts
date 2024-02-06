@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AccountAddress } from 'src/app/models/account-address';
 import { OrderRequest } from 'src/app/models/order-request';
+import { Shipment } from 'src/app/models/shipment';
 import { ShipmentRequest } from 'src/app/models/shipment-request';
 import { AccountService } from 'src/app/services/accounts/account.service';
 import { ShopService } from 'src/app/services/olders/shop.service';
@@ -13,16 +14,15 @@ import { ShopService } from 'src/app/services/olders/shop.service';
   styleUrls: ['./purchase.component.scss'],
 })
 export class PurchaseComponent implements OnInit {
-  private accountAddress!: AccountAddress;
-  private foundAddress!: boolean;
-  private basket!: ShipmentRequest[];
-  private shipmentsPrice = 0;
-  private submitPurchase = false;
-  private message!: string;
-  private postcodePattern = /^\d{2}-\d{3}$/;
-  private addressPattern =
-    /^(ul(.)\s)?[A-Z]?[a-z]+\s[0-9]{1,3}((\/[0-9]{1,3})|(\sm\.?\s[0-9]{1,3})?[a-z])?$/;
-
+  private _accountAddress!: AccountAddress;
+  private _foundAddress!: boolean;
+  private _basket!: Shipment[];
+  private _shipmentsPrice = 0;
+  private _submitPurchase = false;
+  private _message!: string;
+  private _postcodePattern = /^\d{2}-\d{3}$/;
+  private _addressPattern =
+    /^((ul\.?\s)?([A-Z]?[a-z]{3,20}(-[A-Z]?[a-z]{3,20})?)\s(\d{1,3})[a-z]?((\/|\sm(.)?\s)\d{1,3})?)$/;
   public deliveryAddressForm = new FormGroup({
     city: new FormControl('', {
       validators: [
@@ -36,14 +36,14 @@ export class PurchaseComponent implements OnInit {
     postcode: new FormControl('', {
       validators: [
         Validators.required,
-        Validators.pattern(this.postcodePattern),
+        Validators.pattern(this._postcodePattern),
       ],
       updateOn: 'change',
     }),
     street: new FormControl('', {
       validators: [
         Validators.required,
-        Validators.pattern(this.addressPattern),
+        Validators.pattern(this._addressPattern),
       ],
       updateOn: 'change',
     }),
@@ -56,17 +56,24 @@ export class PurchaseComponent implements OnInit {
   ) {
     this.accountService.getAccountAddress().subscribe({
       next: (response) => {
-        this.accountAddress = response;
-        this.foundAddress = true;
+        this._accountAddress = response;
+        this._foundAddress = true;
       },
       error: (error) => {
         if (error.status === 404) {
-          this.foundAddress = false;
+          this._foundAddress = false;
         }
       },
     });
     this.shopService.basket$.subscribe((shipments) => {
-      this.basket = shipments;
+      this._basket = shipments;
+      shipments.forEach((s) => {
+        let shipmentPrice = '';
+        s.product.promotionPrice
+          ? (shipmentPrice = (s.product.promotionPrice * s.quantity).toFixed(2))
+          : (shipmentPrice = (s.product.price * s.quantity).toFixed(2));
+        this._shipmentsPrice += Number(shipmentPrice);
+      });
     });
   }
 
@@ -74,13 +81,13 @@ export class PurchaseComponent implements OnInit {
 
   public autocomplete() {
     this.deliveryAddressForm.controls['city'].setValue(
-      this.accountAddress.city
+      this._accountAddress.city
     );
     this.deliveryAddressForm.controls['postcode'].setValue(
-      this.accountAddress.postcode
+      this._accountAddress.postcode
     );
     this.deliveryAddressForm.controls['street'].setValue(
-      this.accountAddress.street
+      this._accountAddress.street
     );
   }
 
@@ -91,7 +98,12 @@ export class PurchaseComponent implements OnInit {
         this.deliveryAddressForm.controls['postcode']?.value ?? '';
       const street = this.deliveryAddressForm.controls['street']?.value ?? '';
       const request: OrderRequest = {
-        shipments: this.basket,
+        shipments: this._basket.map((shipment) => {
+          return {
+            productId: shipment.product.id,
+            quantity: shipment.quantity,
+          };
+        }),
         deliveryAddress: city + ', ' + postcode + ', ' + street,
       };
       this.shopService.purchase(request).subscribe({
@@ -100,30 +112,30 @@ export class PurchaseComponent implements OnInit {
           this.router.navigate(['/accounts/orders']);
         },
         error: (error) => {
-          this.submitPurchase = true;
-          this.message = error.error.errors;
+          this._submitPurchase = true;
+          this._message = error.error.errors;
         },
       });
     }
   }
 
   public get isFoundAddress() {
-    return this.foundAddress;
+    return this._foundAddress;
   }
 
   public get quantity() {
-    return this.basket.length;
+    return this._basket.length;
   }
 
   public get price() {
-    return this.shipmentsPrice;
+    return this._shipmentsPrice;
   }
 
   public get isSubmitPurchase() {
-    return this.submitPurchase;
+    return this._submitPurchase;
   }
 
   public get sumbitMessage() {
-    return this.message;
+    return this._message;
   }
 }
