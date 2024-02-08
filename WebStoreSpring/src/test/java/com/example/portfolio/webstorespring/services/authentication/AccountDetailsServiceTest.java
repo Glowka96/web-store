@@ -14,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Optional;
 
@@ -65,6 +66,18 @@ class AccountDetailsServiceTest {
         assertThatThrownBy(() -> underTest.loadUserByUsername("test@test.pl"))
                 .isInstanceOf(DisabledException.class)
                 .hasMessageContaining("Your account is disabled");
+    }
+
+    @Test
+    void willThrowWhenAccountEmailNotFound() {
+        // given
+        String email = "test@test.pl";
+
+        //when
+        // then
+        assertThatThrownBy(() -> underTest.loadUserByUsername(email))
+                .isInstanceOf(UsernameNotFoundException.class)
+                .hasMessageContaining("Account with email: " + email + " not found");
     }
 
     private void setupSecutiryContext(Account account) {

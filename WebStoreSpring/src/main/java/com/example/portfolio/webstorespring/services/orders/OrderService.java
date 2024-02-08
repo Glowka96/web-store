@@ -150,7 +150,6 @@ public class OrderService {
         currentOrder.setDelivery(deliveryService.formatDelivery(updateOrder.getDelivery(),
                 loggedAccount.getAddress()));
 
-
         setupTotalPrice(currentOrder);
     }
 

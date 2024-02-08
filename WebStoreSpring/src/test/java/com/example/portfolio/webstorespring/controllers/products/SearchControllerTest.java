@@ -44,7 +44,7 @@ class SearchControllerTest {
                 .willReturn(pageProducts);
 
         mvc.perform(get(URI)
-                        .param("text", "test")
+                        .param("query", "test")
                         .param("page", "0")
                         .param("size", "3")
                         .param("sort", "PRICE")
