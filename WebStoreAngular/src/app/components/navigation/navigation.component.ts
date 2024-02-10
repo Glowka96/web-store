@@ -15,6 +15,7 @@ import { FormLoginService } from 'src/app/services/accounts/form-login.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ShopService } from 'src/app/services/olders/shop.service';
 import { Shipment } from 'src/app/models/shipment';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-navigation',
@@ -32,6 +33,7 @@ export class NavigationComponent implements OnInit {
   private isLogIn = false;
   private isMobile = false;
   private _basket: Shipment[] = [];
+  private _subscriptions: Subscription[] = [];
 
   public searchForm = new FormGroup({
     search: new FormControl('', {
@@ -49,19 +51,20 @@ export class NavigationComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute
   ) {
-    categoryService.categories$.subscribe((categories) => {
+    const sub1 = categoryService.categories$.subscribe((categories) => {
       this.categories = categories;
     });
-    authService.isAuthenticated$.subscribe((isLogIn) => {
+    const sub2 = authService.isAuthenticated$.subscribe((isLogIn) => {
       this.isLogIn = isLogIn;
     });
-    shopService.basket$.subscribe((shipments) => {
+    const sub3 = shopService.basket$.subscribe((shipments) => {
       this._basket = shipments;
     });
+    this._subscriptions.push(sub1, sub2, sub3);
   }
 
   ngOnInit() {
-    this.breakpointObserver
+    const sub = this.breakpointObserver
       .observe([
         Breakpoints.XSmall,
         Breakpoints.Small,
@@ -72,6 +75,11 @@ export class NavigationComponent implements OnInit {
       .subscribe((result) => {
         this.isMobile = result.matches;
       });
+    this._subscriptions.push(sub);
+  }
+
+  ngOnDestroy(): void {
+    this._subscriptions.forEach((s) => s.unsubscribe);
   }
 
   public get getCategories(): CategoryResponse[] {

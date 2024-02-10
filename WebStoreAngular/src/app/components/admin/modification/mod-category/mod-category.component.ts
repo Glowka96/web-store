@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CategoryResponse } from 'src/app/models/category-response';
 import { CategoryRequest } from 'src/app/models/category-request';
 import { CategoryService } from 'src/app/services/products/category.service';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-mod-category',
@@ -49,12 +50,15 @@ export class ModCategoryComponent implements OnInit {
       const request: CategoryRequest = {
         name: this.addForm.controls['name']?.value ?? '',
       };
-      this.categoryService.addCategory(request).subscribe({
-        next: () => window.location.reload(),
-        error: (e) => {
-          this.errorAddMsg = e.error.errors.join('<br>');
-        },
-      });
+      this.categoryService
+        .addCategory(request)
+        .pipe(take(1))
+        .subscribe({
+          next: () => window.location.reload(),
+          error: (e) => {
+            this.errorAddMsg = e.error.errors.join('<br>');
+          },
+        });
     }
   }
 
@@ -65,12 +69,15 @@ export class ModCategoryComponent implements OnInit {
       };
       const id = this.updateForm.controls['choiceCategory']?.value;
       if (id) {
-        this.categoryService.updateCategory(id, request).subscribe({
-          next: () => window.location.reload(),
-          error: (e) => {
-            this.errorAddMsg = e.error.errors.join('<br>');
-          },
-        });
+        this.categoryService
+          .updateCategory(id, request)
+          .pipe(take(1))
+          .subscribe({
+            next: () => window.location.reload(),
+            error: (e) => {
+              this.errorAddMsg = e.error.errors.join('<br>');
+            },
+          });
       }
     }
   }
@@ -79,12 +86,15 @@ export class ModCategoryComponent implements OnInit {
     if (this.deleteForm.valid) {
       const id = this.deleteForm.controls['choiceCategory']?.value;
       if (id) {
-        this.categoryService.deleteCategory(id).subscribe({
-          next: () => window.location.reload(),
-          error: (e) => {
-            this.errorDeleteMsg = e.error.errors.join('<br>');
-          },
-        });
+        this.categoryService
+          .deleteCategory(id)
+          .pipe(take(1))
+          .subscribe({
+            next: () => window.location.reload(),
+            error: (e) => {
+              this.errorDeleteMsg = e.error.errors.join('<br>');
+            },
+          });
       }
     }
   }

@@ -19,7 +19,7 @@ export class AbstractPageProductComponent {
   protected _selectedSortBy: string = 'id';
   protected _selectedSortDirection: string = 'asc';
   protected _selectedPageSize: number = 12;
-  protected routeSubscription!: Subscription;
+  protected _routeSubscription!: Subscription;
 
   constructor(
     protected pageProductService: AbstractPageProductsService,
@@ -29,9 +29,8 @@ export class AbstractPageProductComponent {
   ngOnInit(): void {}
 
   ngOnDestroy(): void {
-    console.log('ng on destroy');
-    if (this.routeSubscription) {
-      this.routeSubscription.unsubscribe();
+    if (this._routeSubscription) {
+      this._routeSubscription.unsubscribe();
     }
   }
 

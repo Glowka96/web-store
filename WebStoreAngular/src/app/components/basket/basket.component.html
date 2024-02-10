@@ -18,9 +18,9 @@
                 </div>
                 <form class="quantity-change" [formGroup]="changeForm" (ngSubmit)="onSumbitChange(shipment.product.id)"
                     *ngIf="isUpdate(shipment.product.id)">
-                    <input formControlName="quantity" class="change" type="text" placeholder="Quantity">
+                    <input formControlName="quantity" class="change-input" type="text" placeholder="Quantity">
                     <div class="error" *ngIf="changeForm.get('quantity')?.invalid">
-                        <small *ngIf="changeForm.get('quantity')?.errors?.['min'] || ['max']">The quantity must be
+                        <small *ngIf="changeForm.get('quantity')?.errors?.['min']">The quantity must be
                             beetwen 1 nad 100.<br></small>
                         <small *ngIf="changeForm.get('quantity')?.errors?.['pattern']">The quantity must be a
                             number</small>

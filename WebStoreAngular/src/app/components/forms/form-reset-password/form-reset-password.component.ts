@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { take } from 'rxjs';
 import { ResetPasswordService } from 'src/app/services/accounts/reset-password.service';
 
 @Component({
@@ -23,14 +24,17 @@ export class FormResetPasswordComponent {
   public onSumbitResetPassword() {
     if (this.resetPasswordForm.valid) {
       const email = this.resetPasswordForm.controls['email'].value ?? '';
-      this.resetPasswordService.sendResetPasswordLink(email).subscribe({
-        next: (response) => {
-          this.responseMessage = response.message;
-        },
-        error: (error) => {
-          this.responseMessage = error.error.errors.join('<br>');
-        },
-      });
+      this.resetPasswordService
+        .sendResetPasswordLink(email)
+        .pipe(take(1))
+        .subscribe({
+          next: (response) => {
+            this.responseMessage = response.message;
+          },
+          error: (error) => {
+            this.responseMessage = error.error.errors.join('<br>');
+          },
+        });
     }
   }
 

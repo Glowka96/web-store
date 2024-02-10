@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { take } from 'rxjs';
 import { CategoryResponse } from 'src/app/models/category-response';
 import { SubcategoryResponse } from 'src/app/models/subcategory-response';
 import { AuthenticationService } from 'src/app/services/accounts/authentication.service';
@@ -22,12 +23,14 @@ export class BoardAdminComponent implements OnInit {
     private router: Router
   ) {
     this.loggedRole = sessionStorage.getItem('role')!;
-    shopService.categories$.subscribe((categories) => {
+    shopService.categories$.pipe(take(1)).subscribe((categories) => {
       this.categories = categories;
     });
-    subcategoryService.subcategories$.subscribe((subcategories) => {
-      this.subcategories = subcategories;
-    });
+    subcategoryService.subcategories$
+      .pipe(take(1))
+      .subscribe((subcategories) => {
+        this.subcategories = subcategories;
+      });
   }
 
   ngOnInit(): void {

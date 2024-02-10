@@ -25,7 +25,7 @@ export class PageNewProductsComponent
   }
 
   override ngOnInit(): void {
-    this.routeSubscription = this.route.paramMap.subscribe(() => {
+    this._routeSubscription = this.route.paramMap.subscribe(() => {
       this.getPageProducts();
       this._title = 'New products';
     });

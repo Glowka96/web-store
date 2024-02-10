@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Subscription, take } from 'rxjs';
 import { OrderRequest } from 'src/app/models/order-request';
 import { OrderResponse } from 'src/app/models/order-response';
 import { OrdersService } from 'src/app/services/olders/orders.service';
@@ -46,9 +47,12 @@ export class OrdersComponent implements OnInit {
   });
 
   constructor(private ordersService: OrdersService) {
-    this.ordersService.getAllAccountOrders().subscribe((orders) => {
-      this.orders = orders;
-    });
+    this.ordersService
+      .getAllAccountOrders()
+      .pipe(take(1))
+      .subscribe((orders) => {
+        this.orders = orders;
+      });
   }
 
   ngOnInit(): void {}
@@ -63,16 +67,19 @@ export class OrdersComponent implements OnInit {
   }
 
   public deleteOrder(orderId: string) {
-    this.ordersService.deleteOrder(orderId).subscribe({
-      next: () => {
-        window.location.reload();
-      },
-      error: (error) => {
-        this.selectedErrorId = orderId;
-        const errorMessage = error.error.errors;
-        this.errorMessage = errorMessage;
-      },
-    });
+    this.ordersService
+      .deleteOrder(orderId)
+      .pipe(take(1))
+      .subscribe({
+        next: () => {
+          window.location.reload();
+        },
+        error: (error) => {
+          this.selectedErrorId = orderId;
+          const errorMessage = error.error.errors;
+          this.errorMessage = errorMessage;
+        },
+      });
   }
 
   public onSumbitUpdate(orderId: string) {

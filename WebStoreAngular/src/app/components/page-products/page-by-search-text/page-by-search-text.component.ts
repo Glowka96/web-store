@@ -27,7 +27,7 @@ export class PageBySearchTextComponent
   }
 
   override ngOnInit(): void {
-    this.routeSubscription = this.route.queryParams
+    this._routeSubscription = this.route.queryParams
       .pipe(take(1))
       .subscribe((params: Params) => {
         if (params['query']) {

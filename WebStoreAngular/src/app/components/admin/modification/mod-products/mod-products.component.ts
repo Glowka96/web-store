@@ -6,6 +6,7 @@ import { ProductRequest } from 'src/app/models/products/product-request';
 import { SubcategoryResponse } from 'src/app/models/subcategory-response';
 import { ProducerService } from 'src/app/services/products/producer.service';
 import { ProductService } from 'src/app/services/products/product.service';
+import { take } from 'rxjs/internal/operators/take';
 
 @Component({
   selector: 'app-mod-products',
@@ -110,12 +111,18 @@ export class ModProductsComponent implements OnInit {
     private productService: ProductService,
     private producerService: ProducerService
   ) {
-    productService.getProductTypes().subscribe((types) => {
-      this.productTypes = types;
-    });
-    productService.getAllProducts().subscribe((products) => {
-      this.products = products;
-    });
+    productService
+      .getProductTypes()
+      .pipe(take(1))
+      .subscribe((types) => {
+        this.productTypes = types;
+      });
+    productService
+      .getAllProducts()
+      .pipe(take(1))
+      .subscribe((products) => {
+        this.products = products;
+      });
     producerService.producers$.subscribe(
       (producers) => (this.producers = producers)
     );
@@ -140,6 +147,7 @@ export class ModProductsComponent implements OnInit {
       if (subcategoryId && producerId) {
         this.productService
           .addProduct(subcategoryId, producerId, request)
+          .pipe(take(1))
           .subscribe({
             next: () => window.location.reload(),
             error: (e) => {
@@ -167,6 +175,7 @@ export class ModProductsComponent implements OnInit {
       if (subcategoryId && producerId) {
         this.productService
           .updateProduct(subcategoryId, producerId, request)
+          .pipe(take(1))
           .subscribe({
             next: () => window.location.reload(),
             error: (e) => {
@@ -181,12 +190,15 @@ export class ModProductsComponent implements OnInit {
     if (this.deleteForm.valid) {
       const id = this.deleteForm.controls['choiceProduct']?.value;
       if (id) {
-        this.productService.deleteProduct(id).subscribe({
-          next: () => window.location.reload(),
-          error: (e) => {
-            this.errorDeleteMsg = e.error.errors.join('<br>');
-          },
-        });
+        this.productService
+          .deleteProduct(id)
+          .pipe(take(1))
+          .subscribe({
+            next: () => window.location.reload(),
+            error: (e) => {
+              this.errorDeleteMsg = e.error.errors.join('<br>');
+            },
+          });
       }
     }
   }

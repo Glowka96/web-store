@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { take } from 'rxjs';
 import { ResetPasswordService } from 'src/app/services/accounts/reset-password.service';
 import { PasswordFormBuilderService } from 'src/app/services/forms/password-form-builder.service';
 
@@ -25,7 +26,7 @@ export class ConfirmResetPasswordComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe((params) => {
+    this.route.queryParams.pipe(take(1)).subscribe((params) => {
       this.token = params['token'];
     });
   }

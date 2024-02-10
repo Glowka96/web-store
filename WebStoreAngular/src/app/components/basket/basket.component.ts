@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { take } from 'rxjs';
 import { Shipment } from 'src/app/models/shipment';
 import { FormLoginService } from 'src/app/services/accounts/form-login.service';
 import { ShopService } from 'src/app/services/olders/shop.service';
@@ -18,11 +19,7 @@ export class BasketComponent implements OnInit {
 
   public changeForm = new FormGroup({
     quantity: new FormControl('', {
-      validators: [
-        Validators.min(1),
-        Validators.max(100),
-        Validators.pattern('\\d+'),
-      ],
+      validators: [Validators.min(1), Validators.pattern('\\d+')],
       updateOn: 'change',
     }),
   });
@@ -32,7 +29,7 @@ export class BasketComponent implements OnInit {
     private formLoginService: FormLoginService,
     private router: Router
   ) {
-    this.shopService.basket$.subscribe((shipments) => {
+    this.shopService.basket$.pipe(take(1)).subscribe((shipments) => {
       this._basket = shipments;
     });
   }
@@ -71,10 +68,11 @@ export class BasketComponent implements OnInit {
     if (this.changeForm.valid) {
       const index = this.getIndexBasket(productId);
       const quantity = this.changeForm.controls['quantity']?.value;
-
-      this._basket[index].quantity = Number(quantity);
-      this.change(0);
-      this.changeForm.controls['quantity'].reset();
+      if (this._basket[index].product.quantity > Number(quantity)) {
+        this._basket[index].quantity = Number(quantity);
+        this.change(0);
+        this.changeForm.controls['quantity'].reset();
+      }
     }
   }
 

@@ -4,6 +4,7 @@ import { CategoryResponse } from 'src/app/models/category-response';
 import { SubcategoryResponse } from 'src/app/models/subcategory-response';
 import { SubcategoryRequest } from 'src/app/models/subcategory-request';
 import { SubcategoryService } from 'src/app/services/products/subcategory.service';
+import { take } from 'rxjs/internal/operators/take';
 
 @Component({
   selector: 'app-mod-subcategory',
@@ -61,12 +62,15 @@ export class ModSubcategoryComponent implements OnInit {
       };
       const id = this.addForm.controls['choiceCategory']?.value;
       if (id) {
-        this.subcategoryService.addSubcategory(id, request).subscribe({
-          next: () => window.location.reload(),
-          error: (e) => {
-            this.errorAddMsg = e.error.errors.join('<br>');
-          },
-        });
+        this.subcategoryService
+          .addSubcategory(id, request)
+          .pipe(take(1))
+          .subscribe({
+            next: () => window.location.reload(),
+            error: (e) => {
+              this.errorAddMsg = e.error.errors.join('<br>');
+            },
+          });
       }
     }
   }
@@ -82,6 +86,7 @@ export class ModSubcategoryComponent implements OnInit {
       if (categoryId && subcategoryId) {
         this.subcategoryService
           .updateSubcategory(categoryId, subcategoryId, request)
+          .pipe(take(1))
           .subscribe({
             next: () => window.location.reload(),
             error: (e) => {
@@ -96,12 +101,15 @@ export class ModSubcategoryComponent implements OnInit {
     if (this.deleteForm.valid) {
       const id = this.deleteForm.controls['choiceCategory']?.value;
       if (id) {
-        this.subcategoryService.deleteSubcategory(id).subscribe({
-          next: () => window.location.reload(),
-          error: (e) => {
-            this.errorDeleteMsg = e.error.errors.join('<br>');
-          },
-        });
+        this.subcategoryService
+          .deleteSubcategory(id)
+          .pipe(take(1))
+          .subscribe({
+            next: () => window.location.reload(),
+            error: (e) => {
+              this.errorDeleteMsg = e.error.errors.join('<br>');
+            },
+          });
       }
     }
   }

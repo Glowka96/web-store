@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { take } from 'rxjs';
+import { Subscription } from 'rxjs/internal/Subscription';
 import { AccountAddress } from 'src/app/models/account-address';
 import { OrderRequest } from 'src/app/models/order-request';
 import { Shipment } from 'src/app/models/shipment';
-import { ShipmentRequest } from 'src/app/models/shipment-request';
 import { AccountService } from 'src/app/services/accounts/account.service';
 import { ShopService } from 'src/app/services/olders/shop.service';
 
@@ -14,6 +15,7 @@ import { ShopService } from 'src/app/services/olders/shop.service';
   styleUrls: ['./purchase.component.scss'],
 })
 export class PurchaseComponent implements OnInit {
+  private _subscriptions: Subscription[] = [];
   private _accountAddress!: AccountAddress;
   private _foundAddress!: boolean;
   private _basket!: Shipment[];
@@ -54,7 +56,7 @@ export class PurchaseComponent implements OnInit {
     private shopService: ShopService,
     private router: Router
   ) {
-    this.accountService.getAccountAddress().subscribe({
+    const sub1 = this.accountService.getAccountAddress().subscribe({
       next: (response) => {
         this._accountAddress = response;
         this._foundAddress = true;
@@ -65,7 +67,7 @@ export class PurchaseComponent implements OnInit {
         }
       },
     });
-    this.shopService.basket$.subscribe((shipments) => {
+    const sub2 = this.shopService.basket$.subscribe((shipments) => {
       this._basket = shipments;
       shipments.forEach((s) => {
         let shipmentPrice = '';
@@ -75,9 +77,14 @@ export class PurchaseComponent implements OnInit {
         this._shipmentsPrice += Number(shipmentPrice);
       });
     });
+    this._subscriptions.push(sub1, sub2);
   }
 
   ngOnInit(): void {}
+
+  ngOnDestroy(): void {
+    this._subscriptions.forEach((s) => s.unsubscribe);
+  }
 
   public autocomplete() {
     this.deliveryAddressForm.controls['city'].setValue(
@@ -106,16 +113,19 @@ export class PurchaseComponent implements OnInit {
         }),
         deliveryAddress: city + ', ' + postcode + ', ' + street,
       };
-      this.shopService.purchase(request).subscribe({
-        next: () => {
-          this.shopService.basket$.next([]);
-          this.router.navigate(['/accounts/orders']);
-        },
-        error: (error) => {
-          this._submitPurchase = true;
-          this._message = error.error.errors;
-        },
-      });
+      this.shopService
+        .purchase(request)
+        .pipe(take(1))
+        .subscribe({
+          next: () => {
+            this.shopService.basket$.next([]);
+            this.router.navigate(['/accounts/orders']);
+          },
+          error: (error) => {
+            this._submitPurchase = true;
+            this._message = error.error.errors;
+          },
+        });
     }
   }
 

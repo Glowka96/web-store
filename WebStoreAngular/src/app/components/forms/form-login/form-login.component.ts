@@ -5,6 +5,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { take } from 'rxjs';
 import { LoginRequest } from 'src/app/models/login-request';
 import { RegistrationRequest } from 'src/app/models/registration-request';
 import { AuthenticationService } from 'src/app/services/accounts/authentication.service';
@@ -77,16 +78,19 @@ export class FormLoginComponent implements OnInit {
         email: this.loginForm.controls['email']?.value ?? '',
         password: this.loginForm.controls['password']?.value ?? '',
       };
-      this.authenticationService.authenticate(request).subscribe({
-        next: () => {
-          this.formService.changeStatusFormLogin();
-        },
-        error: (error) => {
-          this.successMessage = null;
-          const errorMessage = error.error.errors.join('<br>');
-          this.errorMessage = errorMessage;
-        },
-      });
+      this.authenticationService
+        .authenticate(request)
+        .pipe(take(1))
+        .subscribe({
+          next: () => {
+            this.formService.changeStatusFormLogin();
+          },
+          error: (error) => {
+            this.successMessage = null;
+            const errorMessage = error.error.errors.join('<br>');
+            this.errorMessage = errorMessage;
+          },
+        });
     }
   }
 
@@ -96,21 +100,25 @@ export class FormLoginComponent implements OnInit {
         firstName: this.registrationForm.controls['firstName']?.value ?? '',
         lastName: this.registrationForm.controls['lastName']?.value ?? '',
         email: this.registrationForm.controls['email']?.value ?? '',
-        password: this.registrationForm.get('passwordGroup.password')?.value ?? '',
+        password:
+          this.registrationForm.get('passwordGroup.password')?.value ?? '',
       };
-      this.registrationService.register(request).subscribe({
-        next: (response) => {
-          this.successMessage = response.message;
-          this.errorMessage = null;
-        },
-        error: (error) => {
-          if (error.status === 400) {
-            this.successMessage = null;
-            const errorMessage = error.error.errors.join('<br>');
-            this.errorMessage = errorMessage;
-          }
-        },
-      });
+      this.registrationService
+        .register(request)
+        .pipe(take(1))
+        .subscribe({
+          next: (response) => {
+            this.successMessage = response.message;
+            this.errorMessage = null;
+          },
+          error: (error) => {
+            if (error.status === 400) {
+              this.successMessage = null;
+              const errorMessage = error.error.errors.join('<br>');
+              this.errorMessage = errorMessage;
+            }
+          },
+        });
     }
   }
 

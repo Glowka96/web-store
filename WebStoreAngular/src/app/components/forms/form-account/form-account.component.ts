@@ -6,6 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { take } from 'rxjs';
 import { AccountRequest } from 'src/app/models/account-request';
 import { AccountService } from 'src/app/services/accounts/account.service';
 import { PasswordFormBuilderService } from 'src/app/services/forms/password-form-builder.service';
@@ -62,15 +63,18 @@ export class FormAccountComponent implements OnInit {
         password: this.accountForm.get('passwordGroup.password')?.value ?? '',
         imageUrl: this.accountForm.controls['imageUrl']?.value ?? '',
       };
-      this.accountService.updateAccount(request).subscribe({
-        next: () => {
-          this.router.navigate(['/accounts'], {});
-        },
-        error: (error) => {
-          const errorMessage = error.error.errors.join('<br>');
-          this.errorMessage = errorMessage;
-        },
-      });
+      this.accountService
+        .updateAccount(request)
+        .pipe(take(1))
+        .subscribe({
+          next: () => {
+            this.router.navigate(['/accounts'], {});
+          },
+          error: (error) => {
+            const errorMessage = error.error.errors.join('<br>');
+            this.errorMessage = errorMessage;
+          },
+        });
     }
   }
 

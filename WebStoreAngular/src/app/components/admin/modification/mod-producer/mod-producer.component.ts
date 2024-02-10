@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { take } from 'rxjs';
 import { CategoryRequest } from 'src/app/models/category-request';
 import { ProducerResponse } from 'src/app/models/producer-response';
 import { ProducerService } from 'src/app/services/products/producer.service';
@@ -40,7 +41,7 @@ export class ModProducerComponent implements OnInit {
   });
 
   constructor(private producerService: ProducerService) {
-    producerService.producers$.subscribe((producers) => {
+    producerService.producers$.pipe(take(1)).subscribe((producers) => {
       this.producers = producers;
     });
   }
@@ -52,12 +53,15 @@ export class ModProducerComponent implements OnInit {
       const request: CategoryRequest = {
         name: this.addForm.controls['name']?.value ?? '',
       };
-      this.producerService.addProducer(request).subscribe({
-        next: () => window.location.reload(),
-        error: (e) => {
-          this.errorAddMsg = e.error.errors.join('<br>');
-        },
-      });
+      this.producerService
+        .addProducer(request)
+        .pipe(take(1))
+        .subscribe({
+          next: () => window.location.reload(),
+          error: (e) => {
+            this.errorAddMsg = e.error.errors.join('<br>');
+          },
+        });
     }
   }
 
@@ -68,12 +72,15 @@ export class ModProducerComponent implements OnInit {
       };
       const id = this.updateForm.controls['choiceProducer']?.value;
       if (id) {
-        this.producerService.updateProducer(id, request).subscribe({
-          next: () => window.location.reload(),
-          error: (e) => {
-            this.errorAddMsg = e.error.errors.join('<br>');
-          },
-        });
+        this.producerService
+          .updateProducer(id, request)
+          .pipe(take(1))
+          .subscribe({
+            next: () => window.location.reload(),
+            error: (e) => {
+              this.errorAddMsg = e.error.errors.join('<br>');
+            },
+          });
       }
     }
   }
@@ -82,12 +89,15 @@ export class ModProducerComponent implements OnInit {
     if (this.deleteForm.valid) {
       const id = this.deleteForm.controls['choiceProducer']?.value;
       if (id) {
-        this.producerService.deleteProducer(id).subscribe({
-          next: () => window.location.reload(),
-          error: (e) => {
-            this.errorDeleteMsg = e.error.errors.join('<br>');
-          },
-        });
+        this.producerService
+          .deleteProducer(id)
+          .pipe(take(1))
+          .subscribe({
+            next: () => window.location.reload(),
+            error: (e) => {
+              this.errorDeleteMsg = e.error.errors.join('<br>');
+            },
+          });
       }
     }
   }

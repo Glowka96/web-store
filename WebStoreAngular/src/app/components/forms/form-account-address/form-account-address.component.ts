@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { take } from 'rxjs';
 import { AccountAddress } from 'src/app/models/account-address';
 import { AccountService } from 'src/app/services/accounts/account.service';
 
@@ -44,12 +45,15 @@ export class FormAccountAddressComponent implements OnInit {
   });
 
   constructor(private accountService: AccountService, private router: Router) {
-    this.accountService.getAccount().subscribe((account) => {
-      if (account.address) {
-        this.isAccountAddress = true;
-        this.titleButton = 'Update';
-      }
-    });
+    this.accountService
+      .getAccount()
+      .pipe(take(1))
+      .subscribe((account) => {
+        if (account.address) {
+          this.isAccountAddress = true;
+          this.titleButton = 'Update';
+        }
+      });
   }
 
   ngOnInit(): void {}

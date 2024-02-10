@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { take } from 'rxjs';
 import { AccountResponse } from 'src/app/models/account-response';
 import { AccountService } from 'src/app/services/accounts/account.service';
 
@@ -13,9 +14,12 @@ export class AccountComponent implements OnInit {
   constructor(private accountService: AccountService) {}
 
   ngOnInit(): void {
-    this.accountService.getAccount().subscribe((account) => {
-      this.account = account;
-    });
+    this.accountService
+      .getAccount()
+      .pipe(take(1))
+      .subscribe((account) => {
+        this.account = account;
+      });
   }
 
   public get user() {
