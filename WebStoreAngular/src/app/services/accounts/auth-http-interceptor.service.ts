@@ -1,17 +1,19 @@
 import { Injectable } from '@angular/core';
 import {
+  HttpErrorResponse,
   HttpEvent,
   HttpHandler,
   HttpInterceptor,
   HttpRequest,
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, catchError, throwError } from 'rxjs';
+import { AuthenticationService } from './authentication.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthHttpInterceptorService implements HttpInterceptor {
-  constructor() {}
+  constructor(private authService: AuthenticationService) {}
   intercept(
     request: HttpRequest<any>,
     next: HttpHandler
@@ -23,6 +25,13 @@ export class AuthHttpInterceptorService implements HttpInterceptor {
       });
     }
 
-    return next.handle(request);
+    return next.handle(request).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 401 || error.status === 403) {
+          this.authService.logout();
+        }
+        return throwError(() => error);
+      })
+    );
   }
 }
