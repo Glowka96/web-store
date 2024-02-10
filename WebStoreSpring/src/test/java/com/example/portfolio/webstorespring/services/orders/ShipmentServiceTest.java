@@ -44,7 +44,7 @@ class ShipmentServiceTest {
         given(productRepository.findProductsByIdWithPromotion(anyLong())).willReturn(Optional.of(product));
 
         // when
-        List<Shipment> result =  underTest.getSetupedShipments(order, List.of(shipmentRequest));
+        List<Shipment> result =  underTest.getSetupShipments(order, List.of(shipmentRequest));
 
         // then
         assertThat(result).hasSize(1).isNotEmpty();
@@ -65,7 +65,7 @@ class ShipmentServiceTest {
 
         // when
         // then
-        assertThatThrownBy(() -> underTest.getSetupedShipments(order, List.of(shipmentRequest)))
+        assertThatThrownBy(() -> underTest.getSetupShipments(order, List.of(shipmentRequest)))
                 .isInstanceOf(ShipmentQuantityExceedsProductQuantityException.class)
                 .hasMessageContaining("The shipment quantity exceeds the product quantity");
     }

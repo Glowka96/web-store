@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { PageProductsOptions } from 'src/app/models/products/page-products-options';
 import { PageProductsWithPromotion } from 'src/app/models/products/page-products-with-promotion';
 import { ProductWithPromotion } from 'src/app/models/products/products-with-promotion';
@@ -18,6 +19,7 @@ export class AbstractPageProductComponent {
   protected _selectedSortBy: string = 'id';
   protected _selectedSortDirection: string = 'asc';
   protected _selectedPageSize: number = 12;
+  protected routeSubscription!: Subscription;
 
   constructor(
     protected pageProductService: AbstractPageProductsService,
@@ -25,6 +27,13 @@ export class AbstractPageProductComponent {
   ) {}
 
   ngOnInit(): void {}
+
+  ngOnDestroy(): void {
+    console.log('ng on destroy');
+    if (this.routeSubscription) {
+      this.routeSubscription.unsubscribe();
+    }
+  }
 
   protected getPageProductsWithText(
     text: string,

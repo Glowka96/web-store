@@ -4,6 +4,7 @@ import { PageProductsWithPromotion } from 'src/app/models/products/page-products
 import { ActivatedRoute, Params } from '@angular/router';
 import { SearchProductsService } from 'src/app/services/page-products/search-products.service';
 import { ShopService } from 'src/app/services/olders/shop.service';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-page-by-search-text',
@@ -26,12 +27,14 @@ export class PageBySearchTextComponent
   }
 
   override ngOnInit(): void {
-    this.route.queryParams.subscribe((params: Params) => {
-      if (params['query']) {
-        this._searchedText = params['query'];
-        this.getPageProductsWithText(this._searchedText);
-        this._title = 'Result of search';
-      }
-    });
+    this.routeSubscription = this.route.queryParams
+      .pipe(take(1))
+      .subscribe((params: Params) => {
+        if (params['query']) {
+          this._searchedText = params['query'];
+          this.getPageProductsWithText(this._searchedText);
+          this._title = 'Result of search';
+        }
+      });
   }
 }

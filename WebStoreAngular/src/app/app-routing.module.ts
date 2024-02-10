@@ -23,7 +23,7 @@ const routes: Routes = [
   },
   { path: 'new-products', component: PageNewProductsComponent },
   { path: 'promotions-products', component: PagePromotionsProductsComponent },
-  { path: 'products/search', component: PageBySearchTextComponent},
+  { path: 'products/search', component: PageBySearchTextComponent },
   { path: 'admin-board', component: BoardAdminComponent },
   { path: 'accounts', component: AccountComponent },
   { path: 'basket', component: BasketComponent },

@@ -15,7 +15,7 @@ export class PromotionProductsService extends AbstractPageProductsService {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
-        page: options.page,
+        page: options.page + 1,
         size: options.size,
         sort: options.sort,
         direction: options.direction,

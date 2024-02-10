@@ -12,6 +12,16 @@ export class SearchProductsService extends AbstractPageProductsService {
   public override getPageProducts(
     options: PageProductsOptions
   ): Observable<PageProductsWithPromotion> {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        page: options.page + 1,
+        size: options.size,
+        sort: options.sort,
+        direction: options.direction,
+      },
+      queryParamsHandling: 'merge',
+    });
     const params = new HttpParams()
       .set('query', options.text || '')
       .set('page', options.page)

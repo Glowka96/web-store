@@ -26,7 +26,7 @@ export class PageBySubcategoryId
   }
 
   override ngOnInit(): void {
-    this.route.paramMap.subscribe((params) => {
+    this.routeSubscription = this.route.paramMap.subscribe((params) => {
       if (params.get('id')) {
         this._subcategoryId = params.get('id') as string;
         this.getPageProductsWithText(this._subcategoryId);

@@ -22,7 +22,7 @@ class ShipmentService {
     private final ProductRepository productRepository;
     private final ShipmentRepository shipmentRepository;
 
-    protected List<Shipment> getSetupedShipments(Order order, List<ShipmentRequest> shipmentRequests) {
+    protected List<Shipment> getSetupShipments(Order order, List<ShipmentRequest> shipmentRequests) {
         List<Shipment> shipments = new ArrayList<>();
         shipmentRequests.forEach(shipmentRequest -> shipments.add(
                 createShipment(
@@ -37,7 +37,8 @@ class ShipmentService {
         if(product.getQuantity() < quantity) {
             throw new ShipmentQuantityExceedsProductQuantityException();
         }
-        return Shipment.builder().product(product)
+        return Shipment.builder()
+                .product(product)
                 .price(calculateShipmentPrice(product, quantity))
                 .order(order)
                 .quantity(quantity)

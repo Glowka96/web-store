@@ -92,13 +92,14 @@ export class NavigationComponent implements OnInit {
         relativeTo: this.route,
         queryParams: {
           query: this.searchForm.controls['search'].value,
-          page: 0,
+          page: 1,
           size: 12,
           sort: 'id',
           direction: 'asc',
         },
         queryParamsHandling: 'merge',
       });
+      this.searchForm.reset();
     }
   }
 
