@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { take } from 'rxjs';
 import { CategoryRequest } from 'src/app/models/category-request';
 import { ProducerResponse } from 'src/app/models/producer-response';
+import { EntityFormBuilderService } from 'src/app/services/forms/admins/entity-form-builder.service';
 import { ProducerService } from 'src/app/services/products/producer.service';
 
 @Component({
@@ -16,37 +17,24 @@ export class ModProducerComponent implements OnInit {
   private errorUpdateMsg = '';
   private errorDeleteMsg = '';
 
-  public addForm = new FormGroup({
-    name: new FormControl('', {
-      validators: [Validators.required, Validators.minLength(3)],
-      updateOn: 'change',
-    }),
-  });
+  public addForm!: FormGroup;
+  public updateForm!: FormGroup;
+  public deleteForm!: FormGroup;
 
-  public updateForm = new FormGroup({
-    choiceProducer: new FormControl('', {
-      updateOn: 'change',
-    }),
-    name: new FormControl('', {
-      validators: [Validators.required, Validators.minLength(3)],
-      updateOn: 'change',
-    }),
-  });
-
-  public deleteForm = new FormGroup({
-    choiceProducer: new FormControl('', {
-      validators: [Validators.required],
-      updateOn: 'change',
-    }),
-  });
-
-  constructor(private producerService: ProducerService) {
+  constructor(
+    private producerService: ProducerService,
+    private entityFormService: EntityFormBuilderService
+  ) {
     producerService.producers$.pipe(take(1)).subscribe((producers) => {
       this.producers = producers;
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.addForm = this.entityFormService.createAddFormGroup();
+    this.updateForm = this.entityFormService.createUpdateFormGroup();
+    this.deleteForm = this.entityFormService.createDeleteFormGroup();
+  }
 
   onSumbitAdd() {
     if (this.addForm.valid) {
@@ -70,7 +58,7 @@ export class ModProducerComponent implements OnInit {
       const request: CategoryRequest = {
         name: this.updateForm.controls['name']?.value ?? '',
       };
-      const id = this.updateForm.controls['choiceProducer']?.value;
+      const id = this.updateForm.controls['choice']?.value;
       if (id) {
         this.producerService
           .updateProducer(id, request)
@@ -87,7 +75,7 @@ export class ModProducerComponent implements OnInit {
 
   onSumbitDelete() {
     if (this.deleteForm.valid) {
-      const id = this.deleteForm.controls['choiceProducer']?.value;
+      const id = this.deleteForm.controls['choice']?.value;
       if (id) {
         this.producerService
           .deleteProducer(id)

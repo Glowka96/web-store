@@ -16,7 +16,7 @@
         <h3>Update Category</h3>
         <form class="form-box" [formGroup]="updateForm" (ngSubmit)="onSumbitUpdate()">
             <label for="category">Choise a category</label>
-            <select name="category" formControlName="choiceCategory">
+            <select name="category" formControlName="choice">
                 <option *ngFor="let category of categories" value="{{category.id}}">{{category.name}}</option>
             </select>
             <label for="update-category-name">Category name:</label>
@@ -33,7 +33,7 @@
         <h3>Delete Category</h3>
         <form class="form-box" [formGroup]="deleteForm" (ngSubmit)="onSumbitDelete()">
             <label for="category">Choise a category</label>
-            <select name="category" formControlName="choiceCategory">
+            <select name="category" formControlName="choice">
                 <option *ngFor="let category of categories" value="{{category.id}}">{{category.name}}</option>
             </select>
             <br>

@@ -16,7 +16,7 @@
         <h3>Update Producer</h3>
         <form class="form-box" [formGroup]="updateForm" (ngSubmit)="onSumbitUpdate()">
             <label for="producer">Choise a producer</label>
-            <select name="producer" formControlName="choiceProducer">
+            <select name="producer" formControlName="choice">
                 <option *ngFor="let category of listProducer" value="{{category.id}}">{{category.name}}</option>
             </select>
             <label for="update-producer-name">Producer name:</label>
@@ -33,7 +33,7 @@
         <h3>Delete Producer</h3>
         <form class="form-box" [formGroup]="deleteForm" (ngSubmit)="onSumbitDelete()">
             <label for="producer">Choise a producer</label>
-            <select name="producer" formControlName="choiceProducer">
+            <select name="producer" formControlName="choice">
                 <option *ngFor="let category of listProducer" value="{{category.id}}">{{category.name}}</option>
             </select>
             <br>

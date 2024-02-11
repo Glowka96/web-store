@@ -7,6 +7,7 @@ import { SubcategoryResponse } from 'src/app/models/subcategory-response';
 import { ProducerService } from 'src/app/services/products/producer.service';
 import { ProductService } from 'src/app/services/products/product.service';
 import { take } from 'rxjs/internal/operators/take';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-mod-products',
@@ -109,7 +110,8 @@ export class ModProductsComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
-    private producerService: ProducerService
+    private producerService: ProducerService,
+    private router: Router
   ) {
     productService
       .getProductTypes()
@@ -149,7 +151,7 @@ export class ModProductsComponent implements OnInit {
           .addProduct(subcategoryId, producerId, request)
           .pipe(take(1))
           .subscribe({
-            next: () => window.location.reload(),
+            next: () => this.reloadCurrentRoute(),
             error: (e) => {
               this.errorAddMsg = e.error.errors.join('<br>');
             },
@@ -177,7 +179,7 @@ export class ModProductsComponent implements OnInit {
           .updateProduct(subcategoryId, producerId, request)
           .pipe(take(1))
           .subscribe({
-            next: () => window.location.reload(),
+            next: () => this.reloadCurrentRoute(),
             error: (e) => {
               this.errorAddMsg = e.error.errors.join('<br>');
             },
@@ -194,13 +196,20 @@ export class ModProductsComponent implements OnInit {
           .deleteProduct(id)
           .pipe(take(1))
           .subscribe({
-            next: () => window.location.reload(),
+            next: () => this.reloadCurrentRoute(),
             error: (e) => {
               this.errorDeleteMsg = e.error.errors.join('<br>');
             },
           });
       }
     }
+  }
+
+  private reloadCurrentRoute() {
+    const currentUrl = this.router.url;
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate([currentUrl]);
+    });
   }
 
   public get listProductType() {

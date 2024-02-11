@@ -4,6 +4,7 @@ import { CategoryResponse } from 'src/app/models/category-response';
 import { CategoryRequest } from 'src/app/models/category-request';
 import { CategoryService } from 'src/app/services/products/category.service';
 import { take } from 'rxjs';
+import { EntityFormBuilderService } from 'src/app/services/forms/admins/entity-form-builder.service';
 
 @Component({
   selector: 'app-mod-category',
@@ -17,33 +18,21 @@ export class ModCategoryComponent implements OnInit {
   private errorUpdateMsg = '';
   private errorDeleteMsg = '';
 
-  public addForm = new FormGroup({
-    name: new FormControl('', {
-      validators: [Validators.required, Validators.minLength(3)],
-      updateOn: 'change',
-    }),
-  });
+  public addForm!: FormGroup;
 
-  public updateForm = new FormGroup({
-    choiceCategory: new FormControl('', {
-      updateOn: 'change',
-    }),
-    name: new FormControl('', {
-      validators: [Validators.required, Validators.minLength(3)],
-      updateOn: 'change',
-    }),
-  });
+  public updateForm!: FormGroup;
+  public deleteForm!: FormGroup;
 
-  public deleteForm = new FormGroup({
-    choiceCategory: new FormControl('', {
-      validators: [Validators.required],
-      updateOn: 'change',
-    }),
-  });
+  constructor(
+    private categoryService: CategoryService,
+    private entityFormService: EntityFormBuilderService
+  ) {}
 
-  constructor(private categoryService: CategoryService) {}
-
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.addForm = this.entityFormService.createAddFormGroup();
+    this.updateForm = this.entityFormService.createUpdateFormGroup();
+    this.deleteForm = this.entityFormService.createDeleteFormGroup();
+  }
 
   onSumbitAdd() {
     if (this.addForm.valid) {
@@ -67,7 +56,7 @@ export class ModCategoryComponent implements OnInit {
       const request: CategoryRequest = {
         name: this.updateForm.controls['name']?.value ?? '',
       };
-      const id = this.updateForm.controls['choiceCategory']?.value;
+      const id = this.updateForm.controls['choice']?.value;
       if (id) {
         this.categoryService
           .updateCategory(id, request)
@@ -84,7 +73,7 @@ export class ModCategoryComponent implements OnInit {
 
   onSumbitDelete() {
     if (this.deleteForm.valid) {
-      const id = this.deleteForm.controls['choiceCategory']?.value;
+      const id = this.deleteForm.controls['choice']?.value;
       if (id) {
         this.categoryService
           .deleteCategory(id)
