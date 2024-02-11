@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { take } from 'rxjs';
 import { ResetPasswordService } from 'src/app/services/accounts/reset-password.service';
 import { EmailFromBuilderService } from 'src/app/services/forms/users/email-from-builder.service';

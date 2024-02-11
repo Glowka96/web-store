@@ -1,13 +1,11 @@
-import { trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { take } from 'rxjs';
 import { LoginRequest } from 'src/app/models/login-request';
 import { RegistrationRequest } from 'src/app/models/registration-request';
 import { AuthenticationService } from 'src/app/services/accounts/authentication.service';
 import { FormLoginService } from 'src/app/services/accounts/form-login.service';
 import { RegistrationService } from 'src/app/services/accounts/registration.service';
-import { RegistrationFormBuilderService } from 'src/app/services/forms/users/registration-form-builder.service';
 
 @Component({
   selector: 'app-form',
