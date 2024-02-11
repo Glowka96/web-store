@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
-import { PasswordMatchValidatorService } from '../password-match-validator.service';
+import { PasswordMatchValidatorService } from '../../password-match-validator.service';
 
 @Injectable({
   providedIn: 'root',

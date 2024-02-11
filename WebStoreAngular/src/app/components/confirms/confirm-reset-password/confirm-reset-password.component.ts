@@ -3,7 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs';
 import { ResetPasswordService } from 'src/app/services/accounts/reset-password.service';
-import { PasswordFormBuilderService } from 'src/app/services/forms/password-form-builder.service';
+import { PasswordFormBuilderService } from 'src/app/services/forms/users/password-form-builder.service';
 
 @Component({
   selector: 'app-confirm-reset-password',

@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 import { take } from 'rxjs';
 import { AccountRequest } from 'src/app/models/account-request';
 import { AccountService } from 'src/app/services/accounts/account.service';
-import { PasswordFormBuilderService } from 'src/app/services/forms/password-form-builder.service';
+import { PasswordFormBuilderService } from 'src/app/services/forms/users/password-form-builder.service';
 
 @Component({
   selector: 'app-form-account',

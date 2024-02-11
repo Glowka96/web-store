@@ -1,6 +1,6 @@
+import { trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import {
-  FormBuilder,
   FormControl,
   FormGroup,
   Validators,
@@ -11,7 +11,7 @@ import { RegistrationRequest } from 'src/app/models/registration-request';
 import { AuthenticationService } from 'src/app/services/accounts/authentication.service';
 import { FormLoginService } from 'src/app/services/accounts/form-login.service';
 import { RegistrationService } from 'src/app/services/accounts/registration.service';
-import { PasswordFormBuilderService } from 'src/app/services/forms/password-form-builder.service';
+import { RegistrationFormBuilderService } from 'src/app/services/forms/users/registration-form-builder.service';
 
 @Component({
   selector: 'app-form',
@@ -36,41 +36,19 @@ export class FormLoginComponent implements OnInit {
     }),
   });
 
-  public registrationForm = this.formBuilder.group({
-    firstName: new FormControl('', {
-      validators: [
-        Validators.minLength(3),
-        Validators.maxLength(20),
-        Validators.pattern('[a-zA-Z ]*'),
-        Validators.required,
-      ],
-      updateOn: 'change',
-    }),
-    lastName: new FormControl('', {
-      validators: [
-        Validators.minLength(3),
-        Validators.maxLength(20),
-        Validators.pattern('[a-zA-Z ]*'),
-        Validators.required,
-      ],
-      updateOn: 'change',
-    }),
-    email: new FormControl('', {
-      validators: [Validators.required, Validators.pattern(this.emailPattern)],
-      updateOn: 'change',
-    }),
-    passwordGroup: this.passwordFormControlService.createPasswordFormGroup(),
-  });
+  public registrationForm!: FormGroup;
 
   constructor(
     private registrationService: RegistrationService,
     private authenticationService: AuthenticationService,
-    private formBuilder: FormBuilder,
     private formService: FormLoginService,
-    private passwordFormControlService: PasswordFormBuilderService
+    private registrationFormService: RegistrationFormBuilderService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.registrationForm =
+      this.registrationFormService.createRegistrationFormBuilder();
+  }
 
   onSumbitLogin() {
     if (this.loginForm.valid) {
@@ -97,28 +75,27 @@ export class FormLoginComponent implements OnInit {
   onSubmitRegister() {
     if (this.registrationForm.valid) {
       const request: RegistrationRequest = {
-        firstName: this.registrationForm.controls['firstName']?.value ?? '',
-        lastName: this.registrationForm.controls['lastName']?.value ?? '',
-        email: this.registrationForm.controls['email']?.value ?? '',
+        firstName:
+          this.registrationForm.get('fullnameGroup.firstName')?.value ?? '',
+        lastName:
+          this.registrationForm.get('fullnameGroup.lastName')?.value ?? '',
+        email: this.registrationForm.get('emailGroup.email')?.value ?? '',
         password:
           this.registrationForm.get('passwordGroup.password')?.value ?? '',
       };
-      this.registrationService
-        .register(request)
-        .pipe(take(1))
-        .subscribe({
-          next: (response) => {
-            this.successMessage = response.message;
-            this.errorMessage = null;
-          },
-          error: (error) => {
-            if (error.status === 400) {
-              this.successMessage = null;
-              const errorMessage = error.error.errors.join('<br>');
-              this.errorMessage = errorMessage;
-            }
-          },
-        });
+      this.registrationService.register(request).subscribe({
+        next: (response) => {
+          this.successMessage = response.message;
+          this.errorMessage = null;
+        },
+        error: (error) => {
+          if (error.status === 400) {
+            this.successMessage = null;
+            const errorMessage = error.error.errors.join('<br>');
+            this.errorMessage = errorMessage;
+          }
+        },
+      });
     }
   }
 
