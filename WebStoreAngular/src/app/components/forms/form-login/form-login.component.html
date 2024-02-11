@@ -11,7 +11,9 @@
     </div>
     <div class="form-section">
         <form class="login-box" [formGroup]="loginForm" (ngSubmit)="onSumbitLogin()" *ngIf="!getFormSectionMove">
-            <input formControlName="email" type="email" class="email ele" placeholder="Email">
+            <span formGroupName="emailGroup">
+                <input formControlName="email" type="email" class="email ele" placeholder="Email">
+            </span>
             <input formControlName="password" type="password" class="password ele" placeholder="Password">
             <div *ngIf="getSuccessMessage" class="alert" role="alert">
                 {{ getSuccessMessage }}

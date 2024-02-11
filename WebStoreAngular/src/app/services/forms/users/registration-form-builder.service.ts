@@ -14,18 +14,17 @@ import { UserFullnameFormBuilderService } from './user-fullname-form-builder.ser
 })
 export class RegistrationFormBuilderService {
   constructor(
-    private emailFormBuilderService: EmailFromBuilderService,
-    private userFullnameFormBuilderService: UserFullnameFormBuilderService,
-    private passwordFormBuilderService: PasswordFormBuilderService,
+    private emailFormService: EmailFromBuilderService,
+    private userFullnameFormService: UserFullnameFormBuilderService,
+    private passwordFormService: PasswordFormBuilderService,
     private formBuilder: FormBuilder
   ) {}
 
   createRegistrationFormBuilder(): FormGroup {
     return this.formBuilder.group({
-      fullnameGroup:
-        this.userFullnameFormBuilderService.createUserFullnameFormGroup(),
-      emailGroup: this.emailFormBuilderService.createEmailFormGroup(),
-      passwordGroup: this.passwordFormBuilderService.createPasswordFormGroup(),
+      fullnameGroup: this.userFullnameFormService.createUserFullnameFormGroup(),
+      emailGroup: this.emailFormService.createEmailFormGroup(),
+      passwordGroup: this.passwordFormService.createPasswordFormGroup(),
     });
   }
 }

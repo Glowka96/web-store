@@ -1,10 +1,6 @@
 import { trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { take } from 'rxjs';
 import { LoginRequest } from 'src/app/models/login-request';
 import { RegistrationRequest } from 'src/app/models/registration-request';
@@ -23,37 +19,24 @@ export class FormLoginComponent implements OnInit {
   private successMessage?: string | null;
   private errorMessage?: string | null;
 
-  private emailPattern = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
-
-  public loginForm = new FormGroup({
-    email: new FormControl('', {
-      validators: [Validators.required, Validators.pattern(this.emailPattern)],
-      updateOn: 'change',
-    }),
-    password: new FormControl('', {
-      validators: [Validators.required],
-      updateOn: 'change',
-    }),
-  });
-
+  public loginForm!: FormGroup;
   public registrationForm!: FormGroup;
 
   constructor(
     private registrationService: RegistrationService,
     private authenticationService: AuthenticationService,
-    private formService: FormLoginService,
-    private registrationFormService: RegistrationFormBuilderService
+    private formService: FormLoginService
   ) {}
 
   ngOnInit(): void {
-    this.registrationForm =
-      this.registrationFormService.createRegistrationFormBuilder();
+    this.loginForm = this.formService.createLoginForm();
+    this.registrationForm = this.formService.createRegisterForm();
   }
 
   onSumbitLogin() {
     if (this.loginForm.valid) {
       const request: LoginRequest = {
-        email: this.loginForm.controls['email']?.value ?? '',
+        email: this.loginForm.get('emailGroup.email')?.value ?? '',
         password: this.loginForm.controls['password']?.value ?? '',
       };
       this.authenticationService
