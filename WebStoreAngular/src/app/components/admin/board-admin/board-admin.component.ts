@@ -2,8 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { take } from 'rxjs';
 import { CategoryResponse } from 'src/app/models/products/category-response';
+import { ProducerResponse } from 'src/app/models/products/producer-response';
+import { ProductTypeResponse } from 'src/app/models/products/product-type-response';
 import { SubcategoryResponse } from 'src/app/models/products/subcategory-response';
 import { CategoryService } from 'src/app/services/products/category.service';
+import { ProducerService } from 'src/app/services/products/producer.service';
+import { ProductTypeService } from 'src/app/services/products/product-type.service';
 import { SubcategoryService } from 'src/app/services/products/subcategory.service';
 
 @Component({
@@ -12,24 +16,32 @@ import { SubcategoryService } from 'src/app/services/products/subcategory.servic
   styleUrls: ['./board-admin.component.scss'],
 })
 export class BoardAdminComponent implements OnInit {
-  private categories: CategoryResponse[] = [];
-  private subcategories: SubcategoryResponse[] = [];
+  private _categories: CategoryResponse[] = [];
+  private _subcategories: SubcategoryResponse[] = [];
+  private _producers: ProducerResponse[] = [];
+  private _productTypes: ProductTypeResponse[] = [];
   private loggedRole!: string;
 
   constructor(
-    private shopService: CategoryService,
+    private categoryService: CategoryService,
     private subcategoryService: SubcategoryService,
+    private producerService: ProducerService,
+    private productTypeService: ProductTypeService,
     private router: Router
   ) {
     this.loggedRole = sessionStorage.getItem('role')!;
-    shopService.categories$.pipe(take(1)).subscribe((categories) => {
-      this.categories = categories;
-    });
+    categoryService.categories$
+      .pipe(take(1))
+      .subscribe((categories) => (this._categories = categories));
     subcategoryService.subcategories$
       .pipe(take(1))
-      .subscribe((subcategories) => {
-        this.subcategories = subcategories;
-      });
+      .subscribe((subcategories) => (this._subcategories = subcategories));
+    producerService.producers$
+      .pipe(take(1))
+      .subscribe((producers) => (this._producers = producers));
+    productTypeService.productTypes$
+      .pipe(take(1))
+      .subscribe((productTypes) => (this._productTypes = productTypes));
   }
 
   ngOnInit(): void {
@@ -42,11 +54,19 @@ export class BoardAdminComponent implements OnInit {
     return this.loggedRole === 'ROLE_ADMIN';
   }
 
-  public get listCategories() {
-    return this.categories;
+  public get categories() {
+    return this._categories;
   }
 
-  public get listSubcategories() {
-    return this.subcategories;
+  public get subcategories() {
+    return this._subcategories;
+  }
+
+  public get producers() {
+    return this._producers;
+  }
+
+  public get productTypes() {
+    return this._productTypes;
   }
 }

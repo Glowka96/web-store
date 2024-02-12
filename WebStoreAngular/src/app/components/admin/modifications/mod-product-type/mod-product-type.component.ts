@@ -1,19 +1,20 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { CategoryResponse } from 'src/app/models/products/category-response';
-import { CategoryRequest } from 'src/app/models/products/category-request';
-import { CategoryService } from 'src/app/services/products/category.service';
+import { Component, Input } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { take } from 'rxjs';
+import { CategoryRequest } from 'src/app/models/products/category-request';
+import { ProductTypeResponse } from 'src/app/models/products/product-type-response';
 import { EntityFormBuilderService } from 'src/app/services/forms/admins/entity-form-builder.service';
+import { ProductTypeService } from 'src/app/services/products/product-type.service';
 
 @Component({
-  selector: 'app-mod-category',
-  templateUrl: './mod-category.component.html',
-  styleUrls: ['./mod-category.component.scss'],
+  selector: 'app-mod-product-type',
+  templateUrl: './mod-product-type.component.html',
+  styleUrls: ['./mod-product-type.component.scss'],
 })
-export class ModCategoryComponent implements OnInit {
+export class ModProductTypeComponent {
   @Input()
-  categories!: CategoryResponse[];
+  productTypes!: ProductTypeResponse[];
+
   private errorAddMsg = '';
   private errorUpdateMsg = '';
   private errorDeleteMsg = '';
@@ -23,7 +24,7 @@ export class ModCategoryComponent implements OnInit {
   public deleteForm!: FormGroup;
 
   constructor(
-    private categoryService: CategoryService,
+    private productTypeService: ProductTypeService,
     private entityFormService: EntityFormBuilderService
   ) {}
 
@@ -38,8 +39,8 @@ export class ModCategoryComponent implements OnInit {
       const request: CategoryRequest = {
         name: this.addForm.controls['name']?.value ?? '',
       };
-      this.categoryService
-        .addCategory(request)
+      this.productTypeService
+        .addProductType(request)
         .pipe(take(1))
         .subscribe({
           next: () => window.location.reload(),
@@ -57,8 +58,8 @@ export class ModCategoryComponent implements OnInit {
       };
       const id = this.updateForm.controls['choice']?.value;
       if (id) {
-        this.categoryService
-          .updateCategory(id, request)
+        this.productTypeService
+          .updateProductType(id, request)
           .pipe(take(1))
           .subscribe({
             next: () => window.location.reload(),
@@ -74,8 +75,8 @@ export class ModCategoryComponent implements OnInit {
     if (this.deleteForm.valid) {
       const id = this.deleteForm.controls['choice']?.value;
       if (id) {
-        this.categoryService
-          .deleteCategory(id)
+        this.productTypeService
+          .deleteProductType(id)
           .pipe(take(1))
           .subscribe({
             next: () => window.location.reload(),

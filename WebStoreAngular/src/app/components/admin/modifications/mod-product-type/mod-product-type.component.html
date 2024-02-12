@@ -1,9 +1,9 @@
 <div class="form-section">
     <div class="box">
-        <h3>Add Category</h3>
+        <h3>Add Product Type</h3>
         <form class="form-box" [formGroup]="addForm" (ngSubmit)="onSumbitAdd()">
-            <label for="add-category-name">Category name:</label>
-            <input id="add-category-name" type="text" formControlName="name">
+            <label for="add-product-type-name">Product type name:</label>
+            <input id="add-product-type-name" type="text" formControlName="name">
             <br>
             <div *ngIf="errorAddMessage" class="alert" role="alert">
                 <span [innerHTML]="errorAddMessage"></span>
@@ -13,14 +13,15 @@
         </form>
     </div>
     <div class="box">
-        <h3>Update Category</h3>
+        <h3>Update Produt Type</h3>
         <form class="form-box" [formGroup]="updateForm" (ngSubmit)="onSumbitUpdate()">
-            <label for="category">Choise a category</label>
-            <select name="category" formControlName="choice">
-                <option *ngFor="let category of categories" value="{{category.id}}">{{category.name}}</option>
+            <label for="productType">Choise a product type</label>
+            <select name="productType" formControlName="choice">
+                <option *ngFor="let productType of productTypes" value="{{productType.id}}">{{productType.name}}
+                </option>
             </select>
-            <label for="update-category-name">Category name:</label>
-            <input id="update-category-name" type="text" formControlName="name">
+            <label for="update-product-type-name">Product Type name:</label>
+            <input id="update-product-type-name" type="text" formControlName="name">
             <br>
             <div *ngIf="errorUpdateMessage" class="alert" role="alert">
                 <span [innerHTML]="errorUpdateMessage"></span>
@@ -30,11 +31,12 @@
         </form>
     </div>
     <div class="box">
-        <h3>Delete Category</h3>
+        <h3>Delete Product Type</h3>
         <form class="form-box" [formGroup]="deleteForm" (ngSubmit)="onSumbitDelete()">
-            <label for="category">Choise a category</label>
-            <select name="category" formControlName="choice">
-                <option *ngFor="let category of categories" value="{{category.id}}">{{category.name}}</option>
+            <label for="productType">Choise a product type:</label>
+            <select name="productType" formControlName="choice">
+                <option *ngFor="let productType of productTypes" value="{{productType.id}}">{{productType.name}}
+                </option>
             </select>
             <br>
             <div *ngIf="errorDeleteMessage" class="alert" role="alert">

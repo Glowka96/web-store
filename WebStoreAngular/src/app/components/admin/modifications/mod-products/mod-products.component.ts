@@ -4,10 +4,10 @@ import { ProducerResponse } from 'src/app/models/products/producer-response';
 import { ProductResponse } from 'src/app/models/products/product-response';
 import { ProductRequest } from 'src/app/models/products/product-request';
 import { SubcategoryResponse } from 'src/app/models/products/subcategory-response';
-import { ProducerService } from 'src/app/services/products/producer.service';
 import { ProductService } from 'src/app/services/products/product.service';
 import { take } from 'rxjs/internal/operators/take';
 import { Router } from '@angular/router';
+import { ProductTypeResponse } from 'src/app/models/products/product-type-response';
 
 @Component({
   selector: 'app-mod-products',
@@ -17,9 +17,11 @@ import { Router } from '@angular/router';
 export class ModProductsComponent implements OnInit {
   @Input()
   subcategories!: SubcategoryResponse[];
-  private productTypes: string[] = [];
+  @Input()
+  productTypes!: ProductTypeResponse[];
+  @Input()
+  producers!: ProducerResponse[];
   private products: ProductResponse[] = [];
-  private producers: ProducerResponse[] = [];
   private errorAddMsg = '';
   private errorUpdateMsg = '';
   private errorDeleteMsg = '';
@@ -108,26 +110,13 @@ export class ModProductsComponent implements OnInit {
     }),
   });
 
-  constructor(
-    private productService: ProductService,
-    private producerService: ProducerService,
-    private router: Router
-  ) {
-    productService
-      .getProductTypes()
-      .pipe(take(1))
-      .subscribe((types) => {
-        this.productTypes = types;
-      });
+  constructor(private productService: ProductService, private router: Router) {
     productService
       .getAllProducts()
       .pipe(take(1))
       .subscribe((products) => {
         this.products = products;
       });
-    producerService.producers$.subscribe(
-      (producers) => (this.producers = producers)
-    );
   }
 
   ngOnInit(): void {}
@@ -212,16 +201,8 @@ export class ModProductsComponent implements OnInit {
     });
   }
 
-  public get listProductType() {
-    return this.productTypes;
-  }
-
   public get listProducts() {
     return this.products;
-  }
-
-  public get listProducer() {
-    return this.producers;
   }
 
   public get errorAddMessage() {

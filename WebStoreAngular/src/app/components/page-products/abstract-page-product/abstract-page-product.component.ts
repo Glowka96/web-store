@@ -67,7 +67,6 @@ export abstract class AbstractPageProductComponent {
   private getPageProduct(options: PageProductsOptions) {
     this.pageProductService.getPageProducts(options).subscribe((data) => {
       this._pageProducts = data;
-      console.log(data);
       this._pageProducts.products.forEach(
         (product) => (this._cart[product.id] = 1)
       );

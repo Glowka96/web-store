@@ -9,7 +9,7 @@
             </select>
             <label for="producer">Choise a producer</label>
             <select name="producer" formControlName="choiceProducer">
-                <option *ngFor="let producer of listProducer" value="{{producer.id}}">{{producer.name}}</option>
+                <option *ngFor="let producer of producers" value="{{producer.id}}">{{producer.name}}</option>
             </select>
             <label for="add-product-name">Product name</label>
             <input id="add-product-name" type="text" formControlName="name">
@@ -19,9 +19,10 @@
             <input id="add-product-imageUrl" type="text" formControlName="imageUrl">
             <label for="add-product-price">Product price</label>
             <input id="add-product-price" type="text" formControlName="price">
-            <label for="type">Choise a type</label>
-            <select name="type" formControlName="choiceType">
-                <option *ngFor="let type of listProductType" value="{{type}}">{{type}}</option>
+            <label for="productType">Choise a product type</label>
+            <select name="productType" formControlName="choice">
+                <option *ngFor="let productType of productTypes" value="{{productType.id}}">{{productType.name}}
+                </option>
             </select>
             <br>
             <div *ngIf="errorAddMessage" class="alert" role="alert">
@@ -41,7 +42,7 @@
             </select>
             <label for="producer">Choise a producer</label>
             <select name="producer" formControlName="choiceProducer">
-                <option *ngFor="let producer of listProducer" value="{{producer.id}}">{{producer.name}}</option>
+                <option *ngFor="let producer of producers" value="{{producer.id}}">{{producer.name}}</option>
             </select>
             <label for="product">Choise a product</label>
             <select name="product" formControlName="choiceProducer">
@@ -55,9 +56,10 @@
             <input id="update-product-imageUrl" type="text" formControlName="imageUrl">
             <label for="update-product-price">Product price</label>
             <input id="update-product-price" type="text" formControlName="price">
-            <label for="type">Choise a type</label>
-            <select name="type" formControlName="choiceType">
-                <option *ngFor="let type of listProductType" value="{{type}}">{{type}}</option>
+            <label for="productType">Choise a product type</label>
+            <select name="productType" formControlName="choice">
+                <option *ngFor="let productType of productTypes" value="{{productType.id}}">{{productType.name}}
+                </option>
             </select>
             <br>
             <div *ngIf="errorAddMessage" class="alert" role="alert">

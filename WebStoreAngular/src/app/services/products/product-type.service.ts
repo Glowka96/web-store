@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ProductTypeRequest } from 'src/app/models/products/product-type-request';
-import { ProductTypResponse } from 'src/app/models/products/product-type-response';
+import { ProductTypeResponse } from 'src/app/models/products/product-type-response';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -10,14 +10,14 @@ import { environment } from 'src/environments/environment';
 })
 export class ProductTypeService {
   private apiServerUrl = environment.apiBaseUrl;
-  private productTypes: Observable<ProductTypResponse[]>;
+  private productTypes: Observable<ProductTypeResponse[]>;
 
   constructor(private http: HttpClient) {
     this.productTypes = this.getAllProductTypes();
   }
 
-  private getAllProductTypes(): Observable<ProductTypResponse[]> {
-    return this.http.get<ProductTypResponse[]>(
+  private getAllProductTypes(): Observable<ProductTypeResponse[]> {
+    return this.http.get<ProductTypeResponse[]>(
       `${this.apiServerUrl}/admin/product-types`
     );
   }
@@ -45,7 +45,7 @@ export class ProductTypeService {
     );
   }
 
-  public get productTypes$(): Observable<ProductTypResponse[]> {
+  public get productTypes$(): Observable<ProductTypeResponse[]> {
     return this.productTypes;
   }
 }

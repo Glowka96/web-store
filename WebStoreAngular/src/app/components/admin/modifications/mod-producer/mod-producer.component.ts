@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { take } from 'rxjs';
 import { CategoryRequest } from 'src/app/models/products/category-request';
@@ -12,7 +12,8 @@ import { ProducerService } from 'src/app/services/products/producer.service';
   styleUrls: ['./mod-producer.component.scss'],
 })
 export class ModProducerComponent implements OnInit {
-  private producers: ProducerResponse[] = [];
+  @Input()
+  producers!: ProducerResponse[];
   private errorAddMsg = '';
   private errorUpdateMsg = '';
   private errorDeleteMsg = '';
@@ -24,11 +25,7 @@ export class ModProducerComponent implements OnInit {
   constructor(
     private producerService: ProducerService,
     private entityFormService: EntityFormBuilderService
-  ) {
-    producerService.producers$.pipe(take(1)).subscribe((producers) => {
-      this.producers = producers;
-    });
-  }
+  ) {}
 
   ngOnInit(): void {
     this.addForm = this.entityFormService.createAddFormGroup();

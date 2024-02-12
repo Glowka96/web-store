@@ -57,6 +57,7 @@ import { ModProductTypeComponent } from './components/admin/modifications/mod-pr
     PageNewProductsComponent,
     PagePromotionsProductsComponent,
     PageBySearchTextComponent,
+    ModProductTypeComponent,
   ],
   imports: [
     BrowserModule,
