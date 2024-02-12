@@ -19,10 +19,6 @@ export class ProductService {
     );
   }
 
-  public getProductTypes(): Observable<string[]> {
-    return this.http.get<string[]>(`${this.apiServerUrl}/admin/product-types`);
-  }
-
   public addProduct(
     subcategoryId: string,
     producerId: string,
