@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { take } from 'rxjs';
-import { CategoryRequest } from 'src/app/models/category-request';
-import { ProducerResponse } from 'src/app/models/producer-response';
+import { CategoryRequest } from 'src/app/models/products/category-request';
+import { ProducerResponse } from 'src/app/models/products/producer-response';
 import { EntityFormBuilderService } from 'src/app/services/forms/admins/entity-form-builder.service';
 import { ProducerService } from 'src/app/services/products/producer.service';
 

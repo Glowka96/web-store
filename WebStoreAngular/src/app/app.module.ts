@@ -6,11 +6,11 @@ import { AppComponent } from './app.component';
 import { ShopService } from './services/olders/shop.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NavigationComponent } from './components/navigation/navigation.component';
-import { ModCategoryComponent } from './components/admin/modification/mod-category/mod-category.component';
+import { ModCategoryComponent } from './components/admin/modifications/mod-category/mod-category.component';
 import { BoardAdminComponent } from './components/admin/board-admin/board-admin.component';
-import { ModSubcategoryComponent } from './components/admin/modification/mod-subcategory/mod-subcategory.component';
-import { ModProductsComponent } from './components/admin/modification/mod-products/mod-products.component';
-import { ModProducerComponent } from './components/admin/modification/mod-producer/mod-producer.component';
+import { ModSubcategoryComponent } from './components/admin/modifications/mod-subcategory/mod-subcategory.component';
+import { ModProductsComponent } from './components/admin/modifications/mod-products/mod-products.component';
+import { ModProducerComponent } from './components/admin/modifications/mod-producer/mod-producer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AccountComponent } from './components/user/account/account.component';
 import { BasketComponent } from './components/basket/basket.component';
@@ -27,10 +27,10 @@ import { AuthHttpInterceptorService } from './services/accounts/auth-http-interc
 import { ConfirmAccountComponent } from './components/confirms/confirm-account/confirm-account.component';
 import { ConfirmResetPasswordComponent } from './components/confirms/confirm-reset-password/confirm-reset-password.component';
 import { PageBySubcategoryId } from './components/page-products/page-by-subcategory-id/page-by-subcategory-id.component';
-import { AbstractPageProductComponent } from './components/page-products/abstract-page-product/abstract-page-product.component';
 import { PageNewProductsComponent } from './components/page-products/page-new-products/page-new-products.component';
 import { PagePromotionsProductsComponent } from './components/page-products/page-promotion-products/page-promotion-products.component';
 import { PageBySearchTextComponent } from './components/page-products/page-by-search-text/page-by-search-text.component';
+import { ModProductTypeComponent } from './components/admin/modifications/mod-product-type/mod-product-type.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +54,6 @@ import { PageBySearchTextComponent } from './components/page-products/page-by-se
     ConfirmResetPasswordComponent,
     FormResetPasswordComponent,
     PageBySubcategoryId,
-    AbstractPageProductComponent,
     PageNewProductsComponent,
     PagePromotionsProductsComponent,
     PageBySearchTextComponent,

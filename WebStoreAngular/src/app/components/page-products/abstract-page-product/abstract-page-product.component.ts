@@ -7,11 +7,9 @@ import { ShopService } from 'src/app/services/olders/shop.service';
 import { AbstractPageProductsService } from 'src/app/services/page-products/abstract-page-products.service';
 
 @Component({
-  selector: 'app-abstract-page-product',
-  templateUrl: './abstract-page-product.component.html',
-  styleUrls: ['./abstract-page-product.component.scss'],
+  template: '',
 })
-export class AbstractPageProductComponent {
+export abstract class AbstractPageProductComponent {
   protected _pageProducts!: PageProductsWithPromotion;
   protected _cart: { [productId: number]: number } = {};
   protected _title!: string;

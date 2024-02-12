@@ -7,7 +7,7 @@ import {
   FormGroupDirective,
   Validators,
 } from '@angular/forms';
-import { CategoryResponse } from 'src/app/models/category-response';
+import { CategoryResponse } from 'src/app/models/products/category-response';
 import { CategoryService } from 'src/app/services/products/category.service';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { AuthenticationService } from 'src/app/services/accounts/authentication.service';

@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { CategoryResponse } from 'src/app/models/category-response';
-import { CategoryRequest } from 'src/app/models/category-request';
+import { CategoryResponse } from 'src/app/models/products/category-response';
+import { CategoryRequest } from 'src/app/models/products/category-request';
 import { CategoryService } from 'src/app/services/products/category.service';
 import { take } from 'rxjs';
 import { EntityFormBuilderService } from 'src/app/services/forms/admins/entity-form-builder.service';
@@ -19,7 +19,6 @@ export class ModCategoryComponent implements OnInit {
   private errorDeleteMsg = '';
 
   public addForm!: FormGroup;
-
   public updateForm!: FormGroup;
   public deleteForm!: FormGroup;
 
@@ -86,6 +85,10 @@ export class ModCategoryComponent implements OnInit {
           });
       }
     }
+  }
+
+  public get listEntity() {
+    return this.categories;
   }
 
   public get errorAddMessage() {

@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { CategoryResponse } from 'src/app/models/category-response';
-import { SubcategoryResponse } from 'src/app/models/subcategory-response';
-import { SubcategoryRequest } from 'src/app/models/subcategory-request';
+import { CategoryResponse } from 'src/app/models/products/category-response';
+import { SubcategoryResponse } from 'src/app/models/products/subcategory-response';
+import { SubcategoryRequest } from 'src/app/models/products/subcategory-request';
 import { SubcategoryService } from 'src/app/services/products/subcategory.service';
 import { take } from 'rxjs/internal/operators/take';
 
@@ -49,7 +49,6 @@ export class ModSubcategoryComponent implements OnInit {
       updateOn: 'change',
     }),
   });
-  objectData: any;
 
   constructor(private subcategoryService: SubcategoryService) {}
 

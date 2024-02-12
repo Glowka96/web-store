@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { take } from 'rxjs';
-import { CategoryResponse } from 'src/app/models/category-response';
-import { SubcategoryResponse } from 'src/app/models/subcategory-response';
-import { AuthenticationService } from 'src/app/services/accounts/authentication.service';
+import { CategoryResponse } from 'src/app/models/products/category-response';
+import { SubcategoryResponse } from 'src/app/models/products/subcategory-response';
 import { CategoryService } from 'src/app/services/products/category.service';
 import { SubcategoryService } from 'src/app/services/products/subcategory.service';
 

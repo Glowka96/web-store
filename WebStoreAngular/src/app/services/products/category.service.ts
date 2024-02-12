@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { CategoryRequest } from '../../models/category-request';
+import { CategoryRequest } from '../../models/products/category-request';
 import { Observable } from 'rxjs';
-import { CategoryResponse } from '../../models/category-response';
+import { CategoryResponse } from '../../models/products/category-response';
 
 @Injectable({
   providedIn: 'root',
