@@ -36,8 +36,8 @@ public class ProductsPageService {
                                                                        SortByType sortBy,
                                                                        SortDirectionType sortDirection) {
         return getPageProduct(
-                pageable -> getProductsBySubcategoryId(subcategoryId, getDate30DaysAgo(), pageable),
-                pageNo, pageSize, sortBy, sortDirection
+                pageNo, pageSize, sortBy, sortDirection,
+                pageable -> getProductsBySubcategoryId(subcategoryId, getDate30DaysAgo(), pageable)
         );
     }
 
@@ -48,8 +48,8 @@ public class ProductsPageService {
                                                               SortByType sortBy,
                                                               SortDirectionType sortDirection) {
         return getPageProduct(
-                pageable -> searchProductsByText(text, getDate30DaysAgo(), pageable),
-                pageNo, pageSize, sortBy, sortDirection
+                pageNo, pageSize, sortBy, sortDirection,
+                pageable -> searchProductsByText(text, getDate30DaysAgo(), pageable)
         );
     }
 
@@ -59,8 +59,8 @@ public class ProductsPageService {
                                                                 SortByType sortBy,
                                                                 SortDirectionType sortDirection) {
         return getPageProduct(
-                pageable -> getPromotionProducts(getDate30DaysAgo(), pageable),
-                pageNo, pageSize, sortBy, sortDirection
+                pageNo, pageSize, sortBy, sortDirection,
+                pageable -> getNewProducts(getDate30DaysAgo(), pageable)
         );
     }
 
@@ -70,15 +70,16 @@ public class ProductsPageService {
                                                           SortByType sortBy,
                                                           SortDirectionType sortDirection) {
         return getPageProduct(
-                pageable -> getNewProducts(getDate30DaysAgo(), pageable),
-                pageNo, pageSize, sortBy, sortDirection);
+                pageNo, pageSize, sortBy, sortDirection,
+                pageable -> getNewProducts(getDate30DaysAgo(), pageable)
+                );
     }
 
-    private PageProductsWithPromotionDTO getPageProduct(Function<Pageable, Page<ProductWithPromotionDTO>> function,
-                                                        Integer pageNo,
+    private PageProductsWithPromotionDTO getPageProduct(Integer pageNo,
                                                         Integer pageSize,
                                                         SortByType sortBy,
-                                                        SortDirectionType sortDirection) {
+                                                        SortDirectionType sortDirection,
+                                                        Function<Pageable, Page<ProductWithPromotionDTO>> function) {
         Pageable pageable = createPageable(pageNo, pageSize, sortBy.getFieldName(), sortDirection.name());
         Page<ProductWithPromotionDTO> productPage = function.apply(pageable);
 
