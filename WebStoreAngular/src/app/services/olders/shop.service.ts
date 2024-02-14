@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { Shipment } from '../../models/shipment';
-import { OrderRequest } from '../../models/order-request';
+import { Shipment } from '../../models/orders/shipment';
+import { OrderRequest } from '../../models/orders/order-request';
 
 @Injectable({
   providedIn: 'root',

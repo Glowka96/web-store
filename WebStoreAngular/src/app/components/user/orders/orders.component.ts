@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { take } from 'rxjs';
-import { OrderRequest } from 'src/app/models/order-request';
-import { OrderResponse } from 'src/app/models/order-response';
+import { OrderRequest } from 'src/app/models/orders/order-request';
+import { OrderResponse } from 'src/app/models/orders/order-response';
 import { OrdersService } from 'src/app/services/olders/orders.service';
 
 @Component({

@@ -4,8 +4,8 @@ import { Router } from '@angular/router';
 import { take } from 'rxjs';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { AccountAddress } from 'src/app/models/account-address';
-import { OrderRequest } from 'src/app/models/order-request';
-import { Shipment } from 'src/app/models/shipment';
+import { OrderRequest } from 'src/app/models/orders/order-request';
+import { Shipment } from 'src/app/models/orders/shipment';
 import { AccountService } from 'src/app/services/accounts/account.service';
 import { ShopService } from 'src/app/services/olders/shop.service';
 

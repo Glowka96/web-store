@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { take } from 'rxjs';
-import { Shipment } from 'src/app/models/shipment';
+import { Shipment } from 'src/app/models/orders/shipment';
 import { FormLoginService } from 'src/app/services/accounts/form-login.service';
 import { ShopService } from 'src/app/services/olders/shop.service';
 
@@ -78,6 +78,7 @@ export class BasketComponent implements OnInit {
 
   public onSumbitBuy() {
     this._isBuyBtnClicked = !this._isBuyBtnClicked;
+    console.log(this.isLoggedIn);
     if (this.isLoggedIn) {
       this.router.navigate(['/basket/purchase'], {});
     }
@@ -97,8 +98,6 @@ export class BasketComponent implements OnInit {
     const index = this.getIndexBasket(productId);
     const product = this._basket[index].product;
     const quantity = this._basket[index].quantity;
-    console.log('prom: ' + product.promotionPrice);
-    console.log('price:' + product.price);
     return product.promotionPrice
       ? (quantity * product.promotionPrice).toFixed(2)
       : (quantity * product.price).toFixed(2);

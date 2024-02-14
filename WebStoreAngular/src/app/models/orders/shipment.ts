@@ -1,4 +1,4 @@
-import { ProductWithPromotion } from './products/products-with-promotion';
+import { ProductWithPromotion } from '../products/products-with-promotion';
 
 export interface Shipment {
   product: ProductWithPromotion;

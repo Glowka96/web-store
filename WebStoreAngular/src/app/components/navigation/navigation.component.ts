@@ -14,7 +14,7 @@ import { AuthenticationService } from 'src/app/services/accounts/authentication.
 import { FormLoginService } from 'src/app/services/accounts/form-login.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ShopService } from 'src/app/services/olders/shop.service';
-import { Shipment } from 'src/app/models/shipment';
+import { Shipment } from 'src/app/models/orders/shipment';
 import { Subscription } from 'rxjs';
 
 @Component({
