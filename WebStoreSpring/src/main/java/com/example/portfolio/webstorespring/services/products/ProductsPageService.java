@@ -60,7 +60,7 @@ public class ProductsPageService {
                                                                 SortDirectionType sortDirection) {
         return getPageProduct(
                 pageNo, pageSize, sortBy, sortDirection,
-                pageable -> getNewProducts(getDate30DaysAgo(), pageable)
+                pageable -> getPromotionProducts(getDate30DaysAgo(), pageable)
         );
     }
 
