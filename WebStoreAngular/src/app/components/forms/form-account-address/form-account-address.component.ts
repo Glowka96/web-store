@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { take } from 'rxjs';
 import { AccountAddress } from 'src/app/models/account-address';
 import { AccountService } from 'src/app/services/accounts/account.service';
-import { AccountAddressFormBuilderService } from 'src/app/services/forms/users/account-address-form-builder.service';
+import { AddressFormBuilderService } from 'src/app/services/forms/users/address-form-builder.service';
 
 @Component({
   selector: 'app-form-account-address',
@@ -20,7 +20,7 @@ export class FormAccountAddressComponent implements OnInit {
 
   constructor(
     private accountService: AccountService,
-    private accountAddressFormService: AccountAddressFormBuilderService,
+    private addressFormService: AddressFormBuilderService,
     private router: Router
   ) {
     this.accountService
@@ -36,7 +36,7 @@ export class FormAccountAddressComponent implements OnInit {
 
   ngOnInit(): void {
     this.accountAddressForm =
-      this.accountAddressFormService.createAccountAddressFormGroup();
+      this.addressFormService.createAccountAddressFormGroup();
   }
 
   onSumbite() {

@@ -4,7 +4,7 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 @Injectable({
   providedIn: 'root',
 })
-export class AccountAddressFormBuilderService {
+export class AddressFormBuilderService {
   private postcodePattern = /^\d{2}-\d{3}$/;
   private addressPattern =
     /^(ul.?\s)?[A-Z]?[a-z]+\s\d{1,3}((\/\d{1,3})?|(\sm.?\s)\d{1,3})[a-z]?$/;

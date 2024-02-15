@@ -7,6 +7,7 @@ import { AccountAddress } from 'src/app/models/account-address';
 import { OrderRequest } from 'src/app/models/orders/order-request';
 import { Shipment } from 'src/app/models/orders/shipment';
 import { AccountService } from 'src/app/services/accounts/account.service';
+import { AddressFormBuilderService } from 'src/app/services/forms/users/address-form-builder.service';
 import { ShopService } from 'src/app/services/olders/shop.service';
 
 @Component({
@@ -22,38 +23,13 @@ export class PurchaseComponent implements OnInit {
   private _shipmentsPrice = 0;
   private _submitPurchase = false;
   private _message!: string;
-  private _postcodePattern = /^\d{2}-\d{3}$/;
-  private _addressPattern =
-    /^((ul\.?\s)?([A-Z]?[a-z]{3,20}(-[A-Z]?[a-z]{3,20})?)\s(\d{1,3})[a-z]?((\/|\sm(.)?\s)\d{1,3})?)$/;
-  public deliveryAddressForm = new FormGroup({
-    city: new FormControl('', {
-      validators: [
-        Validators.required,
-        Validators.minLength(2),
-        Validators.maxLength(32),
-        Validators.pattern('[a-zA-Z]*'),
-      ],
-      updateOn: 'change',
-    }),
-    postcode: new FormControl('', {
-      validators: [
-        Validators.required,
-        Validators.pattern(this._postcodePattern),
-      ],
-      updateOn: 'change',
-    }),
-    street: new FormControl('', {
-      validators: [
-        Validators.required,
-        Validators.pattern(this._addressPattern),
-      ],
-      updateOn: 'change',
-    }),
-  });
+
+  public deliveryAddressForm!: FormGroup;
 
   constructor(
     private accountService: AccountService,
     private shopService: ShopService,
+    private addressFormService: AddressFormBuilderService,
     private router: Router
   ) {
     const sub1 = this.accountService.getAccountAddress().subscribe({
@@ -80,7 +56,10 @@ export class PurchaseComponent implements OnInit {
     this._subscriptions.push(sub1, sub2);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.deliveryAddressForm =
+      this.addressFormService.createAccountAddressFormGroup();
+  }
 
   ngOnDestroy(): void {
     this._subscriptions.forEach((s) => s.unsubscribe);
