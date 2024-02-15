@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { take } from 'rxjs';
 import { OrderRequest } from 'src/app/models/orders/order-request';
 import { OrderResponse } from 'src/app/models/orders/order-response';
+import { AddressFormBuilderService } from 'src/app/services/forms/users/address-form-builder.service';
 import { OrdersService } from 'src/app/services/olders/orders.service';
 
 @Component({
@@ -16,37 +17,12 @@ export class OrdersComponent implements OnInit {
   private selectedErrorId!: string;
   private selectedUpdatedId!: string;
 
-  private postcodePattern = /^\d{2}-\d{3}$/;
-  private addressPattern =
-    /^(ul(.)\s)?[A-Z]?[a-z]+\s[0-9]{1,3}((\/[0-9]{1,3})|(\sm\.?\s[0-9]{1,3})?[a-z])?$/;
+  public deliveryAddressForm!: FormGroup;
 
-  public deliveryAddressForm = new FormGroup({
-    city: new FormControl('', {
-      validators: [
-        Validators.required,
-        Validators.min(2),
-        Validators.max(32),
-        Validators.pattern('[a-zA-z]*'),
-      ],
-      updateOn: 'change',
-    }),
-    postcode: new FormControl('', {
-      validators: [
-        Validators.required,
-        Validators.pattern(this.postcodePattern),
-      ],
-      updateOn: 'change',
-    }),
-    street: new FormControl('', {
-      validators: [
-        Validators.required,
-        Validators.pattern(this.addressPattern),
-      ],
-      updateOn: 'change',
-    }),
-  });
-
-  constructor(private ordersService: OrdersService) {
+  constructor(
+    private ordersService: OrdersService,
+    private addressFormService: AddressFormBuilderService
+  ) {
     this.ordersService
       .getAllAccountOrders()
       .pipe(take(1))
@@ -55,7 +31,10 @@ export class OrdersComponent implements OnInit {
       });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.deliveryAddressForm =
+      this.addressFormService.createAccountAddressFormGroup();
+  }
 
   public updateOrder(orderId: string) {
     if (!this.selectedUpdatedId) {
