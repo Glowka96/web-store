@@ -1,66 +1,41 @@
 package com.example.portfolio.webstorespring.services.orders;
 
-import com.example.portfolio.webstorespring.exceptions.DeliveryAddressCanNotEmpty;
-import com.example.portfolio.webstorespring.model.entity.accounts.AccountAddress;
+import com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryBuilderHelper;
+import com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryTypeBuilderHelper;
+import com.example.portfolio.webstorespring.model.dto.orders.request.DeliveryRequest;
 import com.example.portfolio.webstorespring.model.entity.orders.Delivery;
+import com.example.portfolio.webstorespring.model.entity.orders.DeliveryType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountAddressBuilderHelper.createAccountAddress;
-import static com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryBuilderHelper.createDelivery;
-import static com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryBuilderHelper.createDeliveryWithBlankDeliveryAddress;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
 class DeliveryServiceTest {
 
+    @Mock
+    private DeliveryTypeService deliveryTypeService;
     @InjectMocks
     private DeliveryService underTest;
 
     @Test
-    void shouldFormatDeliveryWhenDeliveryAddressAndAccountAddressAreNotNull() {
+    void shouldFormatDelivery() {
         // given
-        Delivery delivery = createDelivery();
-        String deliveryAddressBeforeUpdate = delivery.getDeliveryAddress();
-        AccountAddress accountAddress = createAccountAddress();
+        DeliveryType deliveryType = DeliveryTypeBuilderHelper.createDeliveryType();
+        DeliveryRequest deliveryRequest = DeliveryBuilderHelper.createDeliveryRequest();
+        String deliveryAddressBeforeUpdate = deliveryRequest.getDeliveryAddress();
 
+        given(deliveryTypeService.getDeliveryTypeById(anyLong())).willReturn(deliveryType);
         // when
-        Delivery formatedDelivery = underTest.formatDelivery(delivery, accountAddress);
+        Delivery formatedDelivery = underTest.formatDelivery(deliveryRequest);
 
         // then
         assertThat(formatedDelivery.getDeliveryAddress()).isNotEqualTo(deliveryAddressBeforeUpdate);
-    }
-
-    @Test
-    void shouldFormatDeliveryWhenDeliveryAddressIsNullAndAccountAddressIsNotNull() {
-        // given
-        Delivery delivery = createDeliveryWithBlankDeliveryAddress();
-        AccountAddress accountAddress = createAccountAddress();
-
-        // when
-        Delivery formatedDelivery = underTest.formatDelivery(delivery, accountAddress);
-
-        // then
-        assertThat(formatedDelivery.getDeliveryAddress())
-                .isNotBlank()
-                .isNotEmpty()
-                .isEqualTo("City: " + accountAddress.getCity() +
-                           ", Postcode: " + accountAddress.getPostcode() +
-                           ", Street: " + accountAddress.getStreet());
-    }
-
-    @Test
-    void willThrowWhenDeliveryAddressAndAccountAddressAreNull() {
-        // given
-        Delivery delivery = createDeliveryWithBlankDeliveryAddress();
-        AccountAddress accountAddress = null;
-
-        // when
-        // then
-        assertThrows(DeliveryAddressCanNotEmpty.class,
-                () -> underTest.formatDelivery(delivery, accountAddress));
+        assertThat(formatedDelivery.getDeliveryType()).isEqualTo(deliveryType);
     }
 }

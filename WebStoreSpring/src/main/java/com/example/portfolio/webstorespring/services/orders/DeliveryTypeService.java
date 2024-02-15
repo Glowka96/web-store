@@ -18,6 +18,11 @@ public class DeliveryTypeService {
     private final DeliveryTypeRepository deliveryTypeRepository;
     private final DeliveryTypeMapper deliveryTypeMapper;
 
+    protected DeliveryType getDeliveryTypeById(Long deliveryTypeId) {
+        return deliveryTypeRepository.findById(deliveryTypeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Delivery type", "id", deliveryTypeId));
+    }
+
     public List<DeliveryTypeResponse> getAllDeliveryType() {
         return deliveryTypeMapper.mapToDto(deliveryTypeRepository.findAll());
     }

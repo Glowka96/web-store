@@ -52,7 +52,6 @@ public class GlobalExceptionHandler {
             PromotionPriceGreaterThanBasePriceException.class,
             ProductHasAlreadyPromotionException.class,
             ShipmentQuantityExceedsProductQuantityException.class,
-            DeliveryAddressCanNotEmpty.class
     })
     public ResponseEntity<ErrorResponse> handleCanNotModifiedException(RuntimeException exception,
                                                                 WebRequest webRequest) {

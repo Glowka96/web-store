@@ -1,13 +1,13 @@
 package com.example.portfolio.webstorespring.buildhelpers.orders;
 
 import com.example.portfolio.webstorespring.model.dto.orders.request.DeliveryRequest;
-import com.example.portfolio.webstorespring.model.dto.orders.request.DeliveryTypeRequest;
 import com.example.portfolio.webstorespring.model.dto.orders.response.DeliveryResponse;
 import com.example.portfolio.webstorespring.model.dto.orders.response.DeliveryTypeResponse;
 import com.example.portfolio.webstorespring.model.entity.orders.Delivery;
 import com.example.portfolio.webstorespring.model.entity.orders.DeliveryType;
 
-import static com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryTypeBuilderHelper.*;
+import static com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryTypeBuilderHelper.createDeliveryType;
+import static com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryTypeBuilderHelper.createDeliveryTypeResponse;
 
 public class DeliveryBuilderHelper {
 
@@ -24,21 +24,10 @@ public class DeliveryBuilderHelper {
                 .build();
     }
 
-    public static Delivery createDeliveryWithBlankDeliveryAddress() {
-        DeliveryType deliveryType = createDeliveryType();
-        return Delivery.builder()
-                .id(1L)
-                .deliveryType(deliveryType)
-                .deliveryAddress("")
-                .shipmentAddress(SHIPMENT_ADDRESS)
-                .build();
-    }
-
     public static DeliveryRequest createDeliveryRequest() {
-        DeliveryTypeRequest deliveryTypeRequest = createDeliveryTypeRequest();
         return DeliveryRequest.builder()
                 .deliveryAddress(DELIVERY_ADDRESS)
-                .deliveryTypeRequest(deliveryTypeRequest)
+                .deliveryTypeId(1L)
                 .build();
     }
 

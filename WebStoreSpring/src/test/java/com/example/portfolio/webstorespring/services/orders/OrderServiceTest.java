@@ -9,10 +9,10 @@ import com.example.portfolio.webstorespring.mappers.DeliveryMapper;
 import com.example.portfolio.webstorespring.mappers.DeliveryTypeMapper;
 import com.example.portfolio.webstorespring.mappers.OrderMapper;
 import com.example.portfolio.webstorespring.mappers.ShipmentMapper;
+import com.example.portfolio.webstorespring.model.dto.orders.request.DeliveryRequest;
 import com.example.portfolio.webstorespring.model.dto.orders.request.OrderRequest;
 import com.example.portfolio.webstorespring.model.dto.orders.response.OrderResponse;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
-import com.example.portfolio.webstorespring.model.entity.accounts.AccountAddress;
 import com.example.portfolio.webstorespring.model.entity.orders.Delivery;
 import com.example.portfolio.webstorespring.model.entity.orders.Order;
 import com.example.portfolio.webstorespring.repositories.orders.OrderRepository;
@@ -160,7 +160,7 @@ class OrderServiceTest {
         OrderRequest orderRequest = createOrderRequest();
 
         Delivery delivery = createDelivery();
-        given(deliveryService.formatDelivery(any(), isNull())).willReturn(delivery);
+        given(deliveryService.formatDelivery(any())).willReturn(delivery);
 
         // when
         OrderResponse savedOrderResponse = underTest.saveOrder(orderRequest);
@@ -181,7 +181,7 @@ class OrderServiceTest {
         Order order = createOrder();
         mockAuthentication();
 
-        given(deliveryService.formatDelivery(any(Delivery.class), any(AccountAddress.class))).willReturn(order.getDelivery());
+        given(deliveryService.formatDelivery(any(DeliveryRequest.class))).willReturn(order.getDelivery());
         given(orderRepository.findById(anyLong())).willReturn(Optional.of(order));
 
         // when

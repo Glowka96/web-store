@@ -6,7 +6,6 @@ import com.example.portfolio.webstorespring.exceptions.OrderCanNotModifiedExcept
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.OrderMapper;
 import com.example.portfolio.webstorespring.model.dto.orders.request.OrderRequest;
-import com.example.portfolio.webstorespring.model.dto.orders.request.ShipmentRequest;
 import com.example.portfolio.webstorespring.model.dto.orders.response.OrderResponse;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.orders.Order;
@@ -66,9 +65,9 @@ public class OrderService {
     @Transactional
     public OrderResponse saveOrder(OrderRequest orderRequest) {
         Account loggedAccount = getAccountDetails().getAccount();
-        Order order = orderMapper.mapToEntity(orderRequest);
 
-        setupNewOrder(order, loggedAccount, orderRequest.getShipmentRequests());
+        Order order = new Order();
+        setupNewOrder(order, loggedAccount, orderRequest);
 
         orderRepository.save(order);
 
@@ -83,9 +82,7 @@ public class OrderService {
 
         checkOrderStatus(foundOrder, "update");
 
-        Order order = orderMapper.mapToEntity(orderRequest);
-
-        setupUpdateOrder(foundOrder, order, foundOrder.getAccount(), orderRequest.getShipmentRequests());
+        setupOrder(foundOrder, orderRequest);
         orderRepository.save(foundOrder);
         return orderMapper.mapToDto(foundOrder);
     }
@@ -111,9 +108,9 @@ public class OrderService {
         }
     }
 
-    private void checkOrderStatus(Order foundOrder, String update) {
+    private void checkOrderStatus(Order foundOrder, String operation) {
         if (foundOrder.getStatus() != OrderStatus.OPEN) {
-            throw new OrderCanNotModifiedException(update);
+            throw new OrderCanNotModifiedException(operation);
         }
     }
 
@@ -125,32 +122,25 @@ public class OrderService {
 
     private void setupNewOrder(Order order,
                                Account loggedAccount,
-                               List<ShipmentRequest> shipmentRequests) {
+                               OrderRequest orderRequest) {
         order.setAccount(loggedAccount);
         order.setNameUser(loggedAccount.getFirstName() +
                           " " + loggedAccount.getLastName());
-        order.setDateOfCreation(getCurrentDate());
         order.setStatus(OrderStatus.OPEN);
 
-        order.setDelivery(deliveryService.formatDelivery(order.getDelivery(),
-                loggedAccount.getAddress()));
-
-        order.setShipments(shipmentService.getSetupShipments(order, shipmentRequests));
-        setupTotalPrice(order);
+        setupOrder(order, orderRequest);
     }
 
-    private void setupUpdateOrder(Order currentOrder,
-                                  Order updateOrder,
-                                  Account loggedAccount,
-                                  List<ShipmentRequest> shipmentRequests) {
-        currentOrder.setShipments(
-                shipmentService.getSetupShipments(currentOrder, shipmentRequests));
+    private void setupOrder(Order order,
+                            OrderRequest orderRequest) {
+        order.setDateOfCreation(getCurrentDate());
+        order.setShipments(
+                shipmentService.getSetupShipments(order,
+                        orderRequest.getShipmentRequests()));
+        order.setDelivery(
+                deliveryService.formatDelivery(orderRequest.getDeliveryRequest()));
 
-        currentOrder.setDateOfCreation(getCurrentDate());
-        currentOrder.setDelivery(deliveryService.formatDelivery(updateOrder.getDelivery(),
-                loggedAccount.getAddress()));
-
-        setupTotalPrice(currentOrder);
+        setupTotalPrice(order);
     }
 
     private void setupTotalPrice(Order order) {

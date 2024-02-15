@@ -19,7 +19,7 @@ public class OrderRequest {
 
     @Valid
     @JsonProperty("delivery")
-    @NotNull(message = "The delivery address can't be null")
+    @NotNull(message = "The delivery can't be null")
     private DeliveryRequest deliveryRequest;
 
     @JsonProperty("shipments")
