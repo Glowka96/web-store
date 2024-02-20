@@ -5,6 +5,7 @@ import { SubcategoryResponse } from 'src/app/models/products/subcategory-respons
 import { SubcategoryRequest } from 'src/app/models/products/subcategory-request';
 import { SubcategoryService } from 'src/app/services/products/subcategory.service';
 import { take } from 'rxjs/internal/operators/take';
+import { SubcategoryFormBuilderService } from 'src/app/services/forms/admins/subcategory-form-builder.service';
 
 @Component({
   selector: 'app-mod-subcategory',
@@ -20,39 +21,20 @@ export class ModSubcategoryComponent implements OnInit {
   private errorUpdateMsg = '';
   private errorDeleteMsg = '';
 
-  public addForm = new FormGroup({
-    choiceCategory: new FormControl('', {
-      updateOn: 'change',
-    }),
-    subcategoryName: new FormControl('', {
-      validators: [Validators.required, Validators.minLength(3)],
-      updateOn: 'change',
-    }),
-  });
+  public addForm!: FormGroup;
+  public updateForm!: FormGroup;
+  public deleteForm!: FormGroup;
 
-  public updateForm = new FormGroup({
-    choiceCategory: new FormControl('', {
-      updateOn: 'change',
-    }),
-    choiceSubcategory: new FormControl('', {
-      updateOn: 'change',
-    }),
-    subcategoryName: new FormControl('', {
-      validators: [Validators.required, Validators.minLength(3)],
-      updateOn: 'change',
-    }),
-  });
+  constructor(
+    private subcategoryService: SubcategoryService,
+    private subcategoryFormBuilder: SubcategoryFormBuilderService
+  ) {}
 
-  public deleteForm = new FormGroup({
-    choiceCategory: new FormControl('', {
-      validators: [Validators.required],
-      updateOn: 'change',
-    }),
-  });
-
-  constructor(private subcategoryService: SubcategoryService) {}
-
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.addForm = this.subcategoryFormBuilder.createAddFormGroup();
+    this.updateForm = this.subcategoryFormBuilder.createUpdateFormGroup();
+    this.deleteForm = this.subcategoryFormBuilder.createDeleteFormGroup();
+  }
 
   onSumbitAdd() {
     if (this.addForm.valid) {

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { take } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { Shipment } from 'src/app/models/orders/shipment';
 import { FormLoginService } from 'src/app/services/accounts/form-login.service';
 import { ShopService } from 'src/app/services/olders/shop.service';
@@ -16,6 +16,7 @@ export class BasketComponent implements OnInit {
   private _selectedId!: number;
   private _isLogIn = false;
   private _isBuyBtnClicked = false;
+  protected _routeSubscription!: Subscription;
 
   public changeForm = new FormGroup({
     quantity: new FormControl('', {
@@ -29,14 +30,22 @@ export class BasketComponent implements OnInit {
     private formLoginService: FormLoginService,
     private router: Router
   ) {
-    this.shopService.basket$.pipe(take(1)).subscribe((shipments) => {
-      this._basket = shipments;
-    });
+    this._routeSubscription = this.shopService.basket$
+      .pipe(take(1))
+      .subscribe((shipments) => {
+        this._basket = shipments;
+      });
   }
 
   ngOnInit(): void {
     const isLogIn = sessionStorage.getItem('isLoggedIn');
     isLogIn === 'true' ? (this._isLogIn = true) : (this._isLogIn = false);
+  }
+
+  ngOnDestroy(): void {
+    if (this._routeSubscription) {
+      this._routeSubscription.unsubscribe();
+    }
   }
 
   public get basket() {
