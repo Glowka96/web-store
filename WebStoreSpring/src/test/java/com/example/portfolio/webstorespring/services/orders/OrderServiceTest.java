@@ -9,7 +9,6 @@ import com.example.portfolio.webstorespring.mappers.DeliveryMapper;
 import com.example.portfolio.webstorespring.mappers.DeliveryTypeMapper;
 import com.example.portfolio.webstorespring.mappers.OrderMapper;
 import com.example.portfolio.webstorespring.mappers.ShipmentMapper;
-import com.example.portfolio.webstorespring.model.dto.orders.request.DeliveryRequest;
 import com.example.portfolio.webstorespring.model.dto.orders.request.OrderRequest;
 import com.example.portfolio.webstorespring.model.dto.orders.response.OrderResponse;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
@@ -173,60 +172,6 @@ class OrderServiceTest {
         OrderResponse orderResponse = orderMapper.mapToDto(orderArgumentCaptor.getValue());
 
         assertThat(savedOrderResponse).isEqualTo(orderResponse);
-    }
-
-    @Test
-    void shouldUpdate() throws OrderCanNotModifiedException {
-        // given
-        Order order = createOrder();
-        mockAuthentication();
-
-        given(deliveryService.formatDelivery(any(DeliveryRequest.class))).willReturn(order.getDelivery());
-        given(orderRepository.findById(anyLong())).willReturn(Optional.of(order));
-
-        // when
-        OrderResponse updateOrderResponse = underTest.updateOrder(1L, createOrderRequest());
-
-        // then
-        ArgumentCaptor<Order> orderArgumentCaptor =
-                ArgumentCaptor.forClass(Order.class);
-        verify(orderRepository).save(orderArgumentCaptor.capture());
-
-        OrderResponse mappedOrderResponse = orderMapper.mapToDto(orderArgumentCaptor.getValue());
-
-        assertThat(mappedOrderResponse).isEqualTo(updateOrderResponse);
-    }
-
-    @Test
-    void willThrowWhenUpdateOrderNoOwnAuthAccount() {
-        // given
-        Order order = createOrder();
-        setupOtherAccountToAuthentication(order);
-        mockAuthentication();
-
-        given(orderRepository.findById(anyLong())).willReturn(Optional.of(order));
-
-        // when
-        // than
-        assertThatThrownBy(() -> underTest.updateOrder(1L, createOrderRequest()))
-                .isInstanceOf(AccessDeniedException.class)
-                .hasMessageContaining(AccessDeniedExceptionMessage.UPDATE.getMessage());
-
-    }
-
-    @Test
-    void willThrowWhenUpdateOrderStatusIsNotOpen() {
-        // given
-        Order order = createOrder();
-        mockAuthentication();
-        order.setStatus(OrderStatus.COMPLETED);
-        given(orderRepository.findById(anyLong())).willReturn(Optional.of(order));
-
-        // when
-        // then
-        assertThatThrownBy(() -> underTest.updateOrder(1L, createOrderRequest()))
-                .isInstanceOf(OrderCanNotModifiedException.class)
-                .hasMessageContaining("The order cannot be update because the order is being prepared");
     }
 
     @Test

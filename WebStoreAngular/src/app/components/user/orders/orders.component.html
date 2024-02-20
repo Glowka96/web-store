@@ -7,60 +7,14 @@
             <div class="order-data">
                 <p><span class="data">Name user: </span>{{order.nameUser}}</p>
                 <p><span class="data">Products price: </span>{{order.productsPrice}} PLN</p>
-                <p><span class="data">Delivery address: </span><br>{{order.deliveryAddress}}</p>
+                <p><span class="data">Delivery address: </span><br>{{order.delivery.deliveryAddress}}</p>
                 <p><span class="data">Shipment address: </span><br>{{order.shipmentAddress}}</p>
                 <p><span class="data">Date of created: </span>{{order.dateOfCreated}}</p>
                 <p><span class="data">Orders status: </span>{{order.status}}</p>
             </div>
             <div class="order-options">
-                <button class="btn-update" (click)="updateOrder(order.id)">Update</button>
                 <button class="btn-delete" (click)="deleteOrder(order.id)">Delete</button>
             </div>
-            <form class="box" [formGroup]="deliveryAddressForm" (ngSubmit)="onSumbitUpdate(order.id)"
-                *ngIf="isUpdated(order.id)">
-                <div class="form-group">
-                    <div class="input-box">
-                        <input formControlName="city" type="text" placeholder="City">
-                    </div>
-                    <div *ngIf="deliveryAddressForm.get('city')?.invalid && deliveryAddressForm.get('city')?.dirty"
-                        class="errors">
-                        <small *ngIf="deliveryAddressForm.get('city')?.errors?.['required']">The city is
-                            required.
-                            <br></small>
-                        <small *ngIf="deliveryAddressForm.get('city')?.errors?.['minLength'] || ['maxLength']">The city
-                            must be between min 2 and max 32 letters.<br></small>
-                        <small *ngIf="deliveryAddressForm.get('city')?.errors?.['pattern']">
-                            The city cannot have numbers or special char.
-                        </small>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="input-box">
-                        <input formControlName="postcode" type="text" placeholder="Postcode">
-                    </div>
-                    <div *ngIf="deliveryAddressForm.get('postcode')?.invalid && deliveryAddressForm.get('postcode')?.dirty"
-                        class="errors">
-                        <small *ngIf="deliveryAddressForm.get('postcode')?.errors?.['required']">The postcode is
-                            required<br></small>
-                        <small *ngIf="deliveryAddressForm.get('postcode')?.errors?.['pattern']">The postcode is invalid.
-                            <br>The correct form is e.g 99-999</small>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="input-box">
-                        <input formControlName="street" type="text" placeholder="Steet">
-                    </div>
-                    <div *ngIf="deliveryAddressForm.get('street')?.invalid && deliveryAddressForm.get('street')?.dirty"
-                        class="errors">
-                        <small *ngIf="deliveryAddressForm.get('street')?.errors?.['required']">The street is
-                            required.<br></small>
-                        <small *ngIf="deliveryAddressForm.get('street')?.errors?.['pattern']">The street is invalid.
-                            <br>The correct forms is e.g: street 50/21, ul. street 50 m 21, ul street 50 m. 20a
-                        </small>
-                    </div>
-                </div>
-                <button type="submit" class="clkbtn">Sumbit</button>
-            </form>
             <div *ngIf="isViewErorr(order.id)" class="errors" role="alert">
                 <p [innerHTML]="errorMsg"></p>
             </div>

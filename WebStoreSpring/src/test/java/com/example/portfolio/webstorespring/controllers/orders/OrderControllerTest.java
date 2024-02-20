@@ -113,23 +113,6 @@ class OrderControllerTest {
     }
 
     @Test
-    void shouldUpdateOrder() throws Exception {
-        OrderRequest orderRequest = createOrderRequest();
-        OrderResponse orderResponse = createOrderResponse();
-
-        given(orderService.updateOrder(anyLong(), any(OrderRequest.class))).willReturn(orderResponse);
-
-        mvc.perform(put(URI + "/orders/{ordersId}", 1)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(orderRequest))
-                        .header("Authorization", "Bearer {JWT_TOKEN}"))
-                .andExpect(status().isAccepted())
-                .andExpect(jsonPath("$.id", is(1)))
-                .andDo(print());
-    }
-
-    @Test
     void shouldDeleteOrderById() throws Exception {
         mvc.perform(delete(URI + "/orders/{orderId}", 1)
                         .contentType(MediaType.APPLICATION_JSON)

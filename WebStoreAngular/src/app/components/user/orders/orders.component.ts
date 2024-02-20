@@ -36,15 +36,6 @@ export class OrdersComponent implements OnInit {
       this.addressFormService.createAccountAddressFormGroup();
   }
 
-  public updateOrder(orderId: string) {
-    if (!this.selectedUpdatedId) {
-      this.deliveryAddressForm.reset();
-      this.selectedUpdatedId = orderId;
-    } else {
-      this.selectedUpdatedId = '';
-    }
-  }
-
   public deleteOrder(orderId: string) {
     this.ordersService
       .deleteOrder(orderId)
@@ -59,34 +50,6 @@ export class OrdersComponent implements OnInit {
           this.errorMessage = errorMessage;
         },
       });
-  }
-
-  public onSumbitUpdate(orderId: string) {
-    if (this.deliveryAddressForm.valid) {
-      const findOrder = this.orders.find((order) => {
-        return order.id === orderId;
-      });
-      if (findOrder) {
-        const city = this.deliveryAddressForm.controls['city']?.value ?? '';
-        const postcode =
-          this.deliveryAddressForm.controls['postcode']?.value ?? '';
-        const street = this.deliveryAddressForm.controls['street']?.value ?? '';
-        const request: OrderRequest = {
-          deliveryAddress: city + ', ' + postcode + ', ' + street,
-          shipments: [],
-        };
-        this.ordersService.updateOrder(findOrder.id, request).subscribe({
-          next: () => {
-            window.location.reload();
-          },
-          error: (error) => {
-            this.selectedErrorId = orderId;
-            const errorMessage = error.error.errors;
-            this.errorMessage = errorMessage;
-          },
-        });
-      }
-    }
   }
 
   public get listOrder() {

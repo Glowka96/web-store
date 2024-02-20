@@ -74,20 +74,6 @@ public class OrderService {
         return orderMapper.mapToDto(order);
     }
 
-    @Transactional
-    public OrderResponse updateOrder(Long orderId, OrderRequest orderRequest) {
-        Order foundOrder = findOrderById(orderId);
-
-        checkOwnerOfOrder(foundOrder, AccessDeniedExceptionMessage.UPDATE);
-
-        checkOrderStatus(foundOrder, "update");
-
-        setupOrder(foundOrder, orderRequest);
-        orderRepository.save(foundOrder);
-        return orderMapper.mapToDto(foundOrder);
-    }
-
-
     public void deleteOrderById(Long id) {
         Order foundOrder = findOrderById(id);
 
@@ -127,12 +113,6 @@ public class OrderService {
         order.setNameUser(loggedAccount.getFirstName() +
                           " " + loggedAccount.getLastName());
         order.setStatus(OrderStatus.OPEN);
-
-        setupOrder(order, orderRequest);
-    }
-
-    private void setupOrder(Order order,
-                            OrderRequest orderRequest) {
         order.setDateOfCreation(getCurrentDate());
         order.setShipments(
                 shipmentService.getSetupShipments(order,

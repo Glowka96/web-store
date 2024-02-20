@@ -24,17 +24,18 @@ class ShipmentService {
 
     protected List<Shipment> getSetupShipments(Order order, List<ShipmentRequest> shipmentRequests) {
         List<Shipment> shipments = new ArrayList<>();
-        shipmentRequests.forEach(shipmentRequest -> shipments.add(
-                createShipment(
-                        order,
-                        findProductByIdWithPromotion(shipmentRequest.getProductId()),
-                        shipmentRequest.getQuantity())));
+        shipmentRequests.forEach(shipmentRequest ->
+                shipments.add(
+                        createShipment(
+                                order,
+                                findProductByIdWithPromotion(shipmentRequest.getProductId()),
+                                shipmentRequest.getQuantity())));
         shipmentRepository.saveAll(shipments);
         return shipments;
     }
 
     private Shipment createShipment(Order order, Product product, Integer quantity) {
-        if(product.getQuantity() < quantity) {
+        if (product.getQuantity() < quantity) {
             throw new ShipmentQuantityExceedsProductQuantityException();
         }
         return Shipment.builder()
@@ -48,7 +49,7 @@ class ShipmentService {
     private BigDecimal calculateShipmentPrice(Product product, Integer quantity) {
         BigDecimal priceForShipment = product.getPrice();
 
-        if (product.getPricePromotions() != null) {
+        if (!product.getPricePromotions().isEmpty()) {
             priceForShipment = product.getPricePromotions()
                     .iterator()
                     .next()

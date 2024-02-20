@@ -34,7 +34,7 @@ class ShipmentServiceTest {
     private ShipmentService underTest;
 
     @Test
-    void shouldGetSetupedShipments() {
+    void shouldGetSetupShipments() {
         // given
         Product product = createProduct();
         ShipmentRequest shipmentRequest = createShipmentRequest();

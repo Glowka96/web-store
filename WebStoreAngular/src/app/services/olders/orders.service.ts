@@ -19,13 +19,6 @@ export class OrdersService {
     );
   }
 
-  public updateOrder(orderId: string, request: OrderRequest) {
-    return this.http.put<OrderResponse>(
-      `${this.apiServerUrl}/accounts/orders/${orderId}`,
-      request
-    );
-  }
-
   public deleteOrder(orderId: string): Observable<any> {
     return this.http.delete(`${this.apiServerUrl}/accounts/orders/${orderId}`);
   }
