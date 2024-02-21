@@ -8,6 +8,8 @@ import { ProductService } from 'src/app/services/products/product.service';
 import { take } from 'rxjs/internal/operators/take';
 import { Router } from '@angular/router';
 import { ProductTypeResponse } from 'src/app/models/products/product-type-response';
+import { ProductFromBuilderService } from 'src/app/services/forms/admins/product-from-builder.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-mod-products',
@@ -25,93 +27,18 @@ export class ModProductsComponent implements OnInit {
   private errorAddMsg = '';
   private errorUpdateMsg = '';
   private errorDeleteMsg = '';
-  private imageUrlPattern = 'https?://.*.(?:png|jpg)';
-  private pricePattern = '^[1-9]+(.[0-9]{1,2})*$';
+  private subscription!: Subscription;
 
-  public addForm = new FormGroup({
-    choiceSubcategory: new FormControl('', {
-      validators: [Validators.required],
-    }),
-    choiceProducer: new FormControl('', {
-      validators: [Validators.required],
-      updateOn: 'change',
-    }),
-    name: new FormControl('', {
-      validators: [Validators.required, Validators.minLength(3)],
-      updateOn: 'change',
-    }),
-    description: new FormControl('', {
-      validators: [Validators.required, Validators.minLength(3)],
-      updateOn: 'change',
-    }),
-    imageUrl: new FormControl('', {
-      validators: [
-        Validators.required,
-        Validators.pattern(this.imageUrlPattern),
-      ],
-      updateOn: 'change',
-    }),
-    price: new FormControl('', {
-      validators: [Validators.required, Validators.pattern(this.pricePattern)],
-      updateOn: 'change',
-    }),
-    choiceType: new FormControl('', {
-      validators: [Validators.required],
-      updateOn: 'change',
-    }),
-  });
+  public addForm!: FormGroup;
+  public updateForm!: FormGroup;
+  public deleteForm!: FormGroup;
 
-  public updateForm = new FormGroup({
-    choiceSubcategory: new FormControl('', {
-      validators: [Validators.required],
-      updateOn: 'change',
-    }),
-    choiceProducer: new FormControl('', {
-      validators: [Validators.required],
-      updateOn: 'change',
-    }),
-    choiceProduct: new FormControl('', {
-      validators: [Validators.required],
-      updateOn: 'change',
-    }),
-    name: new FormControl('', {
-      validators: [Validators.required, Validators.minLength(3)],
-      updateOn: 'change',
-    }),
-    description: new FormControl('', {
-      validators: [
-        Validators.required,
-        Validators.minLength(3),
-        Validators.maxLength(256),
-      ],
-      updateOn: 'change',
-    }),
-    imageUrl: new FormControl('', {
-      validators: [
-        Validators.required,
-        Validators.pattern(this.imageUrlPattern),
-      ],
-      updateOn: 'change',
-    }),
-    price: new FormControl('', {
-      validators: [Validators.required, Validators.pattern(this.pricePattern)],
-      updateOn: 'change',
-    }),
-    choiceType: new FormControl('', {
-      validators: [Validators.required],
-      updateOn: 'change',
-    }),
-  });
-
-  public deleteForm = new FormGroup({
-    choiceProduct: new FormControl('', {
-      validators: [Validators.required],
-      updateOn: 'change',
-    }),
-  });
-
-  constructor(private productService: ProductService, private router: Router) {
-    productService
+  constructor(
+    private productService: ProductService,
+    private router: Router,
+    private productFormService: ProductFromBuilderService
+  ) {
+    this.subscription = productService
       .getAllProducts()
       .pipe(take(1))
       .subscribe((products) => {
@@ -119,7 +46,15 @@ export class ModProductsComponent implements OnInit {
       });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.addForm = this.productFormService.createAddFormGroup();
+    this.updateForm = this.productFormService.createUpdateFormGroup();
+    this.deleteForm = this.productFormService.createDeleteFormGroup();
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 
   onSumbitAdd() {
     if (this.addForm.valid) {
@@ -130,9 +65,10 @@ export class ModProductsComponent implements OnInit {
         price: parseFloat(
           this.addForm.controls['price']?.value?.toString() ?? ''
         ),
-        type: this.addForm.controls['choiceType']?.value ?? '',
+        quantity: this.addForm.controls['quantity']?.value ?? '',
+        productTypeId: this.addForm.controls['choiceType']?.value ?? '',
       };
-      console.log('price: ' + request.price);
+      console.log(request);
       const subcategoryId = this.addForm.controls['choiceSubcategory']?.value;
       const producerId = this.addForm.controls['choiceProducer']?.value;
       if (subcategoryId && producerId) {
@@ -158,7 +94,8 @@ export class ModProductsComponent implements OnInit {
         price: parseFloat(
           this.updateForm.controls['price']?.value?.toString() ?? ''
         ),
-        type: this.updateForm.controls['choiceType']?.value ?? '',
+        quantity: this.updateForm.controls['quantity']?.value ?? '',
+        productTypeId: this.updateForm.controls['choiceType']?.value ?? '',
       };
       const subcategoryId =
         this.updateForm.controls['choiceSubcategory']?.value;

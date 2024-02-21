@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { textPattern } from '../pattern-constants';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserFullnameFormBuilderService {
-  private _namePattern = '^[a-zA-Z]+$';
+  private _namePattern = textPattern;
 
   constructor(private formBuilder: FormBuilder) {}
 

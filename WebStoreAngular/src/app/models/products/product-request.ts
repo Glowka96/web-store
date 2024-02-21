@@ -3,5 +3,6 @@ export interface ProductRequest {
   description: string;
   imageUrl: string;
   price: number;
-  type: string;
+  quantity: number;
+  productTypeId: number;
 }

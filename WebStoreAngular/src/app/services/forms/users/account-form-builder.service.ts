@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { UserFullnameFormBuilderService } from './user-fullname-form-builder.service';
 import { PasswordFormBuilderService } from './password-form-builder.service';
+import { imageUrlPattern } from '../pattern-constants';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AccountFormBuilderService {
-  private imageUrlPattern = /https?:\/\/.*\.(?:png|jpg)/;
+  private imageUrlPattern = imageUrlPattern;
 
   constructor(
     private userFullnameFormService: UserFullnameFormBuilderService,

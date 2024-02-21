@@ -11,16 +11,18 @@
             <select name="producer" formControlName="choiceProducer">
                 <option *ngFor="let producer of producers" value="{{producer.id}}">{{producer.name}}</option>
             </select>
-            <label for="add-product-name">Product name</label>
+            <label for="add-product-name">Product name:</label>
             <input id="add-product-name" type="text" formControlName="name">
-            <label for="add-product-description">Product description </label>
+            <label for="add-product-description">Product description:</label>
             <textarea id="add-product-description" formControlName="description" rows="6" cols="30"></textarea>
-            <label for="add-product-imageUrl">Product imageUrl</label>
+            <label for="add-product-imageUrl">Product imageUrl:</label>
             <input id="add-product-imageUrl" type="text" formControlName="imageUrl">
-            <label for="add-product-price">Product price</label>
+            <label for="add-product-price">Product price:</label>
             <input id="add-product-price" type="text" formControlName="price">
+            <label for="add-product-quantity">Product quantity:</label>
+            <input id="add-product-quantity" type="text" formControlName="quantity">
             <label for="productType">Choise a product type</label>
-            <select name="productType" formControlName="choice">
+            <select name="productType" formControlName="choiceType">
                 <option *ngFor="let productType of productTypes" value="{{productType.id}}">{{productType.name}}
                 </option>
             </select>
@@ -48,16 +50,18 @@
             <select name="product" formControlName="choiceProducer">
                 <option *ngFor="let product of listProducts" value="{{product.id}}">{{product.name}}</option>
             </select>
-            <label for="update-product-name">Product name</label>
+            <label for="update-product-name">Product name:</label>
             <input id="update-product-name" type="text" formControlName="name">
-            <label for="update-product-description">Product description </label>
+            <label for="update-product-description">Product description:</label>
             <textarea id="update-product-description" formControlName="description" rows="6" cols="30"></textarea>
-            <label for="update-product-imageUrl">Product imageUrl</label>
+            <label for="update-product-imageUrl">Product imageUrl:</label>
             <input id="update-product-imageUrl" type="text" formControlName="imageUrl">
-            <label for="update-product-price">Product price</label>
+            <label for="update-product-price">Product price:</label>
             <input id="update-product-price" type="text" formControlName="price">
+            <label for="update-product-quantity">Product quantity:</label>
+            <input id="update-product-quantity" type="text" formControlName="quantity">
             <label for="productType">Choise a product type</label>
-            <select name="productType" formControlName="choice">
+            <select name="productType" formControlName="choiceType">
                 <option *ngFor="let productType of productTypes" value="{{productType.id}}">{{productType.name}}
                 </option>
             </select>

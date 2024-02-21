@@ -7,7 +7,7 @@
                 <option *ngFor="let category of categories" value="{{category.id}}">{{category.name}}</option>
             </select>
             <label for="add-subcategory-name">Subcategory name:</label>
-            <input id="add-subcategory-name" type="text" formControlName="subcategoryName">
+            <input id="add-subcategory-name" type="text" formControlName="name">
             <br>
             <div *ngIf="errorAddMessage" class="alert" role="alert">
                 <span [innerHTML]="errorAddMessage"></span>
@@ -29,7 +29,7 @@
                 </option>
             </select>
             <label for="update-subcategory-name">Subcategory name:</label>
-            <input id="update-subcategory-name" type="text" formControlName="subcategoryName">
+            <input id="update-subcategory-name" type="text" formControlName="name">
             <br>
             <div *ngIf="errorUpdateMessage" class="alert" role="alert">
                 <span [innerHTML]="errorUpdateMessage"></span>
@@ -42,7 +42,7 @@
         <h3>Delete Subategory</h3>
         <form class="form-box" [formGroup]="deleteForm" (ngSubmit)="onSumbitDelete()">
             <label for="category">Choise a subcategory</label>
-            <select name="category" formControlName="choiceCategory">
+            <select name="category" formControlName="choiceSubcategory">
                 <option *ngFor="let subcategory of subcategories" value="{{subcategory.id}}">{{subcategory.name}}
                 </option>
             </select>

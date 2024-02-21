@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { take } from 'rxjs/internal/operators/take';
 import { DeliveryTypeRequest } from 'src/app/models/orders/delivery-type-request';
 import { DeliveryTypeResponse } from 'src/app/models/orders/delivery-type-response';
+import { DeliveryTypeFromBuilderService } from 'src/app/services/forms/admins/delivery-type-from-builder.service';
 import { EntityFormBuilderService } from 'src/app/services/forms/admins/entity-form-builder.service';
 import { DeliveryTypeService } from 'src/app/services/olders/delivery-type.service';
 
@@ -23,7 +24,7 @@ export class ModDeliveryTypeComponent implements OnInit {
 
   constructor(
     private deliveryTypeService: DeliveryTypeService,
-    private entityFormService: EntityFormBuilderService
+    private deliveryTypeFormService: DeliveryTypeFromBuilderService
   ) {
     this.subscription = deliveryTypeService
       .getAllDeliveryType()
@@ -31,8 +32,8 @@ export class ModDeliveryTypeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.addForm = this.entityFormService.createAddFormGroup();
-    this.deleteForm = this.entityFormService.createDeleteFormGroup();
+    this.addForm = this.deliveryTypeFormService.createAddFormGroup();
+    this.deleteForm = this.deliveryTypeFormService.createDeleteFormGroup();
   }
 
   ngOnDestroy(): void {
@@ -75,7 +76,6 @@ export class ModDeliveryTypeComponent implements OnInit {
   }
 
   public get deliveryTypes() {
-    console.log(this._deliveryTypes);
     return this._deliveryTypes;
   }
 

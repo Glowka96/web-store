@@ -1,11 +1,6 @@
 import { Injectable } from '@angular/core';
 import { EmailFromBuilderService } from './email-from-builder.service';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { PasswordFormBuilderService } from './password-form-builder.service';
 import { UserFullnameFormBuilderService } from './user-fullname-form-builder.service';
 

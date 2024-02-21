@@ -27,19 +27,19 @@ export class ModSubcategoryComponent implements OnInit {
 
   constructor(
     private subcategoryService: SubcategoryService,
-    private subcategoryFormBuilder: SubcategoryFormBuilderService
+    private subcategoryFormService: SubcategoryFormBuilderService
   ) {}
 
   ngOnInit(): void {
-    this.addForm = this.subcategoryFormBuilder.createAddFormGroup();
-    this.updateForm = this.subcategoryFormBuilder.createUpdateFormGroup();
-    this.deleteForm = this.subcategoryFormBuilder.createDeleteFormGroup();
+    this.addForm = this.subcategoryFormService.createAddFormGroup();
+    this.updateForm = this.subcategoryFormService.createUpdateFormGroup();
+    this.deleteForm = this.subcategoryFormService.createDeleteFormGroup();
   }
 
   onSumbitAdd() {
     if (this.addForm.valid) {
       const request: SubcategoryRequest = {
-        name: this.addForm.controls['subcategoryName']?.value ?? '',
+        name: this.addForm.controls['name']?.value ?? '',
       };
       const id = this.addForm.controls['choiceCategory']?.value;
       if (id) {
@@ -59,7 +59,7 @@ export class ModSubcategoryComponent implements OnInit {
   onSumbitUpdate() {
     if (this.updateForm.valid) {
       const request: SubcategoryRequest = {
-        name: this.updateForm.controls['subcategoryName']?.value ?? '',
+        name: this.updateForm.controls['name']?.value ?? '',
       };
       const categoryId = this.updateForm.controls['choiceCategory']?.value;
       const subcategoryId =
@@ -80,7 +80,7 @@ export class ModSubcategoryComponent implements OnInit {
 
   onSumbitDelete() {
     if (this.deleteForm.valid) {
-      const id = this.deleteForm.controls['choiceCategory']?.value;
+      const id = this.deleteForm.controls['choiceSubcategory']?.value;
       if (id) {
         this.subcategoryService
           .deleteSubcategory(id)

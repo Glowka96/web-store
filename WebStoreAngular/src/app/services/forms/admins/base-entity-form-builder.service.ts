@@ -20,17 +20,6 @@ export class BaseEntityFormBuilderService {
     });
   }
 
-  public getDescriptionFormControll() {
-    return new FormControl('', {
-      validators: [
-        Validators.required,
-        Validators.minLength(3),
-        Validators.maxLength(512),
-      ],
-      updateOn: 'change',
-    });
-  }
-
   public getPriceFormControll() {
     return new FormControl('', {
       validators: [Validators.required, Validators.pattern(this.pricePattern)],

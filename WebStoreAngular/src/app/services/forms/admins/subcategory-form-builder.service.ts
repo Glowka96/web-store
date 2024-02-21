@@ -28,7 +28,7 @@ export class SubcategoryFormBuilderService {
 
   createDeleteFormGroup() {
     return this.formBuilder.group({
-      choice: this.baseEntityFormService.getChoiceFormControll(),
+      choiceSubcategory: this.baseEntityFormService.getChoiceFormControll(),
     });
   }
 }
