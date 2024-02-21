@@ -12,24 +12,24 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "api/v1/delivery-types")
+@RequestMapping(value = "api/v1")
 @RequiredArgsConstructor
 public class DeliveryTypeController {
 
     private final DeliveryTypeService deliveryTypeService;
 
-    @GetMapping()
+    @GetMapping("/delivery-types")
     public ResponseEntity<List<DeliveryTypeResponse>> getAllDeliveryType(){
         return ResponseEntity.ok(deliveryTypeService.getAllDeliveryType());
     }
 
-    @PostMapping
+    @PostMapping("/admin/delivery-types")
     public ResponseEntity<DeliveryTypeResponse> saveDelivery(@RequestBody DeliveryTypeRequest deliveryTypeRequest) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(deliveryTypeService.saveDeliveryType(deliveryTypeRequest));
     }
 
-    @DeleteMapping(value = "/{deliveryId}")
+    @DeleteMapping(value = "/admin/delivery-types/{deliveryId}")
     public ResponseEntity<Void> deleteDeliveryTypeById(@PathVariable(value = "deliveryId") Long deliveryId){
         deliveryTypeService.deleteDeliveryType(deliveryId);
         return ResponseEntity.noContent().build();

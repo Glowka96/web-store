@@ -5,7 +5,7 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
   providedIn: 'root',
 })
 export class UserFullnameFormBuilderService {
-  private _namePattern = '^[a-zA-Z]*$';
+  private _namePattern = '^[a-zA-Z]+$';
 
   constructor(private formBuilder: FormBuilder) {}
 

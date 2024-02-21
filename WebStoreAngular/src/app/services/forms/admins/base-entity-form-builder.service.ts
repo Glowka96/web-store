@@ -5,11 +5,35 @@ import { FormControl, Validators } from '@angular/forms';
   providedIn: 'root',
 })
 export class BaseEntityFormBuilderService {
+  private pricePattern = '^[1-9]+(.[0-9]{1,2})*$';
+
   constructor() {}
 
-  public getNameFormControll() {
+  public getTextFormControll(maxLength: number = 20) {
     return new FormControl('', {
-      validators: [Validators.required, Validators.minLength(3)],
+      validators: [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(maxLength),
+      ],
+      updateOn: 'change',
+    });
+  }
+
+  public getDescriptionFormControll() {
+    return new FormControl('', {
+      validators: [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(512),
+      ],
+      updateOn: 'change',
+    });
+  }
+
+  public getPriceFormControll() {
+    return new FormControl('', {
+      validators: [Validators.required, Validators.pattern(this.pricePattern)],
       updateOn: 'change',
     });
   }

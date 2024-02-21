@@ -15,7 +15,7 @@ public class DeliveryTypeResponse {
 
     private Long id;
 
-    private String type;
+    private String name;
 
     private BigDecimal price;
 }

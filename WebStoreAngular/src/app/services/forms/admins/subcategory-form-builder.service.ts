@@ -8,27 +8,27 @@ import { BaseEntityFormBuilderService } from './base-entity-form-builder.service
 export class SubcategoryFormBuilderService {
   constructor(
     private formBuilder: FormBuilder,
-    private baseEntityForm: BaseEntityFormBuilderService
+    private baseEntityFormService: BaseEntityFormBuilderService
   ) {}
 
   createAddFormGroup() {
     return this.formBuilder.group({
-      choiceCategory: this.baseEntityForm.getChoiceFormControll(),
-      name: this.baseEntityForm.getNameFormControll(),
+      choiceCategory: this.baseEntityFormService.getChoiceFormControll(),
+      name: this.baseEntityFormService.getTextFormControll(),
     });
   }
 
   createUpdateFormGroup() {
     return this.formBuilder.group({
-      choiceCategory: this.baseEntityForm.getChoiceFormControll(),
-      choiceSubcategory: this.baseEntityForm.getChoiceFormControll(),
-      name: this.baseEntityForm.getNameFormControll(),
+      choiceCategory: this.baseEntityFormService.getChoiceFormControll(),
+      choiceSubcategory: this.baseEntityFormService.getChoiceFormControll(),
+      name: this.baseEntityFormService.getTextFormControll(),
     });
   }
 
   createDeleteFormGroup() {
     return this.formBuilder.group({
-      choice: this.baseEntityForm.getChoiceFormControll(),
+      choice: this.baseEntityFormService.getChoiceFormControll(),
     });
   }
 }

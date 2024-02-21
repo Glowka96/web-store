@@ -23,12 +23,14 @@ export class DeliveryTypeService {
     request: DeliveryTypeRequest
   ): Observable<DeliveryTypeResponse> {
     return this.http.post<DeliveryTypeResponse>(
-      `${this.apiServerUrl}`,
+      `${this.apiServerUrl}/admin/delivery-types`,
       request
     );
   }
 
   public deleteDeliveryType(deliveryId: number): Observable<any> {
-    return this.http.delete(`${this.apiServerUrl}/${deliveryId}`);
+    return this.http.delete(
+      `${this.apiServerUrl}/admin/delivery-types/${deliveryId}`
+    );
   }
 }

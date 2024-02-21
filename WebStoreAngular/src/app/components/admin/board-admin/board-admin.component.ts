@@ -21,7 +21,7 @@ export class BoardAdminComponent implements OnInit {
   private _producers: ProducerResponse[] = [];
   private _productTypes: ProductTypeResponse[] = [];
   private _loggedRole!: string;
-  private _subscriptions!: Subscription[];
+  private _subscriptions: Subscription[] = [];
 
   constructor(
     private categoryService: CategoryService,
@@ -43,6 +43,7 @@ export class BoardAdminComponent implements OnInit {
     const sub4 = productTypeService.productTypes$
       .pipe(take(1))
       .subscribe((productTypes) => (this._productTypes = productTypes));
+    this._subscriptions.push(sub1, sub2, sub3, sub4);
     this._subscriptions.push(sub1, sub2, sub3, sub4);
   }
 

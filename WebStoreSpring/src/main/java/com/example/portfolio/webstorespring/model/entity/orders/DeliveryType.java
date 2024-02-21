@@ -19,7 +19,7 @@ public class DeliveryType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String type;
+    private String name;
 
     private BigDecimal price;
 

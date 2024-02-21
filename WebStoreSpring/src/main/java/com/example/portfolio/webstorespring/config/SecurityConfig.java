@@ -41,7 +41,8 @@ public class SecurityConfig {
                                 "/api/v1/promotions/products/**",
                                 "/api/v1/login",
                                 "/api/v1/new-products",
-                                "/api/v1/accounts/reset-password/**").permitAll()
+                                "/api/v1/accounts/reset-password/**",
+                                "/api/v1/delivery-types").permitAll()
                         .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/v1/accounts/**",
                                 "/api/v1/accounts/address/**",

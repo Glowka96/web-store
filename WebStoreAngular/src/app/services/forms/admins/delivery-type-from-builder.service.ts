@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { BaseEntityFormBuilderService } from './base-entity-form-builder.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class EntityFormBuilderService {
+export class DeliveryTypeFromBuilderService {
   constructor(
     private formBuilder: FormBuilder,
     private baseEntityFormService: BaseEntityFormBuilderService
@@ -13,14 +13,8 @@ export class EntityFormBuilderService {
 
   createAddFormGroup() {
     return this.formBuilder.group({
-      name: this.baseEntityFormService.getTextFormControll(),
-    });
-  }
-
-  createUpdateFormGroup() {
-    return this.formBuilder.group({
-      choice: this.baseEntityFormService.getChoiceFormControll(),
-      name: this.baseEntityFormService.getTextFormControll(),
+      name: this.baseEntityFormService.getTextFormControll(32),
+      price: this.baseEntityFormService.getPriceFormControll(),
     });
   }
 
