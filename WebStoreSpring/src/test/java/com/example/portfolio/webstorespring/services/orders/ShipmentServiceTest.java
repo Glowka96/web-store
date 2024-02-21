@@ -41,7 +41,7 @@ class ShipmentServiceTest {
         Order order = createOrderWithoutShipments();
         Long productQuantity = product.getQuantity();
 
-        given(productRepository.findProductsByIdWithPromotion(anyLong())).willReturn(Optional.of(product));
+        given(productRepository.findProductByIdWithPromotion(anyLong())).willReturn(Optional.of(product));
 
         // when
         List<Shipment> result =  underTest.getSetupShipments(order, List.of(shipmentRequest));
@@ -61,7 +61,7 @@ class ShipmentServiceTest {
         shipmentRequest.setQuantity(10000);
         Order order = createOrderWithoutShipments();
 
-        given(productRepository.findProductsByIdWithPromotion(anyLong())).willReturn(Optional.of(product));
+        given(productRepository.findProductByIdWithPromotion(anyLong())).willReturn(Optional.of(product));
 
         // when
         // then

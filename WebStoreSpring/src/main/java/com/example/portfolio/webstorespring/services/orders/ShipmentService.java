@@ -63,7 +63,7 @@ class ShipmentService {
     }
 
     private Product findProductByIdWithPromotion(Long productId) {
-        return productRepository.findProductsByIdWithPromotion(productId)
+        return productRepository.findProductByIdWithPromotion(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "id", productId));
     }
 }

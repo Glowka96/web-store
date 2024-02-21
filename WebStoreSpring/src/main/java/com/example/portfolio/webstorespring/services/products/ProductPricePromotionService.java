@@ -9,7 +9,6 @@ import com.example.portfolio.webstorespring.model.dto.products.response.ProductP
 import com.example.portfolio.webstorespring.model.entity.products.Product;
 import com.example.portfolio.webstorespring.model.entity.products.ProductPricePromotion;
 import com.example.portfolio.webstorespring.repositories.products.ProductPricePromotionRepository;
-import com.example.portfolio.webstorespring.repositories.products.ProductRepository;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,14 +19,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProductPricePromotionService {
 
     private final ProductPricePromotionRepository promotionRepository;
-    private final ProductRepository productRepository;
+    private final ProductService productService;
     private final ProductPricePromotionMapper promotionMapper;
 
     @Transactional
     public ProductPricePromotionResponse saveProductPricePromotion(@NotNull ProductPricePromotionRequest promotionRequest) {
-        Product product = findProductById(promotionRequest.getProductId());
+        Product product = productService.findProductByIdWithPromotion(promotionRequest.getProductId());
 
-        if (product.getPricePromotions() != null) {
+        if (!product.getPricePromotions().isEmpty()) {
             throw new ProductHasAlreadyPromotionException();
         }
 
@@ -46,11 +45,6 @@ public class ProductPricePromotionService {
     public void deleteProductPricePromotionById(@NotNull Long id) {
         ProductPricePromotion promotion = findProductPricePromotionById(id);
         promotionRepository.delete(promotion);
-    }
-
-    private Product findProductById(Long id) {
-        return productRepository.findProductsByIdWithPromotion(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Product", "id", id));
     }
 
     private ProductPricePromotion findProductPricePromotionById(Long id) {

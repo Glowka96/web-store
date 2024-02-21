@@ -12,14 +12,14 @@ public class DeliveryTypeBuilderHelper {
     public static DeliveryType createDeliveryType() {
         return DeliveryType.builder()
                 .id(1L)
-                .type(TYPE)
+                .name(TYPE)
                 .price(BigDecimal.valueOf(10.0))
                 .build();
     }
 
     public static DeliveryTypeRequest createDeliveryTypeRequest() {
         return DeliveryTypeRequest.builder()
-                .type(TYPE)
+                .name(TYPE)
                 .price(BigDecimal.valueOf(10.0))
                 .build();
     }
@@ -27,7 +27,7 @@ public class DeliveryTypeBuilderHelper {
 
     public static DeliveryTypeRequest createDeliveryTypeRequest(String type, BigDecimal price) {
         return DeliveryTypeRequest.builder()
-                .type(type)
+                .name(type)
                 .price(price)
                 .build();
     }
@@ -35,7 +35,7 @@ public class DeliveryTypeBuilderHelper {
     public static DeliveryTypeResponse createDeliveryTypeResponse() {
         return DeliveryTypeResponse.builder()
                 .id(1L)
-                .type(TYPE)
+                .name(TYPE)
                 .price(BigDecimal.valueOf(10.0))
                 .build();
     }

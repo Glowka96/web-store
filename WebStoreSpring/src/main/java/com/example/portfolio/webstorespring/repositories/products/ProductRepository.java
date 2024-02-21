@@ -95,5 +95,5 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             ON (CURRENT_DATE BETWEEN pp.startDate AND pp.endDate)
             WHERE p.id = :productId
             """)
-    Optional<Product> findProductsByIdWithPromotion(@Param("productId") Long productId);
+    Optional<Product> findProductByIdWithPromotion(@Param("productId") Long productId);
 }

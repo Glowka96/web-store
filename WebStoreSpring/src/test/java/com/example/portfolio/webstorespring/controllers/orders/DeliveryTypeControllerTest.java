@@ -35,7 +35,7 @@ class DeliveryTypeControllerTest {
     @InjectMocks
     private DeliveryTypeController underTest;
 
-    private static final String URI = "/api/v1/delivery-types";
+    private static final String URI = "/api/v1";
     private MockMvc mvc;
     private ObjectMapper mapper;
 
@@ -49,7 +49,7 @@ class DeliveryTypeControllerTest {
         DeliveryTypeResponse deliveryTypeResponse = createDeliveryTypeResponse();
         given(deliveryTypeService.getAllDeliveryType()).willReturn(List.of(deliveryTypeResponse, deliveryTypeResponse));
 
-        mvc.perform(get(URI)
+        mvc.perform(get(URI + "/delivery-types")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
@@ -63,19 +63,19 @@ class DeliveryTypeControllerTest {
 
         given(deliveryTypeService.saveDeliveryType(any(DeliveryTypeRequest.class))).willReturn(deliveryTypeResponse);
 
-        mvc.perform(post(URI)
+        mvc.perform(post(URI + "/admin/delivery-types")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(deliveryTypeRequest)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.type", is(deliveryTypeRequest.getType())))
+                .andExpect(jsonPath("$.name", is(deliveryTypeRequest.getName())))
                 .andExpect(jsonPath("$.price", is(10.0)))
                 .andDo(print());
     }
 
     @Test
     void deleteDeliveryTypeById() throws Exception {
-        mvc.perform(delete(URI + "/{deliveryId}", 1))
+        mvc.perform(delete(URI + "/admin/delivery-types/{deliveryId}", 1))
                 .andExpect(status().isNoContent());
     }
 }

@@ -5,12 +5,8 @@ import com.example.portfolio.webstorespring.mappers.ProductMapper;
 import com.example.portfolio.webstorespring.model.dto.products.ProductWithProducerAndPromotionDTO;
 import com.example.portfolio.webstorespring.model.dto.products.request.ProductRequest;
 import com.example.portfolio.webstorespring.model.dto.products.response.ProductResponse;
-import com.example.portfolio.webstorespring.model.entity.products.Producer;
 import com.example.portfolio.webstorespring.model.entity.products.Product;
-import com.example.portfolio.webstorespring.model.entity.products.Subcategory;
-import com.example.portfolio.webstorespring.repositories.products.ProducerRepository;
 import com.example.portfolio.webstorespring.repositories.products.ProductRepository;
-import com.example.portfolio.webstorespring.repositories.products.SubcategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
@@ -28,8 +24,9 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
-    private final ProducerRepository producerRepository;
-    private final SubcategoryRepository subcategoryRepository;
+    private final ProducerService producerService;
+    private final SubcategoryService subcategoryService;
+    private final ProductTypeService productTypeService;
     private final Clock clock = Clock.systemUTC();
 
     public ProductWithProducerAndPromotionDTO getProductById(Long id) {
@@ -46,12 +43,10 @@ public class ProductService {
 
     @Transactional
     public ProductResponse saveProduct(Long subcategoryId, Long producerId, ProductRequest productRequest) {
-        Subcategory foundSubcategory = findSubcategoryById(subcategoryId);
-        Producer foundProducer = findProducerById(producerId);
-
         Product product = productMapper.mapToEntity(productRequest);
-        product.setSubcategory(foundSubcategory);
-        product.setProducer(foundProducer);
+        product.setSubcategory(subcategoryService.findSubcategoryById(subcategoryId));
+        product.setProducer(producerService.findProducerById(producerId));
+        product.setType(productTypeService.findProductTypeById(productRequest.getProductTypeId()));
 
         productRepository.save(product);
         return productMapper.mapToDto(product);
@@ -62,15 +57,20 @@ public class ProductService {
                                          Long producerId,
                                          Long productId,
                                          ProductRequest productRequest) {
-        Subcategory foundSubcategory = findSubcategoryById(subcategoryId);
-        Producer foundProducer = findProducerById(producerId);
         Product foundProduct = findProductById(productId);
         Product product = productMapper.mapToEntity(productRequest);
 
-        setupUpdateProduct(foundSubcategory, foundProducer, foundProduct, product);
+        foundProduct.setSubcategory(subcategoryService.findSubcategoryById(subcategoryId));
+        foundProduct.setProducer(producerService.findProducerById(producerId));
+        foundProduct.setType(productTypeService.findProductTypeById(productRequest.getProductTypeId()));
+        foundProduct.setName(product.getName());
+        foundProduct.setDescription(product.getDescription());
+        foundProduct.setPrice(product.getPrice());
+        foundProduct.setQuantity(product.getQuantity());
+        foundProduct.setImageUrl(product.getImageUrl());
 
-        productRepository.save(product);
-        return productMapper.mapToDto(product);
+        productRepository.save(foundProduct);
+        return productMapper.mapToDto(foundProduct);
     }
 
     public void deleteProductById(Long id) {
@@ -78,8 +78,13 @@ public class ProductService {
         productRepository.delete(foundProduct);
     }
 
-    private Product findProductById(Long id) {
+    protected Product findProductById(Long id) {
         return productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product", "id", id));
+    }
+
+    protected Product findProductByIdWithPromotion(Long id) {
+        return productRepository.findProductByIdWithPromotion(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product", "id", id));
     }
 
@@ -87,40 +92,5 @@ public class ProductService {
     private Date getDate30DaysAgo() {
         return Date.from(LocalDateTime.now(clock).minusDays(30)
                 .atZone(ZoneId.systemDefault()).toInstant());
-    }
-
-    private Subcategory findSubcategoryById(Long id) {
-        return subcategoryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Subcategory", "id", id));
-    }
-
-    private Producer findProducerById(Long id) {
-        return producerRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Producer", "id", id));
-    }
-
-    private void setupUpdateProduct(Subcategory foundSubcategory,
-                                    Producer foundProducer,
-                                    Product foundProduct,
-                                    Product updatedProduct) {
-        updatedProduct.setSubcategory(foundSubcategory);
-        updatedProduct.setProducer(foundProducer);
-        updatedProduct.setId(foundProduct.getId());
-
-        if (updatedProduct.getName() == null) {
-            updatedProduct.setName(foundProduct.getName());
-        }
-        if (updatedProduct.getDescription() == null) {
-            updatedProduct.setDescription(foundProduct.getDescription());
-        }
-        if (updatedProduct.getImageUrl() == null) {
-            updatedProduct.setImageUrl(foundProduct.getImageUrl());
-        }
-        if (updatedProduct.getPrice() == null) {
-            updatedProduct.setPrice(foundProduct.getPrice());
-        }
-        if (updatedProduct.getType() == null) {
-            updatedProduct.setType(foundProduct.getType());
-        }
     }
 }

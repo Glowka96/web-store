@@ -52,7 +52,7 @@ public class CategoryService {
         categoryRepository.delete(category);
     }
 
-    private Category findCategoryById(Long id) {
+    protected Category findCategoryById(Long id) {
         return categoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "id", id));
     }

@@ -9,7 +9,6 @@ import com.example.portfolio.webstorespring.model.dto.products.response.ProductP
 import com.example.portfolio.webstorespring.model.entity.products.Product;
 import com.example.portfolio.webstorespring.model.entity.products.ProductPricePromotion;
 import com.example.portfolio.webstorespring.repositories.products.ProductPricePromotionRepository;
-import com.example.portfolio.webstorespring.repositories.products.ProductRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
@@ -24,6 +23,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.createProduct;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.createProductWithPromotion;
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductPricePromotionBuilderHelper.createProductPricePromotion;
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductPricePromotionBuilderHelper.createProductPricePromotionRequest;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -39,7 +39,7 @@ class ProductPricePromotionServiceTest {
     @Mock
     private ProductPricePromotionRepository promotionRepository;
     @Mock
-    private ProductRepository productRepository;
+    private ProductService productService;
     @Spy
     private ProductPricePromotionMapper promotionMapper = Mappers.getMapper(ProductPricePromotionMapper.class);
     @InjectMocks
@@ -51,7 +51,7 @@ class ProductPricePromotionServiceTest {
         Product product = createProduct();
         ProductPricePromotionRequest productPricePromotionRequest = createProductPricePromotionRequest();
 
-        given(productRepository.findProductsByIdWithPromotion(anyLong())).willReturn(Optional.of(product));
+        given(productService.findProductByIdWithPromotion(anyLong())).willReturn(product);
 
         // when
         ProductPricePromotionResponse savedProductPricePromotionRequest = underTest.saveProductPricePromotion(productPricePromotionRequest);
@@ -74,31 +74,31 @@ class ProductPricePromotionServiceTest {
         ProductPricePromotionRequest productPricePromotionRequest = createProductPricePromotionRequest(BigDecimal.valueOf(999.99));
 
         // when
-        when(productRepository.findProductsByIdWithPromotion(anyLong())).thenReturn(Optional.of(product));
+        when(productService.findProductByIdWithPromotion(anyLong())).thenReturn(product);
 
         // then
         assertThrows(PromotionPriceGreaterThanBasePriceException.class, () -> underTest.saveProductPricePromotion(productPricePromotionRequest));
-        verify(productRepository, times(1)).findProductsByIdWithPromotion(1L);
-        verifyNoMoreInteractions(productRepository);
+        verify(productService, times(1)).findProductByIdWithPromotion(1L);
+        verifyNoMoreInteractions(productService);
         verifyNoMoreInteractions(promotionRepository);
     }
 
     @Test
     void willThrowWhenProductHasAlreadyPromotion() {
         // given
-        Product product = createProduct();
+        Product product = createProductWithPromotion();
         ProductPricePromotion productPricePromotion = createProductPricePromotion();
         product.setPricePromotions(Set.of(productPricePromotion));
 
         ProductPricePromotionRequest productPricePromotionRequest = createProductPricePromotionRequest();
 
         // when
-        when(productRepository.findProductsByIdWithPromotion(anyLong())).thenReturn(Optional.of(product));
+        when(productService.findProductByIdWithPromotion(anyLong())).thenReturn(product);
 
         // then
         assertThrows(ProductHasAlreadyPromotionException.class, () -> underTest.saveProductPricePromotion(productPricePromotionRequest));
-        verify(productRepository, times(1)).findProductsByIdWithPromotion(1L);
-        verifyNoMoreInteractions(productRepository);
+        verify(productService, times(1)).findProductByIdWithPromotion(1L);
+        verifyNoMoreInteractions(productService);
         verifyNoMoreInteractions(promotionRepository);
     }
 

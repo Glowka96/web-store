@@ -9,10 +9,9 @@ import com.example.portfolio.webstorespring.model.dto.products.request.ProductRe
 import com.example.portfolio.webstorespring.model.dto.products.response.ProductResponse;
 import com.example.portfolio.webstorespring.model.entity.products.Producer;
 import com.example.portfolio.webstorespring.model.entity.products.Product;
+import com.example.portfolio.webstorespring.model.entity.products.ProductType;
 import com.example.portfolio.webstorespring.model.entity.products.Subcategory;
-import com.example.portfolio.webstorespring.repositories.products.ProducerRepository;
 import com.example.portfolio.webstorespring.repositories.products.ProductRepository;
-import com.example.portfolio.webstorespring.repositories.products.SubcategoryRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,11 +29,11 @@ import java.util.Optional;
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProducerBuilderHelper.createProducer;
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.createProduct;
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.createProductRequest;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProductTypeBuilderHelper.createProductType;
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductWithProducerAndPromotionDTOBuilderHelper.createNullProductWithProducerAndPromotionDTO;
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductWithProducerAndPromotionDTOBuilderHelper.createProductWithProducerAndPromotionDTO;
 import static com.example.portfolio.webstorespring.buildhelpers.products.SubcategoryBuilderHelper.createSubcategory;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
@@ -47,9 +46,11 @@ class ProductServiceTest {
     @Mock
     private ProductRepository productRepository;
     @Mock
-    private SubcategoryRepository subcategoryRepository;
+    private SubcategoryService subcategoryService;
     @Mock
-    private ProducerRepository producerRepository;
+    private ProducerService producerService;
+    @Mock
+    private ProductTypeService productTypeService;
     @InjectMocks
     private ProductService underTest;
 
@@ -85,6 +86,15 @@ class ProductServiceTest {
     }
 
     @Test
+    void willThrowWhenProductIdWithPromotionNotFound() {
+        given(productRepository.findProductByIdWithPromotion(anyLong())).willReturn(Optional.empty());
+        // when
+        // then
+        assertThrows(ResourceNotFoundException.class, () -> underTest.findProductByIdWithPromotion(1L));
+        verify(productRepository, times(1)).findProductByIdWithPromotion(eq(1L));
+    }
+
+    @Test
     void shouldGetAllProducts() {
         // when
         underTest.getAllProducts();
@@ -99,9 +109,11 @@ class ProductServiceTest {
         Producer producer = createProducer();
         Subcategory subcategory = createSubcategory();
         ProductRequest productRequest = createProductRequest();
+        ProductType productType = createProductType();
 
-        given(producerRepository.findById(anyLong())).willReturn(Optional.of(producer));
-        given(subcategoryRepository.findById(anyLong())).willReturn(Optional.of(subcategory));
+        given(producerService.findProducerById(anyLong())).willReturn(producer);
+        given(subcategoryService.findSubcategoryById(anyLong())).willReturn(subcategory);
+        given(productTypeService.findProductTypeById(anyLong())).willReturn(productType);
 
         // when
         ProductResponse savedProductResponse = underTest.saveProduct(subcategory.getId(), producer.getId(), productRequest);
@@ -118,36 +130,6 @@ class ProductServiceTest {
     }
 
     @Test
-    void willThrowWhenSubcategoryIdNotFound() {
-        // given
-        ProductRequest productRequest = createProductRequest();
-
-        given(subcategoryRepository.findById(anyLong())).willReturn(Optional.empty());
-
-        // when
-        // then
-        assertThatThrownBy(() -> underTest.saveProduct(2L, 1L, productRequest))
-                .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessageContaining("Subcategory with id 2 not found");
-    }
-
-    @Test
-    void willThrowWhenProducerIdNotFound() {
-        // given
-        Subcategory subcategory = createSubcategory();
-        ProductRequest productRequest = createProductRequest();
-
-        given(subcategoryRepository.findById(anyLong())).willReturn(Optional.of(subcategory));
-        given(producerRepository.findById(anyLong())).willReturn(Optional.empty());
-
-        // when
-        // then
-        assertThatThrownBy(() -> underTest.saveProduct(1L, 2L, productRequest))
-                .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessageContaining("Producer with id 2 not found");
-    }
-
-    @Test
     void shouldUpdateProduct() {
         // given
         ProductRequest productRequest = ProductBuilderHelper.createProductRequest(
@@ -160,15 +142,17 @@ class ProductServiceTest {
         Subcategory subcategory = createSubcategory();
         Producer producer = createProducer();
         Product product = createProduct();
+        ProductType productType = createProductType();
 
         String name = product.getName();
         String description = product.getDescription();
         BigDecimal price = product.getPrice();
         Long quantity = product.getQuantity();
 
-        given(subcategoryRepository.findById(anyLong())).willReturn(Optional.of(subcategory));
-        given(producerRepository.findById(anyLong())).willReturn(Optional.of(producer));
+        given(subcategoryService.findSubcategoryById(anyLong())).willReturn(subcategory);
+        given(producerService.findProducerById(anyLong())).willReturn(producer);
         given(productRepository.findById(anyLong())).willReturn(Optional.of(product));
+     //   given(productTypeService.findProductTypeById(anyLong())).willReturn(productType);
 
         // when
         ProductResponse updatedProductResponse = underTest.updateProduct(subcategory.getId(), producer.getId(), product.getId(), productRequest);

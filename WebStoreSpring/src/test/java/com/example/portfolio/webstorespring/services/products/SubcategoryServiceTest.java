@@ -6,7 +6,6 @@ import com.example.portfolio.webstorespring.model.dto.products.request.Subcatego
 import com.example.portfolio.webstorespring.model.dto.products.response.SubcategoryResponse;
 import com.example.portfolio.webstorespring.model.entity.products.Category;
 import com.example.portfolio.webstorespring.model.entity.products.Subcategory;
-import com.example.portfolio.webstorespring.repositories.products.CategoryRepository;
 import com.example.portfolio.webstorespring.repositories.products.SubcategoryRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,7 +34,7 @@ class SubcategoryServiceTest {
     @Mock
     private SubcategoryRepository subcategoryRepository;
     @Mock
-    private CategoryRepository categoryRepository;
+    private CategoryService categoryService;
     @InjectMocks
     private SubcategoryService underTest;
 
@@ -70,7 +69,7 @@ class SubcategoryServiceTest {
         // given
         Category category = createCategory();
         SubcategoryRequest subcategoryRequest = createSubcategoryRequest();
-        given(categoryRepository.findById(anyLong())).willReturn(Optional.of(category));
+        given(categoryService.findCategoryById(anyLong())).willReturn(category);
 
         // when
         SubcategoryResponse savedSubcategoryResponse = underTest.saveSubcategory(category.getId(), subcategoryRequest);
@@ -106,7 +105,7 @@ class SubcategoryServiceTest {
         String subcategoryName = subcategory.getName();
         SubcategoryRequest subcategoryRequest = createSubcategoryRequest("Test2");
 
-        given(categoryRepository.findById(category.getId())).willReturn(Optional.of(category));
+        given(categoryService.findCategoryById(category.getId())).willReturn(category);
         given(subcategoryRepository.findById(subcategory.getId())).willReturn(Optional.of(subcategory));
 
         // when

@@ -45,7 +45,7 @@ public class ProductTypeService {
         productTypeRepository.delete(foundProductType);
     }
 
-    private ProductType findProductTypeById(Long productTypeId) {
+    protected ProductType findProductTypeById(Long productTypeId) {
         return productTypeRepository.findById(productTypeId)
                 .orElseThrow(() -> new ResourceNotFoundException("ProductType", "id", productTypeId));
     }

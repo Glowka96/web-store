@@ -50,7 +50,7 @@ public class ProducerService {
         producerRepository.delete(foundProducer);
     }
 
-    private Producer findProducerById(Long id) {
+    protected Producer findProducerById(Long id) {
         return producerRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Producer", "id", id));
     }
