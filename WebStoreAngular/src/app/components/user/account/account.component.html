@@ -18,14 +18,41 @@
             </div>
         </div>
     </div>
-    <div class="account-data" *ngIf="user">
-        <p><span class="data">First name: </span>{{user.firstName}} </p>
-        <p><span class="data">Last name: </span>{{user.lastName}} </p>
-        <p><span class="data">Email: </span>{{user.email}}</p>
-        <span *ngIf="user.address">
-            <p><span class="data">City: </span>{{user.address.city}}</p>
-            <p><span class="data">Postcode: </span>{{user.address.postcode}}</p>
-            <p><span class="data">Street: </span>{{user.address.street}}</p>
+    <div class="account-data" *ngIf="account">
+        <p><span class="data">First name: </span>{{account.firstName}} </p>
+        <p><span class="data">Last name: </span>{{account.lastName}} </p>
+        <p><span class="data">Email: </span>{{account.email}}</p>
+        <span *ngIf="account.address">
+            <p><span class="data">City: </span>{{account.address.city}}</p>
+            <p><span class="data">Postcode: </span>{{account.address.postcode}}</p>
+            <p><span class="data">Street: </span>{{account.address.street}}</p>
         </span>
+    </div>
+    <div class="wrapper-orders">
+        <div class="title-orders">
+            <h2>Last five orders</h2>
+        </div>
+        <div class="orders-box">
+            <table>
+                <thead>
+                    <tr class="thead-box">
+                        <th>Name User</th>
+                        <th>Total Price</th>
+                        <th>Delivery Address</th>
+                        <th>Date of Creation</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let order of orders">
+                        <td>{{ order.nameUser }}</td>
+                        <td>{{ order.totalPrice }} PLN</td>
+                        <td>{{ order.delivery.deliveryAddress}}</td>
+                        <td>{{ order.dateOfCreation | date: 'dd-MM-yyy HH:mm:ss' }}</td>
+                        <td>{{ order.status }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </section>

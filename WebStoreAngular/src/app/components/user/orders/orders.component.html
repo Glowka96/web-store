@@ -3,17 +3,13 @@
         <h1>Your orders</h1>
     </div>
     <div class="box-orders">
-        <div class="order" *ngFor="let order of listOrder">
+        <div class="order" *ngFor="let order of orders">
             <div class="order-data">
                 <p><span class="data">Name user: </span>{{order.nameUser}}</p>
-                <p><span class="data">Products price: </span>{{order.productsPrice}} PLN</p>
+                <p><span class="data">Products price: </span>{{order.totalPrice}} PLN</p>
                 <p><span class="data">Delivery address: </span><br>{{order.delivery.deliveryAddress}}</p>
-                <p><span class="data">Shipment address: </span><br>{{order.shipmentAddress}}</p>
-                <p><span class="data">Date of created: </span>{{order.dateOfCreated}}</p>
+                <p><span class="data">Date of created: </span>{{order.dateOfCreation | date: 'dd-MM-yyy HH:mm:ss'}}</p>
                 <p><span class="data">Orders status: </span>{{order.status}}</p>
-            </div>
-            <div *ngIf="isViewErorr(order.id)" class="errors" role="alert">
-                <p [innerHTML]="errorMsg"></p>
             </div>
         </div>
     </div>

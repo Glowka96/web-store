@@ -4,10 +4,9 @@ import { ShipmentResponse } from './shipment-response';
 export interface OrderResponse {
   id: string;
   nameUser: string;
-  productsPrice: number;
+  totalPrice: number;
   delivery: DeliveryResponse;
-  shipmentAddress: string;
-  dateOfCreated: Date;
+  dateOfCreation: Date;
   status: string;
   shipments: ShipmentResponse[];
 }
