@@ -4,16 +4,16 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Shipment } from '../../models/orders/shipment';
 import { OrderRequest } from '../../models/orders/order-request';
+import { OrdersService } from './orders.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ShopService {
-  private apiServerUrl = environment.apiBaseUrl;
   private basket: BehaviorSubject<Shipment[]> = new BehaviorSubject(
     [] as Shipment[]
   );
-  constructor(private http: HttpClient) {
+  constructor(private orderService: OrdersService) {
     const localStorageData = localStorage.getItem('basket');
     let localStorageBasket: Shipment[] = [];
     if (localStorageData) {
@@ -30,13 +30,12 @@ export class ShopService {
     } else {
       cart.push(shipment);
     }
-    console.log(cart);
     this.basket.next(cart);
     localStorage.setItem('basket', JSON.stringify(cart));
   }
 
   public purchase(request: OrderRequest): Observable<any> {
-    return this.http.post<any>(`${this.apiServerUrl}/accounts/orders`, request);
+    return this.orderService.saveOrder(request);
   }
 
   public get basket$() {

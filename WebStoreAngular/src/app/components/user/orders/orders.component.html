@@ -12,9 +12,6 @@
                 <p><span class="data">Date of created: </span>{{order.dateOfCreated}}</p>
                 <p><span class="data">Orders status: </span>{{order.status}}</p>
             </div>
-            <div class="order-options">
-                <button class="btn-delete" (click)="deleteOrder(order.id)">Delete</button>
-            </div>
             <div *ngIf="isViewErorr(order.id)" class="errors" role="alert">
                 <p [innerHTML]="errorMsg"></p>
             </div>

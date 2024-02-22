@@ -36,22 +36,6 @@ export class OrdersComponent implements OnInit {
       this.addressFormService.createAccountAddressFormGroup();
   }
 
-  public deleteOrder(orderId: string) {
-    this.ordersService
-      .deleteOrder(orderId)
-      .pipe(take(1))
-      .subscribe({
-        next: () => {
-          window.location.reload();
-        },
-        error: (error) => {
-          this.selectedErrorId = orderId;
-          const errorMessage = error.error.errors;
-          this.errorMessage = errorMessage;
-        },
-      });
-  }
-
   public get listOrder() {
     return this.orders;
   }

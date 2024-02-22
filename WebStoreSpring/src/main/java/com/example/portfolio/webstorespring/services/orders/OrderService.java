@@ -2,7 +2,6 @@ package com.example.portfolio.webstorespring.services.orders;
 
 import com.example.portfolio.webstorespring.enums.AccessDeniedExceptionMessage;
 import com.example.portfolio.webstorespring.enums.OrderStatus;
-import com.example.portfolio.webstorespring.exceptions.OrderCanNotModifiedException;
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.OrderMapper;
 import com.example.portfolio.webstorespring.model.dto.orders.request.OrderRequest;
@@ -54,7 +53,7 @@ public class OrderService {
         ));
     }
 
-    public OrderResponse getAccountOrderByOrderId(Long orderId) {
+    public OrderResponse getOrderById(Long orderId) {
         Order foundOrder = findOrderById(orderId);
 
         checkOwnerOfOrder(foundOrder, AccessDeniedExceptionMessage.GET);
@@ -74,15 +73,6 @@ public class OrderService {
         return orderMapper.mapToDto(order);
     }
 
-    public void deleteOrderById(Long id) {
-        Order foundOrder = findOrderById(id);
-
-        checkOwnerOfOrder(foundOrder, AccessDeniedExceptionMessage.DELETE);
-
-        checkOrderStatus(foundOrder, "delete");
-        orderRepository.delete(foundOrder);
-    }
-
     private Order findOrderById(Long id) {
         return orderRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Order", "id", id));
@@ -91,12 +81,6 @@ public class OrderService {
     private void checkOwnerOfOrder(Order foundOrder, AccessDeniedExceptionMessage exceptionMessage) {
         if (!foundOrder.getAccount().getId().equals(getAccountDetails().getAccount().getId())) {
             throw new AccessDeniedException(exceptionMessage.getMessage());
-        }
-    }
-
-    private void checkOrderStatus(Order foundOrder, String operation) {
-        if (foundOrder.getStatus() != OrderStatus.OPEN) {
-            throw new OrderCanNotModifiedException(operation);
         }
     }
 

@@ -19,7 +19,19 @@ export class OrdersService {
     );
   }
 
-  public deleteOrder(orderId: string): Observable<any> {
-    return this.http.delete(`${this.apiServerUrl}/accounts/orders/${orderId}`);
+  public getLastFiveAccountOrders() {
+    return this.http.get<OrderResponse[]>(
+      `${this.apiServerUrl}/accounts/orders/last-five`
+    );
+  }
+
+  public getOrderById(orderId: number) {
+    return this.http.get<OrderResponse>(
+      `${this.apiServerUrl}/accounts/orders/${orderId}`
+    );
+  }
+
+  public saveOrder(request: OrderRequest): Observable<any> {
+    return this.http.post<any>(`${this.apiServerUrl}/accounts/orders`, request);
   }
 }

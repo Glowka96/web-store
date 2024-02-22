@@ -2,8 +2,6 @@ package com.example.portfolio.webstorespring.services.orders;
 
 import com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper;
 import com.example.portfolio.webstorespring.enums.AccessDeniedExceptionMessage;
-import com.example.portfolio.webstorespring.enums.OrderStatus;
-import com.example.portfolio.webstorespring.exceptions.OrderCanNotModifiedException;
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.DeliveryMapper;
 import com.example.portfolio.webstorespring.mappers.DeliveryTypeMapper;
@@ -103,7 +101,7 @@ class OrderServiceTest {
         given(orderRepository.findById(anyLong())).willReturn(Optional.of(order));
 
         // when
-        OrderResponse orderResponse = underTest.getAccountOrderByOrderId(1L);
+        OrderResponse orderResponse = underTest.getOrderById(1L);
 
         // then
         assertThat(orderResponse.getId()).isEqualTo(order.getId());
@@ -139,14 +137,14 @@ class OrderServiceTest {
 
         // when
         // than
-        assertThatThrownBy(() -> underTest.getAccountOrderByOrderId(1L))
+        assertThatThrownBy(() -> underTest.getOrderById(1L))
                 .isInstanceOf(AccessDeniedException.class)
                 .hasMessageContaining(AccessDeniedExceptionMessage.GET.getMessage());
     }
 
     @Test
     void willThrowWhenGetAccountOrderIdNotFoundOrder() {
-        assertThatThrownBy(() -> underTest.getAccountOrderByOrderId(1L))
+        assertThatThrownBy(() -> underTest.getOrderById(1L))
                 .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessageContaining("Order with id 1 not found");
     }
@@ -172,53 +170,6 @@ class OrderServiceTest {
         OrderResponse orderResponse = orderMapper.mapToDto(orderArgumentCaptor.getValue());
 
         assertThat(savedOrderResponse).isEqualTo(orderResponse);
-    }
-
-    @Test
-    void shouldDeleteOrderById() {
-        // given
-        Order order = createOrder();
-
-        mockAuthentication();
-        order.setStatus(OrderStatus.OPEN);
-        given(orderRepository.findById(anyLong())).willReturn(Optional.of(order));
-
-        // when
-        underTest.deleteOrderById(1L);
-
-        // then
-        verify(orderRepository, times(1)).findById(1L);
-        verify(orderRepository, times(1)).delete(order);
-    }
-
-    @Test
-    void willThrowWhenDeleteOrderNotOwnAuthAccount() {
-        // given
-        Order order = createOrder();
-
-        setupOtherAccountToAuthentication(order);
-        mockAuthentication();
-        given(orderRepository.findById(anyLong())).willReturn(Optional.of(order));
-
-        // when
-        // then
-        assertThatThrownBy(() -> underTest.deleteOrderById(1L))
-                .isInstanceOf(AccessDeniedException.class)
-                .hasMessageContaining(AccessDeniedExceptionMessage.DELETE.getMessage());
-    }
-
-    @Test
-    void willThrowWhenDeleteOrderStatusIsNotOpen() {
-        Order order = createOrder();
-        order.setStatus(OrderStatus.COMPLETED);
-        mockAuthentication();
-        given(orderRepository.findById(anyLong())).willReturn(Optional.of(order));
-
-        // when
-        // then
-        assertThatThrownBy(() -> underTest.deleteOrderById(1L))
-                .isInstanceOf(OrderCanNotModifiedException.class)
-                .hasMessageContaining("The order cannot be delete because the order is being prepared");
     }
 
     private void mockAuthentication() {

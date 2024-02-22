@@ -29,20 +29,13 @@ public class OrderController {
     }
 
     @GetMapping(value = "/{orderId}")
-    public ResponseEntity<OrderResponse> getOrderByAccountIdAndOrderId(@PathVariable("orderId") Long orderId) {
-        return ResponseEntity.ok(orderService.getAccountOrderByOrderId(orderId));
+    public ResponseEntity<OrderResponse> getOrderById(@PathVariable("orderId") Long orderId) {
+        return ResponseEntity.ok(orderService.getOrderById(orderId));
     }
 
     @PostMapping()
     public ResponseEntity<OrderResponse> saveOrder(@Valid @RequestBody OrderRequest orderRequest) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(orderService.saveOrder(orderRequest));
-    }
-
-    @DeleteMapping(value = "/{orderId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> deleteOrderById(@PathVariable("orderId") Long orderId) {
-        orderService.deleteOrderById(orderId);
-        return ResponseEntity.noContent().build();
     }
 }

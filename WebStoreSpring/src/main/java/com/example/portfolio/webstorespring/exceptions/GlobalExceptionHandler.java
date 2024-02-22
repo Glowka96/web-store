@@ -45,7 +45,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
     }
 
-    @ExceptionHandler({OrderCanNotModifiedException.class,
+    @ExceptionHandler({
             EmailAlreadyConfirmedException.class,
             TokenConfirmedException.class,
             TokenExpiredException.class,
