@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 public class ResetPasswordSenderServiceImpl extends AbstractEmailSenderService {
 
     public ResetPasswordSenderServiceImpl(JavaMailSender javaMailSender) {
-        super(javaMailSender);
-        setEmailTypeStrategy(ResetPasswordType.PASSWORD);
+        super(javaMailSender, ResetPasswordType.PASSWORD);
     }
 }

@@ -4,13 +4,11 @@ import com.example.portfolio.webstorespring.exceptions.EmailAlreadyConfirmedExce
 import com.example.portfolio.webstorespring.model.dto.accounts.request.RegistrationRequest;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.accounts.ConfirmationToken;
-import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
-import com.example.portfolio.webstorespring.repositories.accounts.RoleRepository;
 import com.example.portfolio.webstorespring.services.email.EmailSenderService;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,41 +16,30 @@ import java.util.Map;
 
 @Service
 public class RegistrationService {
-
-    private final PasswordEncoder encoder;
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailSenderService emailSenderService;
-    private final AccountRepository accountRepository;
-    private final RoleRepository roleRepository;
+    private final AccountService accountService;
 
-    private static final String ROLE_USER = "ROLE_USER";
 
     @Value("${email.confirmation.link}")
     private String confirmLink;
 
-    @Value("${account.image.url}")
-    private String accountImageURL;
-
     @Autowired
-    public RegistrationService(PasswordEncoder encoder,
-                               ConfirmationTokenService confirmationTokenService,
+    public RegistrationService(ConfirmationTokenService confirmationTokenService,
                                @Qualifier(value = "confirmEmailSender") EmailSenderService emailSenderService,
-                               AccountRepository accountRepository, RoleRepository roleRepository) {
-        this.encoder = encoder;
+                               AccountService accountService) {
         this.confirmationTokenService = confirmationTokenService;
         this.emailSenderService = emailSenderService;
-        this.accountRepository = accountRepository;
-        this.roleRepository = roleRepository;
+        this.accountService = accountService;
     }
 
     @Transactional
     public Map<String, Object> registrationAccount(RegistrationRequest registrationRequest) {
-        Account account = setupNewAccount(registrationRequest);
-        accountRepository.save(account);
+        Account account = accountService.saveAccount(registrationRequest);
 
         ConfirmationToken savedToken = confirmationTokenService.createConfirmationToken(account);
         return emailSenderService.sendEmail(account.getEmail(),
-                confirmLink + savedToken.getToken());
+                getConfirmLinkWithToken(savedToken));
     }
 
     @Transactional
@@ -68,25 +55,17 @@ public class RegistrationService {
             ConfirmationToken newToken = confirmationTokenService.createConfirmationToken(account);
             confirmationTokenService.deleteConfirmationToken(confirmationToken);
             return emailSenderService.sendEmail(account.getEmail(),
-                    confirmLink + newToken.getToken());
+                    getConfirmLinkWithToken(newToken));
         }
 
         confirmationTokenService.setConfirmedAtAndSaveConfirmationToken(confirmationToken);
-        account.setEnabled(true);
-        accountRepository.save(account);
+        accountService.setEnabledAccount(account);
 
         return Map.of("message", "Account confirmed");
     }
 
-    private Account setupNewAccount(RegistrationRequest registrationRequest) {
-        return Account.builder()
-                .firstName(registrationRequest.getFirstName())
-                .lastName(registrationRequest.getLastName())
-                .email(registrationRequest.getEmail())
-                .password(encoder.encode(registrationRequest.getPassword()))
-                .roles(roleRepository.findByName(ROLE_USER))
-                .enabled(false)
-                .imageUrl(accountImageURL)
-                .build();
+    @NotNull
+    private String getConfirmLinkWithToken(ConfirmationToken newToken) {
+        return confirmLink + newToken.getToken();
     }
 }

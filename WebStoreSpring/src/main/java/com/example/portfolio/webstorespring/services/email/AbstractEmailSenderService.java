@@ -12,7 +12,7 @@ import java.util.Map;
 public abstract class AbstractEmailSenderService implements EmailSenderService {
 
     private final JavaMailSender javaMailSender;
-    private EmailTypeStrategy emailTypeStrategy;
+    private final EmailTypeStrategy emailTypeStrategy;
 
     @Value("${sender.email}")
     private String senderEmail;
@@ -28,9 +28,5 @@ public abstract class AbstractEmailSenderService implements EmailSenderService {
         javaMailSender.send(mailMessage);
 
         return Map.of("message", emailTypeStrategy.getInformationMessage());
-    }
-
-    public void setEmailTypeStrategy(EmailTypeStrategy emailTypeStrategy) {
-        this.emailTypeStrategy = emailTypeStrategy;
     }
 }

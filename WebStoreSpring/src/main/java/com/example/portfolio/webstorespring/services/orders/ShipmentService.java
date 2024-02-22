@@ -22,7 +22,7 @@ class ShipmentService {
     private final ProductRepository productRepository;
     private final ShipmentRepository shipmentRepository;
 
-    protected List<Shipment> getSetupShipments(Order order, List<ShipmentRequest> shipmentRequests) {
+    List<Shipment> getSetupShipments(Order order, List<ShipmentRequest> shipmentRequests) {
         List<Shipment> shipments = new ArrayList<>();
         shipmentRequests.forEach(shipmentRequest ->
                 shipments.add(

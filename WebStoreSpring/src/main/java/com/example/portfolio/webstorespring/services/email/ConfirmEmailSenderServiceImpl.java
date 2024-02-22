@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 public class ConfirmEmailSenderServiceImpl extends AbstractEmailSenderService {
 
     public ConfirmEmailSenderServiceImpl(JavaMailSender javaMailSender) {
-        super(javaMailSender);
-        setEmailTypeStrategy(ConfirmEmailType.REGISTRATION);
+        super(javaMailSender, ConfirmEmailType.REGISTRATION);
     }
 }

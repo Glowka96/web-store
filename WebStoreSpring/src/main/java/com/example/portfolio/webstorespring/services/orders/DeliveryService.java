@@ -15,7 +15,7 @@ class DeliveryService {
 
     private final DeliveryTypeService deliveryTypeService;
 
-    protected Delivery formatDelivery(DeliveryRequest deliveryRequest) {
+   Delivery formatDelivery(DeliveryRequest deliveryRequest) {
         Delivery delivery = Delivery.builder()
                 .shipmentAddress(shipmentAddress)
                 .deliveryType(deliveryTypeService.getDeliveryTypeById(
