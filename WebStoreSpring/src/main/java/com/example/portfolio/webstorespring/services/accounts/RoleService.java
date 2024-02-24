@@ -16,4 +16,13 @@ class RoleService {
     Set<Role> findRoleByName(String name) {
         return roleRepository.findByName(name);
     }
+
+    void initializeRole(String roleName) {
+        if (!roleRepository.existsByName(roleName)) {
+            Role role = Role.builder()
+                    .name("role")
+                    .build();
+            roleRepository.save(role);
+        }
+    }
 }

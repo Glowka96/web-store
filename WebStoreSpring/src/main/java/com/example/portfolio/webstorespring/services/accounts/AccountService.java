@@ -1,6 +1,5 @@
 package com.example.portfolio.webstorespring.services.accounts;
 
-import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.AccountMapper;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.AccountRequest;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.RegistrationRequest;
@@ -11,6 +10,7 @@ import com.example.portfolio.webstorespring.services.authentication.AccountDetai
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,7 +47,7 @@ public class AccountService {
     }
 
      Account saveAccount(RegistrationRequest registrationRequest) {
-        return Account.builder()
+        Account account = Account.builder()
                 .firstName(registrationRequest.getFirstName())
                 .lastName(registrationRequest.getLastName())
                 .email(registrationRequest.getEmail())
@@ -56,6 +56,8 @@ public class AccountService {
                 .enabled(false)
                 .imageUrl(accountImageURL)
                 .build();
+        accountRepository.save(account);
+        return account;
     }
 
     void setEnabledAccount(Account account) {
@@ -72,9 +74,9 @@ public class AccountService {
         accountRepository.delete(getAccountDetails().getAccount());
     }
 
-    Account findAccountByEmail(String email) {
+    public Account findAccountByEmail(String email) {
         return accountRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("Account", "email", email));
+                .orElseThrow(() -> new UsernameNotFoundException("Account with email: " + email + " not found"));
     }
 
     private AccountDetails getAccountDetails() {
