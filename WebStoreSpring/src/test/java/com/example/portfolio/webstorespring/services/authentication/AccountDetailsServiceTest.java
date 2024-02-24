@@ -43,7 +43,7 @@ class AccountDetailsServiceTest {
         Account account = createAccountWithRoleUser();
         setupSecutiryContext(account);
 
-        given(accountRepository.findByEmailWithRolesAndAddress(anyString())).willReturn(Optional.of(account));
+        given(accountRepository.findAccountWithRolesAndAddressByEmail(anyString())).willReturn(Optional.of(account));
 
         // when
         UserDetails userDetails = underTest.loadUserByUsername("test@test.pl");
@@ -60,7 +60,7 @@ class AccountDetailsServiceTest {
         setupSecutiryContext(account);
 
         // when
-        when(accountRepository.findByEmailWithRolesAndAddress(anyString())).thenReturn(Optional.of(account));
+        when(accountRepository.findAccountWithRolesAndAddressByEmail(anyString())).thenReturn(Optional.of(account));
 
         // then
         assertThatThrownBy(() -> underTest.loadUserByUsername("test@test.pl"))

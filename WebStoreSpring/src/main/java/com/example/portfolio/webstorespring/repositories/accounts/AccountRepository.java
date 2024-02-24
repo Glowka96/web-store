@@ -10,7 +10,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     Optional<Account> findByEmail(String email);
 
     @EntityGraph(value = "account-with-roles-and-address-entity-graph")
-    Optional<Account> findByEmailWithRolesAndAddress(String email);
+    Optional<Account> findAccountWithRolesAndAddressByEmail(String email);
 
     Boolean existsByEmail(String email);
 }
