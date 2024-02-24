@@ -43,6 +43,19 @@ public class AccountBuilderHelper {
                 .build();
     }
 
+    public static Account createAccountWithRoleUserNoEnabled() {
+        return Account.builder()
+                .id(1L)
+                .firstName("Name")
+                .lastName("Lastname")
+                .email("test@test.pl")
+                .password("Password123*")
+                .enabled(Boolean.FALSE)
+                .imageUrl("test.pl/test.png")
+                .roles(Set.of(ROLE_USER))
+                .build();
+    }
+
     public static AccountRequest createAccountRequest() {
         return AccountRequest.builder()
                 .firstName("Name")

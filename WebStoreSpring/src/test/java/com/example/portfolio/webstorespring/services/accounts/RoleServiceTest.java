@@ -10,7 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Set;
 
-import static com.example.portfolio.webstorespring.buildhelpers.accounts.RoleBuilderHelper.createRole;
+import static com.example.portfolio.webstorespring.buildhelpers.accounts.RoleBuilderHelper.createUserRole;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
@@ -27,7 +27,7 @@ class RoleServiceTest {
     @Test
     void shouldFindRoleByName() {
         // given
-        Role role = createRole();
+        Role role = createUserRole();
         given(roleRepository.findByName(anyString())).willReturn(Set.of(role));
 
         // when

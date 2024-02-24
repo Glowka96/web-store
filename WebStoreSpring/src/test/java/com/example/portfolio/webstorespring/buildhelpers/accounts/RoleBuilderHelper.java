@@ -4,7 +4,7 @@ import com.example.portfolio.webstorespring.model.entity.accounts.Role;
 
 public class RoleBuilderHelper {
 
-    public static Role createRole() {
+    public static Role createUserRole() {
         return Role.builder()
                 .id(1L)
                 .name("Test")
