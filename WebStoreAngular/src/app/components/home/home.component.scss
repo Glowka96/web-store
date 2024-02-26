@@ -15,4 +15,21 @@
       filter: drop-shadow(2px 4px 6px black);
     }
   }
+  .product-pages-box {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+    width: 100%;
+    .product-page {
+      background-color: azure;
+      padding: 30px;
+      border-radius: 15px;
+      a {
+        text-align: center;
+        font-size: 24px;
+        font-weight: 600;
+        text-decoration: none;
+      }
+    }
+  }
 }

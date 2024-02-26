@@ -51,9 +51,13 @@
     }
   }
 }
-
-@media screen and (min-width: 767px) {
-  th {
-    padding: 0 32px;
+table {
+  margin: auto;
+  width: 80%;
+  table-layout: fixed;
+}
+@media screen and (max-width: 1278px) {
+  table {
+    width: 100%;
   }
 }
