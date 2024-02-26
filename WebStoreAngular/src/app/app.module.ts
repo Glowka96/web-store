@@ -32,6 +32,7 @@ import { PagePromotionsProductsComponent } from './components/page-products/page
 import { PageBySearchTextComponent } from './components/page-products/page-by-search-text/page-by-search-text.component';
 import { ModProductTypeComponent } from './components/admin/modifications/mod-product-type/mod-product-type.component';
 import { ModDeliveryTypeComponent } from './components/admin/modifications/mod-delivery-type/mod-delivery-type.component';
+import { ProductComponent } from './components/product/product.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import { ModDeliveryTypeComponent } from './components/admin/modifications/mod-d
     PageBySearchTextComponent,
     ModProductTypeComponent,
     ModDeliveryTypeComponent,
+    ProductComponent,
   ],
   imports: [
     BrowserModule,

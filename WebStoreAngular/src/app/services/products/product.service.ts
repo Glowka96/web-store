@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { ProductRequest } from '../../models/products/product-request';
 import { Observable } from 'rxjs';
 import { ProductResponse } from '../../models/products/product-response';
+import { ProductWithProducerAndPromotion } from 'src/app/models/products/product-with-producer-and-promotion';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +17,14 @@ export class ProductService {
   public getAllProducts(): Observable<ProductResponse[]> {
     return this.http.get<ProductResponse[]>(
       `${this.apiServerUrl}/admin/products`
+    );
+  }
+
+  public getProductById(
+    productId: string
+  ): Observable<ProductWithProducerAndPromotion> {
+    return this.http.get<ProductWithProducerAndPromotion>(
+      `${this.apiServerUrl}/products/${productId}`
     );
   }
 

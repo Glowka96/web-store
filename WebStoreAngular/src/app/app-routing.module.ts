@@ -15,6 +15,7 @@ import { PageBySubcategoryId } from './components/page-products/page-by-subcateg
 import { PageNewProductsComponent } from './components/page-products/page-new-products/page-new-products.component';
 import { PagePromotionsProductsComponent } from './components/page-products/page-promotion-products/page-promotion-products.component';
 import { PageBySearchTextComponent } from './components/page-products/page-by-search-text/page-by-search-text.component';
+import { ProductComponent } from './components/product/product.component';
 
 const routes: Routes = [
   {
@@ -24,6 +25,7 @@ const routes: Routes = [
   { path: 'new-products', component: PageNewProductsComponent },
   { path: 'promotions-products', component: PagePromotionsProductsComponent },
   { path: 'products/search', component: PageBySearchTextComponent },
+  { path: 'product/:id', component: ProductComponent },
   { path: 'admin-board', component: BoardAdminComponent },
   { path: 'accounts', component: AccountComponent },
   { path: 'basket', component: BasketComponent },
