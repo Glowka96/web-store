@@ -1,7 +1,6 @@
 package com.example.portfolio.webstorespring.services.orders;
 
 import com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper;
-import com.example.portfolio.webstorespring.enums.AccessDeniedExceptionMessage;
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.DeliveryMapper;
 import com.example.portfolio.webstorespring.mappers.DeliveryTypeMapper;
@@ -139,7 +138,7 @@ class OrderServiceTest {
         // than
         assertThatThrownBy(() -> underTest.getOrderById(1L))
                 .isInstanceOf(AccessDeniedException.class)
-                .hasMessageContaining(AccessDeniedExceptionMessage.GET.getMessage());
+                .hasMessageContaining("You can only get your data");
     }
 
     @Test

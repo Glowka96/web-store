@@ -1,6 +1,5 @@
 package com.example.portfolio.webstorespring.services.orders;
 
-import com.example.portfolio.webstorespring.enums.AccessDeniedExceptionMessage;
 import com.example.portfolio.webstorespring.enums.OrderStatus;
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.OrderMapper;
@@ -56,7 +55,7 @@ public class OrderService {
     public OrderResponse getOrderById(Long orderId) {
         Order foundOrder = findOrderById(orderId);
 
-        checkOwnerOfOrder(foundOrder, AccessDeniedExceptionMessage.GET);
+        checkOwnerOfOrder(foundOrder);
 
         return orderMapper.mapToDto(foundOrder);
     }
@@ -78,9 +77,9 @@ public class OrderService {
                 .orElseThrow(() -> new ResourceNotFoundException("Order", "id", id));
     }
 
-    private void checkOwnerOfOrder(Order foundOrder, AccessDeniedExceptionMessage exceptionMessage) {
+    private void checkOwnerOfOrder(Order foundOrder) {
         if (!foundOrder.getAccount().getId().equals(getAccountDetails().getAccount().getId())) {
-            throw new AccessDeniedException(exceptionMessage.getMessage());
+            throw new AccessDeniedException("You can only get your data");
         }
     }
 
