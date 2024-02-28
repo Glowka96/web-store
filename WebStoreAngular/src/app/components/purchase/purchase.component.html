@@ -9,7 +9,7 @@
                     <p>Shipments quantity: </p>{{quantity}}
                 </span>
                 <span>
-                    <p>Shipments price: </p>{{price}}
+                    <p>Order price: </p>{{price}}
                 </span>
             </div>
             <div class="autocomplete-box" *ngIf="isFoundAddress">
@@ -17,43 +17,53 @@
                 <button (click)="autocomplete()">Autocomplete</button>
             </div>
         </div>
-        <form class="address-box" [formGroup]="deliveryAddressForm">
-            <h2>Delivery address: </h2>
-            <div class="form-group">
-                <input formControlName="city" type="text" placeholder="City">
-                <div class="errors"
-                    *ngIf="deliveryAddressForm.get('city')?.invalid && deliveryAddressForm.get('city')?.dirty">
-                    <small *ngIf="deliveryAddressForm.get('city')?.errors?.['required']">The city is
-                        required.<br></small>
-                    <small *ngIf="deliveryAddressForm.get('city')?.errors?.['minLength'] || ['maxLength']">The city
-                        is must be between min 2 and max 32 letters.<br></small>
-                    <small *ngIf="deliveryAddressForm.get('city')?.errors?.['pattern']">The city cannot have number or
-                        special char.</small>
+        <div class="delivery-box">
+            <form class="address-box" [formGroup]="deliveryAddressForm">
+                <h2>Delivery address: </h2>
+                <div class="form-group">
+                    <input formControlName="city" type="text" placeholder="City">
+                    <div class="errors"
+                        *ngIf="deliveryAddressForm.get('city')?.invalid && deliveryAddressForm.get('city')?.dirty">
+                        <small *ngIf="deliveryAddressForm.get('city')?.errors?.['required']">The city is
+                            required.<br></small>
+                        <small *ngIf="deliveryAddressForm.get('city')?.errors?.['minLength'] || ['maxLength']">The city
+                            is must be between min 2 and max 32 letters.<br></small>
+                        <small *ngIf="deliveryAddressForm.get('city')?.errors?.['pattern']">The city cannot have number
+                            or
+                            special char.</small>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <input formControlName="postcode" type="text" placeholder="Postcode">
-                <div class="errors"
-                    *ngIf="deliveryAddressForm.get('postcode')?.invalid && deliveryAddressForm.get('postcode')?.dirty">
-                    <small *ngIf="deliveryAddressForm.get('postcode')?.errors?.['required']">The postcode is
-                        required.<br></small>
-                    <small *ngIf="deliveryAddressForm.get('postcode')?.errors?.['pattern']">The postcode is invalid.
-                        <br>The correct form is e.g: 99-999
-                    </small>
+                <div class="form-group">
+                    <input formControlName="postcode" type="text" placeholder="Postcode">
+                    <div class="errors"
+                        *ngIf="deliveryAddressForm.get('postcode')?.invalid && deliveryAddressForm.get('postcode')?.dirty">
+                        <small *ngIf="deliveryAddressForm.get('postcode')?.errors?.['required']">The postcode is
+                            required.<br></small>
+                        <small *ngIf="deliveryAddressForm.get('postcode')?.errors?.['pattern']">The postcode is invalid.
+                            <br>The correct form is e.g: 99-999
+                        </small>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <input formControlName="street" type="text" placeholder="Delivery address">
-                <div class="errors"
-                    *ngIf="deliveryAddressForm.get('street')?.invalid && deliveryAddressForm.get('street')?.dirty">
-                    <small *ngIf="deliveryAddressForm.get('street')?.errors?.['required']">The address is
-                        required.<br></small>
-                    <small *ngIf="deliveryAddressForm.get('street')?.errors?.['pattern']">The address is invalid.
-                        <br>The correct forms is e.g: street 50/21, ul. street 50 m 21, ul street 50a m. 20
-                    </small>
+                <div class="form-group">
+                    <input formControlName="street" type="text" placeholder="Delivery address">
+                    <div class="errors"
+                        *ngIf="deliveryAddressForm.get('street')?.invalid && deliveryAddressForm.get('street')?.dirty">
+                        <small *ngIf="deliveryAddressForm.get('street')?.errors?.['required']">The address is
+                            required.<br></small>
+                        <small *ngIf="deliveryAddressForm.get('street')?.errors?.['pattern']">The address is invalid.
+                            <br>The correct forms is e.g: street 50/21, ul. street 50 m 21, ul street 50a m. 20
+                        </small>
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
+            <form [formGroup]="deliveryTypeForm" class="delivery-type-box">
+                <h2>Delivery type: </h2>
+                <div *ngFor="let deliveryType of deliveryTypes">
+                    <input type="radio" [id]="deliveryType.id" [value]="deliveryType.id" formControlName="choice">
+                    <label for="{{deliveryType.id}}">{{ deliveryType.name}}: {{deliveryType.price}}PLN</label>
+                </div>
+            </form>
+        </div>
     </div>
     <div class="sumbit-box">
         <button type="submit" (click)="purchase()" class="btn-purchase"

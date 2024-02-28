@@ -30,7 +30,6 @@ class ShipmentService {
                                 order,
                                 findProductByIdWithPromotion(shipmentRequest.getProductId()),
                                 shipmentRequest.getQuantity())));
-        shipmentRepository.saveAll(shipments);
         return shipments;
     }
 
