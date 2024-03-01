@@ -147,7 +147,7 @@ export class PurchaseComponent implements OnInit {
     return this._shipmentsPrice.toFixed(2);
   }
 
-  public get isSubmitPurchase() {
+  public get submitPurchase() {
     return this._submitPurchase;
   }
 
