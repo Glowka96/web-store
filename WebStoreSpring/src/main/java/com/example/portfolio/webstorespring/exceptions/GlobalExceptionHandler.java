@@ -21,14 +21,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({ResourceNotFoundException.class})
     public ResponseEntity<ErrorResponse> handleResourceNotFoundException(RuntimeException exception,
-                                                                  WebRequest webRequest) {
+                                                                         WebRequest webRequest) {
         ErrorResponse errorResponse = createErrorResponse(HttpStatus.NOT_FOUND, exception, webRequest);
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class})
     public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception,
-                                                                        WebRequest webRequest) {
+                                                                               WebRequest webRequest) {
         ErrorResponse errorResponse = createErrorResponse(exception, webRequest);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
@@ -52,22 +52,33 @@ public class GlobalExceptionHandler {
             PromotionPriceGreaterThanBasePriceException.class,
             ProductHasAlreadyPromotionException.class,
             ShipmentQuantityExceedsProductQuantityException.class,
-            IllegalArgumentException.class
     })
     public ResponseEntity<ErrorResponse> handleCanNotModifiedException(RuntimeException exception,
-                                                                WebRequest webRequest) {
+                                                                       WebRequest webRequest) {
+        ErrorResponse errorResponse = createErrorResponse(HttpStatus.BAD_REQUEST, exception, webRequest);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({
+            IllegalArgumentException.class
+    })
+    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException exception, WebRequest webRequest) {
         ErrorResponse errorResponse = createErrorResponse(HttpStatus.BAD_REQUEST, exception, webRequest);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ErrorResponse> handeConstraintViolationException(ConstraintViolationException exception,
-                                                                    WebRequest webRequest) {
+                                                                           WebRequest webRequest) {
         ErrorResponse errorResponse = createErrorResponse(exception, webRequest);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     private ErrorResponse createErrorResponse(HttpStatus status, Exception exception, WebRequest webRequest) {
+        return new ErrorResponse(status.value(), exception.getMessage(), webRequest.getDescription(false));
+    }
+
+    private ErrorResponse createErrorResponse(HttpStatus status, IllegalArgumentException exception, WebRequest webRequest) {
         return new ErrorResponse(status.value(), exception.getMessage(), webRequest.getDescription(false));
     }
 
