@@ -2,7 +2,6 @@ package com.example.portfolio.webstorespring.services.products;
 
 import com.example.portfolio.webstorespring.exceptions.ProductHasAlreadyPromotionException;
 import com.example.portfolio.webstorespring.exceptions.PromotionPriceGreaterThanBasePriceException;
-import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.ProductPricePromotionMapper;
 import com.example.portfolio.webstorespring.model.dto.products.request.ProductPricePromotionRequest;
 import com.example.portfolio.webstorespring.model.dto.products.response.ProductPricePromotionResponse;
@@ -19,7 +18,6 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 import java.util.Set;
 
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.createProduct;
@@ -27,7 +25,6 @@ import static com.example.portfolio.webstorespring.buildhelpers.products.Product
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductPricePromotionBuilderHelper.createProductPricePromotion;
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductPricePromotionBuilderHelper.createProductPricePromotionRequest;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
@@ -100,31 +97,5 @@ class ProductPricePromotionServiceTest {
         verify(productService, times(1)).findProductByIdWithPromotion(1L);
         verifyNoMoreInteractions(productService);
         verifyNoMoreInteractions(promotionRepository);
-    }
-
-    @Test
-    void shouldDeleteProductPricePromotionById() {
-        // given
-        ProductPricePromotion promotion = createProductPricePromotion();
-
-        given(promotionRepository.findById(anyLong())).willReturn(Optional.of(promotion));
-
-        // when
-        underTest.deleteProductPricePromotionById(1L);
-
-        // then
-        verify(promotionRepository, times(1)).findById(1L);
-        verify(promotionRepository, times(1)).delete(promotion);
-        verifyNoMoreInteractions(promotionRepository);
-    }
-
-    @Test
-    void willThrowWhenProductPricePromotionNotFound() {
-        // given
-        // when
-        // then
-        assertThatThrownBy(() -> underTest.deleteProductPricePromotionById(1L))
-                .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessageContaining("ProductPricePromotion with id 1 not found");
     }
 }

@@ -10,18 +10,11 @@ import { CategoryResponse } from '../../models/products/category-response';
 })
 export class CategoryService {
   private apiServerUrl = environment.apiBaseUrl;
-  private listCategory: Observable<CategoryResponse[]>;
 
-  constructor(private http: HttpClient) {
-    this.listCategory = this.getCategories();
-  }
+  constructor(private http: HttpClient) {}
 
-  private getCategories(): Observable<CategoryResponse[]> {
+  public getCategories(): Observable<CategoryResponse[]> {
     return this.http.get<CategoryResponse[]>(`${this.apiServerUrl}/categories`);
-  }
-
-  public get categories$(): Observable<CategoryResponse[]> {
-    return this.listCategory;
   }
 
   public addCategory(request: CategoryRequest): Observable<any> {

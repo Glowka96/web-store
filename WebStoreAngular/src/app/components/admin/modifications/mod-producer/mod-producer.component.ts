@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { take } from 'rxjs';
-import { CategoryRequest } from 'src/app/models/products/category-request';
+import { ProducerRequest } from 'src/app/models/products/producer-request';
 import { ProducerResponse } from 'src/app/models/products/producer-response';
 import { EntityFormBuilderService } from 'src/app/services/forms/admins/entity-form-builder.service';
 import { ProducerService } from 'src/app/services/products/producer.service';
@@ -35,7 +35,7 @@ export class ModProducerComponent implements OnInit {
 
   onSumbitAdd() {
     if (this.addForm.valid) {
-      const request: CategoryRequest = {
+      const request: ProducerRequest = {
         name: this.addForm.controls['name']?.value ?? '',
       };
       this.producerService
@@ -52,7 +52,7 @@ export class ModProducerComponent implements OnInit {
 
   onSumbitUpdate() {
     if (this.updateForm.valid) {
-      const request: CategoryRequest = {
+      const request: ProducerRequest = {
         name: this.updateForm.controls['name']?.value ?? '',
       };
       const id = this.updateForm.controls['choice']?.value;
@@ -85,10 +85,6 @@ export class ModProducerComponent implements OnInit {
           });
       }
     }
-  }
-
-  public get listProducer() {
-    return this.producers;
   }
 
   public get errorAddMessage() {

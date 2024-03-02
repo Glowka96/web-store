@@ -10,13 +10,10 @@ import { ProducerResponse } from '../../models/products/producer-response';
 })
 export class ProducerService {
   private apiServerUrl = environment.apiBaseUrl;
-  private listProducer: Observable<ProducerResponse[]>;
 
-  constructor(private http: HttpClient) {
-    this.listProducer = this.getAllProducers();
-  }
+  constructor(private http: HttpClient) {}
 
-  private getAllProducers(): Observable<ProducerResponse[]> {
+  public getAllProducers(): Observable<ProducerResponse[]> {
     return this.http.get<ProducerResponse[]>(
       `${this.apiServerUrl}/admin/producers`
     );
@@ -40,9 +37,5 @@ export class ProducerService {
     return this.http.delete<any>(
       `${this.apiServerUrl}/admin/producers/${producerId}`
     );
-  }
-
-  public get producers$(): Observable<ProducerResponse[]> {
-    return this.listProducer;
   }
 }

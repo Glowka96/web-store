@@ -10,20 +10,13 @@ import { SubcategoryResponse } from '../../models/products/subcategory-response'
 })
 export class SubcategoryService {
   private apiServerUrl = environment.apiBaseUrl;
-  private listSubcategory: Observable<SubcategoryResponse[]>;
 
-  constructor(private http: HttpClient) {
-    this.listSubcategory = this.getSubcategories();
-  }
+  constructor(private http: HttpClient) {}
 
-  private getSubcategories(): Observable<SubcategoryResponse[]> {
+  public getAllSubcategories(): Observable<SubcategoryResponse[]> {
     return this.http.get<SubcategoryResponse[]>(
       `${this.apiServerUrl}/categories/subcategories`
     );
-  }
-
-  public get subcategories$(): Observable<SubcategoryResponse[]> {
-    return this.listSubcategory;
   }
 
   public addSubcategory(

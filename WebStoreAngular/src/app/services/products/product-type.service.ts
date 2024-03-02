@@ -10,13 +10,10 @@ import { environment } from 'src/environments/environment';
 })
 export class ProductTypeService {
   private apiServerUrl = environment.apiBaseUrl;
-  private productTypes: Observable<ProductTypeResponse[]>;
 
-  constructor(private http: HttpClient) {
-    this.productTypes = this.getAllProductTypes();
-  }
+  constructor(private http: HttpClient) {}
 
-  private getAllProductTypes(): Observable<ProductTypeResponse[]> {
+  public getAllProductTypes(): Observable<ProductTypeResponse[]> {
     return this.http.get<ProductTypeResponse[]>(
       `${this.apiServerUrl}/admin/product-types`
     );
@@ -43,9 +40,5 @@ export class ProductTypeService {
     return this.http.delete<any>(
       `${this.apiServerUrl}/admin/product-types/${productTypeId}`
     );
-  }
-
-  public get productTypes$(): Observable<ProductTypeResponse[]> {
-    return this.productTypes;
   }
 }

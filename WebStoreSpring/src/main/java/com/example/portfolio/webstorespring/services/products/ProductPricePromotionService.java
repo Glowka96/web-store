@@ -2,7 +2,6 @@ package com.example.portfolio.webstorespring.services.products;
 
 import com.example.portfolio.webstorespring.exceptions.ProductHasAlreadyPromotionException;
 import com.example.portfolio.webstorespring.exceptions.PromotionPriceGreaterThanBasePriceException;
-import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.ProductPricePromotionMapper;
 import com.example.portfolio.webstorespring.model.dto.products.request.ProductPricePromotionRequest;
 import com.example.portfolio.webstorespring.model.dto.products.response.ProductPricePromotionResponse;
@@ -40,16 +39,4 @@ public class ProductPricePromotionService {
         promotionRepository.save(promotion);
         return promotionMapper.mapToDto(promotion);
     }
-
-    @Transactional
-    public void deleteProductPricePromotionById(@NotNull Long id) {
-        ProductPricePromotion promotion = findProductPricePromotionById(id);
-        promotionRepository.delete(promotion);
-    }
-
-    private ProductPricePromotion findProductPricePromotionById(Long id) {
-        return promotionRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("ProductPricePromotion", "id", id));
-    }
-
 }

@@ -47,8 +47,8 @@
                 <option *ngFor="let producer of producers" value="{{producer.id}}">{{producer.name}}</option>
             </select>
             <label for="product">Choise a product</label>
-            <select name="product" formControlName="choiceProducer">
-                <option *ngFor="let product of listProducts" value="{{product.id}}">{{product.name}}</option>
+            <select name="product" formControlName="choiceProduct">
+                <option *ngFor="let product of products" value="{{product.id}}">{{product.name}}</option>
             </select>
             <label for="update-product-name">Product name:</label>
             <input id="update-product-name" type="text" formControlName="name">
@@ -78,7 +78,7 @@
         <form class="form-box" [formGroup]="deleteForm" (ngSubmit)="onSumbitDelete()">
             <label for="product">Choise a product</label>
             <select name="product" formControlName="choiceProduct">
-                <option *ngFor="let product of listProducts" value="{{product.id}}">{{product.name}}</option>
+                <option *ngFor="let product of products" value="{{product.id}}">{{product.name}}</option>
             </select>
             <br>
             <div *ngIf="errorDeleteMessage" class="alert" role="alert">

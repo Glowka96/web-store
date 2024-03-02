@@ -19,7 +19,6 @@ import static com.example.portfolio.webstorespring.buildhelpers.products.Product
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -60,16 +59,6 @@ class ProductPricePromotionControllerTest {
                 .andExpect(jsonPath("$.promotionPrice", is(10.0)))
                 .andExpect(jsonPath("$.startDate", is(promotionRequest.getStartDate().getTime())))
                 .andExpect(jsonPath("$.endDate", is(promotionRequest.getEndDate().getTime())))
-                .andDo(print());
-    }
-
-    @Test
-    void shouldDeleteProductPricePromotion() throws Exception {
-        mvc.perform(delete(URI + "/{promotionId}", 1)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "Bearer {JWT_TOKEN}"))
-                .andExpect(status().isNoContent())
                 .andDo(print());
     }
 }

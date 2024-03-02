@@ -51,7 +51,7 @@ export class NavigationComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute
   ) {
-    const sub1 = categoryService.categories$.subscribe((categories) => {
+    const sub1 = categoryService.getCategories().subscribe((categories) => {
       this.categories = categories;
     });
     const sub2 = authService.isAuthenticated$.subscribe((isLogIn) => {

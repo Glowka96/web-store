@@ -8,7 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping(value = "/api/v1/admin/products/promotions")
@@ -20,11 +22,5 @@ public class ProductPricePromotionController {
     @PostMapping()
     public ResponseEntity<ProductPricePromotionResponse> saveProductPricePromotion(@NotNull @RequestBody ProductPricePromotionRequest promotionRequest) {
         return ResponseEntity.status(HttpStatus.CREATED).body(promotionService.saveProductPricePromotion(promotionRequest));
-    }
-
-    @DeleteMapping(value = "/{promotionId}")
-    public ResponseEntity<Void> deleteProductPricePromotion(@NotNull @PathVariable("promotionId") Long id) {
-        promotionService.deleteProductPricePromotionById(id);
-        return ResponseEntity.noContent().build();
     }
 }

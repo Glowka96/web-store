@@ -23,7 +23,7 @@ export class ModProductsComponent implements OnInit {
   productTypes!: ProductTypeResponse[];
   @Input()
   producers!: ProducerResponse[];
-  private products: ProductResponse[] = [];
+  private _products: ProductResponse[] = [];
   private errorAddMsg = '';
   private errorUpdateMsg = '';
   private errorDeleteMsg = '';
@@ -35,14 +35,13 @@ export class ModProductsComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
-    private router: Router,
     private productFormService: ProductFromBuilderService
   ) {
     this.subscription = productService
       .getAllProducts()
       .pipe(take(1))
       .subscribe((products) => {
-        this.products = products;
+        this._products = products;
       });
   }
 
@@ -76,7 +75,7 @@ export class ModProductsComponent implements OnInit {
           .addProduct(subcategoryId, producerId, request)
           .pipe(take(1))
           .subscribe({
-            next: () => this.reloadCurrentRoute(),
+            next: () => window.location.reload(),
             error: (e) => {
               this.errorAddMsg = e.error.errors.join('<br>');
             },
@@ -105,7 +104,7 @@ export class ModProductsComponent implements OnInit {
           .updateProduct(subcategoryId, producerId, request)
           .pipe(take(1))
           .subscribe({
-            next: () => this.reloadCurrentRoute(),
+            next: () => window.location.reload(),
             error: (e) => {
               this.errorAddMsg = e.error.errors.join('<br>');
             },
@@ -122,7 +121,7 @@ export class ModProductsComponent implements OnInit {
           .deleteProduct(id)
           .pipe(take(1))
           .subscribe({
-            next: () => this.reloadCurrentRoute(),
+            next: () => window.location.reload(),
             error: (e) => {
               this.errorDeleteMsg = e.error.errors.join('<br>');
             },
@@ -131,15 +130,8 @@ export class ModProductsComponent implements OnInit {
     }
   }
 
-  private reloadCurrentRoute() {
-    const currentUrl = this.router.url;
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigate([currentUrl]);
-    });
-  }
-
-  public get listProducts() {
-    return this.products;
+  public get products() {
+    return this._products;
   }
 
   public get errorAddMessage() {

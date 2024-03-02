@@ -21,9 +21,9 @@
                     <input formControlName="quantity" class="change-input" type="text" placeholder="Quantity">
                     <div class="error" *ngIf="changeForm.get('quantity')?.invalid">
                         <small *ngIf="changeForm.get('quantity')?.errors?.['min']">The quantity must be
-                            beetwen 1 nad 100.<br></small>
+                            positive.<br></small>
                         <small *ngIf="changeForm.get('quantity')?.errors?.['pattern']">The quantity must be a
-                            number</small>
+                            number.</small>
                     </div>
                 </form>
                 <div class="shipment-price">
