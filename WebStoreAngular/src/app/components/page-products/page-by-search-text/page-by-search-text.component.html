@@ -16,7 +16,7 @@
     </div>
     <div class="list-product">
         <div class="product" *ngFor="let product of products">
-            <span class="product-name">{{product.name}}</span>
+            <a class="product-name" [routerLink]="['products', product.id]">{{product.name}}</a>
             <span class="product-img"><img src={{product.imageUrl}} alt="{{product.name}}" width="240" height="240"
                     fetchpriority="high">
             </span>

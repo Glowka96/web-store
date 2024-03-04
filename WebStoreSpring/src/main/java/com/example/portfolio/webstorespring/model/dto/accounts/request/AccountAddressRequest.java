@@ -17,7 +17,7 @@ public class AccountAddressRequest {
             message = "The city format is invalid")
     private String city;
 
-    @Pattern(regexp = "^" +AddressRegex.POSTCODE  + "$",
+    @Pattern(regexp = "^" + AddressRegex.POSTCODE + "$",
             message = "The postcode format is invalid")
     private String postcode;
 

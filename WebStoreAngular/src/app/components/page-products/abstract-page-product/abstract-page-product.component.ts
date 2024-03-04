@@ -78,7 +78,7 @@ export abstract class AbstractPageProductComponent {
     });
   }
 
-  public getPrice(product: ProductWithPromotion): string {
+  protected getPrice(product: ProductWithPromotion): string {
     if (product.promotionPrice) {
       return (
         Number(this._cart[product.id]) * Number(product.promotionPrice)

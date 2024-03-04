@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { environment } from 'src/environments/environment';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Shipment } from '../../models/orders/shipment';
 import { OrderRequest } from '../../models/orders/order-request';
 import { OrdersService } from './orders.service';

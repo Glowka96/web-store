@@ -26,7 +26,7 @@ public class AccountRequest {
     @Password(message = "The password format is invalid")
     private String password;
 
-    @Pattern(regexp = "^(http(s)?:)?([\\/|\\.|\\w|\\s|-])*\\.(?:jpg|png)$",
+    @Pattern(regexp = "^(https?://)?[\\w./\\s-]*\\.(?:jpg|png)$",
             message = "This image url format is invalid")
     private String imageUrl;
 }

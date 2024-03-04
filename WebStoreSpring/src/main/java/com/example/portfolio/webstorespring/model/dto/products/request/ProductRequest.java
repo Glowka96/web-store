@@ -25,7 +25,7 @@ public class ProductRequest {
     private String description;
 
     @NotBlank(message = "The image url can't be blank")
-    @Pattern(regexp = "^(http(s)?:)?([/|.|\\w|-])*\\.(?:jpg|png)$",
+    @Pattern(regexp = "^(https?://)?[\\w./\\s-]*\\.(?:jpg|png)$",
             message = "This is not image url")
     private String imageUrl;
 
