@@ -21,6 +21,7 @@
       position: relative;
       padding: 20px;
       border-radius: 15px;
+      min-width: fit-content;
       background-color: rgb(228, 228, 228);
       .title {
         font-weight: 600;
@@ -29,6 +30,11 @@
         display: flex;
         flex-flow: column wrap;
         justify-content: center;
+        .product-name {
+          color: black;
+          text-decoration: none;
+          margin: 16px 0;
+        }
         .product-img {
           margin: auto;
         }
