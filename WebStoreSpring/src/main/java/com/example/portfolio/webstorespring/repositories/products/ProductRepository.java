@@ -16,10 +16,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("""
             SELECT NEW com.example.portfolio.webstorespring.model.dto.products.ProductWithProducerAndPromotionDTO(
-                    p.id, p.name, p.imageUrl, p.quantity, p.price, ppp_1.promotionPrice, MIN(ppp_2.promotionPrice), ppp_1.endDate,
+                    p.id, p.name, p.imageUrl, p.quantity, pt.name, p.price, ppp_1.promotionPrice, MIN(ppp_2.promotionPrice), ppp_1.endDate,
                 p.description, p.producer.name)
             FROM Product p
             INNER JOIN p.producer pr
+            INNER JOIN p.type pt
             LEFT JOIN p.pricePromotions ppp_1 ON (CURRENT_DATE BETWEEN ppp_1.startDate AND ppp_1.endDate)
             LEFT JOIN p.pricePromotions ppp_2 ON (ppp_2.endDate >= :date30DaysAgo AND ppp_1.id IS NOT NULL)
             WHERE p.id = :productId AND p.quantity > 0

@@ -1,0 +1,38 @@
+<section class="wrapper-product">
+    <div class="product-box">
+        <div class="product-title">
+            <h1>{{product.name}}</h1>
+        </div>
+        <div class="image-box">
+            <img src={{product.imageUrl}} alt="{{product.name}}" width="500" height="400">
+        </div>
+    </div>
+    <div class="product-info-box">
+        <div class="product-description">
+            <p class="title">Product description: </p>
+            <p class="description">{{product.description}}</p>
+        </div>
+        <p><span class="title">Product type: </span>{{product.productType}}</p>
+        <p><span class="title">Producer: </span>{{product.producerName}}</p>
+        <div class="product-price" [ngStyle]="{'text-decoration': product.promotionPrice ? 'line-through' : 'none'}">
+            <p>
+                <span class="title">Price:</span> {{product.price}} PLN
+            </p>
+        </div>
+        <div class="product-price" *ngIf="isPromotions(product)">
+            <p>
+                <span class="title">Promotion price:</span> {{product.promotionPrice}} PLN
+            </p>
+            <p>
+                <span class="title">Lowest price in the last 30 days:</span> {{product.lowestPrice}} PLN
+            </p>
+            <p><span class="title">End promotion:</span> {{product.endDate | date: 'dd-MM-yyy HH:mm:ss'}}</p>
+        </div>
+        <div class="add-to-cart">
+            <button class="button-add" type="submit" (click)="addToBasket()">
+                <span>Add to cart</span>
+                <i class="icon-cart-plus"></i>
+            </button>
+        </div>
+    </div>
+</section>

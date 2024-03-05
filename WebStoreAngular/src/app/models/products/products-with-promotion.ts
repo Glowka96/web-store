@@ -3,7 +3,6 @@ export interface ProductWithPromotion {
   name: string;
   imageUrl: string;
   quantity: number;
-  productType: string;
   price: number;
   promotionPrice: number;
   lowestPrice: number;
