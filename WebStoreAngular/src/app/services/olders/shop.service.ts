@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Shipment } from '../../models/orders/shipment';
 import { OrderRequest } from '../../models/orders/order-request';
-import { OrdersService } from './orders.service';
+import { OrderService } from './order.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +11,7 @@ export class ShopService {
   private basket: BehaviorSubject<Shipment[]> = new BehaviorSubject(
     [] as Shipment[]
   );
-  constructor(private orderService: OrdersService) {
+  constructor(private orderService: OrderService) {
     const localStorageData = localStorage.getItem('basket');
     let localStorageBasket: Shipment[] = [];
     if (localStorageData) {

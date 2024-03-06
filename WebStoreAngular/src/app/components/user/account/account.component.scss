@@ -1,3 +1,5 @@
+@import "/styles/order-table.scss";
+
 .wrapper-account {
   display: flex;
   flex-flow: row wrap;
@@ -49,15 +51,5 @@
     .data {
       font-weight: 600;
     }
-  }
-}
-table {
-  margin: auto;
-  width: 80%;
-  table-layout: fixed;
-}
-@media screen and (max-width: 1278px) {
-  table {
-    width: 100%;
   }
 }

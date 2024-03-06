@@ -1,93 +1,15 @@
+@import "/styles/order-table.scss";
+
 .wrapper-orders {
   display: flex;
   flex-direction: column;
   width: 95%;
   border-radius: 15px;
   margin: 15px auto;
+  padding: 10px;
   background-color: aliceblue;
   .title {
     font-size: 28px;
     border-bottom: 1px solid black;
-  }
-  .box-orders {
-    display: flex;
-    flex-flow: row wrap;
-    margin: 10px;
-    .order {
-      display: flex;
-      flex-direction: column;
-      margin: 20px auto;
-      padding: 20px;
-      border-radius: 15px;
-      background-color: rgb(228, 228, 228);
-      .order-data {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        .data {
-          font-weight: 600;
-          float: left;
-          margin-right: 3px;
-        }
-      }
-    }
-    .order-options {
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-      button {
-        cursor: pointer;
-        padding: 12px;
-        box-shadow: 0px 0px 6px 0px rgb(154, 155, 167);
-        background-color: rgb(240, 240, 240);
-        border-radius: 15px;
-        border: none;
-        a {
-          text-decoration: none;
-          color: black;
-        }
-        &:hover {
-          background-color: darkgray;
-        }
-        &:active {
-          transform: scale(0.9);
-        }
-      }
-    }
-    .errors {
-      color: red;
-    }
-    .box {
-      margin-top: 10px;
-      input {
-        margin: 0 auto;
-        height: 20px;
-        outline: none;
-        border: none;
-        color: rgb(77, 77, 77);
-        background-color: rgb(240, 240, 240);
-        border-radius: 50px;
-        padding-left: 20px;
-        font-size: 18px;
-      }
-      button {
-        cursor: pointer;
-        padding: 8px;
-        box-shadow: 0px 0px 6px 0px rgb(154, 155, 167);
-        background-color: rgb(240, 240, 240);
-        border-radius: 15px;
-        border: none;
-        a {
-          text-decoration: none;
-          color: black;
-        }
-        &:hover {
-          background-color: darkgray;
-        }
-        &:active {
-          transform: scale(0.9);
-        }
-      }
-    }
   }
 }

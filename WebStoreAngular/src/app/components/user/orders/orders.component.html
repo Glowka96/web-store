@@ -2,15 +2,26 @@
     <div class="title">
         <h1>Your orders</h1>
     </div>
-    <div class="box-orders">
-        <div class="order" *ngFor="let order of orders">
-            <div class="order-data">
-                <p><span class="data">Name user: </span>{{order.nameUser}}</p>
-                <p><span class="data">Products price: </span>{{order.totalPrice}} PLN</p>
-                <p><span class="data">Delivery address: </span><br>{{order.delivery.deliveryAddress}}</p>
-                <p><span class="data">Date of created: </span>{{order.dateOfCreation | date: 'dd-MM-yyy HH:mm:ss'}}</p>
-                <p><span class="data">Orders status: </span>{{order.status}}</p>
-            </div>
-        </div>
+    <div class="orders-box">
+        <table>
+            <thead>
+                <tr class="thead-box">
+                    <th>Name User</th>
+                    <th>Total Price</th>
+                    <th class="delivery-address">Delivery Address</th>
+                    <th>Date of purchase</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let order of orders" [routerLink]="[order.id]">
+                    <td>{{ order.nameUser }}</td>
+                    <td>{{ order.totalPrice }} PLN</td>
+                    <td class="delivery-address">{{ order.delivery.deliveryAddress}}</td>
+                    <td>{{ order.dateOfCreation | date: 'dd-MM-yyy HH:mm:ss' }}</td>
+                    <td>{{ order.status }}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>

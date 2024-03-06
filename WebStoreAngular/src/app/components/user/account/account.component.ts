@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Subscription, take } from 'rxjs';
+import { take } from 'rxjs';
 import { AccountResponse } from 'src/app/models/account-response';
 import { OrderResponse } from 'src/app/models/orders/order-response';
 import { AccountService } from 'src/app/services/accounts/account.service';
-import { OrdersService } from 'src/app/services/olders/orders.service';
+import { OrderService } from 'src/app/services/olders/order.service';
 
 @Component({
   selector: 'app-account',
@@ -16,7 +16,7 @@ export class AccountComponent implements OnInit {
 
   constructor(
     private accountService: AccountService,
-    private orderService: OrdersService
+    private orderService: OrderService
   ) {}
 
   ngOnInit(): void {

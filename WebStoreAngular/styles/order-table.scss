@@ -1,0 +1,41 @@
+table {
+  margin: auto;
+  width: 80%;
+  table-layout: fixed;
+  border-spacing: 0;
+  tr {
+    border-radius: 15px;
+  }
+  .thead-box:hover {
+    cursor: default;
+    background-color: aliceblue;
+  }
+  tr:hover {
+    cursor: pointer;
+    background-color: lightgray;
+    td:first-child {
+      border-top-left-radius: 15px;
+      border-bottom-left-radius: 15px;
+    }
+    td:last-child {
+      border-top-right-radius: 15px;
+      border-bottom-right-radius: 15px;
+    }
+  }
+}
+
+@media screen and (max-width: 1278px) {
+  table {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .wrapper-orders {
+    table {
+      .delivery-address {
+        display: none;
+      }
+    }
+  }
+}

@@ -16,6 +16,7 @@ import { PageNewProductsComponent } from './components/page-products/page-new-pr
 import { PagePromotionsProductsComponent } from './components/page-products/page-promotion-products/page-promotion-products.component';
 import { PageBySearchTextComponent } from './components/page-products/page-by-search-text/page-by-search-text.component';
 import { ProductComponent } from './components/product/product.component';
+import { OrderComponent } from './components/user/order/order.component';
 
 const routes: Routes = [
   {
@@ -33,6 +34,7 @@ const routes: Routes = [
   { path: 'accounts/update', component: FormAccountComponent },
   { path: 'accounts/address/update', component: FormAccountAddressComponent },
   { path: 'accounts/orders', component: OrdersComponent },
+  { path: 'accounts/orders/:id', component: OrderComponent },
   { path: '', component: HomeComponent },
   { path: 'registration/confirm', component: ConfirmAccountComponent },
   { path: 'reset-password', component: FormResetPasswordComponent },

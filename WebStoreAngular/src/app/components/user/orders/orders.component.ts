@@ -1,10 +1,9 @@
-import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { take } from 'rxjs';
 import { OrderResponse } from 'src/app/models/orders/order-response';
 import { AddressFormBuilderService } from 'src/app/services/forms/users/address-form-builder.service';
-import { OrdersService } from 'src/app/services/olders/orders.service';
+import { OrderService } from 'src/app/services/olders/order.service';
 
 @Component({
   selector: 'app-orders',
@@ -17,7 +16,7 @@ export class OrdersComponent implements OnInit {
   public deliveryAddressForm!: FormGroup;
 
   constructor(
-    private ordersService: OrdersService,
+    private ordersService: OrderService,
     private addressFormService: AddressFormBuilderService
   ) {
     this.ordersService

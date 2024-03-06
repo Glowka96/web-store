@@ -34,6 +34,7 @@ import { ModProductTypeComponent } from './components/admin/modifications/mod-pr
 import { ModDeliveryTypeComponent } from './components/admin/modifications/mod-delivery-type/mod-delivery-type.component';
 import { ProductComponent } from './components/product/product.component';
 import { ModPromotionComponent } from './components/admin/modifications/mod-promotion/mod-promotion.component';
+import { OrderComponent } from './components/user/order/order.component';
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import { ModPromotionComponent } from './components/admin/modifications/mod-prom
     ModDeliveryTypeComponent,
     ProductComponent,
     ModPromotionComponent,
+    OrderComponent,
   ],
   imports: [
     BrowserModule,

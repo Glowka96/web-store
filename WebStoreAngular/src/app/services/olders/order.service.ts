@@ -8,7 +8,7 @@ import { OrderRequest } from '../../models/orders/order-request';
 @Injectable({
   providedIn: 'root',
 })
-export class OrdersService {
+export class OrderService {
   private apiServerUrl = environment.apiBaseUrl;
 
   constructor(private http: HttpClient) {}
@@ -25,7 +25,7 @@ export class OrdersService {
     );
   }
 
-  public getOrderById(orderId: number) {
+  public getOrderById(orderId: string) {
     return this.http.get<OrderResponse>(
       `${this.apiServerUrl}/accounts/orders/${orderId}`
     );

@@ -38,16 +38,16 @@
                     <tr class="thead-box">
                         <th>Name User</th>
                         <th>Total Price</th>
-                        <th>Delivery Address</th>
-                        <th>Date of Creation</th>
+                        <th class="delivery-address">Delivery Address</th>
+                        <th>Date of purchase</th>
                         <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let order of orders">
+                    <tr *ngFor="let order of orders" [routerLink]="['orders', order.id]">
                         <td>{{ order.nameUser }}</td>
                         <td>{{ order.totalPrice }} PLN</td>
-                        <td>{{ order.delivery.deliveryAddress}}</td>
+                        <td class="delivery-address">{{ order.delivery.deliveryAddress}}</td>
                         <td>{{ order.dateOfCreation | date: 'dd-MM-yyy HH:mm:ss' }}</td>
                         <td>{{ order.status }}</td>
                     </tr>
