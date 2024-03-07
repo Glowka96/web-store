@@ -5,7 +5,8 @@ import org.springframework.core.convert.converter.Converter;
 
 import java.util.Arrays;
 
-abstract class AbstractConverter<E extends Enum<E>> implements Converter<String, E> {
+abstract sealed class AbstractConverter<E extends Enum<E>> implements Converter<String, E>
+        permits SortByTypeConverter, SortDirectionTypeConverter {
     @Override
     public E convert(@NotNull String source) {
         return Arrays.stream(getEnumType().getEnumConstants())

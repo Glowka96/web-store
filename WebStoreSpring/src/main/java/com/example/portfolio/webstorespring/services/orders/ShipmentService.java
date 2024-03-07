@@ -20,7 +20,6 @@ import java.util.List;
 class ShipmentService {
 
     private final ProductRepository productRepository;
-    private final ShipmentRepository shipmentRepository;
 
     List<Shipment> getSetupShipments(Order order, List<ShipmentRequest> shipmentRequests) {
         List<Shipment> shipments = new ArrayList<>();

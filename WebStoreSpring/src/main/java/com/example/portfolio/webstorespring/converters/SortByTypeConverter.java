@@ -4,7 +4,7 @@ import com.example.portfolio.webstorespring.enums.SortByType;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SortByTypeConverter extends AbstractConverter<SortByType> {
+public final class SortByTypeConverter extends AbstractConverter<SortByType> {
 
     @Override
     protected Class<SortByType> getEnumType() {

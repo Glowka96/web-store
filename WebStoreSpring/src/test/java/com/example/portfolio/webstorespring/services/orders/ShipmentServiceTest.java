@@ -23,16 +23,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class ShipmentServiceTest {
 
     @Mock
     private ProductRepository productRepository;
-    @Mock
-    private ShipmentRepository shipmentRepository;
     @InjectMocks
     private ShipmentService underTest;
 
@@ -54,7 +50,6 @@ class ShipmentServiceTest {
         assertThat(result.get(0).getOrder()).isEqualTo(order);
         assertThat(result.get(0).getProduct().getQuantity())
                 .isNotEqualTo(productQuantity);
-        verify(shipmentRepository, times(1)).saveAll(result);
     }
 
     @Test
@@ -75,7 +70,6 @@ class ShipmentServiceTest {
         assertThat(result.get(0).getOrder()).isEqualTo(order);
         assertThat(result.get(0).getProduct().getQuantity())
                 .isNotEqualTo(productQuantity);
-        verify(shipmentRepository, times(1)).saveAll(result);
 
     }
 

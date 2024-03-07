@@ -9,7 +9,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import java.util.Map;
 
 @RequiredArgsConstructor
-public abstract class AbstractEmailSenderService implements EmailSenderService {
+abstract sealed class AbstractEmailSenderService implements EmailSenderService
+        permits ConfirmEmailSenderServiceImpl, ResetPasswordSenderServiceImpl {
 
     private final JavaMailSender javaMailSender;
     private final EmailTypeStrategy emailTypeStrategy;

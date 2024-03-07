@@ -4,7 +4,7 @@ import com.example.portfolio.webstorespring.enums.SortDirectionType;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SortDirectionTypeConverter extends AbstractConverter<SortDirectionType> {
+public final class SortDirectionTypeConverter extends AbstractConverter<SortDirectionType> {
 
     @Override
     protected Class<SortDirectionType> getEnumType() {

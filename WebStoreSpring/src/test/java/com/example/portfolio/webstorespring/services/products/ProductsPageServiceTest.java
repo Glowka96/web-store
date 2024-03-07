@@ -13,16 +13,14 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.*;
 
-import java.math.BigDecimal;
 import java.time.Clock;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProductWithPromotionDtoBuildHelper.createProductWithPromotionDTO;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
@@ -177,16 +175,6 @@ class ProductsPageServiceTest {
     private ProductWithPromotionDTO getProductDTO() {
         when(clock.getZone()).thenReturn(zonedDateTime.getZone());
         when(clock.instant()).thenReturn(zonedDateTime.toInstant());
-        return new ProductWithPromotionDTO(
-                1L,
-                "Test",
-                "test.pl/test.png",
-                1L, "test",
-                BigDecimal.valueOf(100L),
-                BigDecimal.valueOf(90L),
-                BigDecimal.valueOf(70L),
-                Date.from(LocalDateTime.now(clock).plusDays(15).atZone(ZoneId.systemDefault()).toInstant())
-        );
+        return createProductWithPromotionDTO(clock);
     }
-
 }
