@@ -37,7 +37,7 @@ public class Account {
     @Column(nullable = false)
     private String password;
 
-    @OneToOne(mappedBy = "account")
+    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private AccountAddress address;
 
     private String imageUrl;
@@ -54,9 +54,9 @@ public class Account {
     @OneToMany(mappedBy = "account")
     private List<Order> orders;
 
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AuthToken> authTokens;
 
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ConfirmationToken> confirmationTokens;
 }

@@ -1,0 +1,23 @@
+<div class="form-section">
+    <div class="box">
+        <h3>Add Promotion</h3>
+        <form class="form-box" [formGroup]="addForm" (ngSubmit)="onSumbitAdd()">
+            <label for="product">Choise a product</label>
+            <select name="product" formControlName="choiceProduct">
+                <option *ngFor="let product of products" value="{{product.id}}">{{product.name}}</option>
+            </select>
+            <label for="add-promotion-price">Promotion price:</label>
+            <input id="add-promotion-price" type="text" formControlName="promotionPrice">
+            <label for="add-start-date">Start date:</label>
+            <input id="add-start-date" type="datetime-local" formControlName="startDate">
+            <label for="add-end-date">End date:</label>
+            <input id="add-end-date" type="datetime-local" formControlName="endDate">
+            <br>
+            <div *ngIf="errorAddMessage" class="alert" role="alert">
+                <span [innerHTML]="errorAddMessage"></span>
+            </div>
+            <button type="submit" class="clkbtn" [disabled]="addForm.invalid"
+                [ngClass]="{'disabled-btn': addForm.invalid}">Submit</button>
+        </form>
+    </div>
+</div>

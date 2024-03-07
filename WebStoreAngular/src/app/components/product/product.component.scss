@@ -1,0 +1,49 @@
+@import "/styles/add-to-cart-button.scss";
+
+.wrapper-product {
+  display: flex;
+  flex-flow: row wrap;
+  width: 85%;
+  border-radius: 15px;
+  margin: 15px auto;
+  padding: 15px;
+  background-color: aliceblue;
+  justify-content: center;
+  .product-box {
+    margin: 2% 3%;
+    max-width: 44%;
+    .product-title {
+      font-size: large;
+    }
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+  .product-info-box {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    margin: 0 15px;
+    min-width: 45%;
+    text-align: left;
+    .product-description {
+      .description {
+        margin: 0 15px;
+        max-width: 570px;
+      }
+    }
+  }
+}
+
+.title {
+  font-weight: 600;
+}
+
+@media only screen and (max-width: 768px) {
+  .wrapper-product {
+    .product-box {
+      max-width: 100%;
+    }
+  }
+}

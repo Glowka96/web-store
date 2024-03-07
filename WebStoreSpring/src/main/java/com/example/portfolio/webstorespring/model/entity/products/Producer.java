@@ -1,9 +1,7 @@
 package com.example.portfolio.webstorespring.model.entity.products;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -11,9 +9,11 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "producer")
-@NamedEntityGraph(name = "Producer.products",
+@NamedEntityGraph(name = "producer-with-products-entity-graph",
         attributeNodes = @NamedAttributeNode("products"))
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Producer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

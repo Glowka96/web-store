@@ -1,9 +1,7 @@
 package com.example.portfolio.webstorespring.model.entity.accounts;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -11,7 +9,9 @@ import java.time.LocalDateTime;
 @Setter
 @Entity
 @Table(name = "confirmation_tokens")
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class ConfirmationToken {
 
     @Id

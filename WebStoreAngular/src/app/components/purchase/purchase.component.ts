@@ -1,11 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { take } from 'rxjs';
+import { Subscription } from 'rxjs/internal/Subscription';
 import { AccountAddress } from 'src/app/models/account-address';
-import { OrderRequest } from 'src/app/models/order-request';
-import { ShipmentRequest } from 'src/app/models/shipment-request';
+import { DeliveryTypeResponse } from 'src/app/models/orders/delivery-type-response';
+import { OrderRequest } from 'src/app/models/orders/order-request';
+import { Shipment } from 'src/app/models/orders/shipment';
 import { AccountService } from 'src/app/services/accounts/account.service';
-import { ShopService } from 'src/app/services/shop.service';
+import { AddressFormBuilderService } from 'src/app/services/forms/users/address-form-builder.service';
+import { DeliveryTypeFormBuilderService } from 'src/app/services/forms/users/delivery-type-form-builder.service';
+import { DeliveryTypeService } from 'src/app/services/olders/delivery-type.service';
+import { ShopService } from 'src/app/services/olders/shop.service';
 
 @Component({
   selector: 'app-purchase',
@@ -13,120 +19,143 @@ import { ShopService } from 'src/app/services/shop.service';
   styleUrls: ['./purchase.component.scss'],
 })
 export class PurchaseComponent implements OnInit {
-  private accountAddress!: AccountAddress;
-  private foundAddress!: boolean;
-  private basket!: ShipmentRequest[];
-  private shipmentsPrice = 0;
-  private submitPurchase = false;
-  private message!: string;
-  private postcodePattern = /^\d{2}-\d{3}$/;
-  private addressPattern =
-    /^(ul(.)\s)?[A-Z]?[a-z]+\s[0-9]{1,3}((\/[0-9]{1,3})|(\sm\.?\s[0-9]{1,3})?[a-z])?$/;
+  private _subscriptions: Subscription[] = [];
+  private _accountAddress!: AccountAddress;
+  private _foundAddress!: boolean;
+  private _basket!: Shipment[];
+  private _shipmentsPrice = 0;
+  private _submitPurchase = false;
+  private _message!: string;
+  private _deliveryTypes!: DeliveryTypeResponse[];
 
-  public deliveryAddressForm = new FormGroup({
-    city: new FormControl('', {
-      validators: [
-        Validators.required,
-        Validators.minLength(2),
-        Validators.maxLength(32),
-        Validators.pattern('[a-zA-Z]*'),
-      ],
-      updateOn: 'change',
-    }),
-    postcode: new FormControl('', {
-      validators: [
-        Validators.required,
-        Validators.pattern(this.postcodePattern),
-      ],
-      updateOn: 'change',
-    }),
-    street: new FormControl('', {
-      validators: [
-        Validators.required,
-        Validators.pattern(this.addressPattern),
-      ],
-      updateOn: 'change',
-    }),
-  });
+  public deliveryAddressForm!: FormGroup;
+  public deliveryTypeForm!: FormGroup;
 
   constructor(
     private accountService: AccountService,
     private shopService: ShopService,
+    private addressFormService: AddressFormBuilderService,
+    private deliveryTypeService: DeliveryTypeService,
+    private deliveryTypeFormService: DeliveryTypeFormBuilderService,
     private router: Router
   ) {
-    this.accountService.getAccountAddress().subscribe({
+    const sub1 = this.accountService.getAccountAddress().subscribe({
       next: (response) => {
-        this.accountAddress = response;
-        this.foundAddress = true;
+        this._accountAddress = response;
+        this._foundAddress = true;
       },
       error: (error) => {
         if (error.status === 404) {
-          this.foundAddress = false;
+          this._foundAddress = false;
         }
       },
     });
-    this.shopService.basket$.subscribe((shipments) => {
-      this.basket = shipments;
-      shipments.forEach((shipment) =>
-        (this.shipmentsPrice += Number(shipment.price)).toFixed(2)
-      );
+    const sub2 = this.shopService.basket$.subscribe((shipments) => {
+      this._basket = shipments;
+      shipments.forEach((s) => {
+        let shipmentPrice = '';
+        s.product.promotionPrice
+          ? (shipmentPrice = (s.product.promotionPrice * s.quantity).toFixed(2))
+          : (shipmentPrice = (s.product.price * s.quantity).toFixed(2));
+        this._shipmentsPrice += Number(shipmentPrice);
+      });
     });
+    const sub3 = this.deliveryTypeService
+      .getAllDeliveryType()
+      .subscribe((types) => {
+        this._deliveryTypes = types;
+        console.log(this._deliveryTypes);
+      });
+    this._subscriptions.push(sub1, sub2, sub3);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.deliveryAddressForm =
+      this.addressFormService.createAccountAddressFormGroup();
+    this.deliveryTypeForm =
+      this.deliveryTypeFormService.createDeliveryFormGroup();
+  }
+
+  ngOnDestroy(): void {
+    this._subscriptions.forEach((s) => s.unsubscribe);
+  }
 
   public autocomplete() {
     this.deliveryAddressForm.controls['city'].setValue(
-      this.accountAddress.city
+      this._accountAddress.city
     );
     this.deliveryAddressForm.controls['postcode'].setValue(
-      this.accountAddress.postcode
+      this._accountAddress.postcode
     );
     this.deliveryAddressForm.controls['street'].setValue(
-      this.accountAddress.street
+      this._accountAddress.street
     );
   }
 
   public purchase() {
-    if (this.deliveryAddressForm.valid) {
-      const city = this.deliveryAddressForm.controls['city']?.value ?? '';
-      const postcode =
-        this.deliveryAddressForm.controls['postcode']?.value ?? '';
-      const street = this.deliveryAddressForm.controls['street']?.value ?? '';
+    if (this.deliveryAddressForm.valid && this.deliveryTypeForm.valid) {
+      const city = this.deliveryAddressForm.controls['city']?.value;
+      const postcode = this.deliveryAddressForm.controls['postcode']?.value;
+      const street = this.deliveryAddressForm.controls['street']?.value;
+      const deliveryTypeId = this.deliveryTypeForm.controls['choice']?.value;
       const request: OrderRequest = {
-        shipments: this.basket,
-        deliveryAddress: city + ', ' + postcode + ', ' + street,
+        shipments: this._basket.map((shipment) => {
+          return {
+            productId: shipment.product.id,
+            quantity: shipment.quantity,
+          };
+        }),
+        delivery: {
+          deliveryAddress: city + ', ' + postcode + ', ' + street,
+          deliveryTypeId: deliveryTypeId,
+        },
       };
-      this.shopService.purchase(request).subscribe({
-        next: () => {
-          this.shopService.basket$.next([]);
-          this.router.navigate(['/accounts/orders']);
-        },
-        error: (error) => {
-          this.submitPurchase = true;
-          this.message = error.error.errors;
-        },
-      });
+      this.shopService
+        .purchase(request)
+        .pipe(take(1))
+        .subscribe({
+          next: () => {
+            this.shopService.basket$.next([]);
+            this.router.navigate(['/accounts/orders']);
+          },
+          error: (error) => {
+            this._submitPurchase = true;
+            this._message = error.error.errors;
+          },
+        });
     }
   }
 
   public get isFoundAddress() {
-    return this.foundAddress;
+    return this._foundAddress;
   }
 
   public get quantity() {
-    return this.basket.length;
+    return this._basket.length;
   }
 
-  public get price() {
-    return this.shipmentsPrice;
+  public get price(): string {
+    if (this.deliveryTypeForm.valid) {
+      const deliveryTypeId = this.deliveryTypeForm.get('choice')?.value;
+      const delivery = this.deliveryTypes.find(
+        (delivery) => delivery.id === deliveryTypeId
+      );
+      if (delivery) {
+        return (this._shipmentsPrice + delivery.price).toFixed(2);
+      }
+    }
+    return this._shipmentsPrice.toFixed(2);
   }
 
-  public get isSubmitPurchase() {
-    return this.submitPurchase;
+  public get submitPurchase() {
+    return this._submitPurchase;
   }
 
   public get sumbitMessage() {
-    return this.message;
+    return this._message;
+  }
+
+  public get deliveryTypes() {
+    return this._deliveryTypes;
   }
 }

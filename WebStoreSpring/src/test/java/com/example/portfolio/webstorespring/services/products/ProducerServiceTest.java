@@ -2,11 +2,10 @@ package com.example.portfolio.webstorespring.services.products;
 
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.ProducerMapper;
-import com.example.portfolio.webstorespring.model.dto.products.ProducerRequest;
-import com.example.portfolio.webstorespring.model.dto.products.ProducerResponse;
+import com.example.portfolio.webstorespring.model.dto.products.request.ProducerRequest;
+import com.example.portfolio.webstorespring.model.dto.products.response.ProducerResponse;
 import com.example.portfolio.webstorespring.model.entity.products.Producer;
 import com.example.portfolio.webstorespring.repositories.products.ProducerRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
@@ -18,6 +17,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProducerBuilderHelper.createProducer;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProducerBuilderHelper.createProducerRequest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
@@ -32,22 +33,10 @@ class ProducerServiceTest {
     @InjectMocks
     private ProducerService underTest;
 
-    private ProducerRequest producerRequest;
-    private Producer producer;
-
-    @BeforeEach
-    void initialization() {
-        producer = new Producer();
-        producer.setId(1L);
-        producer.setName("ProducerTest");
-
-        producerRequest = new ProducerRequest();
-        producerRequest.setName("Test");
-    }
-
     @Test
     void shouldGetProducerById() {
         // given
+        Producer producer = createProducer();
         given(producerRepository.findById(anyLong())).willReturn(Optional.of(producer));
 
         // when
@@ -56,7 +45,7 @@ class ProducerServiceTest {
         // then
         assertThat(foundProducerResponse.getId()).isEqualTo(1L);
         assertThat(foundProducerResponse).isNotNull();
-        assertThat(foundProducerResponse.getName()).isNotNull();
+        assertThat(foundProducerResponse.getName()).isEqualTo(producer.getName());
     }
 
     @Test
@@ -85,6 +74,7 @@ class ProducerServiceTest {
     @Test
     void shouldSaveProducer() {
         // given
+        ProducerRequest producerRequest = createProducerRequest();
         // when
         ProducerResponse savedProducerResponse = underTest.saveProducer(producerRequest);
 
@@ -93,8 +83,8 @@ class ProducerServiceTest {
                 ArgumentCaptor.forClass(Producer.class);
         verify(producerRepository).save(producerArgumentCaptor.capture());
 
-        Producer captureProducer = producerArgumentCaptor.getValue();
-        ProducerResponse mappedProducerResponse = producerMapper.mapToDto(captureProducer);
+        ProducerResponse mappedProducerResponse =
+                producerMapper.mapToDto(producerArgumentCaptor.getValue());
 
         assertThat(mappedProducerResponse).isEqualTo(savedProducerResponse);
     }
@@ -102,23 +92,33 @@ class ProducerServiceTest {
     @Test
     void shouldUpdateProducer() {
         // given
-        given(producerRepository.findById(producer.getId())).willReturn(Optional.of(producer));
+        Producer producer = createProducer();
+        String producerName = producer.getName();
+        ProducerRequest producerRequest = createProducerRequest("Test2");
+        given(producerRepository.findById(anyLong())).willReturn(Optional.of(producer));
 
         // when
-        ProducerResponse updatedProducer = underTest.updateProducer(producer.getId(), producerRequest);
+        ProducerResponse updatedProducerResponse = underTest.updateProducer(producer.getId(), producerRequest);
 
         // then
-        assertThat(updatedProducer.getName()).isEqualTo(producerRequest.getName());
-        assertThat(updatedProducer.getId()).isEqualTo(producer.getId());
+        ArgumentCaptor<Producer> producerArgumentCaptor =
+                ArgumentCaptor.forClass(Producer.class);
+        verify(producerRepository).save(producerArgumentCaptor.capture());
+
+        ProducerResponse mappedCategoryResponse = producerMapper.mapToDto(producerArgumentCaptor.getValue());
+
+        assertThat(mappedCategoryResponse).isEqualTo(updatedProducerResponse);
+        assertThat(mappedCategoryResponse.getName()).isNotEqualTo(producerName);
     }
 
     @Test
     void shouldDeleteProducerById() {
         // given
-        given(producerRepository.findById(producer.getId())).willReturn(Optional.of(producer));
+        Producer producer = createProducer();
+        given(producerRepository.findById(anyLong())).willReturn(Optional.of(producer));
 
         // when
-        underTest.deleteById(producer.getId());
+        underTest.deleteProducerById(producer.getId());
 
         // then
         verify(producerRepository, times(1)).findById(producer.getId());

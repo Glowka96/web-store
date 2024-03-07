@@ -3,7 +3,6 @@ package com.example.portfolio.webstorespring.services.authentication;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,12 +14,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Optional;
 
+import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.createAccountWithRoleUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,20 +32,6 @@ class AccountDetailsServiceTest {
     @InjectMocks
     private AccountDetailsService underTest;
 
-    private Account account;
-
-    @BeforeEach
-    void initialization() {
-        account = new Account();
-        account.setId(1L);
-        account.setEmail("test@test.pl");
-        account.setEnabled(true);
-
-        Authentication authentication = new UsernamePasswordAuthenticationToken(new AccountDetails(account), null);
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        securityContext.setAuthentication(authentication);
-    }
-
     @AfterEach
     void resetSecurityContext() {
         SecurityContextHolder.clearContext();
@@ -51,21 +39,51 @@ class AccountDetailsServiceTest {
 
     @Test
     void shouldLoadUserByUsername() {
-        when(accountRepository.findAccountByEmail(anyString())).thenReturn(Optional.of(account));
+        // given
+        Account account = createAccountWithRoleUser();
+        setupSecutiryContext(account);
 
+        given(accountRepository.findAccountWithRolesAndAddressByEmail(anyString())).willReturn(Optional.of(account));
+
+        // when
         UserDetails userDetails = underTest.loadUserByUsername("test@test.pl");
 
+        // then
         assertThat(userDetails).isNotNull();
     }
 
     @Test
     void willThrowWhenAccountIsDisabled() {
+        // given
+        Account account = createAccountWithRoleUser();
         account.setEnabled(false);
+        setupSecutiryContext(account);
 
-        when(accountRepository.findAccountByEmail(anyString())).thenReturn(Optional.of(account));
+        // when
+        when(accountRepository.findAccountWithRolesAndAddressByEmail(anyString())).thenReturn(Optional.of(account));
 
+        // then
         assertThatThrownBy(() -> underTest.loadUserByUsername("test@test.pl"))
                 .isInstanceOf(DisabledException.class)
                 .hasMessageContaining("Your account is disabled");
     }
+
+    @Test
+    void willThrowWhenAccountEmailNotFound() {
+        // given
+        String email = "test@test.pl";
+
+        //when
+        // then
+        assertThatThrownBy(() -> underTest.loadUserByUsername(email))
+                .isInstanceOf(UsernameNotFoundException.class)
+                .hasMessageContaining("Account with email: " + email + " not found");
+    }
+
+    private void setupSecutiryContext(Account account) {
+        Authentication authentication = new UsernamePasswordAuthenticationToken(new AccountDetails(account), null);
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        securityContext.setAuthentication(authentication);
+    }
+
 }

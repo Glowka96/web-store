@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.services.accounts;
 
 import com.example.portfolio.webstorespring.mappers.AccountAddressMapper;
-import com.example.portfolio.webstorespring.model.dto.accounts.AccountAddressRequest;
-import com.example.portfolio.webstorespring.model.dto.accounts.AccountAddressResponse;
+import com.example.portfolio.webstorespring.model.dto.accounts.request.AccountAddressRequest;
+import com.example.portfolio.webstorespring.model.dto.accounts.response.AccountAddressResponse;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.accounts.AccountAddress;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountAddressRepository;
@@ -10,6 +10,7 @@ import com.example.portfolio.webstorespring.services.authentication.AccountDetai
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +27,7 @@ public class AccountAddressService {
         );
     }
 
+    @Transactional
     public AccountAddressResponse saveAccountAddress(AccountAddressRequest accountAddressRequest) {
         Account loggedAccount = getAccountDetails().getAccount();
 
@@ -36,6 +38,7 @@ public class AccountAddressService {
         return addressMapper.mapToDto(accountAddress);
     }
 
+    @Transactional
     public AccountAddressResponse updateAccountAddress(AccountAddressRequest accountAddressRequest) {
         AccountAddress loggedAccountAddress = getAccountDetails().getAccount().getAddress();
 

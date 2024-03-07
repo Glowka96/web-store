@@ -1,0 +1,49 @@
+<div class="form-section">
+    <div class="box">
+        <h3>Add Product Type</h3>
+        <form class="form-box" [formGroup]="addForm" (ngSubmit)="onSumbitAdd()">
+            <label for="add-product-type-name">Product type name:</label>
+            <input id="add-product-type-name" type="text" formControlName="name">
+            <br>
+            <div *ngIf="errorAddMessage" class="alert" role="alert">
+                <span [innerHTML]="errorAddMessage"></span>
+            </div>
+            <button type="submit" class="clkbtn" [disabled]="addForm.invalid"
+                [ngClass]="{'disabled-btn': addForm.invalid}">Submit</button>
+        </form>
+    </div>
+    <div class="box">
+        <h3>Update Produt Type</h3>
+        <form class="form-box" [formGroup]="updateForm" (ngSubmit)="onSumbitUpdate()">
+            <label for="productType">Choise a product type</label>
+            <select name="productType" formControlName="choice">
+                <option *ngFor="let productType of productTypes" value="{{productType.id}}">{{productType.name}}
+                </option>
+            </select>
+            <label for="update-product-type-name">Product Type name:</label>
+            <input id="update-product-type-name" type="text" formControlName="name">
+            <br>
+            <div *ngIf="errorUpdateMessage" class="alert" role="alert">
+                <span [innerHTML]="errorUpdateMessage"></span>
+            </div>
+            <button type="submit" class="clkbtn" [disabled]="updateForm.invalid"
+                [ngClass]="{'disabled-btn': updateForm.invalid}">Submit</button>
+        </form>
+    </div>
+    <div class="box">
+        <h3>Delete Product Type</h3>
+        <form class="form-box" [formGroup]="deleteForm" (ngSubmit)="onSumbitDelete()">
+            <label for="productType">Choise a product type:</label>
+            <select name="productType" formControlName="choice">
+                <option *ngFor="let productType of productTypes" value="{{productType.id}}">{{productType.name}}
+                </option>
+            </select>
+            <br>
+            <div *ngIf="errorDeleteMessage" class="alert" role="alert">
+                <span [innerHTML]="errorDeleteMessage"></span>
+            </div>
+            <button type="submit" class="clkbtn" [disabled]="deleteForm.invalid"
+                [ngClass]="{'disabled-btn': deleteForm.invalid}">Submit</button>
+        </form>
+    </div>
+</div>

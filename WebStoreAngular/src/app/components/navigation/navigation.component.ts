@@ -7,12 +7,15 @@ import {
   FormGroupDirective,
   Validators,
 } from '@angular/forms';
-import { CategoryResponse } from 'src/app/models/category-response';
-import { CategoryService } from 'src/app/services/category.service';
-import { ProductService } from 'src/app/services/product.service';
+import { CategoryResponse } from 'src/app/models/products/category-response';
+import { CategoryService } from 'src/app/services/products/category.service';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { AuthenticationService } from 'src/app/services/accounts/authentication.service';
 import { FormLoginService } from 'src/app/services/accounts/form-login.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ShopService } from 'src/app/services/olders/shop.service';
+import { Shipment } from 'src/app/models/orders/shipment';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-navigation',
@@ -29,6 +32,8 @@ export class NavigationComponent implements OnInit {
   private categories: CategoryResponse[] = [];
   private isLogIn = false;
   private isMobile = false;
+  private _basket: Shipment[] = [];
+  private _subscriptions: Subscription[] = [];
 
   public searchForm = new FormGroup({
     search: new FormControl('', {
@@ -38,22 +43,28 @@ export class NavigationComponent implements OnInit {
   });
 
   constructor(
-    private productService: ProductService,
     private formLoginService: FormLoginService,
     private authService: AuthenticationService,
     private categoryService: CategoryService,
-    private breakpointObserver: BreakpointObserver
+    private shopService: ShopService,
+    private breakpointObserver: BreakpointObserver,
+    private router: Router,
+    private route: ActivatedRoute
   ) {
-    categoryService.categories$.subscribe((categories) => {
+    const sub1 = categoryService.getCategories().subscribe((categories) => {
       this.categories = categories;
     });
-    authService.isAuthenticated$.subscribe((isLogIn) => {
+    const sub2 = authService.isAuthenticated$.subscribe((isLogIn) => {
       this.isLogIn = isLogIn;
     });
+    const sub3 = shopService.basket$.subscribe((shipments) => {
+      this._basket = shipments;
+    });
+    this._subscriptions.push(sub1, sub2, sub3);
   }
 
   ngOnInit() {
-    this.breakpointObserver
+    const sub = this.breakpointObserver
       .observe([
         Breakpoints.XSmall,
         Breakpoints.Small,
@@ -64,6 +75,11 @@ export class NavigationComponent implements OnInit {
       .subscribe((result) => {
         this.isMobile = result.matches;
       });
+    this._subscriptions.push(sub);
+  }
+
+  ngOnDestroy(): void {
+    this._subscriptions.forEach((s) => s.unsubscribe);
   }
 
   public get getCategories(): CategoryResponse[] {
@@ -80,13 +96,18 @@ export class NavigationComponent implements OnInit {
 
   public onSearch(): void {
     if (this.searchForm.valid) {
-      const text = this.searchForm.controls['search']?.value ?? '';
-      this.productService.getSearchProducts(text);
-      window.scroll({
-        top: 0,
-        left: 0,
-        behavior: 'smooth',
+      this.router.navigate(['products/search'], {
+        relativeTo: this.route,
+        queryParams: {
+          query: this.searchForm.controls['search'].value,
+          page: 1,
+          size: 12,
+          sort: 'id',
+          direction: 'asc',
+        },
+        queryParamsHandling: 'merge',
       });
+      this.searchForm.reset();
     }
   }
 
@@ -96,5 +117,9 @@ export class NavigationComponent implements OnInit {
 
   public get isModbileWidth() {
     return this.isMobile;
+  }
+
+  public get basket() {
+    return this._basket;
   }
 }

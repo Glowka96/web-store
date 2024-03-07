@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.controllers.accounts;
 
 import com.example.portfolio.webstorespring.exceptions.GlobalExceptionHandler;
-import com.example.portfolio.webstorespring.model.dto.accounts.AccountRequest;
-import com.example.portfolio.webstorespring.model.dto.accounts.AccountResponse;
+import com.example.portfolio.webstorespring.model.dto.accounts.request.AccountRequest;
+import com.example.portfolio.webstorespring.model.dto.accounts.response.AccountResponse;
 import com.example.portfolio.webstorespring.services.accounts.AccountService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +15,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.createAccountRequest;
+import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.createAccountResponse;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -35,26 +37,10 @@ class AccountControllerTest {
     private MockMvc mvc;
     private ObjectMapper mapper;
     private final static String URI = "/api/v1/accounts";
-    private AccountResponse accountResponse;
-    private AccountRequest accountRequest;
 
     @BeforeEach
     void initialization() {
         mapper = new ObjectMapper();
-
-        accountResponse = AccountResponse.builder()
-                .id(1L)
-                .firstName("Test")
-                .lastName("Dev")
-                .email("test@test.pl")
-                .build();
-
-        accountRequest = AccountRequest.builder()
-                .firstName("Test")
-                .lastName("Dev")
-                .password("Abcd123$")
-                .imageUrl("https://i.imgur.com/a23SANX.png")
-                .build();
 
         mvc = MockMvcBuilders.standaloneSetup(underTest)
                 .setControllerAdvice(new GlobalExceptionHandler())
@@ -63,6 +49,8 @@ class AccountControllerTest {
 
     @Test
     void shouldGetAccountById() throws Exception {
+        AccountResponse accountResponse = createAccountResponse();
+
         given(accountService.getAccount()).willReturn(accountResponse);
 
         mvc.perform(get(URI)
@@ -70,14 +58,17 @@ class AccountControllerTest {
                         .header("Authorization", "Bearer {JWT_TOKEN}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.firstName", is("Test")))
-                .andExpect(jsonPath("$.lastName", is("Dev")))
+                .andExpect(jsonPath("$.firstName", is("Name")))
+                .andExpect(jsonPath("$.lastName", is("Lastname")))
                 .andExpect(jsonPath("$.email", is("test@test.pl")))
                 .andDo(print());
     }
 
     @Test
     void shouldUpdateAccount() throws Exception {
+        AccountRequest accountRequest = createAccountRequest();
+        AccountResponse accountResponse = createAccountResponse();
+
         given(accountService.updateAccount(any(AccountRequest.class))).willReturn(accountResponse);
 
         mvc.perform(put(URI)
@@ -86,8 +77,8 @@ class AccountControllerTest {
                         .header("Authorization", "Bearer {JWT_TOKEN}"))
                 .andExpect(status().isAccepted())
                 .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.firstName", is("Test")))
-                .andExpect(jsonPath("$.lastName", is("Dev")))
+                .andExpect(jsonPath("$.firstName", is("Name")))
+                .andExpect(jsonPath("$.lastName", is("Lastname")))
                 .andExpect(jsonPath("$.email", is("test@test.pl")))
                 .andDo(print());
     }

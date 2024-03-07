@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.controllers.products;
 
 
-import com.example.portfolio.webstorespring.model.dto.products.CategoryRequest;
-import com.example.portfolio.webstorespring.model.dto.products.CategoryResponse;
+import com.example.portfolio.webstorespring.model.dto.products.request.CategoryRequest;
+import com.example.portfolio.webstorespring.model.dto.products.response.CategoryResponse;
 import com.example.portfolio.webstorespring.services.products.CategoryService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +17,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Arrays;
 
+import static com.example.portfolio.webstorespring.buildhelpers.products.CategoryBuilderHelper.createCategoryRequest;
+import static com.example.portfolio.webstorespring.buildhelpers.products.CategoryBuilderHelper.createCategoryResponse;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
@@ -36,23 +38,19 @@ class CategoryControllerTest {
     private MockMvc mvc;
     private ObjectMapper mapper;
     private final static String URI = "/api/v1";
-    private CategoryResponse categoryResponse;
 
     @BeforeEach
     public void initialization() {
         mvc = MockMvcBuilders.standaloneSetup(underTest).build();
 
         mapper = new ObjectMapper();
-
-        categoryResponse = new CategoryResponse();
-        categoryResponse.setName("Test");
-        categoryResponse.setId(1L);
     }
 
     @Test
     void shouldGetAllCategory() throws Exception {
         // given
-        given(categoryService.getAllCategory()).willReturn(Arrays.asList(categoryResponse, new CategoryResponse()));
+        CategoryResponse categoryResponse = createCategoryResponse();
+        given(categoryService.getAllCategory()).willReturn(Arrays.asList(categoryResponse, categoryResponse));
 
         // when
         // then
@@ -67,7 +65,8 @@ class CategoryControllerTest {
     @Test
     void shouldGetCategoryById() throws Exception {
         // given
-        given(categoryService.getCategoryDtoById(anyLong())).willReturn(categoryResponse);
+        CategoryResponse categoryResponse = createCategoryResponse();
+        given(categoryService.getCategoryById(anyLong())).willReturn(categoryResponse);
 
         // when
         // then
@@ -84,6 +83,9 @@ class CategoryControllerTest {
     @Test
     void shouldSaveCategory() throws Exception {
         // given
+        CategoryResponse categoryResponse = createCategoryResponse();
+        CategoryRequest categoryRequest = createCategoryRequest();
+
         given(categoryService.saveCategory(any(CategoryRequest.class))).willReturn(categoryResponse);
 
         // when
@@ -91,7 +93,7 @@ class CategoryControllerTest {
         mvc.perform(post(URI + "/admin/categories")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(categoryResponse)))
+                        .content(mapper.writeValueAsString(categoryRequest)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.name", is("Test")))
                 .andDo(print());
@@ -100,6 +102,9 @@ class CategoryControllerTest {
     @Test
     void shouldUpdateCategory() throws Exception {
         // given
+        CategoryResponse categoryResponse = createCategoryResponse();
+        CategoryRequest categoryRequest = createCategoryRequest();
+
         given(categoryService.updateCategory(anyLong(), any(CategoryRequest.class))).willReturn(categoryResponse);
 
         // when
@@ -107,7 +112,7 @@ class CategoryControllerTest {
         mvc.perform(put(URI + "/admin/categories/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(categoryResponse)))
+                        .content(mapper.writeValueAsString(categoryRequest)))
                 .andExpect(status().isAccepted())
                 .andExpect(jsonPath("$.name", is("Test")))
                 .andExpect(jsonPath("$.id", is(1)))

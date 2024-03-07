@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.controllers.products;
 
-import com.example.portfolio.webstorespring.model.dto.products.ProducerRequest;
-import com.example.portfolio.webstorespring.model.dto.products.ProducerResponse;
+import com.example.portfolio.webstorespring.model.dto.products.request.ProducerRequest;
+import com.example.portfolio.webstorespring.model.dto.products.response.ProducerResponse;
 import com.example.portfolio.webstorespring.services.products.ProducerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +38,7 @@ public class ProducerController {
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteProducer(@PathVariable("id") Long id) {
-        producerService.deleteById(id);
+        producerService.deleteProducerById(id);
         return ResponseEntity.noContent().build();
 
     }

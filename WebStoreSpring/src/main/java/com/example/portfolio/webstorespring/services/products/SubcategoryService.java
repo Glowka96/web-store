@@ -2,14 +2,14 @@ package com.example.portfolio.webstorespring.services.products;
 
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.SubcategoryMapper;
-import com.example.portfolio.webstorespring.model.dto.products.SubcategoryRequest;
-import com.example.portfolio.webstorespring.model.dto.products.SubcategoryResponse;
+import com.example.portfolio.webstorespring.model.dto.products.request.SubcategoryRequest;
+import com.example.portfolio.webstorespring.model.dto.products.response.SubcategoryResponse;
 import com.example.portfolio.webstorespring.model.entity.products.Category;
 import com.example.portfolio.webstorespring.model.entity.products.Subcategory;
-import com.example.portfolio.webstorespring.repositories.products.CategoryRepository;
 import com.example.portfolio.webstorespring.repositories.products.SubcategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ import java.util.List;
 public class SubcategoryService {
 
     private final SubcategoryRepository subcategoryRepository;
-    private final CategoryRepository categoryRepository;
+    private final CategoryService categoryService;
     private final SubcategoryMapper subcategoryMapper;
 
     public SubcategoryResponse getSubcategoryDtoById(Long id) {
@@ -30,9 +30,10 @@ public class SubcategoryService {
         return subcategoryMapper.mapToDto(subcategoryRepository.findAll());
     }
 
+    @Transactional
     public SubcategoryResponse saveSubcategory(Long categoryId,
                                                SubcategoryRequest subCategoryRequest) {
-        Category foundCategory = findCategoryById(categoryId);
+        Category foundCategory = categoryService.findCategoryById(categoryId);
         Subcategory subcategory = subcategoryMapper.mapToEntity(subCategoryRequest);
 
         subcategory.setCategory(foundCategory);
@@ -40,17 +41,19 @@ public class SubcategoryService {
         return subcategoryMapper.mapToDto(subcategory);
     }
 
+    @Transactional
     public SubcategoryResponse updateSubcategory(Long categoryId,
                                                  Long subCategoryId,
                                                  SubcategoryRequest subCategoryRequest) {
-        Category foundCategory = findCategoryById(categoryId);
         Subcategory foundSubcategory = findSubcategoryById(subCategoryId);
 
-        Subcategory subCategory = subcategoryMapper.mapToEntity(subCategoryRequest);
-        setupUpdateSubcategory(foundCategory, foundSubcategory, subCategory);
+        Subcategory subcategory = subcategoryMapper.mapToEntity(subCategoryRequest);
 
-        subcategoryRepository.save(subCategory);
-        return subcategoryMapper.mapToDto(subCategory);
+        foundSubcategory.setName(subcategory.getName());
+        foundSubcategory.setCategory(categoryService.findCategoryById(categoryId));
+
+        subcategoryRepository.save(subcategory);
+        return subcategoryMapper.mapToDto(subcategory);
     }
 
     public void deleteSubcategoryById(Long subCategoryId) {
@@ -58,26 +61,8 @@ public class SubcategoryService {
         subcategoryRepository.deleteById(foundSubcategory.getId());
     }
 
-    private Subcategory findSubcategoryById(Long id) {
+    protected Subcategory findSubcategoryById(Long id) {
         return subcategoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Subcategory", "id", id));
-    }
-
-    private Category findCategoryById(Long id) {
-        return categoryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Category", "id", id));
-    }
-
-    private void setupUpdateSubcategory(Category foundCategory,
-                                        Subcategory foundSubcategory,
-                                        Subcategory updatedSubcategory) {
-        updatedSubcategory.setId(foundSubcategory.getId());
-        updatedSubcategory.setCategory(foundCategory);
-        if (updatedSubcategory.getName() == null) {
-            updatedSubcategory.setName(foundSubcategory.getName());
-        }
-        if (updatedSubcategory.getProducts() == null) {
-            updatedSubcategory.setProducts(foundSubcategory.getProducts());
-        }
     }
 }

@@ -20,7 +20,7 @@ export class AccountService {
 
   public getAccountAddress(): Observable<AccountAddress> {
     return this.http.get<AccountAddress>(
-      `${this.apiServerUrl}/accounts/address`
+      `${this.apiServerUrl}/accounts/addresses`
     );
   }
 
@@ -40,7 +40,7 @@ export class AccountService {
 
   public updateAddress(request: AccountAddress): Observable<AccountAddress> {
     return this.http.put<AccountAddress>(
-      `${this.apiServerUrl}/accounts/address`,
+      `${this.apiServerUrl}/accounts/addresses`,
       request
     );
   }

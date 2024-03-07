@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -20,19 +21,19 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({ResourceNotFoundException.class})
     public ResponseEntity<ErrorResponse> handleResourceNotFoundException(RuntimeException exception,
-                                                                  WebRequest webRequest) {
+                                                                         WebRequest webRequest) {
         ErrorResponse errorResponse = createErrorResponse(HttpStatus.NOT_FOUND, exception, webRequest);
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class})
     public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception,
-                                                                        WebRequest webRequest) {
+                                                                               WebRequest webRequest) {
         ErrorResponse errorResponse = createErrorResponse(exception, webRequest);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler({BadCredentialsException.class, DisabledException.class})
+    @ExceptionHandler({BadCredentialsException.class, DisabledException.class, UsernameNotFoundException.class})
     public ResponseEntity<ErrorResponse> handleBadCredentialsException(RuntimeException exception, WebRequest webRequest) {
         ErrorResponse errorResponse = createErrorResponse(HttpStatus.UNAUTHORIZED, exception, webRequest);
         return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
@@ -44,25 +45,40 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
     }
 
-    @ExceptionHandler({OrderCanNotModifiedException.class,
+    @ExceptionHandler({
             EmailAlreadyConfirmedException.class,
             TokenConfirmedException.class,
             TokenExpiredException.class,
+            PromotionPriceGreaterThanBasePriceException.class,
+            ProductHasAlreadyPromotionException.class,
+            ShipmentQuantityExceedsProductQuantityException.class,
     })
     public ResponseEntity<ErrorResponse> handleCanNotModifiedException(RuntimeException exception,
-                                                                WebRequest webRequest) {
+                                                                       WebRequest webRequest) {
+        ErrorResponse errorResponse = createErrorResponse(HttpStatus.BAD_REQUEST, exception, webRequest);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({
+            IllegalArgumentException.class
+    })
+    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException exception, WebRequest webRequest) {
         ErrorResponse errorResponse = createErrorResponse(HttpStatus.BAD_REQUEST, exception, webRequest);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ErrorResponse> handeConstraintViolationException(ConstraintViolationException exception,
-                                                                    WebRequest webRequest) {
+                                                                           WebRequest webRequest) {
         ErrorResponse errorResponse = createErrorResponse(exception, webRequest);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     private ErrorResponse createErrorResponse(HttpStatus status, Exception exception, WebRequest webRequest) {
+        return new ErrorResponse(status.value(), exception.getMessage(), webRequest.getDescription(false));
+    }
+
+    private ErrorResponse createErrorResponse(HttpStatus status, IllegalArgumentException exception, WebRequest webRequest) {
         return new ErrorResponse(status.value(), exception.getMessage(), webRequest.getDescription(false));
     }
 

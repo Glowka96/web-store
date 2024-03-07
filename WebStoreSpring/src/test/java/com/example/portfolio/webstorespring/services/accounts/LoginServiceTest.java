@@ -1,7 +1,8 @@
 package com.example.portfolio.webstorespring.services.accounts;
 
-import com.example.portfolio.webstorespring.model.dto.accounts.AuthenticationResponse;
-import com.example.portfolio.webstorespring.model.dto.accounts.LoginRequest;
+import com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper;
+import com.example.portfolio.webstorespring.model.dto.accounts.request.LoginRequest;
+import com.example.portfolio.webstorespring.model.dto.accounts.response.AuthenticationResponse;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
 import com.example.portfolio.webstorespring.services.authentication.AuthService;
@@ -39,10 +40,7 @@ class LoginServiceTest {
     @Test
     void shouldLogin() {
         // given
-        Account account = new Account();
-        account.setId(1L);
-        account.setFirstName("test");
-        account.setLastName("abcd");
+        Account account = AccountBuilderHelper.createAccountWithRoleUser();
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(new AccountDetails(account), null);
         SecurityContext securityContext = SecurityContextHolder.getContext();

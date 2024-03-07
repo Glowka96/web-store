@@ -7,10 +7,9 @@ import org.springframework.stereotype.Service;
 
 @Service()
 @Qualifier(value = "resetPasswordSender")
-public class ResetPasswordSenderServiceImpl extends AbstractEmailSenderService {
+final class ResetPasswordSenderServiceImpl extends AbstractEmailSenderService {
 
     public ResetPasswordSenderServiceImpl(JavaMailSender javaMailSender) {
-        super(javaMailSender);
-        setEmailTypeStrategy(ResetPasswordType.PASSWORD);
+        super(javaMailSender, ResetPasswordType.PASSWORD);
     }
 }

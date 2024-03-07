@@ -1,6 +1,7 @@
 package com.example.portfolio.webstorespring.services.accounts;
 
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
+import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.accounts.AuthToken;
 import com.example.portfolio.webstorespring.repositories.accounts.AuthTokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,6 +15,8 @@ import org.springframework.security.core.Authentication;
 
 import java.util.Optional;
 
+import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.createAccountWithRoleUser;
+import static com.example.portfolio.webstorespring.buildhelpers.accounts.AuthTokenBuilderHelper.createAuthToken;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -38,8 +41,9 @@ class LogoutServiceTest {
         // given
         String jwt = "7777";
         String authHeader = "Bearer " + jwt;
-        AuthToken authToken = new AuthToken();
-        authToken.setToken(jwt);
+
+        Account account = createAccountWithRoleUser();
+        AuthToken authToken = createAuthToken(account, jwt);
 
         // when
         when(request.getHeader("Authorization")).thenReturn(authHeader);
@@ -86,8 +90,6 @@ class LogoutServiceTest {
     void willThrowWhenNotFoundAuthToken() {
         // given
         String jwt = "Bearer 7777";
-        AuthToken authToken = new AuthToken();
-        authToken.setToken(jwt);
 
         // when
         when(request.getHeader("Authorization")).thenReturn(jwt);

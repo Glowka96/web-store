@@ -3,13 +3,10 @@
         <h1>Your basket</h1>
     </div>
     <div class="list-shipments">
-        <div class="shipment" *ngFor="let shipment of shipments">
+        <div class="shipment" *ngFor="let shipment of basket">
             <div class="wprapper-product">
-                <div class="product-text">
-                    <p><span class="title">Product name: </span>{{shipment.product.name}}</p>
-                    <p><span class="title description">Product
-                            description: </span>{{shipment.product.description}}</p>
-                </div>
+                <a class="product-name" [routerLink]="['/products', shipment.product.id]"><span class="title">Product
+                        name: </span>{{shipment.product.name}}</a>
                 <span class="product-img"><img src={{shipment.product.imageUrl}} alt="{{shipment.product.name}}"
                         width="256" height="256">
                 </span>
@@ -20,16 +17,17 @@
                 </div>
                 <form class="quantity-change" [formGroup]="changeForm" (ngSubmit)="onSumbitChange(shipment.product.id)"
                     *ngIf="isUpdate(shipment.product.id)">
-                    <input formControlName="quantity" class="change" type="text" placeholder="Quantity">
+                    <input formControlName="quantity" class="change-input" type="text" placeholder="Quantity">
                     <div class="error" *ngIf="changeForm.get('quantity')?.invalid">
-                        <small *ngIf="changeForm.get('quantity')?.errors?.['min'] || ['max']">The quantity must be
-                            beetwen 1 nad 100.<br></small>
+                        <small *ngIf="changeForm.get('quantity')?.errors?.['min']">The quantity must be
+                            positive.<br></small>
                         <small *ngIf="changeForm.get('quantity')?.errors?.['pattern']">The quantity must be a
-                            number</small>
+                            number.</small>
                     </div>
                 </form>
                 <div class="shipment-price">
-                    <p><span class="title">Price for the product: </span> {{shipment.price}} PLN</p>
+                    <p><span class="title">Price for the product: </span> {{getShipmentPrice(shipment.product.id)}} PLN
+                    </p>
                 </div>
             </div>
             <button class="btn-delete" (click)="deleteProductFromBasket(shipment.product.id)"><i

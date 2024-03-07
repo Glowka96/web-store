@@ -1,9 +1,11 @@
 package com.example.portfolio.webstorespring.model.entity.orders;
 
+import com.example.portfolio.webstorespring.enums.OrderStatus;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -11,6 +13,8 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "orders")
+@NamedEntityGraph(name = "order-with-delivery-entity-graph",
+        attributeNodes = @NamedAttributeNode("delivery"))
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,16 +28,15 @@ public class Order {
     private String nameUser;
 
     @Column(nullable = false)
-    private Double productsPrice;
+    private BigDecimal totalPrice;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "delivery_id")
+    private Delivery delivery;
 
     @Column(nullable = false)
-    private String deliveryAddress;
-
-    @Column(nullable = false)
-    private String shipmentAddress;
-
-    @Column(nullable = false)
-    private Date dateOfCreated;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateOfCreation;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

@@ -36,9 +36,6 @@ export class AuthenticationService {
   }
 
   logout(): void {
-    this.router.navigate([''], {
-      queryParams: {},
-    });
     const headers = new HttpHeaders().set(
       'Authorization',
       'Bearer ' + sessionStorage.getItem('token')
@@ -49,6 +46,9 @@ export class AuthenticationService {
         sessionStorage.clear();
         this._isAuthenticated$.next(false);
       });
+    this.router.navigate([''], {
+      queryParams: {},
+    });
   }
 
   private checkAdminRouteNav(): void {

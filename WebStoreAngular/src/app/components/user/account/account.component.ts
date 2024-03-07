@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { take } from 'rxjs';
 import { AccountResponse } from 'src/app/models/account-response';
+import { OrderResponse } from 'src/app/models/orders/order-response';
 import { AccountService } from 'src/app/services/accounts/account.service';
+import { OrderService } from 'src/app/services/olders/order.service';
 
 @Component({
   selector: 'app-account',
@@ -8,27 +11,42 @@ import { AccountService } from 'src/app/services/accounts/account.service';
   styleUrls: ['./account.component.scss'],
 })
 export class AccountComponent implements OnInit {
-  private account!: AccountResponse;
+  private _account!: AccountResponse;
+  private _orders: OrderResponse[] = [];
 
-  constructor(private accountService: AccountService) {}
+  constructor(
+    private accountService: AccountService,
+    private orderService: OrderService
+  ) {}
 
   ngOnInit(): void {
-    this.accountService.getAccount().subscribe((account) => {
-      this.account = account;
-    });
+    this.accountService
+      .getAccount()
+      .pipe(take(1))
+      .subscribe((account) => {
+        this._account = account;
+      });
+    this.orderService
+      .getLastFiveAccountOrders()
+      .pipe(take(1))
+      .subscribe((orders) => (this._orders = orders));
   }
 
-  public get user() {
-    return this.account;
+  public get account() {
+    return this._account;
+  }
+
+  public get orders() {
+    return this._orders;
   }
 
   public getUserImageUrl() {
-    return this.account
-      ? this.account.imageUrl
+    return this._account
+      ? this._account.imageUrl
       : 'https://ik.imagekit.io/glowacki/a23SANX.png?updatedAt=1686001892311';
   }
 
   public get titleButton() {
-    return this.account?.address ? 'Update Address' : 'Add Address';
+    return this._account?.address ? 'Update Address' : 'Add Address';
   }
 }

@@ -3,11 +3,10 @@ package com.example.portfolio.webstorespring.services.products;
 
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.CategoryMapper;
-import com.example.portfolio.webstorespring.model.dto.products.CategoryRequest;
-import com.example.portfolio.webstorespring.model.dto.products.CategoryResponse;
+import com.example.portfolio.webstorespring.model.dto.products.request.CategoryRequest;
+import com.example.portfolio.webstorespring.model.dto.products.response.CategoryResponse;
 import com.example.portfolio.webstorespring.model.entity.products.Category;
 import com.example.portfolio.webstorespring.repositories.products.CategoryRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
@@ -17,8 +16,11 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
+import static com.example.portfolio.webstorespring.buildhelpers.products.CategoryBuilderHelper.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
@@ -33,35 +35,32 @@ class CategoryServiceTest {
     @InjectMocks
     private CategoryService underTest;
 
-    private CategoryRequest categoryRequest;
-    private Category category;
-
-    @BeforeEach
-    void initialization() {
-        category = new Category();
-        category.setId(1L);
-        category.setName("CategoryTest");
-
-        categoryRequest = new CategoryRequest();
-        categoryRequest.setName("Test");
-    }
-
     @Test
-    void shouldGetAllCategoryDto() {
+    void shouldGetAllCategory() {
+        // given
+        List<Category> categories = Collections.singletonList(createCategory());
+        List<CategoryResponse> exceptedResponses = Collections.singletonList(createCategoryResponse());
+
+        given(categoryRepository.findAll()).willReturn(categories);
+
         // when
-        underTest.getAllCategory();
+        List<CategoryResponse> foundCategoryResponses = underTest.getAllCategory();
+
         // then
+        assertThat(foundCategoryResponses).isEqualTo(exceptedResponses);
         verify(categoryRepository, times(1)).findAll();
         verifyNoMoreInteractions(categoryRepository);
+        verify(categoryMapper, times(1)).mapToDto(categories);
     }
 
     @Test
     void shouldGetCategoryById() {
         // given
+        Category category = createCategory();
         given(categoryRepository.findById(anyLong())).willReturn(Optional.of(category));
 
         // when
-        CategoryResponse foundCategory = underTest.getCategoryDtoById(category.getId());
+        CategoryResponse foundCategory = underTest.getCategoryById(category.getId());
 
         // then
         assertThat(foundCategory).isNotNull();
@@ -75,7 +74,7 @@ class CategoryServiceTest {
 
         // when
         // then
-        assertThatThrownBy(() -> underTest.getCategoryDtoById(2L))
+        assertThatThrownBy(() -> underTest.getCategoryById(2L))
                 .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessageContaining("Category with id 2 not found");
     }
@@ -83,6 +82,8 @@ class CategoryServiceTest {
     @Test
     void shouldSaveCategory() {
         // given
+        CategoryRequest categoryRequest = createCategoryRequest();
+
         // when
         CategoryResponse savedCategoryResponse = underTest.saveCategory(categoryRequest);
 
@@ -92,7 +93,8 @@ class CategoryServiceTest {
         verify(categoryRepository).save(categoryArgumentCaptor.capture());
 
         Category capturedCategory = categoryArgumentCaptor.getValue();
-        CategoryResponse mappedCategoryResponse = categoryMapper.mapToDto(capturedCategory);
+        CategoryResponse mappedCategoryResponse =
+                categoryMapper.mapToDto(capturedCategory);
 
         assertThat(mappedCategoryResponse).isEqualTo(savedCategoryResponse);
     }
@@ -100,6 +102,9 @@ class CategoryServiceTest {
     @Test
     void shouldUpdateCategory() {
         // given
+        Category category = createCategory();
+        String categoryName = category.getName();
+        CategoryRequest categoryRequest = createCategoryRequest("Test2");
         given(categoryRepository.findById(anyLong())).willReturn(Optional.of(category));
 
         // when
@@ -110,19 +115,21 @@ class CategoryServiceTest {
                 ArgumentCaptor.forClass(Category.class);
         verify(categoryRepository).save(categoryArgumentCaptor.capture());
 
-        Category capturedCategory = categoryArgumentCaptor.getValue();
-        CategoryResponse mappedCategoryResponse = categoryMapper.mapToDto(capturedCategory);
+        CategoryResponse mappedCategoryResponse =
+                categoryMapper.mapToDto(categoryArgumentCaptor.getValue());
 
         assertThat(mappedCategoryResponse).isEqualTo(updatedCategoryResponse);
+        assertThat(updatedCategoryResponse.getName()).isNotEqualTo(categoryName);
     }
 
     @Test
     void shouldDeleteCategoryById() {
         // given
+        Category category = createCategory();
         given(categoryRepository.findById(anyLong())).willReturn(Optional.of(category));
 
         // when
-        underTest.deleteById(1L);
+        underTest.deleteCategoryById(1L);
 
         // then
         verify(categoryRepository, times(1)).findById(1L);

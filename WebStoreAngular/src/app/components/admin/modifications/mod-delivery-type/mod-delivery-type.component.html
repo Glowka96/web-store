@@ -1,0 +1,33 @@
+<div class="form-section">
+    <div class="box">
+        <h3>Add Delivery Type</h3>
+        <form class="form-box" [formGroup]="addForm" (ngSubmit)="onSumbitAdd()">
+            <label for="add-delivery-type-name">Delivery type name:</label>
+            <input id="add-delivery-type-name" type="text" formControlName="name">
+            <label for="add-delivery-type-price">Product price</label>
+            <input id="add-delivery-type-price" type="text" formControlName="price">
+            <br>
+            <div *ngIf="errorAddMessage" class="alert" role="alert">
+                <span [innerHTML]="errorAddMessage"></span>
+            </div>
+            <button type="submit" class="clkbtn" [disabled]="addForm.invalid"
+                [ngClass]="{'disabled-btn': addForm.invalid}">Submit</button>
+        </form>
+    </div>
+    <div class="box">
+        <h3>Delete Delivery Type</h3>
+        <form class="form-box" [formGroup]="deleteForm" (ngSubmit)="onSumbitDelete()">
+            <label for="delivery-type">Choise a delivery type</label>
+            <select name="delivery-type" formControlName="choice">
+                <option *ngFor="let type of deliveryTypes" value="{{type.id}}">{{type.name}}
+                </option>
+            </select>
+            <br>
+            <div *ngIf="errorDeleteMessage" class="alert" role="alert">
+                <span [innerHTML]="errorDeleteMessage"></span>
+            </div>
+            <button type="submit" class="clkbtn" [disabled]="deleteForm.invalid"
+                [ngClass]="{'disabled-btn': deleteForm.invalid}">Submit</button>
+        </form>
+    </div>
+</div>

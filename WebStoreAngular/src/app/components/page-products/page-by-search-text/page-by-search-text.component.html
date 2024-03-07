@@ -1,0 +1,74 @@
+<section class="wrapper-products">
+    <div class="title-products">
+        <h1> {{title}} ({{quantityOfProducts}}) </h1>
+        <div class="sort-products">
+            <select class="sort" [(ngModel)]="_selectedSortBy"
+                (change)="getPageProductsWithText(_searchedText, _selectedPageNumber-1, _selectedPageSize, _selectedSortBy, _selectedSortDirection)">
+                <option *ngFor="let sortBy of listSortBy">
+                    {{sortBy}}
+                </option>
+            </select>
+            <select class="sort" [(ngModel)]="_selectedSortDirection"
+                (change)="getPageProductsWithText(_searchedText, _selectedPageNumber-1, _selectedPageSize, _selectedSortBy, _selectedSortDirection)">
+                <option *ngFor="let sortDirection of listSortDirection">{{sortDirection}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="list-product">
+        <div class="product" *ngFor="let product of products">
+            <a class="product-name" [routerLink]="['/products', product.id]">{{product.name}}</a>
+            <span class="product-img"><img src={{product.imageUrl}} alt="{{product.name}}" width="240" height="240"
+                    fetchpriority="high">
+            </span>
+            <div class="product-price-box">
+                <div class="quantity-product">
+                    <div class="product-price"
+                        [ngStyle]="{'text-decoration': product.promotionPrice ? 'line-through' : 'none'}">
+                        <span *ngIf="!isPromotions(product)">
+                            {{getPrice(product)}} PLN
+                        </span>
+                        <span *ngIf="isPromotions(product)">
+                            {{product.price}} PLN
+                        </span>
+                    </div>
+                    <div class="product-price" *ngIf="isPromotions(product)">
+                        <p>
+                            Promotion price: {{getPrice(product)}} PLN
+                        </p>
+                        <p>
+                            Lowest price in the last 30 days: {{product.lowestPrice}} PLN
+                        </p>
+                    </div>
+                    <input aria-label="quantity-product" #box (keyup.enter)="changeProductQuantity(product, box.value)"
+                        (blur)="changeProductQuantity(product, box.value)" type="number"
+                        value="{{getQuantityOfProduct(product.id)}}" min="1" max={{product.quantity}}>
+                    <button class="button-change-quantity" aria-label="increase product quantity"
+                        (click)="increaseProductQuantity(product)">
+                        <i class="icon-plus"></i>
+                    </button>
+                    <button class="button-change-quantity" aria-label="decrease product quantity"
+                        (click)="decreaseProductQuantity(product)">
+                        <i class="icon-minus"></i>
+                    </button>
+                    <div *ngIf="isMaxQuantityOfProduct(product)">
+                        <p class="information-window">Max quantity of this product</p>
+                    </div>
+                </div>
+                <div class="add-to-cart">
+                    <button class="button-add" type="submit" (click)="addToBasket(product.id)">
+                        <span>Add to cart</span>
+                        <i class="icon-cart-plus"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <nav class="pagination">
+        <div class="page" *ngFor="let pageNumber of totalPagesArray">
+            <button class="btn-page"
+                (click)="getPageProductsWithText(_searchedText,pageNumber-1,_selectedPageSize,_selectedSortBy,_selectedSortDirection)">
+                {{pageNumber}}
+            </button>
+        </div>
+    </nav>
+</section>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RegistrationService } from 'src/app/services/accounts/registration.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-confirm-account',
@@ -18,25 +19,28 @@ export class ConfirmAccountComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe((params) => {
+    this.route.queryParams.pipe(take(1)).subscribe((params) => {
       this.token = params['token'];
       this.confirmAccount(this.token);
     });
   }
 
   private confirmAccount(token: string): void {
-    this.registrationService.confirmAccount(token).subscribe({
-      next: (response) => {
-        this.responseMessage = response.message;
-        setTimeout(() => {
-          this.router.navigate(['/']);
-        }, 2000);
-      },
-      error: (error) => {
-        const errorMessage = error.error.errors.join('<br>');
-        this.responseMessage = errorMessage;
-      },
-    });
+    this.registrationService
+      .confirmAccount(token)
+      .pipe(take(1))
+      .subscribe({
+        next: (response) => {
+          this.responseMessage = response.message;
+          setTimeout(() => {
+            this.router.navigate(['/']);
+          }, 2000);
+        },
+        error: (error) => {
+          const errorMessage = error.error.errors.join('<br>');
+          this.responseMessage = errorMessage;
+        },
+      });
   }
 
   public get responseMsg() {

@@ -1,22 +1,16 @@
 package com.example.portfolio.webstorespring.services.orders;
 
-import com.example.portfolio.webstorespring.enums.AccessDeniedExceptionMessage;
-import com.example.portfolio.webstorespring.exceptions.OrderCanNotModifiedException;
+import com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper;
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
+import com.example.portfolio.webstorespring.mappers.DeliveryMapper;
+import com.example.portfolio.webstorespring.mappers.DeliveryTypeMapper;
 import com.example.portfolio.webstorespring.mappers.OrderMapper;
-import com.example.portfolio.webstorespring.mappers.ProducerMapper;
-import com.example.portfolio.webstorespring.mappers.ProductMapper;
 import com.example.portfolio.webstorespring.mappers.ShipmentMapper;
-import com.example.portfolio.webstorespring.model.dto.orders.OrderRequest;
-import com.example.portfolio.webstorespring.model.dto.orders.OrderResponse;
-import com.example.portfolio.webstorespring.model.dto.orders.ShipmentRequest;
-import com.example.portfolio.webstorespring.model.dto.products.ProductRequest;
+import com.example.portfolio.webstorespring.model.dto.orders.request.OrderRequest;
+import com.example.portfolio.webstorespring.model.dto.orders.response.OrderResponse;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
-import com.example.portfolio.webstorespring.model.entity.accounts.AccountAddress;
+import com.example.portfolio.webstorespring.model.entity.orders.Delivery;
 import com.example.portfolio.webstorespring.model.entity.orders.Order;
-import com.example.portfolio.webstorespring.model.entity.orders.OrderStatus;
-import com.example.portfolio.webstorespring.model.entity.orders.Shipment;
-import com.example.portfolio.webstorespring.model.entity.products.Product;
 import com.example.portfolio.webstorespring.repositories.orders.OrderRepository;
 import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
 import org.junit.jupiter.api.AfterEach;
@@ -35,11 +29,13 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryBuilderHelper.createDelivery;
+import static com.example.portfolio.webstorespring.buildhelpers.orders.OrderBuilderHelper.createOrder;
+import static com.example.portfolio.webstorespring.buildhelpers.orders.OrderBuilderHelper.createOrderRequest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -51,6 +47,10 @@ class OrderServiceTest {
     @Mock
     private OrderRepository orderRepository;
     @Mock
+    private DeliveryService deliveryService;
+    @Mock
+    private ShipmentService shipmentService;
+    @Mock
     private Authentication authentication;
     @Mock
     private SecurityContext securityContext;
@@ -59,53 +59,16 @@ class OrderServiceTest {
     @InjectMocks
     private OrderService underTest;
 
-    private Order order;
-    private Account account;
-
     @BeforeEach
     void initialization() {
-       ShipmentMapper shipmentMapper = Mappers.getMapper(ShipmentMapper.class);
-       ReflectionTestUtils.setField(orderMapper, "shipmentMapper", shipmentMapper);
+        ShipmentMapper shipmentMapper = Mappers.getMapper(ShipmentMapper.class);
+        ReflectionTestUtils.setField(orderMapper, "shipmentMapper", shipmentMapper);
 
-       ProductMapper productMapper = Mappers.getMapper(ProductMapper.class);
-       ReflectionTestUtils.setField(shipmentMapper, "productMapper", productMapper);
+        DeliveryMapper deliveryMapper = Mappers.getMapper(DeliveryMapper.class);
+        ReflectionTestUtils.setField(orderMapper, "deliveryMapper", deliveryMapper);
 
-       ProducerMapper producerMapper = Mappers.getMapper(ProducerMapper.class);
-       ReflectionTestUtils.setField(productMapper, "producerMapper", producerMapper);
-
-        Product product = Product.builder()
-                .price(20.00)
-                .build();
-
-        Shipment shipment = Shipment.builder()
-                .product(product)
-                .quantity(1)
-                .build();
-
-        List<Shipment> shipments = new ArrayList<>(Arrays.asList(shipment, shipment));
-
-        order = Order.builder()
-                .id(1L)
-                .shipments(shipments)
-                .status(OrderStatus.OPEN)
-                .build();
-
-        AccountAddress accountAddress = AccountAddress.builder()
-                .city("Test")
-                .postcode("99-999")
-                .street("test 59/2")
-                .build();
-
-        account = Account.builder()
-                .id(1L)
-                .firstName("test")
-                .lastName("dev")
-                .email("test@dev.pl")
-                .address(accountAddress)
-                .orders(Arrays.asList(order, order))
-                .build();
-
-        order.setAccount(account);
+        DeliveryTypeMapper deliveryTypeMapper = Mappers.getMapper(DeliveryTypeMapper.class);
+        ReflectionTestUtils.setField(deliveryMapper, "deliveryTypeMapper", deliveryTypeMapper);
     }
 
     @AfterEach
@@ -116,6 +79,8 @@ class OrderServiceTest {
     @Test
     void shouldGetAllAccountsOrder() {
         // given
+        Order order = createOrder();
+
         mockAuthentication();
         given(orderRepository.findAllByAccountId(anyLong())).willReturn(Arrays.asList(order, order));
 
@@ -129,11 +94,13 @@ class OrderServiceTest {
     @Test
     void shouldGetAccountOrderByOrderId() {
         // given
+        Order order = createOrder();
+
         mockAuthentication();
         given(orderRepository.findById(anyLong())).willReturn(Optional.of(order));
 
         // when
-        OrderResponse orderResponse = underTest.getAccountOrderByOrderId(1L);
+        OrderResponse orderResponse = underTest.getOrderById(1L);
 
         // then
         assertThat(orderResponse.getId()).isEqualTo(order.getId());
@@ -141,161 +108,81 @@ class OrderServiceTest {
     }
 
     @Test
+    void shouldGetLastFiveAccountOrders() {
+        // given
+
+        Order order = createOrder();
+
+        mockAuthentication();
+
+        given(orderRepository.findLastFiveAccountOrder(anyLong()))
+                .willReturn(List.of(order, order, order, order, order));
+
+        // when
+        List<OrderResponse> findOrders = underTest.getLastFiveAccountOrder();
+
+        // then
+        assertThat(findOrders).hasSize(5);
+    }
+
+    @Test
     void willThrowWhenGetAccountOrderNoOwnAuthAccount() {
         // given
-        setupOtherAccountToAuthentication();
+        Order order = createOrder();
+        setupOtherAccountToAuthentication(order);
+
         mockAuthentication();
         given(orderRepository.findById(anyLong())).willReturn(Optional.of(order));
 
         // when
         // than
-        assertThatThrownBy(() -> underTest.getAccountOrderByOrderId(1L))
+        assertThatThrownBy(() -> underTest.getOrderById(1L))
                 .isInstanceOf(AccessDeniedException.class)
-                .hasMessageContaining(AccessDeniedExceptionMessage.GET.getMessage());
+                .hasMessageContaining("You can only get your data");
     }
 
     @Test
     void willThrowWhenGetAccountOrderIdNotFoundOrder() {
-        assertThatThrownBy(() -> underTest.getAccountOrderByOrderId(1L))
+        assertThatThrownBy(() -> underTest.getOrderById(1L))
                 .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessageContaining("Order with id 1 not found");
     }
 
     @Test
-    void shouldSave() {
+    void shouldSaveOrder() {
         // given
         mockAuthentication();
-        String expectedNameUser = account.getFirstName() + " " + account.getLastName();
 
         OrderRequest orderRequest = createOrderRequest();
-        Double expectedDouble = 120.0;
+
+        Delivery delivery = createDelivery();
+        given(deliveryService.formatDelivery(any())).willReturn(delivery);
 
         // when
         OrderResponse savedOrderResponse = underTest.saveOrder(orderRequest);
-
-        // then
-        assertThat(expectedNameUser).isEqualTo(savedOrderResponse.getNameUser());
-        assertThat(expectedDouble).isEqualTo(savedOrderResponse.getProductsPrice());
-        assertThat(savedOrderResponse.getDeliveryAddress()).hasToString("City: Test, Postcode: 99-999, Street: test 59/6");
-    }
-
-    @Test
-    void shouldUpdate() throws OrderCanNotModifiedException {
-        // given
-        mockAuthentication();
-        given(orderRepository.findById(anyLong())).willReturn(Optional.of(order));
-
-        // when
-        OrderResponse updateOrderResponse = underTest.updateOrder(1L, createOrderRequest());
 
         // then
         ArgumentCaptor<Order> orderArgumentCaptor =
                 ArgumentCaptor.forClass(Order.class);
         verify(orderRepository).save(orderArgumentCaptor.capture());
 
-        Order capturedOrder = orderArgumentCaptor.getValue();
-        OrderResponse mappedOrderResponse = orderMapper.mapToDto(capturedOrder);
+        OrderResponse orderResponse = orderMapper.mapToDto(orderArgumentCaptor.getValue());
 
-        assertThat(mappedOrderResponse).isEqualTo(updateOrderResponse);
-        assertThat(updateOrderResponse.getDeliveryAddress()).hasToString("City: Test, Postcode: 99-999, Street: test 59/6");
-    }
-
-    @Test
-    void willThrowWhenUpdateOrderNoOwnAuthAccount() {
-        // given
-        setupOtherAccountToAuthentication();
-        mockAuthentication();
-        given(orderRepository.findById(anyLong())).willReturn(Optional.of(order));
-
-        // when
-        // than
-        assertThatThrownBy(() -> underTest.updateOrder(1L, createOrderRequest()))
-                .isInstanceOf(AccessDeniedException.class)
-                .hasMessageContaining(AccessDeniedExceptionMessage.UPDATE.getMessage());
-
-    }
-
-    @Test
-    void willThrowWhenUpdateOrderStatusIsNotOpen() {
-        // given
-        mockAuthentication();
-        order.setStatus(OrderStatus.COMPLETED);
-        given(orderRepository.findById(anyLong())).willReturn(Optional.of(order));
-
-        // when
-        // then
-        assertThatThrownBy(() -> underTest.updateOrder(1L,  createOrderRequest()))
-                .isInstanceOf(OrderCanNotModifiedException.class)
-                .hasMessageContaining("The order cannot be update because the order is being prepared");
-    }
-
-    @Test
-    void shouldDeleteOrderById() {
-        // given
-        mockAuthentication();
-        order.setStatus(OrderStatus.OPEN);
-        given(orderRepository.findById(anyLong())).willReturn(Optional.of(order));
-
-        // when
-        underTest.deleteOrderById(1L);
-
-        // then
-        verify(orderRepository, times(1)).findById(1L);
-        verify(orderRepository, times(1)).delete(order);
-    }
-
-    @Test
-    void willThrowWhenDeleteOrderNotOwnAuthAccount(){
-        // given
-        setupOtherAccountToAuthentication();
-        mockAuthentication();
-        given(orderRepository.findById(anyLong())).willReturn(Optional.of(order));
-
-        // when
-        // then
-        assertThatThrownBy(() -> underTest.deleteOrderById(1L))
-                .isInstanceOf(AccessDeniedException.class)
-                .hasMessageContaining(AccessDeniedExceptionMessage.DELETE.getMessage());
-    }
-
-    @Test
-    void willThrowWhenDeleteOrderStatusIsNotOpen() {
-        order.setStatus(OrderStatus.COMPLETED);
-        mockAuthentication();
-        given(orderRepository.findById(anyLong())).willReturn(Optional.of(order));
-
-        // when
-        // then
-        assertThatThrownBy(() -> underTest.deleteOrderById(1L))
-                .isInstanceOf(OrderCanNotModifiedException.class)
-                .hasMessageContaining("The order cannot be delete because the order is being prepared");
+        assertThat(savedOrderResponse).isEqualTo(orderResponse);
     }
 
     private void mockAuthentication() {
+        Account account = AccountBuilderHelper.createAccountWithRoleUser();
         AccountDetails accountDetails = new AccountDetails(account);
         when(authentication.getPrincipal()).thenReturn(accountDetails);
         SecurityContextHolder.setContext(securityContext);
         when(securityContext.getAuthentication()).thenReturn(authentication);
     }
 
-    private void setupOtherAccountToAuthentication() {
+    private void setupOtherAccountToAuthentication(Order order) {
         Account otherAccount = Account.builder()
                 .id(2L)
                 .build();
         order.setAccount(otherAccount);
-    }
-
-    private OrderRequest createOrderRequest() {
-        ProductRequest productRequest = ProductRequest.builder()
-                .price(20.0)
-                .build();
-        ShipmentRequest shipmentRequest = ShipmentRequest.builder()
-                .quantity(3)
-                .productRequest(productRequest)
-                .build();
-        return OrderRequest.builder()
-                .deliveryAddress("Test, 99-999, test 59/6")
-                .shipmentRequests(Arrays.asList(shipmentRequest, shipmentRequest))
-                .build();
     }
 }

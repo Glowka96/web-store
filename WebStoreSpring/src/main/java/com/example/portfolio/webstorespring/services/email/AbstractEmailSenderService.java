@@ -9,10 +9,11 @@ import org.springframework.mail.javamail.JavaMailSender;
 import java.util.Map;
 
 @RequiredArgsConstructor
-public abstract class AbstractEmailSenderService implements EmailSenderService {
+abstract sealed class AbstractEmailSenderService implements EmailSenderService
+        permits ConfirmEmailSenderServiceImpl, ResetPasswordSenderServiceImpl {
 
     private final JavaMailSender javaMailSender;
-    private EmailTypeStrategy emailTypeStrategy;
+    private final EmailTypeStrategy emailTypeStrategy;
 
     @Value("${sender.email}")
     private String senderEmail;
@@ -28,9 +29,5 @@ public abstract class AbstractEmailSenderService implements EmailSenderService {
         javaMailSender.send(mailMessage);
 
         return Map.of("message", emailTypeStrategy.getInformationMessage());
-    }
-
-    public void setEmailTypeStrategy(EmailTypeStrategy emailTypeStrategy) {
-        this.emailTypeStrategy = emailTypeStrategy;
     }
 }

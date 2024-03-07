@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.mappers;
 
-import com.example.portfolio.webstorespring.model.dto.accounts.AccountRequest;
-import com.example.portfolio.webstorespring.model.dto.accounts.AccountResponse;
+import com.example.portfolio.webstorespring.model.dto.accounts.request.AccountRequest;
+import com.example.portfolio.webstorespring.model.dto.accounts.response.AccountResponse;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

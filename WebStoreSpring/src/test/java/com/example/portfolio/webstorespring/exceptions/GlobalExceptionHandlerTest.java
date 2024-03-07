@@ -29,8 +29,6 @@ class GlobalExceptionHandlerTest {
     @Mock
     private MethodArgumentNotValidException argumentNotValidException;
     @Mock
-    private OrderCanNotModifiedException orderCanNotModifiedException;
-    @Mock
     private EmailAlreadyConfirmedException emailAlreadyConfirmedException;
     @Mock
     private AccessDeniedException accessDeniedException;
@@ -105,23 +103,6 @@ class GlobalExceptionHandlerTest {
         // then
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(expectedErrorResponse.getStatusCode());
         assertThat(responseEntity.getBody()).isEqualTo(expectedErrorResponse);
-    }
-
-    @Test
-    void shouldHandleCanNotModifiedExceptionWhenOrderCanNotModifiedException() {
-        // given
-        ErrorResponse exceptedErrorResponse = new ErrorResponse(
-                HttpStatus.BAD_REQUEST.value(),
-                orderCanNotModifiedException.getMessage(),
-                webRequest.getDescription(false));
-
-        // when
-        ResponseEntity<ErrorResponse> responseEntity = underTest
-                .handleCanNotModifiedException(orderCanNotModifiedException, webRequest);
-
-        // then
-        assertThat(responseEntity.getStatusCode().value()).isEqualTo(exceptedErrorResponse.getStatusCode());
-        assertThat(responseEntity.getBody()).isEqualTo(exceptedErrorResponse);
     }
 
     @Test

@@ -17,7 +17,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 
 @ExtendWith(MockitoExtension.class)
-class ConfirmEmailSenderServiceImplTest {
+class ConfirmEmailSenderServiceTest {
 
     @Mock
     private JavaMailSender javaMailSender;

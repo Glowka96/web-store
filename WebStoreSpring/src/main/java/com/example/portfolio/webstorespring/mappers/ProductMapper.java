@@ -1,8 +1,9 @@
 package com.example.portfolio.webstorespring.mappers;
 
-import com.example.portfolio.webstorespring.model.dto.products.ProductRequest;
-import com.example.portfolio.webstorespring.model.dto.products.ProductResponse;
+import com.example.portfolio.webstorespring.model.dto.products.request.ProductRequest;
+import com.example.portfolio.webstorespring.model.dto.products.response.ProductResponse;
 import com.example.portfolio.webstorespring.model.entity.products.Product;
+import org.mapstruct.CollectionMappingStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -10,18 +11,25 @@ import java.util.List;
 
 @Mapper(
         componentModel = "spring",
+        collectionMappingStrategy = CollectionMappingStrategy.ADDER_PREFERRED,
         uses = {
-                ProducerMapper.class
+                ProducerMapper.class,
+                ProductPricePromotionMapper.class,
+                ProductTypeMapper.class
         }
 )
 public interface ProductMapper {
 
-    @Mapping(target = "producerResponse", source = "producer")
+    @Mapping(target = "producerResponse", ignore = true)
+    @Mapping(target = "pricePromotionsResponse", ignore = true)
+    @Mapping(target = "productTypeResponse", source = "type")
     ProductResponse mapToDto(Product product);
 
-    @Mapping(target = "producerResponse", source = "producer")
     List<ProductResponse> mapToDto(List<Product> products);
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "pricePromotions", ignore = true)
+    @Mapping(target = "dateOfCreation", ignore = true)
     @Mapping(target = "shipment", ignore = true)
     @Mapping(target = "subcategory", ignore = true)
     @Mapping(target = "producer", ignore = true)

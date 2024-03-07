@@ -27,16 +27,15 @@ class RegistrationControllerTest {
     private RegistrationService registrationService;
     @InjectMocks
     private RegistrationController underTest;
-
     private MockMvc mvc;
+    private ObjectMapper mapper;
     private static final String URI = "/api/v1/registration";
 
     @BeforeEach
     void initialization() {
         mvc = MockMvcBuilders.standaloneSetup(underTest)
                 .build();
-
-        ObjectMapper mapper = new ObjectMapper();
+        mapper = new ObjectMapper();
     }
 
     @Test
@@ -52,7 +51,7 @@ class RegistrationControllerTest {
                 .andDo(print());
     }
 
-//    //TODO Repair HV000064: Unable to instantiate ConstraintValidator:
+    //TODO Repair HV000064: Unable to instantiate ConstraintValidator:
 //    @Test
 //    void shouldRegistration() throws Exception {
 //        RegistrationRequest request = new RegistrationRequest();
@@ -61,13 +60,13 @@ class RegistrationControllerTest {
 //        request.setEmail("test@test.pl");
 //        request.setPassword("password");
 //
-//        result = new HashMap<>();
+//        HashMap<String, Object> result = new HashMap<>();
 //        result.put("message","Verify email by the link sent on your email address");
 //
 //        given(registrationService.registrationAccount(any(RegistrationRequest.class)))
 //                .willReturn(result);
 //
-//        mvc.perform(post(URL)
+//        mvc.perform(post(URI)
 //                        .contentType(MediaType.APPLICATION_JSON)
 //                        .accept(MediaType.APPLICATION_JSON)
 //                        .content(mapper.writeValueAsString(request)))
