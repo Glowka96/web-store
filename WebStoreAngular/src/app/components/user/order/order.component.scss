@@ -1,0 +1,21 @@
+@import "/styles/order-wrapper-style.scss";
+
+.order-box {
+  display: flex;
+  flex-flow: row wrap;
+  .info-box {
+    margin: auto;
+    text-align: left;
+    .data {
+      font-weight: 600;
+    }
+    max-width: fit-content;
+  }
+  .shipments-box {
+    padding: 15px;
+    margin: 0 auto;
+    table {
+      border-spacing: 24px;
+    }
+  }
+}

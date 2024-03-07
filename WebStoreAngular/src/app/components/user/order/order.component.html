@@ -1,1 +1,38 @@
-<p>order works!</p>
+<section class="wrapper">
+    <div class="title">
+        <h1>Order</h1>
+    </div>
+    <div class="order-box">
+        <div class="shipments-box">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let shipment of order.shipments">
+                        <td>
+                            <a class="product-name" [routerLink]="['/products', shipment.product.id]">
+                                <img src={{shipment.product.imageUrl}} alt="{{shipment.product.name}}" height="72px"
+                                    width="72px">
+                            </a>
+                        </td>
+                        <td>{{shipment.quantity}}</td>
+                        <td>{{shipment.price}} PLN</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="info-box">
+            <p><span class="data">Pesron name:</span><br> {{order.nameUser}}</p>
+            <p><span class="data">Total price:</span><br> {{order.totalPrice}}</p>
+            <p><span class="data">Delivery address:</span><br> {{order.delivery.deliveryAddress}}</p>
+            <p><span class="data">Delivery type:</span><br> {{order.delivery.deliveryType.name}}</p>
+            <p><span class="data">Date of purchase</span><br>{{order.dateOfCreation}}</p>
+            <p><span class="data">Order status:</span><br> {{order.status}}</p>
+        </div>
+    </div>
+</section>

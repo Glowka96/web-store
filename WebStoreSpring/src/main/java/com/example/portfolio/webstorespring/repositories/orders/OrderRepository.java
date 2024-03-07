@@ -8,7 +8,12 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
-    List<Order> findAllByAccountId(Long accountId);
+    @Query("""
+        SELECT o FROM Order o
+        WHERE o.account.id =:accountId
+        ORDER BY o.dateOfCreation DESC
+""")
+    List<Order> findAllByAccountId(@Param(value = "accountId") Long accountId);
 
     @Query("""
         SELECT o FROM Order o

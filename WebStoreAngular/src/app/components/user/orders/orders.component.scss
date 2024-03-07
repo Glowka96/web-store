@@ -1,15 +1,2 @@
+@import "/styles/order-wrapper-style.scss";
 @import "/styles/order-table.scss";
-
-.wrapper-orders {
-  display: flex;
-  flex-direction: column;
-  width: 95%;
-  border-radius: 15px;
-  margin: 15px auto;
-  padding: 10px;
-  background-color: aliceblue;
-  .title {
-    font-size: 28px;
-    border-bottom: 1px solid black;
-  }
-}
