@@ -3,6 +3,7 @@ package com.example.portfolio.webstorespring.services.accounts;
 import com.example.portfolio.webstorespring.enums.emailtypes.ResetPasswordType;
 import com.example.portfolio.webstorespring.exceptions.TokenConfirmedException;
 import com.example.portfolio.webstorespring.exceptions.TokenExpiredException;
+import com.example.portfolio.webstorespring.model.dto.accounts.request.ResetPasswordRequest;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.accounts.ConfirmationToken;
 import com.example.portfolio.webstorespring.services.email.EmailSenderService;
@@ -60,7 +61,7 @@ class ResetPasswordServiceTest {
         // given
         Account account = createAccountWithRoleUser();
         ConfirmationToken confirmationToken = createConfirmationToken(account);
-        String password = "Password123*";
+        ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest("Password123*");
 
         Map<String, Object> excepted = Map.of("message", "Your new password has been saved");
 
@@ -68,7 +69,7 @@ class ResetPasswordServiceTest {
         given(confirmationTokenService.isTokenExpired(any(ConfirmationToken.class))).willReturn(false);
 
         // when
-        Map<String, Object> result = underTest.confirmResetPassword(password, confirmationToken.getToken());
+        Map<String, Object> result = underTest.confirmResetPassword(resetPasswordRequest, confirmationToken.getToken());
 
         // then
         assertThat(result).isEqualTo(excepted);
@@ -83,13 +84,14 @@ class ResetPasswordServiceTest {
         // given
         Account account = createAccountWithRoleUser();
         ConfirmationToken confirmationToken = createConfirmationToken(account);
+        ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest("Password123*");
 
         // when
         when(confirmationTokenService.getConfirmationTokenByToken(anyString())).thenReturn(confirmationToken);
         when(confirmationTokenService.isConfirmed(any(ConfirmationToken.class))).thenReturn(true);
 
         // then
-        assertThatThrownBy(() -> underTest.confirmResetPassword("Password123*", confirmationToken.getToken()))
+        assertThatThrownBy(() -> underTest.confirmResetPassword(resetPasswordRequest, confirmationToken.getToken()))
                 .isInstanceOf(TokenConfirmedException.class)
                 .hasMessageContaining("This token is confirmed.");
     }
@@ -99,13 +101,14 @@ class ResetPasswordServiceTest {
         // given
         Account account = createAccountWithRoleUser();
         ConfirmationToken confirmationToken = createConfirmationToken(account);
+        ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest("Password123*");
 
         // when
         when(confirmationTokenService.getConfirmationTokenByToken(anyString())).thenReturn(confirmationToken);
         when(confirmationTokenService.isTokenExpired(any(ConfirmationToken.class))).thenReturn(true);
 
         // then
-        assertThatThrownBy(() -> underTest.confirmResetPassword("Password123*", confirmationToken.getToken()))
+        assertThatThrownBy(() -> underTest.confirmResetPassword(resetPasswordRequest, confirmationToken.getToken()))
                 .isInstanceOf(TokenExpiredException.class)
                 .hasMessageContaining("This token is expired.");
     }

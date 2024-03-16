@@ -1,7 +1,9 @@
 package com.example.portfolio.webstorespring.controllers.accounts;
 
 import com.example.portfolio.webstorespring.enums.emailtypes.ResetPasswordType;
+import com.example.portfolio.webstorespring.model.dto.accounts.request.ResetPasswordRequest;
 import com.example.portfolio.webstorespring.services.accounts.ResetPasswordService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,6 +17,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.Map;
 
 import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -30,14 +33,16 @@ class ResetPasswordControllerTest {
     @InjectMocks
     private ResetPasswordController underTest;
 
+    private ObjectMapper objectMapper;
     private MockMvc mvc;
-    private static final String URI = "/api/v1/accounts";
+    private static final String URI = "/api/v1";
     private Map<String, Object> result;
 
     @BeforeEach
     void initialization() {
         mvc = MockMvcBuilders.standaloneSetup(underTest)
                 .build();
+        objectMapper = new ObjectMapper();
     }
 
     @Test
@@ -57,14 +62,15 @@ class ResetPasswordControllerTest {
     @Test
     void shouldConfirmResetPassword() throws Exception {
         result = Map.of("message", "Your new password has been saved");
+        ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest("Password123$");
 
-        given(resetPasswordService.confirmResetPassword(anyString(), anyString())).willReturn(result);
+        given(resetPasswordService.confirmResetPassword(any(ResetPasswordRequest.class), anyString())).willReturn(result);
 
         mvc.perform(patch(URI + "/reset-password/confirm")
-                        .param("password", "Test123*")
                         .param("token", "Token123")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
+                        .accept(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(resetPasswordRequest)))
                 .andExpect(status().isAccepted())
                 .andExpect(jsonPath("$", is(result)))
                 .andDo(print());

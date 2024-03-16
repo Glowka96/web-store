@@ -3,18 +3,6 @@
   flex-wrap: wrap;
   justify-content: center;
   margin-top: 1rem;
-  .home-img {
-    display: flex;
-    flex-wrap: wrap;
-    width: 90%;
-    border-radius: 10%;
-    img {
-      width: 100%;
-      height: 100%;
-      border-radius: 30px;
-      filter: drop-shadow(2px 4px 6px black);
-    }
-  }
   .product-pages-box {
     display: flex;
     flex-flow: row wrap;
@@ -30,6 +18,7 @@
         font-size: 24px;
         font-weight: 600;
         text-decoration: none;
+        color: black;
       }
     }
   }

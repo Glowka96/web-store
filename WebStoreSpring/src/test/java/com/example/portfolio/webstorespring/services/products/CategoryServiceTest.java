@@ -1,7 +1,6 @@
 package com.example.portfolio.webstorespring.services.products;
 
 
-import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.CategoryMapper;
 import com.example.portfolio.webstorespring.model.dto.products.request.CategoryRequest;
 import com.example.portfolio.webstorespring.model.dto.products.response.CategoryResponse;
@@ -22,7 +21,6 @@ import java.util.Optional;
 
 import static com.example.portfolio.webstorespring.buildhelpers.products.CategoryBuilderHelper.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
@@ -51,32 +49,6 @@ class CategoryServiceTest {
         verify(categoryRepository, times(1)).findAll();
         verifyNoMoreInteractions(categoryRepository);
         verify(categoryMapper, times(1)).mapToDto(categories);
-    }
-
-    @Test
-    void shouldGetCategoryById() {
-        // given
-        Category category = createCategory();
-        given(categoryRepository.findById(anyLong())).willReturn(Optional.of(category));
-
-        // when
-        CategoryResponse foundCategory = underTest.getCategoryById(category.getId());
-
-        // then
-        assertThat(foundCategory).isNotNull();
-        verify(categoryRepository, times(1)).findById(category.getId());
-    }
-
-    @Test
-    void willThrowWhenCategoryIdIsNotFound() {
-        // given
-        given(categoryRepository.findById(anyLong())).willReturn(Optional.empty());
-
-        // when
-        // then
-        assertThatThrownBy(() -> underTest.getCategoryById(2L))
-                .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessageContaining("Category with id 2 not found");
     }
 
     @Test

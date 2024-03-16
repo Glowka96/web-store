@@ -21,10 +21,6 @@ public class SubcategoryService {
     private final CategoryService categoryService;
     private final SubcategoryMapper subcategoryMapper;
 
-    public SubcategoryResponse getSubcategoryDtoById(Long id) {
-        Subcategory foundSubcategory = findSubcategoryById(id);
-        return subcategoryMapper.mapToDto(foundSubcategory);
-    }
 
     public List<SubcategoryResponse> getAllSubcategory() {
         return subcategoryMapper.mapToDto(subcategoryRepository.findAll());

@@ -9,7 +9,7 @@ public record ProductWithProducerAndPromotionDTO(
         String name,
         String imageUrl,
         Long quantity,
-        String productType,
+        String productTypeName,
         BigDecimal price,
         BigDecimal promotionPrice,
         BigDecimal lowestPrice,

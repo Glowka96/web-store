@@ -3,7 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { take } from 'rxjs';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { AccountAddress } from 'src/app/models/account-address';
+import { AccountAddress } from 'src/app/models/accounts/account-address';
 import { DeliveryTypeResponse } from 'src/app/models/orders/delivery-type-response';
 import { OrderRequest } from 'src/app/models/orders/order-request';
 import { Shipment } from 'src/app/models/orders/shipment';

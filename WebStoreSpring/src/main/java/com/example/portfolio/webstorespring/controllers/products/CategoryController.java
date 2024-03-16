@@ -23,11 +23,6 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.getAllCategory());
     }
 
-    @GetMapping(value = "/categories/{categoryId}")
-    public ResponseEntity<CategoryResponse> getCategoryById(@PathVariable(value = "categoryId") Long categoryId) {
-        return ResponseEntity.ok(categoryService.getCategoryById(categoryId));
-    }
-
     @PostMapping(value = "/admin/categories")
     public ResponseEntity<CategoryResponse> saveCategory(@Valid @RequestBody CategoryRequest categoryRequest) {
         return ResponseEntity.status(HttpStatus.CREATED)

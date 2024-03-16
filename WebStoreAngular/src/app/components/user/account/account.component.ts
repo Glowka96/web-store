@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { take } from 'rxjs';
-import { AccountResponse } from 'src/app/models/account-response';
+import { AccountResponse } from 'src/app/models/accounts/account-response';
 import { OrderResponse } from 'src/app/models/orders/order-response';
 import { AccountService } from 'src/app/services/accounts/account.service';
 import { OrderService } from 'src/app/services/olders/order.service';

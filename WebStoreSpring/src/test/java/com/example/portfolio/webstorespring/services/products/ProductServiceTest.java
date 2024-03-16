@@ -2,6 +2,7 @@ package com.example.portfolio.webstorespring.services.products;
 
 import com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper;
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
+import com.example.portfolio.webstorespring.mappers.ProducerMapper;
 import com.example.portfolio.webstorespring.mappers.ProductMapper;
 import com.example.portfolio.webstorespring.mappers.ProductTypeMapper;
 import com.example.portfolio.webstorespring.model.dto.products.ProductWithProducerAndPromotionDTO;
@@ -58,6 +59,8 @@ class ProductServiceTest {
     void initialization() {
         ProductTypeMapper productTypeMapper = Mappers.getMapper(ProductTypeMapper.class);
         ReflectionTestUtils.setField(productMapper, "productTypeMapper", productTypeMapper);
+        ProducerMapper producerMapper = Mappers.getMapper(ProducerMapper.class);
+        ReflectionTestUtils.setField(productMapper, "producerMapper", producerMapper);
     }
 
     @Test

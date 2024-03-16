@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs';
+import { ResetPasswordRequest } from 'src/app/models/accounts/reset-password-request';
 import { ResetPasswordService } from 'src/app/services/accounts/reset-password.service';
 import { PasswordFormBuilderService } from 'src/app/services/forms/users/password-form-builder.service';
 
@@ -33,9 +34,11 @@ export class ConfirmResetPasswordComponent implements OnInit {
 
   onSubmitConfirmResetPassword() {
     if (this.confirmResetPasswordForm.valid) {
-      const password = this.confirmResetPasswordForm.get('password')?.value;
+      const request: ResetPasswordRequest = {
+        password: this.confirmResetPasswordForm.get('password')?.value,
+      };
       this.resetPasswordService
-        .confirmResetPassword(password, this.token)
+        .confirmResetPassword(request, this.token)
         .subscribe({
           next: (response) => {
             this.resposneMessage = response.message;

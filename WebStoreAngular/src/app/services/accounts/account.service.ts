@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AccountAddress } from 'src/app/models/account-address';
-import { AccountRequest } from 'src/app/models/account-request';
-import { AccountResponse } from 'src/app/models/account-response';
+import { AccountAddress } from 'src/app/models/accounts/account-address';
+import { AccountRequest } from 'src/app/models/accounts/account-request';
+import { AccountResponse } from 'src/app/models/accounts/account-response';
 import { environment } from 'src/environments/environment';
 
 @Injectable({

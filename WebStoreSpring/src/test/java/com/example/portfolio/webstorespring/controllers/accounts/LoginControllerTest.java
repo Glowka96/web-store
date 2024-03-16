@@ -34,9 +34,7 @@ class LoginControllerTest {
         // given
         MockMvc mvc = MockMvcBuilders.standaloneSetup(underTest).build();
         ObjectMapper mapper = new ObjectMapper();
-        LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setEmail("test@test.pl");
-        loginRequest.setPassword("Test1234$");
+        LoginRequest loginRequest = new LoginRequest("test@test.pl","Test1234$");
 
         AuthenticationResponse authenticationResponse = new AuthenticationResponse("token");
 

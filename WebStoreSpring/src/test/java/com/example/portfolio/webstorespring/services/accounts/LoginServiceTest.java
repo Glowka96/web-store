@@ -50,9 +50,7 @@ class LoginServiceTest {
 
         AuthenticationResponse response = new AuthenticationResponse(jwtToken);
 
-        LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setEmail("test@test.pl");
-        loginRequest.setPassword("testpassword");
+        LoginRequest loginRequest = new LoginRequest("test@test.pl","testpassword");
 
         // when
         when(authenticationManager.authenticate(any())).thenReturn(authentication);

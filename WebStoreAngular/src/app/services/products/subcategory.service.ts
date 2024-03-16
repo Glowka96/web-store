@@ -15,7 +15,7 @@ export class SubcategoryService {
 
   public getAllSubcategories(): Observable<SubcategoryResponse[]> {
     return this.http.get<SubcategoryResponse[]>(
-      `${this.apiServerUrl}/categories/subcategories`
+      `${this.apiServerUrl}/admin/categories/subcategories`
     );
   }
 

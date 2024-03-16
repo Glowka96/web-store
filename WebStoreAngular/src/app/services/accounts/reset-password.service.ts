@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { ResetPasswordRequest } from 'src/app/models/accounts/reset-password-request';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -12,18 +13,16 @@ export class ResetPasswordService {
 
   public sendResetPasswordLink(email: string) {
     const params = new HttpParams().set('email', email);
-    return this.http.get<any>(`${this.apiServerUrl}/accounts/reset-password`, {
+    return this.http.get<any>(`${this.apiServerUrl}/reset-password`, {
       params,
     });
   }
 
-  public confirmResetPassword(password: string, token: string) {
-    const params = new HttpParams()
-      .set('password', password)
-      .set('token', token);
+  public confirmResetPassword(request: ResetPasswordRequest, token: string) {
+    const params = new HttpParams().set('token', token);
     return this.http.patch<any>(
-      `${this.apiServerUrl}/accounts/reset-password/confirm`,
-      {},
+      `${this.apiServerUrl}/reset-password/confirm`,
+      request,
       { params }
     );
   }

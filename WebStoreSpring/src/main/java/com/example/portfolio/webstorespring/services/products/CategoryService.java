@@ -24,11 +24,6 @@ public class CategoryService {
                 categoryRepository.findAll());
     }
 
-    public CategoryResponse getCategoryById(Long id) {
-        Category foundCategory = findCategoryById(id);
-        return categoryMapper.mapToDto(foundCategory);
-    }
-
     public CategoryResponse saveCategory(CategoryRequest categoryRequest) {
         Category category = categoryMapper.mapToEntity(categoryRequest);
         categoryRepository.save(category);

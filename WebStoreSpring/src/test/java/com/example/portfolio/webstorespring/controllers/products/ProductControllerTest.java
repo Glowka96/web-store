@@ -118,7 +118,7 @@ class ProductControllerTest {
 
     @Test
     void shouldDeleteProductById() throws Exception {
-        mvc.perform(delete(URI + "/admin/subcategories/products/{productId}", 1))
+        mvc.perform(delete(URI + "/admin/products/{productId}", 1))
                 .andExpect(status().isNoContent())
                 .andDo(print());
     }

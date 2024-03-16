@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, map } from 'rxjs';
 import { __values } from 'tslib';
 import { Router } from '@angular/router';
-import { LoginRequest } from 'src/app/models/login-request';
+import { LoginRequest } from 'src/app/models/accounts/login-request';
 
 @Injectable({
   providedIn: 'root',

@@ -28,7 +28,7 @@ export class NewProductsService extends AbstractPageProductsService {
       .set('sort', options.sort)
       .set('direction', options.direction);
     return this.http.get<PageProductsWithPromotion>(
-      `${this.apiServerUrl}/promotions/products`,
+      `${this.apiServerUrl}/products/news`,
       { params }
     );
   }

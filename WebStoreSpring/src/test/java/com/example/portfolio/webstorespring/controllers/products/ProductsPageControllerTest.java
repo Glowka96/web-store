@@ -63,7 +63,7 @@ class ProductsPageControllerTest {
         given(productsPageService.getPagePromotionProduct(anyInt(), anyInt(), any(), any()))
                 .willReturn(pageProductsWithPromotionDTO);
 
-        mvc.perform(get(URI + "/promotions/products", 1)
+        mvc.perform(get(URI + "/products/promotions", 1)
                         .param("text", "test")
                         .param("page", "0")
                         .param("size", "3")
@@ -82,7 +82,7 @@ class ProductsPageControllerTest {
         given(productsPageService.getPageNewProduct(anyInt(), anyInt(), any(), any()))
                 .willReturn(pageProductsWithPromotionDTO);
 
-        mvc.perform(get(URI + "/new-products", 1)
+        mvc.perform(get(URI + "/products/news", 1)
                         .param("text", "test")
                         .param("page", "0")
                         .param("size", "3")
