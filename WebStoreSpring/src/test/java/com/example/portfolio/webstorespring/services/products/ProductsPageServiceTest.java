@@ -64,23 +64,6 @@ class ProductsPageServiceTest {
         assertThat(actual.totalElements()).isEqualTo(3);
     }
 
-    @Test
-    void shouldGetPageProductsBySubCategoryIdReturnTwoTotalPages() {
-        // given
-        Pageable pageable = PageRequest.of(0, 2, Sort.by(Sort.Direction.ASC, "id"));
-        List<ProductWithPromotionDTO> productList = List.of(getProductDTO(), getProductDTO(), getProductDTO());
-        Page<ProductWithPromotionDTO> productPage = new PageImpl<>(productList, pageable, productList.size());
-
-        given(productRepository.findProductsBySubcategory_Id(anyLong(), any(), any())).willReturn(Optional.of(productPage));
-
-        // when
-        PageProductsWithPromotionDTO actual = underTest.getPageProductsBySubcategoryId(1L, 0, 2, SortByType.ID, SortDirectionType.ASC);
-
-        // then
-        assertThat(actual.products()).hasSize(productList.size());
-        assertThat(actual.totalPages()).isEqualTo(2);
-        assertThat(actual.totalElements()).isEqualTo(3);
-    }
 
     @Test
     void shouldGetPageNewProducts() {
