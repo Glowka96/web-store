@@ -2,7 +2,10 @@ package com.example.portfolio.webstorespring.services.products;
 
 import com.example.portfolio.webstorespring.exceptions.ProductHasAlreadyPromotionException;
 import com.example.portfolio.webstorespring.exceptions.PromotionPriceGreaterThanBasePriceException;
+import com.example.portfolio.webstorespring.mappers.ProducerMapper;
+import com.example.portfolio.webstorespring.mappers.ProductMapper;
 import com.example.portfolio.webstorespring.mappers.ProductPricePromotionMapper;
+import com.example.portfolio.webstorespring.mappers.ProductTypeMapper;
 import com.example.portfolio.webstorespring.model.dto.products.request.ProductPricePromotionRequest;
 import com.example.portfolio.webstorespring.model.dto.products.response.ProductPricePromotionResponse;
 import com.example.portfolio.webstorespring.model.entity.products.Product;
@@ -16,6 +19,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.math.BigDecimal;
 import java.util.Set;
@@ -45,6 +49,8 @@ class ProductPricePromotionServiceTest {
     @Test
     void shouldSaveProductPricePromotion() {
         // given
+        setMappers();
+
         Product product = createProduct();
         ProductPricePromotionRequest productPricePromotionRequest = createProductPricePromotionRequest();
 
@@ -62,6 +68,15 @@ class ProductPricePromotionServiceTest {
         ProductPricePromotionResponse mappedProductPricePromotionResponse = promotionMapper.mapToDto(promotion);
 
         assertThat(mappedProductPricePromotionResponse).isEqualTo(savedProductPricePromotionRequest);
+    }
+
+    private void setMappers() {
+        ProductMapper productMapper = Mappers.getMapper(ProductMapper.class);
+        ReflectionTestUtils.setField(promotionMapper, "productMapper", productMapper);
+        ProductTypeMapper productTypeMapper = Mappers.getMapper(ProductTypeMapper.class);
+        ReflectionTestUtils.setField(productMapper, "productTypeMapper", productTypeMapper);
+        ProducerMapper producerMapper = Mappers.getMapper(ProducerMapper.class);
+        ReflectionTestUtils.setField(productMapper, "producerMapper", producerMapper);
     }
 
     @Test

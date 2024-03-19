@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { take } from 'rxjs';
-import { LoginRequest } from 'src/app/models/login-request';
-import { RegistrationRequest } from 'src/app/models/registration-request';
+import { LoginRequest } from 'src/app/models/accounts/login-request';
+import { RegistrationRequest } from 'src/app/models/accounts/registration-request';
 import { AuthenticationService } from 'src/app/services/accounts/authentication.service';
 import { FormLoginService } from 'src/app/services/accounts/form-login.service';
 import { RegistrationService } from 'src/app/services/accounts/registration.service';

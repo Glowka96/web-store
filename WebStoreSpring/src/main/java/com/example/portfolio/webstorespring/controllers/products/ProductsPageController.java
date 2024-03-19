@@ -24,7 +24,7 @@ public class ProductsPageController {
         return ResponseEntity.ok(productsPageService.getPageProductsBySubcategoryId(subcategoryId, page, size, sort, sortDirection));
     }
 
-    @GetMapping(value = "/promotions/products", params = {"page", "size", "sort", "direction"})
+    @GetMapping(value = "/products/promotions", params = {"page", "size", "sort", "direction"})
     public ResponseEntity<PageProductsWithPromotionDTO> getPagePromotionProduct(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                                                                 @RequestParam(name = "size", defaultValue = "12") Integer size,
                                                                                 @RequestParam(name = "sort", required = false, defaultValue = "id") SortByType sort,
@@ -32,7 +32,7 @@ public class ProductsPageController {
         return ResponseEntity.ok(productsPageService.getPagePromotionProduct(page, size, sort, sortDirection));
     }
 
-    @GetMapping(value = "/new-products", params = {"page", "size", "sort", "direction"})
+    @GetMapping(value = "/products/news", params = {"page", "size", "sort", "direction"})
     public ResponseEntity<PageProductsWithPromotionDTO> getPageNewProduct(@RequestParam(name = "page", defaultValue = "0") Integer page,
                                                                           @RequestParam(name = "size", defaultValue = "12") Integer size,
                                                                           @RequestParam(name = "sort", required = false) SortByType sort,

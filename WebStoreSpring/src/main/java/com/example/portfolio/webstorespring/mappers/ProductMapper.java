@@ -20,7 +20,7 @@ import java.util.List;
 )
 public interface ProductMapper {
 
-    @Mapping(target = "producerResponse", ignore = true)
+    @Mapping(target = "producerResponse", source = "producer")
     @Mapping(target = "pricePromotionsResponse", ignore = true)
     @Mapping(target = "productTypeResponse", source = "type")
     ProductResponse mapToDto(Product product);
@@ -33,5 +33,6 @@ public interface ProductMapper {
     @Mapping(target = "shipment", ignore = true)
     @Mapping(target = "subcategory", ignore = true)
     @Mapping(target = "producer", ignore = true)
+    @Mapping(target = "type", ignore = true)
     Product mapToEntity(ProductRequest productRequest);
 }

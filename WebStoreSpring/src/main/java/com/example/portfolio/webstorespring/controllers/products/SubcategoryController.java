@@ -18,12 +18,7 @@ public class SubcategoryController {
 
     private final SubcategoryService subcategoryService;
 
-    @GetMapping(value = "/categories/subcategories/{subCategoryId}")
-    public ResponseEntity<SubcategoryResponse> getSubcategoryById(@PathVariable("subCategoryId") Long id) {
-        return ResponseEntity.ok(subcategoryService.getSubcategoryDtoById(id));
-    }
-
-    @GetMapping(value = "/categories/subcategories")
+    @GetMapping(value = "/admin/categories/subcategories")
     public ResponseEntity<List<SubcategoryResponse>> getAllSubcategory() {
         return ResponseEntity.ok(subcategoryService.getAllSubcategory());
     }

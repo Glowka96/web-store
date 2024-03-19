@@ -33,6 +33,12 @@ public class AccountAddressService {
 
         AccountAddress accountAddress = addressMapper.mapToEntity(accountAddressRequest);
 
+        if(loggedAccount.getAddress() != null) {
+            setupUpdateAddress(loggedAccount.getAddress(), accountAddress);
+            addressRepository.save(loggedAccount.getAddress());
+            return addressMapper.mapToDto(loggedAccount.getAddress());
+        }
+
         accountAddress.setAccount(loggedAccount);
         addressRepository.save(accountAddress);
         return addressMapper.mapToDto(accountAddress);

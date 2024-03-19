@@ -45,7 +45,7 @@ public class ProductController {
                 .body(productService.updateProduct(subcategoryId, producerId, productId, productRequest));
     }
 
-    @DeleteMapping(value = "/admin/subcategories/products/{productId}")
+    @DeleteMapping(value = "/admin/products/{productId}")
     public ResponseEntity<Void> deleteProductById(@PathVariable(value = "productId") Long id) {
         productService.deleteProductById(id);
         return ResponseEntity.noContent().build();

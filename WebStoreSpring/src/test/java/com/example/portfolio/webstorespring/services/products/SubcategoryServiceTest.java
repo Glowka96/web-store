@@ -1,6 +1,5 @@
 package com.example.portfolio.webstorespring.services.products;
 
-import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.SubcategoryMapper;
 import com.example.portfolio.webstorespring.model.dto.products.request.SubcategoryRequest;
 import com.example.portfolio.webstorespring.model.dto.products.response.SubcategoryResponse;
@@ -22,7 +21,6 @@ import static com.example.portfolio.webstorespring.buildhelpers.products.Categor
 import static com.example.portfolio.webstorespring.buildhelpers.products.SubcategoryBuilderHelper.createSubcategory;
 import static com.example.portfolio.webstorespring.buildhelpers.products.SubcategoryBuilderHelper.createSubcategoryRequest;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
@@ -37,21 +35,6 @@ class SubcategoryServiceTest {
     private CategoryService categoryService;
     @InjectMocks
     private SubcategoryService underTest;
-
-    @Test
-    void shouldGetSubcategoryById() {
-        // given
-        Subcategory subcategory = createSubcategory();
-        given(subcategoryRepository.findById(anyLong())).willReturn(Optional.of(subcategory));
-
-        // when
-        SubcategoryResponse foundSubcategoryResponse = underTest.getSubcategoryDtoById(1L);
-
-        // then
-        assertThat(foundSubcategoryResponse).isNotNull();
-        assertThat(foundSubcategoryResponse.getName()).isEqualTo(subcategory.getName());
-        verify(subcategoryRepository, times(1)).findById(subcategory.getId());
-    }
 
     @Test
     void shouldGetAllSubcategoryResponse() {
@@ -83,18 +66,6 @@ class SubcategoryServiceTest {
                 subCategoryMapper.mapToDto(subcategoryArgumentCaptor.getValue());
 
         assertThat(savedSubcategoryResponse).isEqualTo(mappedSubCategory);
-    }
-
-    @Test
-    void willThrowWhenSubcategoryIdIsNotFound() {
-        // given
-        given(subcategoryRepository.findById(anyLong())).willReturn(Optional.empty());
-
-        // when
-        // then
-        assertThatThrownBy(() -> underTest.getSubcategoryDtoById(anyLong()))
-                .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessageContaining("Subcategory with id 0 not found");
     }
 
     @Test

@@ -51,28 +51,10 @@ class SubcategoryControllerTest {
 
         given(subcategoryService.getAllSubcategory()).willReturn(List.of(subcategoryResponse, subcategoryResponse));
 
-        mvc.perform(get(URI + "/categories/subcategories")
+        mvc.perform(get(URI + "/admin/categories/subcategories")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
-                .andDo(print());
-    }
-
-    @Test
-    void shouldGetSubcategoryByName() throws Exception {
-        // given
-        SubcategoryResponse subcategoryResponse = createSubcategoryResponse();
-        SubcategoryRequest subcategoryRequest = createSubcategoryRequest();
-
-        given(subcategoryService.getSubcategoryDtoById(anyLong())).willReturn(subcategoryResponse);
-
-        // when
-        // then
-        mvc.perform(get(URI + "/categories/subcategories/{id}", 1L)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", is("Test")))
                 .andDo(print());
     }
 

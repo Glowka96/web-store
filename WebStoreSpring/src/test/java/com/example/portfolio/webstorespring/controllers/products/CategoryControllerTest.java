@@ -63,24 +63,6 @@ class CategoryControllerTest {
     }
 
     @Test
-    void shouldGetCategoryById() throws Exception {
-        // given
-        CategoryResponse categoryResponse = createCategoryResponse();
-        given(categoryService.getCategoryById(anyLong())).willReturn(categoryResponse);
-
-        // when
-        // then
-        mvc.perform(get(URI + "/categories/{id}", 1L)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(categoryResponse)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.name", is("Test")))
-                .andDo(print());
-    }
-
-    @Test
     void shouldSaveCategory() throws Exception {
         // given
         CategoryResponse categoryResponse = createCategoryResponse();

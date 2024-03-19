@@ -1,7 +1,8 @@
 package com.example.portfolio.webstorespring.controllers.accounts;
 
-import com.example.portfolio.webstorespring.annotations.Password;
+import com.example.portfolio.webstorespring.model.dto.accounts.request.ResetPasswordRequest;
 import com.example.portfolio.webstorespring.services.accounts.ResetPasswordService;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "api/v1/accounts/reset-password")
+@RequestMapping(value = "api/v1/reset-password")
 @RequiredArgsConstructor
 @Validated
 public class ResetPasswordController {
@@ -22,10 +23,10 @@ public class ResetPasswordController {
         return ResponseEntity.ok(resetPasswordService.resetPasswordByEmail(email));
     }
 
-    @PatchMapping(value = "confirm", params = {"password", "token"})
-    public ResponseEntity<Map<String, Object>> confirmResetPassword(@RequestParam("password") @Password String password,
+    @PatchMapping(value = "/confirm", params = {"token"})
+    public ResponseEntity<Map<String, Object>> confirmResetPassword(@RequestBody() @Valid ResetPasswordRequest resetPasswordRequest,
                                                                     @RequestParam("token") String token) {
         return ResponseEntity.accepted()
-                .body(resetPasswordService.confirmResetPassword(password, token));
+                .body(resetPasswordService.confirmResetPassword(resetPasswordRequest, token));
     }
 }

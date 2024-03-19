@@ -6,10 +6,13 @@ import com.example.portfolio.webstorespring.model.entity.products.ProductPricePr
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring",
+        uses = {
+                ProductMapper.class
+        })
 public interface ProductPricePromotionMapper {
 
-    @Mapping(target = "productResponse", ignore = true)
+    @Mapping(target = "productResponse", source = "product")
     ProductPricePromotionResponse mapToDto(ProductPricePromotion pricePromotion);
 
     @Mapping(target = "id", ignore = true)

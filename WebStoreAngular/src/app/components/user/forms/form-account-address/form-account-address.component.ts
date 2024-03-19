@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { take } from 'rxjs';
-import { AccountAddress } from 'src/app/models/account-address';
+import { AccountAddress } from 'src/app/models/accounts/account-address';
 import { AccountService } from 'src/app/services/accounts/account.service';
 import { AddressFormBuilderService } from 'src/app/services/forms/users/address-form-builder.service';
 

@@ -32,6 +32,7 @@ export class OrderService {
   }
 
   public saveOrder(request: OrderRequest): Observable<any> {
+    console.log(JSON.stringify(request));
     return this.http.post<any>(`${this.apiServerUrl}/accounts/orders`, request);
   }
 }
