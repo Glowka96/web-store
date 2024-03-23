@@ -143,7 +143,7 @@ https://www.youtube.com/watch?v=KxqlJblhzfI
 
 Amigoscode https://github.com/amigoscode
 
-<div style="display: flex; justify-content: right;">
+<div align="right">
   <a href="#web-store">Back to top</a>
 </div>
 
