@@ -2,7 +2,7 @@
 
 This is a web store project created in Java using Spring Boot and Angular. The website is fully responsive, allowing users to browse and search for products, create an account with email verification, log in, add their shipping address, make purchases, view orders, and reset their password (with a password reset link sent to their email). The admin can add, modify, or delete categories, subcategories, products, and producers. I am continually expanding my knowledge and developing the project in my spare time.
 
-Project deployed on GCP: [Link](https://toysland-hixicpf4xa-lm.a.run.app/)
+Project deployed on GCP: [Link](https://webstore-j5caa4355a-lm.a.run.app/)
 
 ## Table of contents
 - [Technologies](#technologies)
@@ -57,23 +57,24 @@ GCP:
 ## Features
 
 - Login/Sign-up with a confirmed email
-- Product pagination 
+- Products pagination 
+- Product and Order Page
+- Sort products
 - Buy the products
 - Search products
 - View orders
 - Modification account data
-- Admin board - modification: category, subcategory, product, producer
+- Admin board - modification: category, subcategory, product, producer, product type, promotion, delivery type
 - Reset password system- send email with a link
 
 ### To-Do
 
-- Home page - new offerts and promotions (currently working on it)
-- Refresh the product purchasing system - choose the delivery method, refresh the view
-- Sort and fillter products
+- Fillter products
 - Message box
 - Newsletter
-- New admin board with more options
-- Better angular pagination
+- Send order email
+- Refactoring a monolith to microservices 
+- New UX/UI
 - ...
 
 <div align="right">
@@ -82,101 +83,7 @@ GCP:
 
 ## Spring boot API Reference
 
-<details>
-<summary>Category</summary>
-
-| Method | Path                            | Permision | Description |
-| ---------- |---------------------------------|-----------| ---------- |
-| `GET` | `/api/v1/categories`            | Public    | Get all categories |
-| `POST` | `/api/v1/admin/categories`      | Admin     | Add category | 
-| `PUT` | `/api/v1/admin/categories/{id}` | Admin     | Update category | 
-| `DELETE` | `/api/v1/admin/categories/{id}` | Admin     |Delete category |
-
-</details>
-
-<details>
-<summary>Subategory</summary>
-
-| Method | Path | Permision | Description |
-| ---------- | ---------- |----------| ---------- |
-| `GET` | `/api/v1/categories/subcategories` | Public   | Get all subcategories | 
-| `GET` | `/api/v1/categories/subcategories/{subCategoryId}` | Public | Get subcategory by id| 
-| `POST` | `/api/v1/admin/categories/{categoryId}/subcategories` | Admin    | Add subcategory |
-| `PUT` | `/api/v1/admin/categories/{categoryId}/subcategories/{subCategoryId}` | Admin    | Update subcategory |
-| `DELETE` | `/api/v1/admin/categories/subcategories/{subCategoryId}` | Admin    | Delete subcategory | 
-
-</details>
-
-<details>
-<summary>Producer</summary>
-
-| Method | Path | Permision | Description |
-| ---------- | ---------- | ---------- | ---------- |
-| `GET` | `/api/v1/admin/producers` | Admin | Get all producers |
-| `POST` | `/api/v1/admin/producers` | Admin | Add producer |
-| `PUT` | `/api/v1/admin/producers/{id}` | Admin | Update producer by id |
-| `DELETE` | `/api/v1/admin/producers/{id}` | Admin | Delte producer by id |
-
-</details>
-
-
-<details>
-<summary>Product</summary>
-
-| Method | Path | Permision | Description |
-| ---------- | ---------- | ---------- | ---------- |
-| `GET` | `/api/v1/admin/subcategories/products/types` | Admin |Get all product types | 
-| `GET` | `/api/v1/admin/subcategories/products` | Admin | Get all products |
-| `GET` | `/api/v1/subcategories/{subcategoryId}/products` | Public |Get all products by subcategory id with params (page, size, sort) |
-| `GET` | `/api/v1/subcategories/{subcategoryId}/products/quantity` | Public | Get products quantity by subcategory id|
-| `POST` | `/api/v1/admin/subcategories/{subcategoryId}/producers/{producerId}/products` | Admin |Add product by subcategory id and producer id | 
-| `PUT` | `/api/v1/admin/subcategories/{subcategoryId}/producers/{producerId}/products/{productId}` | Admin |Update product by subcategory id, producer id and product id|
-| `DELETE` | `/api/v1/admin/subcategories/products/{productId}` | Admin |Delete product by id |
-| `GET` | `/api/v1/products/search` | Public |Get search products with params (text, page, size, sort) |
-| `GET` | `/api/v1/products/search/quantity` | Public | Get search products quantity with params (text)|
-
-</details>
-
-<details>
-<summary>Account</summary>
-
-| Method | Path | Permision   | Description                                                       |
-| ---------- | ---------- |-------------|-------------------------------------------------------------------|
-| `POST` | `/api/v1/registration` | Public      | Account registration send confirm link to email                   | 
-| `GET` | `/api/v1/registration/confirm` | Public    | Account enabled and confrim registration token with params (token) | 
-| `POST` | `/api/v1/login` | Public    | Login                                                             | 
-| `POST` | `/api/v1/logout` | User, Admin | Logout                                                            | 
-| `GET` | `/api/v1/accounts` | User, Admin | Get account data by account id with authorization                 | 
-| `PUT` | `/api/v1/accounts` | User, Admin | Update account data by account id with authorization              | 
-| `DELETE` | `/api/v1/accounts` | User, Admin | Delete account by account id data with authorization              |
-| `GET` | `api/v1/accounts/reset-password` | Everyone    | Send reset password link to email with param (email)       |
-| `PATCH` | `api/v1/accounts/reset-password/confirm` | User, Admin | Setup new password and confirm token with params (password, token) |
-
-</details>
-
-<details>
-<summary>Account address</summary>
-
-| Method | Path | Permision | Description |
-| ---------- | ---------- | ---------- | ---------- |
-| `GET` | `/api/v1/accounts/address` | User, Admin | Get account address data by account with authorization | 
-| `POST` | `/api/v1/accounts/address` | User, Admin | Add account address data by account with authorization | 
-| `PUT` | `/api/v1/accounts/address` | User, Admin | Update account address data by account with authorization | 
-
-</details>
-
-<details>
-<summary>Order</summary>
-
-| Method | Path | Permision | Description |
-| ---------- | ---------- | ---------- | ---------- |
-| `GET` | `/api/v1/accounts/orders` | User, Admin | Get account all orders by account with authorization | 
-| `GET` | `/api/v1/accounts/orders/{orderId}` | User, Admin | Get account order by account id and order id with authorization | 
-| `POST` | `/api/v1/accounts/orders` | User, Admin | Add order to account by account id with authorization | 
-| `PUT` | `/api/v1/accounts/orders` | User, Admin | Update order in account by account id with authorization | 
-| `DELETE` | `/api/v1/accounts/orders` | User, Admin | Delete order from account by account id with authorization | 
-
-</details>
+[Postman documentation](https://documenter.getpostman.com/view/23641360/2sA2xiXCKr#intro)
 
 <div align="right">
   <a href="#web-store">Back to top</a>
@@ -184,22 +91,33 @@ GCP:
 
 ## Screenshot
 
-![app image](https://ik.imagekit.io/glowacki/Zrzut_ekranu_2023-07-12_102052.png?updatedAt=1689150176647)
+![app image](https://ik.imagekit.io/glowacki/Zrzut_ekranu_2023-07-12_102052.png?updatedAt=1711179688638)
 
 ### Products Page
 
-![app image](https://ik.imagekit.io/glowacki/products.png?updatedAt=1695434185323)
+![app image](https://ik.imagekit.io/glowacki/products.png?updatedAt=1711181592363)
+
+### Product Page
+![app image](https://ik.imagekit.io/glowacki/Zrzut%20ekranu%202024-03-23%20085842.png?updatedAt=1711180738622)
 
 ### Admin Board
 
 ![app image](https://ik.imagekit.io/glowacki/Zrzut%20ekranu%202023-08-18%20123044.png?updatedAt=1692354731249)
 
+### Account Page
+
+![app image](https://ik.imagekit.io/glowacki/Zrzut%20ekranu%202024-03-23%20085732.png?updatedAt=1711180738487)
+
+### Order Page
+![app image](https://ik.imagekit.io/glowacki/Zrzut%20ekranu%202024-03-23%20085819.png?updatedAt=1711180738571)
+
+
 ### Database diagram
 
-![app image](https://ik.imagekit.io/glowacki/Zrzut_ekranu_2023-07-12_192353.png?updatedAt=1689182679226)
+![app image](https://ik.imagekit.io/glowacki/Zrzut_ekranu_2023-07-12_192353.png?updatedAt=1711179630302)
 
 ### Tests
-![app imaget](https://ik.imagekit.io/glowacki/Zrzut%20ekranu%202023-08-09%20002003.png?updatedAt=1691533356035)
+![app imaget](https://ik.imagekit.io/glowacki/Zrzut%20ekranu%202023-08-09%20002003.png?updatedAt=1711181500231)
 
 <div align="right">
     <a href="#web-store">Back to top</a>

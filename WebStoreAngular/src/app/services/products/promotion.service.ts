@@ -16,6 +16,7 @@ export class PromotionService {
   public addPromotion(
     request: ProductPromotionRequest
   ): Observable<ProductPromotionResponse> {
+    console.log(request);
     return this.http.post<ProductPromotionResponse>(
       `${this.apiServerUrl}/admin/products/promotions`,
       request

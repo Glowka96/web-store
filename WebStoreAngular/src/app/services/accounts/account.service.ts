@@ -33,7 +33,7 @@ export class AccountService {
 
   public addAddress(request: AccountAddress): Observable<AccountAddress> {
     return this.http.post<AccountAddress>(
-      `${this.apiServerUrl}/accounts/address`,
+      `${this.apiServerUrl}/accounts/addresses`,
       request
     );
   }

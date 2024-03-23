@@ -21,10 +21,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             FROM Product p
             INNER JOIN p.producer pr
             INNER JOIN p.type pt
-            LEFT JOIN p.pricePromotions ppp_1 ON (CURRENT_DATE BETWEEN ppp_1.startDate AND ppp_1.endDate)
+            LEFT JOIN p.pricePromotions ppp_1 ON (CURRENT_TIMESTAMP BETWEEN ppp_1.startDate AND ppp_1.endDate)
             LEFT JOIN p.pricePromotions ppp_2 ON (ppp_2.endDate >= :date30DaysAgo AND ppp_1.id IS NOT NULL)
             WHERE p.id = :productId AND p.quantity > 0
-            """)
+            GROUP BY p.id, p.name, p.imageUrl, p.quantity, pt.name, p.price, ppp_1.promotionPrice, ppp_1.endDate, p.description, p.producer.name
+                             """)
     ProductWithProducerAndPromotionDTO findProductById(@Param("productId") Long productId,
                                                        @Param("date30DaysAgo") Date date30DaysAgo);
 
@@ -32,10 +33,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             SELECT NEW com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionDTO(
                 p.id, p.name, p.imageUrl, p.quantity, p.price, ppp_1.promotionPrice, MIN(ppp_2.promotionPrice), ppp_1.endDate)
             FROM Product p
-            LEFT JOIN p.pricePromotions ppp_1 ON (CURRENT_DATE BETWEEN ppp_1.startDate AND ppp_1.endDate)
+            LEFT JOIN p.pricePromotions ppp_1 ON (CURRENT_TIMESTAMP BETWEEN ppp_1.startDate AND ppp_1.endDate)
             LEFT JOIN p.pricePromotions ppp_2 ON (ppp_2.endDate >= :date30DaysAgo AND ppp_1.id IS NOT NULL)
             WHERE p.subcategory.id = :subcategoryId AND p.quantity > 0
-            GROUP BY p.id
+            GROUP BY p.id, p.name, p.imageUrl, p.quantity, p.price, ppp_1.promotionPrice, ppp_1.endDate
                        """)
     Optional<Page<ProductWithPromotionDTO>> findProductsBySubcategory_Id(@Param("subcategoryId") Long subcategoryId,
                                                                          @Param("date30DaysAgo") Date date30DaysAgo,
@@ -47,14 +48,14 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             FROM Product p
             INNER JOIN p.producer pr
             INNER JOIN p.type pt
-            LEFT JOIN p.pricePromotions ppp_1 ON (CURRENT_DATE BETWEEN ppp_1.startDate AND ppp_1.endDate)
+            LEFT JOIN p.pricePromotions ppp_1 ON (CURRENT_TIMESTAMP BETWEEN ppp_1.startDate AND ppp_1.endDate)
             LEFT JOIN p.pricePromotions ppp_2 ON (ppp_2.endDate >= :date30DaysAgo AND ppp_1.id IS NOT NULL)
             WHERE (LOWER(p.name) LIKE LOWER(CONCAT('%', :text, '%'))
             OR LOWER(p.description) LIKE LOWER(CONCAT('%', :text, '%'))
             OR LOWER(pr.name) LIKE LOWER(CONCAT('%', :text, '%'))
             OR LOWER(pt.name) LIKE LOWER(CONCAT('%', :text, '%')))
             AND p.quantity > 0
-            GROUP BY p.id
+            GROUP BY p.id, p.name, p.imageUrl, p.quantity, pt.name, p.price, ppp_1.promotionPrice, ppp_1.endDate
                        """)
     Optional<Page<ProductWithPromotionDTO>> searchProductsByEnteredText(@Param("text") String text,
                                                                         @Param("date30DaysAgo") Date date30DaysAgo,
@@ -66,10 +67,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             FROM Product p
             LEFT JOIN p.pricePromotions ppp_1
             LEFT JOIN p.pricePromotions ppp_2
-            WHERE (CURRENT_DATE BETWEEN ppp_1.startDate AND ppp_1.endDate)
+            WHERE (CURRENT_TIMESTAMP BETWEEN ppp_1.startDate AND ppp_1.endDate)
             AND ppp_2.endDate >= :date30DaysAgo
             AND p.quantity > 0
-            GROUP BY p.id
+            GROUP BY p.id, p.name, p.imageUrl, p.quantity, p.price, ppp_1.promotionPrice, ppp_1.endDate
                         """)
     Optional<Page<ProductWithPromotionDTO>> findPromotionProducts(@Param("date30DaysAgo") Date date30DaysAgo,
                                                                   Pageable pageable);
@@ -78,18 +79,18 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                         SELECT NEW com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionDTO(
                                              p.id, p.name, p.imageUrl, p.quantity, p.price, ppp_1.promotionPrice, MIN(ppp_2.promotionPrice), ppp_1.endDate)
                         FROM Product p
-                        LEFT JOIN p.pricePromotions ppp_1 ON (CURRENT_DATE BETWEEN ppp_1.startDate AND ppp_1.endDate)
+                        LEFT JOIN p.pricePromotions ppp_1 ON (CURRENT_TIMESTAMP BETWEEN ppp_1.startDate AND ppp_1.endDate)
                         LEFT JOIN p.pricePromotions ppp_2 ON (ppp_2.endDate >= :date30DaysAgo AND ppp_1.id IS NOT NULL)
                         WHERE p.dateOfCreation >= :date30DaysAgo
                         AND p.quantity > 0
-                        GROUP BY p.id
+                        GROUP BY p.id, p.name, p.imageUrl, p.quantity, p.price, ppp_1.promotionPrice, ppp_1.endDate
             """)
     Optional<Page<ProductWithPromotionDTO>> findNewProducts(@Param("date30DaysAgo") Date date30DaysAgo,
                                                             Pageable pageable);
 
     @Query("""
             SELECT p FROM Product p
-            LEFT JOIN p.pricePromotions pp ON (CURRENT_DATE BETWEEN pp.startDate AND pp.endDate)
+            LEFT JOIN p.pricePromotions pp ON (CURRENT_TIMESTAMP BETWEEN pp.startDate AND pp.endDate)
             WHERE p.id = :productId
             """)
     Optional<Product> findProductByIdWithPromotion(@Param("productId") Long productId);

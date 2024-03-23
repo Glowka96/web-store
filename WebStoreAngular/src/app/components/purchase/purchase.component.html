@@ -67,7 +67,7 @@
     </div>
     <div class="sumbit-box">
         <button type="submit" (click)="purchase()" class="btn-purchase"
-            [disabled]="deliveryAddressForm.invalid && deliveryTypeForm.invalid">Purchase</button>
+            [disabled]="deliveryAddressForm.invalid || deliveryTypeForm.invalid">Purchase</button>
         <div class="msg-box" *ngIf="submitPurchase">
             <p>{{sumbitMessage}}</p>
         </div>

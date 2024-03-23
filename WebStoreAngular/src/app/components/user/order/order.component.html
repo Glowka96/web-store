@@ -13,7 +13,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let shipment of order.shipments">
+                    <tr *ngFor="let shipment of order?.shipments">
                         <td>
                             <a class="product-name" [routerLink]="['/products', shipment.product.id]">
                                 <img src={{shipment.product.imageUrl}} alt="{{shipment.product.name}}" height="72px"
