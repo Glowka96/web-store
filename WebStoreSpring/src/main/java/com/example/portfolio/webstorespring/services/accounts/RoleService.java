@@ -3,7 +3,6 @@ package com.example.portfolio.webstorespring.services.accounts;
 import com.example.portfolio.webstorespring.model.entity.accounts.Role;
 import com.example.portfolio.webstorespring.repositories.accounts.RoleRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;

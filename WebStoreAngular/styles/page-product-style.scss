@@ -46,9 +46,9 @@
     .product {
       display: flex;
       flex-direction: column;
-      max-width: 240px;
       row-gap: 5px;
       padding: 25px;
+      max-width: 270px;
       background-color: aliceblue;
       border-radius: 15px;
       .product-name {
@@ -60,7 +60,7 @@
       }
       .product-img {
         display: flex;
-        align-items: center;
+        justify-content: center;
         img {
           width: 100%;
           max-width: 240px;

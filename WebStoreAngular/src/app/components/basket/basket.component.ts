@@ -87,7 +87,6 @@ export class BasketComponent implements OnInit {
 
   public onSumbitBuy() {
     this._isBuyBtnClicked = !this._isBuyBtnClicked;
-    console.log(this.isLoggedIn);
     if (this.isLoggedIn) {
       this.router.navigate(['/basket/purchase'], {});
     }

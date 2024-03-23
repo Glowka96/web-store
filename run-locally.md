@@ -58,9 +58,13 @@ cors.allowed-origin-patterns=${CORS_ALLOWED_ORIGIN_PATTERNS:http://localhost:420
 email.confirmation.link = ${EMAIL_CONFIRMATION_LINK:http://localhost:4200/registration/confirm?token=}
 reset-password.confirmation.link = ${RESET_PASSWORD_CONFIRMATION_LINK:http://localhost:4200/reset-password/confirm?token=}
 shipment.address = ${SHIPMENT_ADDRESS:your_shipment_address}
+account.image.url = ${ACCOUNT_IMAGE_URL:https://i.imgur.com/a23SANX.png}
+secret.key = ${SECRET_KEY:5970337336763979244226452948404D6351665468576D5A7134743777217A25}
 ```
 How to create a Google-generated app password [link](https://support.google.com/accounts/answer/185833?hl=en).
 Use it for `SENDER_PASSWORD`.
+
+How to create a secret key [link](https://dev.to/tkirwa/generate-a-random-jwt-secret-key-39j4).
 
 If you're running Angular on default port you don't need change cross origination patterns, email confirmation link and password reset confirmation link.
 

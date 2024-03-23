@@ -64,7 +64,6 @@ export class PurchaseComponent implements OnInit {
       .getAllDeliveryType()
       .subscribe((types) => {
         this._deliveryTypes = types;
-        console.log(this._deliveryTypes);
       });
     this._subscriptions.push(sub1, sub2, sub3);
   }
@@ -82,13 +81,13 @@ export class PurchaseComponent implements OnInit {
 
   public autocomplete() {
     this.deliveryAddressForm.controls['city'].setValue(
-      this._accountAddress.city
+      this._accountAddress?.city
     );
     this.deliveryAddressForm.controls['postcode'].setValue(
-      this._accountAddress.postcode
+      this._accountAddress?.postcode
     );
     this.deliveryAddressForm.controls['street'].setValue(
-      this._accountAddress.street
+      this._accountAddress?.street
     );
   }
 

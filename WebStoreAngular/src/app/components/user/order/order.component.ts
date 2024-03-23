@@ -26,7 +26,6 @@ export class OrderComponent implements OnInit {
           .pipe(take(1))
           .subscribe((order) => {
             this._order = order;
-            console.log(this._order);
           });
       }
     });
