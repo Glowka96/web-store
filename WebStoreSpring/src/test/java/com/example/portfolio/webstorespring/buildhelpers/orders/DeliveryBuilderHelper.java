@@ -2,6 +2,7 @@ package com.example.portfolio.webstorespring.buildhelpers.orders;
 
 import com.example.portfolio.webstorespring.model.dto.orders.request.DeliveryRequest;
 import com.example.portfolio.webstorespring.model.dto.orders.response.DeliveryResponse;
+import com.example.portfolio.webstorespring.model.dto.orders.response.DeliveryResponseWithoutDeliveryType;
 import com.example.portfolio.webstorespring.model.dto.orders.response.DeliveryTypeResponse;
 import com.example.portfolio.webstorespring.model.entity.orders.Delivery;
 import com.example.portfolio.webstorespring.model.entity.orders.DeliveryType;
@@ -36,6 +37,14 @@ public class DeliveryBuilderHelper {
         return DeliveryResponse.builder()
                 .id(1L)
                 .deliveryTypeResponse(deliveryTypeResponse)
+                .deliveryAddress(DELIVERY_ADDRESS)
+                .shipmentAddress(SHIPMENT_ADDRESS)
+                .build();
+    }
+
+    public static DeliveryResponseWithoutDeliveryType createDeliveryResponseWithoutDeliveryType() {
+        return DeliveryResponseWithoutDeliveryType.builder()
+                .id(1L)
                 .deliveryAddress(DELIVERY_ADDRESS)
                 .shipmentAddress(SHIPMENT_ADDRESS)
                 .build();

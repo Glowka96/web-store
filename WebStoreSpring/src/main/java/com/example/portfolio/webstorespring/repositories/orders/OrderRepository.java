@@ -6,21 +6,33 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
+
+    @Query("SELECT o FROM Order o " +
+           "LEFT JOIN FETCH o.delivery d " +
+           "LEFT JOIN FETCH d.deliveryType " +
+           "LEFT JOIN FETCH o.shipments s " +
+           "LEFT JOIN FETCH s.product " +
+           "WHERE o.id = :orderId")
+    Optional<Order> findById(@Param("orderId") Long orderId);
+
     @Query("""
-        SELECT o FROM Order o
-        WHERE o.account.id =:accountId
-        ORDER BY o.dateOfCreation DESC
-""")
+                    SELECT o FROM Order o
+                    LEFT JOIN FETCH o.delivery
+                    WHERE o.account.id =:accountId
+                    ORDER BY o.dateOfCreation DESC
+            """)
     List<Order> findAllByAccountId(@Param(value = "accountId") Long accountId);
 
     @Query("""
-        SELECT o FROM Order o
-        WHERE o.account.id = :accountId
-        ORDER BY o.dateOfCreation DESC
-        LIMIT 5
-""")
+                    SELECT o FROM Order o
+                    LEFT JOIN FETCH o.delivery
+                    WHERE o.account.id = :accountId
+                    ORDER BY o.dateOfCreation DESC
+                    LIMIT 5
+            """)
     List<Order> findLastFiveAccountOrder(@Param(value = "accountId") Long accountId);
 
 }

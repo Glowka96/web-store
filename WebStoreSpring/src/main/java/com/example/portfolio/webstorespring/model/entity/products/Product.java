@@ -39,7 +39,7 @@ public class Product {
     @Column(nullable = false)
     private Long quantity;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_type_id")
     private ProductType type;
 
@@ -47,7 +47,7 @@ public class Product {
     @JoinColumn(name = "subcategory_id")
     private Subcategory subcategory;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "producer_id")
     private Producer producer;
 

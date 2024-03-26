@@ -6,5 +6,4 @@ export interface ProductWithPromotion {
   price: number;
   promotionPrice: number;
   lowestPrice: number;
-  endDate: Date;
 }

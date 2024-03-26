@@ -24,6 +24,6 @@ public class Delivery {
     @Column(nullable = false)
     private String shipmentAddress;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     private DeliveryType deliveryType;
 }

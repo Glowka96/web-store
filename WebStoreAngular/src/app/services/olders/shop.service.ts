@@ -20,6 +20,11 @@ export class ShopService {
     }
   }
 
+  public saveBasket(basket: Shipment[]) {
+    this.basket.next(basket);
+    localStorage.setItem('basket', JSON.stringify(basket));
+  }
+
   public addToBasket(shipment: Shipment) {
     const cart = this.basket.value;
     const findShipment = cart.find((s) => s.product.id == shipment.product.id);

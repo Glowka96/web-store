@@ -59,18 +59,15 @@ export class BasketComponent implements OnInit {
   public deleteProductFromBasket(productId: number) {
     const index = this.getIndexBasket(productId);
     this._basket.splice(index, 1);
+    this.shopService.saveBasket(this.basket);
   }
 
   public isUpdate(shipmentId: number) {
     return this._selectedId === shipmentId;
   }
 
-  public change(shipmentId: number) {
-    if (!this._selectedId) {
-      this._selectedId = shipmentId;
-    } else {
-      this._selectedId = 0;
-    }
+  public selectShipment(shipmentId: number) {
+    this._selectedId = shipmentId;
   }
 
   public onSumbitChange(productId: number) {
@@ -79,7 +76,8 @@ export class BasketComponent implements OnInit {
       const quantity = this.changeForm.controls['quantity']?.value;
       if (this._basket[index].product.quantity > Number(quantity)) {
         this._basket[index].quantity = Number(quantity);
-        this.change(0);
+        this.shopService.saveBasket(this.basket);
+        this._selectedId = 0;
         this.changeForm.controls['quantity'].reset();
       }
     }

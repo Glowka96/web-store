@@ -19,7 +19,7 @@ public class Shipment {
     @Column(nullable = false, unique = true)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "product_id")
     private Product product;
 

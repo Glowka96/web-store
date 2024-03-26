@@ -14,7 +14,8 @@ import java.util.Set;
 @NamedEntityGraph(name = "account-with-roles-and-address-entity-graph",
         attributeNodes = {
                 @NamedAttributeNode(value = "roles"),
-                @NamedAttributeNode(value = "address")})
+                @NamedAttributeNode(value = "address"),
+        })
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
