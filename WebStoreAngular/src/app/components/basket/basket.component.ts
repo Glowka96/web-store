@@ -67,7 +67,11 @@ export class BasketComponent implements OnInit {
   }
 
   public selectShipment(shipmentId: number) {
-    this._selectedId = shipmentId;
+    if (this._selectedId !== shipmentId) {
+      this._selectedId = shipmentId;
+    } else {
+      this._selectedId = 0;
+    }
   }
 
   public onSumbitChange(productId: number) {

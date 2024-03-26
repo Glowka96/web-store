@@ -12,19 +12,22 @@
                 </span>
             </div>
             <div class="shipment-products">
-                <div class="shipment-quantity" *ngIf="!isUpdate(shipment.product.id)">
-                    <p><span class="title">Quantity: </span>{{shipment.quantity}}</p>
-                </div>
-                <form class="quantity-change" [formGroup]="changeForm" (ngSubmit)="onSumbitChange(shipment.product.id)"
-                    *ngIf="isUpdate(shipment.product.id)">
-                    <input formControlName="quantity" class="change-input" type="text" placeholder="Quantity">
-                    <div class="error" *ngIf="changeForm.get('quantity')?.invalid">
-                        <small *ngIf="changeForm.get('quantity')?.errors?.['min']">The quantity must be
-                            positive.<br></small>
-                        <small *ngIf="changeForm.get('quantity')?.errors?.['pattern']">The quantity must be a
-                            number.</small>
+                <div class="quantity-box">
+                    <div class="shipment-quantity" *ngIf="!isUpdate(shipment.product.id)">
+                        <p><span class="title">Quantity: </span>{{shipment.quantity}}</p>
                     </div>
-                </form>
+                    <form class="quantity-change" [formGroup]="changeForm"
+                        (ngSubmit)="onSumbitChange(shipment.product.id)" *ngIf="isUpdate(shipment.product.id)">
+                        <input formControlName="quantity" class="change-input" type="text" placeholder="Quantity">
+                        <div class="error" *ngIf="changeForm.get('quantity')?.invalid">
+                            <small *ngIf="changeForm.get('quantity')?.errors?.['min']">The quantity must be
+                                positive.<br></small>
+                            <small *ngIf="changeForm.get('quantity')?.errors?.['pattern']">The quantity must be a
+                                number.</small>
+                        </div>
+                    </form>
+                    <button class="btn-change" (click)="selectShipment(shipment.product.id)">Change</button>
+                </div>
                 <div class="shipment-price">
                     <p><span class="title">Price for the product: </span> {{getShipmentPrice(shipment.product.id)}} PLN
                     </p>
@@ -32,7 +35,6 @@
             </div>
             <button class="btn-delete" (click)="deleteProductFromBasket(shipment.product.id)"><i
                     class="icon-cancel"></i></button>
-            <button class="btn-change" (click)="selectShipment(shipment.product.id)">Change</button>
         </div>
     </div>
     <div class="purchase-box">
