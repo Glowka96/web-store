@@ -5,9 +5,7 @@ import com.example.portfolio.webstorespring.enums.OrderStatus;
 import com.example.portfolio.webstorespring.model.dto.orders.request.DeliveryRequest;
 import com.example.portfolio.webstorespring.model.dto.orders.request.OrderRequest;
 import com.example.portfolio.webstorespring.model.dto.orders.request.ShipmentRequest;
-import com.example.portfolio.webstorespring.model.dto.orders.response.DeliveryResponse;
-import com.example.portfolio.webstorespring.model.dto.orders.response.OrderResponse;
-import com.example.portfolio.webstorespring.model.dto.orders.response.ShipmentResponse;
+import com.example.portfolio.webstorespring.model.dto.orders.response.*;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.orders.Delivery;
 import com.example.portfolio.webstorespring.model.entity.orders.Order;
@@ -66,6 +64,18 @@ public class OrderBuilderHelper {
                 .status(OrderStatus.OPEN)
                 .deliveryResponse(deliveryResponse)
                 .shipmentResponses(List.of(shipmentResponse, shipmentResponse))
+                .nameUser("Name Lastname")
+                .totalPrice(BigDecimal.valueOf(130.0))
+                .dateOfCreation(Timestamp.valueOf(DateForTestBuilderHelper.DATE_OF_CREATED))
+                .build();
+    }
+
+    public static OrderResponseWithoutShipments createOrderResponseWithoutShipments() {
+        DeliveryResponseWithoutDeliveryType deliveryResponse = createDeliveryResponseWithoutDeliveryType();
+        return OrderResponseWithoutShipments.builder()
+                .id(1L)
+                .status(OrderStatus.OPEN)
+                .deliveryResponse(deliveryResponse)
                 .nameUser("Name Lastname")
                 .totalPrice(BigDecimal.valueOf(130.0))
                 .dateOfCreation(Timestamp.valueOf(DateForTestBuilderHelper.DATE_OF_CREATED))

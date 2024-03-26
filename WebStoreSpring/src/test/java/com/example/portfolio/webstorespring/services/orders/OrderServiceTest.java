@@ -8,6 +8,7 @@ import com.example.portfolio.webstorespring.mappers.OrderMapper;
 import com.example.portfolio.webstorespring.mappers.ShipmentMapper;
 import com.example.portfolio.webstorespring.model.dto.orders.request.OrderRequest;
 import com.example.portfolio.webstorespring.model.dto.orders.response.OrderResponse;
+import com.example.portfolio.webstorespring.model.dto.orders.response.OrderResponseWithoutShipments;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.orders.Delivery;
 import com.example.portfolio.webstorespring.model.entity.orders.Order;
@@ -85,7 +86,7 @@ class OrderServiceTest {
         given(orderRepository.findAllByAccountId(anyLong())).willReturn(Arrays.asList(order, order));
 
         // when
-        List<OrderResponse> foundOrderResponses = underTest.getAllAccountOrder();
+        List<OrderResponseWithoutShipments> foundOrderResponses = underTest.getAllAccountOrder();
 
         // then
         assertThat(foundOrderResponses).hasSize(2);
@@ -119,7 +120,7 @@ class OrderServiceTest {
                 .willReturn(List.of(order, order, order, order, order));
 
         // when
-        List<OrderResponse> findOrders = underTest.getLastFiveAccountOrder();
+        List<OrderResponseWithoutShipments> findOrders = underTest.getLastFiveAccountOrder();
 
         // then
         assertThat(findOrders).hasSize(5);

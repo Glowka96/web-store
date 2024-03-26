@@ -2,6 +2,7 @@ package com.example.portfolio.webstorespring.controllers.orders;
 
 import com.example.portfolio.webstorespring.model.dto.orders.request.OrderRequest;
 import com.example.portfolio.webstorespring.model.dto.orders.response.OrderResponse;
+import com.example.portfolio.webstorespring.model.dto.orders.response.OrderResponseWithoutShipments;
 import com.example.portfolio.webstorespring.services.orders.OrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,12 +20,12 @@ public class OrderController {
     private final OrderService orderService;
 
     @GetMapping()
-    public ResponseEntity<List<OrderResponse>> getAllAccountOrders() {
+    public ResponseEntity<List<OrderResponseWithoutShipments>> getAllAccountOrders() {
         return ResponseEntity.ok(orderService.getAllAccountOrder());
     }
 
     @GetMapping("/last-five")
-    public ResponseEntity<List<OrderResponse>> getLastFiveAccountOrder() {
+    public ResponseEntity<List<OrderResponseWithoutShipments>> getLastFiveAccountOrder() {
         return ResponseEntity.ok(orderService.getLastFiveAccountOrder());
     }
 

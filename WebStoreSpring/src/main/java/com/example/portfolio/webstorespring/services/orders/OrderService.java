@@ -5,6 +5,7 @@ import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException
 import com.example.portfolio.webstorespring.mappers.OrderMapper;
 import com.example.portfolio.webstorespring.model.dto.orders.request.OrderRequest;
 import com.example.portfolio.webstorespring.model.dto.orders.response.OrderResponse;
+import com.example.portfolio.webstorespring.model.dto.orders.response.OrderResponseWithoutShipments;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.orders.Order;
 import com.example.portfolio.webstorespring.model.entity.orders.Shipment;
@@ -37,16 +38,16 @@ public class OrderService {
     private final DeliveryService deliveryService;
     private final Clock clock = Clock.systemUTC();
 
-    public List<OrderResponse> getAllAccountOrder() {
-        return orderMapper.mapToDto(orderRepository.findAllByAccountId(
+    public List<OrderResponseWithoutShipments> getAllAccountOrder() {
+        return orderMapper.mapToDtoWithoutShipments(orderRepository.findAllByAccountId(
                         getAccountDetails()
                                 .getAccount().getId()
                 )
         );
     }
 
-    public List<OrderResponse> getLastFiveAccountOrder() {
-        return orderMapper.mapToDto(orderRepository.findLastFiveAccountOrder(
+    public List<OrderResponseWithoutShipments> getLastFiveAccountOrder() {
+        return orderMapper.mapToDtoWithoutShipments(orderRepository.findLastFiveAccountOrder(
                 getAccountDetails()
                         .getAccount().getId()
         ));

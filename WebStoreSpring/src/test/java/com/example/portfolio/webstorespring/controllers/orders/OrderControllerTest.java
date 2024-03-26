@@ -2,6 +2,7 @@ package com.example.portfolio.webstorespring.controllers.orders;
 
 import com.example.portfolio.webstorespring.model.dto.orders.request.OrderRequest;
 import com.example.portfolio.webstorespring.model.dto.orders.response.OrderResponse;
+import com.example.portfolio.webstorespring.model.dto.orders.response.OrderResponseWithoutShipments;
 import com.example.portfolio.webstorespring.services.orders.OrderService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,12 +15,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import static com.example.portfolio.webstorespring.buildhelpers.orders.OrderBuilderHelper.createOrderRequest;
-import static com.example.portfolio.webstorespring.buildhelpers.orders.OrderBuilderHelper.createOrderResponse;
+import static com.example.portfolio.webstorespring.buildhelpers.orders.OrderBuilderHelper.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
@@ -54,9 +52,8 @@ class OrderControllerTest {
 
     @Test
     void shouldGetAllOrders() throws Exception {
-        OrderResponse orderResponse = createOrderResponse();
-        List<OrderResponse> orderResponses = new ArrayList<>(Arrays.asList(orderResponse, orderResponse));
-        given(orderService.getAllAccountOrder()).willReturn(orderResponses);
+        OrderResponseWithoutShipments orderResponse = createOrderResponseWithoutShipments();
+        given(orderService.getAllAccountOrder()).willReturn(List.of(orderResponse, orderResponse));
 
         mvc.perform(get(URI + "/orders")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -83,7 +80,7 @@ class OrderControllerTest {
 
     @Test
     void shouldGetLastFiveAccountOrders() throws Exception {
-        OrderResponse orderResponse = createOrderResponse();
+        OrderResponseWithoutShipments orderResponse = createOrderResponseWithoutShipments();
 
         given(orderService.getLastFiveAccountOrder())
                 .willReturn(List.of(orderResponse, orderResponse, orderResponse, orderResponse, orderResponse));
