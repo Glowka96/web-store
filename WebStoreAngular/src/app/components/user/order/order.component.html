@@ -31,7 +31,7 @@
             <p><span class="data">Total price:</span><br> {{order.totalPrice}}</p>
             <p><span class="data">Delivery address:</span><br> {{order.delivery.deliveryAddress}}</p>
             <p><span class="data">Delivery type:</span><br> {{order.delivery.deliveryType.name}}</p>
-            <p><span class="data">Date of purchase</span><br>{{order.dateOfCreation}}</p>
+            <p><span class="data">Date of purchase</span><br>{{order.dateOfCreation | date: 'dd-MM-yyy HH:mm:ss'}}</p>
             <p><span class="data">Order status:</span><br> {{order.status}}</p>
         </div>
     </div>
