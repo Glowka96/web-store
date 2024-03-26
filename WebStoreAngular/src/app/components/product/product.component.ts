@@ -45,16 +45,8 @@ export class ProductComponent implements OnInit {
   private mapToProductWithPromotion(
     productWithProducerAndPromotion: ProductWithProducerAndPromotion
   ): ProductWithPromotion {
-    const {
-      id,
-      name,
-      imageUrl,
-      quantity,
-      price,
-      promotionPrice,
-      lowestPrice,
-      endDate,
-    } = productWithProducerAndPromotion;
+    const { id, name, imageUrl, quantity, price, promotionPrice, lowestPrice } =
+      productWithProducerAndPromotion;
     return {
       id,
       name,
@@ -63,7 +55,6 @@ export class ProductComponent implements OnInit {
       price,
       promotionPrice,
       lowestPrice,
-      endDate,
     };
   }
 

@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum SortByType {
-    ID("id"),
+
     NAME("name"),
     PRICE("price"),
     TYPE("type"),

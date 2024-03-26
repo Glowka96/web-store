@@ -36,7 +36,7 @@ export abstract class AbstractPageProductComponent {
     text: string,
     pageNo = 0,
     pageSize = 12,
-    sortBy = 'id',
+    sortBy = 'name',
     sortDirection = 'asc'
   ) {
     const options = {
@@ -52,7 +52,7 @@ export abstract class AbstractPageProductComponent {
   protected getPageProducts(
     pageNo = 0,
     pageSize = 12,
-    sortBy = 'id',
+    sortBy = 'name',
     sortDirection = 'asc'
   ) {
     const options = {

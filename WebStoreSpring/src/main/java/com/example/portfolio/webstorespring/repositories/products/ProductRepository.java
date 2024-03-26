@@ -31,12 +31,12 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("""
             SELECT NEW com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionDTO(
-                p.id, p.name, p.imageUrl, p.quantity, p.price, ppp_1.promotionPrice, MIN(ppp_2.promotionPrice), ppp_1.endDate)
+                p.id, p.name, p.imageUrl, p.quantity, p.price, ppp_1.promotionPrice, MIN(ppp_2.promotionPrice))
             FROM Product p
             LEFT JOIN p.pricePromotions ppp_1 ON (CURRENT_TIMESTAMP BETWEEN ppp_1.startDate AND ppp_1.endDate)
             LEFT JOIN p.pricePromotions ppp_2 ON (ppp_2.endDate >= :date30DaysAgo AND ppp_1.id IS NOT NULL)
             WHERE p.subcategory.id = :subcategoryId AND p.quantity > 0
-            GROUP BY p.id, p.name, p.imageUrl, p.quantity, p.price, ppp_1.promotionPrice, ppp_1.endDate
+            GROUP BY p.id, p.name, p.imageUrl, p.quantity, p.price, ppp_1.promotionPrice
                        """)
     Optional<Page<ProductWithPromotionDTO>> findProductsBySubcategory_Id(@Param("subcategoryId") Long subcategoryId,
                                                                          @Param("date30DaysAgo") Date date30DaysAgo,
@@ -44,7 +44,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query(value = """ 
             SELECT NEW com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionDTO(
-                                 p.id, p.name, p.imageUrl, p.quantity, p.price, ppp_1.promotionPrice, MIN(ppp_2.promotionPrice), ppp_1.endDate)
+                                 p.id, p.name, p.imageUrl, p.quantity, p.price, ppp_1.promotionPrice, MIN(ppp_2.promotionPrice))
             FROM Product p
             INNER JOIN p.producer pr
             INNER JOIN p.type pt
@@ -55,7 +55,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             OR LOWER(pr.name) LIKE LOWER(CONCAT('%', :text, '%'))
             OR LOWER(pt.name) LIKE LOWER(CONCAT('%', :text, '%')))
             AND p.quantity > 0
-            GROUP BY p.id, p.name, p.imageUrl, p.quantity, pt.name, p.price, ppp_1.promotionPrice, ppp_1.endDate
+            GROUP BY p.id, p.name, p.imageUrl, p.quantity, pt.name, p.price, ppp_1.promotionPrice
                        """)
     Optional<Page<ProductWithPromotionDTO>> searchProductsByEnteredText(@Param("text") String text,
                                                                         @Param("date30DaysAgo") Date date30DaysAgo,
@@ -63,7 +63,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query(value = """
             SELECT NEW com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionDTO(
-                                 p.id, p.name, p.imageUrl, p.quantity, p.price, ppp_1.promotionPrice, MIN(ppp_2.promotionPrice), ppp_1.endDate)
+                                 p.id, p.name, p.imageUrl, p.quantity, p.price, ppp_1.promotionPrice, MIN(ppp_2.promotionPrice))
             FROM Product p
             LEFT JOIN p.pricePromotions ppp_1
             LEFT JOIN p.pricePromotions ppp_2
@@ -77,13 +77,13 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query(value = """
                         SELECT NEW com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionDTO(
-                                             p.id, p.name, p.imageUrl, p.quantity, p.price, ppp_1.promotionPrice, MIN(ppp_2.promotionPrice), ppp_1.endDate)
+                                             p.id, p.name, p.imageUrl, p.quantity, p.price, ppp_1.promotionPrice, MIN(ppp_2.promotionPrice))
                         FROM Product p
                         LEFT JOIN p.pricePromotions ppp_1 ON (CURRENT_TIMESTAMP BETWEEN ppp_1.startDate AND ppp_1.endDate)
                         LEFT JOIN p.pricePromotions ppp_2 ON (ppp_2.endDate >= :date30DaysAgo AND ppp_1.id IS NOT NULL)
                         WHERE p.dateOfCreation >= :date30DaysAgo
                         AND p.quantity > 0
-                        GROUP BY p.id, p.name, p.imageUrl, p.quantity, p.price, ppp_1.promotionPrice, ppp_1.endDate
+                        GROUP BY p.id, p.name, p.imageUrl, p.quantity, p.price, ppp_1.promotionPrice
             """)
     Optional<Page<ProductWithPromotionDTO>> findNewProducts(@Param("date30DaysAgo") Date date30DaysAgo,
                                                             Pageable pageable);
