@@ -15,24 +15,23 @@ class DeliveryService {
 
     private final DeliveryTypeService deliveryTypeService;
 
-   Delivery formatDelivery(DeliveryRequest deliveryRequest) {
-        Delivery delivery = Delivery.builder()
+    Delivery formatDelivery(DeliveryRequest deliveryRequest) {
+        return Delivery.builder()
                 .shipmentAddress(shipmentAddress)
+                .deliveryAddress(
+                        formatDeliveryAddress(
+                                deliveryRequest.getDeliveryAddress().split(", ")))
                 .deliveryType(deliveryTypeService.getDeliveryTypeById(
                         deliveryRequest.getDeliveryTypeId()))
                 .build();
-
-        formatDeliveryAddress(delivery, deliveryRequest.getDeliveryAddress().split(", "));
-        return delivery;
     }
 
-    private void formatDeliveryAddress(Delivery delivery, String... address) {
-        String formattedAddress = "City: " +
-                                  address[0] +
-                                  ", Postcode: " +
-                                  address[1] +
-                                  ", Street: " +
-                                  address[2];
-        delivery.setDeliveryAddress(formattedAddress);
+    private String formatDeliveryAddress(String... address) {
+        return "City: " +
+               address[0] +
+               ", Postcode: " +
+               address[1] +
+               ", Street: " +
+               address[2];
     }
 }
