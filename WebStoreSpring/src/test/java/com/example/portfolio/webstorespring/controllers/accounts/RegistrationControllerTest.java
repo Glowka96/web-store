@@ -8,6 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -45,9 +46,10 @@ class RegistrationControllerTest {
         given(registrationService.confirmToken(anyString())).willReturn(result);
 
         mvc.perform(get(URI + "/confirm")
-                        .param("token", "token123"))
+                        .param("token", "token123")
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath( "$",is(result)))
+                .andExpect(jsonPath("$", is(result)))
                 .andDo(print());
     }
 

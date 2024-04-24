@@ -14,10 +14,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static com.example.portfolio.webstorespring.buildhelpers.products.PageProductWithPromotionDTOBuilderHelper.createPageProductsWithPromotionDTO;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
@@ -39,10 +42,10 @@ class ProductsPageControllerTest {
 
     @Test
     void shouldGetPageProductsBySubcategoryId() throws Exception {
-        PageProductsWithPromotionDTO pageProductsWithPromotionDTO = createPageProductsWithPromotionDTO();
+        PageProductsWithPromotionDTO pageProducts = createPageProductsWithPromotionDTO();
 
         given(productsPageService.getPageProductsBySubcategoryId(anyLong(), anyInt(), anyInt(), any(), any()))
-                .willReturn(pageProductsWithPromotionDTO);
+                .willReturn(pageProducts);
 
         mvc.perform(get(URI + "/subcategories/{subcategoryId}/products", 1)
                         .param("text", "test")
@@ -50,18 +53,22 @@ class ProductsPageControllerTest {
                         .param("size", "3")
                         .param("sort", "PRICE")
                         .param("direction", "ASC")
-                        .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalElements", is(pageProducts.totalElements().intValue())))
+                .andExpect(jsonPath("$.totalPages", is(pageProducts.totalPages())))
+                .andExpect(jsonPath("$.sortByTypes", hasSize(pageProducts.sortByTypes().size())))
+                .andExpect(jsonPath("$.sortDirectionTypes", hasSize(pageProducts.sortDirectionTypes().size())))
+                .andExpect(jsonPath("$.products", hasSize(pageProducts.products().size())))
                 .andDo(print());
     }
 
     @Test
     void getPagePromotionProduct() throws Exception {
-        PageProductsWithPromotionDTO pageProductsWithPromotionDTO = createPageProductsWithPromotionDTO();
+        PageProductsWithPromotionDTO pageProducts = createPageProductsWithPromotionDTO();
 
         given(productsPageService.getPagePromotionProduct(anyInt(), anyInt(), any(), any()))
-                .willReturn(pageProductsWithPromotionDTO);
+                .willReturn(pageProducts);
 
         mvc.perform(get(URI + "/products/promotions", 1)
                         .param("text", "test")
@@ -69,18 +76,22 @@ class ProductsPageControllerTest {
                         .param("size", "3")
                         .param("sort", "PRICE")
                         .param("direction", "ASC")
-                        .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalElements", is(pageProducts.totalElements().intValue())))
+                .andExpect(jsonPath("$.totalPages", is(pageProducts.totalPages())))
+                .andExpect(jsonPath("$.sortByTypes", hasSize(pageProducts.sortByTypes().size())))
+                .andExpect(jsonPath("$.sortDirectionTypes", hasSize(pageProducts.sortDirectionTypes().size())))
+                .andExpect(jsonPath("$.products", hasSize(pageProducts.products().size())))
                 .andDo(print());
     }
 
     @Test
     void getPageNewProduct() throws Exception {
-        PageProductsWithPromotionDTO pageProductsWithPromotionDTO = createPageProductsWithPromotionDTO();
+        PageProductsWithPromotionDTO pageProducts = createPageProductsWithPromotionDTO();
 
         given(productsPageService.getPageNewProduct(anyInt(), anyInt(), any(), any()))
-                .willReturn(pageProductsWithPromotionDTO);
+                .willReturn(pageProducts);
 
         mvc.perform(get(URI + "/products/news", 1)
                         .param("text", "test")
@@ -88,9 +99,13 @@ class ProductsPageControllerTest {
                         .param("size", "3")
                         .param("sort", "PRICE")
                         .param("direction", "ASC")
-                        .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalElements", is(pageProducts.totalElements().intValue())))
+                .andExpect(jsonPath("$.totalPages", is(pageProducts.totalPages())))
+                .andExpect(jsonPath("$.sortByTypes", hasSize(pageProducts.sortByTypes().size())))
+                .andExpect(jsonPath("$.sortDirectionTypes", hasSize(pageProducts.sortDirectionTypes().size())))
+                .andExpect(jsonPath("$.products", hasSize(pageProducts.products().size())))
                 .andDo(print());
     }
 }

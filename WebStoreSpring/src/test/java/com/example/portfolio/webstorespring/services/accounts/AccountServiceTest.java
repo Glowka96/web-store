@@ -10,7 +10,6 @@ import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.accounts.Role;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
 import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
@@ -19,9 +18,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -42,29 +38,25 @@ class AccountServiceTest {
     @Mock
     private BCryptPasswordEncoder encoder;
     @Mock
-    private Authentication authentication;
-    @Mock
-    private SecurityContext securityContext;
-    @Mock
     private RoleService roleService;
     @Spy
     private AccountMapper accountMapper = Mappers.getMapper(AccountMapper.class);
     @InjectMocks
     private AccountService underTest;
 
-    @AfterEach
-    void resetSecurityContext() {
-        SecurityContextHolder.clearContext();
-    }
+//    @AfterEach
+//    void clearSecurityContext() {
+//        SecurityContextHolder.clearContext();
+//    }
 
     @Test
     void shouldGetAccount() {
         // given
         Account account = createAccountWithRoleUser();
-        mockAuthentication(account);
+        AccountDetails accountDetails = new AccountDetails(account);
 
         // when
-        AccountResponse result = underTest.getAccount();
+        AccountResponse result = underTest.getAccount(accountDetails);
 
         // then
         assertThat(result).isNotNull();
@@ -125,14 +117,13 @@ class AccountServiceTest {
         Account account = createAccountWithRoleUser();
 
         AccountRequest accountRequest = createAccountRequest();
-
-        mockAuthentication(account);
+        AccountDetails accountDetails = new AccountDetails(account);
 
         given(encoder.encode(anyString())).willReturn("hashedPassword");
         given(accountRepository.save(any(Account.class))).willReturn(account);
 
         // when
-        AccountResponse updatedAccountResponse = underTest.updateAccount(accountRequest);
+        AccountResponse updatedAccountResponse = underTest.updateAccount(accountDetails, accountRequest);
 
         // then
         ArgumentCaptor<Account> accountArgumentCaptor = ArgumentCaptor.forClass(Account.class);
@@ -148,10 +139,10 @@ class AccountServiceTest {
     void shouldDeleteAccount() {
         // given
         Account account = createAccountWithRoleUser();
-        mockAuthentication(account);
+        AccountDetails accountDetails = new AccountDetails(account);
 
         // when
-        underTest.deleteAccount();
+        underTest.deleteAccount(accountDetails);
 
         // then
         verify(accountRepository, times(1)).delete(account);
@@ -180,13 +171,5 @@ class AccountServiceTest {
         assertThatThrownBy(() -> underTest.findAccountByEmail("test"))
                 .isInstanceOf(UsernameNotFoundException.class)
                 .hasMessageContaining("Account with email: test not found");
-    }
-
-
-    private void mockAuthentication(Account account) {
-        AccountDetails accountDetails = new AccountDetails(account);
-        when(authentication.getPrincipal()).thenReturn(accountDetails);
-        SecurityContextHolder.setContext(securityContext);
-        when(securityContext.getAuthentication()).thenReturn(authentication);
     }
 }

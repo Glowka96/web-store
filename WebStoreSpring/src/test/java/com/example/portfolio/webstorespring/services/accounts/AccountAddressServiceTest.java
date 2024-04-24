@@ -1,6 +1,5 @@
 package com.example.portfolio.webstorespring.services.accounts;
 
-import com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper;
 import com.example.portfolio.webstorespring.mappers.AccountAddressMapper;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.AccountAddressRequest;
 import com.example.portfolio.webstorespring.model.dto.accounts.response.AccountAddressResponse;
@@ -16,14 +15,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountAddressBuilderHelper.createAccountAddressRequest;
+import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.createAccountWithRoleUserAndAccountAddress;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class AccountAddressServiceTest {
@@ -32,21 +28,22 @@ class AccountAddressServiceTest {
     private AccountAddressRepository addressRepository;
     @Spy
     private AccountAddressMapper addressMapper = Mappers.getMapper(AccountAddressMapper.class);
-    @Mock
-    private Authentication authentication;
-    @Mock
-    private SecurityContext securityContext;
     @InjectMocks
     private AccountAddressService underTest;
+
+//    @AfterEach
+//    void clearSecurityContext() {
+//        SecurityContextHolder.clearContext();
+//    }
 
     @Test
     void shouldGetAccountAddress() {
         // given
-        Account account = AccountBuilderHelper.createAccountWithRoleUserAndAccountAddress();
-        mockAuthentication(account);
+        Account account = createAccountWithRoleUserAndAccountAddress();
+        AccountDetails accountDetails = new AccountDetails(account);
 
         // when
-        AccountAddressResponse foundAccountAddressResponse = underTest.getAccountAddress();
+        AccountAddressResponse foundAccountAddressResponse = underTest.getAccountAddress(accountDetails);
 
         // then
         assertThat(foundAccountAddressResponse).isNotNull();
@@ -59,13 +56,14 @@ class AccountAddressServiceTest {
     @Test
     void saveAccountAddress() {
         // given
-        Account account = AccountBuilderHelper.createAccountWithRoleUserAndAccountAddress();
-        mockAuthentication(account);
+        Account account = createAccountWithRoleUserAndAccountAddress();
+        AccountDetails accountDetails = new AccountDetails(account);
 
         AccountAddressRequest accountAddressRequest = createAccountAddressRequest();
 
         // when
-        AccountAddressResponse savedAccountAddressResponse = underTest.saveAccountAddress(accountAddressRequest);
+        AccountAddressResponse savedAccountAddressResponse =
+                underTest.saveAccountAddress(accountDetails, accountAddressRequest);
 
         // then
         ArgumentCaptor<AccountAddress> accountAddressArgumentCaptor =
@@ -81,13 +79,14 @@ class AccountAddressServiceTest {
     @Test
     void updateAccountAddress() {
         // given
-        Account account = AccountBuilderHelper.createAccountWithRoleUserAndAccountAddress();
-        mockAuthentication(account);
+        Account account = createAccountWithRoleUserAndAccountAddress();
+        AccountDetails accountDetails = new AccountDetails(account);
 
         AccountAddressRequest accountAddressRequest = createAccountAddressRequest();
 
         // when
-        AccountAddressResponse updatedAccountAddressResponse = underTest.updateAccountAddress(accountAddressRequest);
+        AccountAddressResponse updatedAccountAddressResponse =
+                underTest.updateAccountAddress(accountDetails, accountAddressRequest);
 
         // then
         ArgumentCaptor<AccountAddress> accountAddressArgumentCaptor =
@@ -98,12 +97,5 @@ class AccountAddressServiceTest {
         AccountAddressResponse mappedAccount = addressMapper.mapToDto(captureAddress);
 
         assertThat(mappedAccount).isEqualTo(updatedAccountAddressResponse);
-    }
-
-    private void mockAuthentication(Account account) {
-        AccountDetails accountDetails = new AccountDetails(account);
-        when(authentication.getPrincipal()).thenReturn(accountDetails);
-        SecurityContextHolder.setContext(securityContext);
-        when(securityContext.getAuthentication()).thenReturn(authentication);
     }
 }

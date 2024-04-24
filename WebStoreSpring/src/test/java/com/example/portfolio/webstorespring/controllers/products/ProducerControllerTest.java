@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.List;
 
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProducerBuilderHelper.createProducerRequest;
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProducerBuilderHelper.createProducerResponse;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
@@ -51,7 +52,6 @@ class ProducerControllerTest {
         given(producerService.getAllProducer()).willReturn(List.of(producerResponse, new ProducerResponse()));
 
         mvc.perform(get(URI)
-                        .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
@@ -60,6 +60,7 @@ class ProducerControllerTest {
 
     @Test
     void shouldSaveProducer() throws Exception {
+        ProducerRequest productRequest = createProducerRequest();
         ProducerResponse producerResponse = createProducerResponse();
 
         given(producerService.saveProducer(any(ProducerRequest.class))).willReturn(producerResponse);
@@ -67,15 +68,16 @@ class ProducerControllerTest {
         mvc.perform(post(URI)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(producerResponse)))
+                        .content(mapper.writeValueAsString(productRequest)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.name", is("Test")))
+                .andExpect(jsonPath("$.id", is(producerResponse.getId().intValue())))
+                .andExpect(jsonPath("$.name", is(producerResponse.getName())))
                 .andDo(print());
     }
 
     @Test
     void shouldUpdateProducer() throws Exception {
+        ProducerRequest productRequest = createProducerRequest();
         ProducerResponse producerResponse = createProducerResponse();
 
         given(producerService.updateProducer(anyLong(), any(ProducerRequest.class))).willReturn(producerResponse);
@@ -83,10 +85,10 @@ class ProducerControllerTest {
         mvc.perform(put(URI + "/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(producerResponse)))
+                        .content(mapper.writeValueAsString(productRequest)))
                 .andExpect(status().isAccepted())
-                .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.name", is("Test")))
+                .andExpect(jsonPath("$.id", is(producerResponse.getId().intValue())))
+                .andExpect(jsonPath("$.name", is(producerResponse.getName())))
                 .andDo(print());
     }
 

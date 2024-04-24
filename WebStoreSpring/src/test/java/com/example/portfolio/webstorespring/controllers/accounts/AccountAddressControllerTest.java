@@ -4,6 +4,7 @@ import com.example.portfolio.webstorespring.exceptions.GlobalExceptionHandler;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.AccountAddressRequest;
 import com.example.portfolio.webstorespring.model.dto.accounts.response.AccountAddressResponse;
 import com.example.portfolio.webstorespring.services.accounts.AccountAddressService;
+import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -48,21 +49,19 @@ class AccountAddressControllerTest {
 
     @Test
     void getAccountAddress() throws Exception {
-        AccountAddressRequest accountAddressRequest = createAccountAddressRequest();
         AccountAddressResponse accountAddressResponse = createAccountAddressResponse();
 
-        given(addressService.getAccountAddress()).willReturn(accountAddressResponse);
+        given(addressService.getAccountAddress(any(AccountDetails.class)))
+                .willReturn(accountAddressResponse);
 
         mvc.perform(get(URI)
-                        .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(accountAddressRequest))
                         .header("Authorization", "Bearer {JWT_TOKEN}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.city", is(accountAddressRequest.getCity())))
-                .andExpect(jsonPath("$.street", is(accountAddressRequest.getStreet())))
-                .andExpect(jsonPath("$.postcode", is(accountAddressRequest.getPostcode())))
+                .andExpect(jsonPath("$.city", is(accountAddressResponse.getCity())))
+                .andExpect(jsonPath("$.street", is(accountAddressResponse.getStreet())))
+                .andExpect(jsonPath("$.postcode", is(accountAddressResponse.getPostcode())))
                 .andDo(print());
     }
 
@@ -71,7 +70,8 @@ class AccountAddressControllerTest {
         AccountAddressRequest accountAddressRequest = createAccountAddressRequest();
         AccountAddressResponse accountAddressResponse = createAccountAddressResponse();
 
-        given(addressService.saveAccountAddress(any(AccountAddressRequest.class))).willReturn(accountAddressResponse);
+        given(addressService.saveAccountAddress(any(AccountDetails.class), any(AccountAddressRequest.class)))
+                .willReturn(accountAddressResponse);
 
         mvc.perform(post(URI)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -80,9 +80,9 @@ class AccountAddressControllerTest {
                         .header("Authorization", "Bearer {JWT_TOKEN}"))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.city", is(accountAddressRequest.getCity())))
-                .andExpect(jsonPath("$.street", is(accountAddressRequest.getStreet())))
-                .andExpect(jsonPath("$.postcode", is(accountAddressRequest.getPostcode())))
+                .andExpect(jsonPath("$.city", is(accountAddressResponse.getCity())))
+                .andExpect(jsonPath("$.street", is(accountAddressResponse.getStreet())))
+                .andExpect(jsonPath("$.postcode", is(accountAddressResponse.getPostcode())))
                 .andDo(print());
     }
 
@@ -91,7 +91,8 @@ class AccountAddressControllerTest {
         AccountAddressRequest accountAddressRequest = createAccountAddressRequest();
         AccountAddressResponse accountAddressResponse = createAccountAddressResponse();
 
-        given(addressService.updateAccountAddress(any(AccountAddressRequest.class))).willReturn(accountAddressResponse);
+        given(addressService.updateAccountAddress(any(AccountDetails.class), any(AccountAddressRequest.class)))
+                .willReturn(accountAddressResponse);
 
         mvc.perform(put(URI, 1)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -100,9 +101,9 @@ class AccountAddressControllerTest {
                         .header("Authorization", "Bearer {JWT_TOKEN}"))
                 .andExpect(status().isAccepted())
                 .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.city", is(accountAddressRequest.getCity())))
-                .andExpect(jsonPath("$.street", is(accountAddressRequest.getStreet())))
-                .andExpect(jsonPath("$.postcode", is(accountAddressRequest.getPostcode())))
+                .andExpect(jsonPath("$.city", is(accountAddressResponse.getCity())))
+                .andExpect(jsonPath("$.street", is(accountAddressResponse.getStreet())))
+                .andExpect(jsonPath("$.postcode", is(accountAddressResponse.getPostcode())))
                 .andDo(print());
     }
 }

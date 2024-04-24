@@ -9,7 +9,6 @@ import com.example.portfolio.webstorespring.repositories.accounts.AccountReposit
 import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,13 +27,13 @@ public class AccountService {
     @Value("${account.image.url}")
     private String accountImageURL;
 
-    public AccountResponse getAccount() {
-        return accountMapper.mapToDto(getAccountDetails().getAccount());
+    public AccountResponse getAccount(AccountDetails accountDetails) {
+        return accountMapper.mapToDto(accountDetails.getAccount());
     }
 
     @Transactional
-    public AccountResponse updateAccount(AccountRequest accountRequest) {
-        Account loggedAccount = getAccountDetails().getAccount();
+    public AccountResponse updateAccount(AccountDetails accountDetails, AccountRequest accountRequest) {
+        Account loggedAccount = accountDetails.getAccount();
 
         Account updatedAccount = accountMapper.mapToEntity(accountRequest);
         loggedAccount.setFirstName(updatedAccount.getFirstName());
@@ -70,18 +69,12 @@ public class AccountService {
         accountRepository.save(account);
     }
 
-    public void deleteAccount() {
-        accountRepository.delete(getAccountDetails().getAccount());
+    public void deleteAccount(AccountDetails accountDetails) {
+        accountRepository.delete(accountDetails.getAccount());
     }
 
     public Account findAccountByEmail(String email) {
         return accountRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Account with email: " + email + " not found"));
-    }
-
-    private AccountDetails getAccountDetails() {
-        return (AccountDetails) SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getPrincipal();
     }
 }

@@ -12,10 +12,8 @@ import com.example.portfolio.webstorespring.model.entity.orders.Shipment;
 import com.example.portfolio.webstorespring.repositories.orders.OrderRepository;
 import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +27,6 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class OrderService {
 
     private final OrderRepository orderRepository;
@@ -38,32 +35,33 @@ public class OrderService {
     private final DeliveryService deliveryService;
     private final Clock clock = Clock.systemUTC();
 
-    public List<OrderResponseWithoutShipments> getAllAccountOrder() {
-        return orderMapper.mapToDtoWithoutShipments(orderRepository.findAllByAccountId(
-                        getAccountDetails()
-                                .getAccount().getId()
+    public List<OrderResponseWithoutShipments> getAllAccountOrder(AccountDetails accountDetails) {
+        return orderMapper.mapToDtoWithoutShipments(
+                orderRepository.findAllByAccountId(
+                        accountDetails.getAccount().getId()
                 )
         );
     }
 
-    public List<OrderResponseWithoutShipments> getLastFiveAccountOrder() {
-        return orderMapper.mapToDtoWithoutShipments(orderRepository.findLastFiveAccountOrder(
-                getAccountDetails()
-                        .getAccount().getId()
-        ));
+    public List<OrderResponseWithoutShipments> getLastFiveAccountOrder(AccountDetails accountDetails) {
+        return orderMapper.mapToDtoWithoutShipments(
+                orderRepository.findLastFiveAccountOrder(
+                        accountDetails.getAccount().getId()
+                )
+        );
     }
 
-    public OrderResponse getOrderById(Long orderId) {
+    public OrderResponse getOrderById(AccountDetails accountDetails, Long orderId) {
         Order foundOrder = findOrderById(orderId);
 
-        checkOwnerOfOrder(foundOrder);
+        checkOwnerOfOrder(accountDetails, foundOrder);
 
         return orderMapper.mapToDto(foundOrder);
     }
 
     @Transactional
-    public OrderResponse saveOrder(OrderRequest orderRequest) {
-        Account loggedAccount = getAccountDetails().getAccount();
+    public OrderResponse saveOrder(AccountDetails accountDetails, OrderRequest orderRequest) {
+        Account loggedAccount = accountDetails.getAccount();
 
         Order order = new Order();
         setupNewOrder(order, loggedAccount, orderRequest);
@@ -78,16 +76,10 @@ public class OrderService {
                 .orElseThrow(() -> new ResourceNotFoundException("Order", "id", id));
     }
 
-    private void checkOwnerOfOrder(Order foundOrder) {
-        if (!foundOrder.getAccount().getId().equals(getAccountDetails().getAccount().getId())) {
+    private void checkOwnerOfOrder(AccountDetails accountDetails, Order foundOrder) {
+        if (!foundOrder.getAccount().getId().equals(accountDetails.getAccount().getId())) {
             throw new AccessDeniedException("You can only get your data");
         }
-    }
-
-    private AccountDetails getAccountDetails() {
-        return (AccountDetails) SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getPrincipal();
     }
 
     private void setupNewOrder(Order order,

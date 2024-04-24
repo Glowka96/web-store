@@ -8,7 +8,6 @@ import com.example.portfolio.webstorespring.model.entity.accounts.AccountAddress
 import com.example.portfolio.webstorespring.repositories.accounts.AccountAddressRepository;
 import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,21 +18,18 @@ public class AccountAddressService {
     private final AccountAddressRepository addressRepository;
     private final AccountAddressMapper addressMapper;
 
-    public AccountAddressResponse getAccountAddress() {
-        return addressMapper.mapToDto(
-                getAccountDetails()
-                        .getAccount()
-                        .getAddress()
-        );
+    public AccountAddressResponse getAccountAddress(AccountDetails accountDetails) {
+        return addressMapper.mapToDto(accountDetails.getAccount().getAddress());
     }
 
     @Transactional
-    public AccountAddressResponse saveAccountAddress(AccountAddressRequest accountAddressRequest) {
-        Account loggedAccount = getAccountDetails().getAccount();
+    public AccountAddressResponse saveAccountAddress(AccountDetails accountDetails,
+                                                     AccountAddressRequest accountAddressRequest) {
+        Account loggedAccount = accountDetails.getAccount();
 
         AccountAddress accountAddress = addressMapper.mapToEntity(accountAddressRequest);
 
-        if(loggedAccount.getAddress() != null) {
+        if (loggedAccount.getAddress() != null) {
             setupUpdateAddress(loggedAccount.getAddress(), accountAddress);
             addressRepository.save(loggedAccount.getAddress());
             return addressMapper.mapToDto(loggedAccount.getAddress());
@@ -45,20 +41,15 @@ public class AccountAddressService {
     }
 
     @Transactional
-    public AccountAddressResponse updateAccountAddress(AccountAddressRequest accountAddressRequest) {
-        AccountAddress loggedAccountAddress = getAccountDetails().getAccount().getAddress();
+    public AccountAddressResponse updateAccountAddress(AccountDetails accountDetails,
+                                                       AccountAddressRequest accountAddressRequest) {
+        AccountAddress loggedAccountAddress = accountDetails.getAccount().getAddress();
 
         AccountAddress accountAddress = addressMapper.mapToEntity(accountAddressRequest);
 
         setupUpdateAddress(loggedAccountAddress, accountAddress);
         addressRepository.save(loggedAccountAddress);
         return addressMapper.mapToDto(loggedAccountAddress);
-    }
-
-    private AccountDetails getAccountDetails() {
-        return (AccountDetails) SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getPrincipal();
     }
 
     private void setupUpdateAddress(AccountAddress loggedAccountAddress, AccountAddress accountAddress) {

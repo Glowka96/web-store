@@ -50,7 +50,7 @@ class DeliveryTypeControllerTest {
         given(deliveryTypeService.getAllDeliveryType()).willReturn(List.of(deliveryTypeResponse, deliveryTypeResponse));
 
         mvc.perform(get(URI + "/delivery-types")
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andDo(print());
@@ -68,8 +68,8 @@ class DeliveryTypeControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(deliveryTypeRequest)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.name", is(deliveryTypeRequest.getName())))
-                .andExpect(jsonPath("$.price", is(10.0)))
+                .andExpect(jsonPath("$.name", is(deliveryTypeResponse.getName())))
+                .andExpect(jsonPath("$.price", is(deliveryTypeResponse.getPrice().doubleValue())))
                 .andDo(print());
     }
 

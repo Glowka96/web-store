@@ -25,8 +25,6 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -41,7 +39,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith({MockitoExtension.class})
 class OrderServiceTest {
@@ -51,10 +50,6 @@ class OrderServiceTest {
     private DeliveryService deliveryService;
     @Mock
     private ShipmentService shipmentService;
-    @Mock
-    private Authentication authentication;
-    @Mock
-    private SecurityContext securityContext;
     @Spy
     private OrderMapper orderMapper = Mappers.getMapper(OrderMapper.class);
     @InjectMocks
@@ -73,7 +68,7 @@ class OrderServiceTest {
     }
 
     @AfterEach
-    void resetSecurityContext() {
+    void clearSecurityContext() {
         SecurityContextHolder.clearContext();
     }
 
@@ -81,12 +76,12 @@ class OrderServiceTest {
     void shouldGetAllAccountsOrder() {
         // given
         Order order = createOrder();
+        AccountDetails accountDetails = getAccountDetails();
 
-        mockAuthentication();
         given(orderRepository.findAllByAccountId(anyLong())).willReturn(Arrays.asList(order, order));
 
         // when
-        List<OrderResponseWithoutShipments> foundOrderResponses = underTest.getAllAccountOrder();
+        List<OrderResponseWithoutShipments> foundOrderResponses = underTest.getAllAccountOrder(accountDetails);
 
         // then
         assertThat(foundOrderResponses).hasSize(2);
@@ -96,12 +91,12 @@ class OrderServiceTest {
     void shouldGetAccountOrderByOrderId() {
         // given
         Order order = createOrder();
+        AccountDetails accountDetails = getAccountDetails();
 
-        mockAuthentication();
         given(orderRepository.findById(anyLong())).willReturn(Optional.of(order));
 
         // when
-        OrderResponse orderResponse = underTest.getOrderById(1L);
+        OrderResponse orderResponse = underTest.getOrderById(accountDetails,1L);
 
         // then
         assertThat(orderResponse.getId()).isEqualTo(order.getId());
@@ -114,13 +109,13 @@ class OrderServiceTest {
 
         Order order = createOrder();
 
-        mockAuthentication();
+        AccountDetails accountDetails = getAccountDetails();
 
         given(orderRepository.findLastFiveAccountOrder(anyLong()))
                 .willReturn(List.of(order, order, order, order, order));
 
         // when
-        List<OrderResponseWithoutShipments> findOrders = underTest.getLastFiveAccountOrder();
+        List<OrderResponseWithoutShipments> findOrders = underTest.getLastFiveAccountOrder(accountDetails);
 
         // then
         assertThat(findOrders).hasSize(5);
@@ -132,19 +127,22 @@ class OrderServiceTest {
         Order order = createOrder();
         setupOtherAccountToAuthentication(order);
 
-        mockAuthentication();
+        AccountDetails accountDetails = getAccountDetails();
+
         given(orderRepository.findById(anyLong())).willReturn(Optional.of(order));
 
         // when
         // than
-        assertThatThrownBy(() -> underTest.getOrderById(1L))
+        assertThatThrownBy(() -> underTest.getOrderById(accountDetails, 1L))
                 .isInstanceOf(AccessDeniedException.class)
                 .hasMessageContaining("You can only get your data");
     }
 
     @Test
     void willThrowWhenGetAccountOrderIdNotFoundOrder() {
-        assertThatThrownBy(() -> underTest.getOrderById(1L))
+        AccountDetails accountDetails = getAccountDetails();
+
+        assertThatThrownBy(() -> underTest.getOrderById(accountDetails, 1L))
                 .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessageContaining("Order with id 1 not found");
     }
@@ -152,7 +150,7 @@ class OrderServiceTest {
     @Test
     void shouldSaveOrder() {
         // given
-        mockAuthentication();
+        AccountDetails accountDetails = getAccountDetails();
 
         OrderRequest orderRequest = createOrderRequest();
 
@@ -160,7 +158,7 @@ class OrderServiceTest {
         given(deliveryService.formatDelivery(any())).willReturn(delivery);
 
         // when
-        OrderResponse savedOrderResponse = underTest.saveOrder(orderRequest);
+        OrderResponse savedOrderResponse = underTest.saveOrder(accountDetails, orderRequest);
 
         // then
         ArgumentCaptor<Order> orderArgumentCaptor =
@@ -172,12 +170,9 @@ class OrderServiceTest {
         assertThat(savedOrderResponse).isEqualTo(orderResponse);
     }
 
-    private void mockAuthentication() {
+    private AccountDetails getAccountDetails() {
         Account account = AccountBuilderHelper.createAccountWithRoleUser();
-        AccountDetails accountDetails = new AccountDetails(account);
-        when(authentication.getPrincipal()).thenReturn(accountDetails);
-        SecurityContextHolder.setContext(securityContext);
-        when(securityContext.getAuthentication()).thenReturn(authentication);
+        return new AccountDetails(account);
     }
 
     private void setupOtherAccountToAuthentication(Order order) {
