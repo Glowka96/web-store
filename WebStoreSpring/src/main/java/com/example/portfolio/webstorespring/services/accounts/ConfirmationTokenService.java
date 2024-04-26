@@ -16,7 +16,7 @@ import java.util.UUID;
 public class ConfirmationTokenService {
 
     private final ConfirmationTokenRepository confirmationTokenRepository;
-    private final Clock clock = Clock.systemUTC();
+    private final Clock clock;
 
     public ConfirmationToken createConfirmationToken(Account account) {
         ConfirmationToken confirmationToken = new ConfirmationToken(
@@ -32,10 +32,6 @@ public class ConfirmationTokenService {
     public ConfirmationToken getConfirmationTokenByToken(String token) {
         return confirmationTokenRepository.findByToken(token)
                 .orElseThrow(() -> new ResourceNotFoundException("Confirmation token","token", token));
-    }
-
-    public boolean isConfirmed(ConfirmationToken token) {
-        return token.getConfirmedAt() != null;
     }
 
     public boolean isTokenExpired(ConfirmationToken token) {

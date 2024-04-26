@@ -15,7 +15,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Map;
 
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.createAccountWithRoleUser;
-import static com.example.portfolio.webstorespring.buildhelpers.accounts.ConfirmationTokenBuilderHelper.createConfirmationToken;
+import static com.example.portfolio.webstorespring.buildhelpers.accounts.ConfirmationTokenBuilderHelper.createConfirmationTokenIsConfirmedAt;
+import static com.example.portfolio.webstorespring.buildhelpers.accounts.ConfirmationTokenBuilderHelper.createConfirmationTokenIsNotConfirmedAt;
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.RegistrationRequestBuilderHelper.createRegistrationRequest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -41,7 +42,7 @@ class RegistrationServiceTest {
         // given
         RegistrationRequest registrationRequest = createRegistrationRequest();
         Account account = createAccountWithRoleUser();
-        ConfirmationToken confirmationToken = createConfirmationToken(account);
+        ConfirmationToken confirmationToken = createConfirmationTokenIsNotConfirmedAt(account);
 
         Map<String, Object> excepted = Map.of("message", ConfirmEmailType.REGISTRATION.getInformationMessage());
 
@@ -61,13 +62,12 @@ class RegistrationServiceTest {
     void shouldSuccessConfirmToken() {
         // given
         Account account = createAccountWithRoleUser();
-        ConfirmationToken confirmationToken = createConfirmationToken(account);
+        ConfirmationToken confirmationToken = createConfirmationTokenIsNotConfirmedAt(account);
 
         Map<String, Object> excepted = Map.of("message","Account confirmed");
 
         // when
         when(confirmationTokenService.getConfirmationTokenByToken(anyString())).thenReturn(confirmationToken);
-        when(confirmationTokenService.isConfirmed(any(ConfirmationToken.class))).thenReturn(false);
 
         Map<String, Object> result = underTest.confirmToken(confirmationToken.getToken());
 
@@ -81,11 +81,10 @@ class RegistrationServiceTest {
     void willThrowWhenAccountConfirm() {
         // given
         Account account = createAccountWithRoleUser();
-        ConfirmationToken confirmationToken = createConfirmationToken(account);
+        ConfirmationToken confirmationToken = createConfirmationTokenIsConfirmedAt(account);
 
         // when
         when(confirmationTokenService.getConfirmationTokenByToken(anyString())).thenReturn(confirmationToken);
-        when(confirmationTokenService.isConfirmed(any(ConfirmationToken.class))).thenReturn(true);
 
         // then
         assertThatThrownBy(() -> underTest.confirmToken(confirmationToken.getToken()))
@@ -98,11 +97,10 @@ class RegistrationServiceTest {
         // given
         Account account = createAccountWithRoleUser();
         account.setEnabled(false);
-        ConfirmationToken confirmationToken = createConfirmationToken(account);
+        ConfirmationToken confirmationToken = createConfirmationTokenIsNotConfirmedAt(account);
         Map<String, Object> excepted = Map.of("message", ConfirmEmailType.REGISTRATION.getInformationMessage());
 
         given(confirmationTokenService.getConfirmationTokenByToken(anyString())).willReturn(confirmationToken);
-        given(confirmationTokenService.isConfirmed(any(ConfirmationToken.class))).willReturn(false);
         given(confirmationTokenService.isTokenExpired(any(ConfirmationToken.class))).willReturn(true);
         given(confirmationTokenService.createConfirmationToken(any(Account.class))).willReturn(confirmationToken);
         given(emailSenderService.sendEmail(anyString(), anyString()))

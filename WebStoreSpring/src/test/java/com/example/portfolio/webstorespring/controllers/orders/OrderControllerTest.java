@@ -3,6 +3,7 @@ package com.example.portfolio.webstorespring.controllers.orders;
 import com.example.portfolio.webstorespring.model.dto.orders.request.OrderRequest;
 import com.example.portfolio.webstorespring.model.dto.orders.response.OrderResponse;
 import com.example.portfolio.webstorespring.model.dto.orders.response.OrderResponseWithoutShipments;
+import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
 import com.example.portfolio.webstorespring.services.orders.OrderService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -53,7 +54,8 @@ class OrderControllerTest {
     @Test
     void shouldGetAllOrders() throws Exception {
         OrderResponseWithoutShipments orderResponse = createOrderResponseWithoutShipments();
-        given(orderService.getAllAccountOrder()).willReturn(List.of(orderResponse, orderResponse));
+        given(orderService.getAllAccountOrder(any(AccountDetails.class)))
+                .willReturn(List.of(orderResponse, orderResponse));
 
         mvc.perform(get(URI + "/orders")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -67,7 +69,8 @@ class OrderControllerTest {
     @Test
     void shouldGetAccountOrderByOrderId() throws Exception {
         OrderResponse orderResponse = createOrderResponse();
-        given(orderService.getOrderById(anyLong())).willReturn(orderResponse);
+        given(orderService.getOrderById(any(AccountDetails.class), anyLong()))
+                .willReturn(orderResponse);
 
         mvc.perform(get(URI + "/orders/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -82,11 +85,10 @@ class OrderControllerTest {
     void shouldGetLastFiveAccountOrders() throws Exception {
         OrderResponseWithoutShipments orderResponse = createOrderResponseWithoutShipments();
 
-        given(orderService.getLastFiveAccountOrder())
+        given(orderService.getLastFiveAccountOrder(any(AccountDetails.class)))
                 .willReturn(List.of(orderResponse, orderResponse, orderResponse, orderResponse, orderResponse));
 
         mvc.perform(get(URI + "/orders/last-five")
-                        .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(5)))
@@ -98,7 +100,8 @@ class OrderControllerTest {
         OrderRequest orderRequest = createOrderRequest();
         OrderResponse orderResponse = createOrderResponse();
 
-        given(orderService.saveOrder(any(OrderRequest.class))).willReturn(orderResponse);
+        given(orderService.saveOrder(any(AccountDetails.class), any(OrderRequest.class)))
+                .willReturn(orderResponse);
 
         mvc.perform(post(URI + "/orders", 1)
                         .contentType(MediaType.APPLICATION_JSON)

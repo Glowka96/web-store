@@ -1,15 +1,15 @@
 package com.example.portfolio.webstorespring.buildhelpers.products;
 
+import com.example.portfolio.webstorespring.buildhelpers.DateForTestBuilderHelper;
 import com.example.portfolio.webstorespring.model.dto.products.request.ProductRequest;
 import com.example.portfolio.webstorespring.model.dto.products.response.ProductResponse;
 import com.example.portfolio.webstorespring.model.entity.products.Product;
 import com.example.portfolio.webstorespring.model.entity.products.ProductPricePromotion;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Set;
 
-import static com.example.portfolio.webstorespring.buildhelpers.DateForTestBuilderHelper.DATE_OF_CREATED;
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductPricePromotionBuilderHelper.createProductPricePromotion;
 
 public class ProductBuilderHelper {
@@ -23,7 +23,7 @@ public class ProductBuilderHelper {
                 .description("Test description")
                 .price(BigDecimal.valueOf(20.0))
                 .quantity(10L)
-                .dateOfCreation(Timestamp.valueOf(DATE_OF_CREATED))
+                .dateOfCreation(Date.from(DateForTestBuilderHelper.ZONED_DATE_TIME.toInstant()))
                 .pricePromotions(Set.of())
                 .imageUrl(IMAGE_URL)
                 .build();
@@ -37,7 +37,7 @@ public class ProductBuilderHelper {
                 .description("Test description")
                 .price(BigDecimal.valueOf(20.0))
                 .quantity(10L)
-                .dateOfCreation(Timestamp.valueOf(DATE_OF_CREATED))
+                .dateOfCreation(Date.from(DateForTestBuilderHelper.ZONED_DATE_TIME.toInstant()))
                 .pricePromotions(Set.of(pricePromotion))
                 .imageUrl(IMAGE_URL)
                 .build();

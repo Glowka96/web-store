@@ -52,7 +52,7 @@ class SubcategoryControllerTest {
         given(subcategoryService.getAllSubcategory()).willReturn(List.of(subcategoryResponse, subcategoryResponse));
 
         mvc.perform(get(URI + "/admin/categories/subcategories")
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andDo(print());
@@ -74,8 +74,8 @@ class SubcategoryControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(subcategoryRequest)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.name", is("Test")))
+                .andExpect(jsonPath("$.id", is(subcategoryResponse.getId().intValue())))
+                .andExpect(jsonPath("$.name", is(subcategoryResponse.getName())))
                 .andDo(print());
     }
 
@@ -94,8 +94,8 @@ class SubcategoryControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(subcategoryRequest)))
                 .andExpect(status().isAccepted())
-                .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.name", is("Test")))
+                .andExpect(jsonPath("$.id", is(subcategoryResponse.getId().intValue())))
+                .andExpect(jsonPath("$.name", is(subcategoryResponse.getName())))
                 .andDo(print());
     }
 

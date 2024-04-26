@@ -55,7 +55,6 @@ class ProductTypeControllerTest {
         given(productTypeService.getAllProductType()).willReturn(List.of(productTypeResponse, productTypeResponse));
 
         mvc.perform(get(URI)
-                        .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
@@ -75,8 +74,8 @@ class ProductTypeControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(productTypeRequest)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.name", is(productTypeRequest.getName())))
+                .andExpect(jsonPath("$.id", is(productTypeResponse.getId().intValue())))
+                .andExpect(jsonPath("$.name", is(productTypeResponse.getName())))
                 .andDo(print());
     }
 
@@ -93,16 +92,14 @@ class ProductTypeControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(productTypeRequest)))
                 .andExpect(status().isAccepted())
-                .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.name", is(productTypeRequest.getName())))
+                .andExpect(jsonPath("$.id", is(productTypeResponse.getId().intValue())))
+                .andExpect(jsonPath("$.name", is(productTypeResponse.getName())))
                 .andDo(print());
     }
 
     @Test
     void deleteProductTypeById() throws Exception {
-        mvc.perform(delete(URI + "/{productTypeId}", 1)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
+        mvc.perform(delete(URI + "/{productTypeId}", 1))
                 .andExpect(status().isNoContent())
                 .andDo(print());
 

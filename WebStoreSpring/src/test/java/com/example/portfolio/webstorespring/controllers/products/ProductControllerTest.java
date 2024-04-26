@@ -88,10 +88,10 @@ class ProductControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(productRequest)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.name", is(productRequest.getName())))
-                .andExpect(jsonPath("$.description", is(productRequest.getDescription())))
-                .andExpect(jsonPath("$.price", is(20.0)))
+                .andExpect(jsonPath("$.id", is(productResponse.getId().intValue())))
+                .andExpect(jsonPath("$.name", is(productResponse.getName())))
+                .andExpect(jsonPath("$.description", is(productResponse.getDescription())))
+                .andExpect(jsonPath("$.price", is(productResponse.getPrice().doubleValue())))
                 .andDo(print());
     }
 
@@ -109,10 +109,10 @@ class ProductControllerTest {
                         .content(mapper.writeValueAsString(productRequest))
                         .header("Authorization", "Bearer {JWT_TOKEN}"))
                 .andExpect(status().isAccepted())
-                .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.name", is(productRequest.getName())))
-                .andExpect(jsonPath("$.description", is(productRequest.getDescription())))
-                .andExpect(jsonPath("$.price", is(20.0)))
+                .andExpect(jsonPath("$.id", is(productResponse.getId().intValue())))
+                .andExpect(jsonPath("$.name", is(productResponse.getName())))
+                .andExpect(jsonPath("$.description", is(productResponse.getDescription())))
+                .andExpect(jsonPath("$.price", is(productResponse.getPrice().doubleValue())))
                 .andDo(print());
     }
 

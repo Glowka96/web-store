@@ -52,8 +52,8 @@ class ResetPasswordControllerTest {
         given(resetPasswordService.resetPasswordByEmail(anyString())).willReturn(result);
 
         mvc.perform(get(URI + "/reset-password")
-                        .param("email","test@test.pl")
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .param("email", "test@test.pl")
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", is(result)))
                 .andDo(print());
@@ -70,7 +70,7 @@ class ResetPasswordControllerTest {
                         .param("token", "Token123")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(resetPasswordRequest)))
+                        .content(objectMapper.writeValueAsString(resetPasswordRequest)))
                 .andExpect(status().isAccepted())
                 .andExpect(jsonPath("$", is(result)))
                 .andDo(print());

@@ -25,6 +25,16 @@ public class ProductPricePromotionService {
     public ProductPricePromotionResponse saveProductPricePromotion(@NotNull ProductPricePromotionRequest promotionRequest) {
         Product product = productService.findProductByIdWithPromotion(promotionRequest.getProductId());
 
+        validateProduct(promotionRequest, product);
+
+        ProductPricePromotion promotion = promotionMapper.mapToEntity(promotionRequest);
+        promotion.setProduct(product);
+
+        promotionRepository.save(promotion);
+        return promotionMapper.mapToDto(promotion);
+    }
+
+    private void validateProduct(ProductPricePromotionRequest promotionRequest, Product product) {
         if (!product.getPricePromotions().isEmpty()) {
             throw new ProductHasAlreadyPromotionException();
         }
@@ -32,11 +42,5 @@ public class ProductPricePromotionService {
         if(product.getPrice().compareTo(promotionRequest.getPromotionPrice()) < 0) {
             throw new PromotionPriceGreaterThanBasePriceException();
         }
-
-        ProductPricePromotion promotion = promotionMapper.mapToEntity(promotionRequest);
-        promotion.setProduct(product);
-
-        promotionRepository.save(promotion);
-        return promotionMapper.mapToDto(promotion);
     }
 }

@@ -12,7 +12,7 @@ import com.example.portfolio.webstorespring.model.entity.orders.Order;
 import com.example.portfolio.webstorespring.model.entity.orders.Shipment;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.createAccountWithRoleUserAndAccountAddress;
@@ -66,7 +66,7 @@ public class OrderBuilderHelper {
                 .shipmentResponses(List.of(shipmentResponse, shipmentResponse))
                 .nameUser("Name Lastname")
                 .totalPrice(BigDecimal.valueOf(130.0))
-                .dateOfCreation(Timestamp.valueOf(DateForTestBuilderHelper.DATE_OF_CREATED))
+                .dateOfCreation(Date.from(DateForTestBuilderHelper.ZONED_DATE_TIME.toInstant()))
                 .build();
     }
 
@@ -78,7 +78,7 @@ public class OrderBuilderHelper {
                 .deliveryResponse(deliveryResponse)
                 .nameUser("Name Lastname")
                 .totalPrice(BigDecimal.valueOf(130.0))
-                .dateOfCreation(Timestamp.valueOf(DateForTestBuilderHelper.DATE_OF_CREATED))
+                .dateOfCreation(Date.from(DateForTestBuilderHelper.ZONED_DATE_TIME.toInstant()))
                 .build();
     }
 }

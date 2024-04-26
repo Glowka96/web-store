@@ -55,7 +55,6 @@ class CategoryControllerTest {
         // when
         // then
         mvc.perform(get(URI + "/categories")
-                        .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
@@ -77,7 +76,8 @@ class CategoryControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(categoryRequest)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.name", is("Test")))
+                .andExpect(jsonPath("$.id", is(categoryResponse.getId().intValue())))
+                .andExpect(jsonPath("$.name", is(categoryResponse.getName())))
                 .andDo(print());
     }
 
@@ -96,8 +96,8 @@ class CategoryControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(categoryRequest)))
                 .andExpect(status().isAccepted())
-                .andExpect(jsonPath("$.name", is("Test")))
-                .andExpect(jsonPath("$.id", is(1)))
+                .andExpect(jsonPath("$.id", is(categoryResponse.getId().intValue())))
+                .andExpect(jsonPath("$.name", is(categoryResponse.getName())))
                 .andDo(print());
     }
 

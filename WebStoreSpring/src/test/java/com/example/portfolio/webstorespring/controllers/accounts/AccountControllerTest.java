@@ -4,6 +4,7 @@ import com.example.portfolio.webstorespring.exceptions.GlobalExceptionHandler;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.AccountRequest;
 import com.example.portfolio.webstorespring.model.dto.accounts.response.AccountResponse;
 import com.example.portfolio.webstorespring.services.accounts.AccountService;
+import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -51,16 +52,16 @@ class AccountControllerTest {
     void shouldGetAccountById() throws Exception {
         AccountResponse accountResponse = createAccountResponse();
 
-        given(accountService.getAccount()).willReturn(accountResponse);
+        given(accountService.getAccount(any(AccountDetails.class))).willReturn(accountResponse);
 
         mvc.perform(get(URI)
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
                         .header("Authorization", "Bearer {JWT_TOKEN}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.firstName", is("Name")))
-                .andExpect(jsonPath("$.lastName", is("Lastname")))
-                .andExpect(jsonPath("$.email", is("test@test.pl")))
+                .andExpect(jsonPath("$.firstName", is(accountResponse.getFirstName())))
+                .andExpect(jsonPath("$.lastName", is(accountResponse.getLastName())))
+                .andExpect(jsonPath("$.email", is(accountResponse.getEmail())))
                 .andDo(print());
     }
 
@@ -69,17 +70,19 @@ class AccountControllerTest {
         AccountRequest accountRequest = createAccountRequest();
         AccountResponse accountResponse = createAccountResponse();
 
-        given(accountService.updateAccount(any(AccountRequest.class))).willReturn(accountResponse);
+        given(accountService.updateAccount(any(AccountDetails.class), any(AccountRequest.class)))
+                .willReturn(accountResponse);
 
         mvc.perform(put(URI)
                         .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(accountRequest))
                         .header("Authorization", "Bearer {JWT_TOKEN}"))
                 .andExpect(status().isAccepted())
                 .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.firstName", is("Name")))
-                .andExpect(jsonPath("$.lastName", is("Lastname")))
-                .andExpect(jsonPath("$.email", is("test@test.pl")))
+                .andExpect(jsonPath("$.firstName", is(accountResponse.getFirstName())))
+                .andExpect(jsonPath("$.lastName", is(accountResponse.getLastName())))
+                .andExpect(jsonPath("$.email", is(accountResponse.getEmail())))
                 .andDo(print());
     }
 
