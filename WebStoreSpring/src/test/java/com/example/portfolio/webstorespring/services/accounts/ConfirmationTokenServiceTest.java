@@ -1,5 +1,6 @@
 package com.example.portfolio.webstorespring.services.accounts;
 
+import com.example.portfolio.webstorespring.buildhelpers.DateForTestBuilderHelper;
 import com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper;
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
@@ -13,13 +14,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.Clock;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.example.portfolio.webstorespring.buildhelpers.accounts.ConfirmationTokenBuilderHelper.createConfirmationToken;
+import static com.example.portfolio.webstorespring.buildhelpers.accounts.ConfirmationTokenBuilderHelper.createConfirmationTokenIsConfirmedAt;
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.ConfirmationTokenBuilderHelper.createConfirmationTokenIsNotConfirmedAt;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -36,26 +34,15 @@ class ConfirmationTokenServiceTest {
     @InjectMocks
     private ConfirmationTokenService underTest;
 
-    private final ZonedDateTime zonedDateTime = ZonedDateTime.of(
-            2023,
-            3,
-            9,
-            12,
-            30,
-            30,
-            0,
-            ZoneId.of("GMT")
-    );
-
     private static final String UUID_CODE = UUID.randomUUID().toString();
 
     @Test
     void shouldCreateConfirmationToken() {
         // given
-        setupClockWhatItReturend();
+        setupClock();
 
         Account account = AccountBuilderHelper.createAccountWithRoleUser();
-        ConfirmationToken confirmationToken = createConfirmationToken(account, clock);
+        ConfirmationToken confirmationToken = createConfirmationTokenIsNotConfirmedAt(account);
 
         given(tokenRepository.save(any(ConfirmationToken.class))).willReturn(confirmationToken);
 
@@ -77,10 +64,8 @@ class ConfirmationTokenServiceTest {
     @Test
     void shouldGetConfirmationTokenByToken() {
         // given
-        setupClockWhatItReturend();
-
         Account account = AccountBuilderHelper.createAccountWithRoleUser();
-        ConfirmationToken confirmationToken = createConfirmationToken(account, clock);
+        ConfirmationToken confirmationToken = createConfirmationTokenIsConfirmedAt(account);
         given(tokenRepository.findByToken(anyString())).willReturn(Optional.of(confirmationToken));
 
         // when
@@ -103,58 +88,27 @@ class ConfirmationTokenServiceTest {
     }
 
     @Test
-    void shouldSuccessConfirmed() {
-        // given
-        setupClockWhatItReturend();
-
-        Account account = AccountBuilderHelper.createAccountWithRoleUser();
-        ConfirmationToken confirmationToken = createConfirmationToken(account, clock);
-
-        // when
-        boolean isConfirmed = underTest.isConfirmed(confirmationToken);
-
-        // then
-        assertThat(isConfirmed).isTrue();
-    }
-
-    @Test
-    void shouldFailConfirmed() {
-        // given
-        setupClockWhatItReturend();
-
-        Account account = AccountBuilderHelper.createAccountWithRoleUser();
-        ConfirmationToken confirmationToken = createConfirmationTokenIsNotConfirmedAt(account, clock);
-
-        // when
-        boolean isNotConfirmed = underTest.isConfirmed(confirmationToken);
-
-        // then
-        assertThat(isNotConfirmed).isFalse();
-    }
-
-    @Test
     void shouldSuccessTokenExpired() {
         // given
-        setupClockWhatItReturend();
+        setupClock();
 
         Account account = AccountBuilderHelper.createAccountWithRoleUser();
-        ConfirmationToken confirmationToken = createConfirmationToken(account, clock);
+        ConfirmationToken confirmationToken = createConfirmationTokenIsConfirmedAt(account);
 
         // when
         boolean isExpired = underTest.isTokenExpired(confirmationToken);
 
         // then
-        assertThat(isExpired).isTrue();
+        assertThat(isExpired).isFalse();
     }
 
     @Test
     void shouldFailTokenExpired() {
         // given
-        setupClockWhatItReturend();
+        setupClockWithExpiredTime();
 
         Account account = AccountBuilderHelper.createAccountWithRoleUser();
-        ConfirmationToken confirmationToken = createConfirmationToken(account, clock);
-        confirmationToken.setExpiresAt(LocalDateTime.now(clock).plusMinutes(15));
+        ConfirmationToken confirmationToken = createConfirmationTokenIsNotConfirmedAt(account);
 
         // when
         boolean isExpired = underTest.isTokenExpired(confirmationToken);
@@ -166,10 +120,10 @@ class ConfirmationTokenServiceTest {
     @Test
     void shouldSetConfirmedAtAndSaveConfirmationToken() {
         // given
-        setupClockWhatItReturend();
+        setupClock();
 
         Account account = AccountBuilderHelper.createAccountWithRoleUser();
-        ConfirmationToken confirmationToken = createConfirmationToken(account, clock);
+        ConfirmationToken confirmationToken = createConfirmationTokenIsConfirmedAt(account);
 
         // when
         underTest.setConfirmedAtAndSaveConfirmationToken(confirmationToken);
@@ -182,10 +136,8 @@ class ConfirmationTokenServiceTest {
     @Test
     void shouldDeleteToken() {
         // given
-        setupClockWhatItReturend();
-
         Account account = AccountBuilderHelper.createAccountWithRoleUser();
-        ConfirmationToken confirmationToken = createConfirmationToken(account, clock);
+        ConfirmationToken confirmationToken = createConfirmationTokenIsConfirmedAt(account);
 
         // when
         underTest.deleteConfirmationToken(confirmationToken);
@@ -195,9 +147,14 @@ class ConfirmationTokenServiceTest {
     }
 
 
-    private void setupClockWhatItReturend() {
-        when(clock.getZone()).thenReturn(zonedDateTime.getZone());
-        when(clock.instant()).thenReturn(zonedDateTime.toInstant());
+    private void setupClock() {
+        when(clock.getZone()).thenReturn(DateForTestBuilderHelper.ZONED_DATE_TIME.getZone());
+        when(clock.instant()).thenReturn(DateForTestBuilderHelper.ZONED_DATE_TIME.toInstant());
+    }
+
+    private void setupClockWithExpiredTime() {
+        when(clock.getZone()).thenReturn(DateForTestBuilderHelper.ZONED_DATE_TIME.getZone());
+        when(clock.instant()).thenReturn(DateForTestBuilderHelper.ZONED_DATE_TIME.plusMinutes(16).toInstant());
     }
 
 }

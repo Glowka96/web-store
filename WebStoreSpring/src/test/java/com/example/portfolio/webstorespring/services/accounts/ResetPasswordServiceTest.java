@@ -16,7 +16,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Map;
 
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.createAccountWithRoleUser;
-import static com.example.portfolio.webstorespring.buildhelpers.accounts.ConfirmationTokenBuilderHelper.createConfirmationToken;
+import static com.example.portfolio.webstorespring.buildhelpers.accounts.ConfirmationTokenBuilderHelper.createConfirmationTokenIsConfirmedAt;
+import static com.example.portfolio.webstorespring.buildhelpers.accounts.ConfirmationTokenBuilderHelper.createConfirmationTokenIsNotConfirmedAt;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -37,10 +38,10 @@ class ResetPasswordServiceTest {
     private ResetPasswordService underTest;
 
     @Test
-    void shouldResetPassword() {
+    void shouldSendResetPasswordLink() {
         // given
         Account account = createAccountWithRoleUser();
-        ConfirmationToken confirmationToken = createConfirmationToken(account);
+        ConfirmationToken confirmationToken = createConfirmationTokenIsNotConfirmedAt(account);
 
         Map<String, Object> excepted = Map.of("message", ResetPasswordType.PASSWORD.getInformationMessage());
 
@@ -53,14 +54,13 @@ class ResetPasswordServiceTest {
 
         // then
         assertThat(result).isEqualTo(excepted);
-
     }
 
     @Test
     void shouldConfirmResetPassword() {
         // given
         Account account = createAccountWithRoleUser();
-        ConfirmationToken confirmationToken = createConfirmationToken(account);
+        ConfirmationToken confirmationToken = createConfirmationTokenIsNotConfirmedAt(account);
         ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest("Password123*");
 
         Map<String, Object> excepted = Map.of("message", "Your new password has been saved");
@@ -73,7 +73,6 @@ class ResetPasswordServiceTest {
 
         // then
         assertThat(result).isEqualTo(excepted);
-        verify(confirmationTokenService, times(1)).isConfirmed(any(ConfirmationToken.class));
         verify(confirmationTokenService, times(1)).isTokenExpired(any(ConfirmationToken.class));
         verify(confirmationTokenService, times(1)).setConfirmedAtAndSaveConfirmationToken(any(ConfirmationToken.class));
         verify(accountService, times(1)).setNewAccountPassword(any(Account.class), anyString());
@@ -83,12 +82,11 @@ class ResetPasswordServiceTest {
     void willThrowWhenTokenIsConfirm() {
         // given
         Account account = createAccountWithRoleUser();
-        ConfirmationToken confirmationToken = createConfirmationToken(account);
+        ConfirmationToken confirmationToken = createConfirmationTokenIsConfirmedAt(account);
         ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest("Password123*");
 
         // when
         when(confirmationTokenService.getConfirmationTokenByToken(anyString())).thenReturn(confirmationToken);
-        when(confirmationTokenService.isConfirmed(any(ConfirmationToken.class))).thenReturn(true);
 
         // then
         assertThatThrownBy(() -> underTest.confirmResetPassword(resetPasswordRequest, confirmationToken.getToken()))
@@ -100,7 +98,7 @@ class ResetPasswordServiceTest {
     void willThrowWhenTokenIsExpired() {
         // given
         Account account = createAccountWithRoleUser();
-        ConfirmationToken confirmationToken = createConfirmationToken(account);
+        ConfirmationToken confirmationToken = createConfirmationTokenIsNotConfirmedAt(account);
         ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest("Password123*");
 
         // when

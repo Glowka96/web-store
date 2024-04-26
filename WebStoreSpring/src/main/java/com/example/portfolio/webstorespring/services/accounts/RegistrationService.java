@@ -47,7 +47,7 @@ public class RegistrationService {
         ConfirmationToken confirmationToken = confirmationTokenService.getConfirmationTokenByToken(token);
         Account account = confirmationToken.getAccount();
 
-        if (confirmationTokenService.isConfirmed(confirmationToken)) {
+        if (confirmationToken.getConfirmedAt() != null) {
             throw new EmailAlreadyConfirmedException();
         }
 

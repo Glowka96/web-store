@@ -47,17 +47,21 @@ public class ResetPasswordService {
         ConfirmationToken confirmationToken = confirmationTokenService.getConfirmationTokenByToken(token);
         Account account = confirmationToken.getAccount();
 
-        if (confirmationTokenService.isConfirmed(confirmationToken)) {
+        validateConfirmationToken(confirmationToken);
+
+        confirmationTokenService.setConfirmedAtAndSaveConfirmationToken(confirmationToken);
+        accountService.setNewAccountPassword(account, resetPasswordRequest.password());
+
+        return Map.of("message", "Your new password has been saved");
+    }
+
+    private void validateConfirmationToken(ConfirmationToken confirmationToken) {
+        if (confirmationToken.getConfirmedAt() != null) {
             throw new TokenConfirmedException();
         }
 
         if (confirmationTokenService.isTokenExpired(confirmationToken)) {
             throw new TokenExpiredException();
         }
-
-        confirmationTokenService.setConfirmedAtAndSaveConfirmationToken(confirmationToken);
-        accountService.setNewAccountPassword(account, resetPasswordRequest.password());
-
-        return Map.of("message", "Your new password has been saved");
     }
 }

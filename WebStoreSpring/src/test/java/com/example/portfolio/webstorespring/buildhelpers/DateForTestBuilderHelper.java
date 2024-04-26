@@ -1,15 +1,18 @@
 package com.example.portfolio.webstorespring.buildhelpers;
 
-import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 public class DateForTestBuilderHelper {
 
-    public static final LocalDateTime DATE_OF_CREATED = LocalDateTime.of(
+    public static final ZonedDateTime ZONED_DATE_TIME = ZonedDateTime.of(
             2024,
             1,
             10,
             20,
             20,
             0,
-            0);
+            0,
+            ZoneId.of("Europe/Warsaw")
+    );
 }
