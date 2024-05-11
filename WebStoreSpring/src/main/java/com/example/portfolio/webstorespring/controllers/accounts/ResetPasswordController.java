@@ -6,7 +6,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -14,7 +13,6 @@ import java.util.Map;
 @RestController
 @RequestMapping(value = "api/v1/reset-password")
 @RequiredArgsConstructor
-@Validated
 public class ResetPasswordController {
 
     private final ResetPasswordService resetPasswordService;
