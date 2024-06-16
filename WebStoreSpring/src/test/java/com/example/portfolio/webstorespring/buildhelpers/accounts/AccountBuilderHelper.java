@@ -10,14 +10,11 @@ import java.util.Set;
 
 public class AccountBuilderHelper {
 
-    private static final Role ROLE_USER = Role.builder()
-            .id(1L)
-            .name("ROLE_USER")
-            .build();
+    private static final Role ROLE_USER = RoleBuilderHelper.createUserRole();
 
-    public static Account createAccountWithRoleUserAndAccountAddress() {
+    public static Account createAccountWithRoleUserAndAccountAddress(Role role) {
         AccountAddress accountAddress = AccountAddressBuilderHelper.createAccountAddress();
-        return Account.builder()
+        Account account = Account.builder()
                 .id(1L)
                 .firstName("Name")
                 .lastName("Lastname")
@@ -25,9 +22,15 @@ public class AccountBuilderHelper {
                 .password("Password123*")
                 .enabled(Boolean.TRUE)
                 .imageUrl("test.pl/test.png")
-                .roles(Set.of(ROLE_USER))
+                .roles(Set.of(role))
                 .address(accountAddress)
                 .build();
+        account.setAddress(accountAddress);
+        return account;
+    }
+
+    public static Account createAccountWithRoleUserAndAccountAddress() {
+        return createAccountWithRoleUserAndAccountAddress(ROLE_USER);
     }
 
     public static Account createAccountWithRoleUser() {

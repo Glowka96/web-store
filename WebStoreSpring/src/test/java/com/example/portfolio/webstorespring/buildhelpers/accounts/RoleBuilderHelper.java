@@ -7,7 +7,14 @@ public class RoleBuilderHelper {
     public static Role createUserRole() {
         return Role.builder()
                 .id(1L)
-                .name("Test")
+                .name("ROLE_USER")
+                .build();
+    }
+
+    public static Role createUserAdmin() {
+        return Role.builder()
+                .id(1L)
+                .name("ROLE_ADMIN")
                 .build();
     }
 }
