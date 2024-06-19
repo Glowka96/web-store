@@ -15,7 +15,7 @@ import org.mapstruct.Mapping;
 )
 public interface AccountMapper {
 
-    @Mapping(target = "addressDto", source = "address")
+    @Mapping(target = "addressDto", ignore = true)
     AccountResponse mapToDto(Account account);
 
     @Mapping(target = "id", ignore = true)
@@ -23,7 +23,6 @@ public interface AccountMapper {
     @Mapping(target = "email", ignore = true)
     @Mapping(target = "confirmationTokens", ignore = true)
     @Mapping(target = "authTokens", ignore = true)
-    @Mapping(target = "address", ignore = true)
     @Mapping(target = "roles", ignore = true)
     @Mapping(target = "enabled", ignore = true)
     Account mapToEntity(AccountRequest accountRequest);

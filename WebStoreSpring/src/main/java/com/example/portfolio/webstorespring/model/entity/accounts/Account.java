@@ -34,14 +34,6 @@ public class Account {
     @Column(nullable = false)
     private String password;
 
-    @OneToOne(mappedBy = "account",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.LAZY,
-            optional = false
-    )
-    private AccountAddress address;
-
     private String imageUrl;
 
     private Boolean enabled;
@@ -67,17 +59,6 @@ public class Account {
             orphanRemoval = true
     )
     private List<ConfirmationToken> confirmationTokens;
-
-    public void setAddress(AccountAddress address) {
-        if(address == null) {
-            if(this.address != null) {
-                this.address.setAccount(null);
-            }
-        } else {
-            address.setAccount(this);
-        }
-        this.address = address;
-    }
 
     @Override
     public boolean equals(Object o) {
