@@ -1,13 +1,13 @@
 package com.example.portfolio.webstorespring.IT.repositories;
 
 import com.example.portfolio.webstorespring.IT.ContainersConfig;
-import com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper;
 import com.example.portfolio.webstorespring.buildhelpers.accounts.RoleBuilderHelper;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.accounts.Role;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountAddressRepository;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
 import com.example.portfolio.webstorespring.repositories.accounts.RoleRepository;
+import com.natpryce.makeiteasy.Maker;
 import jakarta.persistence.EntityManager;
 import org.hibernate.Hibernate;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,7 +20,11 @@ import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.Optional;
+import java.util.Set;
 
+import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.BASIC_ACCOUNT;
+import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.ROLES;
+import static com.natpryce.makeiteasy.MakeItEasy.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Import(ContainersConfig.class)
@@ -44,17 +48,19 @@ class AccountRepositoryIT {
     @BeforeEach
     void init() {
         roleRepository.deleteAll();
+        accountRepository.deleteAll();
+        accountAddressRepository.deleteAll();
+
         Role role = RoleBuilderHelper.createUserRole();
         Role savedRole = roleRepository.save(role);
 
-        accountRepository.deleteAll();
-        accountAddressRepository.deleteAll();
-        Account account = AccountBuilderHelper.createAccountWithRoleUserAndAccountAddress(savedRole);
-        accountRepository.saveAndFlush(account);
+        Maker<Account> accountMaker = a(BASIC_ACCOUNT);
+        Account account = make(accountMaker.but(with(ROLES, Set.of(savedRole))));
+        accountRepository.save(account);
     }
 
     @Test
-    void shouldFindAccountByEmailWithRoleAndWithoutAddress() {
+    void shouldFindAccountByEmailWithoutRole() {
         entityManager.clear();
 
         Optional<Account> account = accountRepository.findByEmail(email);
@@ -64,18 +70,14 @@ class AccountRepositoryIT {
 
         boolean rolesInitialized = Hibernate.isInitialized(account.get().getRoles());
         assertThat(rolesInitialized).isFalse();
-
-        boolean addressInitialized = Hibernate.isInitialized(account.get().getAddress());
-        assertThat(addressInitialized).isFalse();
     }
 
     @Test
-    void shouldFindAccountByEmailWithRoleAndAddress() {
-        Optional<Account> account = accountRepository.findAccountWithRolesAndAddressByEmail(email);
+    void shouldFindAccountByEmailWithRole() {
+        Optional<Account> account = accountRepository.findAccountWithRolesByEmail(email);
 
-        assertThat(account).isNotNull();
+        assertThat(account).isPresent();
         assertThat(account.get().getEmail()).isEqualTo(email);
         assertThat(account.get().getRoles()).isNotNull();
-        assertThat(account.get().getAddress()).isNotNull();
     }
 }
