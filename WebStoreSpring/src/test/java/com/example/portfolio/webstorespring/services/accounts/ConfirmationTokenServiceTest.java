@@ -1,7 +1,6 @@
 package com.example.portfolio.webstorespring.services.accounts;
 
 import com.example.portfolio.webstorespring.buildhelpers.DateForTestBuilderHelper;
-import com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper;
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.accounts.ConfirmationToken;
@@ -17,8 +16,11 @@ import java.time.Clock;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.BASIC_ACCOUNT;
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.ConfirmationTokenBuilderHelper.createConfirmationTokenIsConfirmedAt;
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.ConfirmationTokenBuilderHelper.createConfirmationTokenIsNotConfirmedAt;
+import static com.natpryce.makeiteasy.MakeItEasy.a;
+import static com.natpryce.makeiteasy.MakeItEasy.make;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
@@ -41,7 +43,7 @@ class ConfirmationTokenServiceTest {
         // given
         setupClock();
 
-        Account account = AccountBuilderHelper.createAccountWithRoleUser();
+        Account account = make(a(BASIC_ACCOUNT));
         ConfirmationToken confirmationToken = createConfirmationTokenIsNotConfirmedAt(account);
 
         given(tokenRepository.save(any(ConfirmationToken.class))).willReturn(confirmationToken);
@@ -64,7 +66,7 @@ class ConfirmationTokenServiceTest {
     @Test
     void shouldGetConfirmationTokenByToken() {
         // given
-        Account account = AccountBuilderHelper.createAccountWithRoleUser();
+        Account account = make(a(BASIC_ACCOUNT));
         ConfirmationToken confirmationToken = createConfirmationTokenIsConfirmedAt(account);
         given(tokenRepository.findByToken(anyString())).willReturn(Optional.of(confirmationToken));
 
@@ -92,7 +94,7 @@ class ConfirmationTokenServiceTest {
         // given
         setupClock();
 
-        Account account = AccountBuilderHelper.createAccountWithRoleUser();
+        Account account = make(a(BASIC_ACCOUNT));
         ConfirmationToken confirmationToken = createConfirmationTokenIsConfirmedAt(account);
 
         // when
@@ -107,7 +109,7 @@ class ConfirmationTokenServiceTest {
         // given
         setupClockWithExpiredTime();
 
-        Account account = AccountBuilderHelper.createAccountWithRoleUser();
+        Account account = make(a(BASIC_ACCOUNT));
         ConfirmationToken confirmationToken = createConfirmationTokenIsNotConfirmedAt(account);
 
         // when
@@ -122,7 +124,7 @@ class ConfirmationTokenServiceTest {
         // given
         setupClock();
 
-        Account account = AccountBuilderHelper.createAccountWithRoleUser();
+        Account account = make(a(BASIC_ACCOUNT));
         ConfirmationToken confirmationToken = createConfirmationTokenIsConfirmedAt(account);
 
         // when
@@ -136,7 +138,7 @@ class ConfirmationTokenServiceTest {
     @Test
     void shouldDeleteToken() {
         // given
-        Account account = AccountBuilderHelper.createAccountWithRoleUser();
+        Account account = make(a(BASIC_ACCOUNT));
         ConfirmationToken confirmationToken = createConfirmationTokenIsConfirmedAt(account);
 
         // when

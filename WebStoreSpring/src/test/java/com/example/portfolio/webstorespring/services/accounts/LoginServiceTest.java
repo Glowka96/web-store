@@ -1,6 +1,5 @@
 package com.example.portfolio.webstorespring.services.accounts;
 
-import com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.LoginRequest;
 import com.example.portfolio.webstorespring.model.dto.accounts.response.AuthenticationResponse;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
@@ -18,6 +17,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.BASIC_ACCOUNT;
+import static com.natpryce.makeiteasy.MakeItEasy.a;
+import static com.natpryce.makeiteasy.MakeItEasy.make;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -40,7 +42,7 @@ class LoginServiceTest {
     @Test
     void shouldLogin() {
         // given
-        Account account = AccountBuilderHelper.createAccountWithRoleUser();
+        Account account = make(a(BASIC_ACCOUNT));
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(new AccountDetails(account), null);
         SecurityContext securityContext = SecurityContextHolder.getContext();

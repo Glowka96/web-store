@@ -18,7 +18,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Optional;
 
-import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.createAccountWithRoleUser;
+import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.BASIC_ACCOUNT;
+import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.ENABLED;
+import static com.natpryce.makeiteasy.MakeItEasy.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -40,10 +42,10 @@ class AccountDetailsServiceTest {
     @Test
     void shouldLoadUserByUsername() {
         // given
-        Account account = createAccountWithRoleUser();
+        Account account = make(a(BASIC_ACCOUNT));
         setupSecutiryContext(account);
 
-        given(accountRepository.findAccountWithRolesAndAddressByEmail(anyString())).willReturn(Optional.of(account));
+        given(accountRepository.findAccountWithRolesByEmail(anyString())).willReturn(Optional.of(account));
 
         // when
         UserDetails userDetails = underTest.loadUserByUsername("test@test.pl");
@@ -55,12 +57,11 @@ class AccountDetailsServiceTest {
     @Test
     void willThrowWhenAccountIsDisabled() {
         // given
-        Account account = createAccountWithRoleUser();
-        account.setEnabled(false);
+        Account account = make(a(BASIC_ACCOUNT).but(with(ENABLED, Boolean.FALSE)));
         setupSecutiryContext(account);
 
         // when
-        when(accountRepository.findAccountWithRolesAndAddressByEmail(anyString())).thenReturn(Optional.of(account));
+        when(accountRepository.findAccountWithRolesByEmail(anyString())).thenReturn(Optional.of(account));
 
         // then
         assertThatThrownBy(() -> underTest.loadUserByUsername("test@test.pl"))

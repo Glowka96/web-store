@@ -15,9 +15,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Map;
 
-import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.createAccountWithRoleUser;
+import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.BASIC_ACCOUNT;
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.ConfirmationTokenBuilderHelper.createConfirmationTokenIsConfirmedAt;
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.ConfirmationTokenBuilderHelper.createConfirmationTokenIsNotConfirmedAt;
+import static com.natpryce.makeiteasy.MakeItEasy.a;
+import static com.natpryce.makeiteasy.MakeItEasy.make;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -40,7 +42,7 @@ class ResetPasswordServiceTest {
     @Test
     void shouldSendResetPasswordLink() {
         // given
-        Account account = createAccountWithRoleUser();
+        Account account = make(a(BASIC_ACCOUNT));
         ConfirmationToken confirmationToken = createConfirmationTokenIsNotConfirmedAt(account);
 
         Map<String, Object> excepted = Map.of("message", ResetPasswordType.PASSWORD.getInformationMessage());
@@ -59,7 +61,7 @@ class ResetPasswordServiceTest {
     @Test
     void shouldConfirmResetPassword() {
         // given
-        Account account = createAccountWithRoleUser();
+        Account account = make(a(BASIC_ACCOUNT));
         ConfirmationToken confirmationToken = createConfirmationTokenIsNotConfirmedAt(account);
         ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest("Password123*");
 
@@ -81,7 +83,7 @@ class ResetPasswordServiceTest {
     @Test
     void willThrowWhenTokenIsConfirm() {
         // given
-        Account account = createAccountWithRoleUser();
+        Account account = make(a(BASIC_ACCOUNT));
         ConfirmationToken confirmationToken = createConfirmationTokenIsConfirmedAt(account);
         ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest("Password123*");
 
@@ -97,7 +99,7 @@ class ResetPasswordServiceTest {
     @Test
     void willThrowWhenTokenIsExpired() {
         // given
-        Account account = createAccountWithRoleUser();
+        Account account = make(a(BASIC_ACCOUNT));
         ConfirmationToken confirmationToken = createConfirmationTokenIsNotConfirmedAt(account);
         ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest("Password123*");
 

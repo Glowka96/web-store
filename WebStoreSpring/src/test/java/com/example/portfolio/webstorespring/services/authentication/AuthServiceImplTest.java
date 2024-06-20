@@ -14,8 +14,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.createAccountWithRoleUser;
+import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.BASIC_ACCOUNT;
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.AuthTokenBuilderHelper.createAuthToken;
+import static com.natpryce.makeiteasy.MakeItEasy.a;
+import static com.natpryce.makeiteasy.MakeItEasy.make;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
@@ -33,7 +35,7 @@ class AuthServiceImplTest {
     @Test
     void shouldSaveAccountAuthToken() {
         // given
-        Account account = createAccountWithRoleUser();
+        Account account = make(a(BASIC_ACCOUNT));
         String jwtToken = "jwtToken";
 
         // when
@@ -46,7 +48,7 @@ class AuthServiceImplTest {
     @Test
     void shouldRevokeAllUserAuthTokens() {
         // given
-        Account account = createAccountWithRoleUser();
+        Account account = make(a(BASIC_ACCOUNT));
         AuthToken authToken = createAuthToken(account, "jwtToken");
 
         List<AuthToken> authTokens = List.of(authToken);
@@ -65,7 +67,7 @@ class AuthServiceImplTest {
     @Test
     void shouldGenerateJwtTokenWhenGiveUserDetails() {
         // given
-        Account account = createAccountWithRoleUser();
+        Account account = make(a(BASIC_ACCOUNT));
         UserDetails userDetails = new AccountDetails(account);
 
         // when
@@ -79,7 +81,7 @@ class AuthServiceImplTest {
     @Test
     void shouldGenerateJwtTokenWhenGiveUserDetailsAndClaims() {
         // given
-        Account account = createAccountWithRoleUser();
+        Account account = make(a(BASIC_ACCOUNT));
         UserDetails userDetails = new AccountDetails(account);
         Map<String, Object> extraClaims = new HashMap<>();
         extraClaims.put("role", "ROLE_USER");
