@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -21,13 +21,15 @@ public class ProductPricePromotion {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
+    @Column(nullable = false)
     private BigDecimal promotionPrice;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date startDate;
+    @Column(nullable = false)
+    private LocalDateTime startDate;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date endDate;
+    @Column(nullable = false)
+    private LocalDateTime endDate;
 }

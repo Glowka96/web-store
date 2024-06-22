@@ -14,8 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -30,7 +28,7 @@ public class ProductService {
     private final Clock clock = Clock.systemUTC();
 
     public ProductWithProducerAndPromotionDTO getProductById(Long id) {
-        ProductWithProducerAndPromotionDTO product =  productRepository.findProductById(id, getDate30DaysAgo());
+        ProductWithProducerAndPromotionDTO product =  productRepository.findProductById(id, getLocalDataTime30DaysAgo());
         if(product.id() == null) {
             throw new ResourceNotFoundException("Product", "id", id);
         }
@@ -89,8 +87,7 @@ public class ProductService {
     }
 
     @NotNull
-    private Date getDate30DaysAgo() {
-        return Date.from(LocalDateTime.now(clock).minusDays(30)
-                .atZone(ZoneId.systemDefault()).toInstant());
+    private LocalDateTime getLocalDataTime30DaysAgo() {
+        return LocalDateTime.now(clock).minusDays(30);
     }
 }

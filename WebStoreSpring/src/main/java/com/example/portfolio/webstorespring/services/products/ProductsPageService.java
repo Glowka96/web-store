@@ -16,9 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.function.Function;
 
@@ -37,7 +35,7 @@ public class ProductsPageService {
                                                                        SortDirectionType sortDirection) {
         return getPageProduct(
                 pageNo, pageSize, sortBy, sortDirection,
-                pageable -> getProductsBySubcategoryId(subcategoryId, getDate30DaysAgo(), pageable)
+                pageable -> getProductsBySubcategoryId(subcategoryId, getLocalDateTime30DaysAgo(), pageable)
         );
     }
 
@@ -49,7 +47,7 @@ public class ProductsPageService {
                                                               SortDirectionType sortDirection) {
         return getPageProduct(
                 pageNo, pageSize, sortBy, sortDirection,
-                pageable -> searchProductsByText(text, getDate30DaysAgo(), pageable)
+                pageable -> searchProductsByText(text, getLocalDateTime30DaysAgo(), pageable)
         );
     }
 
@@ -60,7 +58,7 @@ public class ProductsPageService {
                                                                 SortDirectionType sortDirection) {
         return getPageProduct(
                 pageNo, pageSize, sortBy, sortDirection,
-                pageable -> getPromotionProducts(getDate30DaysAgo(), pageable)
+                pageable -> getPromotionProducts(getLocalDateTime30DaysAgo(), pageable)
         );
     }
 
@@ -71,7 +69,7 @@ public class ProductsPageService {
                                                           SortDirectionType sortDirection) {
         return getPageProduct(
                 pageNo, pageSize, sortBy, sortDirection,
-                pageable -> getNewProducts(getDate30DaysAgo(), pageable)
+                pageable -> getNewProducts(getLocalDateTime30DaysAgo(), pageable)
                 );
     }
 
@@ -94,9 +92,8 @@ public class ProductsPageService {
     }
 
     @NotNull
-    private Date getDate30DaysAgo() {
-        return Date.from(LocalDateTime.now(clock).minusDays(30)
-                .atZone(ZoneId.systemDefault()).toInstant());
+    private LocalDateTime getLocalDateTime30DaysAgo() {
+        return LocalDateTime.now(clock).minusDays(30);
     }
 
     private Pageable createPageable(Integer pageNo, Integer pageSize, String sortBy, String sortDirection) {
@@ -104,25 +101,25 @@ public class ProductsPageService {
     }
 
     private Page<ProductWithPromotionDTO> getProductsBySubcategoryId(Long subcategoryId,
-                                                                     Date date30DaysAgo,
+                                                                     LocalDateTime date30DaysAgo,
                                                                      Pageable pageable) {
-        return productRepository.findProductsBySubcategory_Id(subcategoryId, date30DaysAgo, pageable)
+        return productRepository.findProductsBySubcategoryId(subcategoryId, date30DaysAgo, pageable)
                 .orElse(Page.empty());
     }
 
     private Page<ProductWithPromotionDTO> searchProductsByText(String text,
-                                                               Date date30DaysAgo,
+                                                               LocalDateTime date30DaysAgo,
                                                                Pageable pageable) {
         return productRepository.searchProductsByEnteredText(text, date30DaysAgo, pageable)
                 .orElse(Page.empty());
     }
 
-    private Page<ProductWithPromotionDTO> getPromotionProducts(Date date30DaysAgo, Pageable pageable) {
+    private Page<ProductWithPromotionDTO> getPromotionProducts(LocalDateTime date30DaysAgo, Pageable pageable) {
         return productRepository.findPromotionProducts(date30DaysAgo, pageable)
                 .orElse(Page.empty());
     }
 
-    private Page<ProductWithPromotionDTO> getNewProducts(Date date30DaysAgo, Pageable pageable) {
+    private Page<ProductWithPromotionDTO> getNewProducts(LocalDateTime date30DaysAgo, Pageable pageable) {
         return productRepository.findNewProducts(date30DaysAgo, pageable)
                 .orElse(Page.empty());
     }

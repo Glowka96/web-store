@@ -25,7 +25,7 @@ public class OrderResponseWithoutShipments {
     @JsonProperty(value = "delivery")
     private DeliveryResponseWithoutDeliveryType deliveryResponse;
 
-    private Date dateOfCreation;
+    private Date createdAt;
 
     private OrderStatus status;
 }

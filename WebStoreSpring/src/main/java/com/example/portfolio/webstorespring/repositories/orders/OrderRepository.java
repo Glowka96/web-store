@@ -10,19 +10,22 @@ import java.util.Optional;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
-    @Query("SELECT o FROM Order o " +
-           "LEFT JOIN FETCH o.delivery d " +
-           "LEFT JOIN FETCH d.deliveryType " +
-           "LEFT JOIN FETCH o.shipments s " +
-           "LEFT JOIN FETCH s.product " +
-           "WHERE o.id = :orderId")
+
+    @Query("""
+                    SELECT o FROM Order o
+                    LEFT JOIN FETCH o.delivery d
+                    LEFT JOIN FETCH d.deliveryType
+                    LEFT JOIN FETCH o.shipments s
+                    LEFT JOIN FETCH s.product
+                    WHERE o.id = :orderId
+            """)
     Optional<Order> findById(@Param("orderId") Long orderId);
 
     @Query("""
                     SELECT o FROM Order o
                     LEFT JOIN FETCH o.delivery
                     WHERE o.account.id =:accountId
-                    ORDER BY o.dateOfCreation DESC
+                    ORDER BY o.createdAt DESC
             """)
     List<Order> findAllByAccountId(@Param(value = "accountId") Long accountId);
 
@@ -30,7 +33,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
                     SELECT o FROM Order o
                     LEFT JOIN FETCH o.delivery
                     WHERE o.account.id = :accountId
-                    ORDER BY o.dateOfCreation DESC
+                    ORDER BY o.createdAt DESC
                     LIMIT 5
             """)
     List<Order> findLastFiveAccountOrder(@Param(value = "accountId") Long accountId);

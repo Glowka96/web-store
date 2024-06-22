@@ -15,7 +15,6 @@ import org.mapstruct.Mapping;
 )
 public interface AccountMapper {
 
-    @Mapping(target = "addressDto", ignore = true)
     AccountResponse mapToDto(Account account);
 
     @Mapping(target = "id", ignore = true)

@@ -2,7 +2,7 @@ package com.example.portfolio.webstorespring.model.dto.products;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public record ProductWithProducerAndPromotionDTO(
         Long id,
@@ -13,7 +13,7 @@ public record ProductWithProducerAndPromotionDTO(
         BigDecimal price,
         BigDecimal promotionPrice,
         BigDecimal lowestPrice,
-        Date endDate,
+        LocalDateTime endDate,
         String description,
         String producerName) implements Serializable {
 }
