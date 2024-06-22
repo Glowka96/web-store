@@ -1,10 +1,10 @@
 package com.example.portfolio.webstorespring.buildhelpers.products;
 
-import com.example.portfolio.webstorespring.buildhelpers.DateForTestBuilderHelper;
 import com.example.portfolio.webstorespring.model.dto.products.ProductWithProducerAndPromotionDTO;
 
 import java.math.BigDecimal;
-import java.util.Date;
+
+import static com.example.portfolio.webstorespring.buildhelpers.DateForTestBuilderHelper.LOCAL_DATE_TIME;
 
 public class ProductWithProducerAndPromotionDTOBuilderHelper {
 
@@ -18,7 +18,7 @@ public class ProductWithProducerAndPromotionDTOBuilderHelper {
                 BigDecimal.valueOf(20.0),
                 BigDecimal.valueOf(10.0),
                 BigDecimal.valueOf(15.0),
-                Date.from(DateForTestBuilderHelper.ZONED_DATE_TIME.toInstant()),
+                LOCAL_DATE_TIME,
                 "Test description",
                 "Test producer name"
         );

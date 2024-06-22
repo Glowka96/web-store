@@ -35,7 +35,7 @@ class ProductsPageServiceTest {
         List<ProductWithPromotionDTO> productList = getListProductWithPromotionDto();
         Page<ProductWithPromotionDTO> productPage = new PageImpl<>(productList, pageable, productList.size());
 
-        given(productRepository.findProductsBySubcategory_Id(anyLong(), any(), any())).willReturn(Optional.of(productPage));
+        given(productRepository.findProductsBySubcategoryId(anyLong(), any(), any())).willReturn(Optional.of(productPage));
 
         // when
         PageProductsWithPromotionDTO actual = underTest.getPageProductsBySubcategoryId(1L, 0, 5, SortByType.NAME, SortDirectionType.ASC);
@@ -88,7 +88,7 @@ class ProductsPageServiceTest {
         List<ProductWithPromotionDTO> productList = getListProductWithPromotionDto();
         Page<ProductWithPromotionDTO> productPage = new PageImpl<>(productList, pageable, productList.size());
 
-        given(productRepository.findProductsBySubcategory_Id(anyLong(), any(), any())).willReturn(Optional.of(productPage));
+        given(productRepository.findProductsBySubcategoryId(anyLong(), any(), any())).willReturn(Optional.of(productPage));
 
         // when
         PageProductsWithPromotionDTO actual = underTest.getPageProductsBySubcategoryId(1L, 0, 5, SortByType.NAME, SortDirectionType.ASC);
@@ -141,10 +141,4 @@ class ProductsPageServiceTest {
         return List.of(productWithPromotionDTO, productWithPromotionDTO, productWithPromotionDTO);
     }
 
-//    @NotNull
-//    private ProductWithPromotionDTO getProductDTO() {
-//        when(clock.getZone()).thenReturn(zonedDateTime.getZone());
-//        when(clock.instant()).thenReturn(zonedDateTime.toInstant());
-//        return createProductWithPromotionDTO(clock);
-//    }
 }

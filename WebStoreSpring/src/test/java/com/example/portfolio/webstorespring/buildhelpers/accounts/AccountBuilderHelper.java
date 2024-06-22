@@ -26,19 +26,17 @@ public class AccountBuilderHelper {
     private static final String ACCOUNT_IMAGE_URL = "test.pl/test.png";
     private static final Role ROLE_USER = RoleBuilderHelper.createUserRole();
 
-    public static final Instantiator<Account> BASIC_ACCOUNT = lookup -> {
-        Account account = Account.builder()
-                .id(lookup.valueOf(ID, 1l))
-                .firstName(lookup.valueOf(FIRST_NAME, ACCOUNT_FIRST_NAME))
-                .lastName(lookup.valueOf(LAST_NAME, ACCOUNT_LAST_NAME))
-                .email(lookup.valueOf(EMAIL, ACCOUNT_EMAIL))
-                .password(lookup.valueOf(PASSWORD, ACCOUNT_PASSWORD))
-                .enabled(lookup.valueOf(ENABLED, Boolean.TRUE))
-                .roles(lookup.valueOf(ROLES, Set.of(ROLE_USER)))
-                .imageUrl(ACCOUNT_IMAGE_URL)
-                .build();
-        return account;
-    };
+    public static final Instantiator<Account> BASIC_ACCOUNT = lookup ->
+            Account.builder()
+            .id(lookup.valueOf(ID, 1L))
+            .firstName(lookup.valueOf(FIRST_NAME, ACCOUNT_FIRST_NAME))
+            .lastName(lookup.valueOf(LAST_NAME, ACCOUNT_LAST_NAME))
+            .email(lookup.valueOf(EMAIL, ACCOUNT_EMAIL))
+            .password(lookup.valueOf(PASSWORD, ACCOUNT_PASSWORD))
+            .enabled(lookup.valueOf(ENABLED, Boolean.TRUE))
+            .roles(lookup.valueOf(ROLES, Set.of(ROLE_USER)))
+            .imageUrl(ACCOUNT_IMAGE_URL)
+            .build();
 
     public static AccountRequest createAccountRequest() {
         return AccountRequest.builder()
