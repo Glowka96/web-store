@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -26,9 +26,9 @@ public class ProductPricePromotionRequest {
 
     @PastOrPresent(message = "The start date must be in the past or present")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date startDate;
+    private LocalDateTime startDate;
 
     @Future(message = "The end date must be a future date")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date endDate;
+    private LocalDateTime endDate;
 }
