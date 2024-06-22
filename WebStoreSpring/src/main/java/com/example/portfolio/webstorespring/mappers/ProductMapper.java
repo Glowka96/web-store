@@ -29,7 +29,7 @@ public interface ProductMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "pricePromotions", ignore = true)
-    @Mapping(target = "dateOfCreation", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "shipment", ignore = true)
     @Mapping(target = "subcategory", ignore = true)
     @Mapping(target = "producer", ignore = true)
