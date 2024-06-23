@@ -17,7 +17,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("""
             SELECT NEW com.example.portfolio.webstorespring.model.dto.products.ProductWithProducerAndPromotionDTO(
                     p.id, p.name, p.imageUrl, p.quantity, pt.name, p.price, ppp_1.promotionPrice, MIN(ppp_2.promotionPrice), ppp_1.endDate,
-                p.description, p.producer.name)
+                p.description, pt.name)
             FROM Product p
             INNER JOIN p.producer pr
             INNER JOIN p.type pt
@@ -28,6 +28,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             """)
     ProductWithProducerAndPromotionDTO findProductById(@Param("productId") Long productId,
                                                        @Param("date30DaysAgo") LocalDateTime date30DaysAgo);
+
 
     @Query("""
             SELECT NEW com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionDTO(

@@ -23,7 +23,7 @@ public class ProductPricePromotionBuilderHelper {
                     .id(lookup.valueOf(ID, 1L))
                     .promotionPrice(lookup.valueOf(PRICE, BigDecimal.valueOf(10.0)))
                     .startDate(lookup.valueOf(START_DATE, LOCAL_DATE_TIME))
-                    .startDate(lookup.valueOf(END_DATE, LOCAL_DATE_TIME.plusDays(15)))
+                    .endDate(lookup.valueOf(END_DATE, LOCAL_DATE_TIME.plusDays(15)))
                     .build();
 
     public static ProductPricePromotionRequest createProductPricePromotionRequest() {
