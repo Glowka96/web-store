@@ -7,6 +7,7 @@ import com.example.portfolio.webstorespring.model.entity.accounts.Role;
 import com.natpryce.makeiteasy.Instantiator;
 import com.natpryce.makeiteasy.Property;
 
+import java.util.List;
 import java.util.Set;
 
 public class AccountBuilderHelper {
@@ -28,15 +29,17 @@ public class AccountBuilderHelper {
 
     public static final Instantiator<Account> BASIC_ACCOUNT = lookup ->
             Account.builder()
-            .id(lookup.valueOf(ID, 1L))
-            .firstName(lookup.valueOf(FIRST_NAME, ACCOUNT_FIRST_NAME))
-            .lastName(lookup.valueOf(LAST_NAME, ACCOUNT_LAST_NAME))
-            .email(lookup.valueOf(EMAIL, ACCOUNT_EMAIL))
-            .password(lookup.valueOf(PASSWORD, ACCOUNT_PASSWORD))
-            .enabled(lookup.valueOf(ENABLED, Boolean.TRUE))
-            .roles(lookup.valueOf(ROLES, Set.of(ROLE_USER)))
-            .imageUrl(ACCOUNT_IMAGE_URL)
-            .build();
+                    .id(lookup.valueOf(ID, 1L))
+                    .firstName(lookup.valueOf(FIRST_NAME, ACCOUNT_FIRST_NAME))
+                    .lastName(lookup.valueOf(LAST_NAME, ACCOUNT_LAST_NAME))
+                    .email(lookup.valueOf(EMAIL, ACCOUNT_EMAIL))
+                    .password(lookup.valueOf(PASSWORD, ACCOUNT_PASSWORD))
+                    .enabled(lookup.valueOf(ENABLED, Boolean.TRUE))
+                    .roles(lookup.valueOf(ROLES, Set.of(ROLE_USER)))
+                    .imageUrl(ACCOUNT_IMAGE_URL)
+                    .authTokens(List.of())
+                    .confirmationTokens(List.of())
+                    .build();
 
     public static AccountRequest createAccountRequest() {
         return AccountRequest.builder()

@@ -10,11 +10,4 @@ public class RoleBuilderHelper {
                 .name("ROLE_USER")
                 .build();
     }
-
-    public static Role createUserAdmin() {
-        return Role.builder()
-                .id(1L)
-                .name("ROLE_ADMIN")
-                .build();
-    }
 }
