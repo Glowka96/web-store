@@ -38,22 +38,22 @@
         <skipIntegrationTests>${skipTests}</skipIntegrationTests>
     </properties>
 
-<!--    <dependencyManagement>-->
-<!--        <dependencies>-->
-<!--            <dependency>-->
-<!--                <groupId>com.google.cloud</groupId>-->
-<!--                <artifactId>spring-cloud-gcp-dependencies</artifactId>-->
-<!--                <version>${spring-cloud-gcp-dependencies.version}</version>-->
-<!--                <type>pom</type>-->
-<!--                <scope>import</scope>-->
-<!--            </dependency>-->
-<!--        </dependencies>-->
-<!--    </dependencyManagement>-->
+    <!--    <dependencyManagement>-->
+    <!--        <dependencies>-->
+    <!--            <dependency>-->
+    <!--                <groupId>com.google.cloud</groupId>-->
+    <!--                <artifactId>spring-cloud-gcp-dependencies</artifactId>-->
+    <!--                <version>${spring-cloud-gcp-dependencies.version}</version>-->
+    <!--                <type>pom</type>-->
+    <!--                <scope>import</scope>-->
+    <!--            </dependency>-->
+    <!--        </dependencies>-->
+    <!--    </dependencyManagement>-->
     <dependencies>
-<!--        <dependency>-->
-<!--            <groupId>com.google.cloud</groupId>-->
-<!--            <artifactId>spring-cloud-gcp-starter-sql-mysql</artifactId>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.google.cloud</groupId>-->
+        <!--            <artifactId>spring-cloud-gcp-starter-sql-mysql</artifactId>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
@@ -205,14 +205,17 @@
                 <configuration>
                     <mainClass>com.example.portfolio.webstorespring.WebStoreSpringApplication</mainClass>
                     <layout>JAR</layout>
+                    <layers>
+                        <enabled>true</enabled>
+                    </layers>
                 </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <goals>-->
+<!--                            <goal>repackage</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

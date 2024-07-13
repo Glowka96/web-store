@@ -13,6 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
@@ -32,6 +33,8 @@ import static com.natpryce.makeiteasy.MakeItEasy.*;
 public abstract class AbstractAuthControllerIT {
 
     @Autowired
+    protected TestRestTemplate restTemplate;
+    @Autowired
     private JwtService jwtService;
     @Autowired
     private AccountRepository accountRepository;
@@ -46,6 +49,7 @@ public abstract class AbstractAuthControllerIT {
     private static String ADMIN_TOKEN;
     private static String USER_TOKEN;
     protected static String LOCALHOST_URI;
+    protected static String LOCALHOST_ADMIN_URI;
 
     @BeforeEach
     public void init() {
@@ -67,10 +71,11 @@ public abstract class AbstractAuthControllerIT {
         authService.saveAccountAuthToken(savedUser, USER_TOKEN);
         authService.saveAccountAuthToken(savedAdmin, ADMIN_TOKEN);
 
-        LOCALHOST_URI = "http://localhost:" + port;
+        LOCALHOST_URI = "http://localhost:" + port + "/api/v1";
+        LOCALHOST_ADMIN_URI = LOCALHOST_URI + "/admin";
     }
 
-    public static HttpHeaders getHttpHedearsWithAdminToken() {
+    public static HttpHeaders getHttpHeadersWithAdminToken() {
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(ADMIN_TOKEN);
         return headers;
