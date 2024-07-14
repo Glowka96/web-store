@@ -50,9 +50,10 @@ public abstract class AbstractAuthControllerIT {
     private static String USER_TOKEN;
     protected static String LOCALHOST_URI;
     protected static String LOCALHOST_ADMIN_URI;
+    protected abstract void setup();
 
     @BeforeEach
-    public void init() {
+    protected void init() {
         Set<Role> userRole = repository.findByName("ROLE_USER");
         Set<Role> adminRole = repository.findByName("ROLE_ADMIN");
         Account user = make(a(BASIC_ACCOUNT).but(with(EMAIL, "user@test.pl"),
@@ -73,6 +74,7 @@ public abstract class AbstractAuthControllerIT {
 
         LOCALHOST_URI = "http://localhost:" + port + "/api/v1";
         LOCALHOST_ADMIN_URI = LOCALHOST_URI + "/admin";
+        setup();
     }
 
     public static HttpHeaders getHttpHeadersWithAdminToken() {
