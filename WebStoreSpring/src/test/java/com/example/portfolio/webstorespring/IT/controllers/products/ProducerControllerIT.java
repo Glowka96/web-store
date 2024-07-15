@@ -38,7 +38,7 @@ class ProducerControllerIT extends AbstractBaseControllerIT<ProducerRequest, Pro
     }
 
     @Override
-    protected Class<ProducerResponse> getResponseType() {
+    protected Class<ProducerResponse> getResponseTypeClass() {
         return ProducerResponse.class;
     }
 
@@ -94,7 +94,7 @@ class ProducerControllerIT extends AbstractBaseControllerIT<ProducerRequest, Pro
 
     @Test
     void shouldDeleteProducer_forAuthenticatedAdmin_thenStatusNotContent() {
-        shouldDeleteEntityForAuthenticatedAdmin_thenStatusNotContent();
+        shouldDeleteEntityForAuthenticatedAdmin_thenStatusNoContent();
     }
 
     @Test

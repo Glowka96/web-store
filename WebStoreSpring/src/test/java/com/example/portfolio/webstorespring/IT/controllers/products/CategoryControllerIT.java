@@ -40,7 +40,7 @@ class CategoryControllerIT extends AbstractBaseControllerIT<CategoryRequest, Cat
     }
 
     @Override
-    protected Class<CategoryResponse> getResponseType() {
+    protected Class<CategoryResponse> getResponseTypeClass() {
         return CategoryResponse.class;
     }
 
@@ -104,7 +104,7 @@ class CategoryControllerIT extends AbstractBaseControllerIT<CategoryRequest, Cat
 
     @Test
     void shouldDeleteCategory_forAuthenticatedAdmin_thanStatusNotContent() {
-        shouldDeleteEntityForAuthenticatedAdmin_thenStatusNotContent();
+        shouldDeleteEntityForAuthenticatedAdmin_thenStatusNoContent();
     }
 
     @Test

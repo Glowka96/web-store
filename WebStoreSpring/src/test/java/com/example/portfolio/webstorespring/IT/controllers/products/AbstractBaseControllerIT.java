@@ -25,7 +25,7 @@ abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthControllerI
 
     protected abstract T createRequest();
 
-    protected abstract Class<R> getResponseType();
+    protected abstract Class<R> getResponseTypeClass();
 
     protected abstract List<E> getAllEntities();
 
@@ -52,7 +52,7 @@ abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthControllerI
                 getAllAdminUri(),
                 HttpMethod.POST,
                 httpEntity,
-                getResponseType()
+                getResponseTypeClass()
         );
 
         Object responseId = getResultMethodFromResponse(response, "getId");
@@ -77,7 +77,7 @@ abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthControllerI
                 getAllAdminUri(),
                 HttpMethod.POST,
                 httpEntity,
-                getResponseType()
+                getResponseTypeClass()
         );
 
         assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
@@ -94,7 +94,7 @@ abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthControllerI
                 getAllAdminUri() + "/" + id,
                 HttpMethod.PUT,
                 httpEntity,
-                getResponseType()
+                getResponseTypeClass()
         );
 
         Object responseId = getResultMethodFromResponse(response, "getId");
@@ -121,21 +121,21 @@ abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthControllerI
                 getAllAdminUri() + "/" + id,
                 HttpMethod.PUT,
                 httpEntity,
-                getResponseType()
+                getResponseTypeClass()
         );
 
         Object requestName = getRequestName(request);
 
-
         assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
         assertThat(response.getBody()).isNull();
+
         Optional<E> optionalE = getOptionalEntityById();
         assertThat(optionalE).isPresent();
         Object entityName = getEntityName(optionalE.get());
         assertThat(entityName).isNotEqualTo(requestName);
     }
 
-    protected void shouldDeleteEntityForAuthenticatedAdmin_thenStatusNotContent() {
+    protected void shouldDeleteEntityForAuthenticatedAdmin_thenStatusNoContent() {
         HttpEntity<?> httpEntity = new HttpEntity<>(getHttpHeadersWithAdminToken());
 
         ResponseEntity<Void> response = restTemplate.exchange(
