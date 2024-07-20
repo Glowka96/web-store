@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.IT.controllers.products;
 
-import com.example.portfolio.webstorespring.buildhelpers.products.ProductTypeBuilderHelper;
+import com.example.portfolio.webstorespring.IT.controllers.AbstractBaseControllerIT;
 import com.example.portfolio.webstorespring.model.dto.products.request.ProductTypeRequest;
 import com.example.portfolio.webstorespring.model.dto.products.response.ProductTypeResponse;
 import com.example.portfolio.webstorespring.model.entity.products.ProductType;
@@ -8,11 +8,13 @@ import com.example.portfolio.webstorespring.repositories.products.ProductTypeRep
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Optional;
 
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductTypeBuilderHelper.createProductType;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProductTypeBuilderHelper.createProductTypeRequest;
+import static org.assertj.core.api.Assertions.assertThat;
+
 class ProductTypeControllerIT extends AbstractBaseControllerIT<ProductTypeRequest, ProductTypeResponse, ProductType> {
 
     @Autowired
@@ -27,37 +29,58 @@ class ProductTypeControllerIT extends AbstractBaseControllerIT<ProductTypeReques
     }
 
     @Override
-    protected String getUri() {
+    public String getUri() {
         return "/product-types";
     }
 
     @Override
-    protected ProductTypeRequest createRequest() {
-        return ProductTypeBuilderHelper.createProductTypeRequest("Test product type");
+    public ProductTypeRequest createRequest() {
+        return createProductTypeRequest("Test product type");
     }
 
     @Override
-    protected Class<ProductTypeResponse> getResponseTypeClass() {
+    public Class<ProductTypeResponse> getResponseTypeClass() {
         return ProductTypeResponse.class;
     }
 
     @Override
-    protected List<ProductType> getAllEntities() {
+    public List<ProductType> getAllEntities() {
         return productTypeRepository.findAll();
     }
 
     @Override
-    protected Optional<ProductType> getOptionalEntityById() {
+    public Optional<ProductType> getOptionalEntityById() {
         return productTypeRepository.findById(id);
     }
 
-    @Test
-    void shouldGetAllProductTypes_thenStatusOk() {
-        shouldGetAllEntities();
+    @Override
+    public void assertsFieldsWhenSave(ProductTypeRequest request,
+                                      ProductTypeResponse response) {
+        assertThat(response.getId()).isNotNull();
+        assertThat(response.getName()).isEqualTo(request.getName());
+    }
+
+    @Override
+    public void assertsFieldsWhenUpdate(ProductTypeRequest request,
+                                        ProductTypeResponse response,
+                                        ProductType entity) {
+        assertThat(entity.getId()).isEqualTo(id).isEqualTo(response.getId());
+        assertThat(entity.getName()).isEqualTo(request.getName()).isEqualTo(response.getName());
+    }
+
+    @Override
+    public void assertsFieldsWhenNotUpdate(ProductTypeRequest request,
+                                           ProductType entity) {
+        assertThat(entity.getName()).isNotEqualTo(request.getName());
     }
 
     @Test
-    void shouldSaveProductType_forAuthenticatedAdmin_thenStatusCreated() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+    void shouldGetAllProductTypes_forEverybody_thenStatusOk() {
+        shouldGetAllEntities_forEverybody_thenStatusOk();
+    }
+
+    @Test
+    void shouldSaveProductType_forAuthenticatedAdmin_thenStatusCreated() {
         shouldSaveEntity_forAuthenticatedAdmin_thenStatusCreated();
     }
 
@@ -67,12 +90,12 @@ class ProductTypeControllerIT extends AbstractBaseControllerIT<ProductTypeReques
     }
 
     @Test
-    void shouldUpdateProductType_forAuthenticatedAdmin_thenStatusAccepted() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+    void shouldUpdateProductType_forAuthenticatedAdmin_thenStatusAccepted() {
         shouldUpdateEntity_forAuthenticatedAdmin_thenStatusAccepted();
     }
 
     @Test
-    void shouldNotUpdateProductType_forAuthenticatedUser_thenStatusForbidden() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+    void shouldNotUpdateProductType_forAuthenticatedUser_thenStatusForbidden() {
         shouldNotUpdateEntityForAuthenticatedUser_thenStatusForbidden();
     }
 

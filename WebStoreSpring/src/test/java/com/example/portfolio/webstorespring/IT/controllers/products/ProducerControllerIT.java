@@ -1,6 +1,7 @@
 package com.example.portfolio.webstorespring.IT.controllers.products;
 
 
+import com.example.portfolio.webstorespring.IT.controllers.AbstractBaseControllerIT;
 import com.example.portfolio.webstorespring.buildhelpers.products.ProducerBuilderHelper;
 import com.example.portfolio.webstorespring.model.dto.products.request.ProducerRequest;
 import com.example.portfolio.webstorespring.model.dto.products.response.ProducerResponse;
@@ -8,49 +9,17 @@ import com.example.portfolio.webstorespring.model.entity.products.Producer;
 import com.example.portfolio.webstorespring.repositories.products.ProducerRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Optional;
 
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProducerBuilderHelper.createProducer;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ProducerControllerIT extends AbstractBaseControllerIT<ProducerRequest, ProducerResponse, Producer> {
 
     @Autowired
     private ProducerRepository producerRepository;
-
-    @Override
-    protected String getUri() {
-        return "/producers";
-    }
-
-    @Override
-    protected ProducerRequest createRequest() {
-        return ProducerBuilderHelper.createProducerRequest("Test producer");
-    }
-
-    @Override
-    protected Class<ProducerResponse> getResponseTypeClass() {
-        return ProducerResponse.class;
-    }
-
-    @Override
-    protected List<Producer> getAllEntities() {
-        return producerRepository.findAll();
-    }
-
-    @Override
-    protected Optional<Producer> getOptionalEntityById() {
-        return producerRepository.findById(id);
-    }
 
     @Override
     protected void setup() {
@@ -59,22 +28,58 @@ class ProducerControllerIT extends AbstractBaseControllerIT<ProducerRequest, Pro
         id = savedProducer.getId();
     }
 
-    @Test
-    void shouldGetAllProducer_forAuthenticatedAdmin_thenStatusOK() {
-        HttpEntity<?> httpEntity = new HttpEntity<>(getHttpHeadersWithAdminToken());
+    @Override
+    public String getUri() {
+        return "/producers";
+    }
 
-        ResponseEntity<List<ProducerResponse>> response = restTemplate.exchange(
-                LOCALHOST_ADMIN_URI + getUri(),
-                HttpMethod.GET,
-                httpEntity,
-                new ParameterizedTypeReference<>() {
-                });
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertThat(response.getBody()).hasSize(1);
+    @Override
+    public ProducerRequest createRequest() {
+        return ProducerBuilderHelper.createProducerRequest("Test producer");
+    }
+
+    @Override
+    public Class<ProducerResponse> getResponseTypeClass() {
+        return ProducerResponse.class;
+    }
+
+    @Override
+    public List<Producer> getAllEntities() {
+        return producerRepository.findAll();
+    }
+
+    @Override
+    public Optional<Producer> getOptionalEntityById() {
+        return producerRepository.findById(id);
+    }
+
+    @Override
+    public void assertsFieldsWhenSave(ProducerRequest request,
+                                      ProducerResponse response) {
+        assertThat(response.getId()).isNotNull();
+        assertThat(response.getName()).isEqualTo(request.getName());
+    }
+
+    @Override
+    public void assertsFieldsWhenUpdate(ProducerRequest request,
+                                        ProducerResponse response,
+                                        Producer entity) {
+        assertThat(entity.getId()).isEqualTo(id).isEqualTo(response.getId());
+        assertThat(entity.getName()).isEqualTo(request.getName()).isEqualTo(response.getName());
+    }
+
+    @Override
+    public void assertsFieldsWhenNotUpdate(ProducerRequest request, Producer entity) {
+        assertThat(entity.getName()).isNotEqualTo(request.getName());
     }
 
     @Test
-    void shouldSaveProducer_forAuthenticatedAdmin_thenStatusCreated() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    void shouldGetAllProducer_forAuthenticatedAdmin_thenStatusOK() {
+        shouldGetAllEntities_forAdmin_thenStatusOK();
+    }
+
+    @Test
+    void shouldSaveProducer_forAuthenticatedAdmin_thenStatusCreated() {
         shouldSaveEntity_forAuthenticatedAdmin_thenStatusCreated();
     }
 
@@ -84,11 +89,12 @@ class ProducerControllerIT extends AbstractBaseControllerIT<ProducerRequest, Pro
     }
 
     @Test
-    void shouldUpdateProducer_forAuthenticatedAdmin_thenStatusAccepted() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+    void shouldUpdateProducer_forAuthenticatedAdmin_thenStatusAccepted() {
         shouldUpdateEntity_forAuthenticatedAdmin_thenStatusAccepted();
     }
+
     @Test
-    void shouldNotUpdateProducer_forAuthenticatedAdmin_thenStatusForbidden() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+    void shouldNotUpdateProducer_forAuthenticatedAdmin_thenStatusForbidden() {
         shouldNotUpdateEntityForAuthenticatedUser_thenStatusForbidden();
     }
 

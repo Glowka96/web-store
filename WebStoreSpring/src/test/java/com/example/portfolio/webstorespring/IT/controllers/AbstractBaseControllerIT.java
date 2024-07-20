@@ -1,51 +1,48 @@
-package com.example.portfolio.webstorespring.IT.controllers.products;
+package com.example.portfolio.webstorespring.IT.controllers;
 
-import com.example.portfolio.webstorespring.IT.controllers.AbstractAuthControllerIT;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthControllerIT {
+public abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthControllerIT
+        implements BaseControllerIT<T, R, E>, AssertsFieldsIT<T, R, E> {
 
     protected Long id;
 
-    protected abstract String getUri();
-
-    protected abstract T createRequest();
-
-    protected abstract Class<R> getResponseTypeClass();
-
-    protected abstract List<E> getAllEntities();
-
-    protected abstract Optional<E> getOptionalEntityById();
-
-    protected void shouldGetAllEntities() {
+    protected void shouldGetAllEntities_forEverybody_thenStatusOk() {
         ResponseEntity<List<R>> response = restTemplate.exchange(
                 getAllUri(),
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<>() {
-                }
+                getListResponseTypeClass()
         );
         assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
-        assertThat(response.getBody()).hasSize(1);
+        assertsFieldsWhenGetAll(response.getBody());
     }
 
-    protected void shouldSaveEntity_forAuthenticatedAdmin_thenStatusCreated() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        T request = createRequest();
+    protected void shouldGetAllEntities_forAdmin_thenStatusOK() {
+        HttpEntity<T> httpEntity = new HttpEntity<>(getHttpHeadersWithAdminToken());
 
+        ResponseEntity<List<R>> response = restTemplate.exchange(
+                getAllAdminUri(),
+                HttpMethod.GET,
+                httpEntity,
+                getListResponseTypeClass()
+        );
+        assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
+        assertsFieldsWhenGetAll(response.getBody());
+    }
+
+    protected void shouldSaveEntity_forAuthenticatedAdmin_thenStatusCreated() {
+        T request = createRequest();
         HttpEntity<T> httpEntity = new HttpEntity<>(request, getHttpHeadersWithAdminToken());
 
         ResponseEntity<R> response = restTemplate.exchange(
@@ -55,15 +52,8 @@ abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthControllerI
                 getResponseTypeClass()
         );
 
-        Object responseId = getResultMethodFromResponse(response, "getId");
-        Object responseName= getResultMethodFromResponse(response, "getName");
-        Method entityGetNameMethod = request.getClass().getMethod("getName");
-
-        Object requestName = entityGetNameMethod.invoke(request);
-
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertThat(responseId).isNotNull();
-        assertThat(responseName).isEqualTo(requestName);
+        assertsFieldsWhenSave(request, response.getBody());
         assertEntitiesSize(2);
     }
 
@@ -85,7 +75,7 @@ abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthControllerI
         assertEntitiesSize(1);
     }
 
-    protected void shouldUpdateEntity_forAuthenticatedAdmin_thenStatusAccepted() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    protected void shouldUpdateEntity_forAuthenticatedAdmin_thenStatusAccepted() {
         T request = createRequest();
 
         HttpEntity<T> httpEntity = new HttpEntity<>(request, getHttpHeadersWithAdminToken());
@@ -97,22 +87,14 @@ abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthControllerI
                 getResponseTypeClass()
         );
 
-        Object responseId = getResultMethodFromResponse(response, "getId");
-        Object responseName = getResultMethodFromResponse(response, "getName");
-
-        Object requestName = getRequestName(request);
-
         assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
-        assertThat(responseId).isEqualTo(id);
-        assertThat(responseName).isEqualTo(requestName);
 
         Optional<E> optionalE = getOptionalEntityById();
         assertThat(optionalE).isPresent();
-        Object entityName = getEntityName(optionalE.get());
-        assertThat(entityName).isEqualTo(requestName).isEqualTo(responseName);
+        assertsFieldsWhenUpdate(request, response.getBody(), optionalE.get());
     }
 
-    protected void shouldNotUpdateEntityForAuthenticatedUser_thenStatusForbidden() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    protected void shouldNotUpdateEntityForAuthenticatedUser_thenStatusForbidden() {
         T request = createRequest();
 
         HttpEntity<T> httpEntity = new HttpEntity<>(request, getHttpHeaderWithUserToken());
@@ -124,15 +106,12 @@ abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthControllerI
                 getResponseTypeClass()
         );
 
-        Object requestName = getRequestName(request);
-
         assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
         assertThat(response.getBody()).isNull();
 
         Optional<E> optionalE = getOptionalEntityById();
         assertThat(optionalE).isPresent();
-        Object entityName = getEntityName(optionalE.get());
-        assertThat(entityName).isNotEqualTo(requestName);
+        assertsFieldsWhenNotUpdate(request, optionalE.get());
     }
 
     protected void shouldDeleteEntityForAuthenticatedAdmin_thenStatusNoContent() {
@@ -169,6 +148,17 @@ abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthControllerI
         assertThat(optionalE).isPresent();
     }
 
+    @Override
+    public void assertsFieldsWhenGetAll(List<R> responses) {
+        assertThat(responses).hasSize(1);
+    }
+
+    @Override
+    public ParameterizedTypeReference<List<R>> getListResponseTypeClass() {
+        return new ParameterizedTypeReference<>() {
+        };
+    }
+
     protected String getAllUri() {
         return LOCALHOST_URI + getUri();
     }
@@ -180,19 +170,5 @@ abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthControllerI
     private void assertEntitiesSize(int expected) {
         List<E> entities = getAllEntities();
         assertThat(entities).hasSize(expected);
-    }
-
-    private static <T> Object getRequestName(T request) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-        return request.getClass().getMethod("getName").invoke(request);
-    }
-
-    @NotNull
-    private static <R> Object getResultMethodFromResponse(ResponseEntity<R> response, String methodName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        return Objects.requireNonNull(response.getBody()).getClass().getMethod(methodName).invoke(response.getBody());
-    }
-
-    @NotNull
-    private static <E> Object getEntityName(E entity) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        return entity.getClass().getMethod("getName").invoke(entity);
     }
 }

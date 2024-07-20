@@ -1,5 +1,6 @@
 package com.example.portfolio.webstorespring.IT.controllers.products;
 
+import com.example.portfolio.webstorespring.IT.controllers.AbstractBaseControllerIT;
 import com.example.portfolio.webstorespring.buildhelpers.products.CategoryBuilderHelper;
 import com.example.portfolio.webstorespring.buildhelpers.products.SubcategoryBuilderHelper;
 import com.example.portfolio.webstorespring.model.dto.products.request.CategoryRequest;
@@ -7,14 +8,10 @@ import com.example.portfolio.webstorespring.model.dto.products.response.Category
 import com.example.portfolio.webstorespring.model.entity.products.Category;
 import com.example.portfolio.webstorespring.model.entity.products.Subcategory;
 import com.example.portfolio.webstorespring.repositories.products.CategoryRepository;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -22,37 +19,10 @@ import java.util.Optional;
 import static com.example.portfolio.webstorespring.buildhelpers.products.CategoryBuilderHelper.createCategory;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Slf4j
 class CategoryControllerIT extends AbstractBaseControllerIT<CategoryRequest, CategoryResponse, Category> {
 
     @Autowired
     private CategoryRepository categoryRepository;
-    private static final String CATEGORY_URI = "/categories";
-
-    @Override
-    protected String getUri() {
-        return "/categories";
-    }
-
-    @Override
-    protected CategoryRequest createRequest() {
-        return CategoryBuilderHelper.createCategoryRequest("Test category");
-    }
-
-    @Override
-    protected Class<CategoryResponse> getResponseTypeClass() {
-        return CategoryResponse.class;
-    }
-
-    @Override
-    protected List<Category> getAllEntities() {
-        return categoryRepository.findAll();
-    }
-
-    @Override
-    protected Optional<Category> getOptionalEntityById() {
-        return categoryRepository.findById(id);
-    }
 
     @Override
     protected void setup() {
@@ -69,36 +39,84 @@ class CategoryControllerIT extends AbstractBaseControllerIT<CategoryRequest, Cat
         id = savedCategory.getId();
     }
 
-    @Test
-    void shouldGetAllCategory() {
-        ResponseEntity<List<CategoryResponse>> response = restTemplate.exchange(
-                LOCALHOST_URI + CATEGORY_URI,
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<>() {
-                });
-        assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
-        assertThat(response.getBody()).hasSize(1);
-        assertThat(response.getBody().get(0).getSubcategoryResponses()).hasSize(3);
+    public String getUri() {
+        return "/categories";
+    }
+
+    @Override
+    public CategoryRequest createRequest() {
+        return CategoryBuilderHelper.createCategoryRequest("Test category");
+    }
+
+    @Override
+    public Class<CategoryResponse> getResponseTypeClass() {
+        return CategoryResponse.class;
+    }
+
+    @Override
+    public List<Category> getAllEntities() {
+        return categoryRepository.findAll();
+    }
+
+    @Override
+    public Optional<Category> getOptionalEntityById() {
+        return categoryRepository.findById(id);
+    }
+
+    @Override
+    public ParameterizedTypeReference<List<CategoryResponse>> getListResponseTypeClass() {
+        return new ParameterizedTypeReference<>() {
+        };
+    }
+
+    @Override
+    public void assertsFieldsWhenGetAll(List<CategoryResponse> responses) {
+        assertThat(responses).hasSize(1);
+        assertThat(responses.get(0).getSubcategoryResponses()).hasSize(3);
+    }
+
+    @Override
+    public void assertsFieldsWhenSave(CategoryRequest request,
+                                      CategoryResponse response) {
+        assertThat(response.getId()).isNotNull();
+        assertThat(response.getName()).isEqualTo(request.getName());
+    }
+
+    @Override
+    public void assertsFieldsWhenUpdate(CategoryRequest request,
+                                        CategoryResponse response,
+                                        Category entity) {
+        assertThat(entity.getId()).isEqualTo(id).isEqualTo(response.getId());
+        assertThat(entity.getName()).isEqualTo(request.getName()).isEqualTo(response.getName());
+    }
+
+    @Override
+    public void assertsFieldsWhenNotUpdate(CategoryRequest request, Category entity) {
+        assertThat(entity.getName()).isNotEqualTo(request.getName());
     }
 
     @Test
-    void shouldSaveCategory_forAuthenticatedAdmin_thenStatusCreated() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
-       shouldSaveEntity_forAuthenticatedAdmin_thenStatusCreated();
+    void shouldGetAllCategory_forEverybody_thenStatusOk() {
+        shouldGetAllEntities_forEverybody_thenStatusOk();
+    }
+
+    @Test
+    void shouldSaveCategory_forAuthenticatedAdmin_thenStatusCreated() {
+        shouldSaveEntity_forAuthenticatedAdmin_thenStatusCreated();
     }
 
     @Test
     void shouldNotSaveCategory_forAuthenticatedUser_thenStatusForbidden() {
-       shouldNotSaveEntity_forAuthenticatedUser_thenStatusForbidden();
+        shouldNotSaveEntity_forAuthenticatedUser_thenStatusForbidden();
     }
 
     @Test
-    void shouldUpdateCategory_forAuthenticatedAdmin_thenStatusAccepted() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+    void shouldUpdateCategory_forAuthenticatedAdmin_thenStatusAccepted() {
         shouldUpdateEntity_forAuthenticatedAdmin_thenStatusAccepted();
     }
 
     @Test
-    void shouldNotUpdateCategory_forAuthenticatedUser_thenStatusForbidden() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+    void shouldNotUpdateCategory_forAuthenticatedUser_thenStatusForbidden() {
         shouldNotUpdateEntityForAuthenticatedUser_thenStatusForbidden();
     }
 
