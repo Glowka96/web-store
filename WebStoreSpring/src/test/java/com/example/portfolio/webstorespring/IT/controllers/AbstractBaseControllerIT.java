@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthControllerIT
         implements BaseControllerIT<T, R, E>, AssertsFieldsIT<T, R, E> {
 
-    protected Long id;
+    protected Long savedEntityId;
 
     protected void shouldGetAllEntities_forEverybody_thenStatusOk() {
         ResponseEntity<List<R>> response = restTemplate.exchange(
@@ -81,7 +81,7 @@ public abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthCont
         HttpEntity<T> httpEntity = new HttpEntity<>(request, getHttpHeadersWithAdminToken());
 
         ResponseEntity<R> response = restTemplate.exchange(
-                getAllAdminUri() + "/" + id,
+                getAllAdminUri() + "/" + savedEntityId,
                 HttpMethod.PUT,
                 httpEntity,
                 getResponseTypeClass()
@@ -100,7 +100,7 @@ public abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthCont
         HttpEntity<T> httpEntity = new HttpEntity<>(request, getHttpHeaderWithUserToken());
 
         ResponseEntity<R> response = restTemplate.exchange(
-                getAllAdminUri() + "/" + id,
+                getAllAdminUri() + "/" + savedEntityId,
                 HttpMethod.PUT,
                 httpEntity,
                 getResponseTypeClass()
@@ -118,7 +118,7 @@ public abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthCont
         HttpEntity<?> httpEntity = new HttpEntity<>(getHttpHeadersWithAdminToken());
 
         ResponseEntity<Void> response = restTemplate.exchange(
-                getAllAdminUri() + "/" + id,
+                getAllAdminUri() + "/" + savedEntityId,
                 HttpMethod.DELETE,
                 httpEntity,
                 Void.class
@@ -135,7 +135,7 @@ public abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthCont
         HttpEntity<?> httpEntity = new HttpEntity<>(getHttpHeaderWithUserToken());
 
         ResponseEntity<Void> response = restTemplate.exchange(
-                getAllAdminUri() + "/" + id,
+                getAllAdminUri() + "/" + savedEntityId,
                 HttpMethod.DELETE,
                 httpEntity,
                 Void.class

@@ -25,7 +25,7 @@ class ProductTypeControllerIT extends AbstractBaseControllerIT<ProductTypeReques
         productTypeRepository.deleteAll();
 
         ProductType savedProductType = productTypeRepository.save(createProductType());
-        id = savedProductType.getId();
+        savedEntityId = savedProductType.getId();
     }
 
     @Override
@@ -50,7 +50,7 @@ class ProductTypeControllerIT extends AbstractBaseControllerIT<ProductTypeReques
 
     @Override
     public Optional<ProductType> getOptionalEntityById() {
-        return productTypeRepository.findById(id);
+        return productTypeRepository.findById(savedEntityId);
     }
 
     @Override
@@ -64,7 +64,7 @@ class ProductTypeControllerIT extends AbstractBaseControllerIT<ProductTypeReques
     public void assertsFieldsWhenUpdate(ProductTypeRequest request,
                                         ProductTypeResponse response,
                                         ProductType entity) {
-        assertThat(entity.getId()).isEqualTo(id).isEqualTo(response.getId());
+        assertThat(entity.getId()).isEqualTo(savedEntityId).isEqualTo(response.getId());
         assertThat(entity.getName()).isEqualTo(request.getName()).isEqualTo(response.getName());
     }
 

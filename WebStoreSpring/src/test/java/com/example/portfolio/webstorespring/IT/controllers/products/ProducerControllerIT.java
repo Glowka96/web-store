@@ -25,7 +25,7 @@ class ProducerControllerIT extends AbstractBaseControllerIT<ProducerRequest, Pro
     protected void setup() {
         producerRepository.deleteAll();
         Producer savedProducer = producerRepository.save(createProducer());
-        id = savedProducer.getId();
+        savedEntityId = savedProducer.getId();
     }
 
     @Override
@@ -50,7 +50,7 @@ class ProducerControllerIT extends AbstractBaseControllerIT<ProducerRequest, Pro
 
     @Override
     public Optional<Producer> getOptionalEntityById() {
-        return producerRepository.findById(id);
+        return producerRepository.findById(savedEntityId);
     }
 
     @Override
@@ -64,7 +64,7 @@ class ProducerControllerIT extends AbstractBaseControllerIT<ProducerRequest, Pro
     public void assertsFieldsWhenUpdate(ProducerRequest request,
                                         ProducerResponse response,
                                         Producer entity) {
-        assertThat(entity.getId()).isEqualTo(id).isEqualTo(response.getId());
+        assertThat(entity.getId()).isEqualTo(savedEntityId).isEqualTo(response.getId());
         assertThat(entity.getName()).isEqualTo(request.getName()).isEqualTo(response.getName());
     }
 

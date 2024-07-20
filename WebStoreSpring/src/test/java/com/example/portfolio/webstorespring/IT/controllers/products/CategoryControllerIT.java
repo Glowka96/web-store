@@ -36,7 +36,7 @@ class CategoryControllerIT extends AbstractBaseControllerIT<CategoryRequest, Cat
         category.setSubcategories(Arrays.asList(subcategory1, subcategory2, subcategory3));
         category.getSubcategories().forEach(s -> s.setCategory(category));
         Category savedCategory = categoryRepository.save(category);
-        id = savedCategory.getId();
+        savedEntityId = savedCategory.getId();
     }
 
     public String getUri() {
@@ -60,7 +60,7 @@ class CategoryControllerIT extends AbstractBaseControllerIT<CategoryRequest, Cat
 
     @Override
     public Optional<Category> getOptionalEntityById() {
-        return categoryRepository.findById(id);
+        return categoryRepository.findById(savedEntityId);
     }
 
     @Override
@@ -86,7 +86,7 @@ class CategoryControllerIT extends AbstractBaseControllerIT<CategoryRequest, Cat
     public void assertsFieldsWhenUpdate(CategoryRequest request,
                                         CategoryResponse response,
                                         Category entity) {
-        assertThat(entity.getId()).isEqualTo(id).isEqualTo(response.getId());
+        assertThat(entity.getId()).isEqualTo(savedEntityId).isEqualTo(response.getId());
         assertThat(entity.getName()).isEqualTo(request.getName()).isEqualTo(response.getName());
     }
 
