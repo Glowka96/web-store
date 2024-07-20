@@ -5,6 +5,7 @@ import com.example.portfolio.webstorespring.model.dto.products.request.ProductTy
 import com.example.portfolio.webstorespring.model.dto.products.response.ProductTypeResponse;
 import com.example.portfolio.webstorespring.model.entity.products.ProductType;
 import com.example.portfolio.webstorespring.repositories.products.ProductTypeRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -14,7 +15,7 @@ import java.util.Optional;
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductTypeBuilderHelper.createProductType;
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductTypeBuilderHelper.createProductTypeRequest;
 import static org.assertj.core.api.Assertions.assertThat;
-
+@Slf4j
 class ProductTypeControllerIT extends AbstractBaseControllerIT<ProductTypeRequest, ProductTypeResponse, ProductType> {
 
     @Autowired
@@ -49,15 +50,20 @@ class ProductTypeControllerIT extends AbstractBaseControllerIT<ProductTypeReques
     }
 
     @Override
-    public Optional<ProductType> getOptionalEntityById() {
+    public Optional<ProductType> getOptionalEntityBySavedId() {
         return productTypeRepository.findById(savedEntityId);
     }
 
     @Override
     public void assertsFieldsWhenSave(ProductTypeRequest request,
                                       ProductTypeResponse response) {
-        assertThat(response.getId()).isNotNull();
-        assertThat(response.getName()).isEqualTo(request.getName());
+        Optional<ProductType> optionalProductType =
+                productTypeRepository.findById(response.getId());
+        assertThat(optionalProductType).isPresent();
+
+        assertThat(response.getId()).isNotNull().isEqualTo(optionalProductType.get().getId());
+        assertThat(response.getName()).isEqualTo(request.getName())
+                .isEqualTo(optionalProductType.get().getName());
     }
 
     @Override
@@ -71,6 +77,7 @@ class ProductTypeControllerIT extends AbstractBaseControllerIT<ProductTypeReques
     @Override
     public void assertsFieldsWhenNotUpdate(ProductTypeRequest request,
                                            ProductType entity) {
+        log.info("asserts not Update");
         assertThat(entity.getName()).isNotEqualTo(request.getName());
     }
 

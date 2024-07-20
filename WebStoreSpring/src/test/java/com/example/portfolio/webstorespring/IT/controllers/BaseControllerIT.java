@@ -12,6 +12,6 @@ public interface BaseControllerIT<T, R, E> {
     Class<R> getResponseTypeClass();
     ParameterizedTypeReference<List<R>> getListResponseTypeClass();
     List<E> getAllEntities();
-    Optional<E> getOptionalEntityById();
+    Optional<E> getOptionalEntityBySavedId();
 
 }

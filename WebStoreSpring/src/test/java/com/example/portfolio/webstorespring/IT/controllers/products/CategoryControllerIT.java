@@ -2,7 +2,6 @@ package com.example.portfolio.webstorespring.IT.controllers.products;
 
 import com.example.portfolio.webstorespring.IT.controllers.AbstractBaseControllerIT;
 import com.example.portfolio.webstorespring.buildhelpers.products.CategoryBuilderHelper;
-import com.example.portfolio.webstorespring.buildhelpers.products.SubcategoryBuilderHelper;
 import com.example.portfolio.webstorespring.model.dto.products.request.CategoryRequest;
 import com.example.portfolio.webstorespring.model.dto.products.response.CategoryResponse;
 import com.example.portfolio.webstorespring.model.entity.products.Category;
@@ -17,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.example.portfolio.webstorespring.buildhelpers.products.CategoryBuilderHelper.createCategory;
+import static com.example.portfolio.webstorespring.buildhelpers.products.SubcategoryBuilderHelper.createSubcategory;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class CategoryControllerIT extends AbstractBaseControllerIT<CategoryRequest, CategoryResponse, Category> {
@@ -28,9 +28,9 @@ class CategoryControllerIT extends AbstractBaseControllerIT<CategoryRequest, Cat
     protected void setup() {
         categoryRepository.deleteAll();
 
-        Subcategory subcategory1 = SubcategoryBuilderHelper.createSubcategory("One");
-        Subcategory subcategory2 = SubcategoryBuilderHelper.createSubcategory("Two");
-        Subcategory subcategory3 = SubcategoryBuilderHelper.createSubcategory("Three");
+        Subcategory subcategory1 = createSubcategory("One");
+        Subcategory subcategory2 = createSubcategory("Two");
+        Subcategory subcategory3 = createSubcategory("Three");
 
         Category category = createCategory();
         category.setSubcategories(Arrays.asList(subcategory1, subcategory2, subcategory3));
@@ -59,7 +59,7 @@ class CategoryControllerIT extends AbstractBaseControllerIT<CategoryRequest, Cat
     }
 
     @Override
-    public Optional<Category> getOptionalEntityById() {
+    public Optional<Category> getOptionalEntityBySavedId() {
         return categoryRepository.findById(savedEntityId);
     }
 
@@ -78,8 +78,12 @@ class CategoryControllerIT extends AbstractBaseControllerIT<CategoryRequest, Cat
     @Override
     public void assertsFieldsWhenSave(CategoryRequest request,
                                       CategoryResponse response) {
-        assertThat(response.getId()).isNotNull();
-        assertThat(response.getName()).isEqualTo(request.getName());
+        Optional<Category> optionalCategory = categoryRepository.findById(response.getId());
+        assertThat(optionalCategory).isPresent();
+
+        assertThat(response.getId()).isNotNull().isEqualTo(optionalCategory.get().getId());
+        assertThat(response.getName()).isEqualTo(request.getName())
+                .isEqualTo(optionalCategory.get().getName());
     }
 
     @Override

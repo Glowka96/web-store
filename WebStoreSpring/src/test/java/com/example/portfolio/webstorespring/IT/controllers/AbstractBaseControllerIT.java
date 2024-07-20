@@ -89,7 +89,7 @@ public abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthCont
 
         assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
 
-        Optional<E> optionalE = getOptionalEntityById();
+        Optional<E> optionalE = getOptionalEntityBySavedId();
         assertThat(optionalE).isPresent();
         assertsFieldsWhenUpdate(request, response.getBody(), optionalE.get());
     }
@@ -109,7 +109,7 @@ public abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthCont
         assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
         assertThat(response.getBody()).isNull();
 
-        Optional<E> optionalE = getOptionalEntityById();
+        Optional<E> optionalE = getOptionalEntityBySavedId();
         assertThat(optionalE).isPresent();
         assertsFieldsWhenNotUpdate(request, optionalE.get());
     }
@@ -127,7 +127,7 @@ public abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthCont
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
         assertThat(response.getBody()).isNull();
 
-        Optional<E> optionalE = getOptionalEntityById();
+        Optional<E> optionalE = getOptionalEntityBySavedId();
         assertThat(optionalE).isNotPresent();
     }
 
@@ -144,7 +144,7 @@ public abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthCont
         assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
         assertThat(response.getBody()).isNull();
 
-        Optional<E> optionalE = getOptionalEntityById();
+        Optional<E> optionalE = getOptionalEntityBySavedId();
         assertThat(optionalE).isPresent();
     }
 

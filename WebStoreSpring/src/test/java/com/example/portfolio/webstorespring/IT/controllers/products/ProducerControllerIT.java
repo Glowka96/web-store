@@ -49,15 +49,19 @@ class ProducerControllerIT extends AbstractBaseControllerIT<ProducerRequest, Pro
     }
 
     @Override
-    public Optional<Producer> getOptionalEntityById() {
+    public Optional<Producer> getOptionalEntityBySavedId() {
         return producerRepository.findById(savedEntityId);
     }
 
     @Override
     public void assertsFieldsWhenSave(ProducerRequest request,
                                       ProducerResponse response) {
-        assertThat(response.getId()).isNotNull();
-        assertThat(response.getName()).isEqualTo(request.getName());
+        Optional<Producer> optionalProducer = producerRepository.findById(response.getId());
+        assertThat(optionalProducer).isPresent();
+
+        assertThat(response.getId()).isNotNull().isEqualTo(optionalProducer.get().getId());
+        assertThat(response.getName()).isEqualTo(request.getName())
+                .isEqualTo(optionalProducer.get().getName());
     }
 
     @Override
