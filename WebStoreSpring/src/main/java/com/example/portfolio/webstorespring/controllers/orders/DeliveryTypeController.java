@@ -18,18 +18,25 @@ public class DeliveryTypeController {
     private final DeliveryTypeService deliveryTypeService;
 
     @GetMapping("/delivery-types")
-    public ResponseEntity<List<DeliveryTypeResponse>> getAllDeliveryType(){
+    public ResponseEntity<List<DeliveryTypeResponse>> getAllDeliveryType() {
         return ResponseEntity.ok(deliveryTypeService.getAllDeliveryType());
     }
 
     @PostMapping("/admin/delivery-types")
-    public ResponseEntity<DeliveryTypeResponse> saveDelivery(@RequestBody DeliveryTypeRequest deliveryTypeRequest) {
+    public ResponseEntity<DeliveryTypeResponse> saveDeliveryType(@RequestBody DeliveryTypeRequest deliveryTypeRequest) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(deliveryTypeService.saveDeliveryType(deliveryTypeRequest));
     }
 
+    @PutMapping("/admin/delivery-types/{deliveryId}")
+    public ResponseEntity<DeliveryTypeResponse> updateDeliveryType(@PathVariable(value = "deliveryId") Long deliveryId,
+                                                                   @RequestBody DeliveryTypeRequest deliveryTypeRequest) {
+        return ResponseEntity.status(HttpStatus.ACCEPTED)
+                .body(deliveryTypeService.updateDeliveryType(deliveryId, deliveryTypeRequest));
+    }
+
     @DeleteMapping(value = "/admin/delivery-types/{deliveryId}")
-    public ResponseEntity<Void> deleteDeliveryTypeById(@PathVariable(value = "deliveryId") Long deliveryId){
+    public ResponseEntity<Void> deleteDeliveryTypeById(@PathVariable(value = "deliveryId") Long deliveryId) {
         deliveryTypeService.deleteDeliveryType(deliveryId);
         return ResponseEntity.noContent().build();
     }
