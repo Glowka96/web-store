@@ -1,5 +1,6 @@
 package com.example.portfolio.webstorespring.controllers.accounts;
 
+import com.example.portfolio.webstorespring.controllers.AccountDetailsArgumentResolver;
 import com.example.portfolio.webstorespring.exceptions.GlobalExceptionHandler;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.AccountRequest;
 import com.example.portfolio.webstorespring.model.dto.accounts.response.AccountResponse;
@@ -45,6 +46,7 @@ class AccountControllerTest {
 
         mvc = MockMvcBuilders.standaloneSetup(underTest)
                 .setControllerAdvice(new GlobalExceptionHandler())
+                .setCustomArgumentResolvers(new AccountDetailsArgumentResolver())
                 .build();
     }
 

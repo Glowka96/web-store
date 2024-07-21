@@ -1,5 +1,6 @@
 package com.example.portfolio.webstorespring.controllers.orders;
 
+import com.example.portfolio.webstorespring.controllers.AccountDetailsArgumentResolver;
 import com.example.portfolio.webstorespring.model.dto.orders.request.OrderRequest;
 import com.example.portfolio.webstorespring.model.dto.orders.response.OrderResponse;
 import com.example.portfolio.webstorespring.model.dto.orders.response.OrderResponseWithoutShipments;
@@ -45,7 +46,9 @@ class OrderControllerTest {
 
     @BeforeEach
     void initialization() {
-        mvc = MockMvcBuilders.standaloneSetup(underTest).build();
+        mvc = MockMvcBuilders.standaloneSetup(underTest)
+                .setCustomArgumentResolvers(new AccountDetailsArgumentResolver())
+                .build();
 
         mapper = new ObjectMapper();
     }
