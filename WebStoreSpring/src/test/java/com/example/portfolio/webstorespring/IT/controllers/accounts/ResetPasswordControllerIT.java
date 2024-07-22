@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.IT.controllers.accounts;
 
 
-import com.example.portfolio.webstorespring.IT.ContainersConfig;
+import com.example.portfolio.webstorespring.IT.controllers.AbstractIT;
 import com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.ResetPasswordRequest;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
@@ -11,18 +11,12 @@ import com.example.portfolio.webstorespring.repositories.accounts.ConfirmationTo
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.context.annotation.Import;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -36,35 +30,27 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Import(ContainersConfig.class)
-@Testcontainers
-class ResetPasswordControllerIT {
+class ResetPasswordControllerIT extends AbstractIT {
 
-    @Autowired
-    private TestRestTemplate restTemplate;
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
     private ConfirmationTokenRepository tokenRepository;
     @Autowired
     private PasswordEncoder encoder;
-    @LocalServerPort
-    private Integer port;
-    private String uri;
+    private final static String URI = localhostUri + "/reset-password";
     private Account savedAccount;
 
     @BeforeEach
-    void setup() {
-        uri = "http://localhost:" + port + "/api/v1/reset-password";
+    @Override
+    public void initTestData() {
         accountRepository.deleteAll();
         savedAccount = accountRepository.save(make(a(AccountBuilderHelper.BASIC_ACCOUNT)));
     }
 
     @Test
     void shouldResetPassword_forEverybody_thenStatusOk() {
-        String requestUri = uri + "?email=" + savedAccount.getEmail();
+        String requestUri = URI +"?email=" + savedAccount.getEmail();
 
         ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
                 requestUri,
@@ -85,7 +71,7 @@ class ResetPasswordControllerIT {
                 tokenRepository.save(createConfirmationTokenIsNotConfirmedAt(savedAccount, LocalDateTime.now()));
         ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest("newPassword123*");
 
-        String requestUri = uri + "/confirm?token=" + savedConfirmationToken.getToken();
+        String requestUri = URI + "/confirm?token=" + savedConfirmationToken.getToken();
         HttpEntity<ResetPasswordRequest> requestEntity = new HttpEntity<>(resetPasswordRequest);
 
         ResponseEntity<Map<String, Object>> response = restTemplate.exchange(

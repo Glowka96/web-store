@@ -32,7 +32,7 @@ class ProductPricePromotionControllerIT extends AbstractAuthControllerIT {
     private ProductPricePromotionRequest promotionRequest;
 
     @Override
-    protected void setup() {
+    public void initTestData() {
         promotionRepository.deleteAll();
         productRepository.deleteAll();
 
@@ -55,7 +55,7 @@ class ProductPricePromotionControllerIT extends AbstractAuthControllerIT {
                 new HttpEntity<>(promotionRequest, getHttpHeadersWithAdminToken());
 
         ResponseEntity<ProductPricePromotionResponse> response = restTemplate.exchange(
-                LOCALHOST_ADMIN_URI + PRODUCTS_PROMOTIONS_URI,
+                localhostAdminUri + PRODUCTS_PROMOTIONS_URI,
                 HttpMethod.POST,
                 httpEntity,
                 ProductPricePromotionResponse.class
@@ -78,7 +78,7 @@ class ProductPricePromotionControllerIT extends AbstractAuthControllerIT {
                 new HttpEntity<>(promotionRequest, getHttpHeaderWithUserToken());
 
         ResponseEntity<ProductPricePromotionResponse> response = restTemplate.exchange(
-                LOCALHOST_ADMIN_URI + PRODUCTS_PROMOTIONS_URI,
+                localhostAdminUri + PRODUCTS_PROMOTIONS_URI,
                 HttpMethod.POST,
                 httpEntity,
                 ProductPricePromotionResponse.class

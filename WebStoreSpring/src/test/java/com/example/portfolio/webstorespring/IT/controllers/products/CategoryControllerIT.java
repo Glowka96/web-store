@@ -25,7 +25,7 @@ class CategoryControllerIT extends AbstractBaseControllerIT<CategoryRequest, Cat
     private CategoryRepository categoryRepository;
 
     @Override
-    protected void setup() {
+    public void initTestData() {
         categoryRepository.deleteAll();
 
         Subcategory subcategory1 = createSubcategory("One");

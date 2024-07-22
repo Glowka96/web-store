@@ -22,7 +22,7 @@ class DeliveryTypeControllerIT extends AbstractBaseControllerIT<DeliveryTypeRequ
     private DeliveryTypeRepository deliveryTypeRepository;
 
     @Override
-    protected void setup() {
+    public void initTestData() {
         deliveryTypeRepository.deleteAll();
         DeliveryType savedDeliveryType = deliveryTypeRepository.save(createDeliveryType());
         savedEntityId = savedDeliveryType.getId();

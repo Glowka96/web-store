@@ -22,7 +22,7 @@ class ProductTypeControllerIT extends AbstractBaseControllerIT<ProductTypeReques
     private ProductTypeRepository productTypeRepository;
 
     @Override
-    protected void setup() {
+    public void initTestData() {
         productTypeRepository.deleteAll();
 
         ProductType savedProductType = productTypeRepository.save(createProductType());

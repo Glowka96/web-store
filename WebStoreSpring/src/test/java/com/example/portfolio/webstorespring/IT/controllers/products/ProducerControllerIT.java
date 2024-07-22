@@ -22,7 +22,7 @@ class ProducerControllerIT extends AbstractBaseControllerIT<ProducerRequest, Pro
     private ProducerRepository producerRepository;
 
     @Override
-    protected void setup() {
+    public void initTestData() {
         producerRepository.deleteAll();
         Producer savedProducer = producerRepository.save(createProducer());
         savedEntityId = savedProducer.getId();

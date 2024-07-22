@@ -160,11 +160,11 @@ public abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthCont
     }
 
     protected String getAllUri() {
-        return LOCALHOST_URI + getUri();
+        return localhostUri + getUri();
     }
 
     protected String getAllAdminUri() {
-        return LOCALHOST_ADMIN_URI + getUri();
+        return localhostAdminUri + getUri();
     }
 
     private void assertEntitiesSize(int expected) {

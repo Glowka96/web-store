@@ -28,7 +28,7 @@ class SubcategoryControllerIT extends AbstractBaseControllerIT<SubcategoryReques
     private Long savedCategoryId;
 
     @Override
-    protected void setup() {
+    public void initTestData() {
         subcategoryRepository.deleteAll();
         categoryRepository.deleteAll();
 
