@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthControllerIT
-        implements BaseControllerIT<T, R, E>, AssertsFieldsIT<T, R, E> {
+        implements BaseControllerIT<T, R, E>, AssertsFieldsIT<T, R, E>, InitTestData {
 
     protected Long savedEntityId;
 
@@ -94,7 +94,7 @@ public abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthCont
         assertsFieldsWhenUpdate(request, response.getBody(), optionalE.get());
     }
 
-    protected void shouldNotUpdateEntityForAuthenticatedUser_thenStatusForbidden() {
+    protected void shouldNotUpdateEntity_forAuthenticatedUser_thenStatusForbidden() {
         T request = createRequest();
 
         HttpEntity<T> httpEntity = new HttpEntity<>(request, getHttpHeaderWithUserToken());
@@ -114,7 +114,7 @@ public abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthCont
         assertsFieldsWhenNotUpdate(request, optionalE.get());
     }
 
-    protected void shouldDeleteEntityForAuthenticatedAdmin_thenStatusNoContent() {
+    protected void shouldDeleteEntity_forAuthenticatedAdmin_thenStatusNoContent() {
         HttpEntity<?> httpEntity = new HttpEntity<>(getHttpHeadersWithAdminToken());
 
         ResponseEntity<Void> response = restTemplate.exchange(
@@ -131,7 +131,7 @@ public abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthCont
         assertThat(optionalE).isNotPresent();
     }
 
-    protected void shouldNotDeleteEntityForAuthenticatedUser_thenStatusForbidden() {
+    protected void shouldNotDeleteEntity_forAuthenticatedUser_thenStatusForbidden() {
         HttpEntity<?> httpEntity = new HttpEntity<>(getHttpHeaderWithUserToken());
 
         ResponseEntity<Void> response = restTemplate.exchange(

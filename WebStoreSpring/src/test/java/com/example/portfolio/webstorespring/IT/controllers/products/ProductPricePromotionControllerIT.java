@@ -6,6 +6,7 @@ import com.example.portfolio.webstorespring.model.dto.products.response.ProductP
 import com.example.portfolio.webstorespring.model.entity.products.Product;
 import com.example.portfolio.webstorespring.repositories.products.ProductPricePromotionRepository;
 import com.example.portfolio.webstorespring.repositories.products.ProductRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -21,7 +22,7 @@ import static com.example.portfolio.webstorespring.buildhelpers.products.Product
 import static com.natpryce.makeiteasy.MakeItEasy.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-class ProductPricePromotionControllerIT extends AbstractAuthControllerIT {
+class ProductPricePromotionControllerIT extends AbstractAuthControllerIT{
 
     @Autowired
     private ProductPricePromotionRepository promotionRepository;
@@ -31,7 +32,7 @@ class ProductPricePromotionControllerIT extends AbstractAuthControllerIT {
     private Long savedProductId;
     private ProductPricePromotionRequest promotionRequest;
 
-    @Override
+    @BeforeEach
     public void initTestData() {
         promotionRepository.deleteAll();
         productRepository.deleteAll();

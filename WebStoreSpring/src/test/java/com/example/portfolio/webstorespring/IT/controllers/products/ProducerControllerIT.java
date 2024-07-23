@@ -7,6 +7,7 @@ import com.example.portfolio.webstorespring.model.dto.products.request.ProducerR
 import com.example.portfolio.webstorespring.model.dto.products.response.ProducerResponse;
 import com.example.portfolio.webstorespring.model.entity.products.Producer;
 import com.example.portfolio.webstorespring.repositories.products.ProducerRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -22,6 +23,7 @@ class ProducerControllerIT extends AbstractBaseControllerIT<ProducerRequest, Pro
     private ProducerRepository producerRepository;
 
     @Override
+    @BeforeEach
     public void initTestData() {
         producerRepository.deleteAll();
         Producer savedProducer = producerRepository.save(createProducer());
@@ -99,16 +101,16 @@ class ProducerControllerIT extends AbstractBaseControllerIT<ProducerRequest, Pro
 
     @Test
     void shouldNotUpdateProducer_forAuthenticatedAdmin_thenStatusForbidden() {
-        shouldNotUpdateEntityForAuthenticatedUser_thenStatusForbidden();
+        shouldNotUpdateEntity_forAuthenticatedUser_thenStatusForbidden();
     }
 
     @Test
     void shouldDeleteProducer_forAuthenticatedAdmin_thenStatusNotContent() {
-        shouldDeleteEntityForAuthenticatedAdmin_thenStatusNoContent();
+        shouldDeleteEntity_forAuthenticatedAdmin_thenStatusNoContent();
     }
 
     @Test
     void shouldNotDeleteProducer_forAuthenticatedUser_thenStatusForbidden() {
-        shouldNotDeleteEntityForAuthenticatedUser_thenStatusForbidden();
+        shouldNotDeleteEntity_forAuthenticatedUser_thenStatusForbidden();
     }
 }

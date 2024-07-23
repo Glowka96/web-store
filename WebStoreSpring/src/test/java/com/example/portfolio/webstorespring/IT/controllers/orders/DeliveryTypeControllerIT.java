@@ -5,6 +5,7 @@ import com.example.portfolio.webstorespring.model.dto.orders.request.DeliveryTyp
 import com.example.portfolio.webstorespring.model.dto.orders.response.DeliveryTypeResponse;
 import com.example.portfolio.webstorespring.model.entity.orders.DeliveryType;
 import com.example.portfolio.webstorespring.repositories.orders.DeliveryTypeRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -22,6 +23,7 @@ class DeliveryTypeControllerIT extends AbstractBaseControllerIT<DeliveryTypeRequ
     private DeliveryTypeRepository deliveryTypeRepository;
 
     @Override
+    @BeforeEach
     public void initTestData() {
         deliveryTypeRepository.deleteAll();
         DeliveryType savedDeliveryType = deliveryTypeRepository.save(createDeliveryType());
@@ -103,16 +105,16 @@ class DeliveryTypeControllerIT extends AbstractBaseControllerIT<DeliveryTypeRequ
 
     @Test
     void shouldNotUpdateDeliveryType_forAuthenticatedUser_thenStatusForbidden() {
-        shouldNotUpdateEntityForAuthenticatedUser_thenStatusForbidden();
+        shouldNotUpdateEntity_forAuthenticatedUser_thenStatusForbidden();
     }
 
     @Test
     void shouldDeleteDeliveryType_forAuthenticatedAdmin_thenStatusNoContent() {
-        shouldDeleteEntityForAuthenticatedAdmin_thenStatusNoContent();
+        shouldDeleteEntity_forAuthenticatedAdmin_thenStatusNoContent();
     }
 
     @Test
     void shouldNotDeleteDeliveryType_forAuthenticatedUser_thenStatusForbidden () {
-        shouldNotDeleteEntityForAuthenticatedUser_thenStatusForbidden();
+        shouldNotDeleteEntity_forAuthenticatedUser_thenStatusForbidden();
     }
 }

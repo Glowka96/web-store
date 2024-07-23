@@ -6,6 +6,7 @@ import com.example.portfolio.webstorespring.model.dto.products.response.ProductT
 import com.example.portfolio.webstorespring.model.entity.products.ProductType;
 import com.example.portfolio.webstorespring.repositories.products.ProductTypeRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -22,6 +23,7 @@ class ProductTypeControllerIT extends AbstractBaseControllerIT<ProductTypeReques
     private ProductTypeRepository productTypeRepository;
 
     @Override
+    @BeforeEach
     public void initTestData() {
         productTypeRepository.deleteAll();
 
@@ -103,16 +105,16 @@ class ProductTypeControllerIT extends AbstractBaseControllerIT<ProductTypeReques
 
     @Test
     void shouldNotUpdateProductType_forAuthenticatedUser_thenStatusForbidden() {
-        shouldNotUpdateEntityForAuthenticatedUser_thenStatusForbidden();
+        shouldNotUpdateEntity_forAuthenticatedUser_thenStatusForbidden();
     }
 
     @Test
     void shouldDeleteProductType_forAuthenticatedAdmin_thenStatusNoContent(){
-        shouldDeleteEntityForAuthenticatedAdmin_thenStatusNoContent();
+        shouldDeleteEntity_forAuthenticatedAdmin_thenStatusNoContent();
     }
 
     @Test
     void shouldNotDeleteProductType_forAuthenticatedUser_thenStatusForbidden() {
-        shouldNotDeleteEntityForAuthenticatedUser_thenStatusForbidden();
+        shouldNotDeleteEntity_forAuthenticatedUser_thenStatusForbidden();
     }
 }

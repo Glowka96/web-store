@@ -36,9 +36,13 @@ public abstract class AbstractAuthControllerIT extends AbstractIT {
     protected void init() {
         Set<Role> userRole = repository.findByName("ROLE_USER");
         Set<Role> adminRole = repository.findByName("ROLE_ADMIN");
-        Account user = make(a(BASIC_ACCOUNT).but(with(EMAIL, "user@test.pl"),
-                with(ROLES, userRole), with(PASSWORD, passwordEncoder.encode("Password123*"))));
+        Account user = make(a(BASIC_ACCOUNT).but(
+                withNull(ID),
+                with(EMAIL, "user@test.pl"),
+                with(ROLES, userRole),
+                with(PASSWORD, passwordEncoder.encode("Password123*"))));
         Account admin = make(a(BASIC_ACCOUNT).but(
+                withNull(ID),
                 with(EMAIL, "admin@test.pl"),
                 with(PASSWORD, passwordEncoder.encode("Password123*")),
                 with(ROLES, adminRole)));
@@ -51,8 +55,6 @@ public abstract class AbstractAuthControllerIT extends AbstractIT {
         adminToken = jwtService.generateToken(new AccountDetails(savedAdmin));
         authService.saveAccountAuthToken(savedUser, userToken);
         authService.saveAccountAuthToken(savedAdmin, adminToken);
-
-        initTestData();
     }
 
     public static HttpHeaders getHttpHeadersWithAdminToken() {

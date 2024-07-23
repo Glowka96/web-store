@@ -7,6 +7,7 @@ import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.accounts.ConfirmationToken;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
 import com.example.portfolio.webstorespring.repositories.accounts.ConfirmationTokenRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -33,7 +34,8 @@ class RegistrationControllerIT extends AbstractIT {
     private AccountRepository accountRepository;
     @Autowired
     private ConfirmationTokenRepository tokenRepository;
-    @Override
+
+    @BeforeEach
     public void initTestData() {
         accountRepository.deleteAll();
         tokenRepository.deleteAll();

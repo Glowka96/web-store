@@ -42,7 +42,6 @@ class ResetPasswordControllerIT extends AbstractIT {
     private Account savedAccount;
 
     @BeforeEach
-    @Override
     public void initTestData() {
         accountRepository.deleteAll();
         savedAccount = accountRepository.save(make(a(AccountBuilderHelper.BASIC_ACCOUNT)));

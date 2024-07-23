@@ -7,6 +7,7 @@ import com.example.portfolio.webstorespring.model.dto.products.response.Category
 import com.example.portfolio.webstorespring.model.entity.products.Category;
 import com.example.portfolio.webstorespring.model.entity.products.Subcategory;
 import com.example.portfolio.webstorespring.repositories.products.CategoryRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -25,6 +26,7 @@ class CategoryControllerIT extends AbstractBaseControllerIT<CategoryRequest, Cat
     private CategoryRepository categoryRepository;
 
     @Override
+    @BeforeEach
     public void initTestData() {
         categoryRepository.deleteAll();
 
@@ -121,16 +123,16 @@ class CategoryControllerIT extends AbstractBaseControllerIT<CategoryRequest, Cat
 
     @Test
     void shouldNotUpdateCategory_forAuthenticatedUser_thenStatusForbidden() {
-        shouldNotUpdateEntityForAuthenticatedUser_thenStatusForbidden();
+        shouldNotUpdateEntity_forAuthenticatedUser_thenStatusForbidden();
     }
 
     @Test
     void shouldDeleteCategory_forAuthenticatedAdmin_thanStatusNotContent() {
-        shouldDeleteEntityForAuthenticatedAdmin_thenStatusNoContent();
+        shouldDeleteEntity_forAuthenticatedAdmin_thenStatusNoContent();
     }
 
     @Test
     void shouldNotDeleteCategory_forAuthenticatedUser_thanStatusForbidden() {
-        shouldNotDeleteEntityForAuthenticatedUser_thenStatusForbidden();
+        shouldNotDeleteEntity_forAuthenticatedUser_thenStatusForbidden();
     }
 }
