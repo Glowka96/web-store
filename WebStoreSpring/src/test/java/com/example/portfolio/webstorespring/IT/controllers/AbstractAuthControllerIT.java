@@ -22,9 +22,9 @@ public abstract class AbstractAuthControllerIT extends AbstractIT {
     @Autowired
     private JwtService jwtService;
     @Autowired
-    private AccountRepository accountRepository;
+    protected AccountRepository accountRepository;
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    protected PasswordEncoder passwordEncoder;
     @Autowired
     private RoleRepository repository;
     @Autowired

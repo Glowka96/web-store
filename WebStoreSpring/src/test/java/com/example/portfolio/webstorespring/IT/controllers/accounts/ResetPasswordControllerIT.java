@@ -8,6 +8,7 @@ import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.accounts.ConfirmationToken;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
 import com.example.portfolio.webstorespring.repositories.accounts.ConfirmationTokenRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ import static com.natpryce.makeiteasy.MakeItEasy.make;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
+@Slf4j
 class ResetPasswordControllerIT extends AbstractIT {
 
     @Autowired
@@ -38,21 +39,20 @@ class ResetPasswordControllerIT extends AbstractIT {
     private ConfirmationTokenRepository tokenRepository;
     @Autowired
     private PasswordEncoder encoder;
-    private final static String URI = localhostUri + "/reset-password";
+    private String resetPasswordUri;
     private Account savedAccount;
 
     @BeforeEach
     public void initTestData() {
+        resetPasswordUri = localhostUri + "/reset-password";
         accountRepository.deleteAll();
         savedAccount = accountRepository.save(make(a(AccountBuilderHelper.BASIC_ACCOUNT)));
     }
 
     @Test
     void shouldResetPassword_forEverybody_thenStatusOk() {
-        String requestUri = URI +"?email=" + savedAccount.getEmail();
-
         ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
-                requestUri,
+                resetPasswordUri +"?email=" + savedAccount.getEmail(),
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<>() {
@@ -61,7 +61,8 @@ class ResetPasswordControllerIT extends AbstractIT {
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertThat(response.getBody()).isNotNull();
-        assertTrue(Objects.requireNonNull(response.getBody()).containsValue("Sent reset password link on your email address"));
+        assertTrue(Objects.requireNonNull(response.getBody())
+                .containsValue("Sent reset password link on your email address"));
     }
 
     @Test
@@ -70,11 +71,10 @@ class ResetPasswordControllerIT extends AbstractIT {
                 tokenRepository.save(createConfirmationTokenIsNotConfirmedAt(savedAccount, LocalDateTime.now()));
         ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest("newPassword123*");
 
-        String requestUri = URI + "/confirm?token=" + savedConfirmationToken.getToken();
         HttpEntity<ResetPasswordRequest> requestEntity = new HttpEntity<>(resetPasswordRequest);
 
         ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
-                requestUri,
+                resetPasswordUri + "/confirm?token=" + savedConfirmationToken.getToken(),
                 HttpMethod.PATCH,
                 requestEntity,
                 new ParameterizedTypeReference<Map<String, Object>>() {

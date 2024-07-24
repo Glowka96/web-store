@@ -49,6 +49,16 @@ public class AccountBuilderHelper {
                 .build();
     }
 
+    public static AccountRequest createAccountRequest(String firstname,
+                                                      String lastname,
+                                                      String password) {
+        return AccountRequest.builder()
+                .firstName(firstname)
+                .lastName(lastname)
+                .password(password)
+                .build();
+    }
+
     public static AccountResponse createAccountResponse() {
         return AccountResponse.builder()
                 .id(1L)
