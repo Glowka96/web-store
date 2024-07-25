@@ -1,5 +1,6 @@
 package com.example.portfolio.webstorespring.controllers.accounts;
 
+import com.example.portfolio.webstorespring.controllers.emails.ResetPasswordController;
 import com.example.portfolio.webstorespring.enums.emailtypes.ResetPasswordType;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.ResetPasswordRequest;
 import com.example.portfolio.webstorespring.services.accounts.ResetPasswordService;

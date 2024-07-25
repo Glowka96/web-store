@@ -24,12 +24,12 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import static com.example.portfolio.webstorespring.buildhelpers.accounts.ConfirmationTokenBuilderHelper.createConfirmationTokenIsNotConfirmedAt;
-import static com.natpryce.makeiteasy.MakeItEasy.a;
-import static com.natpryce.makeiteasy.MakeItEasy.make;
+import static com.example.portfolio.webstorespring.buildhelpers.accounts.ConfirmationTokenBuilderHelper.*;
+import static com.natpryce.makeiteasy.MakeItEasy.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
 @Slf4j
 class ResetPasswordControllerIT extends AbstractIT {
 
@@ -52,7 +52,7 @@ class ResetPasswordControllerIT extends AbstractIT {
     @Test
     void shouldResetPassword_forEverybody_thenStatusOk() {
         ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
-                resetPasswordUri +"?email=" + savedAccount.getEmail(),
+                resetPasswordUri + "?email=" + savedAccount.getEmail(),
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<>() {
@@ -67,8 +67,13 @@ class ResetPasswordControllerIT extends AbstractIT {
 
     @Test
     void shouldConfirmResetPassword_withValidToken_thenStatusAccepted() {
-        ConfirmationToken savedConfirmationToken =
-                tokenRepository.save(createConfirmationTokenIsNotConfirmedAt(savedAccount, LocalDateTime.now()));
+        ConfirmationToken savedConfirmationToken = tokenRepository.save(
+                make(a(BASIC_CONFIRMATION_TOKEN)
+                        .but(with(ACCOUNT, savedAccount))
+                        .but(with(CREATED_AT, LocalDateTime.now()))
+                        .but(withNull(CONFIRMED_AT))
+                        .but(with(EXPIRED_AT, LocalDateTime.now().plusMinutes(15))))
+        );
         ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest("newPassword123*");
 
         HttpEntity<ResetPasswordRequest> requestEntity = new HttpEntity<>(resetPasswordRequest);
@@ -77,13 +82,14 @@ class ResetPasswordControllerIT extends AbstractIT {
                 resetPasswordUri + "/confirm?token=" + savedConfirmationToken.getToken(),
                 HttpMethod.PATCH,
                 requestEntity,
-                new ParameterizedTypeReference<Map<String, Object>>() {
+                new ParameterizedTypeReference<>() {
                 }
         );
 
         assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
         assertThat(response.getBody()).isNotNull();
-        assertTrue(Objects.requireNonNull(response.getBody()).containsValue("Your new password has been saved"));
+        assertTrue(Objects.requireNonNull(response.getBody())
+                .containsValue("Your new password has been saved"));
 
         Optional<Account> optionalAccount = accountRepository.findByEmail(savedAccount.getEmail());
         assertThat(optionalAccount).isPresent();

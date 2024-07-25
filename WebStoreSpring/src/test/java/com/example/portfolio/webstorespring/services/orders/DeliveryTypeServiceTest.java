@@ -81,7 +81,7 @@ class DeliveryTypeServiceTest {
     }
 
     @Test
-    void willThrowWhenDeliveryTypeIdNotFound() {
+    void willThrow_whenDeliveryTypeIdNotFound() {
         // given
         given(deliveryTypeRepository.findById(anyLong())).willReturn(Optional.empty());
 
@@ -89,6 +89,6 @@ class DeliveryTypeServiceTest {
         // then
         assertThatThrownBy(() -> underTest.deleteDeliveryType(1L))
                 .isInstanceOf(ResourceNotFoundException.class)
-                        .hasMessageContaining("DeliveryType with id 1 not found");
+                        .hasMessageContaining("Delivery type with id 1 not found");
     }
 }

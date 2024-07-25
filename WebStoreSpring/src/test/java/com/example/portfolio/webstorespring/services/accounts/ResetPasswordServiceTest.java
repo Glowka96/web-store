@@ -1,5 +1,6 @@
 package com.example.portfolio.webstorespring.services.accounts;
 
+import com.example.portfolio.webstorespring.buildhelpers.DateForTestBuilderHelper;
 import com.example.portfolio.webstorespring.enums.emailtypes.ResetPasswordType;
 import com.example.portfolio.webstorespring.exceptions.TokenConfirmedException;
 import com.example.portfolio.webstorespring.exceptions.TokenExpiredException;
@@ -16,10 +17,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Map;
 
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.BASIC_ACCOUNT;
-import static com.example.portfolio.webstorespring.buildhelpers.accounts.ConfirmationTokenBuilderHelper.createConfirmationTokenIsConfirmedAt;
-import static com.example.portfolio.webstorespring.buildhelpers.accounts.ConfirmationTokenBuilderHelper.createConfirmationTokenIsNotConfirmedAt;
-import static com.natpryce.makeiteasy.MakeItEasy.a;
-import static com.natpryce.makeiteasy.MakeItEasy.make;
+import static com.example.portfolio.webstorespring.buildhelpers.accounts.ConfirmationTokenBuilderHelper.*;
+import static com.natpryce.makeiteasy.MakeItEasy.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -43,8 +42,9 @@ class ResetPasswordServiceTest {
     void shouldSendResetPasswordLink() {
         // given
         Account account = make(a(BASIC_ACCOUNT));
-        ConfirmationToken confirmationToken = createConfirmationTokenIsNotConfirmedAt(account);
-
+        ConfirmationToken confirmationToken = make(a(BASIC_CONFIRMATION_TOKEN)
+                .but(with(ACCOUNT, account))
+                .but(withNull(CONFIRMED_AT)));
         Map<String, Object> excepted = Map.of("message", ResetPasswordType.PASSWORD.getInformationMessage());
 
         given(accountService.findAccountByEmail(anyString())).willReturn(account);
@@ -62,7 +62,9 @@ class ResetPasswordServiceTest {
     void shouldConfirmResetPassword() {
         // given
         Account account = make(a(BASIC_ACCOUNT));
-        ConfirmationToken confirmationToken = createConfirmationTokenIsNotConfirmedAt(account);
+        ConfirmationToken confirmationToken = make(a(BASIC_CONFIRMATION_TOKEN)
+                .but(with(ACCOUNT, account))
+                .but(withNull(CONFIRMED_AT)));
         ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest("Password123*");
 
         Map<String, Object> excepted = Map.of("message", "Your new password has been saved");
@@ -81,10 +83,11 @@ class ResetPasswordServiceTest {
     }
 
     @Test
-    void willThrowWhenTokenIsConfirm() {
+    void willThrow_whenTokenIsConfirm() {
         // given
         Account account = make(a(BASIC_ACCOUNT));
-        ConfirmationToken confirmationToken = createConfirmationTokenIsConfirmedAt(account);
+        ConfirmationToken confirmationToken = make(a(BASIC_CONFIRMATION_TOKEN)
+                .but(with(ACCOUNT, account)));
         ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest("Password123*");
 
         // when
@@ -97,10 +100,13 @@ class ResetPasswordServiceTest {
     }
 
     @Test
-    void willThrowWhenTokenIsExpired() {
+    void willThrow_whenTokenIsExpired() {
         // given
         Account account = make(a(BASIC_ACCOUNT));
-        ConfirmationToken confirmationToken = createConfirmationTokenIsNotConfirmedAt(account);
+        ConfirmationToken confirmationToken = make(a(BASIC_CONFIRMATION_TOKEN)
+                .but(with(ACCOUNT, account))
+                .but(withNull(CONFIRMED_AT))
+                .but(with(EXPIRED_AT, DateForTestBuilderHelper.LOCAL_DATE_TIME)));
         ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest("Password123*");
 
         // when

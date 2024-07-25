@@ -14,12 +14,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Map;
 
+import static com.example.portfolio.webstorespring.buildhelpers.DateForTestBuilderHelper.LOCAL_DATE_TIME;
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.BASIC_ACCOUNT;
-import static com.example.portfolio.webstorespring.buildhelpers.accounts.ConfirmationTokenBuilderHelper.createConfirmationTokenIsConfirmedAt;
-import static com.example.portfolio.webstorespring.buildhelpers.accounts.ConfirmationTokenBuilderHelper.createConfirmationTokenIsNotConfirmedAt;
+import static com.example.portfolio.webstorespring.buildhelpers.accounts.ConfirmationTokenBuilderHelper.*;
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.RegistrationRequestBuilderHelper.createRegistrationRequest;
-import static com.natpryce.makeiteasy.MakeItEasy.a;
-import static com.natpryce.makeiteasy.MakeItEasy.make;
+import static com.natpryce.makeiteasy.MakeItEasy.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -44,8 +43,8 @@ class RegistrationServiceTest {
         // given
         RegistrationRequest registrationRequest = createRegistrationRequest();
         Account account = make(a(BASIC_ACCOUNT));
-        ConfirmationToken confirmationToken = createConfirmationTokenIsNotConfirmedAt(account);
-
+        ConfirmationToken confirmationToken = make(a(BASIC_CONFIRMATION_TOKEN)
+                .but(with(ACCOUNT, account)));
         Map<String, Object> excepted = Map.of("message", ConfirmEmailType.REGISTRATION.getInformationMessage());
 
         given(confirmationTokenService.createConfirmationToken(any(Account.class))).willReturn(confirmationToken);
@@ -64,8 +63,9 @@ class RegistrationServiceTest {
     void shouldSuccessConfirmToken() {
         // given
         Account account = make(a(BASIC_ACCOUNT));
-        ConfirmationToken confirmationToken = createConfirmationTokenIsNotConfirmedAt(account);
-
+        ConfirmationToken confirmationToken = make(a(BASIC_CONFIRMATION_TOKEN)
+                .but(with(ACCOUNT, account))
+                .but(withNull(CONFIRMED_AT)));
         Map<String, Object> excepted = Map.of("message","Account confirmed");
 
         // when
@@ -80,11 +80,11 @@ class RegistrationServiceTest {
     }
 
     @Test
-    void willThrowWhenAccountConfirm() {
+    void willThrow_whenAccountConfirm() {
         // given
         Account account = make(a(BASIC_ACCOUNT));
-        ConfirmationToken confirmationToken = createConfirmationTokenIsConfirmedAt(account);
-
+        ConfirmationToken confirmationToken = make(a(BASIC_CONFIRMATION_TOKEN)
+                .but(with(ACCOUNT, account)));
         // when
         when(confirmationTokenService.getConfirmationTokenByToken(anyString())).thenReturn(confirmationToken);
 
@@ -95,11 +95,14 @@ class RegistrationServiceTest {
     }
 
     @Test
-    void shouldSendEmailWhenTokenIsExpired() {
+    void shouldSendEmail_whenTokenIsExpired() {
         // given
         Account account = make(a(BASIC_ACCOUNT));
         account.setEnabled(false);
-        ConfirmationToken confirmationToken = createConfirmationTokenIsNotConfirmedAt(account);
+        ConfirmationToken confirmationToken = make(a(BASIC_CONFIRMATION_TOKEN)
+                .but(with(ACCOUNT, account))
+                .but(withNull(CONFIRMED_AT))
+                .but(with(EXPIRED_AT, LOCAL_DATE_TIME)));
         Map<String, Object> excepted = Map.of("message", ConfirmEmailType.REGISTRATION.getInformationMessage());
 
         given(confirmationTokenService.getConfirmationTokenByToken(anyString())).willReturn(confirmationToken);

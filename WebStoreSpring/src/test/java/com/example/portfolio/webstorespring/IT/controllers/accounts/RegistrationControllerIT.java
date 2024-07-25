@@ -21,10 +21,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import static com.example.portfolio.webstorespring.buildhelpers.accounts.ConfirmationTokenBuilderHelper.createConfirmationTokenIsNotConfirmedAt;
+import static com.example.portfolio.webstorespring.buildhelpers.accounts.ConfirmationTokenBuilderHelper.*;
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.RegistrationRequestBuilderHelper.createRegistrationRequest;
-import static com.natpryce.makeiteasy.MakeItEasy.a;
-import static com.natpryce.makeiteasy.MakeItEasy.make;
+import static com.natpryce.makeiteasy.MakeItEasy.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -67,11 +66,16 @@ class RegistrationControllerIT extends AbstractIT {
     @Test
     void shouldConfirmAccountToken_thenStatusOk() {
         Account savedAccount = accountRepository.save(make(a(AccountBuilderHelper.BASIC_ACCOUNT)));
-        ConfirmationToken savedToken = tokenRepository.save(
-                createConfirmationTokenIsNotConfirmedAt(savedAccount, LocalDateTime.now()));
+        ConfirmationToken savedConfirmationToken = tokenRepository.save(
+                make(a(BASIC_CONFIRMATION_TOKEN)
+                        .but(with(ACCOUNT, savedAccount))
+                        .but(with(CREATED_AT, LocalDateTime.now()))
+                        .but(withNull(CONFIRMED_AT))
+                        .but(with(EXPIRED_AT, LocalDateTime.now().plusMinutes(15))))
+        );
 
         ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
-                localhostUri + "/registration/confirm?token=" + savedToken.getToken(),
+                localhostUri + "/registration/confirm?token=" + savedConfirmationToken.getToken(),
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<>() {
