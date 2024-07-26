@@ -1,4 +1,4 @@
-package com.example.portfolio.webstorespring.controllers.accounts;
+package com.example.portfolio.webstorespring.controllers.emails;
 
 import com.example.portfolio.webstorespring.model.dto.accounts.request.RegistrationRequest;
 import com.example.portfolio.webstorespring.services.accounts.RegistrationService;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "api/v1/registration")
+@RequestMapping(value = "api/v1/registrations")
 @RequiredArgsConstructor
 public class RegistrationController {
 

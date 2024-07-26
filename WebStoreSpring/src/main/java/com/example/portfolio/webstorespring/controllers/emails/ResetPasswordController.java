@@ -1,4 +1,4 @@
-package com.example.portfolio.webstorespring.controllers.accounts;
+package com.example.portfolio.webstorespring.controllers.emails;
 
 import com.example.portfolio.webstorespring.model.dto.accounts.request.ResetPasswordRequest;
 import com.example.portfolio.webstorespring.services.accounts.ResetPasswordService;

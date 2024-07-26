@@ -33,11 +33,21 @@ class RegistrationControllerIT extends AbstractIT {
     private AccountRepository accountRepository;
     @Autowired
     private ConfirmationTokenRepository tokenRepository;
+    private String registrationURI;
+    private String registrationConfirmTokenURI;
+    private static final String CONFIRMED_MESSAGE = "Account confirmed.";
+    private static final String REGISTER_MESSAGE =
+            "Verify your email address using the link in your email.";
+    private static final String RESEND_TOKEN_MESSAGE =
+            "Your token is expired. Verify your email address using the new token link in your email.";
 
     @BeforeEach
     public void initTestData() {
         accountRepository.deleteAll();
         tokenRepository.deleteAll();
+
+        registrationURI = localhostUri + "/registrations";
+        registrationConfirmTokenURI = registrationURI + "/confirm?token=";
     }
 
     @Test
@@ -46,7 +56,7 @@ class RegistrationControllerIT extends AbstractIT {
         HttpEntity<RegistrationRequest> httpEntity = new HttpEntity<>(registrationRequest);
 
         ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
-                localhostUri + "/registration",
+                registrationURI,
                 HttpMethod.POST,
                 httpEntity,
                 new ParameterizedTypeReference<>() {
@@ -56,7 +66,7 @@ class RegistrationControllerIT extends AbstractIT {
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertThat(response.getBody()).isNotNull();
         assertTrue(Objects.requireNonNull(response.getBody())
-                .containsValue("Verify email by the link sent on your email address"));
+                .containsValue(REGISTER_MESSAGE));
 
         Optional<Account> accountOptional = accountRepository.findByEmail(registrationRequest.getEmail());
         assertThat(accountOptional).isPresent();
@@ -75,7 +85,7 @@ class RegistrationControllerIT extends AbstractIT {
         );
 
         ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
-                localhostUri + "/registration/confirm?token=" + savedConfirmationToken.getToken(),
+                registrationConfirmTokenURI + savedConfirmationToken.getToken(),
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<>() {
@@ -84,7 +94,35 @@ class RegistrationControllerIT extends AbstractIT {
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertThat(response.getBody()).isNotNull();
-        assertTrue(Objects.requireNonNull(response.getBody()).containsValue("Account confirmed"));
+        assertTrue(Objects.requireNonNull(response.getBody()).containsValue(CONFIRMED_MESSAGE));
+
+        Optional<Account> accountOptional = accountRepository.findByEmail(savedAccount.getEmail());
+        assertThat(accountOptional).isPresent();
+        assertTrue(accountOptional.get().getEnabled());
+    }
+
+    @Test
+    void shouldSendNewConfirmAccountToken_whenPreviousTokenIsExpired_thenStatusOk() {
+        Account savedAccount = accountRepository.save(make(a(AccountBuilderHelper.BASIC_ACCOUNT)));
+        ConfirmationToken savedConfirmationToken = tokenRepository.save(
+                make(a(BASIC_CONFIRMATION_TOKEN)
+                        .but(with(ACCOUNT, savedAccount))
+                        .but(with(CREATED_AT, LocalDateTime.now()))
+                        .but(withNull(CONFIRMED_AT))
+                        .but(with(EXPIRED_AT, LocalDateTime.now().plusMinutes(15))))
+        );
+
+        ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
+                registrationConfirmTokenURI + savedConfirmationToken.getToken(),
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<>() {
+                }
+        );
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertThat(response.getBody()).isNotNull();
+        assertTrue(Objects.requireNonNull(response.getBody()).containsValue(RESEND_TOKEN_MESSAGE));
 
         Optional<Account> accountOptional = accountRepository.findByEmail(savedAccount.getEmail());
         assertThat(accountOptional).isPresent();
