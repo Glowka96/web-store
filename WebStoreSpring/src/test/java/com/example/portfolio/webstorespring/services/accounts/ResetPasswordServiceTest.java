@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.services.accounts;
 
 import com.example.portfolio.webstorespring.buildhelpers.DateForTestBuilderHelper;
-import com.example.portfolio.webstorespring.enums.emailtypes.ResetPasswordType;
+import com.example.portfolio.webstorespring.enums.NotificationType;
 import com.example.portfolio.webstorespring.exceptions.TokenConfirmedException;
 import com.example.portfolio.webstorespring.exceptions.TokenExpiredException;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.ResetPasswordRequest;
@@ -45,11 +45,11 @@ class ResetPasswordServiceTest {
         ConfirmationToken confirmationToken = make(a(BASIC_CONFIRMATION_TOKEN)
                 .but(with(ACCOUNT, account))
                 .but(withNull(CONFIRMED_AT)));
-        Map<String, Object> excepted = Map.of("message", ResetPasswordType.PASSWORD.getInformationMessage());
+        Map<String, Object> excepted = Map.of("message", "Sent reset password link to your email");
 
         given(accountService.findAccountByEmail(anyString())).willReturn(account);
         given(confirmationTokenService.createConfirmationToken(any(Account.class))).willReturn(confirmationToken);
-        given(emailSenderService.sendEmail(anyString(), anyString())).willReturn(excepted);
+        given(emailSenderService.sendEmail(any(NotificationType.class), anyString(), anyString())).willReturn(excepted);
 
         // when
         Map<String, Object> result = underTest.resetPasswordByEmail(account.getEmail());

@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.ENABLED;
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.ConfirmationTokenBuilderHelper.*;
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.RegistrationRequestBuilderHelper.createRegistrationRequest;
 import static com.natpryce.makeiteasy.MakeItEasy.*;
@@ -75,7 +76,10 @@ class RegistrationControllerIT extends AbstractIT {
 
     @Test
     void shouldConfirmAccountToken_thenStatusOk() {
-        Account savedAccount = accountRepository.save(make(a(AccountBuilderHelper.BASIC_ACCOUNT)));
+        Account savedAccount = accountRepository.save(
+                make(a(AccountBuilderHelper.BASIC_ACCOUNT)
+                        .but(with(ENABLED, Boolean.FALSE)))
+        );
         ConfirmationToken savedConfirmationToken = tokenRepository.save(
                 make(a(BASIC_CONFIRMATION_TOKEN)
                         .but(with(ACCOUNT, savedAccount))
@@ -103,13 +107,16 @@ class RegistrationControllerIT extends AbstractIT {
 
     @Test
     void shouldSendNewConfirmAccountToken_whenPreviousTokenIsExpired_thenStatusOk() {
-        Account savedAccount = accountRepository.save(make(a(AccountBuilderHelper.BASIC_ACCOUNT)));
+        Account savedAccount = accountRepository.save(
+                make(a(AccountBuilderHelper.BASIC_ACCOUNT)
+                        .but(with(ENABLED, Boolean.FALSE)))
+        );
         ConfirmationToken savedConfirmationToken = tokenRepository.save(
                 make(a(BASIC_CONFIRMATION_TOKEN)
                         .but(with(ACCOUNT, savedAccount))
                         .but(with(CREATED_AT, LocalDateTime.now()))
                         .but(withNull(CONFIRMED_AT))
-                        .but(with(EXPIRED_AT, LocalDateTime.now().plusMinutes(15))))
+                        .but(with(EXPIRED_AT, LocalDateTime.now())))
         );
 
         ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
@@ -126,6 +133,6 @@ class RegistrationControllerIT extends AbstractIT {
 
         Optional<Account> accountOptional = accountRepository.findByEmail(savedAccount.getEmail());
         assertThat(accountOptional).isPresent();
-        assertTrue(accountOptional.get().getEnabled());
+        assertFalse(accountOptional.get().getEnabled());
     }
 }

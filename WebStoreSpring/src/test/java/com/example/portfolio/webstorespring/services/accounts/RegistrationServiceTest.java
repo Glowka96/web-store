@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.services.accounts;
 
-import com.example.portfolio.webstorespring.enums.emailtypes.ConfirmEmailType;
+import com.example.portfolio.webstorespring.enums.NotificationType;
 import com.example.portfolio.webstorespring.exceptions.EmailAlreadyConfirmedException;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.RegistrationRequest;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
@@ -16,6 +16,7 @@ import java.util.Map;
 
 import static com.example.portfolio.webstorespring.buildhelpers.DateForTestBuilderHelper.LOCAL_DATE_TIME;
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.BASIC_ACCOUNT;
+import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.ENABLED;
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.ConfirmationTokenBuilderHelper.*;
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.RegistrationRequestBuilderHelper.createRegistrationRequest;
 import static com.natpryce.makeiteasy.MakeItEasy.*;
@@ -45,10 +46,10 @@ class RegistrationServiceTest {
         Account account = make(a(BASIC_ACCOUNT));
         ConfirmationToken confirmationToken = make(a(BASIC_CONFIRMATION_TOKEN)
                 .but(with(ACCOUNT, account)));
-        Map<String, Object> excepted = Map.of("message", ConfirmEmailType.REGISTRATION.getInformationMessage());
+        Map<String, Object> excepted = Map.of("message", "Verify your email address using the link in your email.");
 
         given(confirmationTokenService.createConfirmationToken(any(Account.class))).willReturn(confirmationToken);
-        given(emailSenderService.sendEmail(anyString(), anyString()))
+        given(emailSenderService.sendEmail(any(NotificationType.class), anyString(), anyString()))
                 .willReturn(excepted);
         given(accountService.saveAccount(registrationRequest)).willReturn(account);
 
@@ -62,11 +63,12 @@ class RegistrationServiceTest {
     @Test
     void shouldSuccessConfirmToken() {
         // given
-        Account account = make(a(BASIC_ACCOUNT));
+        Account account = make(a(BASIC_ACCOUNT)
+                .but(with(ENABLED, Boolean.FALSE)));
         ConfirmationToken confirmationToken = make(a(BASIC_CONFIRMATION_TOKEN)
                 .but(with(ACCOUNT, account))
                 .but(withNull(CONFIRMED_AT)));
-        Map<String, Object> excepted = Map.of("message","Account confirmed");
+        Map<String, Object> excepted = Map.of("message","Account confirmed.");
 
         // when
         when(confirmationTokenService.getConfirmationTokenByToken(anyString())).thenReturn(confirmationToken);
@@ -91,7 +93,7 @@ class RegistrationServiceTest {
         // then
         assertThatThrownBy(() -> underTest.confirmToken(confirmationToken.getToken()))
                 .isInstanceOf(EmailAlreadyConfirmedException.class)
-                .hasMessageContaining("Email already confirmed");
+                .hasMessageContaining("Email already confirmed.");
     }
 
     @Test
@@ -103,12 +105,13 @@ class RegistrationServiceTest {
                 .but(with(ACCOUNT, account))
                 .but(withNull(CONFIRMED_AT))
                 .but(with(EXPIRED_AT, LOCAL_DATE_TIME)));
-        Map<String, Object> excepted = Map.of("message", ConfirmEmailType.REGISTRATION.getInformationMessage());
+        Map<String, Object> excepted = Map.of("message",
+                "Your token is expired. Verify your email address using the new token link in your email.");
 
         given(confirmationTokenService.getConfirmationTokenByToken(anyString())).willReturn(confirmationToken);
         given(confirmationTokenService.isTokenExpired(any(ConfirmationToken.class))).willReturn(true);
         given(confirmationTokenService.createConfirmationToken(any(Account.class))).willReturn(confirmationToken);
-        given(emailSenderService.sendEmail(anyString(), anyString()))
+        given(emailSenderService.sendEmail(any(NotificationType.class), anyString(), anyString()))
                 .willReturn(excepted);
 
         // when
