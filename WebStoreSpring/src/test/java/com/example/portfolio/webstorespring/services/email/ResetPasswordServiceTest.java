@@ -1,4 +1,4 @@
-package com.example.portfolio.webstorespring.services.accounts;
+package com.example.portfolio.webstorespring.services.email;
 
 import com.example.portfolio.webstorespring.buildhelpers.DateForTestBuilderHelper;
 import com.example.portfolio.webstorespring.enums.NotificationType;
@@ -7,7 +7,8 @@ import com.example.portfolio.webstorespring.exceptions.TokenExpiredException;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.ResetPasswordRequest;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.accounts.ConfirmationToken;
-import com.example.portfolio.webstorespring.services.email.EmailSenderService;
+import com.example.portfolio.webstorespring.services.accounts.AccountService;
+import com.example.portfolio.webstorespring.services.accounts.ConfirmationTokenService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

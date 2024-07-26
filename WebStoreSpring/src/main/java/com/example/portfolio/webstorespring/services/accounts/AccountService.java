@@ -45,7 +45,8 @@ public class AccountService {
         return accountMapper.mapToDto(loggedAccount);
     }
 
-     Account saveAccount(RegistrationRequest registrationRequest) {
+    @Transactional
+    public Account saveAccount(RegistrationRequest registrationRequest) {
         Account account = Account.builder()
                 .firstName(registrationRequest.getFirstName())
                 .lastName(registrationRequest.getLastName())
@@ -59,12 +60,12 @@ public class AccountService {
         return account;
     }
 
-    void setEnabledAccount(Account account) {
+    public void setEnabledAccount(Account account) {
         account.setEnabled(true);
         accountRepository.save(account);
     }
 
-    void setNewAccountPassword(Account account, String password) {
+    public void setNewAccountPassword(Account account, String password) {
         account.setPassword(encoder.encode(password));
         accountRepository.save(account);
     }

@@ -62,7 +62,7 @@ class ResetPasswordControllerIT extends AbstractIT {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertThat(response.getBody()).isNotNull();
         assertTrue(Objects.requireNonNull(response.getBody())
-                .containsValue("Sent reset password link in your email"));
+                .containsValue("Sent reset password link to your email"));
     }
 
     @Test

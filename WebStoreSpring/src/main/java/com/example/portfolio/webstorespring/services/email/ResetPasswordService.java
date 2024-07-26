@@ -1,13 +1,14 @@
-package com.example.portfolio.webstorespring.services.accounts;
+package com.example.portfolio.webstorespring.services.email;
 
+import com.example.portfolio.webstorespring.enums.NotificationType;
 import com.example.portfolio.webstorespring.exceptions.TokenConfirmedException;
 import com.example.portfolio.webstorespring.exceptions.TokenExpiredException;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.ResetPasswordRequest;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.accounts.ConfirmationToken;
-import com.example.portfolio.webstorespring.services.email.EmailSenderService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import com.example.portfolio.webstorespring.services.accounts.AccountService;
+import com.example.portfolio.webstorespring.services.accounts.ConfirmationTokenService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class ResetPasswordService {
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailSenderService emailSenderService;
@@ -23,22 +25,13 @@ public class ResetPasswordService {
     @Value("${reset-password.confirmation.link}")
     private String confirmLink;
 
-    @Autowired
-    public ResetPasswordService(
-            ConfirmationTokenService confirmationTokenService,
-            @Qualifier(value = "resetPasswordSender") EmailSenderService emailSenderService,
-            AccountService accountService) {
-        this.confirmationTokenService = confirmationTokenService;
-        this.emailSenderService = emailSenderService;
-        this.accountService = accountService;
-    }
-
     @Transactional
     public Map<String, Object> resetPasswordByEmail(String email) {
         Account account = accountService.findAccountByEmail(email);
 
         ConfirmationToken savedToken = confirmationTokenService.createConfirmationToken(account);
-        return emailSenderService.sendEmail(account.getEmail(),
+        return emailSenderService.sendEmail(NotificationType.RESET_PASSWORD,
+                account.getEmail(),
                 confirmLink + savedToken.getToken());
     }
 
