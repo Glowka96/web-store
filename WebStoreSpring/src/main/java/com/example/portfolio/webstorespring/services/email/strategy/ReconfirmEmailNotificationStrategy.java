@@ -1,10 +1,10 @@
-package com.example.portfolio.webstorespring.controllers.emails.strategy;
+package com.example.portfolio.webstorespring.services.email.strategy;
 
 import com.example.portfolio.webstorespring.enums.NotificationType;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ReconfirmEmailNotificationStrategy implements NotificationStrategy{
+class ReconfirmEmailNotificationStrategy implements NotificationStrategy{
     @Override
     public NotificationType getNotificationType() {
         return NotificationType.RECONFIRM_EMAIL;

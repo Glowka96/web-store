@@ -1,4 +1,4 @@
-package com.example.portfolio.webstorespring.IT.controllers.accounts;
+package com.example.portfolio.webstorespring.IT.controllers.emails;
 
 
 import com.example.portfolio.webstorespring.IT.controllers.AbstractIT;

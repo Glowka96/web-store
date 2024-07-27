@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.services.email;
 
-import com.example.portfolio.webstorespring.controllers.emails.strategy.NotificationStrategy;
 import com.example.portfolio.webstorespring.enums.NotificationType;
+import com.example.portfolio.webstorespring.services.email.strategy.NotificationStrategy;
 
 import java.util.Map;
 

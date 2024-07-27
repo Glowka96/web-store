@@ -1,27 +1,28 @@
-package com.example.portfolio.webstorespring.controllers.emails.strategy;
+package com.example.portfolio.webstorespring.services.email.strategy;
 
 import com.example.portfolio.webstorespring.enums.NotificationType;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ResetPasswordNotificationStrategy implements NotificationStrategy{
+class ConfirmEmailNotificationStrategy implements NotificationStrategy {
+
     @Override
     public NotificationType getNotificationType() {
-        return NotificationType.RESET_PASSWORD;
+        return NotificationType.CONFIRM_EMAIL;
     }
 
     @Override
     public String getEmailTitle() {
-        return "Complete reset password.";
+        return "Confirm email address";
     }
 
     @Override
     public String getEmailMessage() {
-        return "To reset your password, please click here: \n";
+        return "To confirm your account, please click here: \n";
     }
 
     @Override
     public String getResponseMessage() {
-        return "Sent reset password link to your email";
+        return "Verify your email address using the link in your email.";
     }
 }

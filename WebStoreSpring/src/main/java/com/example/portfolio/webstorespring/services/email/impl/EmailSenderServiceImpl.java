@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.services.email.impl;
 
-import com.example.portfolio.webstorespring.controllers.emails.strategy.NotificationStrategy;
 import com.example.portfolio.webstorespring.enums.NotificationType;
 import com.example.portfolio.webstorespring.services.email.EmailSenderService;
+import com.example.portfolio.webstorespring.services.email.strategy.NotificationStrategy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
