@@ -47,5 +47,10 @@ public class Order {
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Shipment> shipments;
+
+    @PrePersist
+    void preSave() {
+        this.shipments.forEach(s -> s.setOrder(this));
+    }
 }
 

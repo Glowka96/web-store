@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
@@ -95,4 +96,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             WHERE p.id = :productId
             """)
     Optional<Product> findProductByIdWithPromotion(@Param("productId") Long productId);
+
+    @Query("""
+            SELECT p FROM Product p
+            LEFT JOIN p.pricePromotions pp ON (CURRENT_TIMESTAMP BETWEEN pp.startDate AND pp.endDate)
+            WHERE p.id = :productIds
+            """)
+    List<Product> findProductsByIdsWithPromotion(@Param("productIds") List<Long> productIds);
 }
