@@ -64,7 +64,7 @@ public class GlobalExceptionHandler {
             IllegalArgumentException.class
     })
     public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException exception, WebRequest webRequest) {
-        ErrorResponse errorResponse = createErrorResponse(HttpStatus.BAD_REQUEST, exception, webRequest);
+        ErrorResponse errorResponse = createErrorResponse(exception, webRequest);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
@@ -79,8 +79,8 @@ public class GlobalExceptionHandler {
         return new ErrorResponse(status.value(), exception.getMessage(), webRequest.getDescription(false));
     }
 
-    private ErrorResponse createErrorResponse(HttpStatus status, IllegalArgumentException exception, WebRequest webRequest) {
-        return new ErrorResponse(status.value(), exception.getMessage(), webRequest.getDescription(false));
+    private ErrorResponse createErrorResponse(IllegalArgumentException exception, WebRequest webRequest) {
+        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), exception.getMessage(), webRequest.getDescription(false));
     }
 
     private ErrorResponse createErrorResponse(ConstraintViolationException exception, WebRequest webRequest) {
