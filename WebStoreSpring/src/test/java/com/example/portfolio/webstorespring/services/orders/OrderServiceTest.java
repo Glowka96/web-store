@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.services.orders;
 
-import com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper;
+import com.example.portfolio.webstorespring.buildhelpers.accounts.RoleBuilderHelper;
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.DeliveryMapper;
 import com.example.portfolio.webstorespring.mappers.DeliveryTypeMapper;
@@ -10,6 +10,7 @@ import com.example.portfolio.webstorespring.model.dto.orders.request.OrderReques
 import com.example.portfolio.webstorespring.model.dto.orders.response.OrderResponse;
 import com.example.portfolio.webstorespring.model.dto.orders.response.OrderResponseWithoutShipments;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
+import com.example.portfolio.webstorespring.model.entity.accounts.Role;
 import com.example.portfolio.webstorespring.model.entity.orders.Delivery;
 import com.example.portfolio.webstorespring.model.entity.orders.Order;
 import com.example.portfolio.webstorespring.repositories.orders.OrderRepository;
@@ -31,10 +32,14 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
+import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.BASIC_ACCOUNT;
+import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.ROLES;
 import static com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryBuilderHelper.createDelivery;
 import static com.example.portfolio.webstorespring.buildhelpers.orders.OrderBuilderHelper.createOrder;
 import static com.example.portfolio.webstorespring.buildhelpers.orders.OrderBuilderHelper.createOrderRequest;
+import static com.natpryce.makeiteasy.MakeItEasy.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -106,7 +111,6 @@ class OrderServiceTest {
     @Test
     void shouldGetLastFiveAccountOrders() {
         // given
-
         Order order = createOrder();
 
         AccountDetails accountDetails = getAccountDetails();
@@ -171,8 +175,9 @@ class OrderServiceTest {
     }
 
     private AccountDetails getAccountDetails() {
-        Account account = AccountBuilderHelper.createAccountWithRoleUser();
-        return new AccountDetails(account);
+        Role role = RoleBuilderHelper.createUserRole();
+        return new AccountDetails(make(a(BASIC_ACCOUNT)
+                .but(with(ROLES, Set.of(role)))));
     }
 
     private void setupOtherAccountToAuthentication(Order order) {
