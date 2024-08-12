@@ -62,6 +62,12 @@ public class AccountAddressService {
         return addressMapper.mapToDto(loggedAccountAddress);
     }
 
+    @Transactional
+    public void deleteAccountAddress(AccountDetails accountDetails) {
+        AccountAddress foundAddress = findAddressByAccountId(accountDetails);
+        addressRepository.delete(foundAddress);
+    }
+
     private AccountAddress findAddressByAccountId(AccountDetails accountDetails) {
         return addressRepository.findById(accountDetails.getAccount().getId())
                 .orElseThrow(AccountHasNoAddressException::new);

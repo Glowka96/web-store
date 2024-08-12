@@ -36,4 +36,10 @@ public class AccountAddressController {
         return ResponseEntity.accepted()
                 .body(addressService.updateAccountAddress(accountDetails, accountAddressRequest));
     }
+
+    @DeleteMapping
+    public ResponseEntity<AccountAddressResponse> deleteAccountAddress(@AuthenticationPrincipal AccountDetails accountDetails) {
+        addressService.deleteAccountAddress(accountDetails);
+        return ResponseEntity.noContent().build();
+    }
 }
