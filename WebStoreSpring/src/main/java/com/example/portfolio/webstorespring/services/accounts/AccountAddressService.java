@@ -10,7 +10,6 @@ import com.example.portfolio.webstorespring.repositories.accounts.AccountAddress
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
 import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +17,6 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class AccountAddressService {
 
     private final AccountAddressRepository addressRepository;
@@ -66,6 +64,12 @@ public class AccountAddressService {
     public void deleteAccountAddress(AccountDetails accountDetails) {
         AccountAddress foundAddress = findAddressByAccountId(accountDetails);
         addressRepository.delete(foundAddress);
+    }
+
+    public void deleteAccountAddressWhenDeleteAccount(AccountDetails accountDetails) {
+        if(addressRepository.existsById(accountDetails.getAccount().getId())){
+            addressRepository.deleteById(accountDetails.getAccount().getId());
+        }
     }
 
     private AccountAddress findAddressByAccountId(AccountDetails accountDetails) {

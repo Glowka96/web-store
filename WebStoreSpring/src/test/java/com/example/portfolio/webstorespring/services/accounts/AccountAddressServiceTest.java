@@ -31,7 +31,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class AccountAddressServiceTest {
@@ -44,7 +44,6 @@ class AccountAddressServiceTest {
     private AccountAddressMapper addressMapper = Mappers.getMapper(AccountAddressMapper.class);
     @InjectMocks
     private AccountAddressService underTest;
-
 
     @Test
     void shouldGetAccountAddress() {
@@ -117,7 +116,32 @@ class AccountAddressServiceTest {
     }
 
     @Test
-    void willThrowWhenAccountHasNoAddress_WhenNotFoundAddressById() {
+    void shouldDeleteAccountAddress() {
+        AccountDetails accountDetails = getAccountDetails();
+        AccountAddress address = createAccountAddress();
+
+        given(addressRepository.findById(anyLong())).willReturn(Optional.of(address));
+
+        underTest.deleteAccountAddress(accountDetails);
+
+        verify(addressRepository).delete(address);
+        verifyNoMoreInteractions(addressRepository);
+    }
+
+    @Test
+    void shouldDeleteAccountAddress_whenDeleteAccount() {
+        AccountDetails accountDetails = getAccountDetails();
+
+        given(addressRepository.existsById(anyLong())).willReturn(true);
+
+        underTest.deleteAccountAddressWhenDeleteAccount(accountDetails);
+
+        verify(addressRepository, times(1)).deleteById(accountDetails.getAccount().getId());
+        verifyNoMoreInteractions(addressRepository);
+    }
+
+    @Test
+    void willThrowWhenAccountHasNoAddress_whenNotFoundAddressById() {
         AccountDetails accountDetails = getAccountDetails();
         given(addressRepository.findById(anyLong())).willReturn(Optional.empty());
 

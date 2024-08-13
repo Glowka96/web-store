@@ -141,6 +141,7 @@ class AccountServiceTest {
 
         // then
         verify(accountRepository, times(1)).delete(accountDetails.getAccount());
+        verifyNoMoreInteractions(accountRepository);
     }
 
     @Test
@@ -158,7 +159,7 @@ class AccountServiceTest {
     }
 
     @Test
-    void willThrowUsernameNotFoundWhenNotFindAccountByEmail () {
+    void willThrowUsernameNotFound_whenNotFindAccountByEmail() {
         given(accountRepository.findByEmail(anyString())).willReturn(Optional.empty());
 
         // when

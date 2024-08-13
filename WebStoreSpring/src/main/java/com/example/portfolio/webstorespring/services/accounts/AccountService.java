@@ -22,6 +22,7 @@ public class AccountService {
     private final AccountMapper accountMapper;
     private final PasswordEncoder encoder;
     private final RoleService roleService;
+    private final AccountAddressService addressService;
     private static final String ROLE_USER = "ROLE_USER";
 
     @Value("${account.image.url}")
@@ -60,6 +61,12 @@ public class AccountService {
         return account;
     }
 
+    @Transactional
+    public void deleteAccount(AccountDetails accountDetails) {
+        addressService.deleteAccountAddressWhenDeleteAccount(accountDetails);
+        accountRepository.delete(accountDetails.getAccount());
+    }
+
     public void setEnabledAccount(Account account) {
         account.setEnabled(true);
         accountRepository.save(account);
@@ -68,10 +75,6 @@ public class AccountService {
     public void setNewAccountPassword(Account account, String password) {
         account.setPassword(encoder.encode(password));
         accountRepository.save(account);
-    }
-
-    public void deleteAccount(AccountDetails accountDetails) {
-        accountRepository.delete(accountDetails.getAccount());
     }
 
     public Account findAccountByEmail(String email) {
