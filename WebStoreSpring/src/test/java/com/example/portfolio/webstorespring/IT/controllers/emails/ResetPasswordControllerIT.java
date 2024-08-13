@@ -9,6 +9,7 @@ import com.example.portfolio.webstorespring.model.entity.accounts.ConfirmationTo
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
 import com.example.portfolio.webstorespring.repositories.accounts.ConfirmationTokenRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,10 +44,15 @@ class ResetPasswordControllerIT extends AbstractIT {
     private Account savedAccount;
 
     @BeforeEach
-    public void initTestData() {
+    void initTestData() {
         resetPasswordUri = localhostUri + "/reset-password";
-        accountRepository.deleteAll();
         savedAccount = accountRepository.save(make(a(AccountBuilderHelper.BASIC_ACCOUNT)));
+    }
+
+    @AfterEach
+    void deleteTestData() {
+        accountRepository.deleteAll();
+        tokenRepository.deleteAll();
     }
 
     @Test

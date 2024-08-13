@@ -7,6 +7,7 @@ import com.example.portfolio.webstorespring.model.dto.products.request.ProducerR
 import com.example.portfolio.webstorespring.model.dto.products.response.ProducerResponse;
 import com.example.portfolio.webstorespring.model.entity.products.Producer;
 import com.example.portfolio.webstorespring.repositories.products.ProducerRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +26,14 @@ class ProducerControllerIT extends AbstractBaseControllerIT<ProducerRequest, Pro
     @Override
     @BeforeEach
     public void initTestData() {
-        producerRepository.deleteAll();
         Producer savedProducer = producerRepository.save(createProducer());
         savedEntityId = savedProducer.getId();
+    }
+
+    @Override
+    @AfterEach
+    public void deleteTestData() {
+        producerRepository.deleteAll();
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.example.portfolio.webstorespring.model.dto.orders.request.DeliveryTyp
 import com.example.portfolio.webstorespring.model.dto.orders.response.DeliveryTypeResponse;
 import com.example.portfolio.webstorespring.model.entity.orders.DeliveryType;
 import com.example.portfolio.webstorespring.repositories.orders.DeliveryTypeRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +26,14 @@ class DeliveryTypeControllerIT extends AbstractBaseControllerIT<DeliveryTypeRequ
     @Override
     @BeforeEach
     public void initTestData() {
-        deliveryTypeRepository.deleteAll();
         DeliveryType savedDeliveryType = deliveryTypeRepository.save(createDeliveryType());
         savedEntityId = savedDeliveryType.getId();
+    }
+
+    @Override
+    @AfterEach
+    public void deleteTestData() {
+        deliveryTypeRepository.deleteAll();
     }
 
     @Override

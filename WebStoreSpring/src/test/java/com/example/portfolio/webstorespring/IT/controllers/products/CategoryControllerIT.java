@@ -7,6 +7,7 @@ import com.example.portfolio.webstorespring.model.dto.products.response.Category
 import com.example.portfolio.webstorespring.model.entity.products.Category;
 import com.example.portfolio.webstorespring.model.entity.products.Subcategory;
 import com.example.portfolio.webstorespring.repositories.products.CategoryRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +29,6 @@ class CategoryControllerIT extends AbstractBaseControllerIT<CategoryRequest, Cat
     @Override
     @BeforeEach
     public void initTestData() {
-        categoryRepository.deleteAll();
-
         Subcategory subcategory1 = createSubcategory("One");
         Subcategory subcategory2 = createSubcategory("Two");
         Subcategory subcategory3 = createSubcategory("Three");
@@ -39,6 +38,12 @@ class CategoryControllerIT extends AbstractBaseControllerIT<CategoryRequest, Cat
         category.getSubcategories().forEach(s -> s.setCategory(category));
         Category savedCategory = categoryRepository.save(category);
         savedEntityId = savedCategory.getId();
+    }
+
+    @Override
+    @AfterEach
+    public void deleteTestData() {
+        categoryRepository.deleteAll();
     }
 
     public String getUri() {

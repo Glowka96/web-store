@@ -10,6 +10,7 @@ import com.example.portfolio.webstorespring.repositories.accounts.RoleRepository
 import com.natpryce.makeiteasy.Maker;
 import jakarta.persistence.EntityManager;
 import org.hibernate.Hibernate;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,16 +48,19 @@ class AccountRepositoryIT {
 
     @BeforeEach
     void init() {
-        roleRepository.deleteAll();
-        accountRepository.deleteAll();
-        accountAddressRepository.deleteAll();
-
         Role role = RoleBuilderHelper.createUserRole();
         Role savedRole = roleRepository.save(role);
 
         Maker<Account> accountMaker = a(BASIC_ACCOUNT);
         Account account = make(accountMaker.but(with(ROLES, Set.of(savedRole))));
         accountRepository.save(account);
+    }
+
+    @AfterEach
+    void delete() {
+        roleRepository.deleteAll();
+        accountRepository.deleteAll();
+        accountAddressRepository.deleteAll();
     }
 
     @Test

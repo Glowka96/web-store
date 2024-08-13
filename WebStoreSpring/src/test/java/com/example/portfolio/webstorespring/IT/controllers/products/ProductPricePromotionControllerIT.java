@@ -6,6 +6,7 @@ import com.example.portfolio.webstorespring.model.dto.products.response.ProductP
 import com.example.portfolio.webstorespring.model.entity.products.Product;
 import com.example.portfolio.webstorespring.repositories.products.ProductPricePromotionRepository;
 import com.example.portfolio.webstorespring.repositories.products.ProductRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +35,6 @@ class ProductPricePromotionControllerIT extends AbstractAuthControllerIT{
 
     @BeforeEach
     public void initTestData() {
-        promotionRepository.deleteAll();
-        productRepository.deleteAll();
-
         Product savedProduct = productRepository.save(make(a(BASIC_PRODUCT)
                 .but(withNull(SUBCATEGORY))
                 .but(withNull(PRODUCT_TYPE))
@@ -48,6 +46,12 @@ class ProductPricePromotionControllerIT extends AbstractAuthControllerIT{
         savedProductId = savedProduct.getId();
         promotionRequest.setProductId(savedProductId);
         promotionRequest.setEndDate(LocalDateTime.now().plusDays(15).truncatedTo(ChronoUnit.SECONDS));
+    }
+
+    @AfterEach
+    public void deleteTestData() {
+        promotionRepository.deleteAll();
+        productRepository.deleteAll();
     }
 
     @Test

@@ -6,6 +6,7 @@ import com.example.portfolio.webstorespring.model.dto.products.response.ProductT
 import com.example.portfolio.webstorespring.model.entity.products.ProductType;
 import com.example.portfolio.webstorespring.repositories.products.ProductTypeRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +26,14 @@ class ProductTypeControllerIT extends AbstractBaseControllerIT<ProductTypeReques
     @Override
     @BeforeEach
     public void initTestData() {
-        productTypeRepository.deleteAll();
-
         ProductType savedProductType = productTypeRepository.save(createProductType());
         savedEntityId = savedProductType.getId();
+    }
+
+    @Override
+    @AfterEach
+    public void deleteTestData() {
+        productTypeRepository.deleteAll();
     }
 
     @Override

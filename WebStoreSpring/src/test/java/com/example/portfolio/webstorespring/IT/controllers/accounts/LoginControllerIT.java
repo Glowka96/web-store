@@ -8,7 +8,7 @@ import com.example.portfolio.webstorespring.model.entity.accounts.AuthToken;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
 import com.example.portfolio.webstorespring.repositories.accounts.AuthTokenRepository;
 import com.natpryce.makeiteasy.Maker;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -34,8 +34,8 @@ class LoginControllerIT extends AbstractIT {
     private PasswordEncoder encoder;
     private static final String PASSWORD_STRING = "Password123*";
 
-    @BeforeEach
-    public void initTestData() {
+    @AfterEach
+    public void deleteTestData() {
         accountRepository.deleteAll();
         tokenRepository.deleteAll();
     }

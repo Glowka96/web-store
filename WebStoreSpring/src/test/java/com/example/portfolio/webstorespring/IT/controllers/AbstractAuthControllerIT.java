@@ -9,6 +9,7 @@ import com.example.portfolio.webstorespring.repositories.accounts.RoleRepository
 import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
 import com.example.portfolio.webstorespring.services.authentication.AuthService;
 import com.example.portfolio.webstorespring.services.authentication.JwtService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -47,9 +48,6 @@ public abstract class AbstractAuthControllerIT extends AbstractIT {
 
     @BeforeEach
     protected void init() {
-        addressRepository.deleteAll();
-        accountRepository.deleteAll();
-
         Set<Role> userRole = roleRepository.findByName("ROLE_USER");
         Set<Role> adminRole = roleRepository.findByName("ROLE_ADMIN");
 
@@ -76,6 +74,12 @@ public abstract class AbstractAuthControllerIT extends AbstractIT {
 
         authService.saveAccountAuthToken(savedUser, userToken);
         authService.saveAccountAuthToken(savedAdmin, adminToken);
+    }
+
+    @AfterEach
+    protected void delete() {
+        addressRepository.deleteAll();
+        accountRepository.deleteAll();
     }
 
     private Account createAccount(String email, Set<Role> accountRoles) {
