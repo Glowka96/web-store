@@ -10,7 +10,7 @@ import com.example.portfolio.webstorespring.model.dto.products.ProductWithPromot
 import com.example.portfolio.webstorespring.model.entity.products.*;
 import com.example.portfolio.webstorespring.repositories.products.*;
 import com.natpryce.makeiteasy.Maker;
-import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +44,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Testcontainers
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Slf4j
 class ProductRepositoryIT {
 
     @Autowired
@@ -65,8 +64,6 @@ class ProductRepositoryIT {
 
     @BeforeEach
     void init() {
-        deleteAllInDatabase();
-
         Subcategory subcategory = subcategoryRepository.save(
                 SubcategoryBuilderHelper.createSubcategory());
         Subcategory subcategory2 = subcategoryRepository.save(
@@ -114,6 +111,14 @@ class ProductRepositoryIT {
         productId = productWithCurrencyPromotion.getId();
     }
 
+    @AfterEach
+    void delete(){
+        subcategoryRepository.deleteAll();
+        productTypeRepository.deleteAll();
+        producerRepository.deleteAll();
+        promotionRepository.deleteAll();
+        productRepository.deleteAll();    }
+
     @Test
     void shouldFindProductById() {
         ProductWithProducerAndPromotionDTO product =
@@ -125,68 +130,68 @@ class ProductRepositoryIT {
 
     @Test
     void shouldFindProductsBySubcategoryId() {
-        Pageable pageable = createPageable();
         Optional<Page<ProductWithPromotionDTO>> products =
-                productRepository.findProductsBySubcategoryId(subId, date30DaysAgo, pageable);
-
+                productRepository.findProductsBySubcategoryId(subId, date30DaysAgo, createPageable());
         assertThat(products).isPresent();
-        assertProductsIfPresent(products, 3, 1);
+        assertPageProductsIfPresent(products, 3, 1);
 
     }
 
     @Test
     void shouldSearchProductsByEnteredText() {
-        Pageable pageable = createPageable();
         Optional<Page<ProductWithPromotionDTO>> products =
-                productRepository.searchProductsByEnteredText("Product", date30DaysAgo, pageable);
+                productRepository.searchProductsByEnteredText("Product", date30DaysAgo, createPageable());
 
         assertThat(products).isPresent();
-        assertProductsIfPresent(products, 1, 1);
+        assertPageProductsIfPresent(products, 1, 1);
     }
 
     @Test
     void shouldFindPromotionProducts() {
-        Pageable pageable = createPageable();
         Optional<Page<ProductWithPromotionDTO>> products =
-                productRepository.findPromotionProducts(date30DaysAgo, pageable);
+                productRepository.findPromotionProducts(date30DaysAgo, createPageable());
 
         assertThat(products).isPresent();
-        assertProductsIfPresent(products, 2, 2);
+        assertPageProductsIfPresent(products, 2, 2);
     }
 
     @Test
     void shouldFindNewProducts() {
-        Pageable pageable = createPageable();
         Optional<Page<ProductWithPromotionDTO>> products =
-                productRepository.findNewProducts(date30DaysAgo, pageable);
+                productRepository.findNewProducts(date30DaysAgo, createPageable());
 
         assertThat(products).isPresent();
-        assertProductsIfPresent(products, 4, 2);
+        assertPageProductsIfPresent(products, 4, 2);
     }
 
-    private void deleteAllInDatabase() {
-        subcategoryRepository.deleteAll();
-        productTypeRepository.deleteAll();
-        producerRepository.deleteAll();
-        promotionRepository.deleteAll();
-        productRepository.deleteAll();
+    @Test
+    void shouldFindProductByIdWithPromotion() {
+        Optional<Product> optionalProduct = productRepository.findProductByIdWithPromotion(productId);
+
+        assertThat(optionalProduct).isPresent();
     }
 
+    @Test
+    void shouldFindProductsByIdsWithPromotion() {
+        List<Product> products = productRepository.findProductsByIdsWithPromotion(List.of(productId, productId-1));
+
+        assertThat(products).hasSize(2);
+    }
     private ProductPricePromotion getCurrencyPromotion() {
         return make(a(BASIC_PROMOTION)
                 .but(withNull(ProductPricePromotionBuilderHelper.ID))
-                .but(with(START_DATE, zonedDateTime.minusDays(1).toLocalDateTime()))
-                .but(with(END_DATE, zonedDateTime.plusDays(1).toLocalDateTime())));
+                .but(with(START_DATE, zonedDateTime.minusDays(10).toLocalDateTime()))
+                .but(with(END_DATE, zonedDateTime.plusDays(50).toLocalDateTime())));
     }
 
     private  Pageable createPageable() {
         return PageRequest.of(0, 12, Sort.by(Sort.Direction.fromString("asc"), "id"));
     }
 
-    private static void assertProductsIfPresent(Optional<Page<ProductWithPromotionDTO>> products,
-                                                int totalElements,
-                                                int totalPromotions) {
-        products.ifPresent((page) -> {
+    private static void assertPageProductsIfPresent(Optional<Page<ProductWithPromotionDTO>> products,
+                                                    int totalElements,
+                                                    int totalPromotions) {
+        products.ifPresent(page -> {
             assertThat(page.getTotalPages()).isEqualTo(1);
             assertThat(page.getTotalElements()).isEqualTo(totalElements);
             assertPageHasPromotionalProduct(page, totalPromotions);
