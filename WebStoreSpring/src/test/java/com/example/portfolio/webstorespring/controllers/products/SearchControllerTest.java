@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static com.example.portfolio.webstorespring.buildhelpers.products.PageProductWithPromotionDTOBuilderHelper.createPageProductsWithPromotionDTO;
+import static com.example.portfolio.webstorespring.buildhelpers.products.PageProductsOptionsBuilderHelper.createBasePageProductsOptions;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.*;
@@ -43,21 +44,19 @@ class SearchControllerTest {
     @Test
     void shouldGetSearchProductsByText() throws Exception {
         PageProductsWithPromotionDTO pageProducts = createPageProductsWithPromotionDTO();
+
         given(productsPageService.getPageSearchProducts(anyString(), anyInt(), anyInt(), any(), any()))
                 .willReturn(pageProducts);
 
         mvc.perform(get(URI)
                         .param("query", "test")
-                        .param("page", "0")
-                        .param("size", "3")
-                        .param("sort", "PRICE")
-                        .param("direction", "ASC")
-                        .accept(MediaType.APPLICATION_JSON))
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(createBasePageProductsOptions())))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.totalElements", is(pageProducts.totalElements().intValue())))
                 .andExpect(jsonPath("$.totalPages", is(pageProducts.totalPages())))
-                .andExpect(jsonPath("$.sortByTypes", hasSize(pageProducts.sortByTypes().size())))
-                .andExpect(jsonPath("$.sortDirectionTypes", hasSize(pageProducts.sortDirectionTypes().size())))
+                .andExpect(jsonPath("$.sortOptions", hasSize(pageProducts.sortOptions().size())))
                 .andExpect(jsonPath("$.products", hasSize(pageProducts.products().size())))
                 .andDo(print());
     }

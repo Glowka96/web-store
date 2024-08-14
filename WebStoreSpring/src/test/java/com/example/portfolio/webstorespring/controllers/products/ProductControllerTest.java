@@ -70,9 +70,19 @@ class ProductControllerTest {
 
         mvc.perform(get(URI + "/products/{productId}", 1)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(productWithProducerAndPromotionDTO)))
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(productWithProducerAndPromotionDTO.id())))
+                .andExpect(jsonPath("$.name", is(productWithProducerAndPromotionDTO.name())))
+                .andExpect(jsonPath("$.imageUrl", is(productWithProducerAndPromotionDTO.imageUrl())))
+                .andExpect(jsonPath("$.quantity", is(productWithProducerAndPromotionDTO.quantity())))
+                .andExpect(jsonPath("$.productTypeName", is(productWithProducerAndPromotionDTO.productTypeName())))
+                .andExpect(jsonPath("$.price", is(productWithProducerAndPromotionDTO.price())))
+                .andExpect(jsonPath("$.promotionPrice", is(productWithProducerAndPromotionDTO.promotionPrice())))
+                .andExpect(jsonPath("$.lowestPrice", is(productWithProducerAndPromotionDTO.lowestPrice())))
+                .andExpect(jsonPath("$.endDate", is(productWithProducerAndPromotionDTO.endDate())))
+                .andExpect(jsonPath("$.description", is(productWithProducerAndPromotionDTO.description())))
+                .andExpect(jsonPath("$.producerName", is(productWithProducerAndPromotionDTO.producerName())))
                 .andDo(print());
     }
 
