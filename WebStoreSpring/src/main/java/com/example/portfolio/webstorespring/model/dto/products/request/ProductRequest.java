@@ -1,6 +1,5 @@
 package com.example.portfolio.webstorespring.model.dto.products.request;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,7 +12,6 @@ import java.math.BigDecimal;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties
 public class ProductRequest {
 
     @NotBlank(message = "The name can't be blank")

@@ -2,6 +2,7 @@ package com.example.portfolio.webstorespring.services.products;
 
 import com.example.portfolio.webstorespring.enums.SortByType;
 import com.example.portfolio.webstorespring.enums.SortDirectionType;
+import com.example.portfolio.webstorespring.model.dto.products.PageProductsOptions;
 import com.example.portfolio.webstorespring.model.dto.products.PageProductsWithPromotionDTO;
 import com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionDTO;
 import com.example.portfolio.webstorespring.repositories.products.ProductRepository;
@@ -28,76 +29,48 @@ public class ProductsPageService {
     private final Clock clock = Clock.systemUTC();
 
     @Transactional(readOnly = true)
-    public PageProductsWithPromotionDTO getPageProductsBySubcategoryId(Long subcategoryId,
-                                                                       Integer pageNo,
-                                                                       Integer pageSize,
-                                                                       SortByType sortBy,
-                                                                       SortDirectionType sortDirection) {
+    public PageProductsWithPromotionDTO getPageProductsBySubcategoryId(Long subcategoryId, PageProductsOptions pageProductsOptions) {
         return getPageProduct(
-                pageNo, pageSize, sortBy, sortDirection,
+                pageProductsOptions,
                 pageable -> getProductsBySubcategoryId(subcategoryId, getLocalDateTime30DaysAgo(), pageable)
         );
     }
 
     @Transactional(readOnly = true)
-    public PageProductsWithPromotionDTO getPageSearchProducts(String text,
-                                                              Integer pageNo,
-                                                              Integer pageSize,
-                                                              SortByType sortBy,
-                                                              SortDirectionType sortDirection) {
+    public PageProductsWithPromotionDTO getPageSearchProducts(String text, PageProductsOptions pageProductsOptions) {
         return getPageProduct(
-                pageNo, pageSize, sortBy, sortDirection,
+                pageProductsOptions,
                 pageable -> searchProductsByText(text, getLocalDateTime30DaysAgo(), pageable)
         );
     }
 
     @Transactional(readOnly = true)
-    public PageProductsWithPromotionDTO getPagePromotionProduct(Integer pageNo,
-                                                                Integer pageSize,
-                                                                SortByType sortBy,
-                                                                SortDirectionType sortDirection) {
+    public PageProductsWithPromotionDTO getPagePromotionProduct(PageProductsOptions pageProductsOptions) {
         return getPageProduct(
-                pageNo, pageSize, sortBy, sortDirection,
+                pageProductsOptions,
                 pageable -> getPromotionProducts(getLocalDateTime30DaysAgo(), pageable)
         );
     }
 
     @Transactional(readOnly = true)
-    public PageProductsWithPromotionDTO getPageNewProduct(Integer pageNo,
-                                                          Integer pageSize,
-                                                          SortByType sortBy,
-                                                          SortDirectionType sortDirection) {
+    public PageProductsWithPromotionDTO getPageNewProduct(PageProductsOptions pageProductsOptions) {
         return getPageProduct(
-                pageNo, pageSize, sortBy, sortDirection,
+                pageProductsOptions,
                 pageable -> getNewProducts(getLocalDateTime30DaysAgo(), pageable)
-                );
+        );
     }
 
-    private PageProductsWithPromotionDTO getPageProduct(Integer pageNo,
-                                                        Integer pageSize,
-                                                        SortByType sortBy,
-                                                        SortDirectionType sortDirection,
+    private PageProductsWithPromotionDTO getPageProduct(PageProductsOptions pageProductsOptions,
                                                         Function<Pageable, Page<ProductWithPromotionDTO>> function) {
-        Pageable pageable = createPageable(pageNo, pageSize, sortBy.getFieldName(), sortDirection.name());
+        Pageable pageable = getPageable(pageProductsOptions);
         Page<ProductWithPromotionDTO> productPage = function.apply(pageable);
 
-        List<String> sortByTypes = getEnumTypes(SortByType.class);
-        List<String> sortDirectionTypes = getEnumTypes(SortDirectionType.class);
+        List<String> sortOptions = getSortOptions();
         return new PageProductsWithPromotionDTO(
                 productPage.getTotalElements(),
                 productPage.getTotalPages(),
-                sortByTypes,
-                sortDirectionTypes,
+                sortOptions,
                 productPage.getContent());
-    }
-
-    @NotNull
-    private LocalDateTime getLocalDateTime30DaysAgo() {
-        return LocalDateTime.now(clock).minusDays(30);
-    }
-
-    private Pageable createPageable(Integer pageNo, Integer pageSize, String sortBy, String sortDirection) {
-        return PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.fromString(sortDirection), sortBy));
     }
 
     private Page<ProductWithPromotionDTO> getProductsBySubcategoryId(Long subcategoryId,
@@ -125,9 +98,34 @@ public class ProductsPageService {
     }
 
     @NotNull
-    private static <E extends Enum<E>> List<String> getEnumTypes(Class<E> enumClass) {
-        return Arrays.stream(enumClass.getEnumConstants())
-                .map((sortByType -> sortByType.name().toLowerCase()))
+    private Pageable getPageable(PageProductsOptions pageProductsOptions) {
+        String[] sortTypeAndDirection = pageProductsOptions.sortOption().split("\\s-\\s");
+        String sortType = getSortTypeName(sortTypeAndDirection);
+        return PageRequest.of(pageProductsOptions.pageNo(),
+                pageProductsOptions.size(),
+                Sort.by(Sort.Direction.fromString(sortTypeAndDirection[1]), sortType)
+        );
+    }
+
+    @NotNull
+    private String getSortTypeName(String[] sortTypeAndDirection) {
+        return Arrays.stream(SortByType.values())
+                .filter(sortByType -> sortByType.name().equalsIgnoreCase(sortTypeAndDirection[0]))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(String.format("Invalid sort type value: %s", sortTypeAndDirection[0])))
+                .getFieldName();
+    }
+
+    @NotNull
+    private static List<String> getSortOptions() {
+        return Arrays.stream(SortByType.values())
+                .flatMap(s -> Arrays.stream(SortDirectionType.values())
+                        .map(d -> s.getFieldName() + " - " + d.name().toLowerCase()))
                 .toList();
+    }
+
+    @NotNull
+    private LocalDateTime getLocalDateTime30DaysAgo() {
+        return LocalDateTime.now(clock).minusDays(30);
     }
 }
