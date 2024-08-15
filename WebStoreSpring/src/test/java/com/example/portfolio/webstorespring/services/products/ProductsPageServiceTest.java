@@ -3,6 +3,7 @@ package com.example.portfolio.webstorespring.services.products;
 import com.example.portfolio.webstorespring.model.dto.products.PageProductsWithPromotionDTO;
 import com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionDTO;
 import com.example.portfolio.webstorespring.repositories.products.ProductRepository;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,9 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.example.portfolio.webstorespring.buildhelpers.products.PageProductsOptionsBuilderHelper.createBasePageProductsOptions;
+import static com.example.portfolio.webstorespring.buildhelpers.products.PageProductsOptionsBuilderHelper.*;
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductWithPromotionDtoBuildHelper.createProductWithPromotionDTO;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 
@@ -26,6 +28,11 @@ class ProductsPageServiceTest {
     private ProductRepository productRepository;
     @InjectMocks
     private ProductsPageService underTest;
+    private static Integer numberOfSortOptions;
+    @BeforeAll
+    static void initNumberOfSorOptions() {
+        numberOfSortOptions = getNumberOfSortOptions();
+    }
 
     @Test
     void shouldGetPageProductsBySubCategoryId() {
@@ -43,13 +50,14 @@ class ProductsPageServiceTest {
         assertThat(actual.products()).hasSize(productList.size());
         assertThat(actual.totalPages()).isEqualTo(1);
         assertThat(actual.totalElements()).isEqualTo(3);
+        assertThat(actual.sortOptions()).hasSize(numberOfSortOptions);
     }
 
 
     @Test
     void shouldGetPageNewProducts() {
         // given
-        Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Direction.ASC, "id"));
+        Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Direction.ASC, "name"));
         List<ProductWithPromotionDTO> productList = getListProductWithPromotionDto();
         Page<ProductWithPromotionDTO> productPage = new PageImpl<>(productList, pageable, productList.size());
 
@@ -62,6 +70,7 @@ class ProductsPageServiceTest {
         assertThat(actual.products()).hasSize(productList.size());
         assertThat(actual.totalPages()).isEqualTo(1);
         assertThat(actual.totalElements()).isEqualTo(3);
+        assertThat(actual.sortOptions()).hasSize(numberOfSortOptions);
     }
 
     @Test
@@ -96,6 +105,7 @@ class ProductsPageServiceTest {
         assertThat(actual.products()).hasSize(productList.size());
         assertThat(actual.totalPages()).isEqualTo(1);
         assertThat(actual.totalElements()).isEqualTo(3);
+        assertThat(actual.sortOptions()).hasSize(numberOfSortOptions);
     }
 
     @Test
@@ -114,8 +124,23 @@ class ProductsPageServiceTest {
         assertThat(actual.products()).hasSize(productList.size());
         assertThat(actual.totalPages()).isEqualTo(1);
         assertThat(actual.totalElements()).isEqualTo(3);
+        assertThat(actual.sortOptions()).hasSize(numberOfSortOptions);
     }
 
+    @Test
+    void willThrowIllegalArgumentException_whenSortTypeIsInvalid() {
+        assertThatThrownBy(() -> underTest.getPageNewProduct(createPageProductsOptionsWithBadSortType()))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Invalid sort type value: bad");
+    }
+
+
+    @Test
+    void willThrowIllegalArgumentException_whenSortDirectionIsInvalid() {
+        assertThatThrownBy(() -> underTest.getPageNewProduct(createPageProductsOptionsWithBadSortDirection()))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Invalid value 'bad' for orders given");
+    }
 
     private List<ProductWithPromotionDTO> getListProductWithPromotionDto() {
         ProductWithPromotionDTO productWithPromotionDTO = createProductWithPromotionDTO();

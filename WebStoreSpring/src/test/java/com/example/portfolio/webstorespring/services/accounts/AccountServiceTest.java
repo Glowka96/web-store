@@ -38,6 +38,8 @@ class AccountServiceTest {
     @Mock
     private AccountRepository accountRepository;
     @Mock
+    private AccountAddressService addressService;
+    @Mock
     private BCryptPasswordEncoder encoder;
     @Mock
     private RoleService roleService;

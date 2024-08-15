@@ -1,5 +1,6 @@
 package com.example.portfolio.webstorespring.controllers.products;
 
+import com.example.portfolio.webstorespring.model.dto.products.PageProductsOptions;
 import com.example.portfolio.webstorespring.model.dto.products.PageProductsWithPromotionDTO;
 import com.example.portfolio.webstorespring.services.products.ProductsPageService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,7 +18,8 @@ import static com.example.portfolio.webstorespring.buildhelpers.products.PagePro
 import static com.example.portfolio.webstorespring.buildhelpers.products.PageProductsOptionsBuilderHelper.createBasePageProductsOptions;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -45,7 +47,7 @@ class SearchControllerTest {
     void shouldGetSearchProductsByText() throws Exception {
         PageProductsWithPromotionDTO pageProducts = createPageProductsWithPromotionDTO();
 
-        given(productsPageService.getPageSearchProducts(anyString(), anyInt(), anyInt(), any(), any()))
+        given(productsPageService.getPageSearchProducts(anyString(), any(PageProductsOptions.class)))
                 .willReturn(pageProducts);
 
         mvc.perform(get(URI)
