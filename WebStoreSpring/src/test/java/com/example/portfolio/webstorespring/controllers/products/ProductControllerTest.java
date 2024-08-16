@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.createProductRequest;
@@ -77,10 +78,10 @@ class ProductControllerTest {
                 .andExpect(jsonPath("$.imageUrl", is(productWithProducerAndPromotionDTO.imageUrl())))
                 .andExpect(jsonPath("$.quantity", is(productWithProducerAndPromotionDTO.quantity().intValue())))
                 .andExpect(jsonPath("$.productTypeName", is(productWithProducerAndPromotionDTO.productTypeName())))
-                .andExpect(jsonPath("$.price", is(productWithProducerAndPromotionDTO.price())))
-                .andExpect(jsonPath("$.promotionPrice", is(productWithProducerAndPromotionDTO.promotionPrice())))
-                .andExpect(jsonPath("$.lowestPrice", is(productWithProducerAndPromotionDTO.lowestPrice())))
-                .andExpect(jsonPath("$.endDate", is(productWithProducerAndPromotionDTO.endDate())))
+                .andExpect(jsonPath("$.price", is(productWithProducerAndPromotionDTO.price().doubleValue())))
+                .andExpect(jsonPath("$.promotionPrice", is(productWithProducerAndPromotionDTO.promotionPrice().doubleValue())))
+                .andExpect(jsonPath("$.lowestPrice", is(productWithProducerAndPromotionDTO.lowestPrice().doubleValue())))
+                .andExpect(jsonPath("$.endDate", is(productWithProducerAndPromotionDTO.endDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))))
                 .andExpect(jsonPath("$.description", is(productWithProducerAndPromotionDTO.description())))
                 .andExpect(jsonPath("$.producerName", is(productWithProducerAndPromotionDTO.producerName())))
                 .andDo(print());
