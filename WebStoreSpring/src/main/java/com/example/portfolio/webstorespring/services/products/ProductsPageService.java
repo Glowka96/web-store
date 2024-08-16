@@ -112,7 +112,7 @@ public class ProductsPageService {
         return Arrays.stream(SortByType.values())
                 .filter(sortByType -> sortByType.name().equalsIgnoreCase(sortTypeAndDirection[0]))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException(String.format("Invalid sort type value: %s", sortTypeAndDirection[0])))
+                .orElseThrow(() -> new IllegalArgumentException("Invalid sort type value: " + sortTypeAndDirection[0]))
                 .getFieldName();
     }
 

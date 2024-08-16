@@ -13,19 +13,8 @@ public class PageProductsOptionsBuilderHelper {
         return new PageProductsOptions(0, 12, "name - asc");
     }
 
-    public static PageProductsOptions createPageProductsOptionsWithBadSortType() {
-        return new PageProductsOptions(0, 12, "bad - asc");
-    }
-
-    public static PageProductsOptions createPageProductsOptionsWithBadSortDirection() {
-        return new PageProductsOptions(0, 12, "name - bad");
-    }
-
-    public static Integer getNumberOfSortOptions() {
-        return Arrays.stream(SortByType.values())
-                .flatMap(s -> Arrays.stream(SortDirectionType.values())
-                        .map(d -> s.getFieldName() + " - " + d.name().toLowerCase()))
-                .toList().size();
+    public static PageProductsOptions createBasePageProductsOptions(String sortType, String sortDirection) {
+        return new PageProductsOptions(0, 12, sortType + " - " + sortDirection);
     }
 
     public static List<String> getSortOptions() {
@@ -33,5 +22,8 @@ public class PageProductsOptionsBuilderHelper {
                 .flatMap(s-> Arrays.stream(SortDirectionType.values())
                         .map(d -> s.getFieldName() + " - " + d.name().toLowerCase()))
                 .toList();
+    }
+    public static Integer getNumberOfSortOptions() {
+        return getSortOptions().size();
     }
 }
