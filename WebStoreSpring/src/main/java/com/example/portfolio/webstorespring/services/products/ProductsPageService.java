@@ -23,12 +23,12 @@ import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ProductsPageService {
 
     private final ProductRepository productRepository;
     private final Clock clock = Clock.systemUTC();
 
-    @Transactional(readOnly = true)
     public PageProductsWithPromotionDTO getPageProductsBySubcategoryId(Long subcategoryId, PageProductsOptions pageProductsOptions) {
         return getPageProduct(
                 pageProductsOptions,
@@ -36,7 +36,6 @@ public class ProductsPageService {
         );
     }
 
-    @Transactional(readOnly = true)
     public PageProductsWithPromotionDTO getPageSearchProducts(String text, PageProductsOptions pageProductsOptions) {
         return getPageProduct(
                 pageProductsOptions,
@@ -44,7 +43,6 @@ public class ProductsPageService {
         );
     }
 
-    @Transactional(readOnly = true)
     public PageProductsWithPromotionDTO getPagePromotionProduct(PageProductsOptions pageProductsOptions) {
         return getPageProduct(
                 pageProductsOptions,
@@ -52,7 +50,6 @@ public class ProductsPageService {
         );
     }
 
-    @Transactional(readOnly = true)
     public PageProductsWithPromotionDTO getPageNewProduct(PageProductsOptions pageProductsOptions) {
         return getPageProduct(
                 pageProductsOptions,
@@ -100,7 +97,7 @@ public class ProductsPageService {
     @NotNull
     private Pageable getPageable(PageProductsOptions pageProductsOptions) {
         String[] sortTypeAndDirection = pageProductsOptions.sortOption().split("\\s-\\s");
-        String sortType = getSortTypeName(sortTypeAndDirection);
+        String sortType = SortByType.findFieldNameOfSortByType(sortTypeAndDirection[0]);
         return PageRequest.of(pageProductsOptions.pageNo(),
                 pageProductsOptions.size(),
                 Sort.by(Sort.Direction.fromString(sortTypeAndDirection[1]), sortType)
@@ -108,19 +105,10 @@ public class ProductsPageService {
     }
 
     @NotNull
-    private String getSortTypeName(String[] sortTypeAndDirection) {
-        return Arrays.stream(SortByType.values())
-                .filter(sortByType -> sortByType.name().equalsIgnoreCase(sortTypeAndDirection[0]))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Invalid sort type value: " + sortTypeAndDirection[0]))
-                .getFieldName();
-    }
-
-    @NotNull
     private static List<String> getSortOptions() {
         return Arrays.stream(SortByType.values())
                 .flatMap(s -> Arrays.stream(SortDirectionType.values())
-                        .map(d -> s.getFieldName() + " - " + d.name().toLowerCase()))
+                        .map(d -> s.toString().toLowerCase() + " - " + d.name().toLowerCase()))
                 .toList();
     }
 
