@@ -63,7 +63,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({
             IllegalArgumentException.class
     })
-    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException exception, WebRequest webRequest) {
+    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException exception,
+                                                                        WebRequest webRequest) {
         ErrorResponse errorResponse = createErrorResponse(exception, webRequest);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
@@ -73,6 +74,13 @@ public class GlobalExceptionHandler {
                                                                            WebRequest webRequest) {
         ErrorResponse errorResponse = createErrorResponse(exception, webRequest);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UnsupportedNotificationTypeException.class)
+    public ResponseEntity<ErrorResponse> handleUnsupportedNotificationTypeException(UnsupportedNotificationTypeException exception,
+                                                                                    WebRequest webRequest) {
+        ErrorResponse errorResponse = createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, exception, webRequest);
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     private ErrorResponse createErrorResponse(HttpStatus status, Exception exception, WebRequest webRequest) {

@@ -59,6 +59,8 @@ class GlobalExceptionHandlerTest {
     @Mock
     private ConstraintViolationException constraintViolationException;
     @Mock
+    private UnsupportedNotificationTypeException unsupportedNotificationTypeException;
+    @Mock
     private WebRequest webRequest;
     @InjectMocks
     private GlobalExceptionHandler underTest;
@@ -276,6 +278,20 @@ class GlobalExceptionHandlerTest {
         assertThat(responseEntity.getStatusCode().value()).isEqualTo(exceptedErrorResponse.getStatusCode());
         assertThat(Objects.requireNonNull(responseEntity.getBody()).getErrors()).containsExactlyInAnyOrderElementsOf(exceptedErrorResponse.getErrors());
 
+    }
+
+    @Test
+    void shouldHandleUnsupportedNotificationTypeException() {
+        ResponseEntity<ErrorResponse> responseEntity = underTest.handleUnsupportedNotificationTypeException(
+                unsupportedNotificationTypeException,
+                webRequest
+        );
+
+        assertsResponse(responseEntity, getExceptedErrorResponse(
+                        HttpStatus.INTERNAL_SERVER_ERROR,
+                        unsupportedNotificationTypeException
+                )
+        );
     }
 
     private void assertsResponse(ResponseEntity<ErrorResponse> responseEntity, ErrorResponse exceptedErrorResponse) {
