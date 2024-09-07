@@ -1,8 +1,6 @@
 package com.example.portfolio.webstorespring.services.email.strategy;
 
 import com.example.portfolio.webstorespring.enums.NotificationType;
-import com.example.portfolio.webstorespring.services.email.impl.EmailSenderServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public interface NotificationStrategy {
 
@@ -13,10 +11,4 @@ public interface NotificationStrategy {
     String getEmailMessage();
 
     String getResponseMessage();
-
-    @Autowired
-    default void registerMe(EmailSenderServiceImpl emailSenderService) {
-        emailSenderService.registerNotification(
-                getNotificationType(), this);
-    }
 }
