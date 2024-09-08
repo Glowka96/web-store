@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.IT.controllers.accounts;
 
-import com.example.portfolio.webstorespring.IT.controllers.AbstractIT;
+import com.example.portfolio.webstorespring.IT.controllers.AbstractTestRestTemplateIT;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.LoginRequest;
 import com.example.portfolio.webstorespring.model.dto.accounts.response.AuthenticationResponse;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
@@ -24,7 +24,7 @@ import static com.natpryce.makeiteasy.MakeItEasy.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class LoginControllerIT extends AbstractIT {
+class LoginControllerIT extends AbstractTestRestTemplateIT {
 
     @Autowired
     private AccountRepository accountRepository;

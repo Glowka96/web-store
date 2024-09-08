@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.IT.controllers.emails;
 
-import com.example.portfolio.webstorespring.IT.controllers.AbstractIT;
+import com.example.portfolio.webstorespring.IT.controllers.AbstractTestRestTemplateIT;
 import com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.RegistrationRequest;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
@@ -29,7 +29,7 @@ import static com.natpryce.makeiteasy.MakeItEasy.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-class RegistrationControllerIT extends AbstractIT {
+class RegistrationControllerIT extends AbstractTestRestTemplateIT {
 
     @Autowired
     private AccountRepository accountRepository;

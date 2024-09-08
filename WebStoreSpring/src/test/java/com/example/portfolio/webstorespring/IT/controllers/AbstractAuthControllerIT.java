@@ -24,7 +24,7 @@ import static com.example.portfolio.webstorespring.buildhelpers.accounts.Account
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.*;
 import static com.natpryce.makeiteasy.MakeItEasy.*;
 
-public abstract class AbstractAuthControllerIT extends AbstractIT {
+public abstract class AbstractAuthControllerIT extends AbstractTestRestTemplateIT {
 
     @Autowired
     private JwtService jwtService;

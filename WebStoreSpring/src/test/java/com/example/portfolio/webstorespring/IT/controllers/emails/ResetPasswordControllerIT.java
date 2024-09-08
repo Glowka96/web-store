@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.IT.controllers.emails;
 
 
-import com.example.portfolio.webstorespring.IT.controllers.AbstractIT;
+import com.example.portfolio.webstorespring.IT.controllers.AbstractTestRestTemplateIT;
 import com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.ResetPasswordRequest;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
-class ResetPasswordControllerIT extends AbstractIT {
+class ResetPasswordControllerIT extends AbstractTestRestTemplateIT {
 
     @Autowired
     private AccountRepository accountRepository;

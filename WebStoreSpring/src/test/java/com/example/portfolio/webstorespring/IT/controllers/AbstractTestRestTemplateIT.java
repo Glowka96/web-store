@@ -14,7 +14,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Import(ContainersConfig.class)
 @Testcontainers
-public abstract class AbstractIT{
+public abstract class AbstractTestRestTemplateIT {
 
     @Autowired
     protected TestRestTemplate restTemplate;
