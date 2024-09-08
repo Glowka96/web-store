@@ -47,14 +47,22 @@ class ProductRepositoryIT{
     }
 
     @Test
-    void shouldFindProductById() {
+    void shouldFindProductWithoutPromotionById() {
+        Optional<Product> optionalProduct = productRepository.findById(initProductTestData.getProductIdWhatNotHasPromotion());
+
+        assertThat(optionalProduct).isPresent();
+        assertThat(optionalProduct.get().getPricePromotions()).isEmpty();
+    }
+
+    @Test
+    void shouldFindProductWithPromotionById() {
         ProductWithProducerAndPromotionDTO product = productRepository.findProductById(
-                initProductTestData.getProductId(),
+                initProductTestData.getProductIdWhatHasPromotion(),
                 initProductTestData.getDate30DaysAgo()
         );
 
         assertThat(product).isNotNull();
-        assertThat(product.id()).isEqualTo(initProductTestData.getProductId());
+        assertThat(product.id()).isEqualTo(initProductTestData.getProductIdWhatHasPromotion());
         assertThat(product.promotionPrice()).isGreaterThan(product.lowestPrice());
     }
 
@@ -108,7 +116,7 @@ class ProductRepositoryIT{
     @Test
     void shouldFindProductByIdWithPromotion() {
         Optional<Product> optionalProduct = productRepository.findProductByIdWithPromotion(
-                initProductTestData.getProductId()
+                initProductTestData.getProductIdWhatHasPromotion()
         );
 
         assertThat(optionalProduct).isPresent();
@@ -117,8 +125,8 @@ class ProductRepositoryIT{
     @Test
     void shouldFindProductsByIdsWithPromotion() {
         List<Product> products = productRepository.findProductsByIdsWithPromotion(List.of(
-                        initProductTestData.getProductId(),
-                        initProductTestData.getProductId() - 1)
+                        initProductTestData.getProductIdWhatHasPromotion(),
+                        initProductTestData.getProductIdWhatHasPromotion() - 1)
                 );
 
         assertThat(products).hasSize(2);

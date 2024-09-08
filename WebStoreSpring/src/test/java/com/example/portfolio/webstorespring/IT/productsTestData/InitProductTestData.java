@@ -6,9 +6,11 @@ import org.springframework.data.domain.Pageable;
 import java.time.LocalDateTime;
 
 public interface InitProductTestData extends InitTestData {
-    Long getProductId();
+    void initOneProduct();
+    Long getProductIdWhatHasPromotion();
+    Long getProductIdWhatNotHasPromotion();
     Long getSubId();
-
+    Long getProducerId();
     LocalDateTime getDate30DaysAgo();
 
     Pageable getPageable();

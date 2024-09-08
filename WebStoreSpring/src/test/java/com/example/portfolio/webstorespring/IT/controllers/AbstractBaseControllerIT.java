@@ -159,11 +159,11 @@ public abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthCont
         };
     }
 
-    protected String getAllUri() {
+    private String getAllUri() {
         return localhostUri + getUri();
     }
 
-    protected String getAllAdminUri() {
+    private String getAllAdminUri() {
         return localhostAdminUri + getUri();
     }
 

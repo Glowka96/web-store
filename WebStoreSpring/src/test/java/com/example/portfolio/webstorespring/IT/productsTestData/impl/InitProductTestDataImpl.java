@@ -6,6 +6,7 @@ import com.example.portfolio.webstorespring.model.entity.products.*;
 import com.example.portfolio.webstorespring.repositories.products.*;
 import com.natpryce.makeiteasy.Maker;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -26,6 +27,7 @@ import static com.example.portfolio.webstorespring.buildhelpers.products.Product
 import static com.example.portfolio.webstorespring.buildhelpers.products.SubcategoryBuilderHelper.createSubcategory;
 import static com.natpryce.makeiteasy.MakeItEasy.*;
 
+@Slf4j
 public class InitProductTestDataImpl implements InitProductTestData {
 
     @Autowired
@@ -39,20 +41,23 @@ public class InitProductTestDataImpl implements InitProductTestData {
     @Autowired
     private ProductRepository productRepository;
 
-    @Getter
-    private Long productId;
+    private Long productIdWhatHasPromotion;
+    private Long productIdWhatNotHasPromotion;
     @Getter
     private Long subId;
+    @Getter
+    private Long producerId;
+    private Subcategory subcategory;
+    private Producer producer;
+    private ProductType productType;
     private final ZonedDateTime zonedDateTime = ZonedDateTime.now();
     @Getter
     private final LocalDateTime date30DaysAgo = zonedDateTime.minusDays(30).toLocalDateTime();
 
     public void initTestData() {
-        Subcategory subcategory = subcategoryRepository.save(createSubcategory("Puzzle"));
+        initOneProduct();
         Subcategory subcategory2 = subcategoryRepository.save(createSubcategory("Test"));
-        ProductType productType = productTypeRepository.save(createProductType("Test"));
         ProductType productType2 = productTypeRepository.save(createProductType("Education"));
-        Producer producer = producerRepository.save(createProducer("Test"));
         Producer producer2 = producerRepository.save(createProducer("Producer"));
 
         Maker<Product> productMaker = getProductMaker(subcategory, productType, producer);
@@ -65,7 +70,6 @@ public class InitProductTestDataImpl implements InitProductTestData {
         ProductPricePromotion expiredPromotion = make(a(BASIC_PROMOTION)
                 .but(withNull(ProductPricePromotionBuilderHelper.ID)));
 
-        Product productWithoutPromotion = productRepository.save(make(productMaker));
         Product productWithPromotion = productRepository.save(make(productMaker));
         Product productWithExpiredPromotion = productRepository.save(make(productMaker));
         Product productWithPromotionAndOtherSubcategory = productRepository.save(
@@ -85,16 +89,36 @@ public class InitProductTestDataImpl implements InitProductTestData {
         promotionRepository.save(currencyPromotion2);
         promotionRepository.save(currencyPromotion3);
 
-        subId = productWithoutPromotion.getSubcategory().getId();
-        productId = productWithPromotion.getId();
+        productIdWhatHasPromotion = productWithPromotion.getId();
+    }
+
+    public void initOneProduct() {
+        subcategory = subcategoryRepository.save(createSubcategory("Puzzle"));
+        productType = productTypeRepository.save(createProductType("Test"));
+        producer = producerRepository.save(createProducer("Test"));
+
+        subId = subcategory.getId();
+        producerId = producer.getId();
+
+        Product product = productRepository.save(make(getProductMaker(subcategory, productType, producer)));
+        productIdWhatNotHasPromotion = product.getId();
     }
 
     public void deleteTestData() {
         subcategoryRepository.deleteAll();
         productTypeRepository.deleteAll();
         producerRepository.deleteAll();
-        promotionRepository.deleteAll();
         productRepository.deleteAll();
+    }
+
+    @Override
+    public Long getProductIdWhatHasPromotion() {
+        return productIdWhatHasPromotion;
+    }
+
+    @Override
+    public Long getProductIdWhatNotHasPromotion() {
+        return productIdWhatNotHasPromotion;
     }
 
     public Pageable getPageable() {
