@@ -13,6 +13,12 @@ public class ProducerBuilderHelper {
                 .build();
     }
 
+    public static Producer createProducer(String name) {
+        return Producer.builder()
+                .name(name)
+                .build();
+    }
+
     public static ProducerRequest createProducerRequest() {
         return ProducerRequest.builder()
                 .name("Test")

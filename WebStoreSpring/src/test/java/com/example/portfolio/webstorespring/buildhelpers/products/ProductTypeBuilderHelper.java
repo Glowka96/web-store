@@ -13,6 +13,12 @@ public class ProductTypeBuilderHelper {
                 .build();
     }
 
+    public static ProductType createProductType(String name) {
+        return ProductType.builder()
+                .name(name)
+                .build();
+    }
+
     public static ProductTypeRequest createProductTypeRequest() {
         return ProductTypeRequest.builder()
                 .name("Test type")
