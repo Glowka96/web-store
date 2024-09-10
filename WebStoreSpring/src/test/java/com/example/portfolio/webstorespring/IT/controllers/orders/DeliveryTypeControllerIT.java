@@ -51,10 +51,17 @@ class DeliveryTypeControllerIT extends AbstractBaseControllerIT<DeliveryTypeRequ
     @Override
     public void assertsFieldsWhenUpdate(DeliveryTypeRequest request,
                                         DeliveryTypeResponse response,
-                                        DeliveryType entity) {
-        assertThat(entity.getId()).isEqualTo(savedEntityId).isEqualTo(response.getId());
-        assertThat(entity.getName()).isEqualTo(request.getName()).isEqualTo(response.getName());
-        assertThat(entity.getPrice()).isEqualTo(request.getPrice()).isEqualTo(response.getPrice());
+                                        DeliveryType entityBeforeUpdate,
+                                        DeliveryType entityAfterUpdate) {
+        assertThat(entityAfterUpdate.getId()).isEqualTo(savedEntityId)
+                .isEqualTo(response.getId())
+                .isEqualTo(entityBeforeUpdate.getId());
+        assertThat(entityAfterUpdate.getName()).isEqualTo(request.getName())
+                .isEqualTo(response.getName())
+                .isNotEqualTo(entityBeforeUpdate.getName());
+        assertThat(entityAfterUpdate.getPrice()).isEqualTo(request.getPrice())
+                .isEqualTo(response.getPrice())
+                .isNotEqualTo(entityBeforeUpdate.getPrice());
     }
 
     @Override

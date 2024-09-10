@@ -76,9 +76,14 @@ class ProductTypeControllerIT extends AbstractBaseControllerIT<ProductTypeReques
     @Override
     public void assertsFieldsWhenUpdate(ProductTypeRequest request,
                                         ProductTypeResponse response,
-                                        ProductType entity) {
-        assertThat(entity.getId()).isEqualTo(savedEntityId).isEqualTo(response.getId());
-        assertThat(entity.getName()).isEqualTo(request.getName()).isEqualTo(response.getName());
+                                        ProductType entityBeforeUpdate,
+                                        ProductType entityAfterUpdate) {
+        assertThat(entityAfterUpdate.getId()).isEqualTo(savedEntityId)
+                .isEqualTo(response.getId())
+                .isEqualTo(entityBeforeUpdate.getId());
+        assertThat(entityAfterUpdate.getName()).isEqualTo(request.getName())
+                .isEqualTo(response.getName())
+                .isNotEqualTo(entityBeforeUpdate.getName());
     }
 
     @Override

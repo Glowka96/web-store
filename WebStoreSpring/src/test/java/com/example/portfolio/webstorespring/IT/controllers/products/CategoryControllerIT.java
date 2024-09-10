@@ -96,9 +96,14 @@ class CategoryControllerIT extends AbstractBaseControllerIT<CategoryRequest, Cat
     @Override
     public void assertsFieldsWhenUpdate(CategoryRequest request,
                                         CategoryResponse response,
-                                        Category entity) {
-        assertThat(entity.getId()).isEqualTo(savedEntityId).isEqualTo(response.getId());
-        assertThat(entity.getName()).isEqualTo(request.getName()).isEqualTo(response.getName());
+                                        Category entityBeforeUpdate,
+                                        Category entityAfterUpdate) {
+        assertThat(entityAfterUpdate.getId()).isEqualTo(savedEntityId)
+                .isEqualTo(response.getId())
+                .isEqualTo(entityBeforeUpdate.getId());
+        assertThat(entityAfterUpdate.getName()).isEqualTo(request.getName())
+                .isEqualTo(response.getName())
+                .isNotEqualTo(entityBeforeUpdate.getName());
     }
 
     @Override

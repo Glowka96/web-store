@@ -88,12 +88,15 @@ class SubcategoryControllerIT extends AbstractBaseControllerIT<SubcategoryReques
     @Override
     public void assertsFieldsWhenUpdate(SubcategoryRequest request,
                                         SubcategoryResponse response,
-                                        Subcategory entity) {
-        assertThat(entity.getId()).isEqualTo(savedEntityId)
-                .isEqualTo(response.getId());
-        assertThat(entity.getCategory().getId()).isEqualTo(savedCategoryId);
-        assertThat(entity.getName()).isEqualTo(request.getName())
-                .isEqualTo(response.getName());
+                                        Subcategory entityBeforeUpdate,
+                                        Subcategory entityAfterUpdate) {
+        assertThat(entityAfterUpdate.getId()).isEqualTo(savedEntityId)
+                .isEqualTo(response.getId())
+                .isEqualTo(entityBeforeUpdate.getId());
+        assertThat(entityAfterUpdate.getCategory().getId()).isEqualTo(savedCategoryId);
+        assertThat(entityAfterUpdate.getName()).isEqualTo(request.getName())
+                .isEqualTo(response.getName())
+                .isNotEqualTo(entityBeforeUpdate.getName());
     }
 
     @Override

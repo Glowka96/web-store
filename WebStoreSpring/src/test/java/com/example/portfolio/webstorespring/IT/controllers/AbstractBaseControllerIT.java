@@ -79,6 +79,7 @@ public abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthCont
         T request = createRequest();
 
         HttpEntity<T> httpEntity = new HttpEntity<>(request, getHttpHeadersWithAdminToken());
+        Optional<E> optionalEBeforeUpdate = getOptionalEntityBySavedId();
 
         ResponseEntity<R> response = restTemplate.exchange(
                 getAllAdminUri() + "/" + savedEntityId,
@@ -87,11 +88,11 @@ public abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthCont
                 getResponseTypeClass()
         );
 
-        assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
+        Optional<E> optionalEAfterUpdate = getOptionalEntityBySavedId();
 
-        Optional<E> optionalE = getOptionalEntityBySavedId();
-        assertThat(optionalE).isPresent();
-        assertsFieldsWhenUpdate(request, response.getBody(), optionalE.get());
+        assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
+        assertThat(optionalEAfterUpdate).isPresent();
+        assertsFieldsWhenUpdate(request, response.getBody(), optionalEBeforeUpdate.get(), optionalEAfterUpdate.get());
     }
 
     protected void shouldNotUpdateEntity_forAuthenticatedUser_thenStatusForbidden() {

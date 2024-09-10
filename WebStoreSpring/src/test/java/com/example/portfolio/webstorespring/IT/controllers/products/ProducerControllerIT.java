@@ -75,9 +75,14 @@ class ProducerControllerIT extends AbstractBaseControllerIT<ProducerRequest, Pro
     @Override
     public void assertsFieldsWhenUpdate(ProducerRequest request,
                                         ProducerResponse response,
-                                        Producer entity) {
-        assertThat(entity.getId()).isEqualTo(savedEntityId).isEqualTo(response.getId());
-        assertThat(entity.getName()).isEqualTo(request.getName()).isEqualTo(response.getName());
+                                        Producer entityBeforeUpdate,
+                                        Producer entityAfterUpdate) {
+        assertThat(entityAfterUpdate.getId()).isEqualTo(savedEntityId)
+                .isEqualTo(response.getId())
+                .isEqualTo(entityBeforeUpdate.getId());
+        assertThat(entityAfterUpdate.getName()).isEqualTo(request.getName())
+                .isEqualTo(response.getName())
+                .isNotEqualTo(entityBeforeUpdate.getName());
     }
 
     @Override
