@@ -4,13 +4,11 @@ import com.example.portfolio.webstorespring.IT.ContainersConfig;
 import com.example.portfolio.webstorespring.buildhelpers.accounts.RoleBuilderHelper;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.accounts.Role;
-import com.example.portfolio.webstorespring.repositories.accounts.AccountAddressRepository;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
 import com.example.portfolio.webstorespring.repositories.accounts.RoleRepository;
 import com.natpryce.makeiteasy.Maker;
 import jakarta.persistence.EntityManager;
 import org.hibernate.Hibernate;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +37,7 @@ class AccountRepositoryIT {
     private AccountRepository accountRepository;
     @Autowired
     private RoleRepository roleRepository;
-    @Autowired
-    private AccountAddressRepository accountAddressRepository;
+
     @Autowired
     EntityManager entityManager;
 
@@ -54,13 +51,6 @@ class AccountRepositoryIT {
         Maker<Account> accountMaker = a(BASIC_ACCOUNT);
         Account account = make(accountMaker.but(with(ROLES, Set.of(savedRole))));
         accountRepository.save(account);
-    }
-
-    @AfterEach
-    void delete() {
-        roleRepository.deleteAll();
-        accountRepository.deleteAll();
-        accountAddressRepository.deleteAll();
     }
 
     @Test

@@ -7,7 +7,6 @@ import com.example.portfolio.webstorespring.model.dto.products.ProductWithProduc
 import com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionDTO;
 import com.example.portfolio.webstorespring.model.entity.products.Product;
 import com.example.portfolio.webstorespring.repositories.products.ProductRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,11 +38,6 @@ class ProductRepositoryIT{
     @BeforeEach
     void init() {
         initProductTestData.initTestData();
-    }
-
-    @AfterEach
-    void delete() {
-        initProductTestData.deleteTestData();
     }
 
     @Test
