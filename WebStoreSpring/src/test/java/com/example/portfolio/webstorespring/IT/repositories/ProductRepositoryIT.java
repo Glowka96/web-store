@@ -48,7 +48,7 @@ class ProductRepositoryIT{
 
     @Test
     void shouldFindProductWithoutPromotionById() {
-        Optional<Product> optionalProduct = productRepository.findById(initProductTestData.getProductIdWhatNotHasPromotion());
+        Optional<Product> optionalProduct = productRepository.findById(initProductTestData.getProductIdThatHasNoPromotion());
 
         assertThat(optionalProduct).isPresent();
         assertThat(optionalProduct.get().getPricePromotions()).isEmpty();
@@ -57,12 +57,12 @@ class ProductRepositoryIT{
     @Test
     void shouldFindProductWithPromotionById() {
         ProductWithProducerAndPromotionDTO product = productRepository.findProductById(
-                initProductTestData.getProductIdWhatHasPromotion(),
+                initProductTestData.getProductIdThatHasPromotion(),
                 initProductTestData.getDate30DaysAgo()
         );
 
         assertThat(product).isNotNull();
-        assertThat(product.id()).isEqualTo(initProductTestData.getProductIdWhatHasPromotion());
+        assertThat(product.id()).isEqualTo(initProductTestData.getProductIdThatHasPromotion());
         assertThat(product.promotionPrice()).isGreaterThan(product.lowestPrice());
     }
 
@@ -116,7 +116,7 @@ class ProductRepositoryIT{
     @Test
     void shouldFindProductByIdWithPromotion() {
         Optional<Product> optionalProduct = productRepository.findProductByIdWithPromotion(
-                initProductTestData.getProductIdWhatHasPromotion()
+                initProductTestData.getProductIdThatHasPromotion()
         );
 
         assertThat(optionalProduct).isPresent();
@@ -125,8 +125,8 @@ class ProductRepositoryIT{
     @Test
     void shouldFindProductsByIdsWithPromotion() {
         List<Product> products = productRepository.findProductsByIdsWithPromotion(List.of(
-                        initProductTestData.getProductIdWhatHasPromotion(),
-                        initProductTestData.getProductIdWhatHasPromotion() - 1)
+                        initProductTestData.getProductIdThatHasPromotion(),
+                        initProductTestData.getProductIdThatHasPromotion() - 1)
                 );
 
         assertThat(products).hasSize(2);

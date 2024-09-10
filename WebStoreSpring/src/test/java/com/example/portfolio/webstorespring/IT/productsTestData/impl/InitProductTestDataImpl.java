@@ -6,7 +6,6 @@ import com.example.portfolio.webstorespring.model.entity.products.*;
 import com.example.portfolio.webstorespring.repositories.products.*;
 import com.natpryce.makeiteasy.Maker;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -27,7 +26,6 @@ import static com.example.portfolio.webstorespring.buildhelpers.products.Product
 import static com.example.portfolio.webstorespring.buildhelpers.products.SubcategoryBuilderHelper.createSubcategory;
 import static com.natpryce.makeiteasy.MakeItEasy.*;
 
-@Slf4j
 public class InitProductTestDataImpl implements InitProductTestData {
 
     @Autowired
@@ -41,8 +39,10 @@ public class InitProductTestDataImpl implements InitProductTestData {
     @Autowired
     private ProductRepository productRepository;
 
-    private Long productIdWhatHasPromotion;
-    private Long productIdWhatNotHasPromotion;
+    @Getter
+    private Long productIdThatHasPromotion;
+    @Getter
+    private Long productIdThatHasNoPromotion;
     @Getter
     private Long subId;
     @Getter
@@ -89,7 +89,7 @@ public class InitProductTestDataImpl implements InitProductTestData {
         promotionRepository.save(currencyPromotion2);
         promotionRepository.save(currencyPromotion3);
 
-        productIdWhatHasPromotion = productWithPromotion.getId();
+        productIdThatHasPromotion = productWithPromotion.getId();
     }
 
     public void initOneProduct() {
@@ -101,7 +101,7 @@ public class InitProductTestDataImpl implements InitProductTestData {
         producerId = producer.getId();
 
         Product product = productRepository.save(make(getProductMaker(subcategory, productType, producer)));
-        productIdWhatNotHasPromotion = product.getId();
+        productIdThatHasNoPromotion = product.getId();
     }
 
     public void deleteTestData() {
@@ -109,16 +109,6 @@ public class InitProductTestDataImpl implements InitProductTestData {
         productTypeRepository.deleteAll();
         producerRepository.deleteAll();
         productRepository.deleteAll();
-    }
-
-    @Override
-    public Long getProductIdWhatHasPromotion() {
-        return productIdWhatHasPromotion;
-    }
-
-    @Override
-    public Long getProductIdWhatNotHasPromotion() {
-        return productIdWhatNotHasPromotion;
     }
 
     public Pageable getPageable() {

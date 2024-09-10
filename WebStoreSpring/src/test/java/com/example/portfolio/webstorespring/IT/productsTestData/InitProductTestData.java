@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 
 public interface InitProductTestData extends InitTestData {
     void initOneProduct();
-    Long getProductIdWhatHasPromotion();
-    Long getProductIdWhatNotHasPromotion();
+    Long getProductIdThatHasPromotion();
+    Long getProductIdThatHasNoPromotion();
     Long getSubId();
     Long getProducerId();
     LocalDateTime getDate30DaysAgo();
