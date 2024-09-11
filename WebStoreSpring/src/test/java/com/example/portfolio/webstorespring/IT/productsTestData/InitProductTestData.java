@@ -11,6 +11,7 @@ public interface InitProductTestData extends InitTestData {
     Long getProductIdThatHasNoPromotion();
     Long getSubId();
     Long getProducerId();
+    Long getProductTypeId();
     LocalDateTime getDate30DaysAgo();
 
     Pageable getPageable();

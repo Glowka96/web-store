@@ -47,6 +47,8 @@ public class InitProductTestDataImpl implements InitProductTestData {
     private Long subId;
     @Getter
     private Long producerId;
+    @Getter
+    private Long productTypeId;
     private Subcategory subcategory;
     private Producer producer;
     private ProductType productType;
@@ -99,16 +101,17 @@ public class InitProductTestDataImpl implements InitProductTestData {
 
         subId = subcategory.getId();
         producerId = producer.getId();
+        productTypeId = productType.getId();
 
         Product product = productRepository.save(make(getProductMaker(subcategory, productType, producer)));
         productIdThatHasNoPromotion = product.getId();
     }
 
     public void deleteTestData() {
+        productRepository.deleteAll();
         subcategoryRepository.deleteAll();
         productTypeRepository.deleteAll();
         producerRepository.deleteAll();
-        productRepository.deleteAll();
     }
 
     public Pageable getPageable() {

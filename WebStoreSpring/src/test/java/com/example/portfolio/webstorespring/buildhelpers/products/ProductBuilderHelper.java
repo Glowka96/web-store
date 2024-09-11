@@ -75,6 +75,22 @@ public class ProductBuilderHelper {
                 .build();
     }
 
+    public static ProductRequest createProductRequest(String name,
+                                                      String description,
+                                                      BigDecimal price,
+                                                      String imageUrl,
+                                                      Long quantity,
+                                                      Long productTypeId) {
+        return ProductRequest.builder()
+                .name(name)
+                .description(description)
+                .price(price)
+                .quantity(quantity)
+                .imageUrl(imageUrl)
+                .productTypeId(productTypeId)
+                .build();
+    }
+
     public static ProductResponse createProductResponse() {
         return ProductResponse.builder()
                 .id(1L)
