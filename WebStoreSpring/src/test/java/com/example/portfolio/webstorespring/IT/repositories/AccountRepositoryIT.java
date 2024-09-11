@@ -37,11 +37,10 @@ class AccountRepositoryIT {
     private AccountRepository accountRepository;
     @Autowired
     private RoleRepository roleRepository;
-
     @Autowired
-    EntityManager entityManager;
+    private EntityManager entityManager;
 
-    private static final String email = "test@test.pl";
+    private static final String EMAIL = "test@test.pl";
 
     @BeforeEach
     void init() {
@@ -57,10 +56,10 @@ class AccountRepositoryIT {
     void shouldFindAccountByEmailWithoutRole() {
         entityManager.clear();
 
-        Optional<Account> account = accountRepository.findByEmail(email);
+        Optional<Account> account = accountRepository.findByEmail(EMAIL);
 
         assertThat(account).isPresent();
-        assertThat(account.get().getEmail()).isEqualTo(email);
+        assertThat(account.get().getEmail()).isEqualTo(EMAIL);
 
         boolean rolesInitialized = Hibernate.isInitialized(account.get().getRoles());
         assertThat(rolesInitialized).isFalse();
@@ -68,10 +67,10 @@ class AccountRepositoryIT {
 
     @Test
     void shouldFindAccountByEmailWithRole() {
-        Optional<Account> account = accountRepository.findAccountWithRolesByEmail(email);
+        Optional<Account> account = accountRepository.findAccountWithRolesByEmail(EMAIL);
 
         assertThat(account).isPresent();
-        assertThat(account.get().getEmail()).isEqualTo(email);
+        assertThat(account.get().getEmail()).isEqualTo(EMAIL);
         assertThat(account.get().getRoles()).isNotNull();
     }
 }
