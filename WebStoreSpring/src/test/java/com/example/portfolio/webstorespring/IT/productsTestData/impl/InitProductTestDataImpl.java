@@ -1,6 +1,7 @@
 package com.example.portfolio.webstorespring.IT.productsTestData.impl;
 
 import com.example.portfolio.webstorespring.IT.productsTestData.InitProductTestData;
+import com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper;
 import com.example.portfolio.webstorespring.buildhelpers.products.ProductPricePromotionBuilderHelper;
 import com.example.portfolio.webstorespring.model.entity.products.*;
 import com.example.portfolio.webstorespring.repositories.products.*;
@@ -72,11 +73,15 @@ public class InitProductTestDataImpl implements InitProductTestData {
         ProductPricePromotion expiredPromotion = make(a(BASIC_PROMOTION)
                 .but(withNull(ProductPricePromotionBuilderHelper.ID)));
 
-        Product productWithPromotion = productRepository.save(make(productMaker));
+        Product productWithPromotion = productRepository.save(
+                make(productMaker.but(with(ProductBuilderHelper.PRICE, BigDecimal.valueOf(60L))))
+        );
         Product productWithExpiredPromotion = productRepository.save(make(productMaker));
         Product productWithPromotionAndOtherSubcategory = productRepository.save(
                 make(productMaker.but(with(NAME, "Product"))
-                        .but(with(SUBCATEGORY, subcategory2))));
+                        .but(with(SUBCATEGORY, subcategory2))
+                )
+        );
         Product productWithPromotionAndOtherProductTypeAndProducer = productRepository.save(make(productMaker2));
 
         expiredPromotionWithLowestPriceLast30Days.setProduct(productWithPromotion);

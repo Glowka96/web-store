@@ -12,7 +12,7 @@ public enum SortByType {
     NAME("name"),
     PRICE("price"),
     TYPE("type"),
-    DATE("dateOfCreation");
+    DATE("createdAt");
 
     private final String fieldName;
     private static final Map<String, String> BY_FIELD_NAME =
