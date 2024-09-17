@@ -18,21 +18,18 @@ public abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthCont
     protected Long savedEntityId;
 
     protected void shouldGetAllEntities_forEverybody_thenStatusOk() {
-        ResponseEntity<List<R>> response = restTemplate.exchange(
-                getAllUri(),
-                HttpMethod.GET,
-                null,
-                getListResponseTypeClass()
-        );
-        assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
-        assertsFieldsWhenGetAll(response.getBody());
+        sendGetAllEntitiesRequest(getAllUri(), null);
     }
 
     protected void shouldGetAllEntities_forAdmin_thenStatusOK() {
         HttpEntity<T> httpEntity = new HttpEntity<>(getHttpHeadersWithAdminToken());
 
+        sendGetAllEntitiesRequest(getAllAdminUri(), httpEntity);
+    }
+
+    private void sendGetAllEntitiesRequest(String allAdminUri, HttpEntity<T> httpEntity) {
         ResponseEntity<List<R>> response = restTemplate.exchange(
-                getAllAdminUri(),
+                allAdminUri,
                 HttpMethod.GET,
                 httpEntity,
                 getListResponseTypeClass()
@@ -45,30 +42,19 @@ public abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthCont
         T request = createRequest();
         HttpEntity<T> httpEntity = new HttpEntity<>(request, getHttpHeadersWithAdminToken());
 
-        ResponseEntity<R> response = restTemplate.exchange(
-                getAllAdminUri(),
-                HttpMethod.POST,
-                httpEntity,
-                getResponseTypeClass()
-        );
+        ResponseEntity<R> response = sendPostRequest(httpEntity);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertsFieldsWhenSave(request, response.getBody());
         assertEntitiesSize(2);
     }
 
-
     protected void shouldNotSaveEntity_forAuthenticatedUser_thenStatusForbidden() {
         T request = createRequest();
 
         HttpEntity<T> httpEntity = new HttpEntity<>(request, getHttpHeaderWithUserToken());
 
-        ResponseEntity<R> response = restTemplate.exchange(
-                getAllAdminUri(),
-                HttpMethod.POST,
-                httpEntity,
-                getResponseTypeClass()
-        );
+        ResponseEntity<R> response = sendPostRequest(httpEntity);
 
         assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
         assertThat(response.getBody()).isNull();
@@ -81,12 +67,7 @@ public abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthCont
         HttpEntity<T> httpEntity = new HttpEntity<>(request, getHttpHeadersWithAdminToken());
         Optional<E> optionalEBeforeUpdate = getOptionalEntityBySavedId();
 
-        ResponseEntity<R> response = restTemplate.exchange(
-                getAllAdminUri() + "/" + savedEntityId,
-                HttpMethod.PUT,
-                httpEntity,
-                getResponseTypeClass()
-        );
+        ResponseEntity<R> response = sendPutRequest(httpEntity);
 
         Optional<E> optionalEAfterUpdate = getOptionalEntityBySavedId();
 
@@ -100,12 +81,7 @@ public abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthCont
 
         HttpEntity<T> httpEntity = new HttpEntity<>(request, getHttpHeaderWithUserToken());
 
-        ResponseEntity<R> response = restTemplate.exchange(
-                getAllAdminUri() + "/" + savedEntityId,
-                HttpMethod.PUT,
-                httpEntity,
-                getResponseTypeClass()
-        );
+        ResponseEntity<R> response = sendPutRequest(httpEntity);
 
         assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
         assertThat(response.getBody()).isNull();
@@ -118,12 +94,7 @@ public abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthCont
     protected void shouldDeleteEntity_forAuthenticatedAdmin_thenStatusNoContent() {
         HttpEntity<?> httpEntity = new HttpEntity<>(getHttpHeadersWithAdminToken());
 
-        ResponseEntity<Void> response = restTemplate.exchange(
-                getAllAdminUri() + "/" + savedEntityId,
-                HttpMethod.DELETE,
-                httpEntity,
-                Void.class
-        );
+        ResponseEntity<Void> response = sendDeleteRequest(httpEntity);
 
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
         assertThat(response.getBody()).isNull();
@@ -135,18 +106,40 @@ public abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthCont
     protected void shouldNotDeleteEntity_forAuthenticatedUser_thenStatusForbidden() {
         HttpEntity<?> httpEntity = new HttpEntity<>(getHttpHeaderWithUserToken());
 
-        ResponseEntity<Void> response = restTemplate.exchange(
-                getAllAdminUri() + "/" + savedEntityId,
-                HttpMethod.DELETE,
-                httpEntity,
-                Void.class
-        );
+        ResponseEntity<Void> response = sendDeleteRequest(httpEntity);
 
         assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
         assertThat(response.getBody()).isNull();
 
         Optional<E> optionalE = getOptionalEntityBySavedId();
         assertThat(optionalE).isPresent();
+    }
+
+    private ResponseEntity<R> sendPostRequest(HttpEntity<T> httpEntity) {
+        return restTemplate.exchange(
+                getAllAdminUri(),
+                HttpMethod.POST,
+                httpEntity,
+                getResponseTypeClass()
+        );
+    }
+
+    private ResponseEntity<R> sendPutRequest(HttpEntity<T> httpEntity) {
+        return restTemplate.exchange(
+                getAllAdminUri() + "/" + savedEntityId,
+                HttpMethod.PUT,
+                httpEntity,
+                getResponseTypeClass()
+        );
+    }
+
+    private ResponseEntity<Void> sendDeleteRequest(HttpEntity<?> httpEntity) {
+        return restTemplate.exchange(
+                getAllAdminUri() + "/" + savedEntityId,
+                HttpMethod.DELETE,
+                httpEntity,
+                Void.class
+        );
     }
 
     @Override
