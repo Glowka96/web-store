@@ -85,7 +85,7 @@ class ProductsPageControllerTest {
     void getPageNewProduct() throws Exception {
         PageProductsWithPromotionDTO pageProducts = createPageProductsWithPromotionDTO();
 
-        given(productsPageService.getPageNewProduct(any(PageProductsOptions.class)))
+        given(productsPageService.getPageNewProducts(any(PageProductsOptions.class)))
                 .willReturn(pageProducts);
 
         mvc.perform(get(URI + "/products/news")

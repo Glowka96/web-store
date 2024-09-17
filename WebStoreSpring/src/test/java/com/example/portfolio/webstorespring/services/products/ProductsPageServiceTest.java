@@ -95,7 +95,7 @@ class ProductsPageServiceTest {
         given(productRepository.findNewProducts(any(), any())).willReturn(Optional.of(productPage));
 
         // when
-        PageProductsWithPromotionDTO actual = underTest.getPageNewProduct(
+        PageProductsWithPromotionDTO actual = underTest.getPageNewProducts(
                 createBasePageProductsOptions(sortType, sortDirection)
         );
 
@@ -114,7 +114,7 @@ class ProductsPageServiceTest {
         given(productRepository.findNewProducts(any(), any())).willReturn(Optional.of(productPage));
 
         // when
-        PageProductsWithPromotionDTO actual = underTest.getPageNewProduct(createBasePageProductsOptions());
+        PageProductsWithPromotionDTO actual = underTest.getPageNewProducts(createBasePageProductsOptions());
 
         // then
         assertThat(actual.products()).isEmpty();
@@ -191,7 +191,7 @@ class ProductsPageServiceTest {
             "bad, desc"
     })
     void willThrowIllegalArgumentException_whenSortTypeIsInvalid(String sortType, String sortDirection) {
-        assertThatThrownBy(() -> underTest.getPageNewProduct(createBasePageProductsOptions(sortType, sortDirection)))
+        assertThatThrownBy(() -> underTest.getPageNewProducts(createBasePageProductsOptions(sortType, sortDirection)))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Invalid sort type value: bad");
     }
@@ -205,7 +205,7 @@ class ProductsPageServiceTest {
             "date, bad"
     })
     void willThrowIllegalArgumentException_whenSortDirectionIsInvalid(String sortType, String sortDirection) {
-        assertThatThrownBy(() -> underTest.getPageNewProduct(createBasePageProductsOptions(sortType, sortDirection)))
+        assertThatThrownBy(() -> underTest.getPageNewProducts(createBasePageProductsOptions(sortType, sortDirection)))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Invalid value 'bad' for orders given");
     }

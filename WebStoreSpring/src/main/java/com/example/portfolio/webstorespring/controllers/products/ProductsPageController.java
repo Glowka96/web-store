@@ -16,19 +16,18 @@ public class ProductsPageController {
     private final ProductsPageService productsPageService;
 
     @GetMapping(value = "/subcategories/{subcategoryId}/products")
-    public ResponseEntity<PageProductsWithPromotionDTO> getPageProductsBySubCategoryId(@PathVariable(value = "subcategoryId") Long subcategoryId,
+    public ResponseEntity<PageProductsWithPromotionDTO> getPageProductsBySubcategoryId(@PathVariable(value = "subcategoryId") Long subcategoryId,
                                                                                        @Valid @RequestBody PageProductsOptions pageProductsOptions) {
         return ResponseEntity.ok(productsPageService.getPageProductsBySubcategoryId(subcategoryId, pageProductsOptions));
     }
 
     @GetMapping(value = "/products/promotions")
-    public ResponseEntity<PageProductsWithPromotionDTO> getPagePromotionProduct(@Valid @RequestBody PageProductsOptions pageProductsOptions) {
+    public ResponseEntity<PageProductsWithPromotionDTO> getPagePromotionProducts(@Valid @RequestBody PageProductsOptions pageProductsOptions) {
         return ResponseEntity.ok(productsPageService.getPagePromotionProduct(pageProductsOptions));
     }
 
     @GetMapping(value = "/products/news")
-    public ResponseEntity<PageProductsWithPromotionDTO> getPageNewProduct(@Valid @RequestBody PageProductsOptions pageProductsOptions) {
-        return ResponseEntity.ok(productsPageService.getPageNewProduct(pageProductsOptions));
+    public ResponseEntity<PageProductsWithPromotionDTO> getPageNewProducts(@Valid @RequestBody PageProductsOptions pageProductsOptions) {
+        return ResponseEntity.ok(productsPageService.getPageNewProducts(pageProductsOptions));
     }
-
 }

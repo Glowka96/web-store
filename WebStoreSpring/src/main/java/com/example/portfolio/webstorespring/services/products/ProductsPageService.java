@@ -50,7 +50,7 @@ public class ProductsPageService {
         );
     }
 
-    public PageProductsWithPromotionDTO getPageNewProduct(PageProductsOptions pageProductsOptions) {
+    public PageProductsWithPromotionDTO getPageNewProducts(PageProductsOptions pageProductsOptions) {
         return getPageProduct(
                 pageProductsOptions,
                 pageable -> getNewProducts(getLocalDateTime30DaysAgo(), pageable)
