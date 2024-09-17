@@ -16,8 +16,8 @@ public class SearchController {
     private final ProductsPageService productsPageService;
 
     @GetMapping(params = {"query"})
-    public ResponseEntity<PageProductsWithPromotionDTO> getSearchProductsByText(@RequestParam(value = "query", defaultValue = "puzzle") String text,
-                                                                                @Valid @RequestBody PageProductsOptions pageProductsOptions) {
+    public ResponseEntity<PageProductsWithPromotionDTO> getPageSearchProductsByText(@RequestParam(value = "query", defaultValue = "puzzle") String text,
+                                                                                    @Valid @RequestBody PageProductsOptions pageProductsOptions) {
         return ResponseEntity.ok(productsPageService.getPageSearchProducts(text, pageProductsOptions));
     }
 }
