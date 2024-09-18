@@ -31,15 +31,15 @@ class AccountAddressControllerIT extends AbstractAuthControllerIT {
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertThat(response.getBody()).isNotNull();
-        assertThat(response.getBody().getCity()).isEqualTo(getSavedUserAccountAddress().getCity());
-        assertThat(response.getBody().getPostcode()).isEqualTo(getSavedUserAccountAddress().getPostcode());
-        assertThat(response.getBody().getStreet()).isEqualTo(getSavedUserAccountAddress().getStreet());
+        assertThat(response.getBody().getCity()).isEqualTo(getSavedAddress().getCity());
+        assertThat(response.getBody().getPostcode()).isEqualTo(getSavedAddress().getPostcode());
+        assertThat(response.getBody().getStreet()).isEqualTo(getSavedAddress().getStreet());
     }
 
     @Test
     void shouldSaveAccountAddress_forAuthenticatedAccount_thenStatusCreated() {
         addressRepository.deleteAll();
-        assertTrue(addressRepository.findById(getSavedUserAccount().getId()).isEmpty());
+        assertTrue(addressRepository.findById(getSavedAddress().getId()).isEmpty());
 
         AccountAddressRequest addressRequest = createAccountAddressRequest();
         HttpEntity<AccountAddressRequest> httpEntity = new HttpEntity<>(addressRequest, getHttpHeaderWithUserToken());
@@ -56,8 +56,8 @@ class AccountAddressControllerIT extends AbstractAuthControllerIT {
         assertThat(response.getBody().getCity()).isEqualTo(addressRequest.getCity());
         assertThat(response.getBody().getPostcode()).isEqualTo(addressRequest.getPostcode());
         assertThat(response.getBody().getStreet()).isEqualTo(addressRequest.getStreet());
-        assertThat(response.getBody().getId()).isEqualTo(getSavedUserAccount().getId());
-        assertTrue(addressRepository.findById(getSavedUserAccount().getId()).isPresent());
+        assertThat(response.getBody().getId()).isEqualTo(getSavedUser().getId());
+        assertTrue(addressRepository.findById(getSavedUser().getId()).isPresent());
     }
 
     @Test
@@ -80,12 +80,12 @@ class AccountAddressControllerIT extends AbstractAuthControllerIT {
         assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
         assertThat(response.getBody()).isNotNull();
         assertThat(response.getBody().getCity()).isEqualTo(addressRequest.getCity())
-                .isNotEqualTo(getSavedUserAccountAddress().getCity());
+                .isNotEqualTo(getSavedAddress().getCity());
         assertThat(response.getBody().getPostcode()).isEqualTo(addressRequest.getPostcode())
-                .isNotEqualTo(getSavedUserAccountAddress().getPostcode());
+                .isNotEqualTo(getSavedAddress().getPostcode());
         assertThat(response.getBody().getStreet()).isEqualTo(addressRequest.getStreet())
-                .isNotEqualTo(getSavedUserAccountAddress().getStreet());
-        assertThat(response.getBody().getId()).isEqualTo(getSavedUserAccountAddress().getId());
+                .isNotEqualTo(getSavedAddress().getStreet());
+        assertThat(response.getBody().getId()).isEqualTo(getSavedAddress().getId());
     }
 
     @Test
@@ -100,6 +100,6 @@ class AccountAddressControllerIT extends AbstractAuthControllerIT {
         );
 
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
-        assertTrue(addressRepository.findById(getSavedUserAccount().getId()).isEmpty());
+        assertTrue(addressRepository.findById(getSavedUser().getId()).isEmpty());
     }
 }

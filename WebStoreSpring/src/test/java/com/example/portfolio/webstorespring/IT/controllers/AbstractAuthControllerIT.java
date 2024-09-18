@@ -9,6 +9,7 @@ import com.example.portfolio.webstorespring.repositories.accounts.RoleRepository
 import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
 import com.example.portfolio.webstorespring.services.authentication.AuthService;
 import com.example.portfolio.webstorespring.services.authentication.JwtService;
+import lombok.Getter;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,9 @@ public abstract class AbstractAuthControllerIT extends AbstractTestRestTemplateI
     private AuthService authService;
     private String adminToken;
     private String userToken;
+    @Getter
     private Account savedUser;
+    @Getter
     private AccountAddress savedAddress;
 
     @Autowired
@@ -100,13 +103,5 @@ public abstract class AbstractAuthControllerIT extends AbstractTestRestTemplateI
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(userToken);
         return headers;
-    }
-
-    public Account getSavedUserAccount() {
-        return savedUser;
-    }
-
-    public AccountAddress getSavedUserAccountAddress() {
-        return savedAddress;
     }
 }

@@ -29,7 +29,7 @@ class ProductControllerIT extends AbstractBaseControllerIT<ProductRequest, Produ
     private InitProductTestData initProductTestData;
     @Autowired
     private ProductRepository productRepository;
-    private final static String URI_PRODUCT = "/products";
+    private static final String URI_PRODUCT = "/products";
     private String uri;
     private Long subcategoryId;
     private Long producerId;
