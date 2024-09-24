@@ -18,6 +18,7 @@ import com.example.portfolio.webstorespring.model.entity.products.Product;
 import com.example.portfolio.webstorespring.repositories.orders.DeliveryTypeRepository;
 import com.example.portfolio.webstorespring.repositories.orders.OrderRepository;
 import com.example.portfolio.webstorespring.repositories.products.ProductRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +65,12 @@ class OrderControllerIT extends AbstractAuthControllerIT {
         orderRepository.saveAll(List.of(order1, order2, order3, order4, order5, order6));
         orderId = order1.getId();
         deliveryTypeId = order1.getDelivery().getDeliveryType().getId();
+    }
+
+    @AfterEach
+    void deleteTestData() {
+        orderRepository.deleteAll();
+        initProductTestData.deleteTestData();
     }
 
     @Test
@@ -136,6 +143,8 @@ class OrderControllerIT extends AbstractAuthControllerIT {
                 .build();
         HttpEntity<OrderRequest> httpEntity = new HttpEntity<>(orderRequest, getHttpHeaderWithUserToken());
 
+        ProductWithProducerAndPromotionDTO productBeforeSaveOrder = productRepository.findProductById(initProductTestData.getProductIdThatHasPromotion(), LocalDateTime.now().minusDays(30));
+
         ResponseEntity<OrderResponse> response = restTemplate.exchange(
                 localhostUri + ORDER_URI,
                 HttpMethod.POST,
@@ -143,7 +152,8 @@ class OrderControllerIT extends AbstractAuthControllerIT {
                 OrderResponse.class
         );
 
-        ProductWithProducerAndPromotionDTO product = productRepository.findProductById(initProductTestData.getProductIdThatHasPromotion(), LocalDateTime.now().minusDays(30));
+        ProductWithProducerAndPromotionDTO productAfterSaveOrder = productRepository.findProductById(initProductTestData.getProductIdThatHasPromotion(), LocalDateTime.now().minusDays(30));
+        assertThat(productBeforeSaveOrder.quantity()).isNotEqualTo(productAfterSaveOrder.quantity());
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertThat(response.getBody()).isNotNull();
@@ -154,7 +164,7 @@ class OrderControllerIT extends AbstractAuthControllerIT {
         assertThat(response.getBody().getShipmentResponses()).hasSize(1);
         assertThat(response.getBody().getDeliveryResponse()).isNotNull();
         assertThat(response.getBody().getTotalPrice().doubleValue())
-                .isEqualTo(product.promotionPrice().add(
+                .isEqualTo(productAfterSaveOrder.promotionPrice().add(
                         response.getBody().getDeliveryResponse().getDeliveryTypeResponse().getPrice()
                 ).doubleValue());
     }
@@ -164,6 +174,7 @@ class OrderControllerIT extends AbstractAuthControllerIT {
         Account account = getSavedUser();
         Optional<Product> optionalProduct = productRepository.findById(initProductTestData.getProductIdThatHasNoPromotion());
         BigDecimal productPrice = optionalProduct.get().getPrice();
+        String testAddress = "City: Test, Postcode: 99-999, Street: Test 59/2";
         return Order.builder()
                 .account(account)
                 .nameUser(account.getFirstName() + " " + account.getLastName())
@@ -173,8 +184,8 @@ class OrderControllerIT extends AbstractAuthControllerIT {
                         .price(productPrice)
                         .build()))
                 .delivery(Delivery.builder()
-                        .shipmentAddress("City: Test, Postcode: 99-999, Street: Test 59/2")
-                        .deliveryAddress("City: Test, Postcode: 99-999, Street: Test 59/2")
+                        .shipmentAddress(testAddress)
+                        .deliveryAddress(testAddress)
                         .deliveryType(savedDeliveryType)
                         .build())
                 .createdAt(localDataTime)

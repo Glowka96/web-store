@@ -92,15 +92,17 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("""
             SELECT p FROM Product p
-            LEFT JOIN p.pricePromotions pp ON (CURRENT_TIMESTAMP BETWEEN pp.startDate AND pp.endDate)
+            LEFT JOIN FETCH p.pricePromotions pp
             WHERE p.id = :productId
+            AND (pp IS NULL OR (CURRENT_TIMESTAMP BETWEEN pp.startDate AND pp.endDate))
             """)
     Optional<Product> findProductByIdWithPromotion(@Param("productId") Long productId);
 
     @Query("""
             SELECT p FROM Product p
-            LEFT JOIN p.pricePromotions pp ON (CURRENT_TIMESTAMP BETWEEN pp.startDate AND pp.endDate)
+            LEFT JOIN FETCH p.pricePromotions pp
             WHERE p.id IN :productIds
+            AND (pp IS NULL OR (CURRENT_TIMESTAMP BETWEEN pp.startDate AND pp.endDate))
             """)
     List<Product> findProductsByIdsWithPromotion(@Param("productIds") List<Long> productIds);
 }
