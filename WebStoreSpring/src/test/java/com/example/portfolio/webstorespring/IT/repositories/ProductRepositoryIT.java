@@ -120,7 +120,7 @@ class ProductRepositoryIT{
     void shouldFindProductsByIdsWithPromotion() {
         List<Product> products = productRepository.findProductsByIdsWithPromotion(List.of(
                         initProductTestData.getProductIdThatHasPromotion(),
-                        initProductTestData.getProductIdThatHasPromotion() - 1)
+                        initProductTestData.getProductIdThatHasNoPromotion())
                 );
 
         assertThat(products).hasSize(2);
