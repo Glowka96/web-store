@@ -12,7 +12,7 @@ class SortByTypeTest {
         assertThat(SortByType.findFieldNameOfSortByType("name")).isEqualTo("name");
         assertThat(SortByType.findFieldNameOfSortByType("price")).isEqualTo("price");
         assertThat(SortByType.findFieldNameOfSortByType("type")).isEqualTo("type");
-        assertThat(SortByType.findFieldNameOfSortByType("date")).isEqualTo("dateOfCreation");
+        assertThat(SortByType.findFieldNameOfSortByType("date")).isEqualTo("createdAt");
     }
 
     @Test
@@ -20,7 +20,7 @@ class SortByTypeTest {
         assertThat(SortByType.findFieldNameOfSortByType("NAME")).isEqualTo("name");
         assertThat(SortByType.findFieldNameOfSortByType("PrIcE")).isEqualTo("price");
         assertThat(SortByType.findFieldNameOfSortByType("TyPe")).isEqualTo("type");
-        assertThat(SortByType.findFieldNameOfSortByType("dAtE")).isEqualTo("dateOfCreation");
+        assertThat(SortByType.findFieldNameOfSortByType("dAtE")).isEqualTo("createdAt");
     }
 
     @Test
