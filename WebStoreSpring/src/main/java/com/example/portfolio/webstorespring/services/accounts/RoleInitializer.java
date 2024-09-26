@@ -2,11 +2,13 @@ package com.example.portfolio.webstorespring.services.accounts;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class RoleInitialize implements CommandLineRunner {
+@Order(1)
+class RoleInitializer implements CommandLineRunner {
 
     private final RoleService roleService;
 

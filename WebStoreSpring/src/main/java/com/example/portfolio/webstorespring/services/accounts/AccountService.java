@@ -24,7 +24,10 @@ public class AccountService {
     private final RoleService roleService;
     private final AccountAddressService addressService;
     private static final String ROLE_USER = "ROLE_USER";
-
+    @Value("${admin.email}")
+    private String adminEmail;
+    @Value("${admin.password}")
+    private String adminPassword;
     @Value("${account.image.url}")
     private String accountImageURL;
 
@@ -59,6 +62,21 @@ public class AccountService {
                 .build();
         accountRepository.save(account);
         return account;
+    }
+
+    void initializeAdminAccount(){
+        if(Boolean.FALSE.equals(accountRepository.existsByEmail(adminEmail))){
+            accountRepository.save(Account.builder()
+                    .firstName("Admin")
+                    .lastName("Admin")
+                    .email(adminEmail)
+                    .password(adminPassword)
+                    .roles(roleService.findRoleByName("ROLE_ADMIN"))
+                    .imageUrl(accountImageURL)
+                    .enabled(Boolean.TRUE)
+                    .build()
+            );
+        }
     }
 
     @Transactional

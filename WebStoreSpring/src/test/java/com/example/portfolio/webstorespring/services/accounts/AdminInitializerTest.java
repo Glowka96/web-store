@@ -10,19 +10,17 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class RoleInitializeTest {
+class AdminInitializerTest {
 
     @Mock
-    private RoleService roleService;
-
+    private AccountService accountService;
     @InjectMocks
-    private RoleInitialize roleInitialize;
+    private AdminInitializer adminInitializer;
 
     @Test
-    void testRun() throws Exception {
-        roleInitialize.run();
+    void run() throws Exception {
+        adminInitializer.run();
 
-        verify(roleService, times(1)).initializeRole("ROLE_USER");
-        verify(roleService, times(1)).initializeRole("ROLE_ADMIN");
+        verify(accountService, times(1)).initializeAdminAccount();
     }
 }

@@ -21,6 +21,7 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Optional;
 import java.util.Set;
@@ -80,6 +81,31 @@ class AccountServiceTest {
         verify(accountRepository).save(accountArgumentCaptor.capture());
 
         assertThat(result).isEqualTo(accountArgumentCaptor.getValue());
+    }
+
+    @Test
+    void shouldInitializeAdminAccount_whenAdminEmailNotExist() {
+        ReflectionTestUtils.setField(underTest, "adminEmail", "mockadmin@example.com");
+
+        given(accountRepository.existsByEmail(anyString())).willReturn(Boolean.FALSE);
+
+        underTest.initializeAdminAccount();
+
+        verify(accountRepository, times(1)).existsByEmail(anyString());
+        verify(accountRepository, times(1)).save(any(Account.class));
+        verifyNoMoreInteractions(accountRepository);
+    }
+
+    @Test
+    void shouldNotInitializeAdminAccount_whenAdminEmailIsExist() {
+        ReflectionTestUtils.setField(underTest, "adminEmail", "mockadmin@example.com");
+
+        given(accountRepository.existsByEmail(anyString())).willReturn(Boolean.TRUE);
+
+        underTest.initializeAdminAccount();
+
+        verify(accountRepository, times(1)).existsByEmail(anyString());
+        verifyNoMoreInteractions(accountRepository);
     }
 
     @Test
