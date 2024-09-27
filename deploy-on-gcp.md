@@ -105,6 +105,8 @@ reset-password.confirmation.link = ${RESET_PASSWORD_CONFIRMATION_LINK:http://loc
 shipment.address = ${SHIPMENT_ADDRESS:your_shipment_address}
 account.image.url = ${ACCOUNT_IMAGE_URL:https://i.imgur.com/a23SANX.png}
 secret.key = ${SECRET_KEY:5970337336763979244226452948404D6351665468576D5A7134743777217A25}
+admin.email = ${ADMIN_EMAIL:admin@admin.com}
+admin.password = ${ADMIN_PASSWORD:Password123!}
 ```
 How to create a Google-generated app password [link](https://support.google.com/accounts/answer/185833?hl=en).
 Use it for `SENDER_PASSWORD`.
@@ -229,6 +231,12 @@ ACCOUNT_IMAGE_URL
 ```
 SECRET_KEY
 ```
+```
+ADMIN_EMAIL
+```
+```
+ADMIN_PASSWORD
+```
 
 Cross origination patterns, email confirmation link and password reset completed after creating the service for Angular. Or you already know the URL of the domain you want to use. (Domain mapping for services)
 
@@ -243,6 +251,7 @@ Use it for `SENDER_PASSWORD`
 
 How to create a secret key [link](https://dev.to/tkirwa/generate-a-random-jwt-secret-key-39j4).
 
+Change the admin email address and password for your data.
 </details>
 
 - Add a Google Cloud SQL connection
