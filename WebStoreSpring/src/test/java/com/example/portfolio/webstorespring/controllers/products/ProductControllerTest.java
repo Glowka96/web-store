@@ -5,6 +5,7 @@ import com.example.portfolio.webstorespring.model.dto.products.request.ProductRe
 import com.example.portfolio.webstorespring.model.dto.products.response.ProductResponse;
 import com.example.portfolio.webstorespring.services.products.ProductService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.createProductRequest;
@@ -44,7 +46,7 @@ class ProductControllerTest {
     @BeforeEach
     void initialization() {
         mvc = MockMvcBuilders.standaloneSetup(underTest).build();
-        mapper = new ObjectMapper();
+        mapper = new ObjectMapper().registerModule(new JavaTimeModule());
     }
 
     @Test
@@ -69,9 +71,19 @@ class ProductControllerTest {
 
         mvc.perform(get(URI + "/products/{productId}", 1)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(productWithProducerAndPromotionDTO)))
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(productWithProducerAndPromotionDTO.id().intValue())))
+                .andExpect(jsonPath("$.name", is(productWithProducerAndPromotionDTO.name())))
+                .andExpect(jsonPath("$.imageUrl", is(productWithProducerAndPromotionDTO.imageUrl())))
+                .andExpect(jsonPath("$.quantity", is(productWithProducerAndPromotionDTO.quantity().intValue())))
+                .andExpect(jsonPath("$.productTypeName", is(productWithProducerAndPromotionDTO.productTypeName())))
+                .andExpect(jsonPath("$.price", is(productWithProducerAndPromotionDTO.price().doubleValue())))
+                .andExpect(jsonPath("$.promotionPrice", is(productWithProducerAndPromotionDTO.promotionPrice().doubleValue())))
+                .andExpect(jsonPath("$.lowestPrice", is(productWithProducerAndPromotionDTO.lowestPrice().doubleValue())))
+                .andExpect(jsonPath("$.endDate", is(productWithProducerAndPromotionDTO.endDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))))
+                .andExpect(jsonPath("$.description", is(productWithProducerAndPromotionDTO.description())))
+                .andExpect(jsonPath("$.producerName", is(productWithProducerAndPromotionDTO.producerName())))
                 .andDo(print());
     }
 

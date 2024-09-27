@@ -8,6 +8,7 @@ Project deployed on GCP: [Link](https://webstore-j5caa4355a-lm.a.run.app/)
 - [Technologies](#technologies)
 - [How to run](#how-to-run)
 - [Features](#features)
+- [Changelogs](#changelogs)
 - [Api Reference](#spring-boot-api-reference)
 - [Screenshot](#screenshot)
 - [Plugins](#plugins)
@@ -29,6 +30,7 @@ Project deployed on GCP: [Link](https://webstore-j5caa4355a-lm.a.run.app/)
 - Spring Boot Starter Mail 
 - Spring Boot Starter Security
 - Spring Security Test
+- Make-it-easy
 - Lombok
 - Mapstruct
 - Passay
@@ -80,6 +82,33 @@ GCP:
 <div align="right">
   <a href="#web-store">Back to top</a>
 </div>
+
+## Changelogs
+
+<details>
+<summary>Integrations and unit test branch:</summary>
+
+- Add changelogs
+- Add docker-compose.yml for whole project
+- Add admin account initializer 
+- Update PageProductsService
+- Delete SortByType and SortDirection converters 
+- Add PageProductsOptions for @RequestParam in controllers, SortByType and SortDirection in one field
+- Change find Order's products - now one query for find all products
+- Update EmailSenderStrategy to NotificationStrategy
+- Add Make-It-Easy dependency for test builders
+- Add integration tests
+- Change relationship beetween Account and AccountAddress - unidirectional association (@MapsId)
+- Add Maven Surefire and Failsafe
+- Add Testcontainers
+
+</details>
+
+
+<div align="right">
+  <a href="#web-store">Back to top</a>
+</div>
+
 
 ## Spring boot API Reference
 

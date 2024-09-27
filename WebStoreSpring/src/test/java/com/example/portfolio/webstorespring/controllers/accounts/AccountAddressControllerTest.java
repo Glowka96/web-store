@@ -1,5 +1,6 @@
 package com.example.portfolio.webstorespring.controllers.accounts;
 
+import com.example.portfolio.webstorespring.controllers.AccountDetailsArgumentResolver;
 import com.example.portfolio.webstorespring.exceptions.GlobalExceptionHandler;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.AccountAddressRequest;
 import com.example.portfolio.webstorespring.model.dto.accounts.response.AccountAddressResponse;
@@ -41,6 +42,7 @@ class AccountAddressControllerTest {
     void initialization() {
         mvc = MockMvcBuilders.standaloneSetup(underTest)
                 .setControllerAdvice(new GlobalExceptionHandler())
+                .setCustomArgumentResolvers(new AccountDetailsArgumentResolver())
                 .build();
 
         mapper = new ObjectMapper();

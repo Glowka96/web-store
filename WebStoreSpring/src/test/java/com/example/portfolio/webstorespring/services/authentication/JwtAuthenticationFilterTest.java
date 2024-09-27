@@ -1,6 +1,5 @@
 package com.example.portfolio.webstorespring.services.authentication;
 
-import com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.accounts.AuthToken;
 import com.example.portfolio.webstorespring.repositories.accounts.AuthTokenRepository;
@@ -19,6 +18,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.io.IOException;
 import java.util.Optional;
 
+import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.BASIC_ACCOUNT;
+import static com.natpryce.makeiteasy.MakeItEasy.a;
+import static com.natpryce.makeiteasy.MakeItEasy.make;
 import static org.mockito.Mockito.*;
 
 
@@ -46,7 +48,7 @@ class JwtAuthenticationFilterTest {
         String jwt = "valid-jwt-token";
         String authHeader = "Bearer " + jwt;
 
-        Account account = AccountBuilderHelper.createAccountWithRoleUser();
+        Account account = make(a(BASIC_ACCOUNT));
         UserDetails userDetails = new AccountDetails(account);
 
         // when

@@ -18,11 +18,6 @@ public class DeliveryTypeService {
     private final DeliveryTypeRepository deliveryTypeRepository;
     private final DeliveryTypeMapper deliveryTypeMapper;
 
-    DeliveryType getDeliveryTypeById(Long deliveryTypeId) {
-        return deliveryTypeRepository.findById(deliveryTypeId)
-                .orElseThrow(() -> new ResourceNotFoundException("Delivery type", "id", deliveryTypeId));
-    }
-
     public List<DeliveryTypeResponse> getAllDeliveryType() {
         return deliveryTypeMapper.mapToDto(deliveryTypeRepository.findAll());
     }
@@ -34,10 +29,23 @@ public class DeliveryTypeService {
         return deliveryTypeMapper.mapToDto(deliveryType);
     }
 
+    public DeliveryTypeResponse updateDeliveryType(Long deliveryId, DeliveryTypeRequest deliveryTypeRequest) {
+        DeliveryType foundDeliveryType = getDeliveryTypeById(deliveryId);
+
+        foundDeliveryType.setName(deliveryTypeRequest.getName());
+        foundDeliveryType.setPrice(deliveryTypeRequest.getPrice());
+        deliveryTypeRepository.save(foundDeliveryType);
+        return deliveryTypeMapper.mapToDto(foundDeliveryType);
+    }
+
     public void deleteDeliveryType(Long deliveryID){
-        DeliveryType foundDeliveryType = deliveryTypeRepository.findById(deliveryID)
-                .orElseThrow(() -> new ResourceNotFoundException("DeliveryType", "id", deliveryID));
+        DeliveryType foundDeliveryType = getDeliveryTypeById(deliveryID);
 
         deliveryTypeRepository.delete(foundDeliveryType);
+    }
+
+    DeliveryType getDeliveryTypeById(Long deliveryTypeId) {
+        return deliveryTypeRepository.findById(deliveryTypeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Delivery type", "id", deliveryTypeId));
     }
 }

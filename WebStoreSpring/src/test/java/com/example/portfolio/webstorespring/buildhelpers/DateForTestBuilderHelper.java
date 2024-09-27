@@ -1,5 +1,6 @@
 package com.example.portfolio.webstorespring.buildhelpers;
 
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
@@ -15,4 +16,6 @@ public class DateForTestBuilderHelper {
             0,
             ZoneId.of("Europe/Warsaw")
     );
+
+    public static final LocalDateTime LOCAL_DATE_TIME = ZONED_DATE_TIME.toLocalDateTime();
 }

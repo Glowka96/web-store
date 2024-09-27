@@ -11,7 +11,7 @@ COPY package.json package-lock.json /app/
 RUN cd /app && npm set progress=false && npm install
 # d) Copy project files into the docker image and build your app
 COPY .  /app
-RUN cd /app && npm run build-prod
+RUN cd /app && npm run build
 # STEP 2 build a small nginx image
 FROM nginx:alpine
 # a) Remove default nginx code

@@ -13,6 +13,12 @@ public class SubcategoryBuilderHelper {
                 .build();
     }
 
+    public static Subcategory createSubcategory(String name) {
+        return Subcategory.builder()
+                .name(name)
+                .build();
+    }
+
     public static SubcategoryRequest createSubcategoryRequest() {
         return SubcategoryRequest.builder()
                 .name("Test")

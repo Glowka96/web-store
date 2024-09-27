@@ -35,7 +35,6 @@ class ProductTypeControllerTest {
     private ProductTypeService productTypeService;
     @InjectMocks
     private ProductTypeController underTest;
-
     private static final String URI = "/api/v1/admin/product-types";
 
     private MockMvc mvc;
@@ -54,7 +53,7 @@ class ProductTypeControllerTest {
 
         given(productTypeService.getAllProductType()).willReturn(List.of(productTypeResponse, productTypeResponse));
 
-        mvc.perform(get(URI)
+        mvc.perform(get("/api/v1/product-types")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))

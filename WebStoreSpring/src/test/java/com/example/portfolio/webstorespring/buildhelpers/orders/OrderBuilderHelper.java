@@ -1,6 +1,5 @@
 package com.example.portfolio.webstorespring.buildhelpers.orders;
 
-import com.example.portfolio.webstorespring.buildhelpers.DateForTestBuilderHelper;
 import com.example.portfolio.webstorespring.enums.OrderStatus;
 import com.example.portfolio.webstorespring.model.dto.orders.request.DeliveryRequest;
 import com.example.portfolio.webstorespring.model.dto.orders.request.OrderRequest;
@@ -12,20 +11,21 @@ import com.example.portfolio.webstorespring.model.entity.orders.Order;
 import com.example.portfolio.webstorespring.model.entity.orders.Shipment;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
-import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.createAccountWithRoleUserAndAccountAddress;
+import static com.example.portfolio.webstorespring.buildhelpers.DateForTestBuilderHelper.LOCAL_DATE_TIME;
+import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.BASIC_ACCOUNT;
 import static com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryBuilderHelper.*;
 import static com.example.portfolio.webstorespring.buildhelpers.orders.ShipmentBuilderHelper.*;
+import static com.natpryce.makeiteasy.MakeItEasy.a;
+import static com.natpryce.makeiteasy.MakeItEasy.make;
 
 public class OrderBuilderHelper {
 
     public static Order createOrder() {
-        Account account = createAccountWithRoleUserAndAccountAddress();
+        Account account = make(a(BASIC_ACCOUNT));
         Delivery delivery = createDelivery();
         Shipment shipment = createShipment();
-
         return Order.builder()
                 .id(1L)
                 .shipments(List.of(shipment, shipment))
@@ -36,9 +36,8 @@ public class OrderBuilderHelper {
     }
 
     public static Order createOrderWithoutShipments() {
-        Account account = createAccountWithRoleUserAndAccountAddress();
+        Account account = make(a(BASIC_ACCOUNT));
         Delivery delivery = createDelivery();
-
         return Order.builder()
                 .id(1L)
                 .status(OrderStatus.OPEN)
@@ -66,7 +65,7 @@ public class OrderBuilderHelper {
                 .shipmentResponses(List.of(shipmentResponse, shipmentResponse))
                 .nameUser("Name Lastname")
                 .totalPrice(BigDecimal.valueOf(130.0))
-                .dateOfCreation(Date.from(DateForTestBuilderHelper.ZONED_DATE_TIME.toInstant()))
+                .createdAt(LOCAL_DATE_TIME)
                 .build();
     }
 
@@ -78,7 +77,7 @@ public class OrderBuilderHelper {
                 .deliveryResponse(deliveryResponse)
                 .nameUser("Name Lastname")
                 .totalPrice(BigDecimal.valueOf(130.0))
-                .dateOfCreation(Date.from(DateForTestBuilderHelper.ZONED_DATE_TIME.toInstant()))
+                .createdAt(LOCAL_DATE_TIME)
                 .build();
     }
 }

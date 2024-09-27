@@ -8,13 +8,15 @@ import com.example.portfolio.webstorespring.model.entity.products.Product;
 
 import java.math.BigDecimal;
 
-import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.createProduct;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.BASIC_PRODUCT;
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductWithPromotionDtoBuildHelper.createProductWithPromotionDTO;
+import static com.natpryce.makeiteasy.MakeItEasy.a;
+import static com.natpryce.makeiteasy.MakeItEasy.make;
 
 public class ShipmentBuilderHelper {
 
     public static Shipment createShipment() {
-        Product product = createProduct();
+        Product product = make(a(BASIC_PRODUCT));
         return Shipment.builder()
                 .id(1L)
                 .quantity(3)

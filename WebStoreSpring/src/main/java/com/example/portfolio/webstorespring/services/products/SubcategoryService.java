@@ -21,16 +21,15 @@ public class SubcategoryService {
     private final CategoryService categoryService;
     private final SubcategoryMapper subcategoryMapper;
 
-
     public List<SubcategoryResponse> getAllSubcategory() {
         return subcategoryMapper.mapToDto(subcategoryRepository.findAll());
     }
 
     @Transactional
     public SubcategoryResponse saveSubcategory(Long categoryId,
-                                               SubcategoryRequest subCategoryRequest) {
+                                               SubcategoryRequest subcategoryRequest) {
         Category foundCategory = categoryService.findCategoryById(categoryId);
-        Subcategory subcategory = subcategoryMapper.mapToEntity(subCategoryRequest);
+        Subcategory subcategory = subcategoryMapper.mapToEntity(subcategoryRequest);
 
         subcategory.setCategory(foundCategory);
         subcategoryRepository.save(subcategory);
@@ -39,23 +38,22 @@ public class SubcategoryService {
 
     @Transactional
     public SubcategoryResponse updateSubcategory(Long categoryId,
-                                                 Long subCategoryId,
-                                                 SubcategoryRequest subCategoryRequest) {
-        Subcategory foundSubcategory = findSubcategoryById(subCategoryId);
+                                                 Long subcategoryId,
+                                                 SubcategoryRequest subcategoryRequest) {
+        Subcategory foundSubcategory = findSubcategoryById(subcategoryId);
 
-        Subcategory subcategory = subcategoryMapper.mapToEntity(subCategoryRequest);
-
-        foundSubcategory.setName(subcategory.getName());
+        foundSubcategory.setName(subcategoryRequest.getName());
         foundSubcategory.setCategory(categoryService.findCategoryById(categoryId));
 
-        subcategoryRepository.save(subcategory);
-        return subcategoryMapper.mapToDto(subcategory);
+        subcategoryRepository.save(foundSubcategory);
+        return subcategoryMapper.mapToDto(foundSubcategory);
     }
 
     public void deleteSubcategoryById(Long subCategoryId) {
         Subcategory foundSubcategory = findSubcategoryById(subCategoryId);
         subcategoryRepository.deleteById(foundSubcategory.getId());
     }
+
 
     protected Subcategory findSubcategoryById(Long id) {
         return subcategoryRepository.findById(id)

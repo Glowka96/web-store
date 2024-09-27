@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -25,7 +25,7 @@ public class OrderResponseWithoutShipments {
     @JsonProperty(value = "delivery")
     private DeliveryResponseWithoutDeliveryType deliveryResponse;
 
-    private Date dateOfCreation;
+    private LocalDateTime createdAt;
 
     private OrderStatus status;
 }

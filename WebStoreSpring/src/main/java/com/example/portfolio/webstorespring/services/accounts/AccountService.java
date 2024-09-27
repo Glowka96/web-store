@@ -22,8 +22,12 @@ public class AccountService {
     private final AccountMapper accountMapper;
     private final PasswordEncoder encoder;
     private final RoleService roleService;
+    private final AccountAddressService addressService;
     private static final String ROLE_USER = "ROLE_USER";
-
+    @Value("${admin.email}")
+    private String adminEmail;
+    @Value("${admin.password}")
+    private String adminPassword;
     @Value("${account.image.url}")
     private String accountImageURL;
 
@@ -45,7 +49,8 @@ public class AccountService {
         return accountMapper.mapToDto(loggedAccount);
     }
 
-     Account saveAccount(RegistrationRequest registrationRequest) {
+    @Transactional
+    public Account saveAccount(RegistrationRequest registrationRequest) {
         Account account = Account.builder()
                 .firstName(registrationRequest.getFirstName())
                 .lastName(registrationRequest.getLastName())
@@ -59,18 +64,35 @@ public class AccountService {
         return account;
     }
 
-    void setEnabledAccount(Account account) {
+    void initializeAdminAccount(){
+        if(Boolean.FALSE.equals(accountRepository.existsByEmail(adminEmail))){
+            accountRepository.save(Account.builder()
+                    .firstName("Admin")
+                    .lastName("Admin")
+                    .email(adminEmail)
+                    .password(adminPassword)
+                    .roles(roleService.findRoleByName("ROLE_ADMIN"))
+                    .imageUrl(accountImageURL)
+                    .enabled(Boolean.TRUE)
+                    .build()
+            );
+        }
+    }
+
+    @Transactional
+    public void deleteAccount(AccountDetails accountDetails) {
+        addressService.deleteAccountAddressWhenDeleteAccount(accountDetails);
+        accountRepository.delete(accountDetails.getAccount());
+    }
+
+    public void setEnabledAccount(Account account) {
         account.setEnabled(true);
         accountRepository.save(account);
     }
 
-    void setNewAccountPassword(Account account, String password) {
+    public void setNewAccountPassword(Account account, String password) {
         account.setPassword(encoder.encode(password));
         accountRepository.save(account);
-    }
-
-    public void deleteAccount(AccountDetails accountDetails) {
-        accountRepository.delete(accountDetails.getAccount());
     }
 
     public Account findAccountByEmail(String email) {

@@ -39,7 +39,7 @@ class RoleServiceTest {
     }
 
     @Test
-    void shouldInitializeRole() {
+    void shouldInitializeRole_whenRolesNotExist() {
         // given
         given(roleRepository.existsByName(anyString())).willReturn(false);
 
@@ -52,7 +52,7 @@ class RoleServiceTest {
     }
 
     @Test
-    void shouldNoInitializeRoleWhenRoleIsExist() {
+    void shouldNoInitializeRole_whenRoleIsExist() {
         // given
         given(roleRepository.existsByName(anyString())).willReturn(true);
 

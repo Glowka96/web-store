@@ -35,7 +35,7 @@ public interface OrderMapper {
     @Mapping(target = "status", ignore = true)
     @Mapping(target = "totalPrice", ignore = true)
     @Mapping(target = "nameUser", ignore = true)
-    @Mapping(target = "dateOfCreation", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "account", ignore = true)
     @Mapping(target = "delivery", source = "deliveryRequest")
     @Mapping(target = "shipments", ignore = true)

@@ -11,6 +11,7 @@ import com.example.portfolio.webstorespring.model.dto.products.response.ProductP
 import com.example.portfolio.webstorespring.model.entity.products.Product;
 import com.example.portfolio.webstorespring.model.entity.products.ProductPricePromotion;
 import com.example.portfolio.webstorespring.repositories.products.ProductPricePromotionRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
@@ -24,10 +25,11 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.math.BigDecimal;
 import java.util.Set;
 
-import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.createProduct;
-import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.createProductWithPromotion;
-import static com.example.portfolio.webstorespring.buildhelpers.products.ProductPricePromotionBuilderHelper.createProductPricePromotion;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.BASIC_PRODUCT;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.PRICE_PROMOTIONS;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProductPricePromotionBuilderHelper.BASIC_PROMOTION;
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductPricePromotionBuilderHelper.createProductPricePromotionRequest;
+import static com.natpryce.makeiteasy.MakeItEasy.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -35,6 +37,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
+@Slf4j
 class ProductPricePromotionServiceTest {
 
     @Mock
@@ -51,7 +54,8 @@ class ProductPricePromotionServiceTest {
         // given
         setMappers();
 
-        Product product = createProduct();
+        Product product = make(a(BASIC_PRODUCT).but(with(PRICE_PROMOTIONS, Set.of())));
+
         ProductPricePromotionRequest productPricePromotionRequest = createProductPricePromotionRequest();
 
         given(productService.findProductByIdWithPromotion(anyLong())).willReturn(product);
@@ -82,7 +86,7 @@ class ProductPricePromotionServiceTest {
     @Test
     void willThrowWhenPromotionPriceIsGreaterThanBasePrice() {
         // given
-        Product product = createProduct();
+        Product product = make(a(BASIC_PRODUCT).but(with(PRICE_PROMOTIONS, Set.of())));
         ProductPricePromotionRequest productPricePromotionRequest = createProductPricePromotionRequest(BigDecimal.valueOf(999.99));
 
         // when
@@ -98,9 +102,8 @@ class ProductPricePromotionServiceTest {
     @Test
     void willThrowWhenProductHasAlreadyPromotion() {
         // given
-        Product product = createProductWithPromotion();
-        ProductPricePromotion productPricePromotion = createProductPricePromotion();
-        product.setPricePromotions(Set.of(productPricePromotion));
+        ProductPricePromotion productPricePromotion = make(a(BASIC_PROMOTION));
+        Product product = make(a(BASIC_PRODUCT).but(with(PRICE_PROMOTIONS, Set.of(productPricePromotion))));
 
         ProductPricePromotionRequest productPricePromotionRequest = createProductPricePromotionRequest();
 

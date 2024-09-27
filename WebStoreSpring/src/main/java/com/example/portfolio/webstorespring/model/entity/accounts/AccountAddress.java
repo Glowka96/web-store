@@ -11,9 +11,9 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AccountAddress {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false, unique = true)
+    @Column(unique = true, nullable = false)
     private Long id;
 
     @Column(nullable = false)
@@ -25,7 +25,8 @@ public class AccountAddress {
     @Column(nullable = false)
     private String street;
 
-    @OneToOne
-    @JoinColumn(name = "account_id")
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId()
+    @JoinColumn(name = "id")
     private Account account;
 }

@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.controllers.accounts;
 
-import com.example.portfolio.webstorespring.enums.emailtypes.ResetPasswordType;
+import com.example.portfolio.webstorespring.controllers.emails.ResetPasswordController;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.ResetPasswordRequest;
-import com.example.portfolio.webstorespring.services.accounts.ResetPasswordService;
+import com.example.portfolio.webstorespring.services.email.ResetPasswordService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -47,7 +47,7 @@ class ResetPasswordControllerTest {
 
     @Test
     void shouldResetPassword() throws Exception {
-        result = Map.of("message", ResetPasswordType.PASSWORD.getInformationMessage());
+        result = Map.of("message", "Sent reset password link to your email");
 
         given(resetPasswordService.resetPasswordByEmail(anyString())).willReturn(result);
 

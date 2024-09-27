@@ -28,12 +28,14 @@ import java.math.BigDecimal;
 import java.util.Optional;
 
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProducerBuilderHelper.createProducer;
-import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.createProduct;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.BASIC_PRODUCT;
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.createProductRequest;
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductTypeBuilderHelper.createProductType;
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductWithProducerAndPromotionDTOBuilderHelper.createNullProductWithProducerAndPromotionDTO;
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductWithProducerAndPromotionDTOBuilderHelper.createProductWithProducerAndPromotionDTO;
 import static com.example.portfolio.webstorespring.buildhelpers.products.SubcategoryBuilderHelper.createSubcategory;
+import static com.natpryce.makeiteasy.MakeItEasy.a;
+import static com.natpryce.makeiteasy.MakeItEasy.make;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
@@ -142,20 +144,21 @@ class ProductServiceTest {
                 8L
         );
 
-        Subcategory subcategory = createSubcategory();
-        Producer producer = createProducer();
-        Product product = createProduct();
-        ProductType productType = createProductType();
+        Product product = make(a(BASIC_PRODUCT));
 
-        String name = product.getName();
-        String description = product.getDescription();
-        BigDecimal price = product.getPrice();
-        Long quantity = product.getQuantity();
+        Subcategory subcategory = product.getSubcategory();
+        Producer producer = product.getProducer();
+        ProductType productType = product.getType();
+
+        String beforeUpdateName = product.getName();
+        String beforeUpdateDescription = product.getDescription();
+        BigDecimal beforeUpdatePrice = product.getPrice();
+        Long beforeUpdateQuantity = product.getQuantity();
 
         given(subcategoryService.findSubcategoryById(anyLong())).willReturn(subcategory);
         given(producerService.findProducerById(anyLong())).willReturn(producer);
         given(productRepository.findById(anyLong())).willReturn(Optional.of(product));
-     //   given(productTypeService.findProductTypeById(anyLong())).willReturn(productType);
+        given(productTypeService.findProductTypeById(anyLong())).willReturn(productType);
 
         // when
         ProductResponse updatedProductResponse = underTest.updateProduct(subcategory.getId(), producer.getId(), product.getId(), productRequest);
@@ -169,16 +172,16 @@ class ProductServiceTest {
                 productMapper.mapToDto(productArgumentCaptor.getValue());
 
         assertThat(mappedProductRequest).isEqualTo(updatedProductResponse);
-        assertThat(updatedProductResponse.getName()).isNotEqualTo(name);
-        assertThat(updatedProductResponse.getDescription()).isNotEqualTo(description);
-        assertThat(updatedProductResponse.getPrice()).isNotEqualTo(price);
-        assertThat(updatedProductResponse.getQuantity()).isNotEqualTo(quantity);
+        assertThat(updatedProductResponse.getName()).isNotEqualTo(beforeUpdateName);
+        assertThat(updatedProductResponse.getDescription()).isNotEqualTo(beforeUpdateDescription);
+        assertThat(updatedProductResponse.getPrice()).isNotEqualTo(beforeUpdatePrice);
+        assertThat(updatedProductResponse.getQuantity()).isNotEqualTo(beforeUpdateQuantity);
     }
 
     @Test
     void shouldDeleteById() {
         // given
-        Product product = createProduct();
+        Product product = make(a(BASIC_PRODUCT));
         given(productRepository.findById(1L)).willReturn(Optional.of(product));
 
         // when

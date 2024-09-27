@@ -1,12 +1,13 @@
 package com.example.portfolio.webstorespring.services.products;
 
-import com.example.portfolio.webstorespring.enums.SortByType;
-import com.example.portfolio.webstorespring.enums.SortDirectionType;
 import com.example.portfolio.webstorespring.model.dto.products.PageProductsWithPromotionDTO;
 import com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionDTO;
 import com.example.portfolio.webstorespring.repositories.products.ProductRepository;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -16,8 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.example.portfolio.webstorespring.buildhelpers.products.PageProductsOptionsBuilderHelper.createBasePageProductsOptions;
+import static com.example.portfolio.webstorespring.buildhelpers.products.PageProductsOptionsBuilderHelper.getNumberOfSortOptions;
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductWithPromotionDtoBuildHelper.createProductWithPromotionDTO;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 
@@ -27,53 +31,90 @@ class ProductsPageServiceTest {
     private ProductRepository productRepository;
     @InjectMocks
     private ProductsPageService underTest;
+    private static Integer numberOfSortOptions;
 
-    @Test
-    void shouldGetPageProductsBySubCategoryId() {
+    @BeforeAll
+    static void initNumberOfSorOptions() {
+        numberOfSortOptions = getNumberOfSortOptions();
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "name, asc, name, asc",
+            "price, desc, price, desc",
+            "type, desc, type, desc",
+            "date, asc, dateOfCreation, asc"
+    })
+    void shouldGetPageProductsBySubCategoryId(String sortType,
+                                              String sortDirection,
+                                              String expectedSortType,
+                                              String expectedSortDirection) {
         // given
-        Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Direction.ASC, "name"));
+        Pageable pageable = PageRequest.of(0,
+                5,
+                Sort.by(Sort.Direction.fromString(expectedSortDirection), expectedSortType)
+        );
         List<ProductWithPromotionDTO> productList = getListProductWithPromotionDto();
         Page<ProductWithPromotionDTO> productPage = new PageImpl<>(productList, pageable, productList.size());
 
-        given(productRepository.findProductsBySubcategory_Id(anyLong(), any(), any())).willReturn(Optional.of(productPage));
+        given(productRepository.findProductsBySubcategoryId(anyLong(), any(), any()))
+                .willReturn(Optional.of(productPage));
 
         // when
-        PageProductsWithPromotionDTO actual = underTest.getPageProductsBySubcategoryId(1L, 0, 5, SortByType.NAME, SortDirectionType.ASC);
+        PageProductsWithPromotionDTO actual = underTest.getPageProductsBySubcategoryId(
+                1L, createBasePageProductsOptions(sortType, sortDirection)
+        );
 
         // then
         assertThat(actual.products()).hasSize(productList.size());
         assertThat(actual.totalPages()).isEqualTo(1);
         assertThat(actual.totalElements()).isEqualTo(3);
+        assertThat(actual.sortOptions()).hasSize(numberOfSortOptions);
     }
 
 
-    @Test
-    void shouldGetPageNewProducts() {
+    @ParameterizedTest
+    @CsvSource({
+            "name, asc, name, asc",
+            "price, desc, price, desc",
+            "type, desc, type, desc",
+            "date, asc, dateOfCreation, asc"
+    })
+    void shouldGetPageNewProducts(String sortType,
+                                  String sortDirection,
+                                  String expectedSortType,
+                                  String expectedSortDirection) {
         // given
-        Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Direction.ASC, "id"));
+        Pageable pageable = PageRequest.of(0,
+                5,
+                Sort.by(Sort.Direction.fromString(expectedSortDirection), expectedSortType)
+        );
         List<ProductWithPromotionDTO> productList = getListProductWithPromotionDto();
         Page<ProductWithPromotionDTO> productPage = new PageImpl<>(productList, pageable, productList.size());
 
         given(productRepository.findNewProducts(any(), any())).willReturn(Optional.of(productPage));
 
         // when
-        PageProductsWithPromotionDTO actual = underTest.getPageNewProduct(0, 5, SortByType.NAME, SortDirectionType.ASC);
+        PageProductsWithPromotionDTO actual = underTest.getPageNewProducts(
+                createBasePageProductsOptions(sortType, sortDirection)
+        );
 
         // then
         assertThat(actual.products()).hasSize(productList.size());
         assertThat(actual.totalPages()).isEqualTo(1);
         assertThat(actual.totalElements()).isEqualTo(3);
+        assertThat(actual.sortOptions()).hasSize(numberOfSortOptions);
     }
 
     @Test
-    void shouldGetEmptyPageWhenNoHaveNewProduct() {
+    void shouldGetEmptyPage_whenNoHaveNewProduct() {
         Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Direction.ASC, "name"));
         Page<ProductWithPromotionDTO> productPage = new PageImpl<>(new ArrayList<>(), pageable, 0);
 
         given(productRepository.findNewProducts(any(), any())).willReturn(Optional.of(productPage));
 
         // when
-        PageProductsWithPromotionDTO actual = underTest.getPageNewProduct(0, 5, SortByType.NAME, SortDirectionType.ASC);
+        PageProductsWithPromotionDTO actual = underTest.getPageNewProducts(createBasePageProductsOptions());
 
         // then
         assertThat(actual.products()).isEmpty();
@@ -81,70 +122,96 @@ class ProductsPageServiceTest {
         assertThat(actual.totalElements()).isZero();
     }
 
-    @Test
-    void shouldPageProductsBySubCategoryIdWhenGetSubCategoryId_PageNo_PageSize_SortBy_SortDirection() {
+    @ParameterizedTest
+    @CsvSource({
+            "name, asc, name, asc",
+            "price, desc, price, desc",
+            "type, desc, type, desc",
+            "date, asc, dateOfCreation, asc"
+    })
+    void shouldGetPageProductsBySearchText(String sortType, String sortDirection, String expectedSortType, String expectedSortDirection) {
         // given
-        Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Direction.ASC, "name"));
+        Pageable pageable = PageRequest.of(0,
+                5,
+                Sort.by(Sort.Direction.fromString(expectedSortDirection), expectedSortType));
         List<ProductWithPromotionDTO> productList = getListProductWithPromotionDto();
         Page<ProductWithPromotionDTO> productPage = new PageImpl<>(productList, pageable, productList.size());
 
-        given(productRepository.findProductsBySubcategory_Id(anyLong(), any(), any())).willReturn(Optional.of(productPage));
+        given(productRepository.searchProductsByEnteredText(anyString(), any(), any()))
+                .willReturn(Optional.of(productPage));
 
         // when
-        PageProductsWithPromotionDTO actual = underTest.getPageProductsBySubcategoryId(1L, 0, 5, SortByType.NAME, SortDirectionType.ASC);
+        PageProductsWithPromotionDTO actual = underTest.getPageSearchProducts(
+                "test", createBasePageProductsOptions(sortType, sortDirection)
+        );
 
         // then
         assertThat(actual.products()).hasSize(productList.size());
         assertThat(actual.totalPages()).isEqualTo(1);
         assertThat(actual.totalElements()).isEqualTo(3);
+        assertThat(actual.sortOptions()).hasSize(numberOfSortOptions);
     }
 
-    @Test
-    void shouldGetPageProductsBySearchText() {
+    @ParameterizedTest
+    @CsvSource({
+            "name, asc, name, asc",
+            "price, desc, price, desc",
+            "type, desc, type, desc",
+            "date, asc, dateOfCreation, asc"
+    })
+    void shouldGetPromotionProducts(String sortType,
+                                    String sortDirection,
+                                    String expectedSortType,
+                                    String expectedSortDirection) {
         // given
-        Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Direction.ASC, "name"));
-        List<ProductWithPromotionDTO> productList = getListProductWithPromotionDto();
-        Page<ProductWithPromotionDTO> productPage = new PageImpl<>(productList, pageable, productList.size());
-
-        given(productRepository.searchProductsByEnteredText(anyString(), any(), any())).willReturn(Optional.of(productPage));
-
-        // when
-        PageProductsWithPromotionDTO actual = underTest.getPageSearchProducts("test", 0, 5, SortByType.NAME, SortDirectionType.ASC);
-
-        // then
-        assertThat(actual.products()).hasSize(productList.size());
-        assertThat(actual.totalPages()).isEqualTo(1);
-        assertThat(actual.totalElements()).isEqualTo(3);
-    }
-
-    @Test
-    void shouldGetPromotionProducts() {
-        // given
-        Pageable pageable= PageRequest.of(0, 5, Sort.by(Sort.Direction.ASC, "name"));
+        Pageable pageable = PageRequest.of(0,
+                5,
+                Sort.by(Sort.Direction.fromString(expectedSortDirection), expectedSortType)
+        );
         List<ProductWithPromotionDTO> productList = getListProductWithPromotionDto();
         Page<ProductWithPromotionDTO> productPage = new PageImpl<>(productList, pageable, productList.size());
 
         given(productRepository.findPromotionProducts(any(), any())).willReturn(Optional.of(productPage));
 
         // when
-        PageProductsWithPromotionDTO actual = underTest.getPagePromotionProduct(0, 5, SortByType.NAME, SortDirectionType.ASC);
+        PageProductsWithPromotionDTO actual = underTest.getPagePromotionProduct(
+                createBasePageProductsOptions(sortType, sortDirection)
+        );
 
         // then
         assertThat(actual.products()).hasSize(productList.size());
         assertThat(actual.totalPages()).isEqualTo(1);
         assertThat(actual.totalElements()).isEqualTo(3);
+        assertThat(actual.sortOptions()).hasSize(numberOfSortOptions);
     }
 
+    @ParameterizedTest
+    @CsvSource({
+            "bad, asc",
+            "bad, desc"
+    })
+    void willThrowIllegalArgumentException_whenSortTypeIsInvalid(String sortType, String sortDirection) {
+        assertThatThrownBy(() -> underTest.getPageNewProducts(createBasePageProductsOptions(sortType, sortDirection)))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Invalid sort type value: bad");
+    }
+
+
+    @ParameterizedTest
+    @CsvSource({
+            "name, bad",
+            "price, bad",
+            "type, bad",
+            "date, bad"
+    })
+    void willThrowIllegalArgumentException_whenSortDirectionIsInvalid(String sortType, String sortDirection) {
+        assertThatThrownBy(() -> underTest.getPageNewProducts(createBasePageProductsOptions(sortType, sortDirection)))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Invalid value 'bad' for orders given");
+    }
 
     private List<ProductWithPromotionDTO> getListProductWithPromotionDto() {
         ProductWithPromotionDTO productWithPromotionDTO = createProductWithPromotionDTO();
         return List.of(productWithPromotionDTO, productWithPromotionDTO, productWithPromotionDTO);
     }
-
-//    @NotNull
-//    private ProductWithPromotionDTO getProductDTO() {
-//        when(clock.getZone()).thenReturn(zonedDateTime.getZone());
-//        when(clock.instant()).thenReturn(zonedDateTime.toInstant());
-//        return createProductWithPromotionDTO(clock);
-//    }
 }

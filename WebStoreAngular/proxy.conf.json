@@ -1,6 +1,6 @@
 {
   "/api": {
-    "target": "//toysland-spring-v1-0-lazlbfo5va-ew.a.run.app/api/v1",
+    "target": "//webstore-v1-0-j5caa4355a-lm.a.run.app/api/v1",
     "secure": false
   }
 }

@@ -19,7 +19,7 @@ import org.springframework.web.context.request.WebRequest;
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler({ResourceNotFoundException.class})
+    @ExceptionHandler({ResourceNotFoundException.class, AccountHasNoAddressException.class})
     public ResponseEntity<ErrorResponse> handleResourceNotFoundException(RuntimeException exception,
                                                                          WebRequest webRequest) {
         ErrorResponse errorResponse = createErrorResponse(HttpStatus.NOT_FOUND, exception, webRequest);
@@ -51,6 +51,7 @@ public class GlobalExceptionHandler {
             TokenExpiredException.class,
             PromotionPriceGreaterThanBasePriceException.class,
             ProductHasAlreadyPromotionException.class,
+            ProductsNotFoundException.class,
             ShipmentQuantityExceedsProductQuantityException.class,
     })
     public ResponseEntity<ErrorResponse> handleCanNotModifiedException(RuntimeException exception,
@@ -62,8 +63,9 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({
             IllegalArgumentException.class
     })
-    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException exception, WebRequest webRequest) {
-        ErrorResponse errorResponse = createErrorResponse(HttpStatus.BAD_REQUEST, exception, webRequest);
+    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException exception,
+                                                                        WebRequest webRequest) {
+        ErrorResponse errorResponse = createErrorResponse(exception, webRequest);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
@@ -74,12 +76,19 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(UnsupportedNotificationTypeException.class)
+    public ResponseEntity<ErrorResponse> handleUnsupportedNotificationTypeException(UnsupportedNotificationTypeException exception,
+                                                                                    WebRequest webRequest) {
+        ErrorResponse errorResponse = createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, exception, webRequest);
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     private ErrorResponse createErrorResponse(HttpStatus status, Exception exception, WebRequest webRequest) {
         return new ErrorResponse(status.value(), exception.getMessage(), webRequest.getDescription(false));
     }
 
-    private ErrorResponse createErrorResponse(HttpStatus status, IllegalArgumentException exception, WebRequest webRequest) {
-        return new ErrorResponse(status.value(), exception.getMessage(), webRequest.getDescription(false));
+    private ErrorResponse createErrorResponse(IllegalArgumentException exception, WebRequest webRequest) {
+        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), exception.getMessage(), webRequest.getDescription(false));
     }
 
     private ErrorResponse createErrorResponse(ConstraintViolationException exception, WebRequest webRequest) {

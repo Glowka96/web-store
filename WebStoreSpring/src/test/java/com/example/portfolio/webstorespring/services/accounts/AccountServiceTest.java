@@ -10,6 +10,7 @@ import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.accounts.Role;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
 import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
@@ -20,11 +21,13 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Optional;
 import java.util.Set;
 
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.*;
+import static com.natpryce.makeiteasy.MakeItEasy.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
@@ -36,6 +39,8 @@ class AccountServiceTest {
     @Mock
     private AccountRepository accountRepository;
     @Mock
+    private AccountAddressService addressService;
+    @Mock
     private BCryptPasswordEncoder encoder;
     @Mock
     private RoleService roleService;
@@ -44,16 +49,10 @@ class AccountServiceTest {
     @InjectMocks
     private AccountService underTest;
 
-//    @AfterEach
-//    void clearSecurityContext() {
-//        SecurityContextHolder.clearContext();
-//    }
-
     @Test
     void shouldGetAccount() {
         // given
-        Account account = createAccountWithRoleUser();
-        AccountDetails accountDetails = new AccountDetails(account);
+        AccountDetails accountDetails = getAccountDetails();
 
         // when
         AccountResponse result = underTest.getAccount(accountDetails);
@@ -61,8 +60,8 @@ class AccountServiceTest {
         // then
         assertThat(result).isNotNull();
         assertThat(result.getId()).isEqualTo(1L);
-        assertThat(result.getFirstName()).isEqualTo("Name");
-        assertThat(result.getLastName()).isEqualTo("Lastname");
+        assertThat(result.getFirstName()).isEqualTo(accountDetails.getAccount().getFirstName());
+        assertThat(result.getLastName()).isEqualTo(accountDetails.getAccount().getLastName());
     }
 
     @Test
@@ -85,9 +84,34 @@ class AccountServiceTest {
     }
 
     @Test
+    void shouldInitializeAdminAccount_whenAdminEmailNotExist() {
+        ReflectionTestUtils.setField(underTest, "adminEmail", "mockadmin@example.com");
+
+        given(accountRepository.existsByEmail(anyString())).willReturn(Boolean.FALSE);
+
+        underTest.initializeAdminAccount();
+
+        verify(accountRepository, times(1)).existsByEmail(anyString());
+        verify(accountRepository, times(1)).save(any(Account.class));
+        verifyNoMoreInteractions(accountRepository);
+    }
+
+    @Test
+    void shouldNotInitializeAdminAccount_whenAdminEmailIsExist() {
+        ReflectionTestUtils.setField(underTest, "adminEmail", "mockadmin@example.com");
+
+        given(accountRepository.existsByEmail(anyString())).willReturn(Boolean.TRUE);
+
+        underTest.initializeAdminAccount();
+
+        verify(accountRepository, times(1)).existsByEmail(anyString());
+        verifyNoMoreInteractions(accountRepository);
+    }
+
+    @Test
     void shouldSetEnableAccount() {
         // given
-        Account account = createAccountWithRoleUserNoEnabled();
+        Account account = make(a(BASIC_ACCOUNT).but(with(ENABLED, Boolean.FALSE)));
 
         // when
         underTest.setEnabledAccount(account);
@@ -100,7 +124,7 @@ class AccountServiceTest {
     @Test
     void shouldSetNewAccountPassword() {
         // given
-        Account account = createAccountWithRoleUser();
+        Account account = make(a(BASIC_ACCOUNT));
         String oldAccountPassword = account.getPassword();
 
         // when
@@ -114,7 +138,7 @@ class AccountServiceTest {
     @Test
     void shouldUpdateAccount() {
         // given
-        Account account = createAccountWithRoleUser();
+        Account account = make(a(BASIC_ACCOUNT));
 
         AccountRequest accountRequest = createAccountRequest();
         AccountDetails accountDetails = new AccountDetails(account);
@@ -138,20 +162,20 @@ class AccountServiceTest {
     @Test
     void shouldDeleteAccount() {
         // given
-        Account account = createAccountWithRoleUser();
-        AccountDetails accountDetails = new AccountDetails(account);
+        AccountDetails accountDetails = getAccountDetails();
 
         // when
         underTest.deleteAccount(accountDetails);
 
         // then
-        verify(accountRepository, times(1)).delete(account);
+        verify(accountRepository, times(1)).delete(accountDetails.getAccount());
+        verifyNoMoreInteractions(accountRepository);
     }
 
     @Test
     void shouldFindAccountByEmail() {
         // given
-        Account account = createAccountWithRoleUser();
+        Account account = make(a(BASIC_ACCOUNT));
 
         given(accountRepository.findByEmail(anyString())).willReturn(Optional.of(account));
 
@@ -163,7 +187,7 @@ class AccountServiceTest {
     }
 
     @Test
-    void willThrowWhenNotFindAccountByEmail () {
+    void willThrowUsernameNotFound_whenNotFindAccountByEmail() {
         given(accountRepository.findByEmail(anyString())).willReturn(Optional.empty());
 
         // when
@@ -171,5 +195,10 @@ class AccountServiceTest {
         assertThatThrownBy(() -> underTest.findAccountByEmail("test"))
                 .isInstanceOf(UsernameNotFoundException.class)
                 .hasMessageContaining("Account with email: test not found");
+    }
+
+    @NotNull
+    private static AccountDetails getAccountDetails() {
+        return new AccountDetails(make(a(BASIC_ACCOUNT)));
     }
 }
