@@ -32,28 +32,28 @@ public class ProductsPageService {
     public PageProductsWithPromotionDTO getPageProductsBySubcategoryId(Long subcategoryId, PageProductsOptions pageProductsOptions) {
         return getPageProduct(
                 pageProductsOptions,
-                pageable -> getProductsBySubcategoryId(subcategoryId, getLocalDateTime30DaysAgo(), pageable)
+                pageable -> getProductsBySubcategoryId(subcategoryId, pageable)
         );
     }
 
     public PageProductsWithPromotionDTO getPageSearchProducts(String text, PageProductsOptions pageProductsOptions) {
         return getPageProduct(
                 pageProductsOptions,
-                pageable -> searchProductsByText(text, getLocalDateTime30DaysAgo(), pageable)
+                pageable -> searchProductsByText(text, pageable)
         );
     }
 
     public PageProductsWithPromotionDTO getPagePromotionProduct(PageProductsOptions pageProductsOptions) {
         return getPageProduct(
                 pageProductsOptions,
-                pageable -> getPromotionProducts(getLocalDateTime30DaysAgo(), pageable)
+                this::getPromotionProducts
         );
     }
 
     public PageProductsWithPromotionDTO getPageNewProducts(PageProductsOptions pageProductsOptions) {
         return getPageProduct(
                 pageProductsOptions,
-                pageable -> getNewProducts(getLocalDateTime30DaysAgo(), pageable)
+                this::getNewProducts
         );
     }
 
@@ -71,26 +71,24 @@ public class ProductsPageService {
     }
 
     private Page<ProductWithPromotionDTO> getProductsBySubcategoryId(Long subcategoryId,
-                                                                     LocalDateTime date30DaysAgo,
                                                                      Pageable pageable) {
-        return productRepository.findProductsBySubcategoryId(subcategoryId, date30DaysAgo, pageable)
+        return productRepository.findProductsBySubcategoryId(subcategoryId, getLocalDateTime30DaysAgo(), pageable)
                 .orElse(Page.empty());
     }
 
     private Page<ProductWithPromotionDTO> searchProductsByText(String text,
-                                                               LocalDateTime date30DaysAgo,
                                                                Pageable pageable) {
-        return productRepository.searchProductsByEnteredText(text, date30DaysAgo, pageable)
+        return productRepository.searchProductsByEnteredText(text, getLocalDateTime30DaysAgo(), pageable)
                 .orElse(Page.empty());
     }
 
-    private Page<ProductWithPromotionDTO> getPromotionProducts(LocalDateTime date30DaysAgo, Pageable pageable) {
-        return productRepository.findPromotionProducts(date30DaysAgo, pageable)
+    private Page<ProductWithPromotionDTO> getPromotionProducts(Pageable pageable) {
+        return productRepository.findPromotionProducts(getLocalDateTime30DaysAgo(), pageable)
                 .orElse(Page.empty());
     }
 
-    private Page<ProductWithPromotionDTO> getNewProducts(LocalDateTime date30DaysAgo, Pageable pageable) {
-        return productRepository.findNewProducts(date30DaysAgo, pageable)
+    private Page<ProductWithPromotionDTO> getNewProducts(Pageable pageable) {
+        return productRepository.findNewProducts(getLocalDateTime30DaysAgo(), pageable)
                 .orElse(Page.empty());
     }
 
@@ -98,7 +96,8 @@ public class ProductsPageService {
     private Pageable getPageable(PageProductsOptions pageProductsOptions) {
         String[] sortTypeAndDirection = pageProductsOptions.sortOption().split("\\s-\\s");
         String sortType = SortByType.findFieldNameOfSortByType(sortTypeAndDirection[0]);
-        return PageRequest.of(pageProductsOptions.pageNo(),
+        return PageRequest.of(
+                pageProductsOptions.pageNo(),
                 pageProductsOptions.size(),
                 Sort.by(Sort.Direction.fromString(sortTypeAndDirection[1]), sortType)
         );
