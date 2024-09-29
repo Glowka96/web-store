@@ -74,6 +74,36 @@ taskkill /PID ---- /f
 ```
 Then try connecting with the cloud-sql-proxy again.
 
+- Open the pom.xml and uncomment these: 
+
+```
+    <!--    <dependencyManagement>-->
+    <!--        <dependencies>-->
+    <!--            <dependency>-->
+    <!--                <groupId>com.google.cloud</groupId>-->
+    <!--                <artifactId>spring-cloud-gcp-dependencies</artifactId>-->
+    <!--                <version>${spring-cloud-gcp-dependencies.version}</version>-->
+    <!--                <type>pom</type>-->
+    <!--                <scope>import</scope>-->
+    <!--            </dependency>-->
+    <!--        </dependencies>-->
+    <!--    </dependencyManagement>-->
+```
+```
+    <!--        <dependency>-->
+    <!--            <groupId>com.google.cloud</groupId>-->
+    <!--            <artifactId>spring-cloud-gcp-starter-sql-mysql</artifactId>-->
+    <!--        </dependency>-->
+```
+  Comment this:
+```
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+```
+
 - Complete application-googlecloud.properties:
 
 ```
@@ -150,6 +180,45 @@ Follow the steps below for Angular and Spring Boot:
 Navigate to the Google Cloud Console: [Link](https://console.cloud.google.com/)
 
 Follow the steps below for Angular and Spring Boot:
+
+<details>
+<summary>Before build docker images do these steps</summary>
+<p></p>
+
+1. Open the pom.xml and uncomment these: 
+
+```
+    <!--    <dependencyManagement>-->
+    <!--        <dependencies>-->
+    <!--            <dependency>-->
+    <!--                <groupId>com.google.cloud</groupId>-->
+    <!--                <artifactId>spring-cloud-gcp-dependencies</artifactId>-->
+    <!--                <version>${spring-cloud-gcp-dependencies.version}</version>-->
+    <!--                <type>pom</type>-->
+    <!--                <scope>import</scope>-->
+    <!--            </dependency>-->
+    <!--        </dependencies>-->
+    <!--    </dependencyManagement>-->
+```
+```
+    <!--        <dependency>-->
+    <!--            <groupId>com.google.cloud</groupId>-->
+    <!--            <artifactId>spring-cloud-gcp-starter-sql-mysql</artifactId>-->
+    <!--        </dependency>-->
+```
+2. Comment this:
+```
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+```
+3. Add `-prod` in angular dockerfile in this line: `RUN cd /app && npm run build`
+</details>
+<p></p>
+
+
 
 - In the navigation menu, go to "Cloud Run".
 
