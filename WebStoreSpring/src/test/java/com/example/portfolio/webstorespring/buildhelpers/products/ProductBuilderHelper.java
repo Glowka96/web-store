@@ -17,7 +17,7 @@ import static com.natpryce.makeiteasy.MakeItEasy.make;
 
 public class ProductBuilderHelper {
 
-    public static final Property<Product, Long> ID = new Property();
+    public static final Property<Product, Long> ID = new Property<>();
     public static final Property<Product, String> NAME = new Property<>();
     public static final Property<Product, String> DESCRIPTION = new Property<>();
     public static final Property<Product, String> IMAGE_URL = new Property<>();
@@ -35,7 +35,7 @@ public class ProductBuilderHelper {
     private static final BigDecimal PRODUCT_PRICE = BigDecimal.valueOf(20.0);
     private static final Long PRODUCT_QUANTITY = 10L;
 
-    public static final Instantiator<Product> BASIC_PRODUCT = (lookup) ->
+    public static final Instantiator<Product> BASIC_PRODUCT = lookup ->
             Product.builder()
             .id(lookup.valueOf(ID,1L))
             .name(lookup.valueOf(NAME, PRODUCT_NAME))
