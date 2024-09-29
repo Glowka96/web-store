@@ -1,4 +1,4 @@
-# Running the Project Locally with MySQL, Spring Boot, and Angular
+# Running the Project Locally using Docker
 This guide will walk you through the steps to run your project locally on your development machine. The project consists of three main components: a MySQL database, a Spring Boot backend, and an Angular frontend.
 
 ## Table of Contents
@@ -17,10 +17,6 @@ Before you begin, make sure you have the following installed on your machine:
  - Integrated Development Environment (IDE) of your choice, such as [IntelliJ IDEA](https://www.jetbrains.com/idea/download/?section=windows) for Java and [Visual Studio Code](https://code.visualstudio.com/download) for Angular
 
 Also, you need a google account for the email sender host.
-
-<div align="right">
-  <a href="#running-the-project-locally-with-mysql-spring-boot-and-angular">Back to top</a>
-</div>
 
 ## Running in docker
 
@@ -48,42 +44,9 @@ Use it for `SENDER_PASSWORD`.
 
 How to create a secret key [link](https://dev.to/tkirwa/generate-a-random-jwt-secret-key-39j4).
 
+Change the admin email address and password for your data.
+
 If you're running Angular on default port you don't need change cross origination patterns, email confirmation link and password reset confirmation link.
-
-- Open the pom.xml and comment or delete these: 
-
-```
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.google.cloud</groupId>
-                <artifactId>spring-cloud-gcp-dependencies</artifactId>
-                <version>${spring-cloud-gcp-dependencies.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-```
-```
-        <dependency>
-            <groupId>com.google.cloud</groupId>
-            <artifactId>spring-cloud-gcp-starter-sql-mysql</artifactId>
-        </dependency>
-```
-  Uncomment this:
-```
-<!--        <dependency>-->
-<!--            <groupId>com.mysql</groupId>-->
-<!--            <artifactId>mysql-connector-j</artifactId>-->
-<!--            <version>${mysql-connector.version}</version>-->
-<!--            <scope>runtime</scope>-->
-<!--        </dependency>-->
-```
-
-<div align="right">
-  <a href="#running-the-project-locally-with-mysql-spring-boot-and-angular">Back to top</a>
-</div>
 
 ### Setting up Angular
 
