@@ -10,7 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Set;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -44,6 +44,6 @@ class NotificationStrategyFactoryTest {
     void shouldFindNotificationStrategy_whenNotificationTypeIsGiven(NotificationType notificationType) {
         NotificationStrategy notificationStrategy = underTest.findNotificationStrategy(notificationType);
 
-        assertThat(notificationStrategy).isNotNull();
+        assertNotNull(notificationStrategy);
     }
 }

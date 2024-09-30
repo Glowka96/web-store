@@ -41,7 +41,6 @@ class LoginServiceTest {
 
     @Test
     void shouldLogin() {
-        // given
         Account account = make(a(BASIC_ACCOUNT));
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(new AccountDetails(account), null);
@@ -54,13 +53,11 @@ class LoginServiceTest {
 
         LoginRequest loginRequest = new LoginRequest("test@test.pl","testpassword");
 
-        // when
         when(authenticationManager.authenticate(any())).thenReturn(authentication);
         when(authService.generateJwtToken(any())).thenReturn(jwtToken);
 
         AuthenticationResponse excepted = underTest.login(loginRequest);
 
-        //then
         assertEquals(response, excepted);
     }
 }

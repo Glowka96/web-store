@@ -37,7 +37,7 @@ import static com.example.portfolio.webstorespring.buildhelpers.products.Subcate
 import static com.natpryce.makeiteasy.MakeItEasy.a;
 import static com.natpryce.makeiteasy.MakeItEasy.make;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
@@ -67,50 +67,42 @@ class ProductServiceTest {
 
     @Test
     void shouldGetProductById() {
-        // given
         ProductWithProducerAndPromotionDTO productWithProducerAndPromotionDTO = createProductWithProducerAndPromotionDTO();
         given(productRepository.findProductById(anyLong(), any())).willReturn(productWithProducerAndPromotionDTO);
 
-        // when
         ProductWithProducerAndPromotionDTO result = underTest.getProductById(1L);
 
-        // then
         assertThat(result).isNotNull().isEqualTo(productWithProducerAndPromotionDTO);
     }
 
     @Test
-    void willThrowWhenProductIdNotFound() {
-        // given
+    void willThrowResourceNotFoundException_whenProductIdNotFound() {
         ProductWithProducerAndPromotionDTO productWithProducerAndPromotionDTO = createNullProductWithProducerAndPromotionDTO();
 
         given(productRepository.findProductById(anyLong(), any())).willReturn(productWithProducerAndPromotionDTO);
-        // when
-        // then
+
         assertThrows(ResourceNotFoundException.class, () -> underTest.getProductById(1L));
-        verify(productRepository, times(1)).findProductById(eq(1L), any());
+        verify(productRepository, times(1)).findProductById(1L, any());
     }
 
     @Test
-    void willThrowWhenProductIdWithPromotionNotFound() {
+    void willThrowResourceNotFoundException_whenProductIdWithPromotionNotFound() {
         given(productRepository.findProductByIdWithPromotion(anyLong())).willReturn(Optional.empty());
-        // when
-        // then
+
         assertThrows(ResourceNotFoundException.class, () -> underTest.findProductByIdWithPromotion(1L));
-        verify(productRepository, times(1)).findProductByIdWithPromotion(eq(1L));
+        verify(productRepository, times(1)).findProductByIdWithPromotion(1L);
     }
 
     @Test
     void shouldGetAllProducts() {
-        // when
         underTest.getAllProducts();
-        // then
+
         verify(productRepository, times(1)).findAll();
         verifyNoMoreInteractions(productRepository);
     }
 
     @Test
     void shouldSaveProduct() {
-        // given
         Producer producer = createProducer();
         Subcategory subcategory = createSubcategory();
         ProductRequest productRequest = createProductRequest();
@@ -120,23 +112,19 @@ class ProductServiceTest {
         given(subcategoryService.findSubcategoryById(anyLong())).willReturn(subcategory);
         given(productTypeService.findProductTypeById(anyLong())).willReturn(productType);
 
-        // when
         ProductResponse savedProductResponse = underTest.saveProduct(subcategory.getId(), producer.getId(), productRequest);
 
-        // then
         ArgumentCaptor<Product> productArgumentCaptor =
                 ArgumentCaptor.forClass(Product.class);
         verify(productRepository).save(productArgumentCaptor.capture());
 
-        Product capturedProduct = productArgumentCaptor.getValue();
-        ProductResponse mappedProductRequest = productMapper.mapToDto(capturedProduct);
+        ProductResponse mappedProductRequest = productMapper.mapToDto(productArgumentCaptor.getValue());
 
-        assertThat(mappedProductRequest).isEqualTo(savedProductResponse);
+        assertEquals(mappedProductRequest, savedProductResponse);
     }
 
     @Test
     void shouldUpdateProduct() {
-        // given
         ProductRequest productRequest = ProductBuilderHelper.createProductRequest(
                 "Test 2",
                 "Test description 2",
@@ -160,10 +148,8 @@ class ProductServiceTest {
         given(productRepository.findById(anyLong())).willReturn(Optional.of(product));
         given(productTypeService.findProductTypeById(anyLong())).willReturn(productType);
 
-        // when
         ProductResponse updatedProductResponse = underTest.updateProduct(subcategory.getId(), producer.getId(), product.getId(), productRequest);
 
-        // then
         ArgumentCaptor<Product> productArgumentCaptor =
                 ArgumentCaptor.forClass(Product.class);
         verify(productRepository).save(productArgumentCaptor.capture());
@@ -171,23 +157,20 @@ class ProductServiceTest {
         ProductResponse mappedProductRequest =
                 productMapper.mapToDto(productArgumentCaptor.getValue());
 
-        assertThat(mappedProductRequest).isEqualTo(updatedProductResponse);
-        assertThat(updatedProductResponse.getName()).isNotEqualTo(beforeUpdateName);
-        assertThat(updatedProductResponse.getDescription()).isNotEqualTo(beforeUpdateDescription);
-        assertThat(updatedProductResponse.getPrice()).isNotEqualTo(beforeUpdatePrice);
-        assertThat(updatedProductResponse.getQuantity()).isNotEqualTo(beforeUpdateQuantity);
+        assertEquals(mappedProductRequest, updatedProductResponse);
+        assertNotEquals(beforeUpdateName, updatedProductResponse.getName());
+        assertNotEquals(beforeUpdateDescription, updatedProductResponse.getDescription());
+        assertNotEquals(beforeUpdatePrice, updatedProductResponse.getPrice());
+        assertNotEquals(beforeUpdateQuantity, updatedProductResponse.getQuantity());
     }
 
     @Test
     void shouldDeleteById() {
-        // given
         Product product = make(a(BASIC_PRODUCT));
         given(productRepository.findById(1L)).willReturn(Optional.of(product));
 
-        // when
         underTest.deleteProductById(1L);
 
-        // then
         verify(productRepository, times(1)).findById(1L);
         verify(productRepository, times(1)).delete(product);
     }

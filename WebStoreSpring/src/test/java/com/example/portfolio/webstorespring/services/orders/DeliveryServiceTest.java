@@ -11,7 +11,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 
@@ -25,17 +26,15 @@ class DeliveryServiceTest {
 
     @Test
     void shouldFormatDelivery() {
-        // given
         DeliveryType deliveryType = DeliveryTypeBuilderHelper.createDeliveryType();
         DeliveryRequest deliveryRequest = DeliveryBuilderHelper.createDeliveryRequest();
         String deliveryAddressBeforeUpdate = deliveryRequest.getDeliveryAddress();
 
         given(deliveryTypeService.getDeliveryTypeById(anyLong())).willReturn(deliveryType);
-        // when
+
         Delivery formatedDelivery = underTest.formatDelivery(deliveryRequest);
 
-        // then
-        assertThat(formatedDelivery.getDeliveryAddress()).isNotEqualTo(deliveryAddressBeforeUpdate);
-        assertThat(formatedDelivery.getDeliveryType()).isEqualTo(deliveryType);
+        assertNotEquals(deliveryAddressBeforeUpdate, formatedDelivery.getDeliveryAddress());
+        assertEquals(deliveryType, formatedDelivery.getDeliveryType());
     }
 }

@@ -41,10 +41,10 @@ class JwtAuthenticationFilterTest {
     private MockHttpServletRequest request;
     @Spy
     private MockHttpServletResponse response;
+    private static final String AUTHORIZATION = "Authorization";
 
     @Test
     void shouldDoFilterInternalWithValidToken() throws ServletException, IOException {
-        // given
         String jwt = "valid-jwt-token";
         String authHeader = "Bearer " + jwt;
 
@@ -52,7 +52,7 @@ class JwtAuthenticationFilterTest {
         UserDetails userDetails = new AccountDetails(account);
 
         // when
-        when(request.getHeader("Authorization")).thenReturn(authHeader);
+        when(request.getHeader(AUTHORIZATION)).thenReturn(authHeader);
         when(jwtService.extractUsername(anyString())).thenReturn(account.getEmail());
         when(accountDetailsService.loadUserByUsername(anyString())).thenReturn(userDetails);
         when(jwtService.isTokenValid(anyString(), any(UserDetails.class))).thenReturn(true);
@@ -61,7 +61,7 @@ class JwtAuthenticationFilterTest {
         underTest.doFilterInternal(request, response, filterChain);
 
         // then
-        verify(request).getHeader("Authorization");
+        verify(request).getHeader(AUTHORIZATION);
         verify(jwtService).extractUsername(jwt);
         verify(accountDetailsService).loadUserByUsername("test@test.pl");
         verify(jwtService).isTokenValid(jwt, userDetails);
@@ -73,9 +73,9 @@ class JwtAuthenticationFilterTest {
     void shouldDoFilterInternalWithInvalidToken() throws ServletException, IOException {
         // given
         String jwt = "invalidToken";
-        String authHeader = "Bear" + jwt;
+        String authHeader = "Bearer" + jwt;
 
-        when(request.getHeader("Authorization")).thenReturn(authHeader);
+        when(request.getHeader(AUTHORIZATION)).thenReturn(authHeader);
 
         // when
         underTest.doFilterInternal(request, response, filterChain);
@@ -87,7 +87,7 @@ class JwtAuthenticationFilterTest {
     @Test
     void shouldDoFilterInternalWhenNoAuthHeader() throws ServletException, IOException {
         // given
-        when(request.getHeader("Authorization")).thenReturn(null);
+        when(request.getHeader(AUTHORIZATION)).thenReturn(null);
 
         // when
         underTest.doFilterInternal(request, response, filterChain);

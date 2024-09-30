@@ -21,8 +21,8 @@ import static com.example.portfolio.webstorespring.buildhelpers.accounts.Account
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.ConfirmationTokenBuilderHelper.*;
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.RegistrationRequestBuilderHelper.createRegistrationRequest;
 import static com.natpryce.makeiteasy.MakeItEasy.*;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
@@ -42,7 +42,6 @@ class RegistrationServiceTest {
 
     @Test
     void shouldRegistrationAccount() {
-        // given
         RegistrationRequest registrationRequest = createRegistrationRequest();
         Account account = make(a(BASIC_ACCOUNT));
         ConfirmationToken confirmationToken = make(a(BASIC_CONFIRMATION_TOKEN)
@@ -54,16 +53,13 @@ class RegistrationServiceTest {
                 .willReturn(excepted);
         given(accountService.saveAccount(registrationRequest)).willReturn(account);
 
-        // when
         Map<String, Object> result = underTest.registrationAccount(registrationRequest);
 
-        // then
-        assertThat(result).isEqualTo(excepted);
+        assertEquals(excepted, result);
     }
 
     @Test
     void shouldSuccessConfirmToken() {
-        // given
         Account account = make(a(BASIC_ACCOUNT)
                 .but(with(ENABLED, Boolean.FALSE)));
         ConfirmationToken confirmationToken = make(a(BASIC_CONFIRMATION_TOKEN)
@@ -71,27 +67,22 @@ class RegistrationServiceTest {
                 .but(withNull(CONFIRMED_AT)));
         Map<String, Object> excepted = Map.of("message","Account confirmed.");
 
-        // when
         when(confirmationTokenService.getConfirmationTokenByToken(anyString())).thenReturn(confirmationToken);
 
         Map<String, Object> result = underTest.confirmToken(confirmationToken.getToken());
 
-        // then
         verify(confirmationTokenService, times(1)).setConfirmedAtAndSaveConfirmationToken(any(ConfirmationToken.class));
         verify(accountService, times(1)).setEnabledAccount(any(Account.class));
-        assertThat(result).isEqualTo(excepted);
+        assertEquals(excepted, result);
     }
 
     @Test
-    void willThrow_whenAccountConfirm() {
-        // given
+    void willThrowEmailAlreadyConfirmedException_whenAccountIsConfirm() {
         Account account = make(a(BASIC_ACCOUNT));
         ConfirmationToken confirmationToken = make(a(BASIC_CONFIRMATION_TOKEN)
                 .but(with(ACCOUNT, account)));
-        // when
         when(confirmationTokenService.getConfirmationTokenByToken(anyString())).thenReturn(confirmationToken);
 
-        // then
         assertThatThrownBy(() -> underTest.confirmToken(confirmationToken.getToken()))
                 .isInstanceOf(EmailAlreadyConfirmedException.class)
                 .hasMessageContaining("Email already confirmed.");
@@ -99,7 +90,6 @@ class RegistrationServiceTest {
 
     @Test
     void shouldSendEmail_whenTokenIsExpired() {
-        // given
         Account account = make(a(BASIC_ACCOUNT));
         account.setEnabled(false);
         ConfirmationToken confirmationToken = make(a(BASIC_CONFIRMATION_TOKEN)
@@ -115,11 +105,9 @@ class RegistrationServiceTest {
         given(emailSenderService.sendEmail(any(NotificationType.class), anyString(), anyString()))
                 .willReturn(excepted);
 
-        // when
         Map<String, Object> result = underTest.confirmToken(confirmationToken.getToken());
 
-        // then
-        assertThat(result).isEqualTo(excepted);
+        assertEquals(excepted, result);
         verify(confirmationTokenService, times(1)).deleteConfirmationToken(any(ConfirmationToken.class));
     }
 }

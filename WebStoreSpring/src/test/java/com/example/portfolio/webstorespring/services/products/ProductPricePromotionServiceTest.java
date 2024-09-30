@@ -30,7 +30,7 @@ import static com.example.portfolio.webstorespring.buildhelpers.products.Product
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductPricePromotionBuilderHelper.BASIC_PROMOTION;
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductPricePromotionBuilderHelper.createProductPricePromotionRequest;
 import static com.natpryce.makeiteasy.MakeItEasy.*;
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
@@ -51,27 +51,24 @@ class ProductPricePromotionServiceTest {
 
     @Test
     void shouldSaveProductPricePromotion() {
-        // given
         setMappers();
 
         Product product = make(a(BASIC_PRODUCT).but(with(PRICE_PROMOTIONS, Set.of())));
-
         ProductPricePromotionRequest productPricePromotionRequest = createProductPricePromotionRequest();
 
         given(productService.findProductByIdWithPromotion(anyLong())).willReturn(product);
 
-        // when
-        ProductPricePromotionResponse savedProductPricePromotionRequest = underTest.saveProductPricePromotion(productPricePromotionRequest);
+        ProductPricePromotionResponse savedProductPricePromotionRequest =
+                underTest.saveProductPricePromotion(productPricePromotionRequest);
 
-        // then
         ArgumentCaptor<ProductPricePromotion> productPricePromotionArgumentCaptor =
                 ArgumentCaptor.forClass(ProductPricePromotion.class);
         verify(promotionRepository).save(productPricePromotionArgumentCaptor.capture());
 
-        ProductPricePromotion promotion = productPricePromotionArgumentCaptor.getValue();
-        ProductPricePromotionResponse mappedProductPricePromotionResponse = promotionMapper.mapToDto(promotion);
+        ProductPricePromotionResponse mappedProductPricePromotionResponse =
+                promotionMapper.mapToDto(productPricePromotionArgumentCaptor.getValue());
 
-        assertThat(mappedProductPricePromotionResponse).isEqualTo(savedProductPricePromotionRequest);
+        assertEquals(mappedProductPricePromotionResponse, savedProductPricePromotionRequest);
     }
 
     private void setMappers() {
@@ -84,15 +81,12 @@ class ProductPricePromotionServiceTest {
     }
 
     @Test
-    void willThrowWhenPromotionPriceIsGreaterThanBasePrice() {
-        // given
+    void willThrowPromotionPriceGreaterThanBasePriceException() {
         Product product = make(a(BASIC_PRODUCT).but(with(PRICE_PROMOTIONS, Set.of())));
         ProductPricePromotionRequest productPricePromotionRequest = createProductPricePromotionRequest(BigDecimal.valueOf(999.99));
 
-        // when
         when(productService.findProductByIdWithPromotion(anyLong())).thenReturn(product);
 
-        // then
         assertThrows(PromotionPriceGreaterThanBasePriceException.class, () -> underTest.saveProductPricePromotion(productPricePromotionRequest));
         verify(productService, times(1)).findProductByIdWithPromotion(1L);
         verifyNoMoreInteractions(productService);
@@ -101,16 +95,13 @@ class ProductPricePromotionServiceTest {
 
     @Test
     void willThrowWhenProductHasAlreadyPromotion() {
-        // given
         ProductPricePromotion productPricePromotion = make(a(BASIC_PROMOTION));
         Product product = make(a(BASIC_PRODUCT).but(with(PRICE_PROMOTIONS, Set.of(productPricePromotion))));
 
         ProductPricePromotionRequest productPricePromotionRequest = createProductPricePromotionRequest();
 
-        // when
         when(productService.findProductByIdWithPromotion(anyLong())).thenReturn(product);
 
-        // then
         assertThrows(ProductHasAlreadyPromotionException.class, () -> underTest.saveProductPricePromotion(productPricePromotionRequest));
         verify(productService, times(1)).findProductByIdWithPromotion(1L);
         verifyNoMoreInteractions(productService);

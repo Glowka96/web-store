@@ -20,7 +20,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.example.portfolio.webstorespring.buildhelpers.products.CategoryBuilderHelper.*;
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
@@ -35,17 +36,14 @@ class CategoryServiceTest {
 
     @Test
     void shouldGetAllCategory() {
-        // given
         List<Category> categories = Collections.singletonList(createCategory());
         List<CategoryResponse> exceptedResponses = Collections.singletonList(createCategoryResponse());
 
         given(categoryRepository.findAll()).willReturn(categories);
 
-        // when
         List<CategoryResponse> foundCategoryResponses = underTest.getAllCategory();
 
-        // then
-        assertThat(foundCategoryResponses).isEqualTo(exceptedResponses);
+        assertEquals(exceptedResponses, foundCategoryResponses);
         verify(categoryRepository, times(1)).findAll();
         verifyNoMoreInteractions(categoryRepository);
         verify(categoryMapper, times(1)).mapToDto(categories);
@@ -53,36 +51,10 @@ class CategoryServiceTest {
 
     @Test
     void shouldSaveCategory() {
-        // given
         CategoryRequest categoryRequest = createCategoryRequest();
 
-        // when
         CategoryResponse savedCategoryResponse = underTest.saveCategory(categoryRequest);
 
-        // then
-        ArgumentCaptor<Category> categoryArgumentCaptor =
-                ArgumentCaptor.forClass(Category.class);
-        verify(categoryRepository).save(categoryArgumentCaptor.capture());
-
-        Category capturedCategory = categoryArgumentCaptor.getValue();
-        CategoryResponse mappedCategoryResponse =
-                categoryMapper.mapToDto(capturedCategory);
-
-        assertThat(mappedCategoryResponse).isEqualTo(savedCategoryResponse);
-    }
-
-    @Test
-    void shouldUpdateCategory() {
-        // given
-        Category category = createCategory();
-        String categoryName = category.getName();
-        CategoryRequest categoryRequest = createCategoryRequest("Test2");
-        given(categoryRepository.findById(anyLong())).willReturn(Optional.of(category));
-
-        // when
-        CategoryResponse updatedCategoryResponse = underTest.updateCategory(category.getId(), categoryRequest);
-
-        // then
         ArgumentCaptor<Category> categoryArgumentCaptor =
                 ArgumentCaptor.forClass(Category.class);
         verify(categoryRepository).save(categoryArgumentCaptor.capture());
@@ -90,20 +62,36 @@ class CategoryServiceTest {
         CategoryResponse mappedCategoryResponse =
                 categoryMapper.mapToDto(categoryArgumentCaptor.getValue());
 
-        assertThat(mappedCategoryResponse).isEqualTo(updatedCategoryResponse);
-        assertThat(updatedCategoryResponse.getName()).isNotEqualTo(categoryName);
+        assertEquals(mappedCategoryResponse, savedCategoryResponse);
+    }
+
+    @Test
+    void shouldUpdateCategory() {
+        Category category = createCategory();
+        String categoryNameBeforeUpdate = category.getName();
+        CategoryRequest categoryRequest = createCategoryRequest("Test2");
+        given(categoryRepository.findById(anyLong())).willReturn(Optional.of(category));
+
+        CategoryResponse updatedCategoryResponse = underTest.updateCategory(category.getId(), categoryRequest);
+
+        ArgumentCaptor<Category> categoryArgumentCaptor =
+                ArgumentCaptor.forClass(Category.class);
+        verify(categoryRepository).save(categoryArgumentCaptor.capture());
+
+        CategoryResponse mappedCategoryResponse =
+                categoryMapper.mapToDto(categoryArgumentCaptor.getValue());
+
+        assertEquals(mappedCategoryResponse, updatedCategoryResponse);
+        assertNotEquals(categoryNameBeforeUpdate, updatedCategoryResponse.getName());
     }
 
     @Test
     void shouldDeleteCategoryById() {
-        // given
         Category category = createCategory();
         given(categoryRepository.findById(anyLong())).willReturn(Optional.of(category));
 
-        // when
         underTest.deleteCategoryById(1L);
 
-        // then
         verify(categoryRepository, times(1)).findById(1L);
         verify(categoryRepository, times(1)).delete(category);
     }

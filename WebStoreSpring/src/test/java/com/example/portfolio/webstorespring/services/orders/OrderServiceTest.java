@@ -42,6 +42,7 @@ import static com.example.portfolio.webstorespring.buildhelpers.orders.OrderBuil
 import static com.natpryce.makeiteasy.MakeItEasy.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.any;
@@ -79,38 +80,31 @@ class OrderServiceTest {
 
     @Test
     void shouldGetAllAccountsOrder() {
-        // given
         Order order = createOrder();
         AccountDetails accountDetails = getAccountDetails();
 
         given(orderRepository.findAllByAccountId(anyLong())).willReturn(Arrays.asList(order, order));
 
-        // when
         List<OrderResponseWithoutShipments> foundOrderResponses = underTest.getAllAccountOrder(accountDetails);
 
-        // then
-        assertThat(foundOrderResponses).hasSize(2);
+        assertEquals(2, foundOrderResponses.size());
     }
 
     @Test
     void shouldGetAccountOrderByOrderId() {
-        // given
         Order order = createOrder();
         AccountDetails accountDetails = getAccountDetails();
 
         given(orderRepository.findById(anyLong())).willReturn(Optional.of(order));
 
-        // when
         OrderResponse orderResponse = underTest.getOrderById(accountDetails,1L);
 
-        // then
-        assertThat(orderResponse.getId()).isEqualTo(order.getId());
+        assertEquals(order.getId(), orderResponse.getId());
         assertThat(orderResponse.getShipmentResponses()).hasSize(2);
     }
 
     @Test
     void shouldGetLastFiveAccountOrders() {
-        // given
         Order order = createOrder();
 
         AccountDetails accountDetails = getAccountDetails();
@@ -118,16 +112,13 @@ class OrderServiceTest {
         given(orderRepository.findLastFiveAccountOrder(anyLong()))
                 .willReturn(List.of(order, order, order, order, order));
 
-        // when
         List<OrderResponseWithoutShipments> findOrders = underTest.getLastFiveAccountOrder(accountDetails);
 
-        // then
         assertThat(findOrders).hasSize(5);
     }
 
     @Test
-    void willThrowWhenGetAccountOrderNoOwnAuthAccount() {
-        // given
+    void willThrowAccessDeniedException_whenGetAccountOrderNoOwnAuthAccount() {
         Order order = createOrder();
         setupOtherAccountToAuthentication(order);
 
@@ -135,15 +126,13 @@ class OrderServiceTest {
 
         given(orderRepository.findById(anyLong())).willReturn(Optional.of(order));
 
-        // when
-        // than
         assertThatThrownBy(() -> underTest.getOrderById(accountDetails, 1L))
                 .isInstanceOf(AccessDeniedException.class)
                 .hasMessageContaining("You can only get your data");
     }
 
     @Test
-    void willThrowWhenGetAccountOrderIdNotFoundOrder() {
+    void willThrowResourceNotFoundException_whenGetAccountOrderIdNotFoundOrder() {
         AccountDetails accountDetails = getAccountDetails();
 
         assertThatThrownBy(() -> underTest.getOrderById(accountDetails, 1L))
@@ -153,7 +142,6 @@ class OrderServiceTest {
 
     @Test
     void shouldSaveOrder() {
-        // given
         AccountDetails accountDetails = getAccountDetails();
 
         OrderRequest orderRequest = createOrderRequest();
@@ -161,17 +149,15 @@ class OrderServiceTest {
         Delivery delivery = createDelivery();
         given(deliveryService.formatDelivery(any())).willReturn(delivery);
 
-        // when
         OrderResponse savedOrderResponse = underTest.saveOrder(accountDetails, orderRequest);
 
-        // then
         ArgumentCaptor<Order> orderArgumentCaptor =
                 ArgumentCaptor.forClass(Order.class);
         verify(orderRepository).save(orderArgumentCaptor.capture());
 
         OrderResponse orderResponse = orderMapper.mapToDto(orderArgumentCaptor.getValue());
 
-        assertThat(savedOrderResponse).isEqualTo(orderResponse);
+        assertEquals(orderResponse, savedOrderResponse);
     }
 
     private AccountDetails getAccountDetails() {

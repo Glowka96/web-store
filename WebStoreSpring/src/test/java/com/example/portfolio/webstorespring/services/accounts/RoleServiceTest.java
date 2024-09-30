@@ -11,7 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Set;
 
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.RoleBuilderHelper.createUserRole;
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
@@ -26,40 +26,31 @@ class RoleServiceTest {
 
     @Test
     void shouldFindRoleByName() {
-        // given
         Role role = createUserRole();
         given(roleRepository.findByName(anyString())).willReturn(Set.of(role));
 
-        // when
         Set<Role> result = underTest.findRoleByName("Test");
 
-        // then
-        assertThat(result).isEqualTo(Set.of(role));
+        assertEquals(Set.of(role), result);
         verify(roleRepository, times(1)).findByName(anyString());
     }
 
     @Test
     void shouldInitializeRole_whenRolesNotExist() {
-        // given
         given(roleRepository.existsByName(anyString())).willReturn(false);
 
-        // when
         underTest.initializeRole("Test");
 
-        // then
         verify(roleRepository, times(1)).existsByName(anyString());
         verify(roleRepository, times(1)).save(any(Role.class));
     }
 
     @Test
     void shouldNoInitializeRole_whenRoleIsExist() {
-        // given
         given(roleRepository.existsByName(anyString())).willReturn(true);
 
-        // when
         underTest.initializeRole("Test");
 
-        // then
         verify(roleRepository, times(1)).existsByName(anyString());
         verifyNoMoreInteractions(roleRepository);
     }
