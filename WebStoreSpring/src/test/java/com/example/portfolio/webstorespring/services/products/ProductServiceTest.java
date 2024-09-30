@@ -82,7 +82,7 @@ class ProductServiceTest {
         given(productRepository.findProductById(anyLong(), any())).willReturn(productWithProducerAndPromotionDTO);
 
         assertThrows(ResourceNotFoundException.class, () -> underTest.getProductById(1L));
-        verify(productRepository, times(1)).findProductById(1L, any());
+        verify(productRepository, times(1)).findProductById(eq(1L), any());
     }
 
     @Test

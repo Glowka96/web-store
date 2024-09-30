@@ -39,14 +39,15 @@ class LogoutServiceTest {
     private LogoutService underTest;
 
     private static final String JWT = "7777";
-    private static final String AUTH_HEADER = "Bearer" + JWT;
+    private static final String AUTH_HEADER = "Bearer " + JWT;
+    private static final String AUTHORIZATION = "Authorization";
 
     @Test
     void shouldLogout() {
         Account account = make(a(BASIC_ACCOUNT));
         AuthToken authToken = createAuthToken(account, JWT);
 
-        when(request.getHeader("Authorization")).thenReturn(AUTH_HEADER);
+        when(request.getHeader(AUTHORIZATION)).thenReturn(AUTH_HEADER);
         when(authTokenRepository.findByToken(any())).thenReturn(Optional.of(authToken));
 
         underTest.logout(request,response,authentication);
@@ -60,7 +61,7 @@ class LogoutServiceTest {
 
     @Test
     void shouldNotLogout_whenInvalidAuthToken() {
-        when(request.getHeader("Authorization")).thenReturn(JWT);
+        when(request.getHeader(AUTHORIZATION)).thenReturn(JWT);
 
         underTest.logout(request,response,authentication);
 
@@ -79,8 +80,8 @@ class LogoutServiceTest {
     }
 
     @Test
-    void willThrowResourceNotFoundException_whenNotFoundAuthToken() {
-        when(request.getHeader("Authorization")).thenReturn(AUTH_HEADER);
+    void willThrowWhenNotFoundAuthToken() {
+        when(request.getHeader(AUTHORIZATION)).thenReturn(AUTH_HEADER);
         when(authTokenRepository.findByToken(any())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> underTest.logout(request, response, authentication))
