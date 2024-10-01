@@ -27,9 +27,7 @@ import java.util.Optional;
 
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.ConfirmationTokenBuilderHelper.*;
 import static com.natpryce.makeiteasy.MakeItEasy.*;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 class ResetPasswordControllerIT extends AbstractTestRestTemplateIT {
@@ -66,7 +64,7 @@ class ResetPasswordControllerIT extends AbstractTestRestTemplateIT {
         );
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertThat(response.getBody()).isNotNull();
+        assertNotNull(response.getBody());
         assertTrue(Objects.requireNonNull(response.getBody())
                 .containsValue("Sent reset password link to your email"));
     }
@@ -93,12 +91,12 @@ class ResetPasswordControllerIT extends AbstractTestRestTemplateIT {
         );
 
         assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
-        assertThat(response.getBody()).isNotNull();
+        assertNotNull(response.getBody());
         assertTrue(Objects.requireNonNull(response.getBody())
                 .containsValue("Your new password has been saved"));
 
         Optional<Account> optionalAccount = accountRepository.findByEmail(savedAccount.getEmail());
-        assertThat(optionalAccount).isPresent();
+        assertTrue(optionalAccount.isPresent());
         assertTrue(encoder.matches("newPassword123*", optionalAccount.get().getPassword()));
     }
 }

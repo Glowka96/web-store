@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import java.util.Objects;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 class AccountControllerIT extends AbstractAuthControllerIT {
@@ -51,18 +50,14 @@ class AccountControllerIT extends AbstractAuthControllerIT {
 
         assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
 
-        assertThat(response.getBody()).isNotNull();
-        AccountResponse accountResponse = response.getBody();
+        assertNotNull(response.getBody());
         Optional<Account> accountOptional =
-                accountRepository.findByEmail(Objects.requireNonNull(accountResponse).getEmail());
-        assertThat(accountOptional).isPresent();
+                accountRepository.findByEmail(Objects.requireNonNull(response.getBody()).getEmail());
+        assertTrue(accountOptional.isPresent());
 
-        Account account = accountOptional.get();
-        assertThat(account.getFirstName()).isEqualTo(accountRequest.getFirstName())
-                .isEqualTo(accountResponse.getFirstName());
-        assertThat(account.getLastName()).isEqualTo(accountRequest.getLastName())
-                .isEqualTo(accountResponse.getLastName());
-        assertTrue(passwordEncoder.matches(accountRequest.getPassword(), account.getPassword()));
+        assertEquals(accountRequest.getFirstName(), accountOptional.get().getFirstName(), response.getBody().getFirstName());
+        assertEquals(accountRequest.getLastName(), accountOptional.get().getLastName(), response.getBody().getLastName());
+        assertTrue(passwordEncoder.matches(accountRequest.getPassword(), accountOptional.get().getPassword()));
     }
 
     @Test
@@ -77,7 +72,7 @@ class AccountControllerIT extends AbstractAuthControllerIT {
         );
 
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
-        assertThat(response.getBody()).isNull();
+        assertNull(response.getBody());
         assertFalse(accountRepository.existsByEmail("user@test.pl"));
     }
 }

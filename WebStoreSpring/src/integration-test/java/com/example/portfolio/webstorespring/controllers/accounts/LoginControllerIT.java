@@ -21,8 +21,7 @@ import java.util.Optional;
 
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.*;
 import static com.natpryce.makeiteasy.MakeItEasy.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class LoginControllerIT extends AbstractTestRestTemplateIT {
 
@@ -47,11 +46,11 @@ class LoginControllerIT extends AbstractTestRestTemplateIT {
                         .but(with(PASSWORD, encoder.encode(PASSWORD_STRING))));
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertThat(response.getBody()).isNotNull();
+        assertNotNull(response.getBody());
 
         Optional<AuthToken> authToken =
                 tokenRepository.findByToken(response.getBody().token());
-        assertThat(authToken).isPresent();
+        assertTrue(authToken.isPresent());
     }
 
     @Test

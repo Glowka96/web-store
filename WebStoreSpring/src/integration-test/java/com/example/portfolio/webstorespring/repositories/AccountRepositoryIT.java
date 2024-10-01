@@ -24,7 +24,7 @@ import java.util.Set;
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.BASIC_ACCOUNT;
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.ROLES;
 import static com.natpryce.makeiteasy.MakeItEasy.*;
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Import(ContainersConfig.class)
 @DataJpaTest
@@ -58,19 +58,19 @@ class AccountRepositoryIT {
 
         Optional<Account> account = accountRepository.findByEmail(EMAIL);
 
-        assertThat(account).isPresent();
-        assertThat(account.get().getEmail()).isEqualTo(EMAIL);
+        assertTrue(account.isPresent());
+        assertEquals(EMAIL, account.get().getEmail());
 
         boolean rolesInitialized = Hibernate.isInitialized(account.get().getRoles());
-        assertThat(rolesInitialized).isFalse();
+        assertFalse(rolesInitialized);
     }
 
     @Test
     void shouldFindAccountByEmailWithRole() {
         Optional<Account> account = accountRepository.findAccountWithRolesByEmail(EMAIL);
 
-        assertThat(account).isPresent();
-        assertThat(account.get().getEmail()).isEqualTo(EMAIL);
-        assertThat(account.get().getRoles()).isNotNull();
+        assertTrue(account.isPresent());
+        assertEquals(EMAIL, account.get().getEmail());
+        assertNotNull(account.get().getRoles());
     }
 }

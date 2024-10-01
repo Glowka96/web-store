@@ -46,8 +46,8 @@ public class Account {
     private Set<Role> roles;
 
     @OneToMany(mappedBy = "account",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
+            cascade = CascadeType.ALL
+    )
     private List<Order> orders;
 
     @OneToMany(mappedBy = "account",

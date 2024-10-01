@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @Import({ContainersConfig.class, InitProductConfig.class})
@@ -44,8 +45,8 @@ class ProductRepositoryIT{
     void shouldFindProductWithoutPromotionById() {
         Optional<Product> optionalProduct = productRepository.findById(initProductTestData.getProductIdThatHasNoPromotion());
 
-        assertThat(optionalProduct).isPresent();
-        assertThat(optionalProduct.get().getPricePromotions()).isEmpty();
+        assertTrue(optionalProduct.isPresent());
+        assertTrue(optionalProduct.get().getPricePromotions().isEmpty());
     }
 
     @Test
@@ -55,8 +56,8 @@ class ProductRepositoryIT{
                 initProductTestData.getDate30DaysAgo()
         );
 
-        assertThat(product).isNotNull();
-        assertThat(product.id()).isEqualTo(initProductTestData.getProductIdThatHasPromotion());
+        assertNotNull(product);
+        assertEquals(initProductTestData.getProductIdThatHasPromotion(), product.id());
         assertThat(product.promotionPrice()).isGreaterThan(product.lowestPrice());
     }
 
@@ -68,7 +69,7 @@ class ProductRepositoryIT{
                 initProductTestData.getPageable()
         );
 
-        assertThat(optionalPageProducts).isPresent();
+        assertTrue(optionalPageProducts.isPresent());
         assertPageProducts(optionalPageProducts.get(), 4, 2);
 
     }
@@ -81,7 +82,7 @@ class ProductRepositoryIT{
                 initProductTestData.getPageable()
         );
 
-        assertThat(optionalPageProducts).isPresent();
+        assertTrue(optionalPageProducts.isPresent());
         assertPageProducts(optionalPageProducts.get(), 1, 1);
     }
 
@@ -92,7 +93,7 @@ class ProductRepositoryIT{
                 initProductTestData.getPageable()
         );
 
-        assertThat(optionalPageProducts).isPresent();
+        assertTrue(optionalPageProducts.isPresent());
         assertPageProducts(optionalPageProducts.get(), 3, 3);
     }
 
@@ -103,7 +104,7 @@ class ProductRepositoryIT{
                 initProductTestData.getPageable()
         );
 
-        assertThat(optionalPageProducts).isPresent();
+        assertTrue(optionalPageProducts.isPresent());
         assertPageProducts(optionalPageProducts.get(), 5, 3);
     }
 
@@ -113,7 +114,7 @@ class ProductRepositoryIT{
                 initProductTestData.getProductIdThatHasPromotion()
         );
 
-        assertThat(optionalProduct).isPresent();
+        assertTrue(optionalProduct.isPresent());
     }
 
     @Test
@@ -123,14 +124,14 @@ class ProductRepositoryIT{
                         initProductTestData.getProductIdThatHasNoPromotion())
                 );
 
-        assertThat(products).hasSize(2);
+        assertEquals(2, products.size());
     }
 
     private static void assertPageProducts(Page<ProductWithPromotionDTO> products,
                                            int totalElements,
                                            int totalPromotions) {
-        assertThat(products.getTotalPages()).isEqualTo(1);
-        assertThat(products.getTotalElements()).isEqualTo(totalElements);
+        assertEquals(1, products.getTotalPages());
+        assertEquals(totalElements, products.getTotalElements());
         assertPageHasPromotionalProduct(products, totalPromotions);
     }
 
@@ -138,6 +139,6 @@ class ProductRepositoryIT{
                                                         int totalPromotions) {
         List<ProductWithPromotionDTO> productsWithPromotion =
                 products.get().filter(p -> p.promotionPrice() != null).toList();
-        assertThat(productsWithPromotion).hasSize(totalPromotions);
+        assertEquals(totalPromotions, productsWithPromotion.size());
     }
 }

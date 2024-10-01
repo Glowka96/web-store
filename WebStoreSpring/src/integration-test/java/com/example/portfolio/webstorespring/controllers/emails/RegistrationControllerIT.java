@@ -69,12 +69,12 @@ class RegistrationControllerIT extends AbstractTestRestTemplateIT {
         );
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertThat(response.getBody()).isNotNull();
+        assertNotNull(response.getBody());
         assertTrue(Objects.requireNonNull(response.getBody())
                 .containsValue(REGISTER_MESSAGE));
 
         Optional<Account> accountOptional = accountRepository.findByEmail(registrationRequest.getEmail());
-        assertThat(accountOptional).isPresent();
+        assertTrue(accountOptional.isPresent());
         assertFalse(accountOptional.get().getEnabled());
     }
 
@@ -105,7 +105,7 @@ class RegistrationControllerIT extends AbstractTestRestTemplateIT {
         assertTrue(Objects.requireNonNull(response.getBody()).containsValue(CONFIRMED_MESSAGE));
 
         Optional<Account> accountOptional = accountRepository.findByEmail(savedAccount.getEmail());
-        assertThat(accountOptional).isPresent();
+        assertTrue(accountOptional.isPresent());
         assertTrue(accountOptional.get().getEnabled());
     }
 
@@ -132,11 +132,11 @@ class RegistrationControllerIT extends AbstractTestRestTemplateIT {
         );
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertThat(response.getBody()).isNotNull();
+        assertNotNull(response.getBody());
         assertTrue(Objects.requireNonNull(response.getBody()).containsValue(RESEND_TOKEN_MESSAGE));
 
         Optional<Account> accountOptional = accountRepository.findByEmail(savedAccount.getEmail());
-        assertThat(accountOptional).isPresent();
+        assertTrue(accountOptional.isPresent());
         assertFalse(accountOptional.get().getEnabled());
     }
 }
