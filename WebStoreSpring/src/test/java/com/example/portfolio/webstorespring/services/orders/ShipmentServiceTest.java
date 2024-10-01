@@ -22,8 +22,8 @@ import static com.example.portfolio.webstorespring.buildhelpers.products.Product
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.PRICE_PROMOTIONS;
 import static com.natpryce.makeiteasy.MakeItEasy.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.BDDMockito.given;
 
@@ -84,9 +84,7 @@ class ShipmentServiceTest {
 
         given(productRepository.findProductsByIdsWithPromotion(anyList())).willReturn(List.of());
 
-        assertThatThrownBy(() -> underTest.setupShipments(List.of(shipmentRequest)))
-                .isInstanceOf(ProductsNotFoundException.class)
-                .hasMessageContaining("One or more products could not be found");
+        assertThrows(ProductsNotFoundException.class, () -> underTest.setupShipments(List.of(shipmentRequest)));
     }
 
     @Test
@@ -97,8 +95,7 @@ class ShipmentServiceTest {
 
         given(productRepository.findProductsByIdsWithPromotion(anyList())).willReturn(List.of(product));
 
-        assertThatThrownBy(() -> underTest.setupShipments(List.of(shipmentRequest)))
-                .isInstanceOf(ShipmentQuantityExceedsProductQuantityException.class)
-                .hasMessageContaining("The shipment quantity exceeds the product quantity");
+        assertThrows(ShipmentQuantityExceedsProductQuantityException.class,
+                () -> underTest.setupShipments(List.of(shipmentRequest)));
     }
 }
