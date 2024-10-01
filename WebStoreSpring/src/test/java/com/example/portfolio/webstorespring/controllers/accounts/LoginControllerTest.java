@@ -27,21 +27,18 @@ class LoginControllerTest {
     private LoginService loginService;
     @InjectMocks
     private LoginController underTest;
-    private final static String URI = "/api/v1/login";
+    private static final String URI = "/api/v1/login";
 
     @Test
     void login() throws Exception {
-        // given
         MockMvc mvc = MockMvcBuilders.standaloneSetup(underTest).build();
         ObjectMapper mapper = new ObjectMapper();
         LoginRequest loginRequest = new LoginRequest("test@test.pl","Test1234$");
 
         AuthenticationResponse authenticationResponse = new AuthenticationResponse("token");
 
-        // when
         when(loginService.login(loginRequest)).thenReturn(authenticationResponse);
 
-        // then
         mvc.perform(post(URI, loginRequest)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)

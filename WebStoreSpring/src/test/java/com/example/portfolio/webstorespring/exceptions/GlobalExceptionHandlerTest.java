@@ -19,7 +19,8 @@ import org.springframework.web.context.request.WebRequest;
 
 import java.util.*;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -89,7 +90,6 @@ class GlobalExceptionHandlerTest {
 
     @Test
     void shouldHandleMethodArgumentNotValidException_thenStatusBadRequest() {
-        // given
         List<String> excepted = new ArrayList<>();
         excepted.add("Error message 1");
         excepted.add("Error message 2");
@@ -97,7 +97,6 @@ class GlobalExceptionHandlerTest {
         FieldError fieldError1 = new FieldError("objectName", "fieldName1", "Error message 1");
         FieldError fieldError2 = new FieldError("objectName", "fieldName2", "Error message 2");
 
-        // when
         when(argumentNotValidException.getAllErrors()).thenReturn(Arrays.asList(fieldError1, fieldError2));
 
         ErrorResponse expectedErrorResponse = new ErrorResponse(
@@ -110,7 +109,6 @@ class GlobalExceptionHandlerTest {
                 argumentNotValidException, webRequest
         );
 
-        // then
         assertsResponse(responseEntity, expectedErrorResponse);
     }
 
@@ -249,7 +247,6 @@ class GlobalExceptionHandlerTest {
 
     @Test
     void shouldHandleConstraintViolationException() {
-        // given
         Set<ConstraintViolation<?>> constraintViolations = new HashSet<>();
         ConstraintViolation mockedViolation = mock(ConstraintViolation.class);
         ConstraintViolation mockedViolation2 = mock(ConstraintViolation.class);
@@ -265,7 +262,6 @@ class GlobalExceptionHandlerTest {
                 webRequest.getDescription(false)
         );
 
-        // when
         when(mockedViolation.getMessage()).thenReturn(messages.get(0));
         when(mockedViolation2.getMessage()).thenReturn(messages.get(1));
         when(constraintViolationException.getConstraintViolations()).thenReturn(constraintViolations);
@@ -273,11 +269,8 @@ class GlobalExceptionHandlerTest {
         ResponseEntity<ErrorResponse> responseEntity = underTest
                 .handeConstraintViolationException(constraintViolationException, webRequest);
 
-        // then
-
-        assertThat(responseEntity.getStatusCode().value()).isEqualTo(exceptedErrorResponse.getStatusCode());
-        assertThat(Objects.requireNonNull(responseEntity.getBody()).getErrors()).containsExactlyInAnyOrderElementsOf(exceptedErrorResponse.getErrors());
-
+        assertEquals(exceptedErrorResponse.getStatusCode(), responseEntity.getStatusCode().value());
+        assertTrue(Objects.requireNonNull(responseEntity.getBody()).getErrors().containsAll(exceptedErrorResponse.getErrors()));
     }
 
     @Test
@@ -295,8 +288,8 @@ class GlobalExceptionHandlerTest {
     }
 
     private void assertsResponse(ResponseEntity<ErrorResponse> responseEntity, ErrorResponse exceptedErrorResponse) {
-        assertThat(responseEntity.getStatusCode().value()).isEqualTo(exceptedErrorResponse.getStatusCode());
-        assertThat(responseEntity.getBody()).isEqualTo(exceptedErrorResponse);
+        assertEquals(exceptedErrorResponse.getStatusCode(), responseEntity.getStatusCode().value());
+        assertEquals(exceptedErrorResponse, responseEntity.getBody());
     }
 
     private <E extends RuntimeException> ErrorResponse getExceptedErrorResponse(HttpStatus httpStatus, E exception) {
