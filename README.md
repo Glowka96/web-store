@@ -86,6 +86,16 @@ GCP:
 ## Changelogs
 
 <details>
+<summary>Clean code branch:</summary>
+
+- Rename ProductPricePromotion to Promotion
+- Use asserts from junit.jupiter instead of assertThat in some cases 
+- Remove comments (//given, //when, //then) form tests
+- Separating integration tests
+
+</details>
+
+<details>
 <summary>Integrations and unit test branch:</summary>
 
 - Add changelogs
