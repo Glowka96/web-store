@@ -44,7 +44,7 @@ class ProductRepositoryIT{
         Optional<Product> optionalProduct = productRepository.findById(initProductTestData.getProductIdThatHasNoPromotion());
 
         assertTrue(optionalProduct.isPresent());
-        assertTrue(optionalProduct.get().getPricePromotions().isEmpty());
+        assertTrue(optionalProduct.get().getPromotions().isEmpty());
     }
 
     @Test

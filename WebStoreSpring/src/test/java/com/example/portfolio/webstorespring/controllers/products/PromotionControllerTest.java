@@ -1,8 +1,9 @@
 package com.example.portfolio.webstorespring.controllers.products;
 
-import com.example.portfolio.webstorespring.model.dto.products.request.ProductPricePromotionRequest;
-import com.example.portfolio.webstorespring.model.dto.products.response.ProductPricePromotionResponse;
-import com.example.portfolio.webstorespring.services.products.ProductPricePromotionService;
+import com.example.portfolio.webstorespring.buildhelpers.products.PromotionBuilderHelper;
+import com.example.portfolio.webstorespring.model.dto.products.request.PromotionRequesst;
+import com.example.portfolio.webstorespring.model.dto.products.response.PromotionResponse;
+import com.example.portfolio.webstorespring.services.products.PromotionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,8 +18,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.time.format.DateTimeFormatter;
 
-import static com.example.portfolio.webstorespring.buildhelpers.products.ProductPricePromotionBuilderHelper.createProductPricePromotionRequest;
-import static com.example.portfolio.webstorespring.buildhelpers.products.ProductPricePromotionBuilderHelper.createProductPricePromotionResponse;
+import static com.example.portfolio.webstorespring.buildhelpers.products.PromotionBuilderHelper.createPromotionResponse;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -28,11 +28,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
-class ProductPricePromotionControllerTest {
+class PromotionControllerTest {
     @Mock
-    private ProductPricePromotionService promotionService;
+    private PromotionService promotionService;
     @InjectMocks
-    private ProductPricePromotionController underTest;
+    private PromotionController underTest;
 
     private static final String URI = "/api/v1/admin/products/promotions";
     private MockMvc mvc;
@@ -45,11 +45,11 @@ class ProductPricePromotionControllerTest {
     }
 
     @Test
-    void shouldSaveProductPricePromotion() throws Exception {
-        ProductPricePromotionRequest promotionRequest = createProductPricePromotionRequest();
-        ProductPricePromotionResponse promotionResponse = createProductPricePromotionResponse();
+    void shouldSavePromotion() throws Exception {
+        PromotionRequesst promotionRequest = PromotionBuilderHelper.createPromotionRequest();
+        PromotionResponse promotionResponse = createPromotionResponse();
 
-        given(promotionService.saveProductPricePromotion(any(ProductPricePromotionRequest.class)))
+        given(promotionService.savePromotion(any(PromotionRequesst.class)))
                 .willReturn(promotionResponse);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

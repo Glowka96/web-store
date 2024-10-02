@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.productsTestData.impl;
 
 import com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper;
-import com.example.portfolio.webstorespring.buildhelpers.products.ProductPricePromotionBuilderHelper;
+import com.example.portfolio.webstorespring.buildhelpers.products.PromotionBuilderHelper;
 import com.example.portfolio.webstorespring.model.entity.products.*;
 import com.example.portfolio.webstorespring.productsTestData.InitProductTestData;
 import com.example.portfolio.webstorespring.repositories.products.*;
@@ -21,9 +21,9 @@ import java.util.Set;
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProducerBuilderHelper.createProducer;
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.ID;
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.*;
-import static com.example.portfolio.webstorespring.buildhelpers.products.ProductPricePromotionBuilderHelper.PRICE;
-import static com.example.portfolio.webstorespring.buildhelpers.products.ProductPricePromotionBuilderHelper.*;
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductTypeBuilderHelper.createProductType;
+import static com.example.portfolio.webstorespring.buildhelpers.products.PromotionBuilderHelper.PRICE;
+import static com.example.portfolio.webstorespring.buildhelpers.products.PromotionBuilderHelper.*;
 import static com.example.portfolio.webstorespring.buildhelpers.products.SubcategoryBuilderHelper.createSubcategory;
 import static com.natpryce.makeiteasy.MakeItEasy.*;
 
@@ -36,7 +36,7 @@ public class InitProductTestDataImpl implements InitProductTestData {
     @Autowired
     private ProducerRepository producerRepository;
     @Autowired
-    private ProductPricePromotionRepository promotionRepository;
+    private PromotionRepository promotionRepository;
     @Autowired
     private ProductRepository productRepository;
 
@@ -66,12 +66,12 @@ public class InitProductTestDataImpl implements InitProductTestData {
         Maker<Product> productMaker = getProductMaker(subcategory, productType, producer);
         Maker<Product> productMaker2 = getProductMaker(subcategory, productType2, producer2);
 
-        ProductPricePromotion currencyPromotion = getCurrencyPromotion();
-        ProductPricePromotion currencyPromotion2 = getCurrencyPromotion();
-        ProductPricePromotion currencyPromotion3 = getCurrencyPromotion();
-        ProductPricePromotion expiredPromotionWithLowestPriceLast30Days = getExpiredPromotionWithLowestPriceLast30Days();
-        ProductPricePromotion expiredPromotion = make(a(BASIC_PROMOTION)
-                .but(withNull(ProductPricePromotionBuilderHelper.ID)));
+        Promotion currencyPromotion = getCurrencyPromotion();
+        Promotion currencyPromotion2 = getCurrencyPromotion();
+        Promotion currencyPromotion3 = getCurrencyPromotion();
+        Promotion expiredPromotionWithLowestPriceLast30Days = getExpiredPromotionWithLowestPriceLast30Days();
+        Promotion expiredPromotion = make(a(BASIC_PROMOTION)
+                .but(withNull(PromotionBuilderHelper.ID)));
 
         Product productWithPromotion = productRepository.save(
                 make(productMaker.but(with(ProductBuilderHelper.PRICE, BigDecimal.valueOf(60L))))
@@ -123,16 +123,16 @@ public class InitProductTestDataImpl implements InitProductTestData {
         return PageRequest.of(0, 12, Sort.by(Sort.Direction.fromString("asc"), "name"));
     }
 
-    private ProductPricePromotion getCurrencyPromotion() {
+    private Promotion getCurrencyPromotion() {
         return make(a(BASIC_PROMOTION)
-                .but(withNull(ProductPricePromotionBuilderHelper.ID))
+                .but(withNull(PromotionBuilderHelper.ID))
                 .but(with(START_DATE, zonedDateTime.minusDays(10).toLocalDateTime()))
                 .but(with(END_DATE, zonedDateTime.plusDays(50).toLocalDateTime())));
     }
 
-    private ProductPricePromotion getExpiredPromotionWithLowestPriceLast30Days() {
+    private Promotion getExpiredPromotionWithLowestPriceLast30Days() {
         return make(a(BASIC_PROMOTION)
-                .but(withNull(ProductPricePromotionBuilderHelper.ID))
+                .but(withNull(PromotionBuilderHelper.ID))
                 .but(with(PRICE, BigDecimal.valueOf(5.00)))
                 .but(with(START_DATE, zonedDateTime.minusDays(20).toLocalDateTime()))
                 .but(with(END_DATE, zonedDateTime.minusDays(10).toLocalDateTime())));

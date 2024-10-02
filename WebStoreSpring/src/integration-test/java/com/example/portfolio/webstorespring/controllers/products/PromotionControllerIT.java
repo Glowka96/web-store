@@ -1,11 +1,12 @@
 package com.example.portfolio.webstorespring.controllers.products;
 
+import com.example.portfolio.webstorespring.buildhelpers.products.PromotionBuilderHelper;
 import com.example.portfolio.webstorespring.controllers.AbstractAuthControllerIT;
-import com.example.portfolio.webstorespring.model.dto.products.request.ProductPricePromotionRequest;
-import com.example.portfolio.webstorespring.model.dto.products.response.ProductPricePromotionResponse;
+import com.example.portfolio.webstorespring.model.dto.products.request.PromotionRequesst;
+import com.example.portfolio.webstorespring.model.dto.products.response.PromotionResponse;
 import com.example.portfolio.webstorespring.model.entity.products.Product;
-import com.example.portfolio.webstorespring.repositories.products.ProductPricePromotionRepository;
 import com.example.portfolio.webstorespring.repositories.products.ProductRepository;
+import com.example.portfolio.webstorespring.repositories.products.PromotionRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,21 +20,20 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.*;
-import static com.example.portfolio.webstorespring.buildhelpers.products.ProductPricePromotionBuilderHelper.createProductPricePromotionRequest;
 import static com.natpryce.makeiteasy.MakeItEasy.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class ProductPricePromotionControllerIT extends AbstractAuthControllerIT{
+class PromotionControllerIT extends AbstractAuthControllerIT{
 
     @Autowired
-    private ProductPricePromotionRepository promotionRepository;
+    private PromotionRepository promotionRepository;
     @Autowired
     private ProductRepository productRepository;
     private static final String PRODUCTS_PROMOTIONS_URI = "/products/promotions";
     private Long savedProductId;
-    private ProductPricePromotionRequest promotionRequest;
+    private PromotionRequesst promotionRequest;
 
     @BeforeEach
     public void initTestData() {
@@ -44,7 +44,7 @@ class ProductPricePromotionControllerIT extends AbstractAuthControllerIT{
                 .but(withNull(PRICE_PROMOTIONS)))
         );
 
-        promotionRequest = createProductPricePromotionRequest();
+        promotionRequest = PromotionBuilderHelper.createPromotionRequest();
         savedProductId = savedProduct.getId();
         promotionRequest.setProductId(savedProductId);
         promotionRequest.setEndDate(LocalDateTime.now().plusDays(15).truncatedTo(ChronoUnit.SECONDS));
@@ -58,36 +58,36 @@ class ProductPricePromotionControllerIT extends AbstractAuthControllerIT{
 
     @Test
     void shouldSavePromotion_forAuthenticatedAdmin_thenStatusCreated() {
-        HttpEntity<ProductPricePromotionRequest> httpEntity =
+        HttpEntity<PromotionRequesst> httpEntity =
                 new HttpEntity<>(promotionRequest, getHttpHeadersWithAdminToken());
 
-        ResponseEntity<ProductPricePromotionResponse> response = restTemplate.exchange(
+        ResponseEntity<PromotionResponse> response = restTemplate.exchange(
                 localhostAdminUri + PRODUCTS_PROMOTIONS_URI,
                 HttpMethod.POST,
                 httpEntity,
-                ProductPricePromotionResponse.class
+                PromotionResponse.class
         );
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        ProductPricePromotionResponse productPricePromotionResponse = response.getBody();
+        PromotionResponse promotionResponse = response.getBody();
 
-        assertNotNull(productPricePromotionResponse);
-        assertEquals(promotionRequest.getPromotionPrice(), productPricePromotionResponse.getPromotionPrice());
-        assertEquals(promotionRequest.getStartDate(), productPricePromotionResponse.getStartDate());
-        assertEquals(promotionRequest.getEndDate(), productPricePromotionResponse.getEndDate());
-        assertEquals(savedProductId, promotionRequest.getProductId(), productPricePromotionResponse.getProductResponse().getId());
+        assertNotNull(promotionResponse);
+        assertEquals(promotionRequest.getPromotionPrice(), promotionResponse.getPromotionPrice());
+        assertEquals(promotionRequest.getStartDate(), promotionResponse.getStartDate());
+        assertEquals(promotionRequest.getEndDate(), promotionResponse.getEndDate());
+        assertEquals(savedProductId, promotionRequest.getProductId(), promotionResponse.getProductResponse().getId());
     }
 
     @Test
     void shouldNotSavePromotion_forAuthenticatedUser_thenStatusForbidden() {
-        HttpEntity<ProductPricePromotionRequest> httpEntity =
+        HttpEntity<PromotionRequesst> httpEntity =
                 new HttpEntity<>(promotionRequest, getHttpHeaderWithUserToken());
 
-        ResponseEntity<ProductPricePromotionResponse> response = restTemplate.exchange(
+        ResponseEntity<PromotionResponse> response = restTemplate.exchange(
                 localhostAdminUri + PRODUCTS_PROMOTIONS_URI,
                 HttpMethod.POST,
                 httpEntity,
-                ProductPricePromotionResponse.class
+                PromotionResponse.class
         );
 
         assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());

@@ -2,12 +2,12 @@ package com.example.portfolio.webstorespring.services.products;
 
 import com.example.portfolio.webstorespring.exceptions.ProductHasAlreadyPromotionException;
 import com.example.portfolio.webstorespring.exceptions.PromotionPriceGreaterThanBasePriceException;
-import com.example.portfolio.webstorespring.mappers.ProductPricePromotionMapper;
-import com.example.portfolio.webstorespring.model.dto.products.request.ProductPricePromotionRequest;
-import com.example.portfolio.webstorespring.model.dto.products.response.ProductPricePromotionResponse;
+import com.example.portfolio.webstorespring.mappers.PromotionMapper;
+import com.example.portfolio.webstorespring.model.dto.products.request.PromotionRequesst;
+import com.example.portfolio.webstorespring.model.dto.products.response.PromotionResponse;
 import com.example.portfolio.webstorespring.model.entity.products.Product;
-import com.example.portfolio.webstorespring.model.entity.products.ProductPricePromotion;
-import com.example.portfolio.webstorespring.repositories.products.ProductPricePromotionRepository;
+import com.example.portfolio.webstorespring.model.entity.products.Promotion;
+import com.example.portfolio.webstorespring.repositories.products.PromotionRepository;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,27 +15,27 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class ProductPricePromotionService {
+public class PromotionService {
 
-    private final ProductPricePromotionRepository promotionRepository;
+    private final PromotionRepository promotionRepository;
     private final ProductService productService;
-    private final ProductPricePromotionMapper promotionMapper;
+    private final PromotionMapper promotionMapper;
 
     @Transactional
-    public ProductPricePromotionResponse saveProductPricePromotion(@NotNull ProductPricePromotionRequest promotionRequest) {
+    public PromotionResponse savePromotion(@NotNull PromotionRequesst promotionRequest) {
         Product product = productService.findProductByIdWithPromotion(promotionRequest.getProductId());
 
         validateProduct(promotionRequest, product);
 
-        ProductPricePromotion promotion = promotionMapper.mapToEntity(promotionRequest);
+        Promotion promotion = promotionMapper.mapToEntity(promotionRequest);
         promotion.setProduct(product);
 
         promotionRepository.save(promotion);
         return promotionMapper.mapToDto(promotion);
     }
 
-    private void validateProduct(ProductPricePromotionRequest promotionRequest, Product product) {
-        if (!product.getPricePromotions().isEmpty()) {
+    private void validateProduct(PromotionRequesst promotionRequest, Product product) {
+        if (!product.getPromotions().isEmpty()) {
             throw new ProductHasAlreadyPromotionException();
         }
 

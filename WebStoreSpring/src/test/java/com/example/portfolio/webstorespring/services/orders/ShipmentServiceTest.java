@@ -60,7 +60,7 @@ class ShipmentServiceTest {
         Product product = make(a(BASIC_PRODUCT));
         List<Product> products = List.of(product);
         BigDecimal exceptedPrice = BigDecimal.valueOf(shipmentRequest.getQuantity())
-                .multiply(product.getPricePromotions().iterator().next().getPromotionPrice())
+                .multiply(product.getPromotions().iterator().next().getPromotionPrice())
                 .setScale(2, RoundingMode.HALF_UP);
 
         given(productRepository.findProductsByIdsWithPromotion(anyList())).willReturn(products);

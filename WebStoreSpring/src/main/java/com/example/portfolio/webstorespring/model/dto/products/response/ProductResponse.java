@@ -34,5 +34,5 @@ public class ProductResponse {
     private ProducerResponse producerResponse;
 
     @JsonProperty(value = "promotions")
-    private Set<ProductPricePromotionResponse> pricePromotionsResponse;
+    private Set<PromotionResponse> pricePromotionsResponse;
 }

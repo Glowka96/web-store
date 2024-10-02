@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class ProductPricePromotionResponse {
+public class PromotionResponse {
 
     private Long id;
 

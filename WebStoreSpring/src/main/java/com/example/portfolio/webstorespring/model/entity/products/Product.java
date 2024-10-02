@@ -59,6 +59,6 @@ public class Product {
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<ProductPricePromotion> pricePromotions;
+    private Set<Promotion> promotions;
 }
 

@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductPricePromotionRequest {
+public class PromotionRequesst {
 
     @NotNull(message = "The product id can't be null")
     @Positive(message = "The product id must be positive number")

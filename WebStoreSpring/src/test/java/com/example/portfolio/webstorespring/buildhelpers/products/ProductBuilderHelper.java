@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 import static com.example.portfolio.webstorespring.buildhelpers.DateForTestBuilderHelper.LOCAL_DATE_TIME;
-import static com.example.portfolio.webstorespring.buildhelpers.products.ProductPricePromotionBuilderHelper.BASIC_PROMOTION;
+import static com.example.portfolio.webstorespring.buildhelpers.products.PromotionBuilderHelper.BASIC_PROMOTION;
 import static com.natpryce.makeiteasy.MakeItEasy.a;
 import static com.natpryce.makeiteasy.MakeItEasy.make;
 
@@ -27,7 +27,7 @@ public class ProductBuilderHelper {
     public static final Property<Product, Subcategory> SUBCATEGORY = new Property<>();
     public static final Property<Product, Producer> PRODUCER = new Property<>();
     public static final Property<Product, LocalDateTime> CREATED_AT = new Property<>();
-    public static final Property<Product, Set<ProductPricePromotion>> PRICE_PROMOTIONS = new Property<>();
+    public static final Property<Product, Set<Promotion>> PRICE_PROMOTIONS = new Property<>();
 
     private static final String PRODUCT_NAME = "Test";
     private static final String PRODUCT_DESCRIPTION = "Test description";
@@ -47,7 +47,7 @@ public class ProductBuilderHelper {
             .subcategory(lookup.valueOf(SUBCATEGORY, SubcategoryBuilderHelper.createSubcategory()))
             .producer(lookup.valueOf(PRODUCER, ProducerBuilderHelper.createProducer()))
             .createdAt(lookup.valueOf(CREATED_AT, LOCAL_DATE_TIME))
-            .pricePromotions(lookup.valueOf(PRICE_PROMOTIONS, Set.of(make(a(BASIC_PROMOTION)))))
+            .promotions(lookup.valueOf(PRICE_PROMOTIONS, Set.of(make(a(BASIC_PROMOTION)))))
             .build();
 
     public static ProductRequest createProductRequest() {

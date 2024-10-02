@@ -1,16 +1,17 @@
 package com.example.portfolio.webstorespring.services.products;
 
+import com.example.portfolio.webstorespring.buildhelpers.products.PromotionBuilderHelper;
 import com.example.portfolio.webstorespring.exceptions.ProductHasAlreadyPromotionException;
 import com.example.portfolio.webstorespring.exceptions.PromotionPriceGreaterThanBasePriceException;
 import com.example.portfolio.webstorespring.mappers.ProducerMapper;
 import com.example.portfolio.webstorespring.mappers.ProductMapper;
-import com.example.portfolio.webstorespring.mappers.ProductPricePromotionMapper;
 import com.example.portfolio.webstorespring.mappers.ProductTypeMapper;
-import com.example.portfolio.webstorespring.model.dto.products.request.ProductPricePromotionRequest;
-import com.example.portfolio.webstorespring.model.dto.products.response.ProductPricePromotionResponse;
+import com.example.portfolio.webstorespring.mappers.PromotionMapper;
+import com.example.portfolio.webstorespring.model.dto.products.request.PromotionRequesst;
+import com.example.portfolio.webstorespring.model.dto.products.response.PromotionResponse;
 import com.example.portfolio.webstorespring.model.entity.products.Product;
-import com.example.portfolio.webstorespring.model.entity.products.ProductPricePromotion;
-import com.example.portfolio.webstorespring.repositories.products.ProductPricePromotionRepository;
+import com.example.portfolio.webstorespring.model.entity.products.Promotion;
+import com.example.portfolio.webstorespring.repositories.products.PromotionRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,8 +28,8 @@ import java.util.Set;
 
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.BASIC_PRODUCT;
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.PRICE_PROMOTIONS;
-import static com.example.portfolio.webstorespring.buildhelpers.products.ProductPricePromotionBuilderHelper.BASIC_PROMOTION;
-import static com.example.portfolio.webstorespring.buildhelpers.products.ProductPricePromotionBuilderHelper.createProductPricePromotionRequest;
+import static com.example.portfolio.webstorespring.buildhelpers.products.PromotionBuilderHelper.BASIC_PROMOTION;
+import static com.example.portfolio.webstorespring.buildhelpers.products.PromotionBuilderHelper.createPromotionRequest;
 import static com.natpryce.makeiteasy.MakeItEasy.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -38,37 +39,37 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @Slf4j
-class ProductPricePromotionServiceTest {
+class PromotionServiceTest {
 
     @Mock
-    private ProductPricePromotionRepository promotionRepository;
+    private PromotionRepository promotionRepository;
     @Mock
     private ProductService productService;
     @Spy
-    private ProductPricePromotionMapper promotionMapper = Mappers.getMapper(ProductPricePromotionMapper.class);
+    private PromotionMapper promotionMapper = Mappers.getMapper(PromotionMapper.class);
     @InjectMocks
-    private ProductPricePromotionService underTest;
+    private PromotionService underTest;
 
     @Test
-    void shouldSaveProductPricePromotion() {
+    void shouldSavePromotion() {
         setMappers();
 
         Product product = make(a(BASIC_PRODUCT).but(with(PRICE_PROMOTIONS, Set.of())));
-        ProductPricePromotionRequest productPricePromotionRequest = createProductPricePromotionRequest();
+        PromotionRequesst promotionRequesst = PromotionBuilderHelper.createPromotionRequest();
 
         given(productService.findProductByIdWithPromotion(anyLong())).willReturn(product);
 
-        ProductPricePromotionResponse savedProductPricePromotionRequest =
-                underTest.saveProductPricePromotion(productPricePromotionRequest);
+        PromotionResponse savedPromotionRequest =
+                underTest.savePromotion(promotionRequesst);
 
-        ArgumentCaptor<ProductPricePromotion> productPricePromotionArgumentCaptor =
-                ArgumentCaptor.forClass(ProductPricePromotion.class);
-        verify(promotionRepository).save(productPricePromotionArgumentCaptor.capture());
+        ArgumentCaptor<Promotion> promotionArgumentCaptor =
+                ArgumentCaptor.forClass(Promotion.class);
+        verify(promotionRepository).save(promotionArgumentCaptor.capture());
 
-        ProductPricePromotionResponse mappedProductPricePromotionResponse =
-                promotionMapper.mapToDto(productPricePromotionArgumentCaptor.getValue());
+        PromotionResponse mappedPromotionResponse =
+                promotionMapper.mapToDto(promotionArgumentCaptor.getValue());
 
-        assertEquals(mappedProductPricePromotionResponse, savedProductPricePromotionRequest);
+        assertEquals(mappedPromotionResponse, savedPromotionRequest);
     }
 
     private void setMappers() {
@@ -83,11 +84,11 @@ class ProductPricePromotionServiceTest {
     @Test
     void willThrowPromotionPriceGreaterThanBasePriceException() {
         Product product = make(a(BASIC_PRODUCT).but(with(PRICE_PROMOTIONS, Set.of())));
-        ProductPricePromotionRequest productPricePromotionRequest = createProductPricePromotionRequest(BigDecimal.valueOf(999.99));
+        PromotionRequesst promotionRequesst = createPromotionRequest(BigDecimal.valueOf(999.99));
 
         when(productService.findProductByIdWithPromotion(anyLong())).thenReturn(product);
 
-        assertThrows(PromotionPriceGreaterThanBasePriceException.class, () -> underTest.saveProductPricePromotion(productPricePromotionRequest));
+        assertThrows(PromotionPriceGreaterThanBasePriceException.class, () -> underTest.savePromotion(promotionRequesst));
         verify(productService, times(1)).findProductByIdWithPromotion(1L);
         verifyNoMoreInteractions(productService);
         verifyNoMoreInteractions(promotionRepository);
@@ -95,14 +96,14 @@ class ProductPricePromotionServiceTest {
 
     @Test
     void willThrowWhenProductHasAlreadyPromotion() {
-        ProductPricePromotion productPricePromotion = make(a(BASIC_PROMOTION));
-        Product product = make(a(BASIC_PRODUCT).but(with(PRICE_PROMOTIONS, Set.of(productPricePromotion))));
+        Promotion promotion = make(a(BASIC_PROMOTION));
+        Product product = make(a(BASIC_PRODUCT).but(with(PRICE_PROMOTIONS, Set.of(promotion))));
 
-        ProductPricePromotionRequest productPricePromotionRequest = createProductPricePromotionRequest();
+        PromotionRequesst promotionRequesst = PromotionBuilderHelper.createPromotionRequest();
 
         when(productService.findProductByIdWithPromotion(anyLong())).thenReturn(product);
 
-        assertThrows(ProductHasAlreadyPromotionException.class, () -> underTest.saveProductPricePromotion(productPricePromotionRequest));
+        assertThrows(ProductHasAlreadyPromotionException.class, () -> underTest.savePromotion(promotionRequesst));
         verify(productService, times(1)).findProductByIdWithPromotion(1L);
         verifyNoMoreInteractions(productService);
         verifyNoMoreInteractions(promotionRepository);
