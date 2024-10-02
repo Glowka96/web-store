@@ -17,6 +17,7 @@ import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class ProductsPageControllerIT extends AbstractTestRestTemplateIT {
 
@@ -81,8 +82,8 @@ class ProductsPageControllerIT extends AbstractTestRestTemplateIT {
     }
     private static void assertPageResponse(ResponseEntity<PageProductsWithPromotionDTO> response) {
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertThat(response.getBody()).isNotNull();
-        assertThat(response.getBody().sortOptions()).hasSize(8);
+        assertNotNull(response.getBody());
+        assertEquals(8, response.getBody().sortOptions().size());
     }
 
     private int getLastProductIndex(ResponseEntity<PageProductsWithPromotionDTO> response) {

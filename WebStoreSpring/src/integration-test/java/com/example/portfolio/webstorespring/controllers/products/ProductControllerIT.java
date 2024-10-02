@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ProductControllerIT extends AbstractBaseControllerIT<ProductRequest, ProductResponse, Product> {
 
@@ -55,26 +55,18 @@ class ProductControllerIT extends AbstractBaseControllerIT<ProductRequest, Produ
         Optional<Product> optionalProduct = productRepository.findProductByIdWithPromotion(
                 response.getId()
         );
-        assertThat(optionalProduct).isPresent();
+        assertTrue(optionalProduct.isPresent());
 
         assertThat(response.getId()).isNotNull().isEqualTo(optionalProduct.get().getId());
-        assertThat(response.getName()).isEqualTo(optionalProduct.get().getName())
-                .isEqualTo(request.getName());
-        assertThat(response.getDescription()).isEqualTo(optionalProduct.get().getDescription())
-                .isEqualTo(request.getDescription());
+        assertEquals(request.getName(), optionalProduct.get().getName(), response.getName());
+        assertEquals(request.getDescription(), optionalProduct.get().getDescription(), response.getDescription());
         assertThat(response.getPrice()).isEqualByComparingTo(optionalProduct.get().getPrice())
                 .isEqualByComparingTo(request.getPrice());
-        assertThat(response.getQuantity()).isEqualTo(optionalProduct.get().getQuantity())
-                .isEqualTo(request.getQuantity());
-        assertThat(response.getImageUrl()).isEqualTo(optionalProduct.get().getImageUrl())
-                .isEqualTo(request.getImageUrl());
-        assertThat(response.getProductTypeResponse().getId())
-                .isEqualTo(optionalProduct.get().getType().getId())
-                .isEqualTo(request.getProductTypeId());
-        assertThat(response.getProducerResponse().getId())
-                .isEqualTo(optionalProduct.get().getProducer().getId())
-                .isEqualTo(producerId);
-        assertThat(optionalProduct.get().getSubcategory().getId()).isEqualTo(subcategoryId);
+        assertEquals(request.getQuantity(), optionalProduct.get().getQuantity(), response.getQuantity());
+        assertEquals(request.getImageUrl(), optionalProduct.get().getImageUrl(), response.getImageUrl());
+        assertEquals(request.getProductTypeId(), optionalProduct.get().getType().getId(), response.getProductTypeResponse().getId());
+        assertEquals(producerId, optionalProduct.get().getProducer().getId(), response.getProducerResponse().getId());
+        assertEquals(subcategoryId, optionalProduct.get().getSubcategory().getId());
     }
 
     @Override
@@ -104,11 +96,11 @@ class ProductControllerIT extends AbstractBaseControllerIT<ProductRequest, Produ
 
     @Override
     public void assertsFieldsWhenNotUpdate(ProductRequest request, Product entity) {
-        assertThat(entity.getName()).isNotEqualTo(request.getName());
-        assertThat(entity.getDescription()).isNotEqualTo(request.getDescription());
-        assertThat(entity.getPrice()).isNotEqualByComparingTo(request.getPrice());
-        assertThat(entity.getQuantity()).isNotEqualTo(request.getQuantity());
-        assertThat(entity.getImageUrl()).isNotEqualTo(request.getImageUrl());
+        assertNotEquals(request.getName(), entity.getName());
+        assertNotEquals(request.getDescription(), entity.getDescription());
+        assertNotEquals(request.getPrice(), entity.getPrice());
+        assertNotEquals(request.getQuantity(), entity.getQuantity());
+        assertNotEquals(request.getImageUrl(), entity.getImageUrl());
     }
 
     @Override
@@ -159,9 +151,8 @@ class ProductControllerIT extends AbstractBaseControllerIT<ProductRequest, Produ
         );
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertThat(response.getBody()).isNotNull();
-
-        assertThat(response.getBody().id()).isEqualTo(savedEntityId);
+        assertNotNull(response.getBody());
+        assertEquals(savedEntityId, response.getBody().id());
     }
 
     @Test

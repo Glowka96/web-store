@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthControllerIT
         implements BaseControllerIT<T, R, E>, AssertsFieldsIT<T, R, E>, InitTestData {
@@ -34,7 +34,7 @@ public abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthCont
                 httpEntity,
                 getListResponseTypeClass()
         );
-        assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertsFieldsWhenGetAll(response.getBody());
     }
 
@@ -57,7 +57,7 @@ public abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthCont
         ResponseEntity<R> response = sendPostRequest(httpEntity);
 
         assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
-        assertThat(response.getBody()).isNull();
+        assertNull(response.getBody());
         assertEntitiesSize(1);
     }
 
@@ -72,7 +72,8 @@ public abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthCont
         Optional<E> optionalEAfterUpdate = getOptionalEntityBySavedId();
 
         assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
-        assertThat(optionalEAfterUpdate).isPresent();
+        assertTrue(optionalEBeforeUpdate.isPresent());
+        assertTrue(optionalEAfterUpdate.isPresent());
         assertsFieldsWhenUpdate(request, response.getBody(), optionalEBeforeUpdate.get(), optionalEAfterUpdate.get());
     }
 
@@ -84,10 +85,10 @@ public abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthCont
         ResponseEntity<R> response = sendPutRequest(httpEntity);
 
         assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
-        assertThat(response.getBody()).isNull();
+        assertNull(response.getBody());
 
         Optional<E> optionalE = getOptionalEntityBySavedId();
-        assertThat(optionalE).isPresent();
+        assertTrue(optionalE.isPresent());
         assertsFieldsWhenNotUpdate(request, optionalE.get());
     }
 
@@ -97,10 +98,10 @@ public abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthCont
         ResponseEntity<Void> response = sendDeleteRequest(httpEntity);
 
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
-        assertThat(response.getBody()).isNull();
+        assertNull(response.getBody());
 
         Optional<E> optionalE = getOptionalEntityBySavedId();
-        assertThat(optionalE).isNotPresent();
+        assertFalse(optionalE.isPresent());
     }
 
     protected void shouldNotDeleteEntity_forAuthenticatedUser_thenStatusForbidden() {
@@ -112,7 +113,7 @@ public abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthCont
         assertThat(response.getBody()).isNull();
 
         Optional<E> optionalE = getOptionalEntityBySavedId();
-        assertThat(optionalE).isPresent();
+        assertTrue(optionalE.isPresent());
     }
 
     private ResponseEntity<R> sendPostRequest(HttpEntity<T> httpEntity) {
@@ -163,6 +164,6 @@ public abstract class AbstractBaseControllerIT<T, R, E> extends AbstractAuthCont
 
     private void assertEntitiesSize(int expected) {
         List<E> entities = getAllEntities();
-        assertThat(entities).hasSize(expected);
+        assertEquals(entities.size(), expected);
     }
 }

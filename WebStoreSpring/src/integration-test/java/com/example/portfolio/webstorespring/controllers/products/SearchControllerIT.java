@@ -13,8 +13,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class SearchControllerIT extends AbstractTestRestTemplateIT {
 
@@ -43,8 +43,8 @@ class SearchControllerIT extends AbstractTestRestTemplateIT {
         );
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertThat(response.getBody()).isNotNull();
-        assertThat(response.getBody().sortOptions()).hasSize(8);
-        assertThat(response.getBody().products()).hasSize(1);
+        assertNotNull(response.getBody());
+        assertEquals(8, response.getBody().sortOptions().size());
+        assertEquals(1, response.getBody().products().size());
     }
 }

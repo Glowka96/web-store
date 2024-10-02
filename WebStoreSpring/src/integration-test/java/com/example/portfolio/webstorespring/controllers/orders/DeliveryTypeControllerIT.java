@@ -17,6 +17,7 @@ import java.util.Optional;
 import static com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryTypeBuilderHelper.createDeliveryType;
 import static com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryTypeBuilderHelper.createDeliveryTypeRequest;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 class DeliveryTypeControllerIT extends AbstractBaseControllerIT<DeliveryTypeRequest, DeliveryTypeResponse, DeliveryType> {
 
@@ -41,11 +42,11 @@ class DeliveryTypeControllerIT extends AbstractBaseControllerIT<DeliveryTypeRequ
                                       DeliveryTypeResponse response) {
         Optional<DeliveryType> optionalDeliveryType =
                 deliveryTypeRepository.findById(response.getId());
-        assertThat(optionalDeliveryType).isPresent();
+        assertTrue(optionalDeliveryType.isPresent());
 
         assertThat(response.getId()).isNotNull().isEqualTo(optionalDeliveryType.get().getId());
-        assertThat(response.getName()).isEqualTo(optionalDeliveryType.get().getName());
-        assertThat(response.getPrice()).isEqualTo(optionalDeliveryType.get().getPrice());
+        assertEquals(optionalDeliveryType.get().getName(), response.getName());
+        assertEquals(optionalDeliveryType.get().getPrice(), response.getPrice());
     }
 
     @Override
@@ -67,8 +68,8 @@ class DeliveryTypeControllerIT extends AbstractBaseControllerIT<DeliveryTypeRequ
     @Override
     public void assertsFieldsWhenNotUpdate(DeliveryTypeRequest request,
                                            DeliveryType entity) {
-        assertThat(entity.getName()).isNotEqualTo(request.getName());
-        assertThat(entity.getPrice()).isNotEqualTo(request.getPrice());
+        assertNotEquals(request.getName(), entity.getName());
+        assertNotEquals(request.getPrice(), entity.getPrice());
     }
 
     @Override

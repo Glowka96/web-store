@@ -36,7 +36,7 @@ import java.util.Optional;
 import static com.example.portfolio.webstorespring.buildhelpers.DateForTestBuilderHelper.LOCAL_DATE_TIME;
 import static com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryTypeBuilderHelper.createDeliveryType;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class OrderControllerIT extends AbstractAuthControllerIT {
 
@@ -121,12 +121,11 @@ class OrderControllerIT extends AbstractAuthControllerIT {
 
         Optional<Order> optionalOrder = orderRepository.findById(orderId);
         assertThat(optionalOrder).isPresent();
-        assertThat(response.getBody().getId()).isEqualTo(optionalOrder.get().getId());
-        assertThat(response.getBody().getNameUser()).isEqualTo(optionalOrder.get().getNameUser());
-        assertThat(response.getBody().getStatus()).isEqualTo(optionalOrder.get().getStatus());
-        assertThat(response.getBody().getCreatedAt()).isEqualTo(optionalOrder.get().getCreatedAt());
-        assertThat(response.getBody().getTotalPrice().doubleValue())
-                .isEqualTo(optionalOrder.get().getTotalPrice().doubleValue());
+        assertEquals(optionalOrder.get().getId(), response.getBody().getId());
+        assertEquals(optionalOrder.get().getNameUser(), response.getBody().getNameUser());
+        assertEquals(optionalOrder.get().getStatus(), response.getBody().getStatus());
+        assertEquals(optionalOrder.get().getCreatedAt(), response.getBody().getCreatedAt());
+        assertEquals(optionalOrder.get().getTotalPrice(), response.getBody().getTotalPrice());
     }
 
     @Test
@@ -143,7 +142,10 @@ class OrderControllerIT extends AbstractAuthControllerIT {
                 .build();
         HttpEntity<OrderRequest> httpEntity = new HttpEntity<>(orderRequest, getHttpHeaderWithUserToken());
 
-        ProductWithProducerAndPromotionDTO productBeforeSaveOrder = productRepository.findProductById(initProductTestData.getProductIdThatHasPromotion(), LocalDateTime.now().minusDays(30));
+        ProductWithProducerAndPromotionDTO productBeforeSaveOrder = productRepository.findProductById(
+                initProductTestData.getProductIdThatHasPromotion(),
+                LocalDateTime.now().minusDays(30)
+        );
 
         ResponseEntity<OrderResponse> response = restTemplate.exchange(
                 localhostUri + ORDER_URI,
@@ -152,21 +154,25 @@ class OrderControllerIT extends AbstractAuthControllerIT {
                 OrderResponse.class
         );
 
-        ProductWithProducerAndPromotionDTO productAfterSaveOrder = productRepository.findProductById(initProductTestData.getProductIdThatHasPromotion(), LocalDateTime.now().minusDays(30));
-        assertThat(productBeforeSaveOrder.quantity()).isNotEqualTo(productAfterSaveOrder.quantity());
+        ProductWithProducerAndPromotionDTO productAfterSaveOrder = productRepository.findProductById(
+                initProductTestData.getProductIdThatHasPromotion(),
+                LocalDateTime.now().minusDays(30)
+        );
+        assertNotEquals(productBeforeSaveOrder.quantity(), productAfterSaveOrder.quantity());
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertThat(response.getBody()).isNotNull();
-        assertThat(response.getBody().getId()).isNotNull();
-        assertThat(response.getBody().getNameUser()).isEqualTo(getSavedUser().getFirstName() + " " + getSavedUser().getLastName());
-        assertThat(response.getBody().getStatus()).isEqualTo(OrderStatus.OPEN);
-        assertThat(response.getBody().getCreatedAt()).isNotNull();
-        assertThat(response.getBody().getShipmentResponses()).hasSize(1);
-        assertThat(response.getBody().getDeliveryResponse()).isNotNull();
-        assertThat(response.getBody().getTotalPrice().doubleValue())
-                .isEqualTo(productAfterSaveOrder.promotionPrice().add(
-                        response.getBody().getDeliveryResponse().getDeliveryTypeResponse().getPrice()
-                ).doubleValue());
+        assertNotNull(response.getBody());
+        assertNotNull(response.getBody().getId());
+        assertNotNull(response.getBody().getCreatedAt());
+        assertNotNull(response.getBody().getDeliveryResponse());
+        assertEquals(getSavedUser().getFirstName() + " " + getSavedUser().getLastName(),
+                response.getBody().getNameUser());
+        assertEquals(OrderStatus.OPEN, response.getBody().getStatus());
+        assertEquals(1, response.getBody().getShipmentResponses().size());
+        assertEquals(productAfterSaveOrder.promotionPrice()
+                        .add(response.getBody().getDeliveryResponse().getDeliveryTypeResponse().getPrice()),
+                response.getBody().getTotalPrice()
+        );
     }
 
     private Order creeteOrder(LocalDateTime localDataTime) {

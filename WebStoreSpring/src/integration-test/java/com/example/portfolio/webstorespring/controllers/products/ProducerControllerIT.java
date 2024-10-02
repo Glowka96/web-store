@@ -17,6 +17,7 @@ import java.util.Optional;
 
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProducerBuilderHelper.createProducer;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ProducerControllerIT extends AbstractBaseControllerIT<ProducerRequest, ProducerResponse, Producer> {
 
@@ -65,11 +66,10 @@ class ProducerControllerIT extends AbstractBaseControllerIT<ProducerRequest, Pro
     public void assertsFieldsWhenSave(ProducerRequest request,
                                       ProducerResponse response) {
         Optional<Producer> optionalProducer = producerRepository.findById(response.getId());
-        assertThat(optionalProducer).isPresent();
+        assertTrue(optionalProducer.isPresent());
 
         assertThat(response.getId()).isNotNull().isEqualTo(optionalProducer.get().getId());
-        assertThat(response.getName()).isEqualTo(request.getName())
-                .isEqualTo(optionalProducer.get().getName());
+        assertEquals(request.getName(), optionalProducer.get().getName(), response.getName());
     }
 
     @Override
@@ -87,7 +87,7 @@ class ProducerControllerIT extends AbstractBaseControllerIT<ProducerRequest, Pro
 
     @Override
     public void assertsFieldsWhenNotUpdate(ProducerRequest request, Producer entity) {
-        assertThat(entity.getName()).isNotEqualTo(request.getName());
+        assertNotEquals(request.getName(), entity.getName());
     }
 
     @Test

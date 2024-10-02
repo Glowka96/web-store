@@ -19,6 +19,7 @@ import java.util.Optional;
 import static com.example.portfolio.webstorespring.buildhelpers.products.SubcategoryBuilderHelper.createSubcategory;
 import static com.example.portfolio.webstorespring.buildhelpers.products.SubcategoryBuilderHelper.createSubcategoryRequest;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 class SubcategoryControllerIT extends AbstractBaseControllerIT<SubcategoryRequest, SubcategoryResponse, Subcategory> {
 
@@ -77,12 +78,11 @@ class SubcategoryControllerIT extends AbstractBaseControllerIT<SubcategoryReques
                                       SubcategoryResponse response) {
         Optional<Subcategory> optionalSubcategory =
                 subcategoryRepository.findById(response.getId());
-        assertThat(optionalSubcategory).isPresent();
+        assertTrue(optionalSubcategory.isPresent());
 
         assertThat(response.getId()).isNotNull()
                 .isEqualTo(optionalSubcategory.get().getId());
-        assertThat(response.getName()).isEqualTo(request.getName())
-                .isEqualTo(optionalSubcategory.get().getName());
+        assertEquals(request.getName(), optionalSubcategory.get().getName(), response.getName());
     }
 
     @Override
@@ -102,7 +102,7 @@ class SubcategoryControllerIT extends AbstractBaseControllerIT<SubcategoryReques
     @Override
     public void assertsFieldsWhenNotUpdate(SubcategoryRequest request,
                                            Subcategory entity) {
-        assertThat(entity.getName()).isNotEqualTo(request.getName());
+        assertNotEquals(request.getName(), entity.getName());
     }
 
     @Test

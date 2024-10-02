@@ -23,13 +23,15 @@ import static com.example.portfolio.webstorespring.buildhelpers.products.Product
 import static com.natpryce.makeiteasy.MakeItEasy.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 class ProductPricePromotionControllerIT extends AbstractAuthControllerIT{
 
     @Autowired
     private ProductPricePromotionRepository promotionRepository;
     @Autowired
     private ProductRepository productRepository;
-    private final static String PRODUCTS_PROMOTIONS_URI = "/products/promotions";
+    private static final String PRODUCTS_PROMOTIONS_URI = "/products/promotions";
     private Long savedProductId;
     private ProductPricePromotionRequest promotionRequest;
 
@@ -69,12 +71,11 @@ class ProductPricePromotionControllerIT extends AbstractAuthControllerIT{
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         ProductPricePromotionResponse productPricePromotionResponse = response.getBody();
 
-        assertThat(productPricePromotionResponse).isNotNull();
-        assertThat(productPricePromotionResponse.getPromotionPrice()).isEqualTo(promotionRequest.getPromotionPrice());
-        assertThat(productPricePromotionResponse.getStartDate()).isEqualTo(promotionRequest.getStartDate());
-        assertThat(productPricePromotionResponse.getEndDate()).isEqualTo(promotionRequest.getEndDate());
-        assertThat(productPricePromotionResponse.getProductResponse().getId())
-                .isEqualTo(savedProductId).isEqualTo(promotionRequest.getProductId());
+        assertNotNull(productPricePromotionResponse);
+        assertEquals(promotionRequest.getPromotionPrice(), productPricePromotionResponse.getPromotionPrice());
+        assertEquals(promotionRequest.getStartDate(), productPricePromotionResponse.getStartDate());
+        assertEquals(promotionRequest.getEndDate(), productPricePromotionResponse.getEndDate());
+        assertEquals(savedProductId, promotionRequest.getProductId(), productPricePromotionResponse.getProductResponse().getId());
     }
 
     @Test
