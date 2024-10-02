@@ -43,13 +43,12 @@ class ProductsPageServiceTest {
             "name, asc, name, asc",
             "price, desc, price, desc",
             "type, desc, type, desc",
-            "date, asc, dateOfCreation, asc"
+            "date, asc, createdAt, asc"
     })
     void shouldGetPageProductsBySubCategoryId(String sortType,
                                               String sortDirection,
                                               String expectedSortType,
                                               String expectedSortDirection) {
-        // given
         Pageable pageable = PageRequest.of(0,
                 5,
                 Sort.by(Sort.Direction.fromString(expectedSortDirection), expectedSortType)
@@ -60,16 +59,11 @@ class ProductsPageServiceTest {
         given(productRepository.findProductsBySubcategoryId(anyLong(), any(), any()))
                 .willReturn(Optional.of(productPage));
 
-        // when
         PageProductsWithPromotionDTO actual = underTest.getPageProductsBySubcategoryId(
                 1L, createBasePageProductsOptions(sortType, sortDirection)
         );
 
-        // then
-        assertThat(actual.products()).hasSize(productList.size());
-        assertThat(actual.totalPages()).isEqualTo(1);
-        assertThat(actual.totalElements()).isEqualTo(3);
-        assertThat(actual.sortOptions()).hasSize(numberOfSortOptions);
+        assertPageProductsWithPromotion(actual, productList);
     }
 
 
@@ -78,13 +72,12 @@ class ProductsPageServiceTest {
             "name, asc, name, asc",
             "price, desc, price, desc",
             "type, desc, type, desc",
-            "date, asc, dateOfCreation, asc"
+            "date, asc, createdAt, asc"
     })
     void shouldGetPageNewProducts(String sortType,
                                   String sortDirection,
                                   String expectedSortType,
                                   String expectedSortDirection) {
-        // given
         Pageable pageable = PageRequest.of(0,
                 5,
                 Sort.by(Sort.Direction.fromString(expectedSortDirection), expectedSortType)
@@ -94,16 +87,11 @@ class ProductsPageServiceTest {
 
         given(productRepository.findNewProducts(any(), any())).willReturn(Optional.of(productPage));
 
-        // when
         PageProductsWithPromotionDTO actual = underTest.getPageNewProducts(
                 createBasePageProductsOptions(sortType, sortDirection)
         );
 
-        // then
-        assertThat(actual.products()).hasSize(productList.size());
-        assertThat(actual.totalPages()).isEqualTo(1);
-        assertThat(actual.totalElements()).isEqualTo(3);
-        assertThat(actual.sortOptions()).hasSize(numberOfSortOptions);
+        assertPageProductsWithPromotion(actual, productList);
     }
 
     @Test
@@ -113,10 +101,8 @@ class ProductsPageServiceTest {
 
         given(productRepository.findNewProducts(any(), any())).willReturn(Optional.of(productPage));
 
-        // when
         PageProductsWithPromotionDTO actual = underTest.getPageNewProducts(createBasePageProductsOptions());
 
-        // then
         assertThat(actual.products()).isEmpty();
         assertThat(actual.totalPages()).isZero();
         assertThat(actual.totalElements()).isZero();
@@ -127,10 +113,9 @@ class ProductsPageServiceTest {
             "name, asc, name, asc",
             "price, desc, price, desc",
             "type, desc, type, desc",
-            "date, asc, dateOfCreation, asc"
+            "date, asc, createdAt, asc"
     })
     void shouldGetPageProductsBySearchText(String sortType, String sortDirection, String expectedSortType, String expectedSortDirection) {
-        // given
         Pageable pageable = PageRequest.of(0,
                 5,
                 Sort.by(Sort.Direction.fromString(expectedSortDirection), expectedSortType));
@@ -140,16 +125,11 @@ class ProductsPageServiceTest {
         given(productRepository.searchProductsByEnteredText(anyString(), any(), any()))
                 .willReturn(Optional.of(productPage));
 
-        // when
         PageProductsWithPromotionDTO actual = underTest.getPageSearchProducts(
                 "test", createBasePageProductsOptions(sortType, sortDirection)
         );
 
-        // then
-        assertThat(actual.products()).hasSize(productList.size());
-        assertThat(actual.totalPages()).isEqualTo(1);
-        assertThat(actual.totalElements()).isEqualTo(3);
-        assertThat(actual.sortOptions()).hasSize(numberOfSortOptions);
+        assertPageProductsWithPromotion(actual, productList);
     }
 
     @ParameterizedTest
@@ -157,13 +137,12 @@ class ProductsPageServiceTest {
             "name, asc, name, asc",
             "price, desc, price, desc",
             "type, desc, type, desc",
-            "date, asc, dateOfCreation, asc"
+            "date, asc, createdAt, asc"
     })
     void shouldGetPromotionProducts(String sortType,
                                     String sortDirection,
                                     String expectedSortType,
                                     String expectedSortDirection) {
-        // given
         Pageable pageable = PageRequest.of(0,
                 5,
                 Sort.by(Sort.Direction.fromString(expectedSortDirection), expectedSortType)
@@ -173,12 +152,14 @@ class ProductsPageServiceTest {
 
         given(productRepository.findPromotionProducts(any(), any())).willReturn(Optional.of(productPage));
 
-        // when
         PageProductsWithPromotionDTO actual = underTest.getPagePromotionProduct(
                 createBasePageProductsOptions(sortType, sortDirection)
         );
 
-        // then
+        assertPageProductsWithPromotion(actual, productList);
+    }
+
+    private static void assertPageProductsWithPromotion(PageProductsWithPromotionDTO actual, List<ProductWithPromotionDTO> productList) {
         assertThat(actual.products()).hasSize(productList.size());
         assertThat(actual.totalPages()).isEqualTo(1);
         assertThat(actual.totalElements()).isEqualTo(3);

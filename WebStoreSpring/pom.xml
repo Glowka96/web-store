@@ -177,6 +177,35 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>default-testCompile</id>
+                        <goals>
+                            <goal>testCompile</goal>
+                        </goals>
+                        <phase>test-compile</phase>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/test-classes</outputDirectory>
+                            <compileSourceRoots>
+                                <sourceRoot>${basedir}/src/test/java</sourceRoot>
+                            </compileSourceRoots>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>compile-integration-tests</id>
+                        <goals>
+                            <goal>testCompile</goal>
+                        </goals>
+                        <phase>integration-test</phase>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/it-classes</outputDirectory>
+                            <compileSourceRoots>
+                                <sourceRoot>${basedir}/src/integration-test/java</sourceRoot>
+                                <sourceRoot>${basedir}/src/test/java</sourceRoot>
+                            </compileSourceRoots>
+                        </configuration>
+                    </execution>
+                </executions>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
@@ -214,13 +243,13 @@
                         <enabled>true</enabled>
                     </layers>
                 </configuration>
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <goals>-->
-<!--                            <goal>repackage</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
+                <!--                <executions>-->
+                <!--                    <execution>-->
+                <!--                        <goals>-->
+                <!--                            <goal>repackage</goal>-->
+                <!--                        </goals>-->
+                <!--                    </execution>-->
+                <!--                </executions>-->
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -235,9 +264,13 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>2.22.2</version>
                 <configuration>
+                    <testSourceDirectory>src/integration-test/java</testSourceDirectory>
                     <includes>
                         <include>**/*IT.java</include>
                     </includes>
+                    <classesDirectory>${project.build.outputDirectory}</classesDirectory>
+                    <testClassesDirectory>${basedir}/target/it-classes</testClassesDirectory>
+                    <testSourceDirectory>${basedir}/src/integration-test/java</testSourceDirectory>
                     <skipTests>${skipIntegrationTests}</skipTests>
                 </configuration>
                 <executions>

@@ -21,8 +21,8 @@ import java.util.Optional;
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.BASIC_ACCOUNT;
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.ENABLED;
 import static com.natpryce.makeiteasy.MakeItEasy.*;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
@@ -34,6 +34,8 @@ class AccountDetailsServiceTest {
     @InjectMocks
     private AccountDetailsService underTest;
 
+    private static final String EMAIL = "test@test.pl";
+
     @AfterEach
     void resetSecurityContext() {
         SecurityContextHolder.clearContext();
@@ -41,44 +43,33 @@ class AccountDetailsServiceTest {
 
     @Test
     void shouldLoadUserByUsername() {
-        // given
         Account account = make(a(BASIC_ACCOUNT));
         setupSecutiryContext(account);
 
         given(accountRepository.findAccountWithRolesByEmail(anyString())).willReturn(Optional.of(account));
 
-        // when
-        UserDetails userDetails = underTest.loadUserByUsername("test@test.pl");
+        UserDetails userDetails = underTest.loadUserByUsername(EMAIL);
 
-        // then
-        assertThat(userDetails).isNotNull();
+        assertNotNull(userDetails);
     }
 
     @Test
-    void willThrowWhenAccountIsDisabled() {
-        // given
+    void willThrowDisableException_whenAccountIsDisabled() {
         Account account = make(a(BASIC_ACCOUNT).but(with(ENABLED, Boolean.FALSE)));
         setupSecutiryContext(account);
 
-        // when
         when(accountRepository.findAccountWithRolesByEmail(anyString())).thenReturn(Optional.of(account));
 
-        // then
-        assertThatThrownBy(() -> underTest.loadUserByUsername("test@test.pl"))
+        assertThatThrownBy(() -> underTest.loadUserByUsername(EMAIL))
                 .isInstanceOf(DisabledException.class)
                 .hasMessageContaining("Your account is disabled");
     }
 
     @Test
-    void willThrowWhenAccountEmailNotFound() {
-        // given
-        String email = "test@test.pl";
-
-        //when
-        // then
-        assertThatThrownBy(() -> underTest.loadUserByUsername(email))
+    void willThrowUsernameNotFoundException_whenAccountEmailNotFound() {
+        assertThatThrownBy(() -> underTest.loadUserByUsername(EMAIL))
                 .isInstanceOf(UsernameNotFoundException.class)
-                .hasMessageContaining("Account with email: " + email + " not found");
+                .hasMessageContaining("Account with email: " + EMAIL + " not found");
     }
 
     private void setupSecutiryContext(Account account) {

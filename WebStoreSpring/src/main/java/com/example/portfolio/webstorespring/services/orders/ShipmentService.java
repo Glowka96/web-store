@@ -5,7 +5,7 @@ import com.example.portfolio.webstorespring.exceptions.ShipmentQuantityExceedsPr
 import com.example.portfolio.webstorespring.model.dto.orders.request.ShipmentRequest;
 import com.example.portfolio.webstorespring.model.entity.orders.Shipment;
 import com.example.portfolio.webstorespring.model.entity.products.Product;
-import com.example.portfolio.webstorespring.model.entity.products.ProductPricePromotion;
+import com.example.portfolio.webstorespring.model.entity.products.Promotion;
 import com.example.portfolio.webstorespring.repositories.products.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -53,9 +53,9 @@ class ShipmentService {
     private BigDecimal calculateShipmentPrice(Product product, Integer quantity) {
         return BigDecimal.valueOf(quantity)
                 .multiply(
-                        product.getPricePromotions().stream()
+                        product.getPromotions().stream()
                                 .findFirst()
-                                .map(ProductPricePromotion::getPromotionPrice)
+                                .map(Promotion::getPromotionPrice)
                                 .orElse(product.getPrice()))
                 .setScale(2, RoundingMode.HALF_UP);
     }

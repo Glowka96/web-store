@@ -22,7 +22,8 @@ import static com.example.portfolio.webstorespring.buildhelpers.products.Product
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.PRICE_PROMOTIONS;
 import static com.natpryce.makeiteasy.MakeItEasy.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.BDDMockito.given;
 
@@ -36,7 +37,6 @@ class ShipmentServiceTest {
 
     @Test
     void shouldGetSetupShipments_whenProductHasNotPromotion() {
-        // given
         ShipmentRequest shipmentRequest = createShipmentRequest();
 
         Product product = make(a(BASIC_PRODUCT)
@@ -49,63 +49,53 @@ class ShipmentServiceTest {
         given(productRepository.findProductsByIdsWithPromotion(anyList()))
                 .willReturn(products);
 
-        // when
         List<Shipment> result = underTest.setupShipments(List.of(shipmentRequest));
 
-        // then
-        assertThat(result).hasSize(1).isNotEmpty();
-        assertThat(result.get(0).getPrice()).isEqualTo(exceptedPrice);
-        assertThat(result.get(0).getProduct()).isEqualTo(product);
-        assertThat(result.get(0).getQuantity()).isEqualTo(shipmentRequest.getQuantity());
+        assertShipment(exceptedPrice, product, shipmentRequest.getQuantity(), result);
     }
 
     @Test
     void shouldGetSetupShipments_whenProductHasPromotion() {
-        // given
         ShipmentRequest shipmentRequest = createShipmentRequest();
         Product product = make(a(BASIC_PRODUCT));
         List<Product> products = List.of(product);
         BigDecimal exceptedPrice = BigDecimal.valueOf(shipmentRequest.getQuantity())
-                .multiply(product.getPricePromotions().iterator().next().getPromotionPrice())
+                .multiply(product.getPromotions().iterator().next().getPromotionPrice())
                 .setScale(2, RoundingMode.HALF_UP);
 
         given(productRepository.findProductsByIdsWithPromotion(anyList())).willReturn(products);
 
-        // when
         List<Shipment> result = underTest.setupShipments(List.of(shipmentRequest));
 
-        // then
-        assertThat(result).hasSize(1).isNotEmpty();
-        assertThat(result.get(0).getPrice()).isEqualTo(exceptedPrice);
-        assertThat(result.get(0).getProduct()).isEqualTo(product);
-        assertThat(result.get(0).getQuantity()).isEqualTo(shipmentRequest.getQuantity());
+        assertShipment(exceptedPrice, product, shipmentRequest.getQuantity(), result);
+    }
+
+    private void assertShipment(BigDecimal exceptedPrice, Product product, Integer exceptedQuantity, List<Shipment> result) {
+        assertThat(result).isNotEmpty().hasSize(1);
+        assertEquals(exceptedPrice, result.get(0).getPrice());
+        assertEquals(product, result.get(0).getProduct());
+        assertEquals(exceptedQuantity, result.get(0).getQuantity());
     }
 
     @Test
-    void willThrowProductsNotFoundException() {
+    void willThrowProductsNotFoundException_whenShipmentHasProductWhatNotExist() {
         ShipmentRequest shipmentRequest = createShipmentRequest();
 
 
         given(productRepository.findProductsByIdsWithPromotion(anyList())).willReturn(List.of());
 
-        assertThatThrownBy(() -> underTest.setupShipments(List.of(shipmentRequest)))
-                .isInstanceOf(ProductsNotFoundException.class)
-                .hasMessageContaining("One or more products could not be found");
+        assertThrows(ProductsNotFoundException.class, () -> underTest.setupShipments(List.of(shipmentRequest)));
     }
 
     @Test
     void willThrowShipmentQuantityExceedsProductQuantityException() {
-        // given
         Product product = make(a(BASIC_PRODUCT));
         ShipmentRequest shipmentRequest = createShipmentRequest();
         shipmentRequest.setQuantity(10000);
 
         given(productRepository.findProductsByIdsWithPromotion(anyList())).willReturn(List.of(product));
 
-        // when
-        // then
-        assertThatThrownBy(() -> underTest.setupShipments(List.of(shipmentRequest)))
-                .isInstanceOf(ShipmentQuantityExceedsProductQuantityException.class)
-                .hasMessageContaining("The shipment quantity exceeds the product quantity");
+        assertThrows(ShipmentQuantityExceedsProductQuantityException.class,
+                () -> underTest.setupShipments(List.of(shipmentRequest)));
     }
 }

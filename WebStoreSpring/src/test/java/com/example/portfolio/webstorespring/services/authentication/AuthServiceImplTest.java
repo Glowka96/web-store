@@ -34,31 +34,25 @@ class AuthServiceImplTest {
 
     @Test
     void shouldSaveAccountAuthToken() {
-        // given
         Account account = make(a(BASIC_ACCOUNT));
         String jwtToken = "jwtToken";
 
-        // when
         underTest.saveAccountAuthToken(account, jwtToken);
 
-        // then
         verify(authTokenRepository, times(1)).save(any(AuthToken.class));
     }
 
     @Test
     void shouldRevokeAllUserAuthTokens() {
-        // given
         Account account = make(a(BASIC_ACCOUNT));
         AuthToken authToken = createAuthToken(account, "jwtToken");
 
         List<AuthToken> authTokens = List.of(authToken);
         account.setAuthTokens(authTokens);
 
-        // when
         when(authTokenRepository.findAllValidTokenByAccountId(anyLong())).thenReturn(authTokens);
         underTest.revokeAllAccountAuthTokensByAccountId(account.getId());
 
-        // then
         verify(authTokenRepository, times(1)).saveAll(authTokens);
         assertTrue(authToken.isRevoked());
         assertTrue(authToken.isExpired());
@@ -66,31 +60,25 @@ class AuthServiceImplTest {
 
     @Test
     void shouldGenerateJwtTokenWhenGiveUserDetails() {
-        // given
         Account account = make(a(BASIC_ACCOUNT));
         UserDetails userDetails = new AccountDetails(account);
 
-        // when
         when(jwtService.generateToken(any())).thenReturn("jwtToken");
         String excepted = underTest.generateJwtToken(userDetails);
 
-        // then
         assertEquals("jwtToken", excepted);
     }
 
     @Test
     void shouldGenerateJwtTokenWhenGiveUserDetailsAndClaims() {
-        // given
         Account account = make(a(BASIC_ACCOUNT));
         UserDetails userDetails = new AccountDetails(account);
         Map<String, Object> extraClaims = new HashMap<>();
         extraClaims.put("role", "ROLE_USER");
 
-        // when
         when(jwtService.generateToken(anyMap(), any())).thenReturn("jwtToken");
         String excepted = underTest.generateJwtToken(extraClaims, userDetails);
 
-        // then
         assertEquals("jwtToken", excepted);
     }
 }

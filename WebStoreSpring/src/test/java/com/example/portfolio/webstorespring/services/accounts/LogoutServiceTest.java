@@ -38,23 +38,21 @@ class LogoutServiceTest {
     @InjectMocks
     private LogoutService underTest;
 
+    private static final String JWT = "7777";
+    private static final String AUTH_HEADER = "Bearer " + JWT;
+    private static final String AUTHORIZATION = "Authorization";
+
     @Test
     void shouldLogout() {
-        // given
-        String jwt = "7777";
-        String authHeader = "Bearer " + jwt;
-
         Account account = make(a(BASIC_ACCOUNT));
-        AuthToken authToken = createAuthToken(account, jwt);
+        AuthToken authToken = createAuthToken(account, JWT);
 
-        // when
-        when(request.getHeader("Authorization")).thenReturn(authHeader);
+        when(request.getHeader(AUTHORIZATION)).thenReturn(AUTH_HEADER);
         when(authTokenRepository.findByToken(any())).thenReturn(Optional.of(authToken));
 
         underTest.logout(request,response,authentication);
 
-        // then
-        verify(authTokenRepository).findByToken(jwt);
+        verify(authTokenRepository).findByToken(JWT);
         verify(authTokenRepository).save(authToken);
 
         assertTrue(authToken.isExpired());
@@ -62,42 +60,30 @@ class LogoutServiceTest {
     }
 
     @Test
-    void shouldNotLogoutWhenInvalidAuthToken() {
-        // given
-        String jwt = "7777";
-
-        // when
-        when(request.getHeader("Authorization")).thenReturn(jwt);
+    void shouldNotLogout_whenInvalidAuthToken() {
+        when(request.getHeader(AUTHORIZATION)).thenReturn(JWT);
 
         underTest.logout(request,response,authentication);
 
-        //then
         verify(authTokenRepository, never()).save(any(AuthToken.class));
         verify(authTokenRepository, never()).findByToken(anyString());
     }
 
     @Test
-    void shouldNotLogoutWhenNotAuthHeader() {
-        // when
+    void shouldNotLogout_whenNotAuthHeader() {
         when(request.getHeader(anyString())).thenReturn(null);
 
         underTest.logout(request, response, authentication);
 
-        //then
         verify(authTokenRepository, never()).save(any(AuthToken.class));
         verify(authTokenRepository, never()).findByToken(anyString());
     }
 
     @Test
     void willThrowWhenNotFoundAuthToken() {
-        // given
-        String jwt = "Bearer 7777";
-
-        // when
-        when(request.getHeader("Authorization")).thenReturn(jwt);
+        when(request.getHeader(AUTHORIZATION)).thenReturn(AUTH_HEADER);
         when(authTokenRepository.findByToken(any())).thenReturn(Optional.empty());
 
-        //then
         assertThatThrownBy(() -> underTest.logout(request, response, authentication))
                 .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessageContaining("Authorization token with token 7777 not found");

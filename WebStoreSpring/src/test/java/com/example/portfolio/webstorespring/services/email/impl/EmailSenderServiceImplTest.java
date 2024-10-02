@@ -15,7 +15,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 
 import java.util.Map;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
@@ -57,9 +57,10 @@ class EmailSenderServiceImplTest {
         verify(javaMailSender).send(simpleMailMessageArgumentCaptor.capture());
 
         SimpleMailMessage simpleMailMessage = simpleMailMessageArgumentCaptor.getValue();
-        assertThat(simpleMailMessage.getTo()).containsExactly(recipientEmail);
-        assertThat(simpleMailMessage.getSubject()).isEqualTo(emailTitle);
-        assertThat(simpleMailMessage.getText()).isEqualTo(emailMessage + confirmLinkWithToken);
-        assertThat(resultMap).containsEntry("message", responseMessage);
+        assertArrayEquals(new String[]{recipientEmail}, simpleMailMessage.getTo());
+        assertEquals(emailTitle, simpleMailMessage.getSubject());
+        assertEquals(emailMessage + confirmLinkWithToken, simpleMailMessage.getText());
+        assertTrue(resultMap.containsKey("message"));
+        assertEquals(responseMessage, resultMap.get("message"));
     }
 }

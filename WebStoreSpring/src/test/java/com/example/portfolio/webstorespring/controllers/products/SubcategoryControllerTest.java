@@ -61,14 +61,11 @@ class SubcategoryControllerTest {
 
     @Test
     void shouldSaveSubcategory() throws Exception {
-        // given
         SubcategoryResponse subcategoryResponse = createSubcategoryResponse();
         SubcategoryRequest subcategoryRequest = createSubcategoryRequest();
 
         given(subcategoryService.saveSubcategory(anyLong(), any(SubcategoryRequest.class))).willReturn(subcategoryResponse);
 
-        // when
-        // then
         mvc.perform(post(URI + "/admin/categories/{id}/subcategories", 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
@@ -81,14 +78,11 @@ class SubcategoryControllerTest {
 
     @Test
     void shouldUpdateSubcategory() throws Exception {
-        // given
         SubcategoryResponse subcategoryResponse = createSubcategoryResponse();
         SubcategoryRequest subcategoryRequest = createSubcategoryRequest();
 
         given(subcategoryService.updateSubcategory(anyLong(), anyLong(), any(SubcategoryRequest.class))).willReturn(subcategoryResponse);
 
-        // when
-        // then
         mvc.perform(put(URI + "/admin/categories/{categoryId}/subcategories/{subcategoryId}", 1, 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)

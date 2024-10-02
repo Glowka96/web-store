@@ -20,7 +20,8 @@ import java.util.Optional;
 import static com.example.portfolio.webstorespring.buildhelpers.products.CategoryBuilderHelper.createCategory;
 import static com.example.portfolio.webstorespring.buildhelpers.products.SubcategoryBuilderHelper.createSubcategory;
 import static com.example.portfolio.webstorespring.buildhelpers.products.SubcategoryBuilderHelper.createSubcategoryRequest;
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
@@ -38,26 +39,20 @@ class SubcategoryServiceTest {
 
     @Test
     void shouldGetAllSubcategoryResponse() {
-        // given
-        // when
         underTest.getAllSubcategory();
 
-        // then
         verify(subcategoryRepository, times(1)).findAll();
         verifyNoMoreInteractions(subcategoryRepository);
     }
 
     @Test
     void shouldSaveSubcategory() {
-        // given
         Category category = createCategory();
         SubcategoryRequest subcategoryRequest = createSubcategoryRequest();
         given(categoryService.findCategoryById(anyLong())).willReturn(category);
 
-        // when
         SubcategoryResponse savedSubcategoryResponse = underTest.saveSubcategory(category.getId(), subcategoryRequest);
 
-        // then
         ArgumentCaptor<Subcategory> subcategoryArgumentCaptor =
                 ArgumentCaptor.forClass(Subcategory.class);
         verify(subcategoryRepository).save(subcategoryArgumentCaptor.capture());
@@ -65,24 +60,21 @@ class SubcategoryServiceTest {
         SubcategoryResponse mappedSubCategory =
                 subCategoryMapper.mapToDto(subcategoryArgumentCaptor.getValue());
 
-        assertThat(savedSubcategoryResponse).isEqualTo(mappedSubCategory);
+        assertEquals(mappedSubCategory, savedSubcategoryResponse);
     }
 
     @Test
     void shouldUpdateSubcategory() {
-        // given
         Category category = createCategory();
         Subcategory subcategory = createSubcategory();
-        String subcategoryName = subcategory.getName();
+        String subcategoryNameBeforeUpdate = subcategory.getName();
         SubcategoryRequest subcategoryRequest = createSubcategoryRequest("Test2");
 
         given(categoryService.findCategoryById(category.getId())).willReturn(category);
         given(subcategoryRepository.findById(subcategory.getId())).willReturn(Optional.of(subcategory));
 
-        // when
         SubcategoryResponse updatedSubcategoryRequest = underTest.updateSubcategory(category.getId(), subcategory.getId(), subcategoryRequest);
 
-        // then
         ArgumentCaptor<Subcategory> subCategoryArgumentCaptor =
                 ArgumentCaptor.forClass(Subcategory.class);
         verify(subcategoryRepository).save(subCategoryArgumentCaptor.capture());
@@ -90,20 +82,17 @@ class SubcategoryServiceTest {
         SubcategoryResponse mappedSubcategoryRequest =
                 subCategoryMapper.mapToDto(subCategoryArgumentCaptor.getValue());
 
-        assertThat(updatedSubcategoryRequest).isEqualTo(mappedSubcategoryRequest);
-        assertThat(updatedSubcategoryRequest.getName()).isNotEqualTo(subcategoryName);
+        assertEquals(mappedSubcategoryRequest, updatedSubcategoryRequest);
+        assertNotEquals(subcategoryNameBeforeUpdate, updatedSubcategoryRequest.getName());
     }
 
     @Test
     void shouldDeleteSubCategoryById() {
-        // given
         Subcategory subcategory = createSubcategory();
         given(subcategoryRepository.findById(anyLong())).willReturn(Optional.of(subcategory));
 
-        // when
         underTest.deleteSubcategoryById(anyLong());
 
-        // then
         verify(subcategoryRepository, times(1)).deleteById(subcategory.getId());
     }
 }

@@ -14,7 +14,7 @@ import java.util.List;
         collectionMappingStrategy = CollectionMappingStrategy.ADDER_PREFERRED,
         uses = {
                 ProducerMapper.class,
-                ProductPricePromotionMapper.class,
+                PromotionMapper.class,
                 ProductTypeMapper.class
         }
 )
@@ -28,7 +28,7 @@ public interface ProductMapper {
     List<ProductResponse> mapToDto(List<Product> products);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "pricePromotions", ignore = true)
+    @Mapping(target = "promotions", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "shipment", ignore = true)
     @Mapping(target = "subcategory", ignore = true)

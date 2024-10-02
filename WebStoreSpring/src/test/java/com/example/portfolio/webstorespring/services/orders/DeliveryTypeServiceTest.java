@@ -18,8 +18,8 @@ import java.util.Optional;
 
 import static com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryTypeBuilderHelper.createDeliveryType;
 import static com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryTypeBuilderHelper.createDeliveryTypeRequest;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
@@ -36,11 +36,8 @@ class DeliveryTypeServiceTest {
 
     @Test
     void shouldGetAllDeliveryType() {
-        // given
-        // when
         underTest.getAllDeliveryType();
 
-        // then
         verify(deliveryTypeRepository, times(1)).findAll();
         verifyNoMoreInteractions(deliveryTypeRepository);
         verify(deliveryTypeMapper, times(1)).mapToDto(anyList());
@@ -49,13 +46,10 @@ class DeliveryTypeServiceTest {
 
     @Test
     void shouldSaveDeliveryType() {
-        // given
         DeliveryTypeRequest deliveryTypeRequest = createDeliveryTypeRequest();
 
-        // when
         DeliveryTypeResponse savedDeliveryTypeResponse = underTest.saveDeliveryType(deliveryTypeRequest);
 
-        // then
         ArgumentCaptor<DeliveryType> deliveryTypeArgumentCaptor =
                 ArgumentCaptor.forClass(DeliveryType.class);
         verify(deliveryTypeRepository).save(deliveryTypeArgumentCaptor.capture());
@@ -63,30 +57,24 @@ class DeliveryTypeServiceTest {
         DeliveryTypeResponse mappedDeliveryTypeResponse =
                 deliveryTypeMapper.mapToDto(deliveryTypeArgumentCaptor.getValue());
 
-        assertThat(savedDeliveryTypeResponse).isEqualTo(mappedDeliveryTypeResponse);
+        assertEquals(mappedDeliveryTypeResponse, savedDeliveryTypeResponse);
     }
 
     @Test
     void shouldDeleteDeliveryType() {
-        // given
         DeliveryType deliveryType = createDeliveryType();
         given(deliveryTypeRepository.findById(anyLong())).willReturn(Optional.of(deliveryType));
 
-        // when
         underTest.deleteDeliveryType(1L);
 
-        // then
         verify(deliveryTypeRepository, times(1)).findById(1L);
         verify(deliveryTypeRepository, times(1)).delete(deliveryType);
     }
 
     @Test
-    void willThrow_whenDeliveryTypeIdNotFound() {
-        // given
+    void willThrowResourceNotFoundException_whenDeliveryTypeIdNotFound() {
         given(deliveryTypeRepository.findById(anyLong())).willReturn(Optional.empty());
 
-        // when
-        // then
         assertThatThrownBy(() -> underTest.deleteDeliveryType(1L))
                 .isInstanceOf(ResourceNotFoundException.class)
                         .hasMessageContaining("Delivery type with id 1 not found");

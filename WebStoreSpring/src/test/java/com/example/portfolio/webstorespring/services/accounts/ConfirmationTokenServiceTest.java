@@ -20,8 +20,8 @@ import static com.example.portfolio.webstorespring.buildhelpers.DateForTestBuild
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.BASIC_ACCOUNT;
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.ConfirmationTokenBuilderHelper.*;
 import static com.natpryce.makeiteasy.MakeItEasy.*;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
@@ -39,7 +39,6 @@ class ConfirmationTokenServiceTest {
 
     @Test
     void shouldCreateConfirmationToken() {
-        // given
         setupClock();
 
         Account account = make(a(BASIC_ACCOUNT));
@@ -49,43 +48,34 @@ class ConfirmationTokenServiceTest {
 
         given(tokenRepository.save(any(ConfirmationToken.class))).willReturn(confirmationToken);
 
-        // when
         ConfirmationToken actual = underTest.createConfirmationToken(account);
 
         ArgumentCaptor<ConfirmationToken> confirmationTokenArgumentCaptor =
                 ArgumentCaptor.forClass(ConfirmationToken.class);
         verify(tokenRepository).save(confirmationTokenArgumentCaptor.capture());
 
-        ConfirmationToken captureToken = confirmationTokenArgumentCaptor.getValue();
-
-        // then
-        assertThat(actual).isNotNull();
-        assertThat(captureToken).isEqualTo(actual);
+        assertNotNull(actual);
+        assertEquals(confirmationTokenArgumentCaptor.getValue(), actual);
         verify(tokenRepository, times(1)).save(any(ConfirmationToken.class));
     }
 
     @Test
     void shouldGetConfirmationTokenByToken() {
-        // given
         Account account = make(a(BASIC_ACCOUNT));
         ConfirmationToken confirmationToken = make(a(BASIC_CONFIRMATION_TOKEN)
                 .but(with(ACCOUNT, account)));
         given(tokenRepository.findByToken(anyString())).willReturn(Optional.of(confirmationToken));
 
-        // when
         ConfirmationToken actual = underTest.getConfirmationTokenByToken(UUID_CODE);
 
-        // then
-        assertThat(actual).isNotNull();
+        assertNotNull(actual);
         verify(tokenRepository, times(1)).findByToken(UUID_CODE);
     }
 
     @Test
-    void willThrowWhenConfirmationTokenNotFound() {
-        // given
+    void willThrowResourceNotFoundException_whenConfirmationTokenNotFound() {
         given(tokenRepository.findByToken(anyString())).willReturn(Optional.empty());
 
-        // when
         assertThatThrownBy(() -> underTest.getConfirmationTokenByToken(UUID_CODE))
                 .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessageContaining("Confirmation token with token " + UUID_CODE + " not found");
@@ -93,62 +83,54 @@ class ConfirmationTokenServiceTest {
 
     @Test
     void shouldSuccess_whenTokenIsNotExpired() {
-        // given
         setupClock();
 
         Account account = make(a(BASIC_ACCOUNT));
         ConfirmationToken confirmationToken = make(a(BASIC_CONFIRMATION_TOKEN)
                 .but(with(ACCOUNT, account)));
-        // when
+
         boolean isExpired = underTest.isTokenExpired(confirmationToken);
 
-        // then
-        assertThat(isExpired).isFalse();
+        assertFalse(isExpired);
     }
 
     @Test
     void shouldFail_whenTokenIsExpired() {
-        // given
         setupClockWithExpiredTime();
 
         Account account = make(a(BASIC_ACCOUNT));
         ConfirmationToken confirmationToken = make(a(BASIC_CONFIRMATION_TOKEN)
                 .but(with(ACCOUNT, account))
                 .but(with(EXPIRED_AT, DateForTestBuilderHelper.LOCAL_DATE_TIME)));
-        // when
+
         boolean isExpired = underTest.isTokenExpired(confirmationToken);
 
-        // then
-        assertThat(isExpired).isTrue();
+        assertTrue(isExpired);
     }
 
     @Test
     void shouldSetConfirmedAtAndSaveConfirmationToken() {
-        // given
         setupClock();
 
         Account account = make(a(BASIC_ACCOUNT));
         ConfirmationToken confirmationToken = make(a(BASIC_CONFIRMATION_TOKEN)
                 .but(with(ACCOUNT, account))
                 .but(withNull(CONFIRMED_AT)));
-        // when
+
         underTest.setConfirmedAtAndSaveConfirmationToken(confirmationToken);
 
-        // then
         verify(tokenRepository, times(1)).save(confirmationToken);
-        assertThat(confirmationToken.getConfirmedAt()).isNotNull();
+        assertNotNull(confirmationToken.getConfirmedAt());
     }
 
     @Test
     void shouldDeleteToken() {
-        // given
         Account account = make(a(BASIC_ACCOUNT));
         ConfirmationToken confirmationToken = make(a(BASIC_CONFIRMATION_TOKEN)
                 .but(with(ACCOUNT, account)));
-        // when
+
         underTest.deleteConfirmationToken(confirmationToken);
 
-        // then
         verify(tokenRepository, times(1)).delete(confirmationToken);
     }
 
