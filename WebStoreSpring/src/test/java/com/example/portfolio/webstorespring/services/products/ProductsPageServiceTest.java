@@ -17,9 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.example.portfolio.webstorespring.buildhelpers.products.PageProductsOptionsBuilderHelper.createBasePageProductsOptions;
-import static com.example.portfolio.webstorespring.buildhelpers.products.PageProductsOptionsBuilderHelper.getNumberOfSortOptions;
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductWithPromotionDtoBuildHelper.createProductWithPromotionDTO;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProductsPageOptionsBuilderHelper.createBaseProductPageOptions;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProductsPageOptionsBuilderHelper.getNumberOfSortOptions;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.*;
@@ -45,7 +45,7 @@ class ProductsPageServiceTest {
             "type, desc, type, desc",
             "date, asc, createdAt, asc"
     })
-    void shouldGetPageProductsBySubCategoryId(String sortType,
+    void shouldGetProductsPageBySubcategoryId(String sortType,
                                               String sortDirection,
                                               String expectedSortType,
                                               String expectedSortDirection) {
@@ -59,11 +59,11 @@ class ProductsPageServiceTest {
         given(productRepository.findProductsBySubcategoryId(anyLong(), any(), any()))
                 .willReturn(Optional.of(productPage));
 
-        PageProductsWithPromotionDTO actual = underTest.getPageProductsBySubcategoryId(
-                1L, createBasePageProductsOptions(sortType, sortDirection)
+        PageProductsWithPromotionDTO actual = underTest.getProductsPageBySubcategoryId(
+                1L, createBaseProductPageOptions(sortType, sortDirection)
         );
 
-        assertPageProductsWithPromotion(actual, productList);
+        assertProductsPageWithPromotion(actual, productList);
     }
 
 
@@ -74,7 +74,7 @@ class ProductsPageServiceTest {
             "type, desc, type, desc",
             "date, asc, createdAt, asc"
     })
-    void shouldGetPageNewProducts(String sortType,
+    void shouldGetNewProductsPage(String sortType,
                                   String sortDirection,
                                   String expectedSortType,
                                   String expectedSortDirection) {
@@ -87,11 +87,11 @@ class ProductsPageServiceTest {
 
         given(productRepository.findNewProducts(any(), any())).willReturn(Optional.of(productPage));
 
-        PageProductsWithPromotionDTO actual = underTest.getPageNewProducts(
-                createBasePageProductsOptions(sortType, sortDirection)
+        PageProductsWithPromotionDTO actual = underTest.getNewProductsPage(
+                createBaseProductPageOptions(sortType, sortDirection)
         );
 
-        assertPageProductsWithPromotion(actual, productList);
+        assertProductsPageWithPromotion(actual, productList);
     }
 
     @Test
@@ -101,7 +101,7 @@ class ProductsPageServiceTest {
 
         given(productRepository.findNewProducts(any(), any())).willReturn(Optional.of(productPage));
 
-        PageProductsWithPromotionDTO actual = underTest.getPageNewProducts(createBasePageProductsOptions());
+        PageProductsWithPromotionDTO actual = underTest.getNewProductsPage(createBaseProductPageOptions());
 
         assertThat(actual.products()).isEmpty();
         assertThat(actual.totalPages()).isZero();
@@ -125,11 +125,11 @@ class ProductsPageServiceTest {
         given(productRepository.searchProductsByEnteredText(anyString(), any(), any()))
                 .willReturn(Optional.of(productPage));
 
-        PageProductsWithPromotionDTO actual = underTest.getPageSearchProducts(
-                "test", createBasePageProductsOptions(sortType, sortDirection)
+        PageProductsWithPromotionDTO actual = underTest.getSearchProductsPage(
+                "test", createBaseProductPageOptions(sortType, sortDirection)
         );
 
-        assertPageProductsWithPromotion(actual, productList);
+        assertProductsPageWithPromotion(actual, productList);
     }
 
     @ParameterizedTest
@@ -139,7 +139,7 @@ class ProductsPageServiceTest {
             "type, desc, type, desc",
             "date, asc, createdAt, asc"
     })
-    void shouldGetPromotionProducts(String sortType,
+    void shouldGetPromotionProductsPage(String sortType,
                                     String sortDirection,
                                     String expectedSortType,
                                     String expectedSortDirection) {
@@ -152,14 +152,14 @@ class ProductsPageServiceTest {
 
         given(productRepository.findPromotionProducts(any(), any())).willReturn(Optional.of(productPage));
 
-        PageProductsWithPromotionDTO actual = underTest.getPagePromotionProduct(
-                createBasePageProductsOptions(sortType, sortDirection)
+        PageProductsWithPromotionDTO actual = underTest.getPromotionProductsPage(
+                createBaseProductPageOptions(sortType, sortDirection)
         );
 
-        assertPageProductsWithPromotion(actual, productList);
+        assertProductsPageWithPromotion(actual, productList);
     }
 
-    private static void assertPageProductsWithPromotion(PageProductsWithPromotionDTO actual, List<ProductWithPromotionDTO> productList) {
+    private static void assertProductsPageWithPromotion(PageProductsWithPromotionDTO actual, List<ProductWithPromotionDTO> productList) {
         assertThat(actual.products()).hasSize(productList.size());
         assertThat(actual.totalPages()).isEqualTo(1);
         assertThat(actual.totalElements()).isEqualTo(3);
@@ -172,7 +172,7 @@ class ProductsPageServiceTest {
             "bad, desc"
     })
     void willThrowIllegalArgumentException_whenSortTypeIsInvalid(String sortType, String sortDirection) {
-        assertThatThrownBy(() -> underTest.getPageNewProducts(createBasePageProductsOptions(sortType, sortDirection)))
+        assertThatThrownBy(() -> underTest.getNewProductsPage(createBaseProductPageOptions(sortType, sortDirection)))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Invalid sort type value: bad");
     }
@@ -186,7 +186,7 @@ class ProductsPageServiceTest {
             "date, bad"
     })
     void willThrowIllegalArgumentException_whenSortDirectionIsInvalid(String sortType, String sortDirection) {
-        assertThatThrownBy(() -> underTest.getPageNewProducts(createBasePageProductsOptions(sortType, sortDirection)))
+        assertThatThrownBy(() -> underTest.getNewProductsPage(createBaseProductPageOptions(sortType, sortDirection)))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Invalid value 'bad' for orders given");
     }

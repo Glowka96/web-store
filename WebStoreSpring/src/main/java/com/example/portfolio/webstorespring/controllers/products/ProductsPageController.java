@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.controllers.products;
 
-import com.example.portfolio.webstorespring.model.dto.products.PageProductsOptions;
 import com.example.portfolio.webstorespring.model.dto.products.PageProductsWithPromotionDTO;
+import com.example.portfolio.webstorespring.model.dto.products.ProductsPageOptions;
 import com.example.portfolio.webstorespring.services.products.ProductsPageService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,17 +17,17 @@ public class ProductsPageController {
 
     @GetMapping(value = "/subcategories/{subcategoryId}/products")
     public ResponseEntity<PageProductsWithPromotionDTO> getPageProductsBySubcategoryId(@PathVariable(value = "subcategoryId") Long subcategoryId,
-                                                                                       @Valid @RequestBody PageProductsOptions pageProductsOptions) {
-        return ResponseEntity.ok(productsPageService.getPageProductsBySubcategoryId(subcategoryId, pageProductsOptions));
+                                                                                       @Valid @RequestBody ProductsPageOptions productsPageOptions) {
+        return ResponseEntity.ok(productsPageService.getProductsPageBySubcategoryId(subcategoryId, productsPageOptions));
     }
 
     @GetMapping(value = "/products/promotions")
-    public ResponseEntity<PageProductsWithPromotionDTO> getPagePromotionProducts(@Valid @RequestBody PageProductsOptions pageProductsOptions) {
-        return ResponseEntity.ok(productsPageService.getPagePromotionProduct(pageProductsOptions));
+    public ResponseEntity<PageProductsWithPromotionDTO> getPagePromotionProducts(@Valid @RequestBody ProductsPageOptions productsPageOptions) {
+        return ResponseEntity.ok(productsPageService.getPromotionProductsPage(productsPageOptions));
     }
 
     @GetMapping(value = "/products/news")
-    public ResponseEntity<PageProductsWithPromotionDTO> getPageNewProducts(@Valid @RequestBody PageProductsOptions pageProductsOptions) {
-        return ResponseEntity.ok(productsPageService.getPageNewProducts(pageProductsOptions));
+    public ResponseEntity<PageProductsWithPromotionDTO> getPageNewProducts(@Valid @RequestBody ProductsPageOptions productsPageOptions) {
+        return ResponseEntity.ok(productsPageService.getNewProductsPage(productsPageOptions));
     }
 }

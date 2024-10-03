@@ -4,7 +4,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
 
-public record PageProductsOptions(
+public record ProductsPageOptions(
         @Min(value = 0, message = "The page number must be 0 or greater")
         Integer pageNo,
         @Min(value = 1, message = "The page size must be between 1 and 48")

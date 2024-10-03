@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.controllers.products;
 
 import com.example.portfolio.webstorespring.controllers.AbstractTestRestTemplateIT;
-import com.example.portfolio.webstorespring.model.dto.products.PageProductsOptions;
 import com.example.portfolio.webstorespring.model.dto.products.PageProductsWithPromotionDTO;
+import com.example.portfolio.webstorespring.model.dto.products.ProductsPageOptions;
 import com.example.portfolio.webstorespring.productsTestData.InitProductTestData;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,7 +33,7 @@ class SearchControllerIT extends AbstractTestRestTemplateIT {
 
     @Test
     void shouldGetPageSearchProductsByTest_forEveryBody_thenStatusOK() {
-        HttpEntity<PageProductsOptions> httpEntity = new HttpEntity<>(new PageProductsOptions(0, 12, "date - desc"));
+        HttpEntity<ProductsPageOptions> httpEntity = new HttpEntity<>(new ProductsPageOptions(0, 12, "date - desc"));
 
         ResponseEntity<PageProductsWithPromotionDTO> response = restTemplate.exchange(
                 localhostUri + "/products/search?query=Education",

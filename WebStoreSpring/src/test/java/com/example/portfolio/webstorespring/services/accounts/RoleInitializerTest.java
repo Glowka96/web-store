@@ -19,7 +19,7 @@ class RoleInitializerTest {
     private RoleInitializer roleInitializer;
 
     @Test
-    void testRun() throws Exception {
+    void testRun() {
         roleInitializer.run();
 
         verify(roleService, times(1)).initializeRole("ROLE_USER");

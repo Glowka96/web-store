@@ -5,8 +5,8 @@ import com.example.portfolio.webstorespring.model.dto.products.ProductWithPromot
 
 import java.util.List;
 
-import static com.example.portfolio.webstorespring.buildhelpers.products.PageProductsOptionsBuilderHelper.getSortOptions;
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductWithPromotionDtoBuildHelper.createProductWithPromotionDTO;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProductsPageOptionsBuilderHelper.getSortOptions;
 
 public class PageProductWithPromotionDTOBuilderHelper {
 

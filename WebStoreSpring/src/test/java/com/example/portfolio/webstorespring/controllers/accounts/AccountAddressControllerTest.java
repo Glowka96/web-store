@@ -34,7 +34,7 @@ class AccountAddressControllerTest {
     @InjectMocks
     private AccountAddressController underTest;
 
-    private final static String URI = "/api/v1/accounts/addresses";
+    private static final String URI = "/api/v1/accounts/addresses";
     private ObjectMapper mapper;
     private MockMvc mvc;
 

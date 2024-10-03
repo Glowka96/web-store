@@ -2,19 +2,19 @@ package com.example.portfolio.webstorespring.buildhelpers.products;
 
 import com.example.portfolio.webstorespring.enums.SortByType;
 import com.example.portfolio.webstorespring.enums.SortDirectionType;
-import com.example.portfolio.webstorespring.model.dto.products.PageProductsOptions;
+import com.example.portfolio.webstorespring.model.dto.products.ProductsPageOptions;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class PageProductsOptionsBuilderHelper {
+public class ProductsPageOptionsBuilderHelper {
 
-    public static PageProductsOptions createBasePageProductsOptions() {
-        return new PageProductsOptions(0, 12, "name - asc");
+    public static ProductsPageOptions createBaseProductPageOptions() {
+        return new ProductsPageOptions(0, 12, "name - asc");
     }
 
-    public static PageProductsOptions createBasePageProductsOptions(String sortType, String sortDirection) {
-        return new PageProductsOptions(0, 12, sortType + " - " + sortDirection);
+    public static ProductsPageOptions createBaseProductPageOptions(String sortType, String sortDirection) {
+        return new ProductsPageOptions(0, 12, sortType + " - " + sortDirection);
     }
 
     public static List<String> getSortOptions() {
