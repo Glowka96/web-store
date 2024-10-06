@@ -25,4 +25,6 @@ public class OrderRequest {
     @JsonProperty("shipments")
     @NotEmpty(message = "The shipments can't be empty")
     private List<ShipmentRequest> shipmentRequests;
+
+    private String discountCode;
 }

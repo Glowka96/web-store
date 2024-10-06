@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Getter
@@ -27,6 +28,9 @@ public class Discount {
 
     @Column(nullable = false, updatable = false)
     private Long quantity;
+
+    @Column(updatable = false)
+    private LocalDate endDate;
 
     @ManyToMany
     @JoinTable(name = "discount_subcategory",
