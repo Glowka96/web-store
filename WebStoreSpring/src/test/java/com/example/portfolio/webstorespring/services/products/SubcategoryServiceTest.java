@@ -1,5 +1,6 @@
 package com.example.portfolio.webstorespring.services.products;
 
+import com.example.portfolio.webstorespring.buildhelpers.products.SubcategoryBuilderHelper;
 import com.example.portfolio.webstorespring.mappers.SubcategoryMapper;
 import com.example.portfolio.webstorespring.model.dto.products.request.SubcategoryRequest;
 import com.example.portfolio.webstorespring.model.dto.products.response.SubcategoryResponse;
@@ -16,6 +17,7 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
+import java.util.Set;
 
 import static com.example.portfolio.webstorespring.buildhelpers.products.CategoryBuilderHelper.createCategory;
 import static com.example.portfolio.webstorespring.buildhelpers.products.SubcategoryBuilderHelper.createSubcategory;
@@ -43,6 +45,15 @@ class SubcategoryServiceTest {
 
         verify(subcategoryRepository, times(1)).findAll();
         verifyNoMoreInteractions(subcategoryRepository);
+    }
+
+    @Test
+    void shouldFindSubcategoriesByNames() {
+        given(subcategoryRepository.findAllByNames(anySet())).willReturn(Set.of(SubcategoryBuilderHelper.createSubcategory()));
+
+        Set<Subcategory> foundSubcategories = underTest.findAllSubcategoryByNames(Set.of("Test"));
+
+        assertEquals(1, foundSubcategories.size());
     }
 
     @Test

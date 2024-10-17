@@ -1,5 +1,6 @@
 package com.example.portfolio.webstorespring.services.products;
 
+import com.example.portfolio.webstorespring.exceptions.NotFoundSubcategoriesByNamesException;
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.SubcategoryMapper;
 import com.example.portfolio.webstorespring.model.dto.products.request.SubcategoryRequest;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +25,14 @@ public class SubcategoryService {
 
     public List<SubcategoryResponse> getAllSubcategory() {
         return subcategoryMapper.mapToDto(subcategoryRepository.findAll());
+    }
+
+    Set<Subcategory> findAllSubcategoryByNames(Set<String> names){
+        Set<Subcategory> subcategories = subcategoryRepository.findAllByNames(names);
+        if (subcategories.isEmpty()) {
+            throw new NotFoundSubcategoriesByNamesException();
+        }
+        return subcategories;
     }
 
     @Transactional

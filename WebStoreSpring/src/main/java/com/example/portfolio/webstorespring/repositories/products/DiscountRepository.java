@@ -15,4 +15,6 @@ public interface DiscountRepository extends JpaRepository<Discount, Long> {
         WHERE d.code = :code
 """)
     Optional<Discount> findByCode(@Param("code") String code);
+
+    boolean existsByCode(String code);
 }
