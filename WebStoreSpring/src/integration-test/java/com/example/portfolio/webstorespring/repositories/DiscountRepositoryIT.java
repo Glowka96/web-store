@@ -31,13 +31,14 @@ class DiscountRepositoryIT {
     private DiscountRepository discountRepository;
     @Autowired
     private SubcategoryRepository subcategoryRepository;
+    private static final String DISCOUNT_CODE = "test";
 
     @BeforeEach
     void initTestData() {
         Subcategory subcategory = subcategoryRepository.save(SubcategoryBuilderHelper.createSubcategory());
         subcategoryRepository.save(Subcategory.builder().name("other").build());
         discountRepository.save(Discount.builder()
-                        .code("test")
+                        .code(DISCOUNT_CODE)
                         .discountRate(BigDecimal.valueOf(0.1))
                         .quantity(10L)
                         .subcategories(Set.of(subcategory))
@@ -46,10 +47,10 @@ class DiscountRepositoryIT {
 
     @Test
     void shouldGetDiscountCodeByCode() {
-        Optional<Discount> optionalDiscount = discountRepository.findByCode("test");
+        Optional<Discount> optionalDiscount = discountRepository.findByCode(DISCOUNT_CODE);
 
         assertTrue(optionalDiscount.isPresent());
-        assertEquals("test", optionalDiscount.get().getCode());
+        assertEquals(DISCOUNT_CODE, optionalDiscount.get().getCode());
         assertEquals(1, optionalDiscount.get().getSubcategories().size());
     }
 }
