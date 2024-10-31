@@ -29,15 +29,8 @@ public class DiscountService {
 
     @Transactional
     public DiscountAdminResponse saveDiscount(DiscountRequest discountRequest) {
-        String code;
-        if(discountRequest.code() != null) {
-            code = discountRequest.code();
-        } else {
-            code = generateUniqueCode();
-        }
-
         Discount discount = Discount.builder()
-                .code(code)
+                .code(getCode(discountRequest))
                 .discountRate(discountRequest.discountRate())
                 .quantity(discountRequest.quantity())
                 .endDate(discountRequest.endDate())
@@ -53,11 +46,15 @@ public class DiscountService {
         Discount discount = findDiscountByCode(code);
         discount.setQuantity(discount.getQuantity() - 1);
         discountRepository.save(discount);
-        return findDiscountByCode(code);
+        return discount;
     }
 
     private Discount findDiscountByCode(String code) {
         return discountRepository.findByCode(code).orElseThrow(DiscountIsInvalid::new);
+    }
+
+    private String getCode(DiscountRequest discountRequest) {
+        return discountRequest.code() != null ? discountRequest.code() : generateUniqueCode();
     }
 
     private String generateUniqueCode() {
