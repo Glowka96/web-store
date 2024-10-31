@@ -19,4 +19,12 @@ public interface DiscountRepository extends JpaRepository<Discount, Long> {
     Optional<Discount> findByCode(@Param("code") String code);
 
     boolean existsByCode(String code);
+
+    @Modifying
+    @Query("""
+            DELETE FROM Discount d
+            WHERE d.quantity = 0
+            OR (d.endDate  IS NOT NULL AND d.endDate < CURRENT_DATE)
+            """)
+    void deleteZeroQuantityOrExpiredDiscounts();
 }
