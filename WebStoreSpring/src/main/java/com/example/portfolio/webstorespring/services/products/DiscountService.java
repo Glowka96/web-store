@@ -8,6 +8,7 @@ import com.example.portfolio.webstorespring.model.entity.products.Discount;
 import com.example.portfolio.webstorespring.repositories.products.DiscountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Random;
@@ -47,6 +48,7 @@ public class DiscountService {
         return DiscountAdminResponse.mapToResponse(discount);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     public Discount useDiscountByCode(String code) {
         Discount discount = findDiscountByCode(code);
         discount.setQuantity(discount.getQuantity() - 1);
