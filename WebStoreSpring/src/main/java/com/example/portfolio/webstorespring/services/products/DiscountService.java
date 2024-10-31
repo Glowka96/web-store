@@ -22,7 +22,7 @@ public class DiscountService {
 
     public DiscountUserResponse getDiscountByDiscountCode(String code) {
         return DiscountUserResponse.mapToResponse(
-                discountRepository.findByCode(code).orElseThrow(DiscountIsInvalid::new)
+                findDiscountByCode(code)
         );
     }
 
@@ -45,6 +45,17 @@ public class DiscountService {
 
         discountRepository.save(discount);
         return DiscountAdminResponse.mapToResponse(discount);
+    }
+
+    public Discount useDiscountByCode(String code) {
+        Discount discount = findDiscountByCode(code);
+        discount.setQuantity(discount.getQuantity() - 1);
+        discountRepository.save(discount);
+        return findDiscountByCode(code);
+    }
+
+    private Discount findDiscountByCode(String code) {
+        return discountRepository.findByCode(code).orElseThrow(DiscountIsInvalid::new);
     }
 
     private String generateUniqueCode() {

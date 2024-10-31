@@ -101,6 +101,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("""
             SELECT p FROM Product p
             LEFT JOIN FETCH p.promotions prom
+            LEFT JOIN FETCH p.subcategory s
             WHERE p.id IN :productIds
             AND (prom IS NULL OR (CURRENT_TIMESTAMP BETWEEN prom.startDate AND prom.endDate))
             """)

@@ -26,7 +26,7 @@ public class Discount {
     @Column(nullable = false, updatable = false)
     private BigDecimal discountRate;
 
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false)
     private Long quantity;
 
     @Column(updatable = false)
