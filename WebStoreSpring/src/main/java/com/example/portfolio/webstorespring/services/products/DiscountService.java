@@ -59,11 +59,8 @@ public class DiscountService {
     }
 
     private String generateUniqueCode() {
-        String code;
-        do {
-            code = generateCode();
-        } while (discountRepository.existsByCode(code));
-        return code;
+        String code = generateCode();
+        return discountRepository.existsByCode(code) ? generateUniqueCode() : code;
     }
 
     private static String generateCode() {
