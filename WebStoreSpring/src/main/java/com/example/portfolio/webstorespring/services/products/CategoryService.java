@@ -43,8 +43,7 @@ public class CategoryService {
     }
 
     public void deleteCategoryById(Long id) {
-        Category category = findCategoryById(id);
-        categoryRepository.delete(category);
+        categoryRepository.deleteById(id);
     }
 
     protected Category findCategoryById(Long id) {
