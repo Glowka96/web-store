@@ -81,7 +81,7 @@ public class AccountService {
 
     @Transactional
     public void deleteAccount(AccountDetails accountDetails) {
-        addressService.deleteAccountAddressWhenDeleteAccount(accountDetails);
+        addressService.deleteAccountAddress(accountDetails);
         accountRepository.delete(accountDetails.getAccount());
     }
 
