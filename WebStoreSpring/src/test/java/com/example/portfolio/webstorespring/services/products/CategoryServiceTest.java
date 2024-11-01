@@ -87,12 +87,9 @@ class CategoryServiceTest {
 
     @Test
     void shouldDeleteCategoryById() {
-        Category category = createCategory();
-        given(categoryRepository.findById(anyLong())).willReturn(Optional.of(category));
+        underTest.deleteCategoryById(anyLong());
 
-        underTest.deleteCategoryById(1L);
-
-        verify(categoryRepository, times(1)).findById(1L);
-        verify(categoryRepository, times(1)).delete(category);
+        verify(categoryRepository, times(1)).deleteById(anyLong());
+        verifyNoMoreInteractions(categoryRepository);
     }
 }
