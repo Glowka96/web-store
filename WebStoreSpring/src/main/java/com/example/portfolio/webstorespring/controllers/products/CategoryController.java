@@ -23,22 +23,22 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.getAllCategory());
     }
 
-    @PostMapping(value = "/admin/categories")
-    public ResponseEntity<CategoryResponse> saveCategory(@Valid @RequestBody CategoryRequest categoryRequest) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(categoryService.saveCategory(categoryRequest));
+    @PostMapping(value = "/categories")
+    @ResponseStatus(HttpStatus.CREATED)
+    public CategoryResponse saveCategory(@Valid @RequestBody CategoryRequest categoryRequest) {
+        return categoryService.saveCategory(categoryRequest);
     }
 
     @PutMapping(value = "/admin/categories/{categoryId}")
-    public ResponseEntity<CategoryResponse> updateCategory(@PathVariable(value = "categoryId") Long categoryId,
-                                                           @Valid @RequestBody CategoryRequest categoryRequest){
-        return ResponseEntity.accepted()
-                .body(categoryService.updateCategory(categoryId, categoryRequest));
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public CategoryResponse updateCategory(@PathVariable(value = "categoryId") Long categoryId,
+                                           @Valid @RequestBody CategoryRequest categoryRequest) {
+        return categoryService.updateCategory(categoryId, categoryRequest);
     }
 
-    @DeleteMapping(value = "/admin/categories/{categoryId}")
-    public ResponseEntity<Void> deleteCategoryById(@PathVariable(value = "categoryId") Long categoryId) {
+    @DeleteMapping(value = "/categories/{categoryId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteCategoryById(@PathVariable(value = "categoryId") Long categoryId) {
         categoryService.deleteCategoryById(categoryId);
-        return ResponseEntity.noContent().build();
     }
 }

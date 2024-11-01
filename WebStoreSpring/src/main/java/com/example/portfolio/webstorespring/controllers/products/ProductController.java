@@ -7,7 +7,6 @@ import com.example.portfolio.webstorespring.services.products.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,34 +19,35 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping(value = "/admin/products")
-    public ResponseEntity<List<ProductResponse>> getAllProducts() {
-        return ResponseEntity.ok(productService.getAllProducts());
+    public List<ProductResponse> getAllProducts() {
+        return productService.getAllProducts();
     }
 
     @GetMapping(value = "/products/{productId}")
-    public ResponseEntity<ProductWithProducerAndPromotionDTO> getProductById(@PathVariable(value = "productId") Long productId){
-        return ResponseEntity.ok(productService.getProductById(productId));
+    public ProductWithProducerAndPromotionDTO getProductById(@PathVariable(value = "productId") Long productId) {
+        return productService.getProductById(productId);
     }
 
     @PostMapping(value = "/admin/subcategories/{subcategoryId}/producers/{producerId}/products")
-    public ResponseEntity<ProductResponse> saveProduct(@PathVariable(value = "subcategoryId") Long subcategoryId,
-                                                       @PathVariable(value = "producerId") Long producerId,
-                                                       @Valid @RequestBody ProductRequest productRequest) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(productService.saveProduct(subcategoryId, producerId, productRequest));
+    @ResponseStatus(HttpStatus.CREATED)
+    public ProductResponse saveProduct(@PathVariable(value = "subcategoryId") Long subcategoryId,
+                                       @PathVariable(value = "producerId") Long producerId,
+                                       @Valid @RequestBody ProductRequest productRequest) {
+        return productService.saveProduct(subcategoryId, producerId, productRequest);
     }
 
     @PutMapping(value = "/admin/subcategories/{subcategoryId}/producers/{producerId}/products/{productId}")
-    public ResponseEntity<ProductResponse> updateProduct(@PathVariable(value = "subcategoryId") Long subcategoryId,
-                                                         @PathVariable(value = "producerId") Long producerId,
-                                                         @PathVariable(value = "productId") Long productId,
-                                                         @Valid @RequestBody ProductRequest productRequest) {
-        return ResponseEntity.accepted()
-                .body(productService.updateProduct(subcategoryId, producerId, productId, productRequest));
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public ProductResponse updateProduct(@PathVariable(value = "subcategoryId") Long subcategoryId,
+                                         @PathVariable(value = "producerId") Long producerId,
+                                         @PathVariable(value = "productId") Long productId,
+                                         @Valid @RequestBody ProductRequest productRequest) {
+        return productService.updateProduct(subcategoryId, producerId, productId, productRequest);
     }
 
     @DeleteMapping(value = "/admin/products/{productId}")
-    public ResponseEntity<Void> deleteProductById(@PathVariable(value = "productId") Long id) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteProductById(@PathVariable(value = "productId") Long id) {
         productService.deleteProductById(id);
-        return ResponseEntity.noContent().build();
     }
 }

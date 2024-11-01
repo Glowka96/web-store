@@ -5,7 +5,6 @@ import com.example.portfolio.webstorespring.model.dto.products.PageProductsWithP
 import com.example.portfolio.webstorespring.services.products.ProductsPageService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,8 +15,8 @@ public class SearchController {
     private final ProductsPageService productsPageService;
 
     @GetMapping(params = {"query"})
-    public ResponseEntity<PageProductsWithPromotionDTO> getPageSearchProductsByText(@RequestParam(value = "query", defaultValue = "puzzle") String text,
-                                                                                    @Valid @RequestBody PageProductsOptions pageProductsOptions) {
-        return ResponseEntity.ok(productsPageService.getPageSearchProducts(text, pageProductsOptions));
+    public PageProductsWithPromotionDTO getPageSearchProductsByText(@RequestParam(value = "query", defaultValue = "puzzle") String text,
+                                                                    @Valid @RequestBody PageProductsOptions pageProductsOptions) {
+        return productsPageService.getPageSearchProducts(text, pageProductsOptions);
     }
 }
