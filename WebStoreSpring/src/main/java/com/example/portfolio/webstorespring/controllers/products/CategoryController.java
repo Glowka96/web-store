@@ -23,7 +23,7 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.getAllCategory());
     }
 
-    @PostMapping(value = "/categories")
+    @PostMapping(value = "/admin/categories")
     @ResponseStatus(HttpStatus.CREATED)
     public CategoryResponse saveCategory(@Valid @RequestBody CategoryRequest categoryRequest) {
         return categoryService.saveCategory(categoryRequest);
@@ -36,7 +36,7 @@ public class CategoryController {
         return categoryService.updateCategory(categoryId, categoryRequest);
     }
 
-    @DeleteMapping(value = "/categories/{categoryId}")
+    @DeleteMapping(value = "/admin/categories/{categoryId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCategoryById(@PathVariable(value = "categoryId") Long categoryId) {
         categoryService.deleteCategoryById(categoryId);
