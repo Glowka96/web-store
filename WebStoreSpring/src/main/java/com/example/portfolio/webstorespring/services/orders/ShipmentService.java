@@ -90,6 +90,7 @@ class ShipmentService {
     }
 
     private Shipment createShipment(Product product, Integer quantity) {
+        product.setQuantity(product.getQuantity() - quantity);
         return Shipment.builder()
                 .product(product)
                 .price(calculateShipmentPrice(product, quantity))
@@ -108,6 +109,7 @@ class ShipmentService {
     }
 
     private Shipment createShipmentPriceWithDiscount(Product product, Integer quantity, BigDecimal multipleDiscountRate) {
+        product.setQuantity(product.getQuantity() - quantity);
         return Shipment.builder()
                 .product(product)
                 .price(calculateShipmentPriceWithDiscount(product, quantity, multipleDiscountRate))
@@ -120,5 +122,4 @@ class ShipmentService {
                 .multiply(product.getPrice().multiply(multipleDiscountRate))
                 .setScale(2, RoundingMode.HALF_UP);
     }
-
 }
