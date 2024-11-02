@@ -41,8 +41,7 @@ public class ProductTypeService {
     }
 
     public void deleteProductTypeById(Long productTypeId) {
-        ProductType foundProductType = findProductTypeById(productTypeId);
-        productTypeRepository.delete(foundProductType);
+        productTypeRepository.deleteById(productTypeId);
     }
 
     protected ProductType findProductTypeById(Long productTypeId) {

@@ -30,7 +30,7 @@ public class DeliveryTypeService {
     }
 
     public DeliveryTypeResponse updateDeliveryType(Long deliveryId, DeliveryTypeRequest deliveryTypeRequest) {
-        DeliveryType foundDeliveryType = getDeliveryTypeById(deliveryId);
+        DeliveryType foundDeliveryType = findDeliveryTypeById(deliveryId);
 
         foundDeliveryType.setName(deliveryTypeRequest.getName());
         foundDeliveryType.setPrice(deliveryTypeRequest.getPrice());
@@ -39,12 +39,10 @@ public class DeliveryTypeService {
     }
 
     public void deleteDeliveryType(Long deliveryID){
-        DeliveryType foundDeliveryType = getDeliveryTypeById(deliveryID);
-
-        deliveryTypeRepository.delete(foundDeliveryType);
+        deliveryTypeRepository.deleteById(deliveryID);
     }
 
-    DeliveryType getDeliveryTypeById(Long deliveryTypeId) {
+    DeliveryType findDeliveryTypeById(Long deliveryTypeId) {
         return deliveryTypeRepository.findById(deliveryTypeId)
                 .orElseThrow(() -> new ResourceNotFoundException("Delivery type", "id", deliveryTypeId));
     }

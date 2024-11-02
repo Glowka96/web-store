@@ -5,7 +5,7 @@ import com.example.portfolio.webstorespring.services.email.ResetPasswordService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -16,15 +16,16 @@ import java.util.Map;
 public class ResetPasswordController {
 
     private final ResetPasswordService resetPasswordService;
+
     @GetMapping(params = "email")
-    public ResponseEntity<Map<String, Object>> resetPassword(@RequestParam("email") @Email(message = "Invalid email format") String email) {
-        return ResponseEntity.ok(resetPasswordService.resetPasswordByEmail(email));
+    public Map<String, Object> resetPassword(@RequestParam("email") @Email(message = "Invalid email format") String email) {
+        return resetPasswordService.resetPasswordByEmail(email);
     }
 
     @PatchMapping(value = "/confirm", params = {"token"})
-    public ResponseEntity<Map<String, Object>> confirmResetPassword(@RequestBody() @Valid ResetPasswordRequest resetPasswordRequest,
-                                                                    @RequestParam("token") String token) {
-        return ResponseEntity.accepted()
-                .body(resetPasswordService.confirmResetPassword(resetPasswordRequest, token));
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public Map<String, Object> confirmResetPassword(@RequestBody() @Valid ResetPasswordRequest resetPasswordRequest,
+                                                    @RequestParam("token") String token) {
+        return resetPasswordService.confirmResetPassword(resetPasswordRequest, token);
     }
 }

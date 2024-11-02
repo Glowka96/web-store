@@ -60,16 +60,8 @@ public class AccountAddressService {
         return addressMapper.mapToDto(loggedAccountAddress);
     }
 
-    @Transactional
     public void deleteAccountAddress(AccountDetails accountDetails) {
-        AccountAddress foundAddress = findAddressByAccountId(accountDetails);
-        addressRepository.delete(foundAddress);
-    }
-
-    public void deleteAccountAddressWhenDeleteAccount(AccountDetails accountDetails) {
-        if(addressRepository.existsById(accountDetails.getAccount().getId())){
-            addressRepository.deleteById(accountDetails.getAccount().getId());
-        }
+        addressRepository.deleteById(accountDetails.getAccount().getId());
     }
 
     private AccountAddress findAddressByAccountId(AccountDetails accountDetails) {

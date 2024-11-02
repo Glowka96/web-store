@@ -5,7 +5,6 @@ import com.example.portfolio.webstorespring.services.email.RegistrationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -18,13 +17,13 @@ public class RegistrationController {
     private final RegistrationService registrationService;
 
     @GetMapping(value = "/confirm", params = "token")
-    public ResponseEntity<Map<String, Object>> confirm(@RequestParam("token") String token) {
-        return ResponseEntity.ok(registrationService.confirmToken(token));
+    public Map<String, Object> confirm(@RequestParam("token") String token) {
+        return registrationService.confirmToken(token);
     }
 
     @PostMapping
-    public ResponseEntity<Map<String, Object>> registration(@Valid @RequestBody RegistrationRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(registrationService.registrationAccount(request));
+    @ResponseStatus(HttpStatus.CREATED)
+    public Map<String, Object> registration(@Valid @RequestBody RegistrationRequest request) {
+        return registrationService.registrationAccount(request);
     }
 }

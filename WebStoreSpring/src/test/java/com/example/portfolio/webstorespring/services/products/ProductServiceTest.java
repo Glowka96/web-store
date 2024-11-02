@@ -31,7 +31,6 @@ import static com.example.portfolio.webstorespring.buildhelpers.products.Produce
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.BASIC_PRODUCT;
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.createProductRequest;
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductTypeBuilderHelper.createProductType;
-import static com.example.portfolio.webstorespring.buildhelpers.products.ProductWithProducerAndPromotionDTOBuilderHelper.createNullProductWithProducerAndPromotionDTO;
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductWithProducerAndPromotionDTOBuilderHelper.createProductWithProducerAndPromotionDTO;
 import static com.example.portfolio.webstorespring.buildhelpers.products.SubcategoryBuilderHelper.createSubcategory;
 import static com.natpryce.makeiteasy.MakeItEasy.a;
@@ -76,10 +75,8 @@ class ProductServiceTest {
     }
 
     @Test
-    void willThrowResourceNotFoundException_whenProductIdNotFound() {
-        ProductWithProducerAndPromotionDTO productWithProducerAndPromotionDTO = createNullProductWithProducerAndPromotionDTO();
-
-        given(productRepository.findProductById(anyLong(), any())).willReturn(productWithProducerAndPromotionDTO);
+    void willThrowResourceNotFoundException_whenProductNotFound() {
+        given(productRepository.findProductById(anyLong(), any())).willReturn(null);
 
         assertThrows(ResourceNotFoundException.class, () -> underTest.getProductById(1L));
         verify(productRepository, times(1)).findProductById(eq(1L), any());
@@ -166,12 +163,9 @@ class ProductServiceTest {
 
     @Test
     void shouldDeleteById() {
-        Product product = make(a(BASIC_PRODUCT));
-        given(productRepository.findById(1L)).willReturn(Optional.of(product));
+        underTest.deleteProductById(anyLong());
 
-        underTest.deleteProductById(1L);
-
-        verify(productRepository, times(1)).findById(1L);
-        verify(productRepository, times(1)).delete(product);
+        verify(productRepository, times(1)).deleteById(anyLong());
+        verifyNoMoreInteractions(productRepository);
     }
 }

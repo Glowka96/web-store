@@ -32,7 +32,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 @ExtendWith(MockitoExtension.class)
 class AccountAddressServiceTest {
@@ -106,25 +107,10 @@ class AccountAddressServiceTest {
     @Test
     void shouldDeleteAccountAddress() {
         AccountDetails accountDetails = getAccountDetails();
-        AccountAddress address = createAccountAddress();
-
-        given(addressRepository.findById(anyLong())).willReturn(Optional.of(address));
 
         underTest.deleteAccountAddress(accountDetails);
 
-        verify(addressRepository).delete(address);
-        verifyNoMoreInteractions(addressRepository);
-    }
-
-    @Test
-    void shouldDeleteAccountAddress_whenDeleteAccount() {
-        AccountDetails accountDetails = getAccountDetails();
-
-        given(addressRepository.existsById(anyLong())).willReturn(true);
-
-        underTest.deleteAccountAddressWhenDeleteAccount(accountDetails);
-
-        verify(addressRepository, times(1)).deleteById(accountDetails.getAccount().getId());
+        verify(addressRepository).deleteById(accountDetails.getAccount().getId());
         verifyNoMoreInteractions(addressRepository);
     }
 
