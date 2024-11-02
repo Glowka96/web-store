@@ -191,8 +191,8 @@ class OrderControllerIT extends AbstractAuthControllerIT {
 
         assertNotEquals(productBeforeSaveOrder.quantity(), productAfterSaveOrder.quantity());
 
-        assertsOrders(response, productAfterSaveOrder.price().multiply(BigDecimal.ONE.subtract(BigDecimal.valueOf(0.10)).setScale(2, RoundingMode.HALF_UP)));
-        assertEquals(0, discount.getQuantity());
+        assertsOrders(response, productAfterSaveOrder.price().multiply(BigDecimal.ONE.subtract(BigDecimal.valueOf(0.10))));
+        assertEquals(0, discountRepository.findById(discount.getId()).get().getQuantity());
     }
 
     private Order creeteOrder(Account account, DeliveryType savedDeliveryType, Product product, LocalDateTime localDataTime) {
@@ -243,7 +243,7 @@ class OrderControllerIT extends AbstractAuthControllerIT {
                 response.getBody().getNameUser());
         assertEquals(OrderStatus.OPEN, response.getBody().getStatus());
         assertEquals(1, response.getBody().getShipmentResponses().size());
-        assertEquals(exceptedPrice.add(response.getBody().getDeliveryResponse().getDeliveryTypeResponse().getPrice()),
+        assertEquals(exceptedPrice.add(response.getBody().getDeliveryResponse().getDeliveryTypeResponse().getPrice()).setScale(2, RoundingMode.HALF_UP),
                 response.getBody().getTotalPrice()
         );
     }
