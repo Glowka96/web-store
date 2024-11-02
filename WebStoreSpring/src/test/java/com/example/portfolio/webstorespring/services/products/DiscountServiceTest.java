@@ -19,8 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 import java.util.Set;
 
-import static com.example.portfolio.webstorespring.buildhelpers.products.DiscountBuilderHelper.createDiscountRequestWithCode;
-import static com.example.portfolio.webstorespring.buildhelpers.products.DiscountBuilderHelper.createDiscountRequestWithoutCode;
+import static com.example.portfolio.webstorespring.buildhelpers.products.DiscountBuilderHelper.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
@@ -34,21 +33,21 @@ class DiscountServiceTest {
     @Mock
     private SubcategoryService subcategoryService;
     @InjectMocks
-    private DiscountService underService;
+    private DiscountService underTest;
 
     @Test
     void shouldGetDiscountByDiscountCode() {
         Discount discount = DiscountBuilderHelper.createDiscount();
         given(discountRepository.findByCode(anyString())).willReturn(Optional.of(discount));
 
-        DiscountUserResponse discountUserResponse = underService.getDiscountByDiscountCode(discount.getCode());
+        DiscountUserResponse discountUserResponse = underTest.getDiscountByDiscountCode(discount.getCode());
 
         assertEquals(discount.getDiscountRate(), discountUserResponse.discountRate());
     }
 
     @Test
     void willThrowDiscountIsInvalid_whenNotFoundDiscount() {
-        assertThrows(DiscountIsInvalid.class, () -> underService.getDiscountByDiscountCode("test"));
+        assertThrows(DiscountIsInvalid.class, () -> underTest.getDiscountByDiscountCode("test"));
 
         verify(discountRepository, times(1)).findByCode("test");
         verifyNoMoreInteractions(discountRepository);
@@ -78,9 +77,32 @@ class DiscountServiceTest {
         assertEquals(discountRequest.code(), savedDiscountAdminResponse.code());
     }
 
+    @Test
+    void shouldDeleteDiscount_whenIsUserOrExpired() {
+        underTest.deleteUsedOrExpiredDiscount();
+
+        verify(discountRepository, times(1)).deleteZeroQuantityOrExpiredDiscounts();
+        verifyNoMoreInteractions(discountRepository);
+    }
+
+    @Test
+    void shouldUseDiscountByCode_whenFoundIt_thenDecreaseQuantityAndReturnIt() {
+        Discount discount = createDiscount();
+        Long exceptedQuantity = discount.getQuantity() - 1;
+
+        given(discountRepository.findByCode(anyString())).willReturn(Optional.of(discount));
+
+        Discount result = underTest.useDiscountByCode(discount.getCode());
+
+        assertEquals(exceptedQuantity, result.getQuantity());
+        verify(discountRepository,times(1)).findByCode(discount.getCode());
+        verify(discountRepository, times(1)).save(discount);
+        verifyNoMoreInteractions(discountRepository);
+    }
+
     private DiscountAdminResponse getSavedDiscountAdminResponse(DiscountRequest discountRequest) {
         given(subcategoryService.findAllSubcategoryByNames(anySet())).willReturn(Set.of(SubcategoryBuilderHelper.createSubcategory()));
-        return underService.saveDiscount(discountRequest);
+        return underTest.saveDiscount(discountRequest);
     }
 
     @NotNull
