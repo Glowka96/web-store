@@ -86,6 +86,17 @@ GCP:
 ## Changelogs
 
 <details>
+<summary>Discount branch:</summary>
+
+- Add info about subcategory id of product in Product DTOS
+- Add unit and integrations test
+- Rebuilding caluclated shipment price system
+- Add Discount
+
+</details>
+
+
+<details>
 <summary>Clean code branch:</summary>
 
 - Rename ProductPricePromotion to Promotion
