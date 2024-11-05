@@ -17,9 +17,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("""
             SELECT NEW com.example.portfolio.webstorespring.model.dto.products.ProductWithProducerAndPromotionDTO(
-                    p.id, p.name, p.imageUrl, p.quantity, t.name, p.price, prom_1.promotionPrice, MIN(prom_2.promotionPrice), prom_1.endDate,
+                    p.id, p.name, p.imageUrl, p.quantity, t.name, s.id, p.price, prom_1.promotionPrice, MIN(prom_2.promotionPrice), prom_1.endDate,
                 p.description, t.name)
             FROM Product p
+            INNER JOIN p.subcategory s
             INNER JOIN p.producer pr
             INNER JOIN p.type t
             LEFT JOIN p.promotions prom_1 ON (CURRENT_TIMESTAMP BETWEEN prom_1.startDate AND prom_1.endDate)
@@ -33,8 +34,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("""
             SELECT NEW com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionDTO(
-                p.id, p.name, p.imageUrl, p.quantity, p.price, prom_1.promotionPrice, MIN(prom_2.promotionPrice))
+                p.id, p.name, p.imageUrl, p.quantity,s.id, p.price, prom_1.promotionPrice, MIN(prom_2.promotionPrice))
             FROM Product p
+            INNER JOIN p.subcategory s
             LEFT JOIN p.promotions prom_1 ON (CURRENT_TIMESTAMP BETWEEN prom_1.startDate AND prom_1.endDate)
             LEFT JOIN p.promotions prom_2 ON (prom_2.endDate >= :date30DaysAgo AND prom_1.id IS NOT NULL)
             WHERE p.subcategory.id = :subcategoryId AND p.quantity > 0
@@ -46,8 +48,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query(value = """ 
             SELECT NEW com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionDTO(
-                                 p.id, p.name, p.imageUrl, p.quantity, p.price, prom_1.promotionPrice, MIN(prom_2.promotionPrice))
+                                 p.id, p.name, p.imageUrl, p.quantity, s.id, p.price, prom_1.promotionPrice, MIN(prom_2.promotionPrice))
             FROM Product p
+            INNER JOIN p.subcategory s
             INNER JOIN p.producer pr
             INNER JOIN p.type t
             LEFT JOIN p.promotions prom_1 ON (CURRENT_TIMESTAMP BETWEEN prom_1.startDate AND prom_1.endDate)
@@ -65,8 +68,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query(value = """
             SELECT NEW com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionDTO(
-                                 p.id, p.name, p.imageUrl, p.quantity, p.price, prom_1.promotionPrice, MIN(prom_2.promotionPrice))
+                                 p.id, p.name, p.imageUrl, p.quantity, s.id, p.price, prom_1.promotionPrice, MIN(prom_2.promotionPrice))
             FROM Product p
+            INNER JOIN p.subcategory s
             LEFT JOIN p.promotions prom_1
             LEFT JOIN p.promotions prom_2
             WHERE (CURRENT_TIMESTAMP BETWEEN prom_1.startDate AND prom_1.endDate)
@@ -79,8 +83,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query(value = """
             SELECT NEW com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionDTO(
-                                 p.id, p.name, p.imageUrl, p.quantity, p.price, prom_1.promotionPrice, MIN(prom_2.promotionPrice))
+                                 p.id, p.name, p.imageUrl, p.quantity, s.id, p.price, prom_1.promotionPrice, MIN(prom_2.promotionPrice))
             FROM Product p
+            INNER JOIN p.subcategory s
             LEFT JOIN p.promotions prom_1 ON (CURRENT_TIMESTAMP BETWEEN prom_1.startDate AND prom_1.endDate)
             LEFT JOIN p.promotions prom_2 ON (prom_2.endDate >= :date30DaysAgo AND prom_1.id IS NOT NULL)
             WHERE p.createdAt >= :date30DaysAgo

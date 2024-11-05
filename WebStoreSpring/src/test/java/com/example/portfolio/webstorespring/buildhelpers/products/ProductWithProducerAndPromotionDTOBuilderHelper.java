@@ -15,6 +15,7 @@ public class ProductWithProducerAndPromotionDTOBuilderHelper {
                 "https://test.pl/test.jpg",
                 10L,
                 "Test product type name",
+                1L,
                 BigDecimal.valueOf(20.0),
                 BigDecimal.valueOf(10.0),
                 BigDecimal.valueOf(15.0),
@@ -26,6 +27,7 @@ public class ProductWithProducerAndPromotionDTOBuilderHelper {
 
     public static ProductWithProducerAndPromotionDTO createNullProductWithProducerAndPromotionDTO(){
         return new ProductWithProducerAndPromotionDTO(
+                null,
                 null,
                 null,
                 null,
