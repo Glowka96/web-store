@@ -8,6 +8,7 @@ public record ProductWithPromotionDTO(
         String name,
         String imageUrl,
         Long quantity,
+        Long subcategoryId,
         BigDecimal price,
         BigDecimal promotionPrice,
         BigDecimal lowestPrice) implements Serializable {

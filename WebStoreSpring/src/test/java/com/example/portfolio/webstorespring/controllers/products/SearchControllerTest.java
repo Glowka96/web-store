@@ -1,7 +1,8 @@
 package com.example.portfolio.webstorespring.controllers.products;
 
-import com.example.portfolio.webstorespring.model.dto.products.PageProductsOptions;
+import com.example.portfolio.webstorespring.buildhelpers.products.ProductsPageOptionsBuilderHelper;
 import com.example.portfolio.webstorespring.model.dto.products.PageProductsWithPromotionDTO;
+import com.example.portfolio.webstorespring.model.dto.products.ProductsPageOptions;
 import com.example.portfolio.webstorespring.services.products.ProductsPageService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,7 +16,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static com.example.portfolio.webstorespring.buildhelpers.products.PageProductWithPromotionDTOBuilderHelper.createPageProductsWithPromotionDTO;
-import static com.example.portfolio.webstorespring.buildhelpers.products.PageProductsOptionsBuilderHelper.createBasePageProductsOptions;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
@@ -35,7 +35,7 @@ class SearchControllerTest {
     private ProductsPageService productsPageService;
     private MockMvc mvc;
     private ObjectMapper mapper;
-    private final static String URI = "/api/v1/products/search";
+    private static final String URI = "/api/v1/products/search";
 
     @BeforeEach
     void initialization() {
@@ -47,14 +47,14 @@ class SearchControllerTest {
     void shouldGetSearchProductsByText() throws Exception {
         PageProductsWithPromotionDTO pageProducts = createPageProductsWithPromotionDTO();
 
-        given(productsPageService.getPageSearchProducts(anyString(), any(PageProductsOptions.class)))
+        given(productsPageService.getSearchProductsPage(anyString(), any(ProductsPageOptions.class)))
                 .willReturn(pageProducts);
 
         mvc.perform(get(URI)
                         .param("query", "test")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(createBasePageProductsOptions())))
+                        .content(mapper.writeValueAsString(ProductsPageOptionsBuilderHelper.createBaseProductPageOptions())))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.totalElements", is(pageProducts.totalElements().intValue())))
                 .andExpect(jsonPath("$.totalPages", is(pageProducts.totalPages())))

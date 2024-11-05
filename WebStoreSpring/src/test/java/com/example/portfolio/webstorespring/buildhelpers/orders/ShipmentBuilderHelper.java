@@ -31,6 +31,13 @@ public class ShipmentBuilderHelper {
                 .build();
     }
 
+    public static ShipmentRequest createShipmentRequest(Long productId) {
+        return ShipmentRequest.builder()
+                .quantity(1)
+                .productId(productId)
+                .build();
+    }
+
     public static ShipmentResponse createShipmentResponse() {
         ProductWithPromotionDTO product = createProductWithPromotionDTO();
         return ShipmentResponse.builder()

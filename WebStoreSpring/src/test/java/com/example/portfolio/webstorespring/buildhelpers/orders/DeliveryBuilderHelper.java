@@ -32,6 +32,13 @@ public class DeliveryBuilderHelper {
                 .build();
     }
 
+    public static DeliveryRequest createDeliveryRequest(Long deliveryTypeId) {
+        return DeliveryRequest.builder()
+                .deliveryAddress(DELIVERY_ADDRESS)
+                .deliveryTypeId(deliveryTypeId)
+                .build();
+    }
+
     public static DeliveryResponse createDeliveryResponse() {
         DeliveryTypeResponse deliveryTypeResponse = createDeliveryTypeResponse();
         return DeliveryResponse.builder()

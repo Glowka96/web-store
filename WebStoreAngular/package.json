@@ -25,6 +25,7 @@
     "jsonwebtoken": "^9.0.0",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
+    "web-store-angular": "file:",
     "zone.js": "~0.13.1"
   },
   "devDependencies": {

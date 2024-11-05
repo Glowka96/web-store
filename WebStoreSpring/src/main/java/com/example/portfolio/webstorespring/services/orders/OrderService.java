@@ -82,7 +82,7 @@ public class OrderService {
                 .nameUser(loggedAccount.getFirstName() +
                           " " + loggedAccount.getLastName())
                 .status(OrderStatus.OPEN)
-                .shipments(shipmentService.setupShipments(orderRequest.getShipmentRequests()))
+                .shipments(shipmentService.setupShipments(orderRequest.getShipmentRequests(), orderRequest.getDiscountCode()))
                 .delivery(deliveryService.formatDelivery(orderRequest.getDeliveryRequest()))
                 .build();
 

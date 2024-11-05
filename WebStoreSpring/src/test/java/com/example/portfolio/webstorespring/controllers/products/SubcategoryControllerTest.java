@@ -37,7 +37,7 @@ class SubcategoryControllerTest {
     private SubcategoryService subcategoryService;
     private MockMvc mvc;
     private ObjectMapper mapper;
-    private final static String URI = "/api/v1";
+    private static final String URI = "/api/v1";
 
     @BeforeEach
     void initialization() {

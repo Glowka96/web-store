@@ -1,7 +1,8 @@
 package com.example.portfolio.webstorespring.controllers.products;
 
-import com.example.portfolio.webstorespring.model.dto.products.PageProductsOptions;
+import com.example.portfolio.webstorespring.buildhelpers.products.ProductsPageOptionsBuilderHelper;
 import com.example.portfolio.webstorespring.model.dto.products.PageProductsWithPromotionDTO;
+import com.example.portfolio.webstorespring.model.dto.products.ProductsPageOptions;
 import com.example.portfolio.webstorespring.services.products.ProductsPageService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,7 +16,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static com.example.portfolio.webstorespring.buildhelpers.products.PageProductWithPromotionDTOBuilderHelper.createPageProductsWithPromotionDTO;
-import static com.example.portfolio.webstorespring.buildhelpers.products.PageProductsOptionsBuilderHelper.createBasePageProductsOptions;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
@@ -35,7 +35,7 @@ class ProductsPageControllerTest {
     private ProductsPageController underTest;
     private MockMvc mvc;
     private ObjectMapper mapper;
-    private final static String URI = "/api/v1";
+    private static final String URI = "/api/v1";
 
     @BeforeEach
     void initialization() {
@@ -47,13 +47,13 @@ class ProductsPageControllerTest {
     void shouldGetPageProductsBySubcategoryId() throws Exception {
         PageProductsWithPromotionDTO pageProducts = createPageProductsWithPromotionDTO();
 
-        given(productsPageService.getPageProductsBySubcategoryId(anyLong(), any(PageProductsOptions.class)))
+        given(productsPageService.getProductsPageBySubcategoryId(anyLong(), any(ProductsPageOptions.class)))
                 .willReturn(pageProducts);
 
         mvc.perform(get(URI + "/subcategories/{subcategoryId}/products", 1)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(createBasePageProductsOptions())))
+                        .content(mapper.writeValueAsString(ProductsPageOptionsBuilderHelper.createBaseProductPageOptions())))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.totalElements", is(pageProducts.totalElements().intValue())))
                 .andExpect(jsonPath("$.totalPages", is(pageProducts.totalPages())))
@@ -66,13 +66,13 @@ class ProductsPageControllerTest {
     void getPagePromotionProduct() throws Exception {
         PageProductsWithPromotionDTO pageProducts = createPageProductsWithPromotionDTO();
 
-        given(productsPageService.getPagePromotionProduct(any(PageProductsOptions.class)))
+        given(productsPageService.getPromotionProductsPage(any(ProductsPageOptions.class)))
                 .willReturn(pageProducts);
 
         mvc.perform(get(URI + "/products/promotions")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(createBasePageProductsOptions())))
+                        .content(mapper.writeValueAsString(ProductsPageOptionsBuilderHelper.createBaseProductPageOptions())))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.totalElements", is(pageProducts.totalElements().intValue())))
                 .andExpect(jsonPath("$.totalPages", is(pageProducts.totalPages())))
@@ -85,13 +85,13 @@ class ProductsPageControllerTest {
     void getPageNewProduct() throws Exception {
         PageProductsWithPromotionDTO pageProducts = createPageProductsWithPromotionDTO();
 
-        given(productsPageService.getPageNewProducts(any(PageProductsOptions.class)))
+        given(productsPageService.getNewProductsPage(any(ProductsPageOptions.class)))
                 .willReturn(pageProducts);
 
         mvc.perform(get(URI + "/products/news")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(createBasePageProductsOptions())))
+                        .content(mapper.writeValueAsString(ProductsPageOptionsBuilderHelper.createBaseProductPageOptions())))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.totalElements", is(pageProducts.totalElements().intValue())))
                 .andExpect(jsonPath("$.totalPages", is(pageProducts.totalPages())))

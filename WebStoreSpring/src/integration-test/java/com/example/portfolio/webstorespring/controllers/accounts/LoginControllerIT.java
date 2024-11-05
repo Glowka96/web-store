@@ -63,8 +63,8 @@ class LoginControllerIT extends AbstractTestRestTemplateIT {
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
     }
 
-    private ResponseEntity<AuthenticationResponse> sendRequest(Maker<Account> BASIC_ACCOUNT) {
-        Account savedAccount = accountRepository.save(make(BASIC_ACCOUNT));
+    private ResponseEntity<AuthenticationResponse> sendRequest(Maker<Account> accountMaker) {
+        Account savedAccount = accountRepository.save(make(accountMaker));
 
         HttpEntity<LoginRequest> httpEntity = new HttpEntity<>(
                 new LoginRequest(savedAccount.getEmail(), PASSWORD_STRING));

@@ -12,6 +12,7 @@ public class ProductWithPromotionDtoBuildHelper {
                 "Test",
                 "https://test.pl/test.jpg",
                 10L,
+                1L,
                 BigDecimal.valueOf(20.0),
                 BigDecimal.valueOf(10.0),
                 BigDecimal.valueOf(15.0)

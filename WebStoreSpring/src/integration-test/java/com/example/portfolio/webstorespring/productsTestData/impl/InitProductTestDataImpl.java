@@ -45,6 +45,8 @@ public class InitProductTestDataImpl implements InitProductTestData {
     @Getter
     private Long productIdThatHasNoPromotion;
     @Getter
+    private Long productIdThatHasOtherSubcategoryAndNoPromotion;
+    @Getter
     private Long subId;
     @Getter
     private Long producerId;
@@ -65,6 +67,7 @@ public class InitProductTestDataImpl implements InitProductTestData {
 
         Maker<Product> productMaker = getProductMaker(subcategory, productType, producer);
         Maker<Product> productMaker2 = getProductMaker(subcategory, productType2, producer2);
+        Maker<Product> productMaker3 = getProductMaker(subcategory2, productType, producer);
 
         Promotion currencyPromotion = getCurrencyPromotion();
         Promotion currencyPromotion2 = getCurrencyPromotion();
@@ -78,11 +81,12 @@ public class InitProductTestDataImpl implements InitProductTestData {
         );
         Product productWithExpiredPromotion = productRepository.save(make(productMaker));
         Product productWithPromotionAndOtherSubcategory = productRepository.save(
-                make(productMaker.but(with(NAME, "Product"))
-                        .but(with(SUBCATEGORY, subcategory2))
-                )
+                make(productMaker3.but(with(NAME, "Product")))
         );
         Product productWithPromotionAndOtherProductTypeAndProducer = productRepository.save(make(productMaker2));
+        Product productWithOtherSubcategoryAndNoPromotion = productRepository.save(
+                make(productMaker3.but(with(NAME, "Product 2")))
+        );
 
         expiredPromotionWithLowestPriceLast30Days.setProduct(productWithPromotion);
         currencyPromotion.setProduct(productWithPromotion);
@@ -97,6 +101,7 @@ public class InitProductTestDataImpl implements InitProductTestData {
         promotionRepository.save(currencyPromotion3);
 
         productIdThatHasPromotion = productWithPromotion.getId();
+        productIdThatHasOtherSubcategoryAndNoPromotion = productWithOtherSubcategoryAndNoPromotion.getId();
     }
 
     public void initOneProduct() {
@@ -139,12 +144,13 @@ public class InitProductTestDataImpl implements InitProductTestData {
     }
 
     @NotNull
-    private static Maker<Product> getProductMaker(Subcategory subcategory, ProductType productType, Producer producer) {
+    private Maker<Product> getProductMaker(Subcategory subcategory, ProductType productType, Producer producer) {
         return a(BASIC_PRODUCT)
                 .but(withNull(ID))
                 .but(with(SUBCATEGORY, subcategory))
                 .but(with(PRODUCT_TYPE, productType))
                 .but(with(PRODUCER, producer))
-                .but(with(PRICE_PROMOTIONS, Set.of()));
+                .but(with(PRICE_PROMOTIONS, Set.of()))
+                .but(with(CREATED_AT, zonedDateTime.toLocalDateTime()));
     }
 }

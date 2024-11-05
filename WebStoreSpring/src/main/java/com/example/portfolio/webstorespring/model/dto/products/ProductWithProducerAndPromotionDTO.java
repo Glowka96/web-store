@@ -12,6 +12,7 @@ public record ProductWithProducerAndPromotionDTO(
         String imageUrl,
         Long quantity,
         String productTypeName,
+        Long subcategoryId,
         BigDecimal price,
         BigDecimal promotionPrice,
         BigDecimal lowestPrice,

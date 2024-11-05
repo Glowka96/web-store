@@ -2,9 +2,9 @@ package com.example.portfolio.webstorespring.services.products;
 
 import com.example.portfolio.webstorespring.enums.SortByType;
 import com.example.portfolio.webstorespring.enums.SortDirectionType;
-import com.example.portfolio.webstorespring.model.dto.products.PageProductsOptions;
 import com.example.portfolio.webstorespring.model.dto.products.PageProductsWithPromotionDTO;
 import com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionDTO;
+import com.example.portfolio.webstorespring.model.dto.products.ProductsPageOptions;
 import com.example.portfolio.webstorespring.repositories.products.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -29,37 +29,37 @@ public class ProductsPageService {
     private final ProductRepository productRepository;
     private final Clock clock = Clock.systemUTC();
 
-    public PageProductsWithPromotionDTO getPageProductsBySubcategoryId(Long subcategoryId, PageProductsOptions pageProductsOptions) {
-        return getPageProduct(
-                pageProductsOptions,
+    public PageProductsWithPromotionDTO getProductsPageBySubcategoryId(Long subcategoryId, ProductsPageOptions productsPageOptions) {
+        return getProductsPage(
+                productsPageOptions,
                 pageable -> getProductsBySubcategoryId(subcategoryId, pageable)
         );
     }
 
-    public PageProductsWithPromotionDTO getPageSearchProducts(String text, PageProductsOptions pageProductsOptions) {
-        return getPageProduct(
-                pageProductsOptions,
+    public PageProductsWithPromotionDTO getSearchProductsPage(String text, ProductsPageOptions productsPageOptions) {
+        return getProductsPage(
+                productsPageOptions,
                 pageable -> searchProductsByText(text, pageable)
         );
     }
 
-    public PageProductsWithPromotionDTO getPagePromotionProduct(PageProductsOptions pageProductsOptions) {
-        return getPageProduct(
-                pageProductsOptions,
+    public PageProductsWithPromotionDTO getPromotionProductsPage(ProductsPageOptions productsPageOptions) {
+        return getProductsPage(
+                productsPageOptions,
                 this::getPromotionProducts
         );
     }
 
-    public PageProductsWithPromotionDTO getPageNewProducts(PageProductsOptions pageProductsOptions) {
-        return getPageProduct(
-                pageProductsOptions,
+    public PageProductsWithPromotionDTO getNewProductsPage(ProductsPageOptions productsPageOptions) {
+        return getProductsPage(
+                productsPageOptions,
                 this::getNewProducts
         );
     }
 
-    private PageProductsWithPromotionDTO getPageProduct(PageProductsOptions pageProductsOptions,
-                                                        Function<Pageable, Page<ProductWithPromotionDTO>> function) {
-        Pageable pageable = getPageable(pageProductsOptions);
+    private PageProductsWithPromotionDTO getProductsPage(ProductsPageOptions productsPageOptions,
+                                                         Function<Pageable, Page<ProductWithPromotionDTO>> function) {
+        Pageable pageable = getPageable(productsPageOptions);
         Page<ProductWithPromotionDTO> productPage = function.apply(pageable);
 
         List<String> sortOptions = getSortOptions();
@@ -93,12 +93,12 @@ public class ProductsPageService {
     }
 
     @NotNull
-    private Pageable getPageable(PageProductsOptions pageProductsOptions) {
-        String[] sortTypeAndDirection = pageProductsOptions.sortOption().split("\\s-\\s");
+    private Pageable getPageable(ProductsPageOptions productsPageOptions) {
+        String[] sortTypeAndDirection = productsPageOptions.sortOption().split("\\s-\\s");
         String sortType = SortByType.findFieldNameOfSortByType(sortTypeAndDirection[0]);
         return PageRequest.of(
-                pageProductsOptions.pageNo(),
-                pageProductsOptions.size(),
+                productsPageOptions.pageNo(),
+                productsPageOptions.size(),
                 Sort.by(Sort.Direction.fromString(sortTypeAndDirection[1]), sortType)
         );
     }

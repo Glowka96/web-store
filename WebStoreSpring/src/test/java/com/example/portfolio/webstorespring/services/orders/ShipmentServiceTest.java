@@ -1,11 +1,15 @@
 package com.example.portfolio.webstorespring.services.orders;
 
+import com.example.portfolio.webstorespring.buildhelpers.products.DiscountBuilderHelper;
 import com.example.portfolio.webstorespring.exceptions.ProductsNotFoundException;
 import com.example.portfolio.webstorespring.exceptions.ShipmentQuantityExceedsProductQuantityException;
 import com.example.portfolio.webstorespring.model.dto.orders.request.ShipmentRequest;
 import com.example.portfolio.webstorespring.model.entity.orders.Shipment;
+import com.example.portfolio.webstorespring.model.entity.products.Discount;
 import com.example.portfolio.webstorespring.model.entity.products.Product;
 import com.example.portfolio.webstorespring.repositories.products.ProductRepository;
+import com.example.portfolio.webstorespring.services.products.DiscountService;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,6 +28,7 @@ import static com.natpryce.makeiteasy.MakeItEasy.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.BDDMockito.given;
 
@@ -32,42 +37,91 @@ class ShipmentServiceTest {
 
     @Mock
     private ProductRepository productRepository;
+    @Mock
+    private DiscountService discountService;
     @InjectMocks
     private ShipmentService underTest;
 
     @Test
-    void shouldGetSetupShipments_whenProductHasNotPromotion() {
+    void shouldGetSetupShipments_whenProductHasNotPromotionAndNotUseDiscount() {
         ShipmentRequest shipmentRequest = createShipmentRequest();
 
-        Product product = make(a(BASIC_PRODUCT)
-                .but(with(PRICE_PROMOTIONS, Set.of())));
-        List<Product> products = List.of(product);
+        List<Product> products = getProductListWhatProductHasNoPromotion();
         BigDecimal exceptedPrice = BigDecimal.valueOf(shipmentRequest.getQuantity())
-                .multiply(product.getPrice())
+                .multiply(products.get(0).getPrice())
                 .setScale(2, RoundingMode.HALF_UP);
 
         given(productRepository.findProductsByIdsWithPromotion(anyList()))
                 .willReturn(products);
 
-        List<Shipment> result = underTest.setupShipments(List.of(shipmentRequest));
+        List<Shipment> result = underTest.setupShipments(List.of(shipmentRequest), null);
 
-        assertShipment(exceptedPrice, product, shipmentRequest.getQuantity(), result);
+        assertShipment(exceptedPrice, products.get(0), shipmentRequest.getQuantity(), result);
     }
 
     @Test
-    void shouldGetSetupShipments_whenProductHasPromotion() {
+    void shouldGetSetupShipments_whenProductHasPromotionAndNotUseDiscount() {
         ShipmentRequest shipmentRequest = createShipmentRequest();
-        Product product = make(a(BASIC_PRODUCT));
-        List<Product> products = List.of(product);
-        BigDecimal exceptedPrice = BigDecimal.valueOf(shipmentRequest.getQuantity())
-                .multiply(product.getPromotions().iterator().next().getPromotionPrice())
-                .setScale(2, RoundingMode.HALF_UP);
+
+        List<Product> products = getProductListWhatProductHasPromotion();
+        BigDecimal exceptedPrice = getExceptedPriceWhenProductHasPromotion(shipmentRequest, products);
 
         given(productRepository.findProductsByIdsWithPromotion(anyList())).willReturn(products);
 
-        List<Shipment> result = underTest.setupShipments(List.of(shipmentRequest));
+        List<Shipment> result = underTest.setupShipments(List.of(shipmentRequest), null);
 
-        assertShipment(exceptedPrice, product, shipmentRequest.getQuantity(), result);
+        assertShipment(exceptedPrice, products.get(0), shipmentRequest.getQuantity(), result);
+    }
+
+    @Test
+    void shouldGetSetupShipments_whenProductHasNotPromotionAndUseDiscountCode() {
+        ShipmentRequest shipmentRequest = createShipmentRequest();
+        Discount discount = DiscountBuilderHelper.createDiscount();
+
+        List<Product> products = getProductListWhatProductHasNoPromotion();
+        BigDecimal exceptedPrice = BigDecimal.valueOf(shipmentRequest.getQuantity())
+                .multiply(products.get(0).getPrice().multiply(BigDecimal.ONE.subtract(discount.getDiscountRate())))
+                .setScale(2, RoundingMode.HALF_UP);
+
+        given(productRepository.findProductsByIdsWithPromotion(anyList())).willReturn(products);
+        given(discountService.useDiscountByCode(any())).willReturn(discount);
+
+        List<Shipment> result = underTest.setupShipments(List.of(shipmentRequest), discount.getCode());
+
+        assertShipment(exceptedPrice, products.get(0), shipmentRequest.getQuantity(), result);
+    }
+
+    @Test
+    void shouldGetSetupShipments_whenProductHasPromotionAndUseDiscountCode() {
+        ShipmentRequest shipmentRequest = createShipmentRequest();
+        Discount discount = DiscountBuilderHelper.createDiscount();
+
+        List<Product> products = getProductListWhatProductHasPromotion();
+        BigDecimal exceptedPrice = getExceptedPriceWhenProductHasPromotion(shipmentRequest, products);
+
+        given(productRepository.findProductsByIdsWithPromotion(anyList())).willReturn(products);
+        given(discountService.useDiscountByCode(any())).willReturn(discount);
+
+        List<Shipment> result = underTest.setupShipments(List.of(shipmentRequest), discount.getCode());
+
+        assertShipment(exceptedPrice, products.get(0), shipmentRequest.getQuantity(), result);
+    }
+
+
+    private List<Product> getProductListWhatProductHasNoPromotion() {
+        return List.of(make(a(BASIC_PRODUCT)
+                .but(with(PRICE_PROMOTIONS, Set.of()))));
+    }
+
+    private List<Product> getProductListWhatProductHasPromotion() {
+        return List.of(make(a(BASIC_PRODUCT)));
+    }
+
+    @NotNull
+    private static BigDecimal getExceptedPriceWhenProductHasPromotion(ShipmentRequest shipmentRequest, List<Product> products) {
+        return BigDecimal.valueOf(shipmentRequest.getQuantity())
+                .multiply(products.get(0).getPromotions().iterator().next().getPromotionPrice())
+                .setScale(2, RoundingMode.HALF_UP);
     }
 
     private void assertShipment(BigDecimal exceptedPrice, Product product, Integer exceptedQuantity, List<Shipment> result) {
@@ -84,7 +138,7 @@ class ShipmentServiceTest {
 
         given(productRepository.findProductsByIdsWithPromotion(anyList())).willReturn(List.of());
 
-        assertThrows(ProductsNotFoundException.class, () -> underTest.setupShipments(List.of(shipmentRequest)));
+        assertThrows(ProductsNotFoundException.class, () -> underTest.setupShipments(List.of(shipmentRequest), null));
     }
 
     @Test
@@ -96,6 +150,6 @@ class ShipmentServiceTest {
         given(productRepository.findProductsByIdsWithPromotion(anyList())).willReturn(List.of(product));
 
         assertThrows(ShipmentQuantityExceedsProductQuantityException.class,
-                () -> underTest.setupShipments(List.of(shipmentRequest)));
+                () -> underTest.setupShipments(List.of(shipmentRequest), null));
     }
 }

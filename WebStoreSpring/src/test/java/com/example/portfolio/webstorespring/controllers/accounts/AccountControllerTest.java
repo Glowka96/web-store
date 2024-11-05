@@ -38,7 +38,7 @@ class AccountControllerTest {
 
     private MockMvc mvc;
     private ObjectMapper mapper;
-    private final static String URI = "/api/v1/accounts";
+    private static final String URI = "/api/v1/accounts";
 
     @BeforeEach
     void initialization() {

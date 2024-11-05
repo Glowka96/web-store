@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.controllers.products;
 
 import com.example.portfolio.webstorespring.controllers.AbstractTestRestTemplateIT;
-import com.example.portfolio.webstorespring.model.dto.products.PageProductsOptions;
 import com.example.portfolio.webstorespring.model.dto.products.PageProductsWithPromotionDTO;
+import com.example.portfolio.webstorespring.model.dto.products.ProductsPageOptions;
 import com.example.portfolio.webstorespring.productsTestData.InitProductTestData;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,22 +36,22 @@ class ProductsPageControllerIT extends AbstractTestRestTemplateIT {
 
     @Test
     void shouldGetPageProductsBySubcategoryId_forEverybody_thenStatusOk() {
-        HttpEntity<PageProductsOptions> httpEntity = new HttpEntity<>(new PageProductsOptions(0, 12, "type - desc"));
+        HttpEntity<ProductsPageOptions> httpEntity = new HttpEntity<>(new ProductsPageOptions(0, 12, "type - desc"));
 
         ResponseEntity<PageProductsWithPromotionDTO> response =
                 sendRequest("/subcategories/" + initProductTestData.getSubId() + "/products", httpEntity);
 
-        assertPageResponse(response);
+        assertResponsePage(response);
     }
 
     @Test
     void shouldGetPagePromotionProduct_forEverybody_thenStatusOk() {
-        HttpEntity<PageProductsOptions> httpEntity = new HttpEntity<>(new PageProductsOptions(0, 12, "name - asc"));
+        HttpEntity<ProductsPageOptions> httpEntity = new HttpEntity<>(new ProductsPageOptions(0, 12, "name - asc"));
 
         ResponseEntity<PageProductsWithPromotionDTO> response =
                 sendRequest("/products/promotions", httpEntity);
 
-        assertPageResponse(response);
+        assertResponsePage(response);
         assertThat(Objects.requireNonNull(response.getBody()).products().get(0).name().charAt(0))
                 .isLessThan(response.getBody().products().get(
                                 getLastProductIndex(response)).name().charAt(0)
@@ -60,19 +60,19 @@ class ProductsPageControllerIT extends AbstractTestRestTemplateIT {
 
     @Test
     void shouldGetPageNewProducts_forEverybody_thenStatusOk() {
-        HttpEntity<PageProductsOptions> httpEntity = new HttpEntity<>(new PageProductsOptions(0, 12, "price - desc"));
+        HttpEntity<ProductsPageOptions> httpEntity = new HttpEntity<>(new ProductsPageOptions(0, 12, "price - desc"));
 
         ResponseEntity<PageProductsWithPromotionDTO> response =
                 sendRequest("/products/news", httpEntity);
 
-        assertPageResponse(response);
+        assertResponsePage(response);
         assertThat(Objects.requireNonNull(response.getBody()).products().get(0).price())
                 .isGreaterThan(response.getBody().products().get(
                        getLastProductIndex(response)).price()
                 );
     }
 
-    private ResponseEntity<PageProductsWithPromotionDTO> sendRequest(String uri, HttpEntity<PageProductsOptions> httpEntity) {
+    private ResponseEntity<PageProductsWithPromotionDTO> sendRequest(String uri, HttpEntity<ProductsPageOptions> httpEntity) {
         return restTemplate.exchange(
                 localhostUri + uri,
                 HttpMethod.GET,
@@ -80,7 +80,7 @@ class ProductsPageControllerIT extends AbstractTestRestTemplateIT {
                 PageProductsWithPromotionDTO.class
         );
     }
-    private static void assertPageResponse(ResponseEntity<PageProductsWithPromotionDTO> response) {
+    private static void assertResponsePage(ResponseEntity<PageProductsWithPromotionDTO> response) {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
         assertEquals(8, response.getBody().sortOptions().size());

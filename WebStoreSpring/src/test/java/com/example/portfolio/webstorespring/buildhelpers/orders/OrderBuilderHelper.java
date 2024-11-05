@@ -35,23 +35,32 @@ public class OrderBuilderHelper {
                 .build();
     }
 
-    public static Order createOrderWithoutShipments() {
-        Account account = make(a(BASIC_ACCOUNT));
-        Delivery delivery = createDelivery();
-        return Order.builder()
-                .id(1L)
-                .status(OrderStatus.OPEN)
-                .account(account)
-                .delivery(delivery)
-                .build();
-    }
-
     public static OrderRequest createOrderRequest() {
         ShipmentRequest shipmentRequest = createShipmentRequest();
         DeliveryRequest deliveryRequest = createDeliveryRequest();
         return OrderRequest.builder()
                 .deliveryRequest(deliveryRequest)
                 .shipmentRequests(List.of(shipmentRequest, shipmentRequest))
+                .build();
+    }
+
+    public static OrderRequest createOrderRequest(ShipmentRequest shipmentRequest,
+                                                  DeliveryRequest deliveryRequest,
+                                                  String discountCode) {
+        return OrderRequest.builder()
+                .deliveryRequest(deliveryRequest)
+                .shipmentRequests(List.of(shipmentRequest))
+                .discountCode(discountCode)
+                .build();
+    }
+
+    public static OrderRequest createOrderRequest(List<ShipmentRequest> shipmentRequests,
+                                                  DeliveryRequest deliveryRequest,
+                                                  String discountCode) {
+        return OrderRequest.builder()
+                .deliveryRequest(deliveryRequest)
+                .shipmentRequests(shipmentRequests)
+                .discountCode(discountCode)
                 .build();
     }
 
