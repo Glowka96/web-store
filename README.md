@@ -99,6 +99,8 @@ GCP:
 <details>
 <summary>Clean code branch:</summary>
 
+- Simplify delete entity methods - previously entity was found before delete 
+- Remove ResponseEntity<> from Controllers
 - Rename ProductPricePromotion to Promotion
 - Use asserts from junit.jupiter instead of assertThat in some cases 
 - Remove comments (//given, //when, //then) form tests

@@ -99,11 +99,9 @@ class SubcategoryServiceTest {
 
     @Test
     void shouldDeleteSubCategoryById() {
-        Subcategory subcategory = createSubcategory();
-        given(subcategoryRepository.findById(anyLong())).willReturn(Optional.of(subcategory));
-
         underTest.deleteSubcategoryById(anyLong());
 
-        verify(subcategoryRepository, times(1)).deleteById(subcategory.getId());
+        verify(subcategoryRepository, times(1)).deleteById(anyLong());
+        verifyNoMoreInteractions(subcategoryRepository);
     }
 }

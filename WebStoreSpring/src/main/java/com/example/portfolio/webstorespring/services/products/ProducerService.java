@@ -46,8 +46,7 @@ public class ProducerService {
     }
 
     public void deleteProducerById(Long id) {
-        Producer foundProducer = findProducerById(id);
-        producerRepository.delete(foundProducer);
+        producerRepository.deleteById(id);
     }
 
     protected Producer findProducerById(Long id) {

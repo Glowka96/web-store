@@ -29,7 +29,7 @@ public class ProductService {
 
     public ProductWithProducerAndPromotionDTO getProductById(Long id) {
         ProductWithProducerAndPromotionDTO product =  productRepository.findProductById(id, getLocalDataTime30DaysAgo());
-        if(product.id() == null) {
+        if (product == null) {
             throw new ResourceNotFoundException("Product", "id", id);
         }
         return product;
@@ -72,8 +72,7 @@ public class ProductService {
     }
 
     public void deleteProductById(Long id) {
-        Product foundProduct = findProductById(id);
-        productRepository.delete(foundProduct);
+        productRepository.deleteById(id);
     }
 
     private Product findProductById(Long id) {

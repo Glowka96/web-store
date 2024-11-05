@@ -6,7 +6,6 @@ import com.example.portfolio.webstorespring.services.products.ProducerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,27 +18,26 @@ public class ProducerController {
     private final ProducerService producerService;
 
     @GetMapping()
-    public ResponseEntity<List<ProducerResponse>> getAllProducer() {
-        return ResponseEntity.ok(producerService.getAllProducer());
+    public List<ProducerResponse> getAllProducer() {
+        return producerService.getAllProducer();
     }
 
     @PostMapping()
-    public ResponseEntity<ProducerResponse> saveProducer(@Valid @RequestBody ProducerRequest producerRequest) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(producerService.saveProducer(producerRequest));
+    @ResponseStatus(HttpStatus.CREATED)
+    public ProducerResponse saveProducer(@Valid @RequestBody ProducerRequest producerRequest) {
+        return producerService.saveProducer(producerRequest);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<ProducerResponse> updateProducer(@PathVariable("id") Long id,
-                                                           @Valid @RequestBody ProducerRequest producerRequest) {
-        return ResponseEntity.accepted()
-                .body(producerService.updateProducer(id, producerRequest));
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public ProducerResponse updateProducer(@PathVariable("id") Long id,
+                                           @Valid @RequestBody ProducerRequest producerRequest) {
+        return producerService.updateProducer(id, producerRequest);
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> deleteProducer(@PathVariable("id") Long id) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteProducer(@PathVariable("id") Long id) {
         producerService.deleteProducerById(id);
-        return ResponseEntity.noContent().build();
-
     }
 }

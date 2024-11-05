@@ -22,27 +22,23 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({ResourceNotFoundException.class, AccountHasNoAddressException.class})
     public ResponseEntity<ErrorResponse> handleResourceNotFoundException(RuntimeException exception,
                                                                          WebRequest webRequest) {
-        ErrorResponse errorResponse = createErrorResponse(HttpStatus.NOT_FOUND, exception, webRequest);
-        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(createErrorResponse(HttpStatus.NOT_FOUND, exception, webRequest), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class})
     public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception,
                                                                                WebRequest webRequest) {
-        ErrorResponse errorResponse = createErrorResponse(exception, webRequest);
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(createErrorResponse(exception, webRequest), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({BadCredentialsException.class, DisabledException.class, UsernameNotFoundException.class})
     public ResponseEntity<ErrorResponse> handleBadCredentialsException(RuntimeException exception, WebRequest webRequest) {
-        ErrorResponse errorResponse = createErrorResponse(HttpStatus.UNAUTHORIZED, exception, webRequest);
-        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(createErrorResponse(HttpStatus.UNAUTHORIZED, exception, webRequest), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler({AccessDeniedException.class})
     public ResponseEntity<ErrorResponse> handleAccessDeniedException(Exception exception, WebRequest webRequest) {
-        ErrorResponse errorResponse = createErrorResponse(HttpStatus.FORBIDDEN, exception, webRequest);
-        return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(createErrorResponse(HttpStatus.FORBIDDEN, exception, webRequest), HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler({
@@ -56,8 +52,7 @@ public class GlobalExceptionHandler {
     })
     public ResponseEntity<ErrorResponse> handleCanNotModifiedException(RuntimeException exception,
                                                                        WebRequest webRequest) {
-        ErrorResponse errorResponse = createErrorResponse(HttpStatus.BAD_REQUEST, exception, webRequest);
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(createErrorResponse(HttpStatus.BAD_REQUEST, exception, webRequest), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({
@@ -65,22 +60,19 @@ public class GlobalExceptionHandler {
     })
     public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException exception,
                                                                         WebRequest webRequest) {
-        ErrorResponse errorResponse = createErrorResponse(exception, webRequest);
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(createErrorResponse(exception, webRequest), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ErrorResponse> handeConstraintViolationException(ConstraintViolationException exception,
                                                                            WebRequest webRequest) {
-        ErrorResponse errorResponse = createErrorResponse(exception, webRequest);
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(createErrorResponse(exception, webRequest), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(UnsupportedNotificationTypeException.class)
     public ResponseEntity<ErrorResponse> handleUnsupportedNotificationTypeException(UnsupportedNotificationTypeException exception,
                                                                                     WebRequest webRequest) {
-        ErrorResponse errorResponse = createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, exception, webRequest);
-        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, exception, webRequest), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     private ErrorResponse createErrorResponse(HttpStatus status, Exception exception, WebRequest webRequest) {

@@ -1,6 +1,5 @@
 package com.example.portfolio.webstorespring.services.orders;
 
-import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.DeliveryTypeMapper;
 import com.example.portfolio.webstorespring.model.dto.orders.request.DeliveryTypeRequest;
 import com.example.portfolio.webstorespring.model.dto.orders.response.DeliveryTypeResponse;
@@ -14,14 +13,9 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Optional;
-
-import static com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryTypeBuilderHelper.createDeliveryType;
 import static com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryTypeBuilderHelper.createDeliveryTypeRequest;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -62,21 +56,9 @@ class DeliveryTypeServiceTest {
 
     @Test
     void shouldDeleteDeliveryType() {
-        DeliveryType deliveryType = createDeliveryType();
-        given(deliveryTypeRepository.findById(anyLong())).willReturn(Optional.of(deliveryType));
+        underTest.deleteDeliveryType(anyLong());
 
-        underTest.deleteDeliveryType(1L);
-
-        verify(deliveryTypeRepository, times(1)).findById(1L);
-        verify(deliveryTypeRepository, times(1)).delete(deliveryType);
-    }
-
-    @Test
-    void willThrowResourceNotFoundException_whenDeliveryTypeIdNotFound() {
-        given(deliveryTypeRepository.findById(anyLong())).willReturn(Optional.empty());
-
-        assertThatThrownBy(() -> underTest.deleteDeliveryType(1L))
-                .isInstanceOf(ResourceNotFoundException.class)
-                        .hasMessageContaining("Delivery type with id 1 not found");
+        verify(deliveryTypeRepository, times(1)).deleteById(anyLong());
+        verifyNoMoreInteractions(deliveryTypeRepository);
     }
 }

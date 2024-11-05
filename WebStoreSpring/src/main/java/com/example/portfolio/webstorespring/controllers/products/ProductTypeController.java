@@ -6,7 +6,6 @@ import com.example.portfolio.webstorespring.services.products.ProductTypeService
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,26 +18,26 @@ public class ProductTypeController {
     private final ProductTypeService productTypeService;
 
     @GetMapping("/product-types")
-    public ResponseEntity<List<ProductTypeResponse>> getAllProductType() {
-        return ResponseEntity.ok(productTypeService.getAllProductType());
+    public List<ProductTypeResponse> getAllProductType() {
+        return productTypeService.getAllProductType();
     }
 
     @PostMapping(value = "/admin/product-types")
-    public ResponseEntity<ProductTypeResponse> saveProductType(@Valid @RequestBody ProductTypeRequest productTypeRequest) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(productTypeService.saveProductType(productTypeRequest));
+    @ResponseStatus(HttpStatus.CREATED)
+    public ProductTypeResponse saveProductType(@Valid @RequestBody ProductTypeRequest productTypeRequest) {
+        return productTypeService.saveProductType(productTypeRequest);
     }
 
     @PutMapping(value = "/admin/product-types/{productTypeId}")
-    public ResponseEntity<ProductTypeResponse> updateProductType(@PathVariable("productTypeId") Long productTypeId,
-                                                                 @Valid @RequestBody ProductTypeRequest productTypeRequest) {
-        return ResponseEntity.accepted()
-                .body(productTypeService.updateProductType(productTypeId, productTypeRequest));
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public ProductTypeResponse updateProductType(@PathVariable("productTypeId") Long productTypeId,
+                                                 @Valid @RequestBody ProductTypeRequest productTypeRequest) {
+        return productTypeService.updateProductType(productTypeId, productTypeRequest);
     }
 
     @DeleteMapping(value = "/admin/product-types/{productTypeId}")
-    public ResponseEntity<Void> deleteProductTypeById(@PathVariable("productTypeId") Long productTypeId) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteProductTypeById(@PathVariable("productTypeId") Long productTypeId) {
         productTypeService.deleteProductTypeById(productTypeId);
-        return ResponseEntity.noContent().build();
     }
 }

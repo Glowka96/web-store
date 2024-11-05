@@ -89,13 +89,9 @@ class ProductTypeServiceTest {
 
     @Test
     void deleteProductTypeById() {
-        ProductType foundProductType = createProductType();
+        underTest.deleteProductTypeById(anyLong());
 
-        given(productTypeRepository.findById(anyLong())).willReturn(Optional.of(foundProductType));
-
-        underTest.deleteProductTypeById(1L);
-
-        verify(productTypeRepository, times(1)).findById(1L);
-        verify(productTypeRepository, times(1)).delete(foundProductType);
+        verify(productTypeRepository, times(1)).deleteById(anyLong());
+        verifyNoMoreInteractions(productTypeRepository);
     }
 }

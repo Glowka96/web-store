@@ -59,9 +59,8 @@ public class SubcategoryService {
         return subcategoryMapper.mapToDto(foundSubcategory);
     }
 
-    public void deleteSubcategoryById(Long subCategoryId) {
-        Subcategory foundSubcategory = findSubcategoryById(subCategoryId);
-        subcategoryRepository.deleteById(foundSubcategory.getId());
+    public void deleteSubcategoryById(Long subcategoryId) {
+        subcategoryRepository.deleteById(subcategoryId);
     }
 
 

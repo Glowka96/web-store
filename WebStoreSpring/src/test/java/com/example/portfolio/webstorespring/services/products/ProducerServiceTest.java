@@ -101,13 +101,9 @@ class ProducerServiceTest {
 
     @Test
     void shouldDeleteProducerById() {
-        Producer producer = createProducer();
-        given(producerRepository.findById(anyLong())).willReturn(Optional.of(producer));
+        underTest.deleteProducerById(anyLong());
 
-        underTest.deleteProducerById(producer.getId());
-
-        verify(producerRepository, times(1)).findById(producer.getId());
-        verify(producerRepository, times(1)).delete(producer);
+        verify(producerRepository, times(1)).deleteById(anyLong());
         verifyNoMoreInteractions(producerRepository);
     }
 }
