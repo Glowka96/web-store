@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.Set;
 
 public record DiscountRequest(
-        @Pattern(regexp = "^[A-Z0-9]{5,10}$", message = "The code must be between 5 and 10 uppercase letters or digits")
+        @Pattern(regexp = "^[a-zA-Z0-9]{5,10}$", message = "The code must be between 5 and 10 uppercase letters or digits")
         String code,
         @DecimalMin(value = "0.1", message = "The discount rate must be greater than or equal to 0.1")
         @DecimalMax(value = "0.90", message = "The discount rate must be less than or equal to 0.90")

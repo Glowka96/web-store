@@ -6,6 +6,7 @@ import com.example.portfolio.webstorespring.model.dto.products.response.Discount
 import com.example.portfolio.webstorespring.services.products.DiscountService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,11 +22,13 @@ public class DiscountController {
     }
 
     @PostMapping(value = "/admin/discounts")
+    @ResponseStatus(HttpStatus.CREATED)
     public DiscountAdminResponse saveDiscount(@Valid @RequestBody DiscountRequest discountRequest) {
         return discountService.saveDiscount(discountRequest);
     }
 
     @DeleteMapping(value = "/admin/discounts")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUserOrExpiredDiscount() {
         discountService.deleteUsedOrExpiredDiscount();
     }
