@@ -170,7 +170,7 @@ class OrderControllerIT extends AbstractAuthControllerIT {
 
         assertNotEquals(productBeforeSaveOrder.quantity(), productAfterSaveOrder.quantity());
 
-        assertsOrders(response, productAfterSaveOrder.promotionPrice());
+        assertsOrders(response, 1L, productAfterSaveOrder.promotionPrice());
     }
 
     @Test
@@ -191,7 +191,35 @@ class OrderControllerIT extends AbstractAuthControllerIT {
 
         assertNotEquals(productBeforeSaveOrder.quantity(), productAfterSaveOrder.quantity());
 
-        assertsOrders(response, productAfterSaveOrder.price().multiply(BigDecimal.ONE.subtract(BigDecimal.valueOf(0.10))));
+        assertsOrders(response, 1L, productAfterSaveOrder.price().multiply(BigDecimal.ONE.subtract(BigDecimal.valueOf(0.10))));
+        assertEquals(0, discountRepository.findById(discount.getId()).get().getQuantity());
+    }
+
+    @Test
+    void shouldSaveOrderWithTwoProducts_whenUserUseDiscount_forAuthenticatedUser_thenStatusCreated() {
+        OrderRequest orderRequest = createOrderRequest(
+                List.of(createShipmentRequest(initProductTestData.getProductIdThatHasNoPromotion()),
+                        createShipmentRequest(initProductTestData.getProductIdThatHasOtherSubcategoryAndNoPromotion()),
+                        createShipmentRequest(initProductTestData.getProductIdThatHasPromotion())),
+                createDeliveryRequest(deliveryTypeId),
+                "test"
+        );
+
+        HttpEntity<OrderRequest> httpEntity = new HttpEntity<>(orderRequest, getHttpHeaderWithUserToken());
+
+        ResponseEntity<OrderResponse> response = sendPostRequest(httpEntity);
+
+        BigDecimal priceOfProductThatHasNoPromotion = getProductById(
+                initProductTestData.getProductIdThatHasNoPromotion()).price().multiply(BigDecimal.ONE.subtract(BigDecimal.valueOf(0.10)));
+        BigDecimal priceOfProductThatHasOtherSubcategoryAndNoPromotion = getProductById(
+                initProductTestData.getProductIdThatHasOtherSubcategoryAndNoPromotion()).price();
+        BigDecimal priceOfProductThatHasPromotion = getProductById(initProductTestData.getProductIdThatHasPromotion()).promotionPrice();
+
+        BigDecimal exceptedPrice = priceOfProductThatHasNoPromotion
+                .add(priceOfProductThatHasOtherSubcategoryAndNoPromotion)
+                .add(priceOfProductThatHasPromotion)
+                .setScale(2, RoundingMode.HALF_UP);
+        assertsOrders(response, 3L, exceptedPrice);
         assertEquals(0, discountRepository.findById(discount.getId()).get().getQuantity());
     }
 
@@ -233,7 +261,7 @@ class OrderControllerIT extends AbstractAuthControllerIT {
         );
     }
 
-    private void assertsOrders(ResponseEntity<OrderResponse> response, BigDecimal exceptedPrice) {
+    private void assertsOrders(ResponseEntity<OrderResponse> response, Long exceptedShipmentSize, BigDecimal exceptedPrice) {
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertNotNull(response.getBody());
         assertNotNull(response.getBody().getId());
@@ -242,7 +270,7 @@ class OrderControllerIT extends AbstractAuthControllerIT {
         assertEquals(getSavedUser().getFirstName() + " " + getSavedUser().getLastName(),
                 response.getBody().getNameUser());
         assertEquals(OrderStatus.OPEN, response.getBody().getStatus());
-        assertEquals(1, response.getBody().getShipmentResponses().size());
+        assertEquals(exceptedShipmentSize, response.getBody().getShipmentResponses().size());
         assertEquals(exceptedPrice.add(response.getBody().getDeliveryResponse().getDeliveryTypeResponse().getPrice()).setScale(2, RoundingMode.HALF_UP),
                 response.getBody().getTotalPrice()
         );

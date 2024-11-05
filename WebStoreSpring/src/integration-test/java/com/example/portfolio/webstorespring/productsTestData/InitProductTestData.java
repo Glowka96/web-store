@@ -9,6 +9,7 @@ public interface InitProductTestData extends InitTestData {
     void initOneProduct();
     Long getProductIdThatHasPromotion();
     Long getProductIdThatHasNoPromotion();
+    Long getProductIdThatHasOtherSubcategoryAndNoPromotion();
     Long getSubId();
     Long getProducerId();
     Long getProductTypeId();

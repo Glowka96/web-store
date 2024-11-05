@@ -81,7 +81,7 @@ class ProductRepositoryIT{
         );
 
         assertTrue(optionalPageProducts.isPresent());
-        assertPageProducts(optionalPageProducts.get(), 1, 1);
+        assertPageProducts(optionalPageProducts.get(), 2, 1);
     }
 
     @Test
@@ -103,7 +103,7 @@ class ProductRepositoryIT{
         );
 
         assertTrue(optionalPageProducts.isPresent());
-        assertPageProducts(optionalPageProducts.get(), 5, 3);
+        assertPageProducts(optionalPageProducts.get(), 6, 3);
     }
 
     @Test

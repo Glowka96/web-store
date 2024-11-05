@@ -54,6 +54,16 @@ public class OrderBuilderHelper {
                 .build();
     }
 
+    public static OrderRequest createOrderRequest(List<ShipmentRequest> shipmentRequests,
+                                                  DeliveryRequest deliveryRequest,
+                                                  String discountCode) {
+        return OrderRequest.builder()
+                .deliveryRequest(deliveryRequest)
+                .shipmentRequests(shipmentRequests)
+                .discountCode(discountCode)
+                .build();
+    }
+
     public static OrderResponse createOrderResponse() {
         DeliveryResponse deliveryResponse = createDeliveryResponse();
         ShipmentResponse shipmentResponse = createShipmentResponse();
