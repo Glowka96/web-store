@@ -28,14 +28,14 @@ public class DeliveryTypeController {
     }
 
     @PutMapping("/admin/delivery-types/{deliveryId}")
-    public DeliveryTypeResponse updateDeliveryType(@PathVariable(value = "deliveryId") Long deliveryId,
+    public DeliveryTypeResponse updateDeliveryType(@PathVariable("deliveryId") Long deliveryId,
                                                    @RequestBody DeliveryTypeRequest deliveryTypeRequest) {
         return deliveryTypeService.updateDeliveryType(deliveryId, deliveryTypeRequest);
     }
 
     @DeleteMapping("/admin/delivery-types/{deliveryId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteDeliveryTypeById(@PathVariable(value = "deliveryId") Long deliveryId) {
+    public void deleteDeliveryTypeById(@PathVariable("deliveryId") Long deliveryId) {
         deliveryTypeService.deleteDeliveryType(deliveryId);
     }
 }

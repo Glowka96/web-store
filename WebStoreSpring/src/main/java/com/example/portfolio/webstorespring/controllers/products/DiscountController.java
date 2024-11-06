@@ -17,7 +17,7 @@ public class DiscountController {
     private final DiscountService discountService;
 
     @GetMapping("/discounts/{code}")
-    public DiscountUserResponse getDiscountByCode(@PathVariable(value = "code") String code) {
+    public DiscountUserResponse getDiscountByCode(@PathVariable("code") String code) {
         return discountService.getDiscountByDiscountCode(code);
     }
 

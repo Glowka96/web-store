@@ -24,7 +24,7 @@ public class ResetPasswordController {
 
     @PatchMapping(value = "/confirm", params = {"token"})
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public Map<String, Object> confirmResetPassword(@RequestBody() @Valid ResetPasswordRequest resetPasswordRequest,
+    public Map<String, Object> confirmResetPassword(@RequestBody @Valid ResetPasswordRequest resetPasswordRequest,
                                                     @RequestParam("token") String token) {
         return resetPasswordService.confirmResetPassword(resetPasswordRequest, token);
     }

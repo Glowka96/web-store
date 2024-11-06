@@ -15,7 +15,7 @@ public class ProductsPageController {
     private final ProductsPageService productsPageService;
 
     @GetMapping("/subcategories/{subcategoryId}/products")
-    public PageProductsWithPromotionDTO getPageProductsBySubcategoryId(@PathVariable(value = "subcategoryId") Long subcategoryId,
+    public PageProductsWithPromotionDTO getPageProductsBySubcategoryId(@PathVariable("subcategoryId") Long subcategoryId,
                                                                        @Valid @RequestBody ProductsPageOptions productsPageOptions) {
         return productsPageService.getProductsPageBySubcategoryId(subcategoryId, productsPageOptions);
     }

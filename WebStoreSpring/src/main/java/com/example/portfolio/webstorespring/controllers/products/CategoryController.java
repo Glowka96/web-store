@@ -30,14 +30,14 @@ public class CategoryController {
     }
 
     @PutMapping("/admin/categories/{categoryId}")
-    public CategoryResponse updateCategory(@PathVariable(value = "categoryId") Long categoryId,
+    public CategoryResponse updateCategory(@PathVariable("categoryId") Long categoryId,
                                            @Valid @RequestBody CategoryRequest categoryRequest) {
         return categoryService.updateCategory(categoryId, categoryRequest);
     }
 
     @DeleteMapping("/admin/categories/{categoryId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteCategoryById(@PathVariable(value = "categoryId") Long categoryId) {
+    public void deleteCategoryById(@PathVariable("categoryId") Long categoryId) {
         categoryService.deleteCategoryById(categoryId);
     }
 }
