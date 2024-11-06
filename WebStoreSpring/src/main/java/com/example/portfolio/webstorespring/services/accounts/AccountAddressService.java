@@ -66,7 +66,7 @@ public class AccountAddressService {
 
     private AccountAddress findAddressByAccountId(AccountDetails accountDetails) {
         return addressRepository.findById(accountDetails.getAccount().getId())
-                .orElseThrow(AccountHasNoAddressException::new);
+                .orElseThrow(() -> new AccountHasNoAddressException(accountDetails.getAccount().getId()));
     }
 
     private void setupUpdateAddress(AccountAddress loggedAccountAddress, AccountAddress accountAddress) {
