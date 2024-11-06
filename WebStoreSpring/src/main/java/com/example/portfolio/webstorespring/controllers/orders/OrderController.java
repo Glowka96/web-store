@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "api/v1/accounts/orders")
+@RequestMapping("api/v1/accounts/orders")
 @RequiredArgsConstructor
 public class OrderController {
 
     private final OrderService orderService;
 
-    @GetMapping()
+    @GetMapping
     public List<OrderResponseWithoutShipments> getAllAccountOrders(@AuthenticationPrincipal AccountDetails accountDetails) {
         return orderService.getAllAccountOrder(accountDetails);
     }
@@ -30,13 +30,13 @@ public class OrderController {
         return orderService.getLastFiveAccountOrder(accountDetails);
     }
 
-    @GetMapping(value = "/{orderId}")
+    @GetMapping("/{orderId}")
     public OrderResponse getOrderById(@AuthenticationPrincipal AccountDetails accountDetails,
                                       @PathVariable("orderId") Long orderId) {
         return orderService.getOrderById(accountDetails, orderId);
     }
 
-    @PostMapping()
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public OrderResponse saveOrder(@AuthenticationPrincipal AccountDetails accountDetails,
                                    @Valid @RequestBody OrderRequest orderRequest) {

@@ -9,13 +9,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "/api/v1/admin/products/promotions")
+@RequestMapping("/api/v1/admin/products/promotions")
 @RequiredArgsConstructor
 public class PromotionController {
 
     private final PromotionService promotionService;
 
-    @PostMapping()
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public PromotionResponse savePromotion(@NotNull @RequestBody PromotionRequesst promotionRequest) {
         return promotionService.savePromotion(promotionRequest);

@@ -17,7 +17,7 @@ public class SearchController {
     @GetMapping(params = {"query"})
   
     public PageProductsWithPromotionDTO getPageSearchProductsByText(@RequestParam(value = "query", defaultValue = "puzzle") String text,
-                                                                    @Valid @RequestBody PageProductsOptions pageProductsOptions) {
-        return productsPageService.getPageSearchProducts(text, pageProductsOptions);
+                                                                    @Valid @RequestBody ProductsPageOptions productsPageOptions) {
+        return productsPageService.getSearchProductsPage(text, productsPageOptions);
     }
 }

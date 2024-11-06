@@ -12,31 +12,30 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "api/v1")
+@RequestMapping("api/v1")
 @RequiredArgsConstructor
 public class CategoryController {
 
     private final CategoryService categoryService;
 
-    @GetMapping(value = "/categories")
+    @GetMapping("/categories")
     public ResponseEntity<List<CategoryResponse>> getAllCategory() {
         return ResponseEntity.ok(categoryService.getAllCategory());
     }
 
-    @PostMapping(value = "/admin/categories")
+    @PostMapping("/admin/categories")
     @ResponseStatus(HttpStatus.CREATED)
     public CategoryResponse saveCategory(@Valid @RequestBody CategoryRequest categoryRequest) {
         return categoryService.saveCategory(categoryRequest);
     }
 
-    @PutMapping(value = "/admin/categories/{categoryId}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PutMapping("/admin/categories/{categoryId}")
     public CategoryResponse updateCategory(@PathVariable(value = "categoryId") Long categoryId,
                                            @Valid @RequestBody CategoryRequest categoryRequest) {
         return categoryService.updateCategory(categoryId, categoryRequest);
     }
 
-    @DeleteMapping(value = "/admin/categories/{categoryId}")
+    @DeleteMapping("/admin/categories/{categoryId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCategoryById(@PathVariable(value = "categoryId") Long categoryId) {
         categoryService.deleteCategoryById(categoryId);

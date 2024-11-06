@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "api/v1")
+@RequestMapping("api/v1")
 @RequiredArgsConstructor
 public class ProductTypeController {
 
@@ -22,20 +22,19 @@ public class ProductTypeController {
         return productTypeService.getAllProductType();
     }
 
-    @PostMapping(value = "/admin/product-types")
+    @PostMapping("/admin/product-types")
     @ResponseStatus(HttpStatus.CREATED)
     public ProductTypeResponse saveProductType(@Valid @RequestBody ProductTypeRequest productTypeRequest) {
         return productTypeService.saveProductType(productTypeRequest);
     }
 
-    @PutMapping(value = "/admin/product-types/{productTypeId}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PutMapping("/admin/product-types/{productTypeId}")
     public ProductTypeResponse updateProductType(@PathVariable("productTypeId") Long productTypeId,
                                                  @Valid @RequestBody ProductTypeRequest productTypeRequest) {
         return productTypeService.updateProductType(productTypeId, productTypeRequest);
     }
 
-    @DeleteMapping(value = "/admin/product-types/{productTypeId}")
+    @DeleteMapping("/admin/product-types/{productTypeId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteProductTypeById(@PathVariable("productTypeId") Long productTypeId) {
         productTypeService.deleteProductTypeById(productTypeId);

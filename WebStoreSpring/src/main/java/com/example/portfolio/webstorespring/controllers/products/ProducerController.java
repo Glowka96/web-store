@@ -11,31 +11,30 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "api/v1/admin/producers")
+@RequestMapping("api/v1/admin/producers")
 @RequiredArgsConstructor
 public class ProducerController {
 
     private final ProducerService producerService;
 
-    @GetMapping()
+    @GetMapping
     public List<ProducerResponse> getAllProducer() {
         return producerService.getAllProducer();
     }
 
-    @PostMapping()
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ProducerResponse saveProducer(@Valid @RequestBody ProducerRequest producerRequest) {
         return producerService.saveProducer(producerRequest);
     }
 
-    @PutMapping(value = "/{id}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PutMapping("/{id}")
     public ProducerResponse updateProducer(@PathVariable("id") Long id,
                                            @Valid @RequestBody ProducerRequest producerRequest) {
         return producerService.updateProducer(id, producerRequest);
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteProducer(@PathVariable("id") Long id) {
         producerService.deleteProducerById(id);

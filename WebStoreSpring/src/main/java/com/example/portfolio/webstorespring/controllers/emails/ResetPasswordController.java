@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "api/v1/reset-password")
+@RequestMapping( "api/v1/reset-password")
 @RequiredArgsConstructor
 public class ResetPasswordController {
 

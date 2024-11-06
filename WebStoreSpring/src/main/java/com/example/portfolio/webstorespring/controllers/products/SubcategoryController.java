@@ -11,33 +11,32 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "api/v1/admin/categories")
+@RequestMapping("api/v1/admin/categories")
 @RequiredArgsConstructor
 public class SubcategoryController {
 
     private final SubcategoryService subcategoryService;
 
-    @GetMapping(value = "/subcategories")
+    @GetMapping("/subcategories")
     public List<SubcategoryResponse> getAllSubcategory() {
         return subcategoryService.getAllSubcategory();
     }
 
-    @PostMapping(value = "/{categoryId}/subcategories")
+    @PostMapping("/{categoryId}/subcategories")
     @ResponseStatus(HttpStatus.CREATED)
     public SubcategoryResponse saveSubcategory(@PathVariable("categoryId") Long id,
                                                @Valid @RequestBody SubcategoryRequest subcategoryRequest) {
         return subcategoryService.saveSubcategory(id, subcategoryRequest);
     }
 
-    @PutMapping(value = "/{categoryId}/subcategories/{subcategoryId}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PutMapping("/{categoryId}/subcategories/{subcategoryId}")
     public SubcategoryResponse updateSubcategory(@PathVariable("categoryId") Long categoryId,
                                                  @PathVariable("subcategoryId") Long subcategoryId,
                                                  @Valid @RequestBody SubcategoryRequest subCategoryRequest) {
         return subcategoryService.updateSubcategory(categoryId, subcategoryId, subCategoryRequest);
     }
 
-    @DeleteMapping(value = "/subcategories/{subcategoryId}")
+    @DeleteMapping("/subcategories/{subcategoryId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteSubcategoryById(@PathVariable("subcategoryId") Long id) {
         subcategoryService.deleteSubcategoryById(id);

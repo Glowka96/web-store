@@ -12,23 +12,23 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "api/v1")
+@RequestMapping("api/v1")
 @RequiredArgsConstructor
 public class ProductController {
 
     private final ProductService productService;
 
-    @GetMapping(value = "/admin/products")
+    @GetMapping("/admin/products")
     public List<ProductResponse> getAllProducts() {
         return productService.getAllProducts();
     }
 
-    @GetMapping(value = "/products/{productId}")
+    @GetMapping("/products/{productId}")
     public ProductWithProducerAndPromotionDTO getProductById(@PathVariable(value = "productId") Long productId) {
         return productService.getProductById(productId);
     }
 
-    @PostMapping(value = "/admin/subcategories/{subcategoryId}/producers/{producerId}/products")
+    @PostMapping("/admin/subcategories/{subcategoryId}/producers/{producerId}/products")
     @ResponseStatus(HttpStatus.CREATED)
     public ProductResponse saveProduct(@PathVariable(value = "subcategoryId") Long subcategoryId,
                                        @PathVariable(value = "producerId") Long producerId,
@@ -36,8 +36,7 @@ public class ProductController {
         return productService.saveProduct(subcategoryId, producerId, productRequest);
     }
 
-    @PutMapping(value = "/admin/subcategories/{subcategoryId}/producers/{producerId}/products/{productId}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PutMapping("/admin/subcategories/{subcategoryId}/producers/{producerId}/products/{productId}")
     public ProductResponse updateProduct(@PathVariable(value = "subcategoryId") Long subcategoryId,
                                          @PathVariable(value = "producerId") Long producerId,
                                          @PathVariable(value = "productId") Long productId,
@@ -45,7 +44,7 @@ public class ProductController {
         return productService.updateProduct(subcategoryId, producerId, productId, productRequest);
     }
 
-    @DeleteMapping(value = "/admin/products/{productId}")
+    @DeleteMapping("/admin/products/{productId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteProductById(@PathVariable(value = "productId") Long id) {
         productService.deleteProductById(id);

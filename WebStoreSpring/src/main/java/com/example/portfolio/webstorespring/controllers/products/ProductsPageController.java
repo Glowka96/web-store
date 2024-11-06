@@ -16,17 +16,17 @@ public class ProductsPageController {
 
     @GetMapping("/subcategories/{subcategoryId}/products")
     public PageProductsWithPromotionDTO getPageProductsBySubcategoryId(@PathVariable(value = "subcategoryId") Long subcategoryId,
-                                                                       @Valid @RequestBody ProductsPageOptions pageProductsOptions) {
-        return productsPageService.getProductsPageBySubcategoryId(subcategoryId, pageProductsOptions);
+                                                                       @Valid @RequestBody ProductsPageOptions productsPageOptions) {
+        return productsPageService.getProductsPageBySubcategoryId(subcategoryId, productsPageOptions);
     }
 
     @GetMapping("/products/promotions")
-    public PageProductsWithPromotionDTO getPagePromotionProducts(@Valid @RequestBody ProductsPageOptions pageProductsOptions) {
-        return productsPageService.getPromotionProductsPage(pageProductsOptions);
+    public PageProductsWithPromotionDTO getPagePromotionProducts(@Valid @RequestBody ProductsPageOptions productsPageOptions) {
+        return productsPageService.getPromotionProductsPage(productsPageOptions);
     }
 
     @GetMapping("/products/news")
-    public PageProductsWithPromotionDTO getPageNewProducts(@Valid @RequestBody ProductsPageOptions pageProductsOptions) {
-        return productsPageService.getNewProductsPage(pageProductsOptions);
+    public PageProductsWithPromotionDTO getPageNewProducts(@Valid @RequestBody ProductsPageOptions productsPageOptions) {
+        return productsPageService.getNewProductsPage(productsPageOptions);
     }
 }
