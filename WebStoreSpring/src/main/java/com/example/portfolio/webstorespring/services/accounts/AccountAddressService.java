@@ -13,8 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class AccountAddressService {
@@ -36,17 +34,18 @@ public class AccountAddressService {
 
         AccountAddress accountAddress = addressMapper.mapToEntity(accountAddressRequest);
 
-        Optional<AccountAddress> addressOptional = addressRepository.findById(accountDetails.getAccount().getId());
-        if (addressOptional.isPresent()) {
-            AccountAddress presentAddress = addressOptional.get();
-            setupUpdateAddress(presentAddress, accountAddress);
-            addressRepository.save(presentAddress);
-            return addressMapper.mapToDto(presentAddress);
-        }
-
-        accountAddress.setAccount(loggedAccount);
-        addressRepository.save(accountAddress);
-        return addressMapper.mapToDto(accountAddress);
+        var finalLoggedAccount = loggedAccount;
+        return addressRepository.findById(accountDetails.getAccount().getId()).map(
+                accountAddress1 -> {
+                    setupUpdateAddress(accountAddress1, accountAddress);
+                    addressRepository.save(accountAddress1);
+                    return addressMapper.mapToDto(accountAddress1);
+                }
+        ).orElseGet(() -> {
+            accountAddress.setAccount(finalLoggedAccount);
+            addressRepository.save(accountAddress);
+            return addressMapper.mapToDto(accountAddress);
+        });
     }
 
     @Transactional
