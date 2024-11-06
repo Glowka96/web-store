@@ -23,7 +23,6 @@ public class AccountController {
     }
 
     @PutMapping
-    @ResponseStatus(HttpStatus.ACCEPTED)
     public AccountResponse updateAccount(@AuthenticationPrincipal AccountDetails accountDetails,
                                          @Valid @RequestBody AccountRequest accountRequest) {
         return accountService.updateAccount(accountDetails, accountRequest);

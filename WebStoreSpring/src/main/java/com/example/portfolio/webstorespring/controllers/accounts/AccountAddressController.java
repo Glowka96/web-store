@@ -36,6 +36,7 @@ public class AccountAddressController {
     }
 
     @DeleteMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteAccountAddress(@AuthenticationPrincipal AccountDetails accountDetails) {
         addressService.deleteAccountAddress(accountDetails);
     }
