@@ -8,24 +8,25 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "api/v1")
+@RequestMapping( "api/v1")
 @RequiredArgsConstructor
 public class ProductsPageController {
 
     private final ProductsPageService productsPageService;
 
+    @GetMapping("/subcategories/{subcategoryId}/products")
     public PageProductsWithPromotionDTO getPageProductsBySubcategoryId(@PathVariable(value = "subcategoryId") Long subcategoryId,
-                                                                       @Valid @RequestBody PageProductsOptions pageProductsOptions) {
-        return productsPageService.getPageProductsBySubcategoryId(subcategoryId, pageProductsOptions);
+                                                                       @Valid @RequestBody ProductsPageOptions pageProductsOptions) {
+        return productsPageService.getProductsPageBySubcategoryId(subcategoryId, pageProductsOptions);
     }
 
-    @GetMapping(value = "/products/promotions")
-    public PageProductsWithPromotionDTO getPagePromotionProducts(@Valid @RequestBody PageProductsOptions pageProductsOptions) {
-        return productsPageService.getPagePromotionProduct(pageProductsOptions);
+    @GetMapping("/products/promotions")
+    public PageProductsWithPromotionDTO getPagePromotionProducts(@Valid @RequestBody ProductsPageOptions pageProductsOptions) {
+        return productsPageService.getPromotionProductsPage(pageProductsOptions);
     }
 
-    @GetMapping(value = "/products/news")
-    public PageProductsWithPromotionDTO getPageNewProducts(@Valid @RequestBody PageProductsOptions pageProductsOptions) {
-        return productsPageService.getPageNewProducts(pageProductsOptions);
+    @GetMapping("/products/news")
+    public PageProductsWithPromotionDTO getPageNewProducts(@Valid @RequestBody ProductsPageOptions pageProductsOptions) {
+        return productsPageService.getNewProductsPage(pageProductsOptions);
     }
 }

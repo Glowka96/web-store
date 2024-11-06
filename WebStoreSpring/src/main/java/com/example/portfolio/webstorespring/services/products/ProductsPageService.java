@@ -27,7 +27,7 @@ import java.util.function.Function;
 public class ProductsPageService {
 
     private final ProductRepository productRepository;
-    private final Clock clock = Clock.systemUTC();
+    private final Clock clock;
 
     public PageProductsWithPromotionDTO getProductsPageBySubcategoryId(Long subcategoryId, ProductsPageOptions productsPageOptions) {
         return getProductsPage(
