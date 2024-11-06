@@ -6,6 +6,7 @@ import com.example.portfolio.webstorespring.model.entity.accounts.ConfirmationTo
 import com.example.portfolio.webstorespring.repositories.accounts.ConfirmationTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -18,15 +19,14 @@ public class ConfirmationTokenService {
     private final ConfirmationTokenRepository confirmationTokenRepository;
     private final Clock clock;
 
+    @Transactional
     public ConfirmationToken createConfirmationToken(Account account) {
-        ConfirmationToken confirmationToken = new ConfirmationToken(
+       return new ConfirmationToken(
                 UUID.randomUUID().toString(),
                 LocalDateTime.now(clock),
                 LocalDateTime.now(clock).plusMinutes(15),
                 account
         );
-        confirmationTokenRepository.save(confirmationToken);
-        return confirmationToken;
     }
 
     public ConfirmationToken getConfirmationTokenByToken(String token) {
@@ -38,9 +38,9 @@ public class ConfirmationTokenService {
         return token.getExpiresAt().isBefore(LocalDateTime.now(clock));
     }
 
+    @Transactional
     public void setConfirmedAtAndSaveConfirmationToken(ConfirmationToken token) {
         token.setConfirmedAt(LocalDateTime.now(clock));
-        confirmationTokenRepository.save(token);
     }
 
     public void deleteConfirmationToken(ConfirmationToken confirmationToken) {
