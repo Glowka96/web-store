@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -85,14 +86,14 @@ public class AccountService {
         accountRepository.delete(accountDetails.getAccount());
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     public void setEnabledAccount(Account account) {
         account.setEnabled(true);
-        accountRepository.save(account);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     public void setNewAccountPassword(Account account, String password) {
         account.setPassword(encoder.encode(password));
-        accountRepository.save(account);
     }
 
     public Account findAccountByEmail(String email) {
