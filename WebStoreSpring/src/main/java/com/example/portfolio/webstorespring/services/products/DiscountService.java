@@ -41,6 +41,7 @@ public class DiscountService {
         return DiscountAdminResponse.mapToResponse(discount);
     }
 
+    @Transactional
     public void deleteUsedOrExpiredDiscount() {
         discountRepository.deleteZeroQuantityOrExpiredDiscounts();
     }

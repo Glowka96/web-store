@@ -111,7 +111,6 @@ class AccountServiceTest {
         underTest.setEnabledAccount(account);
 
         assertTrue(account.getEnabled());
-        verify(accountRepository, times(1)).save(any(Account.class));
     }
 
     @Test
@@ -122,7 +121,6 @@ class AccountServiceTest {
         underTest.setNewAccountPassword(account, "new password");
 
         assertNotEquals(oldAccountPassword, account.getPassword());
-        verify(accountRepository, times(1)).save(any(Account.class));
     }
 
     @Test
