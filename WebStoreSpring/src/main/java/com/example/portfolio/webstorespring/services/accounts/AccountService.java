@@ -1,5 +1,6 @@
 package com.example.portfolio.webstorespring.services.accounts;
 
+import com.example.portfolio.webstorespring.config.AdminCredentialsProvider;
 import com.example.portfolio.webstorespring.mappers.AccountMapper;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.AccountRequest;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.RegistrationRequest;
@@ -25,10 +26,8 @@ public class AccountService {
     private final RoleService roleService;
     private final AccountAddressService addressService;
     private static final String ROLE_USER = "ROLE_USER";
-    @Value("${admin.email}")
-    private String adminEmail;
-    @Value("${admin.password}")
-    private String adminPassword;
+    private final AdminCredentialsProvider adminCredentialsProvider;
+
     @Value("${account.image.url}")
     private String accountImageURL;
 
@@ -58,7 +57,7 @@ public class AccountService {
                 .email(registrationRequest.getEmail())
                 .password(encoder.encode(registrationRequest.getPassword()))
                 .roles(roleService.findByName(ROLE_USER))
-                .enabled(false)
+                .enabled(Boolean.FALSE)
                 .imageUrl(accountImageURL)
                 .build();
         accountRepository.save(account);
@@ -66,12 +65,12 @@ public class AccountService {
     }
 
     void initializeAdminAccount(){
-        if(Boolean.FALSE.equals(accountRepository.existsByEmail(adminEmail))){
+        if(Boolean.FALSE.equals(accountRepository.existsByEmail(adminCredentialsProvider.getEmail()))){
             accountRepository.save(Account.builder()
                     .firstName("Admin")
                     .lastName("Admin")
-                    .email(adminEmail)
-                    .password(adminPassword)
+                    .email(adminCredentialsProvider.getEmail())
+                    .password(adminCredentialsProvider.getPassword())
                     .roles(roleService.findByName("ROLE_ADMIN"))
                     .imageUrl(accountImageURL)
                     .enabled(Boolean.TRUE)
