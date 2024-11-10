@@ -54,7 +54,7 @@ class AccountControllerTest {
     void shouldGetAccountById() throws Exception {
         AccountResponse accountResponse = createAccountResponse();
 
-        given(accountService.getAccount(any(AccountDetails.class))).willReturn(accountResponse);
+        given(accountService.getByAccountDetails(any(AccountDetails.class))).willReturn(accountResponse);
 
         mvc.perform(get(URI)
                         .accept(MediaType.APPLICATION_JSON)
@@ -72,7 +72,7 @@ class AccountControllerTest {
         AccountRequest accountRequest = createAccountRequest();
         AccountResponse accountResponse = createAccountResponse();
 
-        given(accountService.updateAccount(any(AccountDetails.class), any(AccountRequest.class)))
+        given(accountService.update(any(AccountDetails.class), any(AccountRequest.class)))
                 .willReturn(accountResponse);
 
         mvc.perform(put(URI)

@@ -19,25 +19,25 @@ public class AccountAddressController {
 
     @GetMapping
     public AccountAddressResponse getAccountAddress(@AuthenticationPrincipal AccountDetails accountDetails) {
-        return addressService.getAccountAddress(accountDetails);
+        return addressService.getByAccountDetails(accountDetails);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public AccountAddressResponse saveAccountAddress(@AuthenticationPrincipal AccountDetails accountDetails,
                                                      @Valid @RequestBody AccountAddressRequest accountAddressRequest) {
-        return addressService.saveAccountAddress(accountDetails, accountAddressRequest);
+        return addressService.save(accountDetails, accountAddressRequest);
     }
 
     @PutMapping
     public AccountAddressResponse updateAccountAddress(@AuthenticationPrincipal AccountDetails accountDetails,
                                                        @Valid @RequestBody AccountAddressRequest accountAddressRequest) {
-        return addressService.updateAccountAddress(accountDetails, accountAddressRequest);
+        return addressService.update(accountDetails, accountAddressRequest);
     }
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteAccountAddress(@AuthenticationPrincipal AccountDetails accountDetails) {
-        addressService.deleteAccountAddress(accountDetails);
+        addressService.deleteByAccountDetails(accountDetails);
     }
 }

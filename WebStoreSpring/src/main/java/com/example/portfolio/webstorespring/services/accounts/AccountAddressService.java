@@ -21,14 +21,14 @@ public class AccountAddressService {
     private final AccountAddressMapper addressMapper;
     private final AccountRepository accountRepository;
 
-    public AccountAddressResponse getAccountAddress(AccountDetails accountDetails) {
-        AccountAddress accountAddress = findAddressByAccountId(accountDetails);
+    public AccountAddressResponse getByAccountDetails(AccountDetails accountDetails) {
+        AccountAddress accountAddress = findByAccountDetails(accountDetails);
         return addressMapper.mapToDto(accountAddress);
     }
 
     @Transactional
-    public AccountAddressResponse saveAccountAddress(AccountDetails accountDetails,
-                                                     AccountAddressRequest accountAddressRequest) {
+    public AccountAddressResponse save(AccountDetails accountDetails,
+                                       AccountAddressRequest accountAddressRequest) {
         Account loggedAccount = accountDetails.getAccount();
         loggedAccount = accountRepository.save(loggedAccount);
 
@@ -37,7 +37,7 @@ public class AccountAddressService {
         var finalLoggedAccount = loggedAccount;
         return addressRepository.findById(accountDetails.getAccount().getId()).map(
                 accountAddress1 -> {
-                    setupUpdateAddress(accountAddress1, accountAddress);
+                    setupUpdatedAddress(accountAddress1, accountAddress);
                     addressRepository.save(accountAddress1);
                     return addressMapper.mapToDto(accountAddress1);
                 }
@@ -49,26 +49,26 @@ public class AccountAddressService {
     }
 
     @Transactional
-    public AccountAddressResponse updateAccountAddress(AccountDetails accountDetails,
-                                                       AccountAddressRequest accountAddressRequest) {
-        AccountAddress loggedAccountAddress = findAddressByAccountId(accountDetails);
+    public AccountAddressResponse update(AccountDetails accountDetails,
+                                         AccountAddressRequest accountAddressRequest) {
+        AccountAddress loggedAccountAddress = findByAccountDetails(accountDetails);
         AccountAddress accountAddress = addressMapper.mapToEntity(accountAddressRequest);
-        setupUpdateAddress(loggedAccountAddress, accountAddress);
+        setupUpdatedAddress(loggedAccountAddress, accountAddress);
         addressRepository.save(loggedAccountAddress);
 
         return addressMapper.mapToDto(loggedAccountAddress);
     }
 
-    public void deleteAccountAddress(AccountDetails accountDetails) {
+    public void deleteByAccountDetails(AccountDetails accountDetails) {
         addressRepository.deleteById(accountDetails.getAccount().getId());
     }
 
-    private AccountAddress findAddressByAccountId(AccountDetails accountDetails) {
+    private AccountAddress findByAccountDetails(AccountDetails accountDetails) {
         return addressRepository.findById(accountDetails.getAccount().getId())
                 .orElseThrow(() -> new AccountHasNoAddressException(accountDetails.getAccount().getId()));
     }
 
-    private void setupUpdateAddress(AccountAddress loggedAccountAddress, AccountAddress accountAddress) {
+    private void setupUpdatedAddress(AccountAddress loggedAccountAddress, AccountAddress accountAddress) {
         loggedAccountAddress.setCity(accountAddress.getCity());
         loggedAccountAddress.setPostcode(accountAddress.getPostcode());
         loggedAccountAddress.setStreet(accountAddress.getStreet());

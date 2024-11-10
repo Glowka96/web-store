@@ -51,7 +51,7 @@ class ShipmentServiceTest {
                 .multiply(products.get(0).getPrice())
                 .setScale(2, RoundingMode.HALF_UP);
 
-        given(productRepository.findProductsByIdsWithPromotion(anyList()))
+        given(productRepository.findWithPromotionByIds(anyList()))
                 .willReturn(products);
 
         List<Shipment> result = underTest.setupShipments(List.of(shipmentRequest), null);
@@ -66,7 +66,7 @@ class ShipmentServiceTest {
         List<Product> products = getProductListWhatProductHasPromotion();
         BigDecimal exceptedPrice = getExceptedPriceWhenProductHasPromotion(shipmentRequest, products);
 
-        given(productRepository.findProductsByIdsWithPromotion(anyList())).willReturn(products);
+        given(productRepository.findWithPromotionByIds(anyList())).willReturn(products);
 
         List<Shipment> result = underTest.setupShipments(List.of(shipmentRequest), null);
 
@@ -83,8 +83,8 @@ class ShipmentServiceTest {
                 .multiply(products.get(0).getPrice().multiply(BigDecimal.ONE.subtract(discount.getDiscountRate())))
                 .setScale(2, RoundingMode.HALF_UP);
 
-        given(productRepository.findProductsByIdsWithPromotion(anyList())).willReturn(products);
-        given(discountService.useDiscountByCode(any())).willReturn(discount);
+        given(productRepository.findWithPromotionByIds(anyList())).willReturn(products);
+        given(discountService.applyByCode(any())).willReturn(discount);
 
         List<Shipment> result = underTest.setupShipments(List.of(shipmentRequest), discount.getCode());
 
@@ -99,8 +99,8 @@ class ShipmentServiceTest {
         List<Product> products = getProductListWhatProductHasPromotion();
         BigDecimal exceptedPrice = getExceptedPriceWhenProductHasPromotion(shipmentRequest, products);
 
-        given(productRepository.findProductsByIdsWithPromotion(anyList())).willReturn(products);
-        given(discountService.useDiscountByCode(any())).willReturn(discount);
+        given(productRepository.findWithPromotionByIds(anyList())).willReturn(products);
+        given(discountService.applyByCode(any())).willReturn(discount);
 
         List<Shipment> result = underTest.setupShipments(List.of(shipmentRequest), discount.getCode());
 
@@ -136,7 +136,7 @@ class ShipmentServiceTest {
         ShipmentRequest shipmentRequest = createShipmentRequest();
 
 
-        given(productRepository.findProductsByIdsWithPromotion(anyList())).willReturn(List.of());
+        given(productRepository.findWithPromotionByIds(anyList())).willReturn(List.of());
 
         assertThrows(ProductsNotFoundException.class, () -> underTest.setupShipments(List.of(shipmentRequest), null));
     }
@@ -147,7 +147,7 @@ class ShipmentServiceTest {
         ShipmentRequest shipmentRequest = createShipmentRequest();
         shipmentRequest.setQuantity(10000);
 
-        given(productRepository.findProductsByIdsWithPromotion(anyList())).willReturn(List.of(product));
+        given(productRepository.findWithPromotionByIds(anyList())).willReturn(List.of(product));
 
         assertThrows(ShipmentQuantityExceedsProductQuantityException.class,
                 () -> underTest.setupShipments(List.of(shipmentRequest), null));

@@ -27,9 +27,9 @@ public class ResetPasswordService {
 
     @Transactional
     public Map<String, Object> resetPasswordByEmail(String email) {
-        Account account = accountService.findAccountByEmail(email);
+        Account account = accountService.findByEmail(email);
 
-        ConfirmationToken savedToken = confirmationTokenService.createConfirmationToken(account);
+        ConfirmationToken savedToken = confirmationTokenService.create(account);
         return emailSenderService.sendEmail(NotificationType.RESET_PASSWORD,
                 account.getEmail(),
                 confirmLink + savedToken.getToken());
@@ -37,12 +37,12 @@ public class ResetPasswordService {
 
     @Transactional
     public Map<String, Object> confirmResetPassword(ResetPasswordRequest resetPasswordRequest, String token) {
-        ConfirmationToken confirmationToken = confirmationTokenService.getConfirmationTokenByToken(token);
+        ConfirmationToken confirmationToken = confirmationTokenService.getByToken(token);
         Account account = confirmationToken.getAccount();
 
         validateConfirmationToken(confirmationToken);
 
-        confirmationTokenService.setConfirmedAtAndSaveConfirmationToken(confirmationToken);
+        confirmationTokenService.setConfirmedAt(confirmationToken);
         accountService.setNewAccountPassword(account, resetPasswordRequest.password());
 
         return Map.of("message", "Your new password has been saved");

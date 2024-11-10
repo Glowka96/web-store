@@ -67,32 +67,32 @@ class ProductServiceTest {
     @Test
     void shouldGetProductById() {
         ProductWithProducerAndPromotionDTO productWithProducerAndPromotionDTO = createProductWithProducerAndPromotionDTO();
-        given(productRepository.findProductById(anyLong(), any())).willReturn(productWithProducerAndPromotionDTO);
+        given(productRepository.findById(anyLong(), any())).willReturn(productWithProducerAndPromotionDTO);
 
-        ProductWithProducerAndPromotionDTO result = underTest.getProductById(1L);
+        ProductWithProducerAndPromotionDTO result = underTest.getById(1L);
 
         assertThat(result).isNotNull().isEqualTo(productWithProducerAndPromotionDTO);
     }
 
     @Test
     void willThrowResourceNotFoundException_whenProductNotFound() {
-        given(productRepository.findProductById(anyLong(), any())).willReturn(null);
+        given(productRepository.findById(anyLong(), any())).willReturn(null);
 
-        assertThrows(ResourceNotFoundException.class, () -> underTest.getProductById(1L));
-        verify(productRepository, times(1)).findProductById(eq(1L), any());
+        assertThrows(ResourceNotFoundException.class, () -> underTest.getById(1L));
+        verify(productRepository, times(1)).findById(eq(1L), any());
     }
 
     @Test
     void willThrowResourceNotFoundException_whenProductIdWithPromotionNotFound() {
-        given(productRepository.findProductByIdWithPromotion(anyLong())).willReturn(Optional.empty());
+        given(productRepository.findWithPromotionById(anyLong())).willReturn(Optional.empty());
 
-        assertThrows(ResourceNotFoundException.class, () -> underTest.findProductByIdWithPromotion(1L));
-        verify(productRepository, times(1)).findProductByIdWithPromotion(1L);
+        assertThrows(ResourceNotFoundException.class, () -> underTest.findWithPromotionById(1L));
+        verify(productRepository, times(1)).findWithPromotionById(1L);
     }
 
     @Test
     void shouldGetAllProducts() {
-        underTest.getAllProducts();
+        underTest.getAll();
 
         verify(productRepository, times(1)).findAll();
         verifyNoMoreInteractions(productRepository);
@@ -105,11 +105,11 @@ class ProductServiceTest {
         ProductRequest productRequest = createProductRequest();
         ProductType productType = createProductType();
 
-        given(producerService.findProducerById(anyLong())).willReturn(producer);
-        given(subcategoryService.findSubcategoryById(anyLong())).willReturn(subcategory);
-        given(productTypeService.findProductTypeById(anyLong())).willReturn(productType);
+        given(producerService.findById(anyLong())).willReturn(producer);
+        given(subcategoryService.findById(anyLong())).willReturn(subcategory);
+        given(productTypeService.findById(anyLong())).willReturn(productType);
 
-        ProductResponse savedProductResponse = underTest.saveProduct(subcategory.getId(), producer.getId(), productRequest);
+        ProductResponse savedProductResponse = underTest.save(subcategory.getId(), producer.getId(), productRequest);
 
         ArgumentCaptor<Product> productArgumentCaptor =
                 ArgumentCaptor.forClass(Product.class);
@@ -140,12 +140,12 @@ class ProductServiceTest {
         BigDecimal beforeUpdatePrice = product.getPrice();
         Long beforeUpdateQuantity = product.getQuantity();
 
-        given(subcategoryService.findSubcategoryById(anyLong())).willReturn(subcategory);
-        given(producerService.findProducerById(anyLong())).willReturn(producer);
+        given(subcategoryService.findById(anyLong())).willReturn(subcategory);
+        given(producerService.findById(anyLong())).willReturn(producer);
         given(productRepository.findById(anyLong())).willReturn(Optional.of(product));
-        given(productTypeService.findProductTypeById(anyLong())).willReturn(productType);
+        given(productTypeService.findById(anyLong())).willReturn(productType);
 
-        ProductResponse updatedProductResponse = underTest.updateProduct(subcategory.getId(), producer.getId(), product.getId(), productRequest);
+        ProductResponse updatedProductResponse = underTest.update(subcategory.getId(), producer.getId(), product.getId(), productRequest);
 
         ArgumentCaptor<Product> productArgumentCaptor =
                 ArgumentCaptor.forClass(Product.class);
@@ -163,7 +163,7 @@ class ProductServiceTest {
 
     @Test
     void shouldDeleteById() {
-        underTest.deleteProductById(anyLong());
+        underTest.deleteById(anyLong());
 
         verify(productRepository, times(1)).deleteById(anyLong());
         verifyNoMoreInteractions(productRepository);

@@ -40,14 +40,14 @@ class DiscountServiceTest {
         Discount discount = DiscountBuilderHelper.createDiscount();
         given(discountRepository.findByCode(anyString())).willReturn(Optional.of(discount));
 
-        DiscountUserResponse discountUserResponse = underTest.getDiscountByDiscountCode(discount.getCode());
+        DiscountUserResponse discountUserResponse = underTest.getByCode(discount.getCode());
 
         assertEquals(discount.getDiscountRate(), discountUserResponse.discountRate());
     }
 
     @Test
     void willThrowDiscountIsInvalid_whenNotFoundDiscount() {
-        assertThrows(DiscountIsInvalid.class, () -> underTest.getDiscountByDiscountCode("test"));
+        assertThrows(DiscountIsInvalid.class, () -> underTest.getByCode("test"));
 
         verify(discountRepository, times(1)).findByCode("test");
         verifyNoMoreInteractions(discountRepository);
@@ -92,7 +92,7 @@ class DiscountServiceTest {
 
         given(discountRepository.findByCode(anyString())).willReturn(Optional.of(discount));
 
-        Discount result = underTest.useDiscountByCode(discount.getCode());
+        Discount result = underTest.applyByCode(discount.getCode());
 
         assertEquals(exceptedQuantity, result.getQuantity());
         verify(discountRepository,times(1)).findByCode(discount.getCode());
@@ -101,8 +101,8 @@ class DiscountServiceTest {
     }
 
     private DiscountAdminResponse getSavedDiscountAdminResponse(DiscountRequest discountRequest) {
-        given(subcategoryService.findAllSubcategoryByNames(anySet())).willReturn(Set.of(SubcategoryBuilderHelper.createSubcategory()));
-        return underTest.saveDiscount(discountRequest);
+        given(subcategoryService.findAllByNames(anySet())).willReturn(Set.of(SubcategoryBuilderHelper.createSubcategory()));
+        return underTest.save(discountRequest);
     }
 
     @NotNull

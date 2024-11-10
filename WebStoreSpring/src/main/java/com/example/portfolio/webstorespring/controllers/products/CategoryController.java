@@ -20,24 +20,24 @@ public class CategoryController {
 
     @GetMapping("/categories")
     public ResponseEntity<List<CategoryResponse>> getAllCategory() {
-        return ResponseEntity.ok(categoryService.getAllCategory());
+        return ResponseEntity.ok(categoryService.getAll());
     }
 
     @PostMapping("/admin/categories")
     @ResponseStatus(HttpStatus.CREATED)
     public CategoryResponse saveCategory(@Valid @RequestBody CategoryRequest categoryRequest) {
-        return categoryService.saveCategory(categoryRequest);
+        return categoryService.save(categoryRequest);
     }
 
     @PutMapping("/admin/categories/{categoryId}")
     public CategoryResponse updateCategory(@PathVariable("categoryId") Long categoryId,
                                            @Valid @RequestBody CategoryRequest categoryRequest) {
-        return categoryService.updateCategory(categoryId, categoryRequest);
+        return categoryService.update(categoryId, categoryRequest);
     }
 
     @DeleteMapping("/admin/categories/{categoryId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCategoryById(@PathVariable("categoryId") Long categoryId) {
-        categoryService.deleteCategoryById(categoryId);
+        categoryService.deleteById(categoryId);
     }
 }

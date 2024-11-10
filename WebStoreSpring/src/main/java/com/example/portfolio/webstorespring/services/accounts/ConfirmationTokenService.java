@@ -6,6 +6,7 @@ import com.example.portfolio.webstorespring.model.entity.accounts.ConfirmationTo
 import com.example.portfolio.webstorespring.repositories.accounts.ConfirmationTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
@@ -20,7 +21,7 @@ public class ConfirmationTokenService {
     private final Clock clock;
 
     @Transactional
-    public ConfirmationToken createConfirmationToken(Account account) {
+    public ConfirmationToken create(Account account) {
        return new ConfirmationToken(
                 UUID.randomUUID().toString(),
                 LocalDateTime.now(clock),
@@ -29,7 +30,7 @@ public class ConfirmationTokenService {
         );
     }
 
-    public ConfirmationToken getConfirmationTokenByToken(String token) {
+    public ConfirmationToken getByToken(String token) {
         return confirmationTokenRepository.findByToken(token)
                 .orElseThrow(() -> new ResourceNotFoundException("Confirmation token","token", token));
     }
@@ -38,12 +39,12 @@ public class ConfirmationTokenService {
         return token.getExpiresAt().isBefore(LocalDateTime.now(clock));
     }
 
-    @Transactional
-    public void setConfirmedAtAndSaveConfirmationToken(ConfirmationToken token) {
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void setConfirmedAt(ConfirmationToken token) {
         token.setConfirmedAt(LocalDateTime.now(clock));
     }
 
-    public void deleteConfirmationToken(ConfirmationToken confirmationToken) {
+    public void delete(ConfirmationToken confirmationToken) {
         confirmationTokenRepository.delete(confirmationToken);
     }
 }

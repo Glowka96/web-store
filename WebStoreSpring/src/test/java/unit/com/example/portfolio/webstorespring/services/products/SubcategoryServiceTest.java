@@ -41,7 +41,7 @@ class SubcategoryServiceTest {
 
     @Test
     void shouldGetAllSubcategoryResponse() {
-        underTest.getAllSubcategory();
+        underTest.getAll();
 
         verify(subcategoryRepository, times(1)).findAll();
         verifyNoMoreInteractions(subcategoryRepository);
@@ -51,7 +51,7 @@ class SubcategoryServiceTest {
     void shouldFindSubcategoriesByNames() {
         given(subcategoryRepository.findAllByNames(anySet())).willReturn(Set.of(SubcategoryBuilderHelper.createSubcategory()));
 
-        Set<Subcategory> foundSubcategories = underTest.findAllSubcategoryByNames(Set.of("Test"));
+        Set<Subcategory> foundSubcategories = underTest.findAllByNames(Set.of("Test"));
 
         assertEquals(1, foundSubcategories.size());
     }
@@ -60,9 +60,9 @@ class SubcategoryServiceTest {
     void shouldSaveSubcategory() {
         Category category = createCategory();
         SubcategoryRequest subcategoryRequest = createSubcategoryRequest();
-        given(categoryService.findCategoryById(anyLong())).willReturn(category);
+        given(categoryService.findById(anyLong())).willReturn(category);
 
-        SubcategoryResponse savedSubcategoryResponse = underTest.saveSubcategory(category.getId(), subcategoryRequest);
+        SubcategoryResponse savedSubcategoryResponse = underTest.save(category.getId(), subcategoryRequest);
 
         ArgumentCaptor<Subcategory> subcategoryArgumentCaptor =
                 ArgumentCaptor.forClass(Subcategory.class);
@@ -81,10 +81,10 @@ class SubcategoryServiceTest {
         String subcategoryNameBeforeUpdate = subcategory.getName();
         SubcategoryRequest subcategoryRequest = createSubcategoryRequest("Test2");
 
-        given(categoryService.findCategoryById(category.getId())).willReturn(category);
+        given(categoryService.findById(category.getId())).willReturn(category);
         given(subcategoryRepository.findById(subcategory.getId())).willReturn(Optional.of(subcategory));
 
-        SubcategoryResponse updatedSubcategoryRequest = underTest.updateSubcategory(category.getId(), subcategory.getId(), subcategoryRequest);
+        SubcategoryResponse updatedSubcategoryRequest = underTest.update(category.getId(), subcategory.getId(), subcategoryRequest);
 
         ArgumentCaptor<Subcategory> subCategoryArgumentCaptor =
                 ArgumentCaptor.forClass(Subcategory.class);
@@ -99,7 +99,7 @@ class SubcategoryServiceTest {
 
     @Test
     void shouldDeleteSubCategoryById() {
-        underTest.deleteSubcategoryById(anyLong());
+        underTest.deleteById(anyLong());
 
         verify(subcategoryRepository, times(1)).deleteById(anyLong());
         verifyNoMoreInteractions(subcategoryRepository);

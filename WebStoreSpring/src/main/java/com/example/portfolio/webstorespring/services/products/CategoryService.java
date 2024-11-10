@@ -19,20 +19,20 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
 
-    public List<CategoryResponse> getAllCategory() {
+    public List<CategoryResponse> getAll() {
         return categoryMapper.mapToDto(
                 categoryRepository.findAll());
     }
 
-    public CategoryResponse saveCategory(CategoryRequest categoryRequest) {
+    public CategoryResponse save(CategoryRequest categoryRequest) {
         Category category = categoryMapper.mapToEntity(categoryRequest);
         categoryRepository.save(category);
         return categoryMapper.mapToDto(category);
     }
 
     @Transactional
-    public CategoryResponse updateCategory(Long id, CategoryRequest categoryRequest) {
-        Category foundCategory = findCategoryById(id);
+    public CategoryResponse update(Long id, CategoryRequest categoryRequest) {
+        Category foundCategory = findById(id);
 
         Category category = categoryMapper.mapToEntity(categoryRequest);
 
@@ -42,11 +42,11 @@ public class CategoryService {
         return categoryMapper.mapToDto(foundCategory);
     }
 
-    public void deleteCategoryById(Long id) {
+    public void deleteById(Long id) {
         categoryRepository.deleteById(id);
     }
 
-    protected Category findCategoryById(Long id) {
+    protected Category findById(Long id) {
         return categoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "id", id));
     }

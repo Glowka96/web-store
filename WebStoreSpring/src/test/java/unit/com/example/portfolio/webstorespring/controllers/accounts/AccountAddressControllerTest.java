@@ -53,7 +53,7 @@ class AccountAddressControllerTest {
     void getAccountAddress() throws Exception {
         AccountAddressResponse accountAddressResponse = createAccountAddressResponse();
 
-        given(addressService.getAccountAddress(any(AccountDetails.class)))
+        given(addressService.getByAccountDetails(any(AccountDetails.class)))
                 .willReturn(accountAddressResponse);
 
         mvc.perform(get(URI)
@@ -72,7 +72,7 @@ class AccountAddressControllerTest {
         AccountAddressRequest accountAddressRequest = createAccountAddressRequest();
         AccountAddressResponse accountAddressResponse = createAccountAddressResponse();
 
-        given(addressService.saveAccountAddress(any(AccountDetails.class), any(AccountAddressRequest.class)))
+        given(addressService.save(any(AccountDetails.class), any(AccountAddressRequest.class)))
                 .willReturn(accountAddressResponse);
 
         mvc.perform(post(URI)
@@ -93,7 +93,7 @@ class AccountAddressControllerTest {
         AccountAddressRequest accountAddressRequest = createAccountAddressRequest();
         AccountAddressResponse accountAddressResponse = createAccountAddressResponse();
 
-        given(addressService.updateAccountAddress(any(AccountDetails.class), any(AccountAddressRequest.class)))
+        given(addressService.update(any(AccountDetails.class), any(AccountAddressRequest.class)))
                 .willReturn(accountAddressResponse);
 
         mvc.perform(put(URI, 1)

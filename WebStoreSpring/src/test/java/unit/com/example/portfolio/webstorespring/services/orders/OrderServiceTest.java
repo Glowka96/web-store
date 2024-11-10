@@ -97,7 +97,7 @@ class OrderServiceTest {
 
         given(orderRepository.findById(anyLong())).willReturn(Optional.of(order));
 
-        OrderResponse orderResponse = underTest.getOrderById(accountDetails,1L);
+        OrderResponse orderResponse = underTest.getById(accountDetails,1L);
 
         assertEquals(order.getId(), orderResponse.getId());
         assertThat(orderResponse.getShipmentResponses()).hasSize(2);
@@ -126,7 +126,7 @@ class OrderServiceTest {
 
         given(orderRepository.findById(anyLong())).willReturn(Optional.of(order));
 
-        assertThatThrownBy(() -> underTest.getOrderById(accountDetails, 1L))
+        assertThatThrownBy(() -> underTest.getById(accountDetails, 1L))
                 .isInstanceOf(AccessDeniedException.class)
                 .hasMessageContaining("You can only get your data");
     }
@@ -135,7 +135,7 @@ class OrderServiceTest {
     void willThrowResourceNotFoundException_whenGetAccountOrderIdNotFoundOrder() {
         AccountDetails accountDetails = getAccountDetails();
 
-        assertThatThrownBy(() -> underTest.getOrderById(accountDetails, 1L))
+        assertThatThrownBy(() -> underTest.getById(accountDetails, 1L))
                 .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessageContaining("Order with id 1 not found");
     }
@@ -149,7 +149,7 @@ class OrderServiceTest {
         Delivery delivery = createDelivery();
         given(deliveryService.formatDelivery(any())).willReturn(delivery);
 
-        OrderResponse savedOrderResponse = underTest.saveOrder(accountDetails, orderRequest);
+        OrderResponse savedOrderResponse = underTest.save(accountDetails, orderRequest);
 
         ArgumentCaptor<Order> orderArgumentCaptor =
                 ArgumentCaptor.forClass(Order.class);

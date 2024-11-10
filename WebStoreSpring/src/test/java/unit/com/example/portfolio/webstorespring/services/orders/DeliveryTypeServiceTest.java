@@ -30,7 +30,7 @@ class DeliveryTypeServiceTest {
 
     @Test
     void shouldGetAllDeliveryType() {
-        underTest.getAllDeliveryType();
+        underTest.getAll();
 
         verify(deliveryTypeRepository, times(1)).findAll();
         verifyNoMoreInteractions(deliveryTypeRepository);
@@ -42,7 +42,7 @@ class DeliveryTypeServiceTest {
     void shouldSaveDeliveryType() {
         DeliveryTypeRequest deliveryTypeRequest = createDeliveryTypeRequest();
 
-        DeliveryTypeResponse savedDeliveryTypeResponse = underTest.saveDeliveryType(deliveryTypeRequest);
+        DeliveryTypeResponse savedDeliveryTypeResponse = underTest.save(deliveryTypeRequest);
 
         ArgumentCaptor<DeliveryType> deliveryTypeArgumentCaptor =
                 ArgumentCaptor.forClass(DeliveryType.class);
@@ -56,7 +56,7 @@ class DeliveryTypeServiceTest {
 
     @Test
     void shouldDeleteDeliveryType() {
-        underTest.deleteDeliveryType(anyLong());
+        underTest.deleteById(anyLong());
 
         verify(deliveryTypeRepository, times(1)).deleteById(anyLong());
         verifyNoMoreInteractions(deliveryTypeRepository);

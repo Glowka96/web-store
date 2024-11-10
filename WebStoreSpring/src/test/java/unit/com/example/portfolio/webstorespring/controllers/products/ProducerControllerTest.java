@@ -49,7 +49,7 @@ class ProducerControllerTest {
     void shouldGetAllProducer() throws Exception {
         ProducerResponse producerResponse = createProducerResponse();
 
-        given(producerService.getAllProducer()).willReturn(List.of(producerResponse, new ProducerResponse()));
+        given(producerService.getAll()).willReturn(List.of(producerResponse, new ProducerResponse()));
 
         mvc.perform(get(URI)
                         .accept(MediaType.APPLICATION_JSON))
@@ -63,7 +63,7 @@ class ProducerControllerTest {
         ProducerRequest productRequest = createProducerRequest();
         ProducerResponse producerResponse = createProducerResponse();
 
-        given(producerService.saveProducer(any(ProducerRequest.class))).willReturn(producerResponse);
+        given(producerService.save(any(ProducerRequest.class))).willReturn(producerResponse);
 
         mvc.perform(post(URI)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -80,7 +80,7 @@ class ProducerControllerTest {
         ProducerRequest productRequest = createProducerRequest();
         ProducerResponse producerResponse = createProducerResponse();
 
-        given(producerService.updateProducer(anyLong(), any(ProducerRequest.class))).willReturn(producerResponse);
+        given(producerService.update(anyLong(), any(ProducerRequest.class))).willReturn(producerResponse);
 
         mvc.perform(put(URI + "/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON)

@@ -33,13 +33,13 @@ public class OrderController {
     @GetMapping("/{orderId}")
     public OrderResponse getOrderById(@AuthenticationPrincipal AccountDetails accountDetails,
                                       @PathVariable("orderId") Long orderId) {
-        return orderService.getOrderById(accountDetails, orderId);
+        return orderService.getById(accountDetails, orderId);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public OrderResponse saveOrder(@AuthenticationPrincipal AccountDetails accountDetails,
                                    @Valid @RequestBody OrderRequest orderRequest) {
-        return orderService.saveOrder(accountDetails, orderRequest);
+        return orderService.save(accountDetails, orderRequest);
     }
 }

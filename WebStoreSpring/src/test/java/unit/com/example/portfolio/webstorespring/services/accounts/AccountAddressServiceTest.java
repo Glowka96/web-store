@@ -54,7 +54,7 @@ class AccountAddressServiceTest {
 
         given(addressRepository.findById(anyLong())).willReturn(Optional.of(address));
 
-        AccountAddressResponse foundAccountAddressResponse = underTest.getAccountAddress(accountDetails);
+        AccountAddressResponse foundAccountAddressResponse = underTest.getByAccountDetails(accountDetails);
 
         assertNotNull(foundAccountAddressResponse);
         assertEquals(1L, foundAccountAddressResponse.getId());
@@ -73,7 +73,7 @@ class AccountAddressServiceTest {
         given(accountRepository.save(any(Account.class))).willReturn(accountDetails.getAccount());
 
         AccountAddressResponse savedAccountAddressResponse =
-                underTest.saveAccountAddress(accountDetails, accountAddressRequest);
+                underTest.save(accountDetails, accountAddressRequest);
 
         ArgumentCaptor<AccountAddress> accountAddressArgumentCaptor =
                 ArgumentCaptor.forClass(AccountAddress.class);
@@ -93,7 +93,7 @@ class AccountAddressServiceTest {
         given(addressRepository.findById(anyLong())).willReturn(Optional.of(address));
 
         AccountAddressResponse updatedAccountAddressResponse =
-                underTest.updateAccountAddress(accountDetails, accountAddressRequest);
+                underTest.update(accountDetails, accountAddressRequest);
 
         ArgumentCaptor<AccountAddress> accountAddressArgumentCaptor =
                 ArgumentCaptor.forClass(AccountAddress.class);
@@ -108,7 +108,7 @@ class AccountAddressServiceTest {
     void shouldDeleteAccountAddress() {
         AccountDetails accountDetails = getAccountDetails();
 
-        underTest.deleteAccountAddress(accountDetails);
+        underTest.deleteByAccountDetails(accountDetails);
 
         verify(addressRepository).deleteById(accountDetails.getAccount().getId());
         verifyNoMoreInteractions(addressRepository);
@@ -119,7 +119,7 @@ class AccountAddressServiceTest {
         AccountDetails accountDetails = getAccountDetails();
         given(addressRepository.findById(anyLong())).willReturn(Optional.empty());
 
-        assertThatThrownBy(() -> underTest.getAccountAddress(accountDetails))
+        assertThatThrownBy(() -> underTest.getByAccountDetails(accountDetails))
                 .isInstanceOf(AccountHasNoAddressException.class)
                 .hasMessageContaining("Account: %s has no saved address".formatted(getAccountDetails().getAccount().getId()));
     }

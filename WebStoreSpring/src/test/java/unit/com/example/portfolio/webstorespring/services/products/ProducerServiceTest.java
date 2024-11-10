@@ -38,7 +38,7 @@ class ProducerServiceTest {
         Producer producer = createProducer();
         given(producerRepository.findById(anyLong())).willReturn(Optional.of(producer));
 
-        ProducerResponse foundProducerResponse = underTest.getProducerById(1L);
+        ProducerResponse foundProducerResponse = underTest.getById(1L);
 
         assertEquals(1L, foundProducerResponse.getId());
         assertNotNull(foundProducerResponse);
@@ -48,17 +48,17 @@ class ProducerServiceTest {
     @Test
     void willThrowResourceNotFound_whenProducerIdNotFound() {
         given(producerRepository.findById(2L)).willReturn(Optional.empty());
-        assertThrows(ResourceNotFoundException.class, () -> underTest.getProducerById(2L));
+        assertThrows(ResourceNotFoundException.class, () -> underTest.getById(2L));
 
 
-        assertThatThrownBy(() -> underTest.getProducerById(2L))
+        assertThatThrownBy(() -> underTest.getById(2L))
                 .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessageContaining("Producer with id 2 not found");
     }
 
     @Test
     void shouldGetAllProducer() {
-        underTest.getAllProducer();
+        underTest.getAll();
 
         verify(producerRepository, times(1)).findAll();
         verifyNoMoreInteractions(producerRepository);
@@ -68,7 +68,7 @@ class ProducerServiceTest {
     void shouldSaveProducer() {
         ProducerRequest producerRequest = createProducerRequest();
 
-        ProducerResponse savedProducerResponse = underTest.saveProducer(producerRequest);
+        ProducerResponse savedProducerResponse = underTest.save(producerRequest);
 
         ArgumentCaptor<Producer> producerArgumentCaptor =
                 ArgumentCaptor.forClass(Producer.class);
@@ -87,7 +87,7 @@ class ProducerServiceTest {
         ProducerRequest producerRequest = createProducerRequest("Test2");
         given(producerRepository.findById(anyLong())).willReturn(Optional.of(producer));
 
-        ProducerResponse updatedProducerResponse = underTest.updateProducer(producer.getId(), producerRequest);
+        ProducerResponse updatedProducerResponse = underTest.update(producer.getId(), producerRequest);
 
         ArgumentCaptor<Producer> producerArgumentCaptor =
                 ArgumentCaptor.forClass(Producer.class);
@@ -101,7 +101,7 @@ class ProducerServiceTest {
 
     @Test
     void shouldDeleteProducerById() {
-        underTest.deleteProducerById(anyLong());
+        underTest.deleteById(anyLong());
 
         verify(producerRepository, times(1)).deleteById(anyLong());
         verifyNoMoreInteractions(producerRepository);

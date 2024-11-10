@@ -20,12 +20,12 @@ public class ProductController {
 
     @GetMapping("/admin/products")
     public List<ProductResponse> getAllProducts() {
-        return productService.getAllProducts();
+        return productService.getAll();
     }
 
     @GetMapping("/products/{productId}")
     public ProductWithProducerAndPromotionDTO getProductById(@PathVariable("productId") Long productId) {
-        return productService.getProductById(productId);
+        return productService.getById(productId);
     }
 
     @PostMapping("/admin/subcategories/{subcategoryId}/producers/{producerId}/products")
@@ -33,7 +33,7 @@ public class ProductController {
     public ProductResponse saveProduct(@PathVariable("subcategoryId") Long subcategoryId,
                                        @PathVariable("producerId") Long producerId,
                                        @Valid @RequestBody ProductRequest productRequest) {
-        return productService.saveProduct(subcategoryId, producerId, productRequest);
+        return productService.save(subcategoryId, producerId, productRequest);
     }
 
     @PutMapping("/admin/subcategories/{subcategoryId}/producers/{producerId}/products/{productId}")
@@ -41,12 +41,12 @@ public class ProductController {
                                          @PathVariable("producerId") Long producerId,
                                          @PathVariable("productId") Long productId,
                                          @Valid @RequestBody ProductRequest productRequest) {
-        return productService.updateProduct(subcategoryId, producerId, productId, productRequest);
+        return productService.update(subcategoryId, producerId, productId, productRequest);
     }
 
     @DeleteMapping("/admin/products/{productId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteProductById(@PathVariable("productId") Long id) {
-        productService.deleteProductById(id);
+        productService.deleteById(id);
     }
 }

@@ -49,7 +49,7 @@ class SubcategoryControllerTest {
     void shouldGetAllSubcategory() throws Exception {
         SubcategoryResponse subcategoryResponse = createSubcategoryResponse();
 
-        given(subcategoryService.getAllSubcategory()).willReturn(List.of(subcategoryResponse, subcategoryResponse));
+        given(subcategoryService.getAll()).willReturn(List.of(subcategoryResponse, subcategoryResponse));
 
         mvc.perform(get(URI + "/admin/categories/subcategories")
                         .accept(MediaType.APPLICATION_JSON))
@@ -64,7 +64,7 @@ class SubcategoryControllerTest {
         SubcategoryResponse subcategoryResponse = createSubcategoryResponse();
         SubcategoryRequest subcategoryRequest = createSubcategoryRequest();
 
-        given(subcategoryService.saveSubcategory(anyLong(), any(SubcategoryRequest.class))).willReturn(subcategoryResponse);
+        given(subcategoryService.save(anyLong(), any(SubcategoryRequest.class))).willReturn(subcategoryResponse);
 
         mvc.perform(post(URI + "/admin/categories/{id}/subcategories", 1)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -81,7 +81,7 @@ class SubcategoryControllerTest {
         SubcategoryResponse subcategoryResponse = createSubcategoryResponse();
         SubcategoryRequest subcategoryRequest = createSubcategoryRequest();
 
-        given(subcategoryService.updateSubcategory(anyLong(), anyLong(), any(SubcategoryRequest.class))).willReturn(subcategoryResponse);
+        given(subcategoryService.update(anyLong(), anyLong(), any(SubcategoryRequest.class))).willReturn(subcategoryResponse);
 
         mvc.perform(put(URI + "/admin/categories/{categoryId}/subcategories/{subcategoryId}", 1, 1)
                         .contentType(MediaType.APPLICATION_JSON)

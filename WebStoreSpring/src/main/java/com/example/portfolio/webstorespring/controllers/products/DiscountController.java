@@ -18,13 +18,13 @@ public class DiscountController {
 
     @GetMapping("/discounts/{code}")
     public DiscountUserResponse getDiscountByCode(@PathVariable("code") String code) {
-        return discountService.getDiscountByDiscountCode(code);
+        return discountService.getByCode(code);
     }
 
     @PostMapping("/admin/discounts")
     @ResponseStatus(HttpStatus.CREATED)
     public DiscountAdminResponse saveDiscount(@Valid @RequestBody DiscountRequest discountRequest) {
-        return discountService.saveDiscount(discountRequest);
+        return discountService.save(discountRequest);
     }
 
     @DeleteMapping("/admin/discounts")

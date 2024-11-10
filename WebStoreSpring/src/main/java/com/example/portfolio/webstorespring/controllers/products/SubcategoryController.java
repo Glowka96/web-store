@@ -19,26 +19,26 @@ public class SubcategoryController {
 
     @GetMapping("/subcategories")
     public List<SubcategoryResponse> getAllSubcategory() {
-        return subcategoryService.getAllSubcategory();
+        return subcategoryService.getAll();
     }
 
     @PostMapping("/{categoryId}/subcategories")
     @ResponseStatus(HttpStatus.CREATED)
     public SubcategoryResponse saveSubcategory(@PathVariable("categoryId") Long id,
                                                @Valid @RequestBody SubcategoryRequest subcategoryRequest) {
-        return subcategoryService.saveSubcategory(id, subcategoryRequest);
+        return subcategoryService.save(id, subcategoryRequest);
     }
 
     @PutMapping("/{categoryId}/subcategories/{subcategoryId}")
     public SubcategoryResponse updateSubcategory(@PathVariable("categoryId") Long categoryId,
                                                  @PathVariable("subcategoryId") Long subcategoryId,
                                                  @Valid @RequestBody SubcategoryRequest subCategoryRequest) {
-        return subcategoryService.updateSubcategory(categoryId, subcategoryId, subCategoryRequest);
+        return subcategoryService.update(categoryId, subcategoryId, subCategoryRequest);
     }
 
     @DeleteMapping("/subcategories/{subcategoryId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteSubcategoryById(@PathVariable("subcategoryId") Long id) {
-        subcategoryService.deleteSubcategoryById(id);
+        subcategoryService.deleteById(id);
     }
 }

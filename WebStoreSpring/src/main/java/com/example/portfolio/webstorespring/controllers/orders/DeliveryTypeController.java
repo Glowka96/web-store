@@ -18,24 +18,24 @@ public class DeliveryTypeController {
 
     @GetMapping("/delivery-types")
     public List<DeliveryTypeResponse> getAllDeliveryType() {
-        return deliveryTypeService.getAllDeliveryType();
+        return deliveryTypeService.getAll();
     }
 
     @PostMapping("/admin/delivery-types")
     @ResponseStatus(HttpStatus.CREATED)
     public DeliveryTypeResponse saveDeliveryType(@RequestBody DeliveryTypeRequest deliveryTypeRequest) {
-        return deliveryTypeService.saveDeliveryType(deliveryTypeRequest);
+        return deliveryTypeService.save(deliveryTypeRequest);
     }
 
     @PutMapping("/admin/delivery-types/{deliveryId}")
     public DeliveryTypeResponse updateDeliveryType(@PathVariable("deliveryId") Long deliveryId,
                                                    @RequestBody DeliveryTypeRequest deliveryTypeRequest) {
-        return deliveryTypeService.updateDeliveryType(deliveryId, deliveryTypeRequest);
+        return deliveryTypeService.update(deliveryId, deliveryTypeRequest);
     }
 
     @DeleteMapping("/admin/delivery-types/{deliveryId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteDeliveryTypeById(@PathVariable("deliveryId") Long deliveryId) {
-        deliveryTypeService.deleteDeliveryType(deliveryId);
+        deliveryTypeService.deleteById(deliveryId);
     }
 }

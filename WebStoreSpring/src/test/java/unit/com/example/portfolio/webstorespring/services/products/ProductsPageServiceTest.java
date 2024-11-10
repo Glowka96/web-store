@@ -62,7 +62,7 @@ class ProductsPageServiceTest {
         List<ProductWithPromotionDTO> productList = getListProductWithPromotionDto();
         Page<ProductWithPromotionDTO> productPage = new PageImpl<>(productList, pageable, productList.size());
 
-        given(productRepository.findProductsBySubcategoryId(anyLong(), any(), any()))
+        given(productRepository.findBySubcategoryId(anyLong(), any(), any()))
                 .willReturn(Optional.of(productPage));
 
         PageProductsWithPromotionDTO actual = underTest.getProductsPageBySubcategoryId(
@@ -137,7 +137,7 @@ class ProductsPageServiceTest {
         List<ProductWithPromotionDTO> productList = getListProductWithPromotionDto();
         Page<ProductWithPromotionDTO> productPage = new PageImpl<>(productList, pageable, productList.size());
 
-        given(productRepository.searchProductsByEnteredText(anyString(), any(), any()))
+        given(productRepository.searchByEnteredText(anyString(), any(), any()))
                 .willReturn(Optional.of(productPage));
 
         PageProductsWithPromotionDTO actual = underTest.getSearchProductsPage(

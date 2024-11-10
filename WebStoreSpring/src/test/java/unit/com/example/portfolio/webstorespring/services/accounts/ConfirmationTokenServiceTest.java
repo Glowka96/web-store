@@ -49,7 +49,7 @@ class ConfirmationTokenServiceTest {
 
         given(tokenRepository.save(any(ConfirmationToken.class))).willReturn(confirmationToken);
 
-        ConfirmationToken actual = underTest.createConfirmationToken(account);
+        ConfirmationToken actual = underTest.create(account);
 
         ArgumentCaptor<ConfirmationToken> confirmationTokenArgumentCaptor =
                 ArgumentCaptor.forClass(ConfirmationToken.class);
@@ -67,7 +67,7 @@ class ConfirmationTokenServiceTest {
                 .but(with(ACCOUNT, account)));
         given(tokenRepository.findByToken(anyString())).willReturn(Optional.of(confirmationToken));
 
-        ConfirmationToken actual = underTest.getConfirmationTokenByToken(UUID_CODE);
+        ConfirmationToken actual = underTest.getByToken(UUID_CODE);
 
         assertNotNull(actual);
         verify(tokenRepository, times(1)).findByToken(UUID_CODE);
@@ -77,7 +77,7 @@ class ConfirmationTokenServiceTest {
     void willThrowResourceNotFoundException_whenConfirmationTokenNotFound() {
         given(tokenRepository.findByToken(anyString())).willReturn(Optional.empty());
 
-        assertThatThrownBy(() -> underTest.getConfirmationTokenByToken(UUID_CODE))
+        assertThatThrownBy(() -> underTest.getByToken(UUID_CODE))
                 .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessageContaining("Confirmation token with token " + UUID_CODE + " not found");
     }
@@ -118,7 +118,7 @@ class ConfirmationTokenServiceTest {
                 .but(with(ACCOUNT, account))
                 .but(withNull(CONFIRMED_AT)));
 
-        underTest.setConfirmedAtAndSaveConfirmationToken(confirmationToken);
+        underTest.setConfirmedAt(confirmationToken);
 
         verify(tokenRepository, times(1)).save(confirmationToken);
         assertNotNull(confirmationToken.getConfirmedAt());
@@ -130,7 +130,7 @@ class ConfirmationTokenServiceTest {
         ConfirmationToken confirmationToken = make(a(BASIC_CONFIRMATION_TOKEN)
                 .but(with(ACCOUNT, account)));
 
-        underTest.deleteConfirmationToken(confirmationToken);
+        underTest.delete(confirmationToken);
 
         verify(tokenRepository, times(1)).delete(confirmationToken);
     }

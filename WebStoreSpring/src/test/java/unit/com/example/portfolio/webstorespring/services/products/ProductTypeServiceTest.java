@@ -43,7 +43,7 @@ class ProductTypeServiceTest {
 
         given(productTypeRepository.findAll()).willReturn(productTypes);
 
-        List<ProductTypeResponse> foundProductTypeResponses = underTest.getAllProductType();
+        List<ProductTypeResponse> foundProductTypeResponses = underTest.getAll();
 
         assertEquals(expectedResponses, foundProductTypeResponses);
         verify(productTypeRepository, times(1)).findAll();
@@ -55,7 +55,7 @@ class ProductTypeServiceTest {
     void shouldSaveProductType() {
         ProductTypeRequest productTypeRequest = createProductTypeRequest();
 
-        ProductTypeResponse result = underTest.saveProductType(productTypeRequest);
+        ProductTypeResponse result = underTest.save(productTypeRequest);
 
         ArgumentCaptor<ProductType> productTypeArgumentCaptor =
                 ArgumentCaptor.forClass(ProductType.class);
@@ -74,7 +74,7 @@ class ProductTypeServiceTest {
 
         given(productTypeRepository.findById(anyLong())).willReturn(Optional.of(productType));
 
-        ProductTypeResponse updatedProductTypeResponse = underTest.updateProductType(1L, productTypeRequest);
+        ProductTypeResponse updatedProductTypeResponse = underTest.update(1L, productTypeRequest);
 
         ArgumentCaptor<ProductType> productTypeArgumentCaptor =
                 ArgumentCaptor.forClass(ProductType.class);
@@ -89,7 +89,7 @@ class ProductTypeServiceTest {
 
     @Test
     void deleteProductTypeById() {
-        underTest.deleteProductTypeById(anyLong());
+        underTest.deleteById(anyLong());
 
         verify(productTypeRepository, times(1)).deleteById(anyLong());
         verifyNoMoreInteractions(productTypeRepository);

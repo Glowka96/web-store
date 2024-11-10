@@ -21,20 +21,20 @@ public class DiscountService {
     private final SubcategoryService subcategoryService;
     private static final Random random = new Random();
 
-    public DiscountUserResponse getDiscountByDiscountCode(String code) {
+    public DiscountUserResponse getByCode(String code) {
         return DiscountUserResponse.mapToResponse(
-                findDiscountByCode(code)
+                findByCode(code)
         );
     }
 
     @Transactional
-    public DiscountAdminResponse saveDiscount(DiscountRequest discountRequest) {
+    public DiscountAdminResponse save(DiscountRequest discountRequest) {
         Discount discount = Discount.builder()
                 .code(getCode(discountRequest))
                 .discountRate(discountRequest.discountRate())
                 .quantity(discountRequest.quantity())
                 .endDate(discountRequest.endDate())
-                .subcategories(subcategoryService.findAllSubcategoryByNames(discountRequest.subcategoryNames()))
+                .subcategories(subcategoryService.findAllByNames(discountRequest.subcategoryNames()))
                 .build();
 
         discountRepository.save(discount);
@@ -47,14 +47,14 @@ public class DiscountService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public Discount useDiscountByCode(String code) {
-        Discount discount = findDiscountByCode(code);
+    public Discount applyByCode(String code) {
+        Discount discount = findByCode(code);
         discount.setQuantity(discount.getQuantity() - 1);
         discountRepository.save(discount);
         return discount;
     }
 
-    private Discount findDiscountByCode(String code) {
+    private Discount findByCode(String code) {
         return discountRepository.findByCode(code).orElseThrow(DiscountIsInvalid::new);
     }
 

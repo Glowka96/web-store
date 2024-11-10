@@ -72,13 +72,13 @@ public class ProductsPageService {
 
     private Page<ProductWithPromotionDTO> getProductsBySubcategoryId(Long subcategoryId,
                                                                      Pageable pageable) {
-        return productRepository.findProductsBySubcategoryId(subcategoryId, getLocalDateTime30DaysAgo(), pageable)
+        return productRepository.findBySubcategoryId(subcategoryId, getLocalDateTime30DaysAgo(), pageable)
                 .orElse(Page.empty());
     }
 
     private Page<ProductWithPromotionDTO> searchProductsByText(String text,
                                                                Pageable pageable) {
-        return productRepository.searchProductsByEnteredText(text, getLocalDateTime30DaysAgo(), pageable)
+        return productRepository.searchByEnteredText(text, getLocalDateTime30DaysAgo(), pageable)
                 .orElse(Page.empty());
     }
 

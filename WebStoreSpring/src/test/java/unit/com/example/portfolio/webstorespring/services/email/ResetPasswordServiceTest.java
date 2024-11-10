@@ -47,8 +47,8 @@ class ResetPasswordServiceTest {
                 .but(withNull(CONFIRMED_AT)));
         Map<String, Object> excepted = Map.of("message", "Sent reset password link to your email");
 
-        given(accountService.findAccountByEmail(anyString())).willReturn(account);
-        given(confirmationTokenService.createConfirmationToken(any(Account.class))).willReturn(confirmationToken);
+        given(accountService.findByEmail(anyString())).willReturn(account);
+        given(confirmationTokenService.create(any(Account.class))).willReturn(confirmationToken);
         given(emailSenderService.sendEmail(any(NotificationType.class), anyString(), anyString())).willReturn(excepted);
 
         Map<String, Object> result = underTest.resetPasswordByEmail(account.getEmail());
@@ -66,14 +66,14 @@ class ResetPasswordServiceTest {
 
         Map<String, Object> excepted = Map.of("message", "Your new password has been saved");
 
-        given(confirmationTokenService.getConfirmationTokenByToken(anyString())).willReturn(confirmationToken);
+        given(confirmationTokenService.getByToken(anyString())).willReturn(confirmationToken);
         given(confirmationTokenService.isTokenExpired(any(ConfirmationToken.class))).willReturn(false);
 
         Map<String, Object> result = underTest.confirmResetPassword(resetPasswordRequest, confirmationToken.getToken());
 
         assertEquals(excepted, result);
         verify(confirmationTokenService, times(1)).isTokenExpired(any(ConfirmationToken.class));
-        verify(confirmationTokenService, times(1)).setConfirmedAtAndSaveConfirmationToken(any(ConfirmationToken.class));
+        verify(confirmationTokenService, times(1)).setConfirmedAt(any(ConfirmationToken.class));
         verify(accountService, times(1)).setNewAccountPassword(any(Account.class), anyString());
     }
 
@@ -84,7 +84,7 @@ class ResetPasswordServiceTest {
                 .but(with(ACCOUNT, account)));
         ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest("Password123*");
 
-        when(confirmationTokenService.getConfirmationTokenByToken(anyString())).thenReturn(confirmationToken);
+        when(confirmationTokenService.getByToken(anyString())).thenReturn(confirmationToken);
 
         assertThatThrownBy(() -> underTest.confirmResetPassword(resetPasswordRequest, confirmationToken.getToken()))
                 .isInstanceOf(TokenConfirmedException.class)
@@ -100,7 +100,7 @@ class ResetPasswordServiceTest {
                 .but(with(EXPIRED_AT, DateForTestBuilderHelper.LOCAL_DATE_TIME)));
         ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest("Password123*");
 
-        when(confirmationTokenService.getConfirmationTokenByToken(anyString())).thenReturn(confirmationToken);
+        when(confirmationTokenService.getByToken(anyString())).thenReturn(confirmationToken);
         when(confirmationTokenService.isTokenExpired(any(ConfirmationToken.class))).thenReturn(true);
 
         assertThatThrownBy(() -> underTest.confirmResetPassword(resetPasswordRequest, confirmationToken.getToken()))

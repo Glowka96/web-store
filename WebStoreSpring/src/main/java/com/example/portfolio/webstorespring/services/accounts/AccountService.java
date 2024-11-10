@@ -32,12 +32,12 @@ public class AccountService {
     @Value("${account.image.url}")
     private String accountImageURL;
 
-    public AccountResponse getAccount(AccountDetails accountDetails) {
+    public AccountResponse getByAccountDetails(AccountDetails accountDetails) {
         return accountMapper.mapToDto(accountDetails.getAccount());
     }
 
     @Transactional
-    public AccountResponse updateAccount(AccountDetails accountDetails, AccountRequest accountRequest) {
+    public AccountResponse update(AccountDetails accountDetails, AccountRequest accountRequest) {
         Account loggedAccount = accountDetails.getAccount();
 
         Account updatedAccount = accountMapper.mapToEntity(accountRequest);
@@ -51,13 +51,13 @@ public class AccountService {
     }
 
     @Transactional
-    public Account saveAccount(RegistrationRequest registrationRequest) {
+    public Account save(RegistrationRequest registrationRequest) {
         Account account = Account.builder()
                 .firstName(registrationRequest.getFirstName())
                 .lastName(registrationRequest.getLastName())
                 .email(registrationRequest.getEmail())
                 .password(encoder.encode(registrationRequest.getPassword()))
-                .roles(roleService.findRoleByName(ROLE_USER))
+                .roles(roleService.findByName(ROLE_USER))
                 .enabled(false)
                 .imageUrl(accountImageURL)
                 .build();
@@ -72,7 +72,7 @@ public class AccountService {
                     .lastName("Admin")
                     .email(adminEmail)
                     .password(adminPassword)
-                    .roles(roleService.findRoleByName("ROLE_ADMIN"))
+                    .roles(roleService.findByName("ROLE_ADMIN"))
                     .imageUrl(accountImageURL)
                     .enabled(Boolean.TRUE)
                     .build()
@@ -81,8 +81,8 @@ public class AccountService {
     }
 
     @Transactional
-    public void deleteAccount(AccountDetails accountDetails) {
-        addressService.deleteAccountAddress(accountDetails);
+    public void delete(AccountDetails accountDetails) {
+        addressService.deleteByAccountDetails(accountDetails);
         accountRepository.delete(accountDetails.getAccount());
     }
 
@@ -96,7 +96,7 @@ public class AccountService {
         account.setPassword(encoder.encode(password));
     }
 
-    public Account findAccountByEmail(String email) {
+    public Account findByEmail(String email) {
         return accountRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Account with email: " + email + " not found"));
     }

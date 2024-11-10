@@ -28,9 +28,9 @@ public class RegistrationService {
 
     @Transactional
     public Map<String, Object> registrationAccount(RegistrationRequest registrationRequest) {
-        Account account = accountService.saveAccount(registrationRequest);
+        Account account = accountService.save(registrationRequest);
 
-        ConfirmationToken savedToken = confirmationTokenService.createConfirmationToken(account);
+        ConfirmationToken savedToken = confirmationTokenService.create(account);
         return emailSenderService.sendEmail(NotificationType.CONFIRM_EMAIL,
                 account.getEmail(),
                 getConfirmLinkWithToken(savedToken));
@@ -38,7 +38,7 @@ public class RegistrationService {
 
     @Transactional
     public Map<String, Object> confirmToken(String token) {
-        ConfirmationToken confirmationToken = confirmationTokenService.getConfirmationTokenByToken(token);
+        ConfirmationToken confirmationToken = confirmationTokenService.getByToken(token);
         Account account = confirmationToken.getAccount();
 
         if (confirmationToken.getConfirmedAt() != null || Boolean.TRUE.equals(account.getEnabled())) {
@@ -46,13 +46,13 @@ public class RegistrationService {
         }
 
         if (Boolean.FALSE.equals(account.getEnabled()) && confirmationTokenService.isTokenExpired(confirmationToken)) {
-            ConfirmationToken newToken = confirmationTokenService.createConfirmationToken(account);
-            confirmationTokenService.deleteConfirmationToken(confirmationToken);
+            ConfirmationToken newToken = confirmationTokenService.create(account);
+            confirmationTokenService.delete(confirmationToken);
             return emailSenderService.sendEmail(NotificationType.RECONFIRM_EMAIL,
                     account.getEmail(),
                     getConfirmLinkWithToken(newToken));
         }
-        confirmationTokenService.setConfirmedAtAndSaveConfirmationToken(confirmationToken);
+        confirmationTokenService.setConfirmedAt(confirmationToken);
         accountService.setEnabledAccount(account);
 
         return Map.of("message", "Account confirmed.");

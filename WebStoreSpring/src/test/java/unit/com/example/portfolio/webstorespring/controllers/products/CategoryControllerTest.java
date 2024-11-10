@@ -49,7 +49,7 @@ class CategoryControllerTest {
     @Test
     void shouldGetAllCategory() throws Exception {
         CategoryResponse categoryResponse = createCategoryResponse();
-        given(categoryService.getAllCategory()).willReturn(Arrays.asList(categoryResponse, categoryResponse));
+        given(categoryService.getAll()).willReturn(Arrays.asList(categoryResponse, categoryResponse));
 
         mvc.perform(get(URI + "/categories")
                         .accept(MediaType.APPLICATION_JSON))
@@ -63,7 +63,7 @@ class CategoryControllerTest {
         CategoryResponse categoryResponse = createCategoryResponse();
         CategoryRequest categoryRequest = createCategoryRequest();
 
-        given(categoryService.saveCategory(any(CategoryRequest.class))).willReturn(categoryResponse);
+        given(categoryService.save(any(CategoryRequest.class))).willReturn(categoryResponse);
 
         mvc.perform(post(URI + "/admin/categories")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -80,7 +80,7 @@ class CategoryControllerTest {
         CategoryResponse categoryResponse = createCategoryResponse();
         CategoryRequest categoryRequest = createCategoryRequest();
 
-        given(categoryService.updateCategory(anyLong(), any(CategoryRequest.class))).willReturn(categoryResponse);
+        given(categoryService.update(anyLong(), any(CategoryRequest.class))).willReturn(categoryResponse);
 
         mvc.perform(put(URI + "/admin/categories/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)

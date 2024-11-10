@@ -65,7 +65,7 @@ class AccountRepositoryIT {
 
     @Test
     void shouldFindAccountByEmailWithRole() {
-        Optional<Account> account = accountRepository.findAccountWithRolesByEmail(EMAIL);
+        Optional<Account> account = accountRepository.findWithRolesByEmail(EMAIL);
 
         assertTrue(account.isPresent());
         assertEquals(EMAIL, account.get().getEmail());

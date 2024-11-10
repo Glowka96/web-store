@@ -22,8 +22,8 @@ public class PromotionService {
     private final PromotionMapper promotionMapper;
 
     @Transactional
-    public PromotionResponse savePromotion(@NotNull PromotionRequesst promotionRequest) {
-        Product product = productService.findProductByIdWithPromotion(promotionRequest.getProductId());
+    public PromotionResponse save(@NotNull PromotionRequesst promotionRequest) {
+        Product product = productService.findWithPromotionById(promotionRequest.getProductId());
 
         validateProduct(promotionRequest, product);
 

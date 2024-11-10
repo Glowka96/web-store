@@ -41,7 +41,7 @@ class CategoryServiceTest {
 
         given(categoryRepository.findAll()).willReturn(categories);
 
-        List<CategoryResponse> foundCategoryResponses = underTest.getAllCategory();
+        List<CategoryResponse> foundCategoryResponses = underTest.getAll();
 
         assertEquals(exceptedResponses, foundCategoryResponses);
         verify(categoryRepository, times(1)).findAll();
@@ -53,7 +53,7 @@ class CategoryServiceTest {
     void shouldSaveCategory() {
         CategoryRequest categoryRequest = createCategoryRequest();
 
-        CategoryResponse savedCategoryResponse = underTest.saveCategory(categoryRequest);
+        CategoryResponse savedCategoryResponse = underTest.save(categoryRequest);
 
         ArgumentCaptor<Category> categoryArgumentCaptor =
                 ArgumentCaptor.forClass(Category.class);
@@ -72,7 +72,7 @@ class CategoryServiceTest {
         CategoryRequest categoryRequest = createCategoryRequest("Test2");
         given(categoryRepository.findById(anyLong())).willReturn(Optional.of(category));
 
-        CategoryResponse updatedCategoryResponse = underTest.updateCategory(category.getId(), categoryRequest);
+        CategoryResponse updatedCategoryResponse = underTest.update(category.getId(), categoryRequest);
 
         ArgumentCaptor<Category> categoryArgumentCaptor =
                 ArgumentCaptor.forClass(Category.class);
@@ -87,7 +87,7 @@ class CategoryServiceTest {
 
     @Test
     void shouldDeleteCategoryById() {
-        underTest.deleteCategoryById(anyLong());
+        underTest.deleteById(anyLong());
 
         verify(categoryRepository, times(1)).deleteById(anyLong());
         verifyNoMoreInteractions(categoryRepository);

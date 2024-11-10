@@ -27,7 +27,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
                     WHERE o.account.id =:accountId
                     ORDER BY o.createdAt DESC
             """)
-    List<Order> findAllByAccountId(@Param(value = "accountId") Long accountId);
+    List<Order> findAllByAccountId(@Param("accountId") Long accountId);
 
     @Query("""
                     SELECT o FROM Order o
@@ -36,6 +36,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
                     ORDER BY o.createdAt DESC
                     LIMIT 5
             """)
-    List<Order> findLastFiveAccountOrder(@Param(value = "accountId") Long accountId);
+    List<Order> findLastFiveAccountOrder(@Param("accountId") Long accountId);
 
 }

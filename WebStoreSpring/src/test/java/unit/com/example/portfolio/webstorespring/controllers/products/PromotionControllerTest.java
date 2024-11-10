@@ -49,7 +49,7 @@ class PromotionControllerTest {
         PromotionRequesst promotionRequest = PromotionBuilderHelper.createPromotionRequest();
         PromotionResponse promotionResponse = createPromotionResponse();
 
-        given(promotionService.savePromotion(any(PromotionRequesst.class)))
+        given(promotionService.save(any(PromotionRequesst.class)))
                 .willReturn(promotionResponse);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

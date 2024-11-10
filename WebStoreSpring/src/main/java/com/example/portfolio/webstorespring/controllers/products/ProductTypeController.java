@@ -19,24 +19,24 @@ public class ProductTypeController {
 
     @GetMapping("/product-types")
     public List<ProductTypeResponse> getAllProductType() {
-        return productTypeService.getAllProductType();
+        return productTypeService.getAll();
     }
 
     @PostMapping("/admin/product-types")
     @ResponseStatus(HttpStatus.CREATED)
     public ProductTypeResponse saveProductType(@Valid @RequestBody ProductTypeRequest productTypeRequest) {
-        return productTypeService.saveProductType(productTypeRequest);
+        return productTypeService.save(productTypeRequest);
     }
 
     @PutMapping("/admin/product-types/{productTypeId}")
     public ProductTypeResponse updateProductType(@PathVariable("productTypeId") Long productTypeId,
                                                  @Valid @RequestBody ProductTypeRequest productTypeRequest) {
-        return productTypeService.updateProductType(productTypeId, productTypeRequest);
+        return productTypeService.update(productTypeId, productTypeRequest);
     }
 
     @DeleteMapping("/admin/product-types/{productTypeId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteProductTypeById(@PathVariable("productTypeId") Long productTypeId) {
-        productTypeService.deleteProductTypeById(productTypeId);
+        productTypeService.deleteById(productTypeId);
     }
 }

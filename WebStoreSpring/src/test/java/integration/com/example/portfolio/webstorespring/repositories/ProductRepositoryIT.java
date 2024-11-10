@@ -49,7 +49,7 @@ class ProductRepositoryIT{
 
     @Test
     void shouldFindProductWithPromotionById() {
-        ProductWithProducerAndPromotionDTO product = productRepository.findProductById(
+        ProductWithProducerAndPromotionDTO product = productRepository.findById(
                 initProductTestData.getProductIdThatHasPromotion(),
                 initProductTestData.getDate30DaysAgo()
         );
@@ -61,7 +61,7 @@ class ProductRepositoryIT{
 
     @Test
     void shouldFindProductsBySubcategoryId() {
-        Optional<Page<ProductWithPromotionDTO>> optionalPageProducts = productRepository.findProductsBySubcategoryId(
+        Optional<Page<ProductWithPromotionDTO>> optionalPageProducts = productRepository.findBySubcategoryId(
                 initProductTestData.getSubId(),
                 initProductTestData.getDate30DaysAgo(),
                 initProductTestData.getPageable()
@@ -74,7 +74,7 @@ class ProductRepositoryIT{
 
     @Test
     void shouldSearchProductsByEnteredText() {
-        Optional<Page<ProductWithPromotionDTO>> optionalPageProducts = productRepository.searchProductsByEnteredText(
+        Optional<Page<ProductWithPromotionDTO>> optionalPageProducts = productRepository.searchByEnteredText(
                 "Product",
                 initProductTestData.getDate30DaysAgo(),
                 initProductTestData.getPageable()
@@ -108,7 +108,7 @@ class ProductRepositoryIT{
 
     @Test
     void shouldFindProductByIdWithPromotion() {
-        Optional<Product> optionalProduct = productRepository.findProductByIdWithPromotion(
+        Optional<Product> optionalProduct = productRepository.findWithPromotionById(
                 initProductTestData.getProductIdThatHasPromotion()
         );
 
@@ -117,7 +117,7 @@ class ProductRepositoryIT{
 
     @Test
     void shouldFindProductsByIdsWithPromotion() {
-        List<Product> products = productRepository.findProductsByIdsWithPromotion(List.of(
+        List<Product> products = productRepository.findWithPromotionByIds(List.of(
                         initProductTestData.getProductIdThatHasPromotion(),
                         initProductTestData.getProductIdThatHasNoPromotion())
                 );

@@ -51,7 +51,7 @@ class ProductTypeControllerTest {
     void getAllProductType() throws Exception {
         ProductTypeResponse productTypeResponse = createProductTypeResponse();
 
-        given(productTypeService.getAllProductType()).willReturn(List.of(productTypeResponse, productTypeResponse));
+        given(productTypeService.getAll()).willReturn(List.of(productTypeResponse, productTypeResponse));
 
         mvc.perform(get("/api/v1/product-types")
                         .accept(MediaType.APPLICATION_JSON))
@@ -66,7 +66,7 @@ class ProductTypeControllerTest {
         ProductTypeRequest productTypeRequest = createProductTypeRequest();
         ProductTypeResponse productTypeResponse = createProductTypeResponse();
 
-        given(productTypeService.saveProductType(any(ProductTypeRequest.class))).willReturn(productTypeResponse);
+        given(productTypeService.save(any(ProductTypeRequest.class))).willReturn(productTypeResponse);
 
         mvc.perform(post(URI)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -83,7 +83,7 @@ class ProductTypeControllerTest {
         ProductTypeRequest productTypeRequest = createProductTypeRequest();
         ProductTypeResponse productTypeResponse = createProductTypeResponse();
 
-        given(productTypeService.updateProductType(anyLong(), any(ProductTypeRequest.class)))
+        given(productTypeService.update(anyLong(), any(ProductTypeRequest.class)))
                 .willReturn(productTypeResponse);
 
         mvc.perform(put(URI + "/{productTypeId}", 1)

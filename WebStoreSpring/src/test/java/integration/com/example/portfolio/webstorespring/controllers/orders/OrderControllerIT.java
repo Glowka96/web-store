@@ -246,7 +246,7 @@ class OrderControllerIT extends AbstractAuthControllerIT {
     }
 
     private ProductWithProducerAndPromotionDTO getProductById(Long initProductTestData) {
-        return productRepository.findProductById(
+        return productRepository.findById(
                 initProductTestData,
                 LocalDateTime.now().minusDays(30)
         );

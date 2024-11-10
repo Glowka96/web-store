@@ -19,19 +19,19 @@ public class ProductTypeService {
     private final ProductTypeRepository productTypeRepository;
     private final ProductTypeMapper productTypeMapper;
 
-    public List<ProductTypeResponse> getAllProductType() {
+    public List<ProductTypeResponse> getAll() {
         return productTypeMapper.mapToDto(productTypeRepository.findAll());
     }
 
-    public ProductTypeResponse saveProductType(ProductTypeRequest productTypeRequest){
+    public ProductTypeResponse save(ProductTypeRequest productTypeRequest){
         ProductType productType = productTypeMapper.mapToEntity(productTypeRequest);
         productTypeRepository.save(productType);
         return productTypeMapper.mapToDto(productType);
     }
 
     @Transactional
-    public ProductTypeResponse updateProductType(Long productTypeId, ProductTypeRequest productTypeRequest) {
-        ProductType foundProductType = findProductTypeById(productTypeId);
+    public ProductTypeResponse update(Long id, ProductTypeRequest productTypeRequest) {
+        ProductType foundProductType = findById(id);
         ProductType productType = productTypeMapper.mapToEntity(productTypeRequest);
 
         foundProductType.setName(productType.getName());
@@ -40,11 +40,11 @@ public class ProductTypeService {
         return productTypeMapper.mapToDto(foundProductType);
     }
 
-    public void deleteProductTypeById(Long productTypeId) {
+    public void deleteById(Long productTypeId) {
         productTypeRepository.deleteById(productTypeId);
     }
 
-    protected ProductType findProductTypeById(Long productTypeId) {
+    protected ProductType findById(Long productTypeId) {
         return productTypeRepository.findById(productTypeId)
                 .orElseThrow(() -> new ResourceNotFoundException("ProductType", "id", productTypeId));
     }

@@ -15,7 +15,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
         LEFT JOIN FETCH a.roles
         WHERE a.email = :email
 """)
-    Optional<Account> findAccountWithRolesByEmail(@Param("email") String email);
+    Optional<Account> findWithRolesByEmail(@Param("email") String email);
 
     Boolean existsByEmail(String email);
 }

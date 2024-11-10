@@ -19,18 +19,18 @@ public class AccountController {
 
     @GetMapping
     public AccountResponse getAccount(@AuthenticationPrincipal AccountDetails accountDetails) {
-        return accountService.getAccount(accountDetails);
+        return accountService.getByAccountDetails(accountDetails);
     }
 
     @PutMapping
     public AccountResponse updateAccount(@AuthenticationPrincipal AccountDetails accountDetails,
                                          @Valid @RequestBody AccountRequest accountRequest) {
-        return accountService.updateAccount(accountDetails, accountRequest);
+        return accountService.update(accountDetails, accountRequest);
     }
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteAccount(@AuthenticationPrincipal AccountDetails accountDetails) {
-        accountService.deleteAccount(accountDetails);
+        accountService.delete(accountDetails);
     }
 }

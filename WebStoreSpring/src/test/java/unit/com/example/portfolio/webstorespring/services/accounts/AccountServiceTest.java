@@ -53,7 +53,7 @@ class AccountServiceTest {
     void shouldGetAccount() {
         AccountDetails accountDetails = getAccountDetails();
 
-        AccountResponse result = underTest.getAccount(accountDetails);
+        AccountResponse result = underTest.getByAccountDetails(accountDetails);
 
         assertNotNull(result);
         assertEquals(accountDetails.getAccount().getId(), result.getId());
@@ -68,9 +68,9 @@ class AccountServiceTest {
         RegistrationRequest registrationRequest = RegistrationRequestBuilderHelper.createRegistrationRequest();
         Role role = RoleBuilderHelper.createUserRole();
 
-        given(roleService.findRoleByName(anyString())).willReturn(Set.of(role));
+        given(roleService.findByName(anyString())).willReturn(Set.of(role));
 
-        Account result = underTest.saveAccount(registrationRequest);
+        Account result = underTest.save(registrationRequest);
 
         ArgumentCaptor<Account> accountArgumentCaptor =
                 ArgumentCaptor.forClass(Account.class);
@@ -133,7 +133,7 @@ class AccountServiceTest {
         given(encoder.encode(anyString())).willReturn("hashedPassword");
         given(accountRepository.save(any(Account.class))).willReturn(account);
 
-        AccountResponse updatedAccountResponse = underTest.updateAccount(accountDetails, accountRequest);
+        AccountResponse updatedAccountResponse = underTest.update(accountDetails, accountRequest);
 
         ArgumentCaptor<Account> accountArgumentCaptor = ArgumentCaptor.forClass(Account.class);
         verify(accountRepository).save(accountArgumentCaptor.capture());
@@ -147,7 +147,7 @@ class AccountServiceTest {
     void shouldDeleteAccount() {
         AccountDetails accountDetails = getAccountDetails();
 
-        underTest.deleteAccount(accountDetails);
+        underTest.delete(accountDetails);
 
         verify(accountRepository, times(1)).delete(accountDetails.getAccount());
         verifyNoMoreInteractions(accountRepository);
@@ -159,7 +159,7 @@ class AccountServiceTest {
 
         given(accountRepository.findByEmail(anyString())).willReturn(Optional.of(account));
 
-        Account result = underTest.findAccountByEmail("test");
+        Account result = underTest.findByEmail("test");
 
         assertEquals(account, result);
     }
@@ -168,7 +168,7 @@ class AccountServiceTest {
     void willThrowUsernameNotFoundException_whenNotFindAccountByEmail() {
         given(accountRepository.findByEmail(anyString())).willReturn(Optional.empty());
 
-        assertThatThrownBy(() -> underTest.findAccountByEmail("test"))
+        assertThatThrownBy(() -> underTest.findByEmail("test"))
                 .isInstanceOf(UsernameNotFoundException.class)
                 .hasMessageContaining("Account with email: test not found");
     }

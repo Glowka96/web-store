@@ -29,7 +29,7 @@ class RoleServiceTest {
         Role role = createUserRole();
         given(roleRepository.findByName(anyString())).willReturn(Set.of(role));
 
-        Set<Role> result = underTest.findRoleByName("Test");
+        Set<Role> result = underTest.findByName("Test");
 
         assertEquals(Set.of(role), result);
         verify(roleRepository, times(1)).findByName(anyString());

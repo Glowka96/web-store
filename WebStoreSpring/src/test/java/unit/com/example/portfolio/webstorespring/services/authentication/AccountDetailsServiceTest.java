@@ -46,7 +46,7 @@ class AccountDetailsServiceTest {
         Account account = make(a(BASIC_ACCOUNT));
         setupSecutiryContext(account);
 
-        given(accountRepository.findAccountWithRolesByEmail(anyString())).willReturn(Optional.of(account));
+        given(accountRepository.findWithRolesByEmail(anyString())).willReturn(Optional.of(account));
 
         UserDetails userDetails = underTest.loadUserByUsername(EMAIL);
 
@@ -58,7 +58,7 @@ class AccountDetailsServiceTest {
         Account account = make(a(BASIC_ACCOUNT).but(with(ENABLED, Boolean.FALSE)));
         setupSecutiryContext(account);
 
-        when(accountRepository.findAccountWithRolesByEmail(anyString())).thenReturn(Optional.of(account));
+        when(accountRepository.findWithRolesByEmail(anyString())).thenReturn(Optional.of(account));
 
         assertThatThrownBy(() -> underTest.loadUserByUsername(EMAIL))
                 .isInstanceOf(DisabledException.class)

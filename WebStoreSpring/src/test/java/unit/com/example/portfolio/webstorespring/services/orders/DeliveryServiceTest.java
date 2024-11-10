@@ -30,7 +30,7 @@ class DeliveryServiceTest {
         DeliveryRequest deliveryRequest = DeliveryBuilderHelper.createDeliveryRequest();
         String deliveryAddressBeforeUpdate = deliveryRequest.getDeliveryAddress();
 
-        given(deliveryTypeService.findDeliveryTypeById(anyLong())).willReturn(deliveryType);
+        given(deliveryTypeService.findById(anyLong())).willReturn(deliveryType);
 
         Delivery formatedDelivery = underTest.formatDelivery(deliveryRequest);
 

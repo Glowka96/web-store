@@ -18,6 +18,6 @@ public class PromotionController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public PromotionResponse savePromotion(@NotNull @RequestBody PromotionRequesst promotionRequest) {
-        return promotionService.savePromotion(promotionRequest);
+        return promotionService.save(promotionRequest);
     }
 }

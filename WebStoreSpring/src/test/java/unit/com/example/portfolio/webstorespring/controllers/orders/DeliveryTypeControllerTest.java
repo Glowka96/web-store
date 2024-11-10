@@ -47,7 +47,7 @@ class DeliveryTypeControllerTest {
     @Test
     void shouldGetAllDeliveryType() throws Exception {
         DeliveryTypeResponse deliveryTypeResponse = createDeliveryTypeResponse();
-        given(deliveryTypeService.getAllDeliveryType()).willReturn(List.of(deliveryTypeResponse, deliveryTypeResponse));
+        given(deliveryTypeService.getAll()).willReturn(List.of(deliveryTypeResponse, deliveryTypeResponse));
 
         mvc.perform(get(URI + "/delivery-types")
                         .accept(MediaType.APPLICATION_JSON))
@@ -61,7 +61,7 @@ class DeliveryTypeControllerTest {
         DeliveryTypeRequest deliveryTypeRequest = createDeliveryTypeRequest();
         DeliveryTypeResponse deliveryTypeResponse = createDeliveryTypeResponse();
 
-        given(deliveryTypeService.saveDeliveryType(any(DeliveryTypeRequest.class))).willReturn(deliveryTypeResponse);
+        given(deliveryTypeService.save(any(DeliveryTypeRequest.class))).willReturn(deliveryTypeResponse);
 
         mvc.perform(post(URI + "/admin/delivery-types")
                         .contentType(MediaType.APPLICATION_JSON)

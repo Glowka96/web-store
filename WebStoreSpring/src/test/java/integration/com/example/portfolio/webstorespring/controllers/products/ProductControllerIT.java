@@ -52,7 +52,7 @@ class ProductControllerIT extends AbstractBaseControllerIT<ProductRequest, Produ
 
     @Override
     public void assertsFieldsWhenSave(ProductRequest request, ProductResponse response) {
-        Optional<Product> optionalProduct = productRepository.findProductByIdWithPromotion(
+        Optional<Product> optionalProduct = productRepository.findWithPromotionById(
                 response.getId()
         );
         assertTrue(optionalProduct.isPresent());

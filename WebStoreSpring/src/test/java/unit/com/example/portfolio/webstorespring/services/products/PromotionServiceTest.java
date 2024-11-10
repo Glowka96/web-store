@@ -57,10 +57,10 @@ class PromotionServiceTest {
         Product product = make(a(BASIC_PRODUCT).but(with(PRICE_PROMOTIONS, Set.of())));
         PromotionRequesst promotionRequesst = PromotionBuilderHelper.createPromotionRequest();
 
-        given(productService.findProductByIdWithPromotion(anyLong())).willReturn(product);
+        given(productService.findWithPromotionById(anyLong())).willReturn(product);
 
         PromotionResponse savedPromotionRequest =
-                underTest.savePromotion(promotionRequesst);
+                underTest.save(promotionRequesst);
 
         ArgumentCaptor<Promotion> promotionArgumentCaptor =
                 ArgumentCaptor.forClass(Promotion.class);
@@ -86,10 +86,10 @@ class PromotionServiceTest {
         Product product = make(a(BASIC_PRODUCT).but(with(PRICE_PROMOTIONS, Set.of())));
         PromotionRequesst promotionRequesst = createPromotionRequest(BigDecimal.valueOf(999.99));
 
-        when(productService.findProductByIdWithPromotion(anyLong())).thenReturn(product);
+        when(productService.findWithPromotionById(anyLong())).thenReturn(product);
 
-        assertThrows(PromotionPriceGreaterThanBasePriceException.class, () -> underTest.savePromotion(promotionRequesst));
-        verify(productService, times(1)).findProductByIdWithPromotion(1L);
+        assertThrows(PromotionPriceGreaterThanBasePriceException.class, () -> underTest.save(promotionRequesst));
+        verify(productService, times(1)).findWithPromotionById(1L);
         verifyNoMoreInteractions(productService);
         verifyNoMoreInteractions(promotionRepository);
     }
@@ -101,10 +101,10 @@ class PromotionServiceTest {
 
         PromotionRequesst promotionRequesst = PromotionBuilderHelper.createPromotionRequest();
 
-        when(productService.findProductByIdWithPromotion(anyLong())).thenReturn(product);
+        when(productService.findWithPromotionById(anyLong())).thenReturn(product);
 
-        assertThrows(ProductHasAlreadyPromotionException.class, () -> underTest.savePromotion(promotionRequesst));
-        verify(productService, times(1)).findProductByIdWithPromotion(1L);
+        assertThrows(ProductHasAlreadyPromotionException.class, () -> underTest.save(promotionRequesst));
+        verify(productService, times(1)).findWithPromotionById(1L);
         verifyNoMoreInteractions(productService);
         verifyNoMoreInteractions(promotionRepository);
     }

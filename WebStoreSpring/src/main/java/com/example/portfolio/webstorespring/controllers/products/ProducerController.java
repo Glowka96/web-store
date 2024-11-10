@@ -19,24 +19,24 @@ public class ProducerController {
 
     @GetMapping
     public List<ProducerResponse> getAllProducer() {
-        return producerService.getAllProducer();
+        return producerService.getAll();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ProducerResponse saveProducer(@Valid @RequestBody ProducerRequest producerRequest) {
-        return producerService.saveProducer(producerRequest);
+        return producerService.save(producerRequest);
     }
 
     @PutMapping("/{id}")
     public ProducerResponse updateProducer(@PathVariable("id") Long id,
                                            @Valid @RequestBody ProducerRequest producerRequest) {
-        return producerService.updateProducer(id, producerRequest);
+        return producerService.update(id, producerRequest);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteProducer(@PathVariable("id") Long id) {
-        producerService.deleteProducerById(id);
+        producerService.deleteById(id);
     }
 }

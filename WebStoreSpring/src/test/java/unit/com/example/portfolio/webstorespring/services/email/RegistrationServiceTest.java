@@ -48,10 +48,10 @@ class RegistrationServiceTest {
                 .but(with(ACCOUNT, account)));
         Map<String, Object> excepted = Map.of("message", "Verify your email address using the link in your email.");
 
-        given(confirmationTokenService.createConfirmationToken(any(Account.class))).willReturn(confirmationToken);
+        given(confirmationTokenService.create(any(Account.class))).willReturn(confirmationToken);
         given(emailSenderService.sendEmail(any(NotificationType.class), anyString(), anyString()))
                 .willReturn(excepted);
-        given(accountService.saveAccount(registrationRequest)).willReturn(account);
+        given(accountService.save(registrationRequest)).willReturn(account);
 
         Map<String, Object> result = underTest.registrationAccount(registrationRequest);
 
@@ -67,11 +67,11 @@ class RegistrationServiceTest {
                 .but(withNull(CONFIRMED_AT)));
         Map<String, Object> excepted = Map.of("message","Account confirmed.");
 
-        when(confirmationTokenService.getConfirmationTokenByToken(anyString())).thenReturn(confirmationToken);
+        when(confirmationTokenService.getByToken(anyString())).thenReturn(confirmationToken);
 
         Map<String, Object> result = underTest.confirmToken(confirmationToken.getToken());
 
-        verify(confirmationTokenService, times(1)).setConfirmedAtAndSaveConfirmationToken(any(ConfirmationToken.class));
+        verify(confirmationTokenService, times(1)).setConfirmedAt(any(ConfirmationToken.class));
         verify(accountService, times(1)).setEnabledAccount(any(Account.class));
         assertEquals(excepted, result);
     }
@@ -81,7 +81,7 @@ class RegistrationServiceTest {
         Account account = make(a(BASIC_ACCOUNT));
         ConfirmationToken confirmationToken = make(a(BASIC_CONFIRMATION_TOKEN)
                 .but(with(ACCOUNT, account)));
-        when(confirmationTokenService.getConfirmationTokenByToken(anyString())).thenReturn(confirmationToken);
+        when(confirmationTokenService.getByToken(anyString())).thenReturn(confirmationToken);
 
         assertThatThrownBy(() -> underTest.confirmToken(confirmationToken.getToken()))
                 .isInstanceOf(EmailAlreadyConfirmedException.class)
@@ -99,15 +99,15 @@ class RegistrationServiceTest {
         Map<String, Object> excepted = Map.of("message",
                 "Your token is expired. Verify your email address using the new token link in your email.");
 
-        given(confirmationTokenService.getConfirmationTokenByToken(anyString())).willReturn(confirmationToken);
+        given(confirmationTokenService.getByToken(anyString())).willReturn(confirmationToken);
         given(confirmationTokenService.isTokenExpired(any(ConfirmationToken.class))).willReturn(true);
-        given(confirmationTokenService.createConfirmationToken(any(Account.class))).willReturn(confirmationToken);
+        given(confirmationTokenService.create(any(Account.class))).willReturn(confirmationToken);
         given(emailSenderService.sendEmail(any(NotificationType.class), anyString(), anyString()))
                 .willReturn(excepted);
 
         Map<String, Object> result = underTest.confirmToken(confirmationToken.getToken());
 
         assertEquals(excepted, result);
-        verify(confirmationTokenService, times(1)).deleteConfirmationToken(any(ConfirmationToken.class));
+        verify(confirmationTokenService, times(1)).delete(any(ConfirmationToken.class));
     }
 }

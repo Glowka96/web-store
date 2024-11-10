@@ -72,7 +72,7 @@ class OrderControllerTest {
     @Test
     void shouldGetAccountOrderByOrderId() throws Exception {
         OrderResponse orderResponse = createOrderResponse();
-        given(orderService.getOrderById(any(AccountDetails.class), anyLong()))
+        given(orderService.getById(any(AccountDetails.class), anyLong()))
                 .willReturn(orderResponse);
 
         mvc.perform(get(URI + "/orders/{id}", 1)
@@ -103,7 +103,7 @@ class OrderControllerTest {
         OrderRequest orderRequest = createOrderRequest();
         OrderResponse orderResponse = createOrderResponse();
 
-        given(orderService.saveOrder(any(AccountDetails.class), any(OrderRequest.class)))
+        given(orderService.save(any(AccountDetails.class), any(OrderRequest.class)))
                 .willReturn(orderResponse);
 
         mvc.perform(post(URI + "/orders", 1)

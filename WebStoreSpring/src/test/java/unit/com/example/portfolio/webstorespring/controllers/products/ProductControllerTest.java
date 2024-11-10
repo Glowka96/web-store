@@ -54,7 +54,7 @@ class ProductControllerTest {
         ProductResponse productResponse = createProductResponse();
         List<ProductResponse> productResponses = List.of(productResponse, productResponse, productResponse);
 
-        given(productService.getAllProducts()).willReturn(productResponses);
+        given(productService.getAll()).willReturn(productResponses);
 
         mvc.perform(get(URI + "/admin/products")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -67,7 +67,7 @@ class ProductControllerTest {
     void shouldGetProductById() throws Exception {
         ProductWithProducerAndPromotionDTO productWithProducerAndPromotionDTO = createProductWithProducerAndPromotionDTO();
 
-        given(productService.getProductById(anyLong())).willReturn(productWithProducerAndPromotionDTO);
+        given(productService.getById(anyLong())).willReturn(productWithProducerAndPromotionDTO);
 
         mvc.perform(get(URI + "/products/{productId}", 1)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -92,7 +92,7 @@ class ProductControllerTest {
         ProductResponse productResponse = createProductResponse();
         ProductRequest productRequest = createProductRequest();
 
-        given(productService.saveProduct(anyLong(), anyLong(), any(ProductRequest.class)))
+        given(productService.save(anyLong(), anyLong(), any(ProductRequest.class)))
                 .willReturn(productResponse);
 
         mvc.perform(post(URI + "/admin/subcategories/{subcategoryId}/producers/{producerId}/products", 1, 1)
@@ -112,7 +112,7 @@ class ProductControllerTest {
         ProductResponse productResponse = createProductResponse();
         ProductRequest productRequest = createProductRequest();
 
-        given(productService.updateProduct(anyLong(), anyLong(), anyLong(), any(ProductRequest.class)))
+        given(productService.update(anyLong(), anyLong(), anyLong(), any(ProductRequest.class)))
                 .willReturn(productResponse);
 
         mvc.perform(put(URI + "/admin/subcategories/{subcategoryId}/producers/{producerId}/products/{productId}", 1, 1, 1)

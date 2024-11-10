@@ -21,7 +21,7 @@ class DeliveryService {
                 .deliveryAddress(
                         formatDeliveryAddress(
                                 deliveryRequest.getDeliveryAddress().split(", ")))
-                .deliveryType(deliveryTypeService.findDeliveryTypeById(
+                .deliveryType(deliveryTypeService.findById(
                         deliveryRequest.getDeliveryTypeId()))
                 .build();
     }
