@@ -2,6 +2,7 @@ package com.example.portfolio.webstorespring.services.orders;
 
 import com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryBuilderHelper;
 import com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryTypeBuilderHelper;
+import com.example.portfolio.webstorespring.config.providers.ShipmentAddressProvider;
 import com.example.portfolio.webstorespring.model.dto.orders.request.DeliveryRequest;
 import com.example.portfolio.webstorespring.model.entity.orders.Delivery;
 import com.example.portfolio.webstorespring.model.entity.orders.DeliveryType;
@@ -21,6 +22,8 @@ class DeliveryServiceTest {
 
     @Mock
     private DeliveryTypeService deliveryTypeService;
+    @Mock
+    private ShipmentAddressProvider shipmentAddressProvider;
     @InjectMocks
     private DeliveryService underTest;
 
@@ -31,6 +34,7 @@ class DeliveryServiceTest {
         String deliveryAddressBeforeUpdate = deliveryRequest.getDeliveryAddress();
 
         given(deliveryTypeService.findById(anyLong())).willReturn(deliveryType);
+        given(shipmentAddressProvider.getAddress()).willReturn(DeliveryBuilderHelper.getSHIPMENT_ADDRESS());
 
         Delivery formatedDelivery = underTest.formatDelivery(deliveryRequest);
 

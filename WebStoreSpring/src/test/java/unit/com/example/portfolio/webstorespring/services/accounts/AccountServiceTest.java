@@ -54,8 +54,6 @@ class AccountServiceTest {
     @InjectMocks
     private AccountService underTest;
 
-
-    private static final String ACCOUNT_IMAGE_URL = "test.pl/test.png";
     private static final String ADMIN_EMAIL = "mockadmin@example.com";
     private static final String HASHED_PASSWORD = "hashedPassword";
     @Test
@@ -93,7 +91,7 @@ class AccountServiceTest {
     @Test
     void shouldInitializeAdminAccount_whenAdminEmailNotExist() {
         given(adminCredentialsProvider.getEmail()).willReturn(ADMIN_EMAIL);
-        given(accountImageUrlProvider.getUrl()).willReturn(ACCOUNT_IMAGE_URL);
+        given(accountImageUrlProvider.getUrl()).willReturn(getACCOUNT_IMAGE_URL());
         given(accountRepository.existsByEmail(anyString())).willReturn(Boolean.FALSE);
 
         underTest.initializeAdminAccount();

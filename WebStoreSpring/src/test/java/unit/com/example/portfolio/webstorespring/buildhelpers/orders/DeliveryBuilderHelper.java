@@ -6,6 +6,7 @@ import com.example.portfolio.webstorespring.model.dto.orders.response.DeliveryRe
 import com.example.portfolio.webstorespring.model.dto.orders.response.DeliveryTypeResponse;
 import com.example.portfolio.webstorespring.model.entity.orders.Delivery;
 import com.example.portfolio.webstorespring.model.entity.orders.DeliveryType;
+import lombok.Getter;
 
 import static com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryTypeBuilderHelper.createDeliveryType;
 import static com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryTypeBuilderHelper.createDeliveryTypeResponse;
@@ -13,6 +14,7 @@ import static com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryT
 public class DeliveryBuilderHelper {
 
     private static final String DELIVERY_ADDRESS = "Test, 99-999, Test 9";
+    @Getter
     private static final String SHIPMENT_ADDRESS = "City, 90-000, Street 9";
 
     public static Delivery createDelivery() {

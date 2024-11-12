@@ -6,6 +6,7 @@ import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.accounts.Role;
 import com.natpryce.makeiteasy.Instantiator;
 import com.natpryce.makeiteasy.Property;
+import lombok.Getter;
 
 import java.util.List;
 import java.util.Set;
@@ -24,6 +25,7 @@ public class AccountBuilderHelper {
     private static final String ACCOUNT_LAST_NAME = "Lastname";
     private static final String ACCOUNT_EMAIL = "test@test.pl";
     private static final String ACCOUNT_PASSWORD = "Password123*";
+    @Getter
     private static final String ACCOUNT_IMAGE_URL = "test.pl/test.png";
     private static final Role ROLE_USER = RoleBuilderHelper.createUserRole();
 

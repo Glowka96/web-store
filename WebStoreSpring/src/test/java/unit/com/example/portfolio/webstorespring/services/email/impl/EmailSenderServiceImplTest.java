@@ -1,5 +1,6 @@
 package com.example.portfolio.webstorespring.services.email.impl;
 
+import com.example.portfolio.webstorespring.config.providers.SenderEmailProvider;
 import com.example.portfolio.webstorespring.enums.NotificationType;
 import com.example.portfolio.webstorespring.services.email.strategy.NotificationStrategy;
 import com.example.portfolio.webstorespring.services.email.strategy.NotificationStrategyFactory;
@@ -29,6 +30,8 @@ class EmailSenderServiceImplTest {
     private NotificationStrategyFactory notificationStrategyFactory;
     @Mock
     private NotificationStrategy notificationStrategy;
+    @Mock
+    private SenderEmailProvider senderEmailProvider;
     @InjectMocks
     private EmailSenderServiceImpl underTest;
 
@@ -49,6 +52,8 @@ class EmailSenderServiceImplTest {
         given(notificationStrategy.getEmailTitle()).willReturn(emailTitle);
         given(notificationStrategy.getEmailMessage()).willReturn(emailMessage);
         given(notificationStrategy.getResponseMessage()).willReturn(responseMessage);
+        given(senderEmailProvider.getEmail()).willReturn("sender@email.com");
+
 
         Map<String, Object> resultMap = underTest.sendEmail(notificationType, recipientEmail, confirmLinkWithToken);
 
