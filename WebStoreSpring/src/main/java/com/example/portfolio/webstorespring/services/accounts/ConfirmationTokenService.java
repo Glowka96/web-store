@@ -22,17 +22,18 @@ public class ConfirmationTokenService {
 
     @Transactional
     public ConfirmationToken create(Account account) {
-       return new ConfirmationToken(
-                UUID.randomUUID().toString(),
-                LocalDateTime.now(clock),
-                LocalDateTime.now(clock).plusMinutes(15),
-                account
-        );
+        return confirmationTokenRepository.save(
+                new ConfirmationToken(
+                        UUID.randomUUID().toString(),
+                        LocalDateTime.now(clock),
+                        LocalDateTime.now(clock).plusMinutes(15),
+                        account
+                ));
     }
 
     public ConfirmationToken getByToken(String token) {
         return confirmationTokenRepository.findByToken(token)
-                .orElseThrow(() -> new ResourceNotFoundException("Confirmation token","token", token));
+                .orElseThrow(() -> new ResourceNotFoundException("Confirmation token", "token", token));
     }
 
     public boolean isTokenExpired(ConfirmationToken token) {

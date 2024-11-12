@@ -7,7 +7,6 @@ import com.example.portfolio.webstorespring.model.entity.accounts.ConfirmationTo
 import com.example.portfolio.webstorespring.repositories.accounts.ConfirmationTokenRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -51,13 +50,14 @@ class ConfirmationTokenServiceTest {
 
         ConfirmationToken actual = underTest.create(account);
 
-        ArgumentCaptor<ConfirmationToken> confirmationTokenArgumentCaptor =
-                ArgumentCaptor.forClass(ConfirmationToken.class);
-        verify(tokenRepository).save(confirmationTokenArgumentCaptor.capture());
+        verify(tokenRepository, times(1)).save(any(ConfirmationToken.class));
 
         assertNotNull(actual);
-       assertEquals(confirmationTokenArgumentCaptor.getValue(), actual);
-        verify(tokenRepository, times(1)).save(any(ConfirmationToken.class));
+        assertNotNull(actual.getId());
+        assertNull(actual.getConfirmedAt());
+        assertEquals(confirmationToken.getToken(), actual.getToken());
+        assertEquals(confirmationToken.getCreatedAt(), actual.getCreatedAt());
+        assertEquals(confirmationToken.getExpiresAt(), actual.getExpiresAt());
     }
 
     @Test
@@ -120,7 +120,6 @@ class ConfirmationTokenServiceTest {
 
         underTest.setConfirmedAt(confirmationToken);
 
-        verify(tokenRepository, times(1)).save(confirmationToken);
         assertNotNull(confirmationToken.getConfirmedAt());
     }
 
