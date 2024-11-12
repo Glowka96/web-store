@@ -1,6 +1,7 @@
 package com.example.portfolio.webstorespring.services.email;
 
 import com.example.portfolio.webstorespring.buildhelpers.DateForTestBuilderHelper;
+import com.example.portfolio.webstorespring.config.providers.ConfirmationLinkProvider;
 import com.example.portfolio.webstorespring.enums.NotificationType;
 import com.example.portfolio.webstorespring.exceptions.TokenConfirmedException;
 import com.example.portfolio.webstorespring.exceptions.TokenExpiredException;
@@ -33,6 +34,8 @@ class ResetPasswordServiceTest {
     @Mock
     private ConfirmationTokenService confirmationTokenService;
     @Mock
+    private ConfirmationLinkProvider confirmationLinkProvider;
+    @Mock
     private EmailSenderService emailSenderService;
     @Mock
     private AccountService accountService;
@@ -48,6 +51,7 @@ class ResetPasswordServiceTest {
         Map<String, Object> excepted = Map.of("message", "Sent reset password link to your email");
 
         given(accountService.findByEmail(anyString())).willReturn(account);
+        given(confirmationLinkProvider.getResetPassword()).willReturn("http://localhost:4200/reset-password/confirm?token=");
         given(confirmationTokenService.create(any(Account.class))).willReturn(confirmationToken);
         given(emailSenderService.sendEmail(any(NotificationType.class), anyString(), anyString())).willReturn(excepted);
 

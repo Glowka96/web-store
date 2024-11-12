@@ -1,5 +1,6 @@
 package com.example.portfolio.webstorespring.services.email;
 
+import com.example.portfolio.webstorespring.config.providers.ConfirmationLinkProvider;
 import com.example.portfolio.webstorespring.enums.NotificationType;
 import com.example.portfolio.webstorespring.exceptions.EmailAlreadyConfirmedException;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.RegistrationRequest;
@@ -9,7 +10,6 @@ import com.example.portfolio.webstorespring.services.accounts.AccountService;
 import com.example.portfolio.webstorespring.services.accounts.ConfirmationTokenService;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,10 +21,7 @@ public class RegistrationService {
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailSenderService emailSenderService;
     private final AccountService accountService;
-
-
-    @Value("${email.confirmation.link}")
-    private String confirmLink;
+    private final ConfirmationLinkProvider confirmationLinkProvider;
 
     @Transactional
     public Map<String, Object> registrationAccount(RegistrationRequest registrationRequest) {
@@ -60,6 +57,6 @@ public class RegistrationService {
 
     @NotNull
     private String getConfirmLinkWithToken(ConfirmationToken newToken) {
-        return confirmLink + newToken.getToken();
+        return confirmationLinkProvider.getEmail() + newToken.getToken();
     }
 }
