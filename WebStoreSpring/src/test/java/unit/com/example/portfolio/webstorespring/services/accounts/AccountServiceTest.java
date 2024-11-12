@@ -2,7 +2,7 @@ package com.example.portfolio.webstorespring.services.accounts;
 
 import com.example.portfolio.webstorespring.buildhelpers.accounts.RegistrationRequestBuilderHelper;
 import com.example.portfolio.webstorespring.buildhelpers.accounts.RoleBuilderHelper;
-import com.example.portfolio.webstorespring.config.AdminCredentialsProvider;
+import com.example.portfolio.webstorespring.config.providers.AdminCredentialsProvider;
 import com.example.portfolio.webstorespring.mappers.AccountMapper;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.AccountRequest;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.RegistrationRequest;
