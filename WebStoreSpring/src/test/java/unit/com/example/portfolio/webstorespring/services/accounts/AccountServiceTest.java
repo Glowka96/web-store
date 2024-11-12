@@ -2,6 +2,7 @@ package com.example.portfolio.webstorespring.services.accounts;
 
 import com.example.portfolio.webstorespring.buildhelpers.accounts.RegistrationRequestBuilderHelper;
 import com.example.portfolio.webstorespring.buildhelpers.accounts.RoleBuilderHelper;
+import com.example.portfolio.webstorespring.config.providers.AccountImageUrlProvider;
 import com.example.portfolio.webstorespring.config.providers.AdminCredentialsProvider;
 import com.example.portfolio.webstorespring.mappers.AccountMapper;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.AccountRequest;
@@ -43,6 +44,8 @@ class AccountServiceTest {
     @Mock
     private AdminCredentialsProvider adminCredentialsProvider;
     @Mock
+    private AccountImageUrlProvider accountImageUrlProvider;
+    @Mock
     private BCryptPasswordEncoder encoder;
     @Mock
     private RoleService roleService;
@@ -51,6 +54,10 @@ class AccountServiceTest {
     @InjectMocks
     private AccountService underTest;
 
+
+    private static final String ACCOUNT_IMAGE_URL = "test.pl/test.png";
+    private static final String ADMIN_EMAIL = "mockadmin@example.com";
+    private static final String HASHED_PASSWORD = "hashedPassword";
     @Test
     void shouldGetAccount() {
         AccountDetails accountDetails = getAccountDetails();
@@ -71,6 +78,8 @@ class AccountServiceTest {
         Role role = RoleBuilderHelper.createUserRole();
 
         given(roleService.findByName(anyString())).willReturn(Set.of(role));
+        given(encoder.encode(anyString())).willReturn(HASHED_PASSWORD);
+        given(accountRepository.save(any(Account.class))).willAnswer(invocation -> invocation.getArgument(0));
 
         Account result = underTest.save(registrationRequest);
 
@@ -83,7 +92,8 @@ class AccountServiceTest {
 
     @Test
     void shouldInitializeAdminAccount_whenAdminEmailNotExist() {
-        given(adminCredentialsProvider.getEmail()).willReturn("mockadmin@example.com");
+        given(adminCredentialsProvider.getEmail()).willReturn(ADMIN_EMAIL);
+        given(accountImageUrlProvider.getUrl()).willReturn(ACCOUNT_IMAGE_URL);
         given(accountRepository.existsByEmail(anyString())).willReturn(Boolean.FALSE);
 
         underTest.initializeAdminAccount();
@@ -95,7 +105,7 @@ class AccountServiceTest {
 
     @Test
     void shouldNotInitializeAdminAccount_whenAdminEmailIsExist() {
-        given(adminCredentialsProvider.getEmail()).willReturn("mockadmin@example.com");
+        given(adminCredentialsProvider.getEmail()).willReturn(ADMIN_EMAIL);
         given(accountRepository.existsByEmail(anyString())).willReturn(Boolean.TRUE);
 
         underTest.initializeAdminAccount();
@@ -130,7 +140,7 @@ class AccountServiceTest {
         AccountRequest accountRequest = createAccountRequest();
         AccountDetails accountDetails = new AccountDetails(account);
 
-        given(encoder.encode(anyString())).willReturn("hashedPassword");
+        given(encoder.encode(anyString())).willReturn(HASHED_PASSWORD);
         given(accountRepository.save(any(Account.class))).willReturn(account);
 
         AccountResponse updatedAccountResponse = underTest.update(accountDetails, accountRequest);

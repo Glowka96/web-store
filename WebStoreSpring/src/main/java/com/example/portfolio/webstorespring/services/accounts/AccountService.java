@@ -1,6 +1,8 @@
 package com.example.portfolio.webstorespring.services.accounts;
 
+import com.example.portfolio.webstorespring.config.providers.AccountImageUrlProvider;
 import com.example.portfolio.webstorespring.config.providers.AdminCredentialsProvider;
+import com.example.portfolio.webstorespring.enums.RoleType;
 import com.example.portfolio.webstorespring.mappers.AccountMapper;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.AccountRequest;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.RegistrationRequest;
@@ -9,7 +11,6 @@ import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
 import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,14 +26,25 @@ public class AccountService {
     private final PasswordEncoder encoder;
     private final RoleService roleService;
     private final AccountAddressService addressService;
-    private static final String ROLE_USER = "ROLE_USER";
     private final AdminCredentialsProvider adminCredentialsProvider;
-
-    @Value("${account.image.url}")
-    private String accountImageURL;
+    private final AccountImageUrlProvider accountImageUrlProvider;
 
     public AccountResponse getByAccountDetails(AccountDetails accountDetails) {
         return accountMapper.mapToDto(accountDetails.getAccount());
+    }
+
+    @Transactional
+    public Account save(RegistrationRequest registrationRequest) {
+        return accountRepository.save(Account.builder()
+                .firstName(registrationRequest.getFirstName())
+                .lastName(registrationRequest.getLastName())
+                .email(registrationRequest.getEmail())
+                .password(encoder.encode(registrationRequest.getPassword()))
+                .roles(roleService.findByName(RoleType.ROLE_USER.name()))
+                .enabled(Boolean.FALSE)
+                .imageUrl(accountImageUrlProvider.getUrl())
+                .build()
+        );
     }
 
     @Transactional
@@ -49,30 +61,15 @@ public class AccountService {
         return accountMapper.mapToDto(loggedAccount);
     }
 
-    @Transactional
-    public Account save(RegistrationRequest registrationRequest) {
-        Account account = Account.builder()
-                .firstName(registrationRequest.getFirstName())
-                .lastName(registrationRequest.getLastName())
-                .email(registrationRequest.getEmail())
-                .password(encoder.encode(registrationRequest.getPassword()))
-                .roles(roleService.findByName(ROLE_USER))
-                .enabled(Boolean.FALSE)
-                .imageUrl(accountImageURL)
-                .build();
-        accountRepository.save(account);
-        return account;
-    }
-
     void initializeAdminAccount(){
         if(Boolean.FALSE.equals(accountRepository.existsByEmail(adminCredentialsProvider.getEmail()))){
             accountRepository.save(Account.builder()
                     .firstName("Admin")
                     .lastName("Admin")
                     .email(adminCredentialsProvider.getEmail())
-                    .password(adminCredentialsProvider.getPassword())
-                    .roles(roleService.findByName("ROLE_ADMIN"))
-                    .imageUrl(accountImageURL)
+                    .password(encoder.encode(adminCredentialsProvider.getPassword()))
+                    .roles(roleService.findByName(RoleType.ROLE_ADMIN.name()))
+                    .imageUrl(accountImageUrlProvider.getUrl())
                     .enabled(Boolean.TRUE)
                     .build()
             );

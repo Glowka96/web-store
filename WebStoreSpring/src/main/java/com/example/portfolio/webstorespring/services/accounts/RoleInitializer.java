@@ -1,5 +1,6 @@
 package com.example.portfolio.webstorespring.services.accounts;
 
+import com.example.portfolio.webstorespring.enums.RoleType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
@@ -14,7 +15,7 @@ class RoleInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        roleService.initializeRole("ROLE_USER");
-        roleService.initializeRole("ROLE_ADMIN");
+        roleService.initializeRole(RoleType.ROLE_USER.name());
+        roleService.initializeRole(RoleType.ROLE_ADMIN.name());
     }
 }
