@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.buildhelpers.products;
 
-import com.example.portfolio.webstorespring.model.dto.products.request.PromotionRequesst;
+import com.example.portfolio.webstorespring.model.dto.products.request.PromotionRequest;
 import com.example.portfolio.webstorespring.model.dto.products.response.PromotionResponse;
 import com.example.portfolio.webstorespring.model.entity.products.Promotion;
 import com.natpryce.makeiteasy.Instantiator;
@@ -26,8 +26,8 @@ public class PromotionBuilderHelper {
                     .endDate(lookup.valueOf(END_DATE, LOCAL_DATE_TIME.plusDays(15)))
                     .build();
 
-    public static PromotionRequesst createPromotionRequest() {
-        return PromotionRequesst.builder()
+    public static PromotionRequest createPromotionRequest() {
+        return PromotionRequest.builder()
                 .promotionPrice(BigDecimal.valueOf(10.0))
                 .startDate(LOCAL_DATE_TIME)
                 .endDate(LOCAL_DATE_TIME.plusDays(15))
@@ -35,8 +35,8 @@ public class PromotionBuilderHelper {
                 .build();
     }
 
-    public static PromotionRequesst createPromotionRequest(BigDecimal price) {
-        return PromotionRequesst.builder()
+    public static PromotionRequest createPromotionRequest(BigDecimal price) {
+        return PromotionRequest.builder()
                 .promotionPrice(price)
                 .startDate(LOCAL_DATE_TIME)
                 .endDate(LOCAL_DATE_TIME.plusDays(15))

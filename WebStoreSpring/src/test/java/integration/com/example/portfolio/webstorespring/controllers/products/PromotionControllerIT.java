@@ -2,7 +2,7 @@ package com.example.portfolio.webstorespring.controllers.products;
 
 import com.example.portfolio.webstorespring.buildhelpers.products.PromotionBuilderHelper;
 import com.example.portfolio.webstorespring.controllers.AbstractAuthControllerIT;
-import com.example.portfolio.webstorespring.model.dto.products.request.PromotionRequesst;
+import com.example.portfolio.webstorespring.model.dto.products.request.PromotionRequest;
 import com.example.portfolio.webstorespring.model.dto.products.response.PromotionResponse;
 import com.example.portfolio.webstorespring.model.entity.products.Product;
 import com.example.portfolio.webstorespring.repositories.products.ProductRepository;
@@ -33,7 +33,7 @@ class PromotionControllerIT extends AbstractAuthControllerIT{
     private ProductRepository productRepository;
     private static final String PRODUCTS_PROMOTIONS_URI = "/products/promotions";
     private Long savedProductId;
-    private PromotionRequesst promotionRequest;
+    private PromotionRequest promotionRequest;
 
     @BeforeEach
     public void initTestData() {
@@ -58,7 +58,7 @@ class PromotionControllerIT extends AbstractAuthControllerIT{
 
     @Test
     void shouldSavePromotion_forAuthenticatedAdmin_thenStatusCreated() {
-        HttpEntity<PromotionRequesst> httpEntity =
+        HttpEntity<PromotionRequest> httpEntity =
                 new HttpEntity<>(promotionRequest, getHttpHeadersWithAdminToken());
 
         ResponseEntity<PromotionResponse> response = restTemplate.exchange(
@@ -80,7 +80,7 @@ class PromotionControllerIT extends AbstractAuthControllerIT{
 
     @Test
     void shouldNotSavePromotion_forAuthenticatedUser_thenStatusForbidden() {
-        HttpEntity<PromotionRequesst> httpEntity =
+        HttpEntity<PromotionRequest> httpEntity =
                 new HttpEntity<>(promotionRequest, getHttpHeaderWithUserToken());
 
         ResponseEntity<PromotionResponse> response = restTemplate.exchange(

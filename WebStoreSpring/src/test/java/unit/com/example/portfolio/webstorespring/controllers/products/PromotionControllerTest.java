@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.controllers.products;
 
 import com.example.portfolio.webstorespring.buildhelpers.products.PromotionBuilderHelper;
-import com.example.portfolio.webstorespring.model.dto.products.request.PromotionRequesst;
+import com.example.portfolio.webstorespring.model.dto.products.request.PromotionRequest;
 import com.example.portfolio.webstorespring.model.dto.products.response.PromotionResponse;
 import com.example.portfolio.webstorespring.services.products.PromotionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -46,10 +46,10 @@ class PromotionControllerTest {
 
     @Test
     void shouldSavePromotion() throws Exception {
-        PromotionRequesst promotionRequest = PromotionBuilderHelper.createPromotionRequest();
+        PromotionRequest promotionRequest = PromotionBuilderHelper.createPromotionRequest();
         PromotionResponse promotionResponse = createPromotionResponse();
 
-        given(promotionService.save(any(PromotionRequesst.class)))
+        given(promotionService.save(any(PromotionRequest.class)))
                 .willReturn(promotionResponse);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

@@ -7,7 +7,7 @@ import com.example.portfolio.webstorespring.mappers.ProducerMapper;
 import com.example.portfolio.webstorespring.mappers.ProductMapper;
 import com.example.portfolio.webstorespring.mappers.ProductTypeMapper;
 import com.example.portfolio.webstorespring.mappers.PromotionMapper;
-import com.example.portfolio.webstorespring.model.dto.products.request.PromotionRequesst;
+import com.example.portfolio.webstorespring.model.dto.products.request.PromotionRequest;
 import com.example.portfolio.webstorespring.model.dto.products.response.PromotionResponse;
 import com.example.portfolio.webstorespring.model.entity.products.Product;
 import com.example.portfolio.webstorespring.model.entity.products.Promotion;
@@ -55,12 +55,12 @@ class PromotionServiceTest {
         setMappers();
 
         Product product = make(a(BASIC_PRODUCT).but(with(PRICE_PROMOTIONS, Set.of())));
-        PromotionRequesst promotionRequesst = PromotionBuilderHelper.createPromotionRequest();
+        PromotionRequest promotionRequest = PromotionBuilderHelper.createPromotionRequest();
 
         given(productService.findWithPromotionById(anyLong())).willReturn(product);
 
         PromotionResponse savedPromotionRequest =
-                underTest.save(promotionRequesst);
+                underTest.save(promotionRequest);
 
         ArgumentCaptor<Promotion> promotionArgumentCaptor =
                 ArgumentCaptor.forClass(Promotion.class);
@@ -84,11 +84,11 @@ class PromotionServiceTest {
     @Test
     void willThrowPromotionPriceGreaterThanBasePriceException() {
         Product product = make(a(BASIC_PRODUCT).but(with(PRICE_PROMOTIONS, Set.of())));
-        PromotionRequesst promotionRequesst = createPromotionRequest(BigDecimal.valueOf(999.99));
+        PromotionRequest promotionRequest = createPromotionRequest(BigDecimal.valueOf(999.99));
 
         when(productService.findWithPromotionById(anyLong())).thenReturn(product);
 
-        assertThrows(PromotionPriceGreaterThanBasePriceException.class, () -> underTest.save(promotionRequesst));
+        assertThrows(PromotionPriceGreaterThanBasePriceException.class, () -> underTest.save(promotionRequest));
         verify(productService, times(1)).findWithPromotionById(1L);
         verifyNoMoreInteractions(productService);
         verifyNoMoreInteractions(promotionRepository);
@@ -99,11 +99,11 @@ class PromotionServiceTest {
         Promotion promotion = make(a(BASIC_PROMOTION));
         Product product = make(a(BASIC_PRODUCT).but(with(PRICE_PROMOTIONS, Set.of(promotion))));
 
-        PromotionRequesst promotionRequesst = PromotionBuilderHelper.createPromotionRequest();
+        PromotionRequest promotionRequest = PromotionBuilderHelper.createPromotionRequest();
 
         when(productService.findWithPromotionById(anyLong())).thenReturn(product);
 
-        assertThrows(ProductHasAlreadyPromotionException.class, () -> underTest.save(promotionRequesst));
+        assertThrows(ProductHasAlreadyPromotionException.class, () -> underTest.save(promotionRequest));
         verify(productService, times(1)).findWithPromotionById(1L);
         verifyNoMoreInteractions(productService);
         verifyNoMoreInteractions(promotionRepository);

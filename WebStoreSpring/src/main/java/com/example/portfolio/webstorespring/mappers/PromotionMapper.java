@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.mappers;
 
-import com.example.portfolio.webstorespring.model.dto.products.request.PromotionRequesst;
+import com.example.portfolio.webstorespring.model.dto.products.request.PromotionRequest;
 import com.example.portfolio.webstorespring.model.dto.products.response.PromotionResponse;
 import com.example.portfolio.webstorespring.model.entity.products.Promotion;
 import org.mapstruct.Mapper;
@@ -17,5 +17,5 @@ public interface PromotionMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "product", ignore = true)
-    Promotion mapToEntity(PromotionRequesst promotionRequest);
+    Promotion mapToEntity(PromotionRequest promotionRequest);
 }

@@ -17,6 +17,7 @@ public record DiscountRequest(
         @Max(value = 10_000, message = "The quantity must be less than or equal to 10000")
         Long quantity,
 
+        @Future(message = "The end date must be a future date")
         LocalDate endDate,
 
         @NotEmpty(message = "The list of subcategory names can't be empty")

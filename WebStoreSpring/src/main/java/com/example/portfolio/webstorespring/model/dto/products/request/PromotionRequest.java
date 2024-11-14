@@ -14,14 +14,14 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PromotionRequesst {
+public class PromotionRequest {
 
     @NotNull(message = "The product id can't be null")
     @Positive(message = "The product id must be positive number")
     private Long productId;
 
     @DecimalMin(value = "0.01", message = "The price must be greater than or equal to 0.01")
-    @DecimalMax(value = "99999.99", message = "The price must be less than or equal to 99999999.99")
+    @DecimalMax(value = "99999.99", message = "The price must be less than or equal to 99999.99")
     private BigDecimal promotionPrice;
 
     @PastOrPresent(message = "The start date must be in the past or present")

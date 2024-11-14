@@ -10,6 +10,7 @@ import com.example.portfolio.webstorespring.model.entity.products.Discount;
 import com.example.portfolio.webstorespring.model.entity.products.Subcategory;
 import com.example.portfolio.webstorespring.repositories.products.DiscountRepository;
 import com.example.portfolio.webstorespring.repositories.products.SubcategoryRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Slf4j
 class DiscountControllerIT extends AbstractAuthControllerIT {
 
     @Autowired
@@ -71,7 +73,6 @@ class DiscountControllerIT extends AbstractAuthControllerIT {
                 httpEntity,
                 DiscountAdminResponse.class
         );
-
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertNotNull(response.getBody());
         assertNotNull(response.getBody().code());

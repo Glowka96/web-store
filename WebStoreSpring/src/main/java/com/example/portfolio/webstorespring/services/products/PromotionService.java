@@ -3,7 +3,7 @@ package com.example.portfolio.webstorespring.services.products;
 import com.example.portfolio.webstorespring.exceptions.ProductHasAlreadyPromotionException;
 import com.example.portfolio.webstorespring.exceptions.PromotionPriceGreaterThanBasePriceException;
 import com.example.portfolio.webstorespring.mappers.PromotionMapper;
-import com.example.portfolio.webstorespring.model.dto.products.request.PromotionRequesst;
+import com.example.portfolio.webstorespring.model.dto.products.request.PromotionRequest;
 import com.example.portfolio.webstorespring.model.dto.products.response.PromotionResponse;
 import com.example.portfolio.webstorespring.model.entity.products.Product;
 import com.example.portfolio.webstorespring.model.entity.products.Promotion;
@@ -22,7 +22,7 @@ public class PromotionService {
     private final PromotionMapper promotionMapper;
 
     @Transactional
-    public PromotionResponse save(@NotNull PromotionRequesst promotionRequest) {
+    public PromotionResponse save(@NotNull PromotionRequest promotionRequest) {
         Product product = productService.findWithPromotionById(promotionRequest.getProductId());
 
         validateProduct(promotionRequest, product);
@@ -34,7 +34,7 @@ public class PromotionService {
         return promotionMapper.mapToDto(promotion);
     }
 
-    private void validateProduct(PromotionRequesst promotionRequest, Product product) {
+    private void validateProduct(PromotionRequest promotionRequest, Product product) {
         if (!product.getPromotions().isEmpty()) {
             throw new ProductHasAlreadyPromotionException();
         }

@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SubcategoryRequest {
 
-    @NotBlank(message = "The subcategory name can't be null")
+    @NotBlank(message = "The subcategory name can't be blank")
     @Size(min = 3, max = 20, message = "The subcategory name must between min 3 and max 20 letters")
     private String name;
 }

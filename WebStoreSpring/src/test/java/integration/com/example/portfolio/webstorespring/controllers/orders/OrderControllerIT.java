@@ -82,7 +82,7 @@ class OrderControllerIT extends AbstractAuthControllerIT {
         deliveryTypeId = order1.getDelivery().getDeliveryType().getId();
 
         discount = discountRepository.save(Discount.builder()
-                .code("test")
+                .code("test1")
                 .quantity(1L)
                 .discountRate(BigDecimal.valueOf(0.10))
                 .subcategories(Set.of(subcategoryRepository.findById(initProductTestData.getSubId()).get()))
@@ -178,7 +178,7 @@ class OrderControllerIT extends AbstractAuthControllerIT {
         OrderRequest orderRequest = createOrderRequest(
                 ShipmentBuilderHelper.createShipmentRequest(initProductTestData.getProductIdThatHasNoPromotion()),
                 DeliveryBuilderHelper.createDeliveryRequest(deliveryTypeId),
-                "test"
+                "test1"
         );
 
         HttpEntity<OrderRequest> httpEntity = new HttpEntity<>(orderRequest, getHttpHeaderWithUserToken());
@@ -202,7 +202,7 @@ class OrderControllerIT extends AbstractAuthControllerIT {
                         ShipmentBuilderHelper.createShipmentRequest(initProductTestData.getProductIdThatHasOtherSubcategoryAndNoPromotion()),
                         ShipmentBuilderHelper.createShipmentRequest(initProductTestData.getProductIdThatHasPromotion())),
                 DeliveryBuilderHelper.createDeliveryRequest(deliveryTypeId),
-                "test"
+                "test1"
         );
 
         HttpEntity<OrderRequest> httpEntity = new HttpEntity<>(orderRequest, getHttpHeaderWithUserToken());
