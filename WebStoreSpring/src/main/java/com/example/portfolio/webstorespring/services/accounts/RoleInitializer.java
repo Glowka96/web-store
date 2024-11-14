@@ -15,7 +15,8 @@ class RoleInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        roleService.initializeRole(RoleType.ROLE_USER.name());
-        roleService.initializeRole(RoleType.ROLE_ADMIN.name());
+        for (RoleType roleType : RoleType.values()) {
+            roleService.initializeRole(roleType.name());
+        }
     }
 }
