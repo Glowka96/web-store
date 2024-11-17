@@ -15,11 +15,9 @@ import com.example.portfolio.webstorespring.services.authentication.AccountDetai
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mapstruct.factory.Mappers;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -49,8 +47,6 @@ class AccountServiceTest {
     private BCryptPasswordEncoder encoder;
     @Mock
     private RoleService roleService;
-    @Spy
-    private AccountMapper accountMapper = Mappers.getMapper(AccountMapper.class);
     @InjectMocks
     private AccountService underTest;
 
@@ -146,7 +142,7 @@ class AccountServiceTest {
         ArgumentCaptor<Account> accountArgumentCaptor = ArgumentCaptor.forClass(Account.class);
         verify(accountRepository).save(accountArgumentCaptor.capture());
 
-        AccountResponse mappedAccount = accountMapper.mapToDto(accountArgumentCaptor.getValue());
+        AccountResponse mappedAccount = AccountMapper.mapToDto(accountArgumentCaptor.getValue());
 
         assertEquals(mappedAccount, updatedAccountResponse);
     }

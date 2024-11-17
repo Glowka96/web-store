@@ -5,6 +5,7 @@ import com.example.portfolio.webstorespring.config.providers.AdminCredentialsPro
 import com.example.portfolio.webstorespring.enums.RoleType;
 import com.example.portfolio.webstorespring.mappers.AccountMapper;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.AccountRequest;
+import com.example.portfolio.webstorespring.model.dto.accounts.request.PasswordRequest;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.RegistrationRequest;
 import com.example.portfolio.webstorespring.model.dto.accounts.response.AccountResponse;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
@@ -22,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class AccountService {
 
     private final AccountRepository accountRepository;
-    private final AccountMapper accountMapper;
     private final PasswordEncoder encoder;
     private final RoleService roleService;
     private final AccountAddressService addressService;
@@ -30,7 +30,7 @@ public class AccountService {
     private final AccountImageUrlProvider accountImageUrlProvider;
 
     public AccountResponse getByAccountDetails(AccountDetails accountDetails) {
-        return accountMapper.mapToDto(accountDetails.getAccount());
+        return AccountMapper.mapToDto(accountDetails.getAccount());
     }
 
     @Transactional
@@ -51,14 +51,14 @@ public class AccountService {
     public AccountResponse update(AccountDetails accountDetails, AccountRequest accountRequest) {
         Account loggedAccount = accountDetails.getAccount();
 
-        Account updatedAccount = accountMapper.mapToEntity(accountRequest);
+        Account updatedAccount = AccountMapper.mapToEntity(accountRequest);
         loggedAccount.setFirstName(updatedAccount.getFirstName());
         loggedAccount.setLastName(updatedAccount.getLastName());
         loggedAccount.setPassword(encoder.encode(updatedAccount.getPassword()));
         loggedAccount.setImageUrl(updatedAccount.getImageUrl());
 
         accountRepository.save(loggedAccount);
-        return accountMapper.mapToDto(loggedAccount);
+        return AccountMapper.mapToDto(loggedAccount);
     }
 
     void initializeAdminAccount(){
