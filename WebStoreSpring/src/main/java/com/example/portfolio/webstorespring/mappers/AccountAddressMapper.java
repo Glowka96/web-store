@@ -19,7 +19,7 @@ public interface AccountAddressMapper {
         return AccountAddress.builder()
                 .city(accountAddressRequest.city())
                 .street(accountAddressRequest.street())
-                .postcode(accountAddressRequest.street())
+                .postcode(accountAddressRequest.postcode())
                 .build();
     }
 }
