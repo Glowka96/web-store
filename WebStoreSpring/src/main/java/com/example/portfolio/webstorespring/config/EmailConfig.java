@@ -1,6 +1,7 @@
 package com.example.portfolio.webstorespring.config;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.example.portfolio.webstorespring.config.providers.SenderEmailProvider;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -9,23 +10,20 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import java.util.Properties;
 
 @Configuration
+@RequiredArgsConstructor
 public class EmailConfig {
 
-    @Value("${sender.email}")
-    private String senderEmail;
-
-    @Value("${sender.password}")
-    private String senderPassword;
-
+    private final SenderEmailProvider senderEmailProvider;
     private static final String SMTP = "smtp.gmail.com";
+
     @Bean
     public JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost(SMTP);
         mailSender.setPort(587);
 
-        mailSender.setUsername(senderEmail);
-        mailSender.setPassword(senderPassword);
+        mailSender.setUsername(senderEmailProvider.getEmail());
+        mailSender.setPassword(senderEmailProvider.getPassword());
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");

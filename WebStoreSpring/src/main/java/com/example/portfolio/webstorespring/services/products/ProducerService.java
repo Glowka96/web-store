@@ -19,42 +19,42 @@ public class ProducerService {
     private final ProducerRepository producerRepository;
     private final ProducerMapper producerMapper;
 
-    public ProducerResponse getProducerById(Long id) {
-        Producer foundProducer = findProducerById(id);
+    public ProducerResponse getById(Long id) {
+        Producer foundProducer = findById(id);
         return producerMapper.mapToDto(foundProducer);
     }
 
-    public List<ProducerResponse> getAllProducer() {
+    public List<ProducerResponse> getAll() {
         return producerMapper.mapToDto(producerRepository.findAll());
     }
 
-    public ProducerResponse saveProducer(ProducerRequest producerRequest) {
+    public ProducerResponse save(ProducerRequest producerRequest) {
         Producer producer = producerMapper.mapToEntity(producerRequest);
         producerRepository.save(producer);
         return producerMapper.mapToDto(producer);
     }
 
     @Transactional
-    public ProducerResponse updateProducer(Long id, ProducerRequest producerRequest) {
-        Producer foundProducer = findProducerById(id);
+    public ProducerResponse update(Long id, ProducerRequest producerRequest) {
+        Producer foundProducer = findById(id);
 
         Producer producer = producerMapper.mapToEntity(producerRequest);
-        setupUpdateProducer(foundProducer, producer);
+        setupUpdatedProducer(foundProducer, producer);
 
         producerRepository.save(producer);
         return producerMapper.mapToDto(producer);
     }
 
-    public void deleteProducerById(Long id) {
+    public void deleteById(Long id) {
         producerRepository.deleteById(id);
     }
 
-    protected Producer findProducerById(Long id) {
+    protected Producer findById(Long id) {
         return producerRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Producer", "id", id));
     }
 
-    private void setupUpdateProducer(Producer foundProducer,
+    private void setupUpdatedProducer(Producer foundProducer,
                                      Producer updatedProducer) {
         updatedProducer.setId(foundProducer.getId());
         if (updatedProducer.getName() == null) {

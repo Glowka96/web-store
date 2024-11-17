@@ -1,5 +1,6 @@
 package com.example.portfolio.webstorespring.services.email;
 
+import com.example.portfolio.webstorespring.config.providers.ConfirmationLinkProvider;
 import com.example.portfolio.webstorespring.enums.NotificationType;
 import com.example.portfolio.webstorespring.exceptions.TokenConfirmedException;
 import com.example.portfolio.webstorespring.exceptions.TokenExpiredException;
@@ -9,7 +10,6 @@ import com.example.portfolio.webstorespring.model.entity.accounts.ConfirmationTo
 import com.example.portfolio.webstorespring.services.accounts.AccountService;
 import com.example.portfolio.webstorespring.services.accounts.ConfirmationTokenService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,27 +22,26 @@ public class ResetPasswordService {
     private final EmailSenderService emailSenderService;
     private final AccountService accountService;
 
-    @Value("${reset-password.confirmation.link}")
-    private String confirmLink;
+    private final ConfirmationLinkProvider confirmationLinkProvider;
 
     @Transactional
     public Map<String, Object> resetPasswordByEmail(String email) {
-        Account account = accountService.findAccountByEmail(email);
+        Account account = accountService.findByEmail(email);
 
-        ConfirmationToken savedToken = confirmationTokenService.createConfirmationToken(account);
+        ConfirmationToken savedToken = confirmationTokenService.create(account);
         return emailSenderService.sendEmail(NotificationType.RESET_PASSWORD,
                 account.getEmail(),
-                confirmLink + savedToken.getToken());
+                confirmationLinkProvider.getResetPassword() + savedToken.getToken());
     }
 
     @Transactional
     public Map<String, Object> confirmResetPassword(ResetPasswordRequest resetPasswordRequest, String token) {
-        ConfirmationToken confirmationToken = confirmationTokenService.getConfirmationTokenByToken(token);
+        ConfirmationToken confirmationToken = confirmationTokenService.getByToken(token);
         Account account = confirmationToken.getAccount();
 
         validateConfirmationToken(confirmationToken);
 
-        confirmationTokenService.setConfirmedAtAndSaveConfirmationToken(confirmationToken);
+        confirmationTokenService.setConfirmedAt(confirmationToken);
         accountService.setNewAccountPassword(account, resetPasswordRequest.password());
 
         return Map.of("message", "Your new password has been saved");

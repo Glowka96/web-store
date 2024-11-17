@@ -8,24 +8,25 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "api/v1")
+@RequestMapping( "api/v1")
 @RequiredArgsConstructor
 public class ProductsPageController {
 
     private final ProductsPageService productsPageService;
 
-    public PageProductsWithPromotionDTO getPageProductsBySubcategoryId(@PathVariable(value = "subcategoryId") Long subcategoryId,
-                                                                       @Valid @RequestBody PageProductsOptions pageProductsOptions) {
-        return productsPageService.getPageProductsBySubcategoryId(subcategoryId, pageProductsOptions);
+    @GetMapping("/subcategories/{subcategoryId}/products")
+    public PageProductsWithPromotionDTO getPageProductsBySubcategoryId(@PathVariable("subcategoryId") Long subcategoryId,
+                                                                       @Valid @RequestBody ProductsPageOptions productsPageOptions) {
+        return productsPageService.getProductsPageBySubcategoryId(subcategoryId, productsPageOptions);
     }
 
-    @GetMapping(value = "/products/promotions")
-    public PageProductsWithPromotionDTO getPagePromotionProducts(@Valid @RequestBody PageProductsOptions pageProductsOptions) {
-        return productsPageService.getPagePromotionProduct(pageProductsOptions);
+    @GetMapping("/products/promotions")
+    public PageProductsWithPromotionDTO getPagePromotionProducts(@Valid @RequestBody ProductsPageOptions productsPageOptions) {
+        return productsPageService.getPromotionProductsPage(productsPageOptions);
     }
 
-    @GetMapping(value = "/products/news")
-    public PageProductsWithPromotionDTO getPageNewProducts(@Valid @RequestBody PageProductsOptions pageProductsOptions) {
-        return productsPageService.getPageNewProducts(pageProductsOptions);
+    @GetMapping("/products/news")
+    public PageProductsWithPromotionDTO getPageNewProducts(@Valid @RequestBody ProductsPageOptions productsPageOptions) {
+        return productsPageService.getNewProductsPage(productsPageOptions);
     }
 }

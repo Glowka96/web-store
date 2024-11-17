@@ -6,6 +6,8 @@ import com.example.portfolio.webstorespring.model.entity.accounts.ConfirmationTo
 import com.example.portfolio.webstorespring.repositories.accounts.ConfirmationTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -18,32 +20,32 @@ public class ConfirmationTokenService {
     private final ConfirmationTokenRepository confirmationTokenRepository;
     private final Clock clock;
 
-    public ConfirmationToken createConfirmationToken(Account account) {
-        ConfirmationToken confirmationToken = new ConfirmationToken(
-                UUID.randomUUID().toString(),
-                LocalDateTime.now(clock),
-                LocalDateTime.now(clock).plusMinutes(15),
-                account
-        );
-        confirmationTokenRepository.save(confirmationToken);
-        return confirmationToken;
+    @Transactional
+    public ConfirmationToken create(Account account) {
+        return confirmationTokenRepository.save(
+                new ConfirmationToken(
+                        UUID.randomUUID().toString(),
+                        LocalDateTime.now(clock),
+                        LocalDateTime.now(clock).plusMinutes(15),
+                        account
+                ));
     }
 
-    public ConfirmationToken getConfirmationTokenByToken(String token) {
+    public ConfirmationToken getByToken(String token) {
         return confirmationTokenRepository.findByToken(token)
-                .orElseThrow(() -> new ResourceNotFoundException("Confirmation token","token", token));
+                .orElseThrow(() -> new ResourceNotFoundException("Confirmation token", "token", token));
     }
 
     public boolean isTokenExpired(ConfirmationToken token) {
         return token.getExpiresAt().isBefore(LocalDateTime.now(clock));
     }
 
-    public void setConfirmedAtAndSaveConfirmationToken(ConfirmationToken token) {
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void setConfirmedAt(ConfirmationToken token) {
         token.setConfirmedAt(LocalDateTime.now(clock));
-        confirmationTokenRepository.save(token);
     }
 
-    public void deleteConfirmationToken(ConfirmationToken confirmationToken) {
+    public void delete(ConfirmationToken confirmationToken) {
         confirmationTokenRepository.delete(confirmationToken);
     }
 }

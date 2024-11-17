@@ -1,27 +1,25 @@
 package com.example.portfolio.webstorespring.services.orders;
 
+import com.example.portfolio.webstorespring.config.providers.ShipmentAddressProvider;
 import com.example.portfolio.webstorespring.model.dto.orders.request.DeliveryRequest;
 import com.example.portfolio.webstorespring.model.entity.orders.Delivery;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 class DeliveryService {
 
-    @Value("${shipment.address}")
-    private String shipmentAddress;
-
+    private final ShipmentAddressProvider shipmentAddressProvider;
     private final DeliveryTypeService deliveryTypeService;
 
     Delivery formatDelivery(DeliveryRequest deliveryRequest) {
         return Delivery.builder()
-                .shipmentAddress(shipmentAddress)
+                .shipmentAddress(shipmentAddressProvider.getAddress())
                 .deliveryAddress(
                         formatDeliveryAddress(
                                 deliveryRequest.getDeliveryAddress().split(", ")))
-                .deliveryType(deliveryTypeService.findDeliveryTypeById(
+                .deliveryType(deliveryTypeService.findById(
                         deliveryRequest.getDeliveryTypeId()))
                 .build();
     }

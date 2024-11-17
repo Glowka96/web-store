@@ -5,13 +5,12 @@ import com.example.portfolio.webstorespring.services.email.ResetPasswordService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "api/v1/reset-password")
+@RequestMapping( "api/v1/reset-password")
 @RequiredArgsConstructor
 public class ResetPasswordController {
 
@@ -23,8 +22,7 @@ public class ResetPasswordController {
     }
 
     @PatchMapping(value = "/confirm", params = {"token"})
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public Map<String, Object> confirmResetPassword(@RequestBody() @Valid ResetPasswordRequest resetPasswordRequest,
+    public Map<String, Object> confirmResetPassword(@RequestBody @Valid ResetPasswordRequest resetPasswordRequest,
                                                     @RequestParam("token") String token) {
         return resetPasswordService.confirmResetPassword(resetPasswordRequest, token);
     }

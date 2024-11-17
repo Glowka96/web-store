@@ -13,7 +13,7 @@ class RoleService {
 
     private final RoleRepository roleRepository;
 
-    Set<Role> findRoleByName(String name) {
+    Set<Role> findByName(String name) {
         return roleRepository.findByName(name);
     }
 

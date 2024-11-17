@@ -12,33 +12,32 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "api/v1")
+@RequestMapping("api/v1")
 @RequiredArgsConstructor
 public class CategoryController {
 
     private final CategoryService categoryService;
 
-    @GetMapping(value = "/categories")
+    @GetMapping("/categories")
     public ResponseEntity<List<CategoryResponse>> getAllCategory() {
-        return ResponseEntity.ok(categoryService.getAllCategory());
+        return ResponseEntity.ok(categoryService.getAll());
     }
 
-    @PostMapping(value = "/admin/categories")
+    @PostMapping("/admin/categories")
     @ResponseStatus(HttpStatus.CREATED)
     public CategoryResponse saveCategory(@Valid @RequestBody CategoryRequest categoryRequest) {
-        return categoryService.saveCategory(categoryRequest);
+        return categoryService.save(categoryRequest);
     }
 
-    @PutMapping(value = "/admin/categories/{categoryId}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public CategoryResponse updateCategory(@PathVariable(value = "categoryId") Long categoryId,
+    @PutMapping("/admin/categories/{categoryId}")
+    public CategoryResponse updateCategory(@PathVariable("categoryId") Long categoryId,
                                            @Valid @RequestBody CategoryRequest categoryRequest) {
-        return categoryService.updateCategory(categoryId, categoryRequest);
+        return categoryService.update(categoryId, categoryRequest);
     }
 
-    @DeleteMapping(value = "/admin/categories/{categoryId}")
+    @DeleteMapping("/admin/categories/{categoryId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteCategoryById(@PathVariable(value = "categoryId") Long categoryId) {
-        categoryService.deleteCategoryById(categoryId);
+    public void deleteCategoryById(@PathVariable("categoryId") Long categoryId) {
+        categoryService.deleteById(categoryId);
     }
 }

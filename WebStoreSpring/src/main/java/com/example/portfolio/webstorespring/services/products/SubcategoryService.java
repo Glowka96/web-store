@@ -23,11 +23,11 @@ public class SubcategoryService {
     private final CategoryService categoryService;
     private final SubcategoryMapper subcategoryMapper;
 
-    public List<SubcategoryResponse> getAllSubcategory() {
+    public List<SubcategoryResponse> getAll() {
         return subcategoryMapper.mapToDto(subcategoryRepository.findAll());
     }
 
-    Set<Subcategory> findAllSubcategoryByNames(Set<String> names){
+    Set<Subcategory> findAllByNames(Set<String> names){
         Set<Subcategory> subcategories = subcategoryRepository.findAllByNames(names);
         if (subcategories.isEmpty()) {
             throw new NotFoundSubcategoriesByNamesException();
@@ -36,9 +36,9 @@ public class SubcategoryService {
     }
 
     @Transactional
-    public SubcategoryResponse saveSubcategory(Long categoryId,
-                                               SubcategoryRequest subcategoryRequest) {
-        Category foundCategory = categoryService.findCategoryById(categoryId);
+    public SubcategoryResponse save(Long categoryId,
+                                    SubcategoryRequest subcategoryRequest) {
+        Category foundCategory = categoryService.findById(categoryId);
         Subcategory subcategory = subcategoryMapper.mapToEntity(subcategoryRequest);
 
         subcategory.setCategory(foundCategory);
@@ -47,24 +47,24 @@ public class SubcategoryService {
     }
 
     @Transactional
-    public SubcategoryResponse updateSubcategory(Long categoryId,
-                                                 Long subcategoryId,
-                                                 SubcategoryRequest subcategoryRequest) {
-        Subcategory foundSubcategory = findSubcategoryById(subcategoryId);
+    public SubcategoryResponse update(Long categoryId,
+                                      Long subcategoryId,
+                                      SubcategoryRequest subcategoryRequest) {
+        Subcategory foundSubcategory = findById(subcategoryId);
 
         foundSubcategory.setName(subcategoryRequest.getName());
-        foundSubcategory.setCategory(categoryService.findCategoryById(categoryId));
+        foundSubcategory.setCategory(categoryService.findById(categoryId));
 
         subcategoryRepository.save(foundSubcategory);
         return subcategoryMapper.mapToDto(foundSubcategory);
     }
 
-    public void deleteSubcategoryById(Long subcategoryId) {
+    public void deleteById(Long subcategoryId) {
         subcategoryRepository.deleteById(subcategoryId);
     }
 
 
-    protected Subcategory findSubcategoryById(Long id) {
+    protected Subcategory findById(Long id) {
         return subcategoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Subcategory", "id", id));
     }

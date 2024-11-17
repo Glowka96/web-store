@@ -32,7 +32,7 @@ class ShipmentService {
         Map<Long, Integer> productQuantities = shipmentRequests.stream()
                 .collect(Collectors.toMap(ShipmentRequest::getProductId, ShipmentRequest::getQuantity));
 
-        List<Product> products = productRepository.findProductsByIdsWithPromotion(
+        List<Product> products = productRepository.findWithPromotionByIds(
                 List.copyOf(productQuantities.keySet())
         );
 
@@ -59,7 +59,7 @@ class ShipmentService {
     private List<Shipment> getCalculatedShipmentsWithDiscount(String discountCode,
                                                               List<Product> products,
                                                               Map<Long, Integer> productQuantities) {
-        Discount discount = discountService.useDiscountByCode(discountCode);
+        Discount discount = discountService.applyByCode(discountCode);
         List<Long> subcategoryIdsWithDiscount = discount.getSubcategories().stream().map(Subcategory::getId).toList();
         BigDecimal multipleDiscountRate = BigDecimal.ONE.subtract(discount.getDiscountRate());
 

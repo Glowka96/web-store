@@ -45,8 +45,8 @@ public class OrderService {
         );
     }
 
-    public OrderResponse getOrderById(AccountDetails accountDetails, Long orderId) {
-        Order foundOrder = findOrderById(orderId);
+    public OrderResponse getById(AccountDetails accountDetails, Long orderId) {
+        Order foundOrder = findById(orderId);
 
         checkOwnerOfOrder(accountDetails, foundOrder);
 
@@ -54,7 +54,7 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderResponse saveOrder(AccountDetails accountDetails, OrderRequest orderRequest) {
+    public OrderResponse save(AccountDetails accountDetails, OrderRequest orderRequest) {
         Account loggedAccount = accountDetails.getAccount();
 
         Order order = setupOrder(loggedAccount, orderRequest);
@@ -64,7 +64,7 @@ public class OrderService {
         return orderMapper.mapToDto(order);
     }
 
-    private Order findOrderById(Long id) {
+    private Order findById(Long id) {
         return orderRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Order", "id", id));
     }

@@ -10,24 +10,24 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "api/v1")
+@RequestMapping("api/v1")
 @RequiredArgsConstructor
 public class DiscountController {
 
     private final DiscountService discountService;
 
-    @GetMapping(value = "/discounts/{code}")
-    public DiscountUserResponse getDiscountByCode(@PathVariable(value = "code") String code) {
-        return discountService.getDiscountByDiscountCode(code);
+    @GetMapping("/discounts/{code}")
+    public DiscountUserResponse getDiscountByCode(@PathVariable("code") String code) {
+        return discountService.getByCode(code);
     }
 
-    @PostMapping(value = "/admin/discounts")
+    @PostMapping("/admin/discounts")
     @ResponseStatus(HttpStatus.CREATED)
     public DiscountAdminResponse saveDiscount(@Valid @RequestBody DiscountRequest discountRequest) {
-        return discountService.saveDiscount(discountRequest);
+        return discountService.save(discountRequest);
     }
 
-    @DeleteMapping(value = "/admin/discounts")
+    @DeleteMapping("/admin/discounts")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUserOrExpiredDiscount() {
         discountService.deleteUsedOrExpiredDiscount();

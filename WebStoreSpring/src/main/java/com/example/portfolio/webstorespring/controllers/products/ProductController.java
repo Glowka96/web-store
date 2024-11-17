@@ -12,42 +12,41 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "api/v1")
+@RequestMapping("api/v1")
 @RequiredArgsConstructor
 public class ProductController {
 
     private final ProductService productService;
 
-    @GetMapping(value = "/admin/products")
+    @GetMapping("/admin/products")
     public List<ProductResponse> getAllProducts() {
-        return productService.getAllProducts();
+        return productService.getAll();
     }
 
-    @GetMapping(value = "/products/{productId}")
-    public ProductWithProducerAndPromotionDTO getProductById(@PathVariable(value = "productId") Long productId) {
-        return productService.getProductById(productId);
+    @GetMapping("/products/{productId}")
+    public ProductWithProducerAndPromotionDTO getProductById(@PathVariable("productId") Long productId) {
+        return productService.getById(productId);
     }
 
-    @PostMapping(value = "/admin/subcategories/{subcategoryId}/producers/{producerId}/products")
+    @PostMapping("/admin/subcategories/{subcategoryId}/producers/{producerId}/products")
     @ResponseStatus(HttpStatus.CREATED)
-    public ProductResponse saveProduct(@PathVariable(value = "subcategoryId") Long subcategoryId,
-                                       @PathVariable(value = "producerId") Long producerId,
+    public ProductResponse saveProduct(@PathVariable("subcategoryId") Long subcategoryId,
+                                       @PathVariable("producerId") Long producerId,
                                        @Valid @RequestBody ProductRequest productRequest) {
-        return productService.saveProduct(subcategoryId, producerId, productRequest);
+        return productService.save(subcategoryId, producerId, productRequest);
     }
 
-    @PutMapping(value = "/admin/subcategories/{subcategoryId}/producers/{producerId}/products/{productId}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public ProductResponse updateProduct(@PathVariable(value = "subcategoryId") Long subcategoryId,
-                                         @PathVariable(value = "producerId") Long producerId,
-                                         @PathVariable(value = "productId") Long productId,
+    @PutMapping("/admin/subcategories/{subcategoryId}/producers/{producerId}/products/{productId}")
+    public ProductResponse updateProduct(@PathVariable("subcategoryId") Long subcategoryId,
+                                         @PathVariable("producerId") Long producerId,
+                                         @PathVariable("productId") Long productId,
                                          @Valid @RequestBody ProductRequest productRequest) {
-        return productService.updateProduct(subcategoryId, producerId, productId, productRequest);
+        return productService.update(subcategoryId, producerId, productId, productRequest);
     }
 
-    @DeleteMapping(value = "/admin/products/{productId}")
+    @DeleteMapping("/admin/products/{productId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteProductById(@PathVariable(value = "productId") Long id) {
-        productService.deleteProductById(id);
+    public void deleteProductById(@PathVariable("productId") Long id) {
+        productService.deleteById(id);
     }
 }

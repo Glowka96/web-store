@@ -12,7 +12,7 @@ class AdminInitializer implements CommandLineRunner {
 
     private final AccountService accountService;
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         accountService.initializeAdminAccount();
     }
 }

@@ -11,27 +11,26 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "api/v1/accounts")
+@RequestMapping("api/v1/accounts")
 @RequiredArgsConstructor
 public class AccountController {
 
     private final AccountService accountService;
 
-    @GetMapping()
+    @GetMapping
     public AccountResponse getAccount(@AuthenticationPrincipal AccountDetails accountDetails) {
-        return accountService.getAccount(accountDetails);
+        return accountService.getByAccountDetails(accountDetails);
     }
 
-    @PutMapping()
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PutMapping
     public AccountResponse updateAccount(@AuthenticationPrincipal AccountDetails accountDetails,
                                          @Valid @RequestBody AccountRequest accountRequest) {
-        return accountService.updateAccount(accountDetails, accountRequest);
+        return accountService.update(accountDetails, accountRequest);
     }
 
-    @DeleteMapping()
+    @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteAccount(@AuthenticationPrincipal AccountDetails accountDetails) {
-        accountService.deleteAccount(accountDetails);
+        accountService.delete(accountDetails);
     }
 }

@@ -1,20 +1,21 @@
 package com.example.portfolio.webstorespring.config;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.example.portfolio.webstorespring.config.providers.CorsProvider;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
+@RequiredArgsConstructor
 public class CorsConfig implements WebMvcConfigurer {
 
-    @Value("${cors.allowed-origin-patterns}")
-    private String allowedOriginPatterns;
+    private final CorsProvider corsProvider;
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOriginPatterns(allowedOriginPatterns)
+                .allowedOriginPatterns(corsProvider.getAllowedOriginPatterns())
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(false);

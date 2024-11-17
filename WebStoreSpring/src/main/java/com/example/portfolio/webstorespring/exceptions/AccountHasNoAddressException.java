@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.exceptions;
 
 public class AccountHasNoAddressException extends RuntimeException{
-    public AccountHasNoAddressException() {
-        super("Account has no saved address");
+    public AccountHasNoAddressException(Long id) {
+        super(String.format("Account: %s has no saved address", id));
     }
 }

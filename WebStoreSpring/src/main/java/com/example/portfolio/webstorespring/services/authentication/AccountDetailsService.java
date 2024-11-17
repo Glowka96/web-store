@@ -17,7 +17,7 @@ public class AccountDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) {
-        Account account = accountRepository.findAccountWithRolesByEmail(email)
+        Account account = accountRepository.findWithRolesByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Account with email: " + email + " not found"));
 
         if (Boolean.FALSE.equals(account.getEnabled())) {

@@ -28,8 +28,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             WHERE p.id = :productId AND p.quantity > 0
             GROUP BY p.id, p.name, p.imageUrl, p.quantity, t.name, p.price, prom_1.promotionPrice, prom_1.endDate, p.description, p.producer.name
             """)
-    ProductWithProducerAndPromotionDTO findProductById(@Param("productId") Long productId,
-                                                       @Param("date30DaysAgo") LocalDateTime date30DaysAgo);
+    ProductWithProducerAndPromotionDTO findById(@Param("productId") Long productId,
+                                                @Param("date30DaysAgo") LocalDateTime date30DaysAgo);
 
 
     @Query("""
@@ -42,9 +42,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             WHERE p.subcategory.id = :subcategoryId AND p.quantity > 0
             GROUP BY p.id, p.name, p.imageUrl, p.quantity, p.price, prom_1.promotionPrice
             """)
-    Optional<Page<ProductWithPromotionDTO>> findProductsBySubcategoryId(@Param("subcategoryId") Long subcategoryId,
-                                                                        @Param("date30DaysAgo") LocalDateTime date30DaysAgo,
-                                                                        Pageable pageable);
+    Optional<Page<ProductWithPromotionDTO>> findBySubcategoryId(@Param("subcategoryId") Long subcategoryId,
+                                                                @Param("date30DaysAgo") LocalDateTime date30DaysAgo,
+                                                                Pageable pageable);
 
     @Query(value = """ 
             SELECT NEW com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionDTO(
@@ -62,9 +62,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             AND p.quantity > 0
             GROUP BY p.id, p.name, p.imageUrl, p.quantity, t.name, p.price, prom_1.promotionPrice
             """)
-    Optional<Page<ProductWithPromotionDTO>> searchProductsByEnteredText(@Param("text") String text,
-                                                                        @Param("date30DaysAgo") LocalDateTime date30DaysAgo,
-                                                                        Pageable pageable);
+    Optional<Page<ProductWithPromotionDTO>> searchByEnteredText(@Param("text") String text,
+                                                                @Param("date30DaysAgo") LocalDateTime date30DaysAgo,
+                                                                Pageable pageable);
 
     @Query(value = """
             SELECT NEW com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionDTO(
@@ -101,7 +101,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             WHERE p.id = :productId
             AND (prom IS NULL OR (CURRENT_TIMESTAMP BETWEEN prom.startDate AND prom.endDate))
             """)
-    Optional<Product> findProductByIdWithPromotion(@Param("productId") Long productId);
+    Optional<Product> findWithPromotionById(@Param("productId") Long productId);
 
     @Query("""
             SELECT p FROM Product p
@@ -110,5 +110,5 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             WHERE p.id IN :productIds
             AND (prom IS NULL OR (CURRENT_TIMESTAMP BETWEEN prom.startDate AND prom.endDate))
             """)
-    List<Product> findProductsByIdsWithPromotion(@Param("productIds") List<Long> productIds);
+    List<Product> findWithPromotionByIds(@Param("productIds") List<Long> productIds);
 }

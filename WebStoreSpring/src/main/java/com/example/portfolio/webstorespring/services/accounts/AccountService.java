@@ -1,5 +1,8 @@
 package com.example.portfolio.webstorespring.services.accounts;
 
+import com.example.portfolio.webstorespring.config.providers.AccountImageUrlProvider;
+import com.example.portfolio.webstorespring.config.providers.AdminCredentialsProvider;
+import com.example.portfolio.webstorespring.enums.RoleType;
 import com.example.portfolio.webstorespring.mappers.AccountMapper;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.AccountRequest;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.RegistrationRequest;
@@ -8,10 +11,10 @@ import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
 import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -23,20 +26,29 @@ public class AccountService {
     private final PasswordEncoder encoder;
     private final RoleService roleService;
     private final AccountAddressService addressService;
-    private static final String ROLE_USER = "ROLE_USER";
-    @Value("${admin.email}")
-    private String adminEmail;
-    @Value("${admin.password}")
-    private String adminPassword;
-    @Value("${account.image.url}")
-    private String accountImageURL;
+    private final AdminCredentialsProvider adminCredentialsProvider;
+    private final AccountImageUrlProvider accountImageUrlProvider;
 
-    public AccountResponse getAccount(AccountDetails accountDetails) {
+    public AccountResponse getByAccountDetails(AccountDetails accountDetails) {
         return accountMapper.mapToDto(accountDetails.getAccount());
     }
 
     @Transactional
-    public AccountResponse updateAccount(AccountDetails accountDetails, AccountRequest accountRequest) {
+    public Account save(RegistrationRequest registrationRequest) {
+        return accountRepository.save(Account.builder()
+                .firstName(registrationRequest.getFirstName())
+                .lastName(registrationRequest.getLastName())
+                .email(registrationRequest.getEmail())
+                .password(encoder.encode(registrationRequest.getPassword()))
+                .roles(roleService.findByName(RoleType.ROLE_USER.name()))
+                .enabled(Boolean.FALSE)
+                .imageUrl(accountImageUrlProvider.getUrl())
+                .build()
+        );
+    }
+
+    @Transactional
+    public AccountResponse update(AccountDetails accountDetails, AccountRequest accountRequest) {
         Account loggedAccount = accountDetails.getAccount();
 
         Account updatedAccount = accountMapper.mapToEntity(accountRequest);
@@ -49,30 +61,15 @@ public class AccountService {
         return accountMapper.mapToDto(loggedAccount);
     }
 
-    @Transactional
-    public Account saveAccount(RegistrationRequest registrationRequest) {
-        Account account = Account.builder()
-                .firstName(registrationRequest.getFirstName())
-                .lastName(registrationRequest.getLastName())
-                .email(registrationRequest.getEmail())
-                .password(encoder.encode(registrationRequest.getPassword()))
-                .roles(roleService.findRoleByName(ROLE_USER))
-                .enabled(false)
-                .imageUrl(accountImageURL)
-                .build();
-        accountRepository.save(account);
-        return account;
-    }
-
     void initializeAdminAccount(){
-        if(Boolean.FALSE.equals(accountRepository.existsByEmail(adminEmail))){
+        if(Boolean.FALSE.equals(accountRepository.existsByEmail(adminCredentialsProvider.getEmail()))){
             accountRepository.save(Account.builder()
                     .firstName("Admin")
                     .lastName("Admin")
-                    .email(adminEmail)
-                    .password(adminPassword)
-                    .roles(roleService.findRoleByName("ROLE_ADMIN"))
-                    .imageUrl(accountImageURL)
+                    .email(adminCredentialsProvider.getEmail())
+                    .password(encoder.encode(adminCredentialsProvider.getPassword()))
+                    .roles(roleService.findByName(RoleType.ROLE_ADMIN.name()))
+                    .imageUrl(accountImageUrlProvider.getUrl())
                     .enabled(Boolean.TRUE)
                     .build()
             );
@@ -80,22 +77,22 @@ public class AccountService {
     }
 
     @Transactional
-    public void deleteAccount(AccountDetails accountDetails) {
-        addressService.deleteAccountAddress(accountDetails);
+    public void delete(AccountDetails accountDetails) {
+        addressService.deleteByAccountDetails(accountDetails);
         accountRepository.delete(accountDetails.getAccount());
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     public void setEnabledAccount(Account account) {
         account.setEnabled(true);
-        accountRepository.save(account);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     public void setNewAccountPassword(Account account, String password) {
         account.setPassword(encoder.encode(password));
-        accountRepository.save(account);
     }
 
-    public Account findAccountByEmail(String email) {
+    public Account findByEmail(String email) {
         return accountRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Account with email: " + email + " not found"));
     }
