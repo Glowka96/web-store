@@ -5,7 +5,6 @@ import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -13,6 +12,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 
 @ControllerAdvice
@@ -20,25 +21,33 @@ import org.springframework.web.context.request.WebRequest;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler({ResourceNotFoundException.class, AccountHasNoAddressException.class})
-    public ResponseEntity<ErrorResponse> handleResourceNotFoundException(RuntimeException exception,
+    @ResponseBody
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleResourceNotFoundException(RuntimeException exception,
                                                                          WebRequest webRequest) {
-        return new ResponseEntity<>(createErrorResponse(HttpStatus.NOT_FOUND, exception, webRequest), HttpStatus.NOT_FOUND);
+        return createErrorResponse(HttpStatus.NOT_FOUND, exception, webRequest);
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class})
-    public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception,
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException exception,
                                                                                WebRequest webRequest) {
-        return new ResponseEntity<>(createErrorResponse(exception, webRequest), HttpStatus.BAD_REQUEST);
+        return createErrorResponse(exception, webRequest);
     }
 
     @ExceptionHandler({BadCredentialsException.class, DisabledException.class, UsernameNotFoundException.class})
-    public ResponseEntity<ErrorResponse> handleBadCredentialsException(RuntimeException exception, WebRequest webRequest) {
-        return new ResponseEntity<>(createErrorResponse(HttpStatus.UNAUTHORIZED, exception, webRequest), HttpStatus.UNAUTHORIZED);
+    @ResponseBody
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorResponse handleBadCredentialsException(RuntimeException exception, WebRequest webRequest) {
+        return createErrorResponse(HttpStatus.UNAUTHORIZED, exception, webRequest);
     }
 
     @ExceptionHandler({AccessDeniedException.class})
-    public ResponseEntity<ErrorResponse> handleAccessDeniedException(Exception exception, WebRequest webRequest) {
-        return new ResponseEntity<>(createErrorResponse(HttpStatus.FORBIDDEN, exception, webRequest), HttpStatus.FORBIDDEN);
+    @ResponseBody
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorResponse handleAccessDeniedException(Exception exception, WebRequest webRequest) {
+        return createErrorResponse(HttpStatus.FORBIDDEN, exception, webRequest);
     }
 
     @ExceptionHandler({
@@ -50,29 +59,37 @@ public class GlobalExceptionHandler {
             ProductsNotFoundException.class,
             ShipmentQuantityExceedsProductQuantityException.class,
     })
-    public ResponseEntity<ErrorResponse> handleCanNotModifiedException(RuntimeException exception,
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleCanNotModifiedException(RuntimeException exception,
                                                                        WebRequest webRequest) {
-        return new ResponseEntity<>(createErrorResponse(HttpStatus.BAD_REQUEST, exception, webRequest), HttpStatus.BAD_REQUEST);
+        return createErrorResponse(HttpStatus.BAD_REQUEST, exception, webRequest);
     }
 
     @ExceptionHandler({
             IllegalArgumentException.class
     })
-    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException exception,
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleIllegalArgumentException(IllegalArgumentException exception,
                                                                         WebRequest webRequest) {
-        return new ResponseEntity<>(createErrorResponse(exception, webRequest), HttpStatus.BAD_REQUEST);
+        return createErrorResponse(exception, webRequest);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<ErrorResponse> handeConstraintViolationException(ConstraintViolationException exception,
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handeConstraintViolationException(ConstraintViolationException exception,
                                                                            WebRequest webRequest) {
-        return new ResponseEntity<>(createErrorResponse(exception, webRequest), HttpStatus.BAD_REQUEST);
+        return createErrorResponse(exception, webRequest);
     }
 
     @ExceptionHandler(UnsupportedNotificationTypeException.class)
-    public ResponseEntity<ErrorResponse> handleUnsupportedNotificationTypeException(UnsupportedNotificationTypeException exception,
+    @ResponseBody
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handleUnsupportedNotificationTypeException(UnsupportedNotificationTypeException exception,
                                                                                     WebRequest webRequest) {
-        return new ResponseEntity<>(createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, exception, webRequest), HttpStatus.INTERNAL_SERVER_ERROR);
+        return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, exception, webRequest);
     }
 
     private ErrorResponse createErrorResponse(HttpStatus status, Exception exception, WebRequest webRequest) {

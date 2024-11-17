@@ -8,7 +8,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -68,22 +67,22 @@ class GlobalExceptionHandlerTest {
 
     @Test
     void shouldHandleResourceNotFoundException_thenStatusNotFound() {
-        ResponseEntity<ErrorResponse> responseEntity = underTest.handleResourceNotFoundException(
+        ErrorResponse resultErrorResponse = underTest.handleResourceNotFoundException(
                 resourceNotFoundException, webRequest
         );
 
-        assertsResponse(responseEntity, getExceptedErrorResponse(
+        assertsResponse(resultErrorResponse, getExceptedErrorResponse(
                 HttpStatus.NOT_FOUND, resourceNotFoundException
         ));
     }
 
     @Test
     void shouldHandleAccountHasNoAddressException_thenStatusNotFound() {
-        ResponseEntity<ErrorResponse> responseEntity = underTest.handleResourceNotFoundException(
+        ErrorResponse resultErrorResponse = underTest.handleResourceNotFoundException(
                 accountHasNoAddressException, webRequest
         );
 
-        assertsResponse(responseEntity, getExceptedErrorResponse(
+        assertsResponse(resultErrorResponse, getExceptedErrorResponse(
                 HttpStatus.NOT_FOUND, accountHasNoAddressException
         ));
     }
@@ -105,49 +104,49 @@ class GlobalExceptionHandlerTest {
                 webRequest.getDescription(false)
         );
 
-        ResponseEntity<ErrorResponse> responseEntity = underTest.handleMethodArgumentNotValidException(
+        ErrorResponse resultErrorResponse = underTest.handleMethodArgumentNotValidException(
                 argumentNotValidException, webRequest
         );
 
-        assertsResponse(responseEntity, expectedErrorResponse);
+        assertsResponse(resultErrorResponse, expectedErrorResponse);
     }
 
     @Test
     void shouldHandleBadCredentialsException_thenStatusUnauthorized() {
-        ResponseEntity<ErrorResponse> responseEntity = underTest.handleBadCredentialsException(
+        ErrorResponse resultErrorResponse = underTest.handleBadCredentialsException(
                 badCredentialsException, webRequest
         );
 
-        assertsResponse(responseEntity, getExceptedErrorResponse(
+        assertsResponse(resultErrorResponse, getExceptedErrorResponse(
                 HttpStatus.UNAUTHORIZED, badCredentialsException
         ));
     }
 
     @Test
     void shouldHandleBadCredentialsException_whenDisableException_thenStatusUnauthorized() {
-        ResponseEntity<ErrorResponse> responseEntity = underTest.handleBadCredentialsException(
+        ErrorResponse resultErrorResponse = underTest.handleBadCredentialsException(
                 disabledException, webRequest
         );
 
-        assertsResponse(responseEntity, getExceptedErrorResponse(
+        assertsResponse(resultErrorResponse, getExceptedErrorResponse(
                 HttpStatus.UNAUTHORIZED, disabledException
         ));
     }
 
     @Test
     void shouldHandleBadCredentialsException_whenUsernameNotFoundException_thenStatusUnauthorized() {
-        ResponseEntity<ErrorResponse> responseEntity = underTest.handleBadCredentialsException(
+        ErrorResponse resultErrorResponse = underTest.handleBadCredentialsException(
                 usernameNotFoundException, webRequest
         );
 
-        assertsResponse(responseEntity, getExceptedErrorResponse(
+        assertsResponse(resultErrorResponse, getExceptedErrorResponse(
                 HttpStatus.UNAUTHORIZED, usernameNotFoundException
         ));
     }
 
     @Test
     void shouldHandleAccessDeniedException_thenStatusForbidden() {
-        ResponseEntity<ErrorResponse> responseEntity = underTest.handleAccessDeniedException(
+        ErrorResponse responseEntity = underTest.handleAccessDeniedException(
                 accessDeniedException, webRequest
         );
 
@@ -159,88 +158,88 @@ class GlobalExceptionHandlerTest {
 
     @Test
     void shouldHandleCanNotModified_whenEmailAlreadyConfirmedException_thenStatusBadRequest() {
-        ResponseEntity<ErrorResponse> responseEntity = underTest.handleCanNotModifiedException(
+        ErrorResponse resultErrorResponse = underTest.handleCanNotModifiedException(
                 emailAlreadyConfirmedException, webRequest
         );
 
-        assertsResponse(responseEntity, getExceptedErrorResponse(
+        assertsResponse(resultErrorResponse, getExceptedErrorResponse(
                 HttpStatus.BAD_REQUEST, emailAlreadyConfirmedException
         ));
     }
 
     @Test
     void shouldHandleCanNotModified_whenTokenIsConfirmedException_thenStatusBadRequest() {
-        ResponseEntity<ErrorResponse> responseEntity = underTest.handleCanNotModifiedException(
+        ErrorResponse resultErrorResponse = underTest.handleCanNotModifiedException(
                 tokenConfirmedException, webRequest
         );
 
-        assertsResponse(responseEntity, getExceptedErrorResponse(
+        assertsResponse(resultErrorResponse, getExceptedErrorResponse(
                 HttpStatus.BAD_REQUEST, tokenConfirmedException
         ));
     }
 
     @Test
     void shouldHandleCanNotModification_whenTokenIsExpiredException_thenStatusBadRequest() {
-        ResponseEntity<ErrorResponse> responseEntity = underTest.handleCanNotModifiedException(
+        ErrorResponse resultErrorResponse = underTest.handleCanNotModifiedException(
                 tokenExpiredException, webRequest
         );
 
-        assertsResponse(responseEntity, getExceptedErrorResponse(
+        assertsResponse(resultErrorResponse, getExceptedErrorResponse(
                 HttpStatus.BAD_REQUEST, tokenExpiredException
         ));
     }
 
     @Test
     void shouldHandleCanNotModification_whenPromotionPriceGreaterThanBasicPrice_thenStatusBadRequest() {
-        ResponseEntity<ErrorResponse> responseEntity = underTest.handleCanNotModifiedException(
+        ErrorResponse resultErrorResponse = underTest.handleCanNotModifiedException(
                 promotionPriceGreaterThanBasePriceException, webRequest
         );
 
-        assertsResponse(responseEntity, getExceptedErrorResponse(
+        assertsResponse(resultErrorResponse, getExceptedErrorResponse(
                 HttpStatus.BAD_REQUEST, promotionPriceGreaterThanBasePriceException
         ));
     }
 
     @Test
     void shouldHandleCanNotModification_whenProductHasAlreadyPromotion_thenStatusBadRequest() {
-        ResponseEntity<ErrorResponse> responseEntity = underTest.handleCanNotModifiedException(
+        ErrorResponse resultErrorResponse = underTest.handleCanNotModifiedException(
                 productHasAlreadyPromotionException, webRequest
         );
 
-        assertsResponse(responseEntity, getExceptedErrorResponse(
+        assertsResponse(resultErrorResponse, getExceptedErrorResponse(
                 HttpStatus.BAD_REQUEST, productHasAlreadyPromotionException
         ));
     }
 
     @Test
     void shouldHandleCanNotModification_whenProductsNotFound_thenStatusBadRequest() {
-        ResponseEntity<ErrorResponse> responseEntity = underTest.handleCanNotModifiedException(
+        ErrorResponse resultErrorResponse = underTest.handleCanNotModifiedException(
                 productsNotFoundException, webRequest
         );
 
-        assertsResponse(responseEntity, getExceptedErrorResponse(
+        assertsResponse(resultErrorResponse, getExceptedErrorResponse(
                 HttpStatus.BAD_REQUEST, productsNotFoundException
         ));
     }
 
     @Test
     void shouldHandleCanNotModification_whenShipmentQualityExceedsProductQuantity_thenStatusBadRequest() {
-        ResponseEntity<ErrorResponse> responseEntity = underTest.handleCanNotModifiedException(
+        ErrorResponse resultErrorResponse = underTest.handleCanNotModifiedException(
                 shipmentQuantityExceedsProductQuantityException, webRequest
         );
 
-        assertsResponse(responseEntity, getExceptedErrorResponse(
+        assertsResponse(resultErrorResponse, getExceptedErrorResponse(
                 HttpStatus.BAD_REQUEST, shipmentQuantityExceedsProductQuantityException
         ));
     }
 
     @Test
     void shouldHandleIllegalArgumentException_thenStatusBadRequest() {
-        ResponseEntity<ErrorResponse> responseEntity = underTest.handleIllegalArgumentException(
+        ErrorResponse resultErrorResponse = underTest.handleIllegalArgumentException(
                 illegalArgumentException, webRequest
         );
 
-        assertsResponse(responseEntity, getExceptedErrorResponse(
+        assertsResponse(resultErrorResponse, getExceptedErrorResponse(
                 HttpStatus.BAD_REQUEST, illegalArgumentException
         ));
     }
@@ -266,30 +265,30 @@ class GlobalExceptionHandlerTest {
         when(mockedViolation2.getMessage()).thenReturn(messages.get(1));
         when(constraintViolationException.getConstraintViolations()).thenReturn(constraintViolations);
 
-        ResponseEntity<ErrorResponse> responseEntity = underTest
+        ErrorResponse resultErrorResponse = underTest
                 .handeConstraintViolationException(constraintViolationException, webRequest);
 
-        assertEquals(exceptedErrorResponse.getStatusCode(), responseEntity.getStatusCode().value());
-        assertTrue(Objects.requireNonNull(responseEntity.getBody()).getErrors().containsAll(exceptedErrorResponse.getErrors()));
+        assertEquals(exceptedErrorResponse.getStatusCode(), resultErrorResponse.getStatusCode());
+        assertTrue(Objects.requireNonNull(resultErrorResponse).getErrors().containsAll(exceptedErrorResponse.getErrors()));
     }
 
     @Test
     void shouldHandleUnsupportedNotificationTypeException() {
-        ResponseEntity<ErrorResponse> responseEntity = underTest.handleUnsupportedNotificationTypeException(
+        ErrorResponse resultErrorResponse = underTest.handleUnsupportedNotificationTypeException(
                 unsupportedNotificationTypeException,
                 webRequest
         );
 
-        assertsResponse(responseEntity, getExceptedErrorResponse(
+        assertsResponse(resultErrorResponse, getExceptedErrorResponse(
                         HttpStatus.INTERNAL_SERVER_ERROR,
                         unsupportedNotificationTypeException
                 )
         );
     }
 
-    private void assertsResponse(ResponseEntity<ErrorResponse> responseEntity, ErrorResponse exceptedErrorResponse) {
-        assertEquals(exceptedErrorResponse.getStatusCode(), responseEntity.getStatusCode().value());
-        assertEquals(exceptedErrorResponse, responseEntity.getBody());
+    private void assertsResponse(ErrorResponse resultErrorResponse, ErrorResponse exceptedErrorResponse) {
+        assertEquals(exceptedErrorResponse.getStatusCode(), resultErrorResponse.getStatusCode());
+        assertEquals(exceptedErrorResponse, resultErrorResponse);
     }
 
     private <E extends RuntimeException> ErrorResponse getExceptedErrorResponse(HttpStatus httpStatus, E exception) {
