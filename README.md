@@ -99,8 +99,15 @@ GCP:
 <details>
 <summary>Clean code branch:</summary>
 
+- Add missed validation annotations for DTO's fields
+- Correct DTO names
+- Correct validation annotations
+- Add providers for enivoroment variables 
+- Use @Transactional for setup methods
+- Simplify method names
+- Remove unnecessary squares and naming of parameters
 - Simplify delete entity methods - previously entity was found before delete 
-- Remove ResponseEntity<> from Controllers
+- Remove ResponseEntity<> from Controllers and GlobalExceptionHandler
 - Rename ProductPricePromotion to Promotion
 - Use asserts from junit.jupiter instead of assertThat in some cases 
 - Remove comments (//given, //when, //then) form tests
