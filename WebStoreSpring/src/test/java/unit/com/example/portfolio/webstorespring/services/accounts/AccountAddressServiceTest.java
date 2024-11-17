@@ -12,11 +12,9 @@ import com.example.portfolio.webstorespring.services.authentication.AccountDetai
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mapstruct.factory.Mappers;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
@@ -42,8 +40,6 @@ class AccountAddressServiceTest {
     private AccountAddressRepository addressRepository;
     @Mock
     private AccountRepository accountRepository;
-    @Spy
-    private AccountAddressMapper addressMapper = Mappers.getMapper(AccountAddressMapper.class);
     @InjectMocks
     private AccountAddressService underTest;
 
@@ -78,7 +74,7 @@ class AccountAddressServiceTest {
         ArgumentCaptor<AccountAddress> accountAddressArgumentCaptor =
                 ArgumentCaptor.forClass(AccountAddress.class);
         verify(addressRepository).save(accountAddressArgumentCaptor.capture());
-        AccountAddressResponse mappedAddress = addressMapper.mapToDto(accountAddressArgumentCaptor.getValue());
+        AccountAddressResponse mappedAddress = AccountAddressMapper.mapToDto(accountAddressArgumentCaptor.getValue());
 
         assertEquals(accountDetails.getAccount().getId(), mappedAddress.getId());
         assertEquals(savedAccountAddressResponse, mappedAddress);
@@ -99,7 +95,7 @@ class AccountAddressServiceTest {
                 ArgumentCaptor.forClass(AccountAddress.class);
         verify(addressRepository).save(accountAddressArgumentCaptor.capture());
 
-        AccountAddressResponse mappedAccount = addressMapper.mapToDto(accountAddressArgumentCaptor.getValue());
+        AccountAddressResponse mappedAccount = AccountAddressMapper.mapToDto(accountAddressArgumentCaptor.getValue());
 
         assertEquals(mappedAccount, updatedAccountAddressResponse);
     }

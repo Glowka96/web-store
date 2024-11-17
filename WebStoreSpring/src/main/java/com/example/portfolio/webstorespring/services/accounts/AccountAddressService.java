@@ -18,12 +18,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class AccountAddressService {
 
     private final AccountAddressRepository addressRepository;
-    private final AccountAddressMapper addressMapper;
     private final AccountRepository accountRepository;
 
     public AccountAddressResponse getByAccountDetails(AccountDetails accountDetails) {
         AccountAddress accountAddress = findByAccountDetails(accountDetails);
-        return addressMapper.mapToDto(accountAddress);
+        return AccountAddressMapper.mapToDto(accountAddress);
     }
 
     @Transactional
@@ -32,19 +31,19 @@ public class AccountAddressService {
         Account loggedAccount = accountDetails.getAccount();
         loggedAccount = accountRepository.save(loggedAccount);
 
-        AccountAddress accountAddress = addressMapper.mapToEntity(accountAddressRequest);
+        AccountAddress accountAddress = AccountAddressMapper.mapToEntity(accountAddressRequest);
 
         var finalLoggedAccount = loggedAccount;
         return addressRepository.findById(accountDetails.getAccount().getId()).map(
                 accountAddress1 -> {
                     setupUpdatedAddress(accountAddress1, accountAddress);
                     addressRepository.save(accountAddress1);
-                    return addressMapper.mapToDto(accountAddress1);
+                    return AccountAddressMapper.mapToDto(accountAddress1);
                 }
         ).orElseGet(() -> {
             accountAddress.setAccount(finalLoggedAccount);
             addressRepository.save(accountAddress);
-            return addressMapper.mapToDto(accountAddress);
+            return AccountAddressMapper.mapToDto(accountAddress);
         });
     }
 
@@ -52,11 +51,11 @@ public class AccountAddressService {
     public AccountAddressResponse update(AccountDetails accountDetails,
                                          AccountAddressRequest accountAddressRequest) {
         AccountAddress loggedAccountAddress = findByAccountDetails(accountDetails);
-        AccountAddress accountAddress = addressMapper.mapToEntity(accountAddressRequest);
+        AccountAddress accountAddress = AccountAddressMapper.mapToEntity(accountAddressRequest);
         setupUpdatedAddress(loggedAccountAddress, accountAddress);
         addressRepository.save(loggedAccountAddress);
 
-        return addressMapper.mapToDto(loggedAccountAddress);
+        return AccountAddressMapper.mapToDto(loggedAccountAddress);
     }
 
     public void deleteByAccountDetails(AccountDetails accountDetails) {
