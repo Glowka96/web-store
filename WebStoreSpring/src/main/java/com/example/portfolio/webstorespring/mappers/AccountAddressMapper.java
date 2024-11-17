@@ -4,22 +4,22 @@ import com.example.portfolio.webstorespring.model.dto.accounts.request.AccountAd
 import com.example.portfolio.webstorespring.model.dto.accounts.response.AccountAddressResponse;
 import com.example.portfolio.webstorespring.model.entity.accounts.AccountAddress;
 
-public class AccountAddressMapper {
+public interface AccountAddressMapper {
 
-    public static AccountAddressResponse mapToDto(AccountAddress address){
-        return AccountAddressResponse.builder()
-                .id(address.getId())
-                .city(address.getCity())
-                .street(address.getStreet())
-                .postcode(address.getPostcode())
-                .build();
+    static AccountAddressResponse mapToDto(AccountAddress address) {
+        return new AccountAddressResponse(
+                address.getId(),
+                address.getCity(),
+                address.getStreet(),
+                address.getPostcode()
+        );
     }
 
-    public static AccountAddress mapToEntity(AccountAddressRequest accountAddressRequest){
+    static AccountAddress mapToEntity(AccountAddressRequest accountAddressRequest) {
         return AccountAddress.builder()
-                .city(accountAddressRequest.getCity())
-                .street(accountAddressRequest.getStreet())
-                .postcode(accountAddressRequest.getStreet())
+                .city(accountAddressRequest.city())
+                .street(accountAddressRequest.street())
+                .postcode(accountAddressRequest.street())
                 .build();
     }
 }
