@@ -54,7 +54,6 @@ public class AccountService {
         Account updatedAccount = AccountMapper.mapToEntity(accountRequest);
         loggedAccount.setFirstName(updatedAccount.getFirstName());
         loggedAccount.setLastName(updatedAccount.getLastName());
-        loggedAccount.setPassword(encoder.encode(updatedAccount.getPassword()));
         loggedAccount.setImageUrl(updatedAccount.getImageUrl());
 
         accountRepository.save(loggedAccount);

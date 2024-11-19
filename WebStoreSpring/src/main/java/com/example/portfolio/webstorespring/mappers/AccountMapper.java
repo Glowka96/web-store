@@ -4,23 +4,23 @@ import com.example.portfolio.webstorespring.model.dto.accounts.request.AccountRe
 import com.example.portfolio.webstorespring.model.dto.accounts.response.AccountResponse;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 
-public class AccountMapper {
+public interface AccountMapper {
 
-    public static AccountResponse mapToDto(Account account) {
-        return AccountResponse.builder()
-                .id(account.getId())
-                .firstName(account.getFirstName())
-                .lastName(account.getLastName())
-                .email(account.getEmail())
-                .imageUrl(account.getImageUrl())
-                .build();
+    static AccountResponse mapToDto(Account account) {
+        return new AccountResponse(
+                account.getId(),
+                account.getFirstName(),
+                account.getLastName(),
+                account.getEmail(),
+                account.getImageUrl()
+        );
     }
 
-    public static Account mapToEntity(AccountRequest accountRequest) {
+    static Account mapToEntity(AccountRequest accountRequest) {
         return Account.builder()
-                .firstName(accountRequest.getFirstName())
-                .lastName(accountRequest.getLastName())
-                .imageUrl(accountRequest.getImageUrl())
+                .firstName(accountRequest.firstName())
+                .lastName(accountRequest.lastName())
+                .imageUrl(accountRequest.imageUrl())
                 .build();
     }
 }
