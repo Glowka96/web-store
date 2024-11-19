@@ -4,7 +4,7 @@ import com.example.portfolio.webstorespring.config.providers.ConfirmationLinkPro
 import com.example.portfolio.webstorespring.enums.NotificationType;
 import com.example.portfolio.webstorespring.exceptions.TokenConfirmedException;
 import com.example.portfolio.webstorespring.exceptions.TokenExpiredException;
-import com.example.portfolio.webstorespring.model.dto.accounts.request.PasswordRequest;
+import com.example.portfolio.webstorespring.model.dto.accounts.request.ResetPasswordRequest;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.accounts.ConfirmationToken;
 import com.example.portfolio.webstorespring.services.accounts.AccountService;
@@ -35,14 +35,14 @@ public class ResetPasswordService {
     }
 
     @Transactional
-    public Map<String, Object> confirmResetPassword(PasswordRequest passwordRequest, String token) {
+    public Map<String, Object> confirmResetPassword(ResetPasswordRequest resetPasswordRequest, String token) {
         ConfirmationToken confirmationToken = confirmationTokenService.getByToken(token);
         Account account = confirmationToken.getAccount();
 
         validateConfirmationToken(confirmationToken);
 
         confirmationTokenService.setConfirmedAt(confirmationToken);
-        accountService.setNewAccountPassword(account, passwordRequest.password());
+        accountService.setNewAccountPassword(account, resetPasswordRequest.password());
 
         return Map.of("message", "Your new password has been saved");
     }

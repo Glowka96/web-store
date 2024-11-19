@@ -30,10 +30,10 @@ class AccountAddressControllerIT extends AbstractAuthControllerIT {
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertEquals(getSavedAddress().getCity(), response.getBody().getCity());
-        assertEquals(getSavedAddress().getPostcode(), response.getBody().getPostcode());
-        assertEquals(getSavedAddress().getStreet(), response.getBody().getStreet());
-        assertEquals(getSavedAddress().getId(), response.getBody().getId());
+        assertEquals(getSavedAddress().getCity(), response.getBody().city());
+        assertEquals(getSavedAddress().getPostcode(), response.getBody().postcode());
+        assertEquals(getSavedAddress().getStreet(), response.getBody().street());
+        assertEquals(getSavedAddress().getId(), response.getBody().id());
     }
 
     @Test
@@ -53,10 +53,9 @@ class AccountAddressControllerIT extends AbstractAuthControllerIT {
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertEquals(addressRequest.getCity(), response.getBody().getCity());
-        assertEquals(addressRequest.getPostcode(), response.getBody().getPostcode());
-        assertEquals(addressRequest.getStreet(), response.getBody().getStreet());
-        assertEquals(getSavedUser().getId(), response.getBody().getId());
+        assertEquals(addressRequest.city(), response.getBody().city());
+        assertEquals(addressRequest.postcode(), response.getBody().postcode());
+        assertEquals(getSavedUser().getId(), response.getBody().id());
         assertTrue(addressRepository.findById(getSavedUser().getId()).isPresent());
     }
 
@@ -79,13 +78,13 @@ class AccountAddressControllerIT extends AbstractAuthControllerIT {
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertThat(response.getBody().getCity()).isEqualTo(addressRequest.getCity())
+        assertThat(response.getBody().city()).isEqualTo(addressRequest.city())
                 .isNotEqualTo(getSavedAddress().getCity());
-        assertThat(response.getBody().getPostcode()).isEqualTo(addressRequest.getPostcode())
+        assertThat(response.getBody().postcode()).isEqualTo(addressRequest.postcode())
                 .isNotEqualTo(getSavedAddress().getPostcode());
-        assertThat(response.getBody().getStreet()).isEqualTo(addressRequest.getStreet())
+        assertThat(response.getBody().street()).isEqualTo(addressRequest.street())
                 .isNotEqualTo(getSavedAddress().getStreet());
-        assertEquals(getSavedAddress().getId(), response.getBody().getId());
+        assertEquals(getSavedAddress().getId(), response.getBody().id());
     }
 
     @Test

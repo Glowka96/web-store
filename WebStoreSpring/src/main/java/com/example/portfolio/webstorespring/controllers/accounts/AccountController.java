@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.controllers.accounts;
 
 import com.example.portfolio.webstorespring.model.dto.accounts.request.AccountRequest;
-import com.example.portfolio.webstorespring.model.dto.accounts.request.PasswordRequest;
+import com.example.portfolio.webstorespring.model.dto.accounts.request.UpdatePasswordRequest;
 import com.example.portfolio.webstorespring.model.dto.accounts.response.AccountResponse;
 import com.example.portfolio.webstorespring.services.accounts.AccountService;
 import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
@@ -31,10 +31,10 @@ public class AccountController {
         return accountService.update(accountDetails, accountRequest);
     }
 
-    @PatchMapping
+    @PatchMapping("/passwords")
     public Map<String, Object> updatePassword(@AuthenticationPrincipal AccountDetails accountDetails,
-                                              @Valid @RequestBody PasswordRequest passwordRequest) {
-        return accountService.updatePassword(accountDetails, passwordRequest);
+                                              @Valid @RequestBody UpdatePasswordRequest updatePasswordRequest) {
+        return accountService.updatePassword(accountDetails, updatePasswordRequest);
     }
 
     @DeleteMapping

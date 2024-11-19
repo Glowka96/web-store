@@ -7,6 +7,7 @@ import com.example.portfolio.webstorespring.config.providers.AdminCredentialsPro
 import com.example.portfolio.webstorespring.mappers.AccountMapper;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.AccountRequest;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.RegistrationRequest;
+import com.example.portfolio.webstorespring.model.dto.accounts.request.UpdatePasswordRequest;
 import com.example.portfolio.webstorespring.model.dto.accounts.response.AccountResponse;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.accounts.Role;
@@ -19,6 +20,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -59,11 +61,11 @@ class AccountServiceTest {
         AccountResponse result = underTest.getByAccountDetails(accountDetails);
 
         assertNotNull(result);
-        assertEquals(accountDetails.getAccount().getId(), result.getId());
-        assertEquals(accountDetails.getAccount().getFirstName(), result.getFirstName());
-        assertEquals(accountDetails.getAccount().getLastName(), result.getLastName());
-        assertEquals(accountDetails.getAccount().getEmail(), result.getEmail());
-        assertEquals(accountDetails.getAccount().getImageUrl(), result.getImageUrl());
+        assertEquals(accountDetails.getAccount().getId(), result.id());
+        assertEquals(accountDetails.getAccount().getFirstName(), result.firstName());
+        assertEquals(accountDetails.getAccount().getLastName(), result.lastName());
+        assertEquals(accountDetails.getAccount().getEmail(), result.email());
+        assertEquals(accountDetails.getAccount().getImageUrl(), result.imageUrl());
     }
 
     @Test
@@ -121,9 +123,9 @@ class AccountServiceTest {
     void shouldSetNewAccountPassword() {
         Account account = make(a(BASIC_ACCOUNT));
         String oldAccountPassword = account.getPassword();
+        given(encoder.encode(anyString())).willReturn(HASHED_PASSWORD);
 
         underTest.setNewAccountPassword(account, "new password");
-
         assertNotEquals(oldAccountPassword, account.getPassword());
     }
 
@@ -132,12 +134,10 @@ class AccountServiceTest {
         Account account = make(a(BASIC_ACCOUNT));
 
         AccountRequest accountRequest = createAccountRequest();
-        AccountDetails accountDetails = new AccountDetails(account);
 
-        given(encoder.encode(anyString())).willReturn(HASHED_PASSWORD);
         given(accountRepository.save(any(Account.class))).willReturn(account);
 
-        AccountResponse updatedAccountResponse = underTest.update(accountDetails, accountRequest);
+        AccountResponse updatedAccountResponse = underTest.update(new AccountDetails(account), accountRequest);
 
         ArgumentCaptor<Account> accountArgumentCaptor = ArgumentCaptor.forClass(Account.class);
         verify(accountRepository).save(accountArgumentCaptor.capture());
@@ -145,6 +145,28 @@ class AccountServiceTest {
         AccountResponse mappedAccount = AccountMapper.mapToDto(accountArgumentCaptor.getValue());
 
         assertEquals(mappedAccount, updatedAccountResponse);
+    }
+
+    @Test
+    void shouldUpdatePassword() {
+        Account account = make(a(BASIC_ACCOUNT));
+        String passwordBeforeUpdated = account.getPassword();
+        String newPassword = "new password";
+        given(encoder.encode(anyString())).willReturn(HASHED_PASSWORD);
+
+        underTest.updatePassword(new AccountDetails(account), new UpdatePasswordRequest("currentlyPassword1*", newPassword));
+
+        assertNotEquals(passwordBeforeUpdated, account.getPassword());
+        assertNotEquals(newPassword, account.getPassword());
+    }
+
+    @Test
+    void willThrowBadCredential_whenEnteredPasswordIsInvalid() {
+        assertThrows(BadCredentialsException.class, () -> underTest.updatePassword(
+                        new AccountDetails(make(a(BASIC_ACCOUNT))),
+                        new UpdatePasswordRequest("enteredPassword", "newPassword1*")
+                )
+        );
     }
 
     @Test

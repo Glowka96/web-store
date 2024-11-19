@@ -53,10 +53,10 @@ class AccountAddressServiceTest {
         AccountAddressResponse foundAccountAddressResponse = underTest.getByAccountDetails(accountDetails);
 
         assertNotNull(foundAccountAddressResponse);
-        assertEquals(1L, foundAccountAddressResponse.getId());
-        assertEquals(address.getStreet(),foundAccountAddressResponse.getStreet());
-        assertEquals(address.getCity(), foundAccountAddressResponse.getCity());
-        assertEquals(address.getPostcode(), foundAccountAddressResponse.getPostcode());
+        assertEquals(1L, foundAccountAddressResponse.id());
+        assertEquals(address.getStreet(),foundAccountAddressResponse.street());
+        assertEquals(address.getCity(), foundAccountAddressResponse.city());
+        assertEquals(address.getPostcode(), foundAccountAddressResponse.postcode());
     }
 
     @Test
@@ -76,7 +76,7 @@ class AccountAddressServiceTest {
         verify(addressRepository).save(accountAddressArgumentCaptor.capture());
         AccountAddressResponse mappedAddress = AccountAddressMapper.mapToDto(accountAddressArgumentCaptor.getValue());
 
-        assertEquals(accountDetails.getAccount().getId(), mappedAddress.getId());
+        assertEquals(accountDetails.getAccount().getId(), mappedAddress.id());
         assertEquals(savedAccountAddressResponse, mappedAddress);
     }
 

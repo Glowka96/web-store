@@ -61,9 +61,9 @@ class AccountAddressControllerTest {
                         .header("Authorization", "Bearer {JWT_TOKEN}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.city", is(accountAddressResponse.getCity())))
-                .andExpect(jsonPath("$.street", is(accountAddressResponse.getStreet())))
-                .andExpect(jsonPath("$.postcode", is(accountAddressResponse.getPostcode())))
+                .andExpect(jsonPath("$.city", is(accountAddressResponse.city())))
+                .andExpect(jsonPath("$.street", is(accountAddressResponse.street())))
+                .andExpect(jsonPath("$.postcode", is(accountAddressResponse.postcode())))
                 .andDo(print());
     }
 
@@ -82,9 +82,9 @@ class AccountAddressControllerTest {
                         .header("Authorization", "Bearer {JWT_TOKEN}"))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.city", is(accountAddressResponse.getCity())))
-                .andExpect(jsonPath("$.street", is(accountAddressResponse.getStreet())))
-                .andExpect(jsonPath("$.postcode", is(accountAddressResponse.getPostcode())))
+                .andExpect(jsonPath("$.city", is(accountAddressResponse.city())))
+                .andExpect(jsonPath("$.street", is(accountAddressResponse.street())))
+                .andExpect(jsonPath("$.postcode", is(accountAddressResponse.postcode())))
                 .andDo(print());
     }
 
@@ -103,9 +103,9 @@ class AccountAddressControllerTest {
                         .header("Authorization", "Bearer {JWT_TOKEN}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.city", is(accountAddressResponse.getCity())))
-                .andExpect(jsonPath("$.street", is(accountAddressResponse.getStreet())))
-                .andExpect(jsonPath("$.postcode", is(accountAddressResponse.getPostcode())))
+                .andExpect(jsonPath("$.city", is(accountAddressResponse.city())))
+                .andExpect(jsonPath("$.street", is(accountAddressResponse.street())))
+                .andExpect(jsonPath("$.postcode", is(accountAddressResponse.postcode())))
                 .andDo(print());
     }
 }

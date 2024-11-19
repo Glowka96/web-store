@@ -5,13 +5,14 @@ import com.example.portfolio.webstorespring.config.providers.AdminCredentialsPro
 import com.example.portfolio.webstorespring.enums.RoleType;
 import com.example.portfolio.webstorespring.mappers.AccountMapper;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.AccountRequest;
-import com.example.portfolio.webstorespring.model.dto.accounts.request.PasswordRequest;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.RegistrationRequest;
+import com.example.portfolio.webstorespring.model.dto.accounts.request.UpdatePasswordRequest;
 import com.example.portfolio.webstorespring.model.dto.accounts.response.AccountResponse;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
 import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -63,9 +64,11 @@ public class AccountService {
     }
 
     @Transactional
-    public Map<String, Object> updatePassword(AccountDetails accountDetails, PasswordRequest passwordRequest) {
+    public Map<String, Object> updatePassword(AccountDetails accountDetails, UpdatePasswordRequest updatePasswordRequest) {
         Account loggedAccount = accountDetails.getAccount();
-        loggedAccount.setPassword(encoder.encode(passwordRequest.password()));
+        validatePassword(updatePasswordRequest.enteredPassword(), loggedAccount);
+
+        loggedAccount.setPassword(encoder.encode(updatePasswordRequest.newPassword()));
         accountRepository.save(loggedAccount);
         return Map.of("message", "Password updated successfully.");
     }
@@ -104,5 +107,11 @@ public class AccountService {
     public Account findByEmail(String email) {
         return accountRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Account with email: " + email + " not found"));
+    }
+
+    private void validatePassword(String enteredPassword, Account account) {
+        if(!encoder.matches(enteredPassword, account.getPassword())) {
+            throw new BadCredentialsException("Invalid password.");
+        }
     }
 }

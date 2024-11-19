@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.controllers.accounts;
 
 import com.example.portfolio.webstorespring.controllers.emails.ResetPasswordController;
-import com.example.portfolio.webstorespring.model.dto.accounts.request.PasswordRequest;
+import com.example.portfolio.webstorespring.model.dto.accounts.request.ResetPasswordRequest;
 import com.example.portfolio.webstorespring.services.email.ResetPasswordService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -62,15 +62,15 @@ class ResetPasswordControllerTest {
     @Test
     void shouldConfirmResetPassword() throws Exception {
         result = Map.of("message", "Your new password has been saved");
-        PasswordRequest passwordRequest = new PasswordRequest("Password123$");
+        ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest("Password123$");
 
-        given(resetPasswordService.confirmResetPassword(any(PasswordRequest.class), anyString())).willReturn(result);
+        given(resetPasswordService.confirmResetPassword(any(ResetPasswordRequest.class), anyString())).willReturn(result);
 
         mvc.perform(patch(URI + "/reset-password/confirm")
                         .param("token", "Token123")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(passwordRequest)))
+                        .content(objectMapper.writeValueAsString(resetPasswordRequest)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", is(result)))
                 .andDo(print());

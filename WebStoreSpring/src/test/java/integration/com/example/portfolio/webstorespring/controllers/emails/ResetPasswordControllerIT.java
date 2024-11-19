@@ -3,7 +3,7 @@ package com.example.portfolio.webstorespring.controllers.emails;
 
 import com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper;
 import com.example.portfolio.webstorespring.controllers.AbstractTestRestTemplateIT;
-import com.example.portfolio.webstorespring.model.dto.accounts.request.PasswordRequest;
+import com.example.portfolio.webstorespring.model.dto.accounts.request.ResetPasswordRequest;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.accounts.ConfirmationToken;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
@@ -78,9 +78,9 @@ class ResetPasswordControllerIT extends AbstractTestRestTemplateIT {
                         .but(withNull(CONFIRMED_AT))
                         .but(with(EXPIRED_AT, LocalDateTime.now().plusMinutes(15))))
         );
-        PasswordRequest passwordRequest = new PasswordRequest("newPassword123*");
+        ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest("newPassword123*");
 
-        HttpEntity<PasswordRequest> requestEntity = new HttpEntity<>(passwordRequest);
+        HttpEntity<ResetPasswordRequest> requestEntity = new HttpEntity<>(resetPasswordRequest);
 
         ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
                 resetPasswordUri + "/confirm?token=" + savedConfirmationToken.getToken(),
