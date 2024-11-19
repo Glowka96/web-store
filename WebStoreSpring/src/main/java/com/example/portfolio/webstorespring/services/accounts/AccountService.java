@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 public class AccountService {
@@ -58,6 +60,14 @@ public class AccountService {
 
         accountRepository.save(loggedAccount);
         return AccountMapper.mapToDto(loggedAccount);
+    }
+
+    @Transactional
+    public Map<String, Object> updatePassword(AccountDetails accountDetails, PasswordRequest passwordRequest) {
+        Account loggedAccount = accountDetails.getAccount();
+        loggedAccount.setPassword(encoder.encode(passwordRequest.password()));
+        accountRepository.save(loggedAccount);
+        return Map.of("message", "Password updated successfully.");
     }
 
     void initializeAdminAccount(){

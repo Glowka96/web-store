@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.controllers.emails;
 
-import com.example.portfolio.webstorespring.model.dto.accounts.request.ResetPasswordRequest;
+import com.example.portfolio.webstorespring.model.dto.accounts.request.PasswordRequest;
 import com.example.portfolio.webstorespring.services.email.ResetPasswordService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
@@ -22,8 +22,8 @@ public class ResetPasswordController {
     }
 
     @PatchMapping(value = "/confirm", params = {"token"})
-    public Map<String, Object> confirmResetPassword(@RequestBody @Valid ResetPasswordRequest resetPasswordRequest,
+    public Map<String, Object> confirmResetPassword(@RequestBody @Valid PasswordRequest passwordRequest,
                                                     @RequestParam("token") String token) {
-        return resetPasswordService.confirmResetPassword(resetPasswordRequest, token);
+        return resetPasswordService.confirmResetPassword(passwordRequest, token);
     }
 }
