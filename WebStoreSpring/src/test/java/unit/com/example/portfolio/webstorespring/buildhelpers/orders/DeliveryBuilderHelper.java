@@ -28,34 +28,28 @@ public class DeliveryBuilderHelper {
     }
 
     public static DeliveryRequest createDeliveryRequest() {
-        return DeliveryRequest.builder()
-                .deliveryAddress(DELIVERY_ADDRESS)
-                .deliveryTypeId(1L)
-                .build();
+        return createDeliveryRequest(1L);
     }
 
     public static DeliveryRequest createDeliveryRequest(Long deliveryTypeId) {
-        return DeliveryRequest.builder()
-                .deliveryAddress(DELIVERY_ADDRESS)
-                .deliveryTypeId(deliveryTypeId)
-                .build();
+        return new DeliveryRequest(DELIVERY_ADDRESS, deliveryTypeId);
     }
 
     public static DeliveryResponse createDeliveryResponse() {
         DeliveryTypeResponse deliveryTypeResponse = createDeliveryTypeResponse();
-        return DeliveryResponse.builder()
-                .id(1L)
-                .deliveryTypeResponse(deliveryTypeResponse)
-                .deliveryAddress(DELIVERY_ADDRESS)
-                .shipmentAddress(SHIPMENT_ADDRESS)
-                .build();
+        return new DeliveryResponse(
+                1L,
+                DELIVERY_ADDRESS,
+                SHIPMENT_ADDRESS,
+                deliveryTypeResponse
+        );
     }
 
     public static DeliveryResponseWithoutDeliveryType createDeliveryResponseWithoutDeliveryType() {
-        return DeliveryResponseWithoutDeliveryType.builder()
-                .id(1L)
-                .deliveryAddress(DELIVERY_ADDRESS)
-                .shipmentAddress(SHIPMENT_ADDRESS)
-                .build();
+        return new DeliveryResponseWithoutDeliveryType(
+                1L,
+                DELIVERY_ADDRESS,
+                SHIPMENT_ADDRESS
+        );
     }
 }
