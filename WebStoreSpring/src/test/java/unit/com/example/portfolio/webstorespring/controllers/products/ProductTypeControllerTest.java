@@ -73,8 +73,8 @@ class ProductTypeControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(productTypeRequest)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id", is(productTypeResponse.getId().intValue())))
-                .andExpect(jsonPath("$.name", is(productTypeResponse.getName())))
+                .andExpect(jsonPath("$.id", is(productTypeResponse.id().intValue())))
+                .andExpect(jsonPath("$.name", is(productTypeResponse.name())))
                 .andDo(print());
     }
 
@@ -91,8 +91,8 @@ class ProductTypeControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(productTypeRequest)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(productTypeResponse.getId().intValue())))
-                .andExpect(jsonPath("$.name", is(productTypeResponse.getName())))
+                .andExpect(jsonPath("$.id", is(productTypeResponse.id().intValue())))
+                .andExpect(jsonPath("$.name", is(productTypeResponse.name())))
                 .andDo(print());
     }
 

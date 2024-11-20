@@ -64,7 +64,7 @@ class ProductControllerIT extends AbstractBaseControllerIT<ProductRequest, Produ
                 .isEqualByComparingTo(request.getPrice());
         assertEquals(request.getQuantity(), optionalProduct.get().getQuantity(), response.getQuantity());
         assertEquals(request.getImageUrl(), optionalProduct.get().getImageUrl(), response.getImageUrl());
-        assertEquals(request.getProductTypeId(), optionalProduct.get().getType().getId(), response.getProductTypeResponse().getId());
+        assertEquals(request.getProductTypeId(), optionalProduct.get().getType().getId(), response.getProductTypeResponse().id());
         assertEquals(producerId, optionalProduct.get().getProducer().getId(), response.getProducerResponse().id());
         assertEquals(subcategoryId, optionalProduct.get().getSubcategory().getId());
     }

@@ -1,7 +1,5 @@
 package com.example.portfolio.webstorespring.productsTestData.impl;
 
-import com.example.portfolio.webstorespring.buildhelpers.products.ProducerBuilderHelper;
-import com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper;
 import com.example.portfolio.webstorespring.buildhelpers.products.PromotionBuilderHelper;
 import com.example.portfolio.webstorespring.model.entity.products.*;
 import com.example.portfolio.webstorespring.productsTestData.InitProductTestData;
@@ -19,7 +17,9 @@ import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Set;
 
-import static com.example.portfolio.webstorespring.buildhelpers.products.ProductTypeBuilderHelper.createProductType;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProducerBuilderHelper.createProducerWithoutId;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.*;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProductTypeBuilderHelper.createProductTypeWithoutId;
 import static com.example.portfolio.webstorespring.buildhelpers.products.SubcategoryBuilderHelper.createSubcategory;
 import static com.natpryce.makeiteasy.MakeItEasy.*;
 
@@ -58,8 +58,8 @@ public class InitProductTestDataImpl implements InitProductTestData {
     public void initTestData() {
         initOneProduct();
         Subcategory subcategory2 = subcategoryRepository.save(createSubcategory("Test"));
-        ProductType productType2 = productTypeRepository.save(createProductType("Education"));
-        Producer producer2 = producerRepository.save(ProducerBuilderHelper.createProducerWithoutId("Producer"));
+        ProductType productType2 = productTypeRepository.save(createProductTypeWithoutId("Education"));
+        Producer producer2 = producerRepository.save(createProducerWithoutId("Producer"));
 
         Maker<Product> productMaker = getProductMaker(subcategory, productType, producer);
         Maker<Product> productMaker2 = getProductMaker(subcategory, productType2, producer2);
@@ -73,15 +73,15 @@ public class InitProductTestDataImpl implements InitProductTestData {
                 .but(withNull(PromotionBuilderHelper.ID)));
 
         Product productWithPromotion = productRepository.save(
-                make(productMaker.but(with(ProductBuilderHelper.PRICE, BigDecimal.valueOf(60L))))
+                make(productMaker.but(with(PRICE, BigDecimal.valueOf(60L))))
         );
         Product productWithExpiredPromotion = productRepository.save(make(productMaker));
         Product productWithPromotionAndOtherSubcategory = productRepository.save(
-                make(productMaker3.but(with(ProductBuilderHelper.NAME, "Product")))
+                make(productMaker3.but(with(NAME, "Product")))
         );
         Product productWithPromotionAndOtherProductTypeAndProducer = productRepository.save(make(productMaker2));
         Product productWithOtherSubcategoryAndNoPromotion = productRepository.save(
-                make(productMaker3.but(with(ProductBuilderHelper.NAME, "Product 2")))
+                make(productMaker3.but(with(NAME, "Product 2")))
         );
 
         expiredPromotionWithLowestPriceLast30Days.setProduct(productWithPromotion);
@@ -102,8 +102,8 @@ public class InitProductTestDataImpl implements InitProductTestData {
 
     public void initOneProduct() {
         subcategory = subcategoryRepository.save(createSubcategory("Puzzle"));
-        productType = productTypeRepository.save(createProductType("Test"));
-        producer = producerRepository.save(ProducerBuilderHelper.createProducerWithoutId("Test"));
+        productType = productTypeRepository.save(createProductTypeWithoutId("Test"));
+        producer = producerRepository.save(createProducerWithoutId("Test"));
 
         subId = subcategory.getId();
         producerId = producer.getId();
@@ -141,12 +141,12 @@ public class InitProductTestDataImpl implements InitProductTestData {
 
     @NotNull
     private Maker<Product> getProductMaker(Subcategory subcategory, ProductType productType, Producer producer) {
-        return a(ProductBuilderHelper.BASIC_PRODUCT)
-                .but(withNull(ProductBuilderHelper.ID))
-                .but(with(ProductBuilderHelper.SUBCATEGORY, subcategory))
-                .but(with(ProductBuilderHelper.PRODUCT_TYPE, productType))
-                .but(with(ProductBuilderHelper.PRODUCER, producer))
-                .but(with(ProductBuilderHelper.PRICE_PROMOTIONS, Set.of()))
-                .but(with(ProductBuilderHelper.CREATED_AT, zonedDateTime.toLocalDateTime()));
+        return a(BASIC_PRODUCT)
+                .but(withNull(ID))
+                .but(with(SUBCATEGORY, subcategory))
+                .but(with(PRODUCT_TYPE, productType))
+                .but(with(PRODUCER, producer))
+                .but(with(PRICE_PROMOTIONS, Set.of()))
+                .but(with(CREATED_AT, zonedDateTime.toLocalDateTime()));
     }
 }

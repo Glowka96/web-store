@@ -7,19 +7,16 @@ import com.example.portfolio.webstorespring.model.entity.products.ProductType;
 import com.example.portfolio.webstorespring.repositories.products.ProductTypeRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mapstruct.factory.Mappers;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static com.example.portfolio.webstorespring.buildhelpers.products.ProductTypeBuilderHelper.createProductType;
-import static com.example.portfolio.webstorespring.buildhelpers.products.ProductTypeBuilderHelper.createProductTypeRequest;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProductTypeBuilderHelper.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -31,15 +28,13 @@ class ProductTypeServiceTest {
 
     @Mock
     private ProductTypeRepository productTypeRepository;
-    @Spy
-    private ProductTypeMapper productTypeMapper = Mappers.getMapper(ProductTypeMapper.class);
     @InjectMocks
     private ProductTypeService underTest;
 
     @Test
     void shouldGetAllProductTypes() {
-        List<ProductType> productTypes = Collections.singletonList(new ProductType());
-        List<ProductTypeResponse> expectedResponses = Collections.singletonList(new ProductTypeResponse());
+        List<ProductType> productTypes = Collections.singletonList(createProductType());
+        List<ProductTypeResponse> expectedResponses = Collections.singletonList(createProductTypeResponse());
 
         given(productTypeRepository.findAll()).willReturn(productTypes);
 
@@ -48,7 +43,6 @@ class ProductTypeServiceTest {
         assertEquals(expectedResponses, foundProductTypeResponses);
         verify(productTypeRepository, times(1)).findAll();
         verifyNoMoreInteractions(productTypeRepository);
-        verify(productTypeMapper).mapToDto(productTypes);
     }
 
     @Test
@@ -61,7 +55,7 @@ class ProductTypeServiceTest {
                 ArgumentCaptor.forClass(ProductType.class);
         verify(productTypeRepository).save(productTypeArgumentCaptor.capture());
 
-        ProductTypeResponse mappedProductTypeResponse = productTypeMapper.mapToDto(productTypeArgumentCaptor.getValue());
+        ProductTypeResponse mappedProductTypeResponse = ProductTypeMapper.mapToDto(productTypeArgumentCaptor.getValue());
 
         assertEquals(mappedProductTypeResponse, result);
     }
@@ -81,10 +75,10 @@ class ProductTypeServiceTest {
         verify(productTypeRepository).save(productTypeArgumentCaptor.capture());
 
         ProductTypeResponse mappedProductType =
-                productTypeMapper.mapToDto(productTypeArgumentCaptor.getValue());
+                ProductTypeMapper.mapToDto(productTypeArgumentCaptor.getValue());
 
         assertEquals(mappedProductType, updatedProductTypeResponse);
-        assertNotEquals(productTypeNameBeforeUpdate, updatedProductTypeResponse.getName());
+        assertNotEquals(productTypeNameBeforeUpdate, updatedProductTypeResponse.name());
     }
 
     @Test

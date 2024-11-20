@@ -17,27 +17,23 @@ import java.util.List;
 public class ProductTypeService {
 
     private final ProductTypeRepository productTypeRepository;
-    private final ProductTypeMapper productTypeMapper;
 
     public List<ProductTypeResponse> getAll() {
-        return productTypeMapper.mapToDto(productTypeRepository.findAll());
+        return ProductTypeMapper.mapToDto(productTypeRepository.findAll());
     }
 
     public ProductTypeResponse save(ProductTypeRequest productTypeRequest){
-        ProductType productType = productTypeMapper.mapToEntity(productTypeRequest);
+        ProductType productType = ProductTypeMapper.mapToEntity(productTypeRequest);
         productTypeRepository.save(productType);
-        return productTypeMapper.mapToDto(productType);
+        return ProductTypeMapper.mapToDto(productType);
     }
 
     @Transactional
     public ProductTypeResponse update(Long id, ProductTypeRequest productTypeRequest) {
         ProductType foundProductType = findById(id);
-        ProductType productType = productTypeMapper.mapToEntity(productTypeRequest);
-
-        foundProductType.setName(productType.getName());
+        foundProductType.setName(productTypeRequest.name());
         productTypeRepository.save(foundProductType);
-
-        return productTypeMapper.mapToDto(foundProductType);
+        return ProductTypeMapper.mapToDto(foundProductType);
     }
 
     public void deleteById(Long productTypeId) {
