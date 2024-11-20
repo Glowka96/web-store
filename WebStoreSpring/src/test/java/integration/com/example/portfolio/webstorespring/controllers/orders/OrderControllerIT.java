@@ -271,7 +271,7 @@ class OrderControllerIT extends AbstractAuthControllerIT {
                 response.getBody().getNameUser());
         assertEquals(OrderStatus.OPEN, response.getBody().getStatus());
         assertEquals(exceptedShipmentSize, response.getBody().getShipmentResponses().size());
-        assertEquals(exceptedPrice.add(response.getBody().getDeliveryResponse().getDeliveryTypeResponse().getPrice()).setScale(2, RoundingMode.HALF_UP),
+        assertEquals(exceptedPrice.add(response.getBody().getDeliveryResponse().deliveryTypeResponse().price()).setScale(2, RoundingMode.HALF_UP),
                 response.getBody().getTotalPrice()
         );
     }
