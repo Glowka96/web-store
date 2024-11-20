@@ -16,26 +16,25 @@ import java.util.List;
 public class DeliveryTypeService {
 
     private final DeliveryTypeRepository deliveryTypeRepository;
-    private final DeliveryTypeMapper deliveryTypeMapper;
 
     public List<DeliveryTypeResponse> getAll() {
-        return deliveryTypeMapper.mapToDto(deliveryTypeRepository.findAll());
+        return DeliveryTypeMapper.mapToDto(deliveryTypeRepository.findAll());
     }
 
     public DeliveryTypeResponse save(DeliveryTypeRequest deliveryTypeRequest){
-        DeliveryType deliveryType = deliveryTypeMapper.mapToEntity(deliveryTypeRequest);
+        DeliveryType deliveryType = DeliveryTypeMapper.mapToEntity(deliveryTypeRequest);
 
         deliveryTypeRepository.save(deliveryType);
-        return deliveryTypeMapper.mapToDto(deliveryType);
+        return DeliveryTypeMapper.mapToDto(deliveryType);
     }
 
     public DeliveryTypeResponse update(Long id, DeliveryTypeRequest deliveryTypeRequest) {
         DeliveryType foundDeliveryType = findById(id);
 
-        foundDeliveryType.setName(deliveryTypeRequest.getName());
-        foundDeliveryType.setPrice(deliveryTypeRequest.getPrice());
+        foundDeliveryType.setName(deliveryTypeRequest.name());
+        foundDeliveryType.setPrice(deliveryTypeRequest.price());
         deliveryTypeRepository.save(foundDeliveryType);
-        return deliveryTypeMapper.mapToDto(foundDeliveryType);
+        return DeliveryTypeMapper.mapToDto(foundDeliveryType);
     }
 
     public void deleteById(Long id){
