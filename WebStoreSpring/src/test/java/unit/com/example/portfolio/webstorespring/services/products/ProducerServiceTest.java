@@ -8,11 +8,9 @@ import com.example.portfolio.webstorespring.model.entity.products.Producer;
 import com.example.portfolio.webstorespring.repositories.products.ProducerRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mapstruct.factory.Mappers;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
@@ -26,8 +24,6 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith({MockitoExtension.class})
 class ProducerServiceTest {
-    @Spy
-    private ProducerMapper producerMapper = Mappers.getMapper(ProducerMapper.class);
     @Mock
     private ProducerRepository producerRepository;
     @InjectMocks
@@ -40,9 +36,9 @@ class ProducerServiceTest {
 
         ProducerResponse foundProducerResponse = underTest.getById(1L);
 
-        assertEquals(1L, foundProducerResponse.getId());
+        assertEquals(1L, foundProducerResponse.id());
         assertNotNull(foundProducerResponse);
-        assertEquals(producer.getName(), foundProducerResponse.getName());
+        assertEquals(producer.getName(), foundProducerResponse.name());
     }
 
     @Test
@@ -75,7 +71,7 @@ class ProducerServiceTest {
         verify(producerRepository).save(producerArgumentCaptor.capture());
 
         ProducerResponse mappedProducerResponse =
-                producerMapper.mapToDto(producerArgumentCaptor.getValue());
+                ProducerMapper.mapToDto(producerArgumentCaptor.getValue());
 
         assertEquals(mappedProducerResponse, savedProducerResponse);
     }
@@ -93,10 +89,10 @@ class ProducerServiceTest {
                 ArgumentCaptor.forClass(Producer.class);
         verify(producerRepository).save(producerArgumentCaptor.capture());
 
-        ProducerResponse mappedCategoryResponse = producerMapper.mapToDto(producerArgumentCaptor.getValue());
+        ProducerResponse mappedCategoryResponse = ProducerMapper.mapToDto(producerArgumentCaptor.getValue());
 
         assertEquals(mappedCategoryResponse, updatedProducerResponse);
-        assertNotEquals(producerNameBeforeUpdate, mappedCategoryResponse.getName());
+        assertNotEquals(producerNameBeforeUpdate, mappedCategoryResponse.name());
     }
 
     @Test

@@ -9,18 +9,18 @@ import java.util.List;
 
 public interface DeliveryTypeMapper {
 
+    static List<DeliveryTypeResponse> mapToDto(List<DeliveryType> deliveryTypes) {
+        return deliveryTypes.stream()
+                .map(DeliveryTypeMapper::mapToDto)
+                .toList();
+    }
+
     static DeliveryTypeResponse mapToDto(DeliveryType deliveryType) {
         return new DeliveryTypeResponse(
                 deliveryType.getId(),
                 deliveryType.getName(),
                 deliveryType.getPrice()
         );
-    }
-
-    static List<DeliveryTypeResponse> mapToDto(List<DeliveryType> deliveryTypes) {
-        return deliveryTypes.stream()
-                .map(DeliveryTypeMapper::mapToDto)
-                .toList();
     }
 
     static DeliveryType mapToEntity(DeliveryTypeRequest deliveryTypeRequest) {

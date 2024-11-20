@@ -13,28 +13,21 @@ public class ProducerBuilderHelper {
                 .build();
     }
 
-    public static Producer createProducer(String name) {
+    public static Producer createProducerWithoutId(String name) {
         return Producer.builder()
                 .name(name)
                 .build();
     }
 
     public static ProducerRequest createProducerRequest() {
-        return ProducerRequest.builder()
-                .name("Test")
-                .build();
+        return createProducerRequest("Test");
     }
 
     public static ProducerRequest createProducerRequest(String name) {
-        return ProducerRequest.builder()
-                .name(name)
-                .build();
+        return new ProducerRequest(name);
     }
 
     public static ProducerResponse createProducerResponse() {
-        return ProducerResponse.builder()
-                .id(1L)
-                .name("Test")
-                .build();
+        return new ProducerResponse(1L, "Test");
     }
 }

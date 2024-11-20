@@ -3,20 +3,28 @@ package com.example.portfolio.webstorespring.mappers;
 import com.example.portfolio.webstorespring.model.dto.products.request.ProducerRequest;
 import com.example.portfolio.webstorespring.model.dto.products.response.ProducerResponse;
 import com.example.portfolio.webstorespring.model.entity.products.Producer;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(
-        componentModel = "spring"
-)
+
 public interface ProducerMapper {
-    ProducerResponse mapToDto(Producer producer);
 
-    List<ProducerResponse> mapToDto(List<Producer> producers);
+    static List<ProducerResponse> mapToDto(List<Producer> producers) {
+        return producers.stream()
+                .map(ProducerMapper::mapToDto)
+                .toList();
+    }
 
-    @Mapping(target = "products", ignore = true)
-    @Mapping(target = "id", ignore = true)
-    Producer mapToEntity(ProducerRequest producerRequest);
+    static ProducerResponse mapToDto(Producer producer) {
+        return new ProducerResponse(
+                producer.getId(),
+                producer.getName()
+        );
+    }
+
+    static Producer mapToEntity(ProducerRequest producerRequest) {
+        return Producer.builder()
+                .name(producerRequest.name())
+                .build();
+    }
 }

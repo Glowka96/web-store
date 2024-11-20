@@ -49,7 +49,7 @@ class ProducerControllerTest {
     void shouldGetAllProducer() throws Exception {
         ProducerResponse producerResponse = createProducerResponse();
 
-        given(producerService.getAll()).willReturn(List.of(producerResponse, new ProducerResponse()));
+        given(producerService.getAll()).willReturn(List.of(producerResponse, producerResponse));
 
         mvc.perform(get(URI)
                         .accept(MediaType.APPLICATION_JSON))
@@ -70,8 +70,8 @@ class ProducerControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(productRequest)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id", is(producerResponse.getId().intValue())))
-                .andExpect(jsonPath("$.name", is(producerResponse.getName())))
+                .andExpect(jsonPath("$.id", is(producerResponse.id().intValue())))
+                .andExpect(jsonPath("$.name", is(producerResponse.name())))
                 .andDo(print());
     }
 
@@ -87,13 +87,13 @@ class ProducerControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(productRequest)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(producerResponse.getId().intValue())))
-                .andExpect(jsonPath("$.name", is(producerResponse.getName())))
+                .andExpect(jsonPath("$.id", is(producerResponse.id().intValue())))
+                .andExpect(jsonPath("$.name", is(producerResponse.name())))
                 .andDo(print());
     }
 
     @Test
-    void shouldDeleteProducer() throws Exception{
+    void shouldDeleteProducer() throws Exception {
         mvc.perform(delete(URI + "/{id}", 1))
                 .andExpect(status().isNoContent())
                 .andDo(print());

@@ -17,32 +17,27 @@ import java.util.List;
 public class ProducerService {
 
     private final ProducerRepository producerRepository;
-    private final ProducerMapper producerMapper;
 
     public ProducerResponse getById(Long id) {
-        Producer foundProducer = findById(id);
-        return producerMapper.mapToDto(foundProducer);
+        return ProducerMapper.mapToDto(findById(id));
     }
 
     public List<ProducerResponse> getAll() {
-        return producerMapper.mapToDto(producerRepository.findAll());
+        return ProducerMapper.mapToDto(producerRepository.findAll());
     }
 
     public ProducerResponse save(ProducerRequest producerRequest) {
-        Producer producer = producerMapper.mapToEntity(producerRequest);
+        Producer producer = ProducerMapper.mapToEntity(producerRequest);
         producerRepository.save(producer);
-        return producerMapper.mapToDto(producer);
+        return ProducerMapper.mapToDto(producer);
     }
 
     @Transactional
     public ProducerResponse update(Long id, ProducerRequest producerRequest) {
         Producer foundProducer = findById(id);
-
-        Producer producer = producerMapper.mapToEntity(producerRequest);
-        setupUpdatedProducer(foundProducer, producer);
-
-        producerRepository.save(producer);
-        return producerMapper.mapToDto(producer);
+        foundProducer.setName(producerRequest.name());
+        producerRepository.save(foundProducer);
+        return ProducerMapper.mapToDto(foundProducer);
     }
 
     public void deleteById(Long id) {
@@ -52,16 +47,5 @@ public class ProducerService {
     protected Producer findById(Long id) {
         return producerRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Producer", "id", id));
-    }
-
-    private void setupUpdatedProducer(Producer foundProducer,
-                                     Producer updatedProducer) {
-        updatedProducer.setId(foundProducer.getId());
-        if (updatedProducer.getName() == null) {
-            updatedProducer.setName(foundProducer.getName());
-        }
-        if (updatedProducer.getProducts() == null) {
-            updatedProducer.setProducts(foundProducer.getProducts());
-        }
     }
 }
