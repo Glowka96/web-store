@@ -39,10 +39,10 @@ public class AccountService {
     @Transactional
     public Account save(RegistrationRequest registrationRequest) {
         return accountRepository.save(Account.builder()
-                .firstName(registrationRequest.getFirstName())
-                .lastName(registrationRequest.getLastName())
-                .email(registrationRequest.getEmail())
-                .password(encoder.encode(registrationRequest.getPassword()))
+                .firstName(registrationRequest.firstName())
+                .lastName(registrationRequest.lastName())
+                .email(registrationRequest.email())
+                .password(encoder.encode(registrationRequest.password()))
                 .roles(roleService.findByName(RoleType.ROLE_USER.name()))
                 .enabled(Boolean.FALSE)
                 .imageUrl(accountImageUrlProvider.getUrl())

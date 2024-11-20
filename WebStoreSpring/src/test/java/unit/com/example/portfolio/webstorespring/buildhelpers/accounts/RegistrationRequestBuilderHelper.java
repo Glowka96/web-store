@@ -5,11 +5,11 @@ import com.example.portfolio.webstorespring.model.dto.accounts.request.Registrat
 public class RegistrationRequestBuilderHelper {
 
     public static RegistrationRequest createRegistrationRequest() {
-        return RegistrationRequest.builder()
-                .firstName("Name")
-                .lastName("Lastname")
-                .email("test@test.pl")
-                .password("Password123*")
-                .build();
+        return new RegistrationRequest(
+                "Name",
+                "Lastname",
+                "test@test.pl",
+                "Password123*"
+        );
     }
 }
