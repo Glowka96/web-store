@@ -17,29 +17,24 @@ import java.util.List;
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
-    private final CategoryMapper categoryMapper;
 
     public List<CategoryResponse> getAll() {
-        return categoryMapper.mapToDto(
-                categoryRepository.findAll());
+        return CategoryMapper.mapToDto(categoryRepository.findAll());
     }
 
     public CategoryResponse save(CategoryRequest categoryRequest) {
-        Category category = categoryMapper.mapToEntity(categoryRequest);
+        Category category = CategoryMapper.mapToEntity(categoryRequest);
         categoryRepository.save(category);
-        return categoryMapper.mapToDto(category);
+        return CategoryMapper.mapToDto(category);
     }
 
     @Transactional
     public CategoryResponse update(Long id, CategoryRequest categoryRequest) {
         Category foundCategory = findById(id);
-
-        Category category = categoryMapper.mapToEntity(categoryRequest);
-
-        foundCategory.setName(category.getName());
+        foundCategory.setName(categoryRequest.name());
 
         categoryRepository.save(foundCategory);
-        return categoryMapper.mapToDto(foundCategory);
+        return CategoryMapper.mapToDto(foundCategory);
     }
 
     public void deleteById(Long id) {

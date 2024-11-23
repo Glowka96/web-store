@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static com.example.portfolio.webstorespring.buildhelpers.products.SubcategoryBuilderHelper.createSubcategory;
+import static com.example.portfolio.webstorespring.buildhelpers.products.SubcategoryBuilderHelper.createSubcategoryWithoutId;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -29,9 +29,9 @@ class CategoryControllerIT extends AbstractBaseControllerIT<CategoryRequest, Cat
     @Override
     @BeforeEach
     public void initTestData() {
-        Subcategory subcategory1 = createSubcategory("One");
-        Subcategory subcategory2 = createSubcategory("Two");
-        Subcategory subcategory3 = createSubcategory("Three");
+        Subcategory subcategory1 = createSubcategoryWithoutId("One");
+        Subcategory subcategory2 = createSubcategoryWithoutId("Two");
+        Subcategory subcategory3 = createSubcategoryWithoutId("Three");
 
         Category category = CategoryBuilderHelper.createCategory();
         category.setSubcategories(Arrays.asList(subcategory1, subcategory2, subcategory3));
@@ -79,17 +79,17 @@ class CategoryControllerIT extends AbstractBaseControllerIT<CategoryRequest, Cat
     @Override
     public void assertsFieldsWhenGetAll(List<CategoryResponse> responses) {
         assertEquals(1, responses.size());
-        assertEquals(3, responses.get(0).getSubcategoryResponses().size());
+        assertEquals(3, responses.get(0).subcategoryResponses().size());
     }
 
     @Override
     public void assertsFieldsWhenSave(CategoryRequest request,
                                       CategoryResponse response) {
-        Optional<Category> optionalCategory = categoryRepository.findById(response.getId());
+        Optional<Category> optionalCategory = categoryRepository.findById(response.id());
         assertTrue(optionalCategory.isPresent());
 
-        assertThat(response.getId()).isNotNull().isEqualTo(optionalCategory.get().getId());
-        assertEquals(request.getName(), optionalCategory.get().getName(), response.getName());
+        assertThat(response.id()).isNotNull().isEqualTo(optionalCategory.get().getId());
+        assertEquals(request.name(), optionalCategory.get().getName(), response.name());
     }
 
     @Override
@@ -98,16 +98,16 @@ class CategoryControllerIT extends AbstractBaseControllerIT<CategoryRequest, Cat
                                         Category entityBeforeUpdate,
                                         Category entityAfterUpdate) {
         assertThat(entityAfterUpdate.getId()).isEqualTo(savedEntityId)
-                .isEqualTo(response.getId())
+                .isEqualTo(response.id())
                 .isEqualTo(entityBeforeUpdate.getId());
-        assertThat(entityAfterUpdate.getName()).isEqualTo(request.getName())
-                .isEqualTo(response.getName())
+        assertThat(entityAfterUpdate.getName()).isEqualTo(request.name())
+                .isEqualTo(response.name())
                 .isNotEqualTo(entityBeforeUpdate.getName());
     }
 
     @Override
     public void assertsFieldsWhenNotUpdate(CategoryRequest request, Category entity) {
-        assertNotEquals(request.getName(), entity.getName());
+        assertNotEquals(request.name(), entity.getName());
     }
 
     @Test

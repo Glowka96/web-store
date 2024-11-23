@@ -3,22 +3,30 @@ package com.example.portfolio.webstorespring.mappers;
 import com.example.portfolio.webstorespring.model.dto.products.request.CategoryRequest;
 import com.example.portfolio.webstorespring.model.dto.products.response.CategoryResponse;
 import com.example.portfolio.webstorespring.model.entity.products.Category;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(
-        componentModel = "spring"
-)
+
 public interface CategoryMapper {
 
-    @Mapping(target = "subcategoryResponses", source = "subcategories")
-    CategoryResponse mapToDto(Category category);
+    static List<CategoryResponse> mapToDto(List<Category> categories) {
+        return categories.stream()
+                .map(CategoryMapper::mapToDto)
+                .toList();
+    }
 
-    List<CategoryResponse> mapToDto(List<Category> categories);
+    static CategoryResponse mapToDto(Category category) {
+        return new CategoryResponse(
+                category.getId(),
+                category.getName(),
+                category.getSubcategories() == null ? null
+                        : SubcategoryMapper.mapToDto(category.getSubcategories())
+        );
+    }
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "subcategories", ignore = true)
-    Category mapToEntity(CategoryRequest categoryRequest);
+    static Category mapToEntity(CategoryRequest categoryRequest) {
+        return Category.builder()
+                .name(categoryRequest.name())
+                .build();
+    }
 }

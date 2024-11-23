@@ -8,11 +8,9 @@ import com.example.portfolio.webstorespring.model.entity.products.Category;
 import com.example.portfolio.webstorespring.repositories.products.CategoryRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mapstruct.factory.Mappers;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
@@ -27,8 +25,6 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith({MockitoExtension.class})
 class CategoryServiceTest {
-    @Spy
-    private CategoryMapper categoryMapper = Mappers.getMapper(CategoryMapper.class);
     @Mock
     private CategoryRepository categoryRepository;
     @InjectMocks
@@ -46,7 +42,6 @@ class CategoryServiceTest {
         assertEquals(exceptedResponses, foundCategoryResponses);
         verify(categoryRepository, times(1)).findAll();
         verifyNoMoreInteractions(categoryRepository);
-        verify(categoryMapper, times(1)).mapToDto(categories);
     }
 
     @Test
@@ -60,7 +55,7 @@ class CategoryServiceTest {
         verify(categoryRepository).save(categoryArgumentCaptor.capture());
 
         CategoryResponse mappedCategoryResponse =
-                categoryMapper.mapToDto(categoryArgumentCaptor.getValue());
+                CategoryMapper.mapToDto(categoryArgumentCaptor.getValue());
 
         assertEquals(mappedCategoryResponse, savedCategoryResponse);
     }
@@ -79,10 +74,10 @@ class CategoryServiceTest {
         verify(categoryRepository).save(categoryArgumentCaptor.capture());
 
         CategoryResponse mappedCategoryResponse =
-                categoryMapper.mapToDto(categoryArgumentCaptor.getValue());
+                CategoryMapper.mapToDto(categoryArgumentCaptor.getValue());
 
         assertEquals(mappedCategoryResponse, updatedCategoryResponse);
-        assertNotEquals(categoryNameBeforeUpdate, updatedCategoryResponse.getName());
+        assertNotEquals(categoryNameBeforeUpdate, updatedCategoryResponse.name());
     }
 
     @Test

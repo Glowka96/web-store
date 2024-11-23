@@ -70,8 +70,8 @@ class CategoryControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(categoryRequest)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id", is(categoryResponse.getId().intValue())))
-                .andExpect(jsonPath("$.name", is(categoryResponse.getName())))
+                .andExpect(jsonPath("$.id", is(categoryResponse.id().intValue())))
+                .andExpect(jsonPath("$.name", is(categoryResponse.name())))
                 .andDo(print());
     }
 
@@ -87,8 +87,8 @@ class CategoryControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(categoryRequest)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(categoryResponse.getId().intValue())))
-                .andExpect(jsonPath("$.name", is(categoryResponse.getName())))
+                .andExpect(jsonPath("$.id", is(categoryResponse.id().intValue())))
+                .andExpect(jsonPath("$.name", is(categoryResponse.name())))
                 .andDo(print());
     }
 
