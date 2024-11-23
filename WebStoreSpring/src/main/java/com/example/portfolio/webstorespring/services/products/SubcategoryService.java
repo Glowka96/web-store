@@ -36,10 +36,10 @@ public class SubcategoryService {
     @Transactional
     public SubcategoryResponse save(Long categoryId,
                                     SubcategoryRequest subcategoryRequest) {
-        Subcategory subcategory = Subcategory.builder()
-                .name(subcategoryRequest.name())
-                .category(categoryService.findById(categoryId))
-                .build();
+        Subcategory subcategory = SubcategoryMapper.mapToEntity(
+                subcategoryRequest,
+                categoryService.findById(categoryId)
+        );
         subcategoryRepository.save(subcategory);
         return SubcategoryMapper.mapToDto(subcategory);
     }
