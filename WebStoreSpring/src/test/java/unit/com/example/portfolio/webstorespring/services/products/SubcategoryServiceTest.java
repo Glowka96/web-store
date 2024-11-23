@@ -9,11 +9,9 @@ import com.example.portfolio.webstorespring.model.entity.products.Subcategory;
 import com.example.portfolio.webstorespring.repositories.products.SubcategoryRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mapstruct.factory.Mappers;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
@@ -30,8 +28,6 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith({MockitoExtension.class})
 class SubcategoryServiceTest {
-    @Spy
-    private SubcategoryMapper subCategoryMapper = Mappers.getMapper(SubcategoryMapper.class);
     @Mock
     private SubcategoryRepository subcategoryRepository;
     @Mock
@@ -61,6 +57,7 @@ class SubcategoryServiceTest {
         Category category = createCategory();
         SubcategoryRequest subcategoryRequest = createSubcategoryRequest();
         given(categoryService.findById(anyLong())).willReturn(category);
+        given(subcategoryRepository.save(any(Subcategory.class))).willReturn(createSubcategory());
 
         SubcategoryResponse savedSubcategoryResponse = underTest.save(category.getId(), subcategoryRequest);
 
@@ -68,10 +65,10 @@ class SubcategoryServiceTest {
                 ArgumentCaptor.forClass(Subcategory.class);
         verify(subcategoryRepository).save(subcategoryArgumentCaptor.capture());
 
-        SubcategoryResponse mappedSubCategory =
-                subCategoryMapper.mapToDto(subcategoryArgumentCaptor.getValue());
+        SubcategoryResponse mappedSubcategory =
+                SubcategoryMapper.mapToDto(subcategoryArgumentCaptor.getValue());
 
-        assertEquals(mappedSubCategory, savedSubcategoryResponse);
+        assertEquals(mappedSubcategory, savedSubcategoryResponse);
     }
 
     @Test
@@ -91,10 +88,10 @@ class SubcategoryServiceTest {
         verify(subcategoryRepository).save(subCategoryArgumentCaptor.capture());
 
         SubcategoryResponse mappedSubcategoryRequest =
-                subCategoryMapper.mapToDto(subCategoryArgumentCaptor.getValue());
+                SubcategoryMapper.mapToDto(subCategoryArgumentCaptor.getValue());
 
         assertEquals(mappedSubcategoryRequest, updatedSubcategoryRequest);
-        assertNotEquals(subcategoryNameBeforeUpdate, updatedSubcategoryRequest.getName());
+        assertNotEquals(subcategoryNameBeforeUpdate, updatedSubcategoryRequest.name());
     }
 
     @Test

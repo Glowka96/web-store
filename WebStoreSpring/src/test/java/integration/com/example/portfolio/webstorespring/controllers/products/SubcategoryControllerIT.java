@@ -77,12 +77,12 @@ class SubcategoryControllerIT extends AbstractBaseControllerIT<SubcategoryReques
     public void assertsFieldsWhenSave(SubcategoryRequest request,
                                       SubcategoryResponse response) {
         Optional<Subcategory> optionalSubcategory =
-                subcategoryRepository.findById(response.getId());
+                subcategoryRepository.findById(response.id());
         assertTrue(optionalSubcategory.isPresent());
 
-        assertThat(response.getId()).isNotNull()
+        assertThat(response.id()).isNotNull()
                 .isEqualTo(optionalSubcategory.get().getId());
-        assertEquals(request.getName(), optionalSubcategory.get().getName(), response.getName());
+        assertEquals(request.name(), optionalSubcategory.get().getName(), response.name());
     }
 
     @Override
@@ -91,18 +91,18 @@ class SubcategoryControllerIT extends AbstractBaseControllerIT<SubcategoryReques
                                         Subcategory entityBeforeUpdate,
                                         Subcategory entityAfterUpdate) {
         assertThat(entityAfterUpdate.getId()).isEqualTo(savedEntityId)
-                .isEqualTo(response.getId())
+                .isEqualTo(response.id())
                 .isEqualTo(entityBeforeUpdate.getId());
         assertThat(entityAfterUpdate.getCategory().getId()).isEqualTo(savedCategoryId);
-        assertThat(entityAfterUpdate.getName()).isEqualTo(request.getName())
-                .isEqualTo(response.getName())
+        assertThat(entityAfterUpdate.getName()).isEqualTo(request.name())
+                .isEqualTo(response.name())
                 .isNotEqualTo(entityBeforeUpdate.getName());
     }
 
     @Override
     public void assertsFieldsWhenNotUpdate(SubcategoryRequest request,
                                            Subcategory entity) {
-        assertNotEquals(request.getName(), entity.getName());
+        assertNotEquals(request.name(), entity.getName());
     }
 
     @Test

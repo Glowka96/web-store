@@ -5,7 +5,6 @@ import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException
 import com.example.portfolio.webstorespring.mappers.SubcategoryMapper;
 import com.example.portfolio.webstorespring.model.dto.products.request.SubcategoryRequest;
 import com.example.portfolio.webstorespring.model.dto.products.response.SubcategoryResponse;
-import com.example.portfolio.webstorespring.model.entity.products.Category;
 import com.example.portfolio.webstorespring.model.entity.products.Subcategory;
 import com.example.portfolio.webstorespring.repositories.products.SubcategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,13 +20,12 @@ public class SubcategoryService {
 
     private final SubcategoryRepository subcategoryRepository;
     private final CategoryService categoryService;
-    private final SubcategoryMapper subcategoryMapper;
 
     public List<SubcategoryResponse> getAll() {
-        return subcategoryMapper.mapToDto(subcategoryRepository.findAll());
+        return SubcategoryMapper.mapToDto(subcategoryRepository.findAll());
     }
 
-    Set<Subcategory> findAllByNames(Set<String> names){
+    Set<Subcategory> findAllByNames(Set<String> names) {
         Set<Subcategory> subcategories = subcategoryRepository.findAllByNames(names);
         if (subcategories.isEmpty()) {
             throw new NotFoundSubcategoriesByNamesException();
@@ -38,12 +36,12 @@ public class SubcategoryService {
     @Transactional
     public SubcategoryResponse save(Long categoryId,
                                     SubcategoryRequest subcategoryRequest) {
-        Category foundCategory = categoryService.findById(categoryId);
-        Subcategory subcategory = subcategoryMapper.mapToEntity(subcategoryRequest);
-
-        subcategory.setCategory(foundCategory);
+        Subcategory subcategory = Subcategory.builder()
+                .name(subcategoryRequest.name())
+                .category(categoryService.findById(categoryId))
+                .build();
         subcategoryRepository.save(subcategory);
-        return subcategoryMapper.mapToDto(subcategory);
+        return SubcategoryMapper.mapToDto(subcategory);
     }
 
     @Transactional
@@ -52,11 +50,11 @@ public class SubcategoryService {
                                       SubcategoryRequest subcategoryRequest) {
         Subcategory foundSubcategory = findById(subcategoryId);
 
-        foundSubcategory.setName(subcategoryRequest.getName());
+        foundSubcategory.setName(subcategoryRequest.name());
         foundSubcategory.setCategory(categoryService.findById(categoryId));
 
         subcategoryRepository.save(foundSubcategory);
-        return subcategoryMapper.mapToDto(foundSubcategory);
+        return SubcategoryMapper.mapToDto(foundSubcategory);
     }
 
     public void deleteById(Long subcategoryId) {

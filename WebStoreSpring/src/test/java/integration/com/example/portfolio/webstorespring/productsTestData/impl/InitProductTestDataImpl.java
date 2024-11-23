@@ -20,7 +20,7 @@ import java.util.Set;
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProducerBuilderHelper.createProducerWithoutId;
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.*;
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductTypeBuilderHelper.createProductTypeWithoutId;
-import static com.example.portfolio.webstorespring.buildhelpers.products.SubcategoryBuilderHelper.createSubcategory;
+import static com.example.portfolio.webstorespring.buildhelpers.products.SubcategoryBuilderHelper.createSubcategoryWithoutId;
 import static com.natpryce.makeiteasy.MakeItEasy.*;
 
 public class InitProductTestDataImpl implements InitProductTestData {
@@ -57,7 +57,7 @@ public class InitProductTestDataImpl implements InitProductTestData {
 
     public void initTestData() {
         initOneProduct();
-        Subcategory subcategory2 = subcategoryRepository.save(createSubcategory("Test"));
+        Subcategory subcategory2 = subcategoryRepository.save(createSubcategoryWithoutId("Test"));
         ProductType productType2 = productTypeRepository.save(createProductTypeWithoutId("Education"));
         Producer producer2 = producerRepository.save(createProducerWithoutId("Producer"));
 
@@ -101,7 +101,7 @@ public class InitProductTestDataImpl implements InitProductTestData {
     }
 
     public void initOneProduct() {
-        subcategory = subcategoryRepository.save(createSubcategory("Puzzle"));
+        subcategory = subcategoryRepository.save(createSubcategoryWithoutId("Puzzle"));
         productType = productTypeRepository.save(createProductTypeWithoutId("Test"));
         producer = producerRepository.save(createProducerWithoutId("Test"));
 
