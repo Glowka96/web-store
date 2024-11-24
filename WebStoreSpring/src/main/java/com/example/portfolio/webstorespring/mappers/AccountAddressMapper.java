@@ -10,9 +10,9 @@ public interface AccountAddressMapper {
         return new AccountAddressResponse(
                 address.getId(),
                 address.getCity(),
-                address.getStreet(),
-                address.getPostcode()
-        );
+                address.getPostcode(),
+                address.getStreet()
+                );
     }
 
     static AccountAddress mapToEntity(AccountAddressRequest accountAddressRequest) {

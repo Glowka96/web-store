@@ -1,6 +1,5 @@
 package com.example.portfolio.webstorespring.model.dto.accounts.request;
 
-import com.example.portfolio.webstorespring.annotations.Password;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -13,9 +12,6 @@ public record AccountRequest(
         @NotBlank(message = "The last name can't be blank")
         @Size(min = 3, max = 20, message = "The name must between min 3 and max 20 letters")
         String lastName,
-
-        @Password(message = "The password format is invalid")
-        String password,
 
         @Pattern(regexp = "^(https?://)?[\\w./\\s-]*\\.(?:jpg|png)$",
                 message = "This image url format is invalid")

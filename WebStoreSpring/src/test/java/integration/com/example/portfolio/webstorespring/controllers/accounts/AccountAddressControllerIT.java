@@ -61,11 +61,7 @@ class AccountAddressControllerIT extends AbstractAuthControllerIT {
 
     @Test
     void shouldUpdateAccountAddress_forAuthenticatedAccount_thenStatusOK() {
-        AccountAddressRequest addressRequest = createAccountAddressRequest(
-                "Newnamecity",
-                "00-000",
-                "new-street 99"
-        );
+        AccountAddressRequest addressRequest = new AccountAddressRequest("Test", "99-000", "New-street 3");
 
         HttpEntity<AccountAddressRequest> httpEntity = new HttpEntity<>(addressRequest, getHttpHeaderWithUserToken());
 

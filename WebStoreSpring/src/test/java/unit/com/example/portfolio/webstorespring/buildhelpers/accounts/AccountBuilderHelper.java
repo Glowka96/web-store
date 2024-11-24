@@ -44,21 +44,14 @@ public class AccountBuilderHelper {
                     .build();
 
     public static AccountRequest createAccountRequest() {
-        return new AccountRequest(
-                ACCOUNT_FIRST_NAME,
-                ACCOUNT_LAST_NAME,
-                ACCOUNT_PASSWORD,
-                ACCOUNT_IMAGE_URL
-        );
+        return createAccountRequest(ACCOUNT_FIRST_NAME, ACCOUNT_LAST_NAME);
     }
 
     public static AccountRequest createAccountRequest(String firstname,
-                                                      String lastname,
-                                                      String password) {
+                                                      String lastname) {
         return new AccountRequest(
                 firstname,
                 lastname,
-                password,
                 ACCOUNT_IMAGE_URL
         );
     }

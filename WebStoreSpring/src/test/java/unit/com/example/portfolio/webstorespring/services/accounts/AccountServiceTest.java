@@ -24,6 +24,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -150,13 +152,17 @@ class AccountServiceTest {
     @Test
     void shouldUpdatePassword() {
         Account account = make(a(BASIC_ACCOUNT));
-        String passwordBeforeUpdated = account.getPassword();
         String newPassword = "new password";
+        Map<String, Object> excepted = new HashMap<>();
+        excepted.put("message", "Password updated successfully.");
+
+        given(encoder.matches(anyString(), anyString())).willReturn(true);
         given(encoder.encode(anyString())).willReturn(HASHED_PASSWORD);
 
-        underTest.updatePassword(new AccountDetails(account), new UpdatePasswordRequest("currentlyPassword1*", newPassword));
+        Map<String, Object> result = underTest.updatePassword(new AccountDetails(account), new UpdatePasswordRequest(account.getPassword(), newPassword));
 
-        assertNotEquals(passwordBeforeUpdated, account.getPassword());
+        assertEquals(excepted, result);
+        assertEquals(HASHED_PASSWORD, account.getPassword());
         assertNotEquals(newPassword, account.getPassword());
     }
 

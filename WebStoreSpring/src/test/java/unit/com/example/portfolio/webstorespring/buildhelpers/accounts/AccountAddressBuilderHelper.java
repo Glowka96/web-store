@@ -21,7 +21,7 @@ public class AccountAddressBuilderHelper {
     }
 
     public static AccountAddressRequest createAccountAddressRequest() {
-        return new AccountAddressRequest(CITY, STREET, POSTCODE);
+        return new AccountAddressRequest(CITY, POSTCODE, STREET);
     }
 
     public static AccountAddressRequest createAccountAddressRequest(String city,

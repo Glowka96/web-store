@@ -1,6 +1,5 @@
 package com.example.portfolio.webstorespring.controllers.accounts;
 
-import com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper;
 import com.example.portfolio.webstorespring.controllers.AbstractAuthControllerIT;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.AccountRequest;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.UpdatePasswordRequest;
@@ -17,6 +16,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.createAccountRequest;
 import static org.junit.jupiter.api.Assertions.*;
 
 class AccountControllerIT extends AbstractAuthControllerIT {
@@ -39,10 +39,9 @@ class AccountControllerIT extends AbstractAuthControllerIT {
 
     @Test
     void shouldUpdateAccount_forAuthenticatedAccount_thenStatusOK() {
-        AccountRequest accountRequest = AccountBuilderHelper.createAccountRequest(
+        AccountRequest accountRequest = createAccountRequest(
                 "New test name",
-                "New test lastname",
-                "newPassword123$"
+                "New test lastname"
         );
 
         HttpEntity<AccountRequest> httpEntity = new HttpEntity<>(accountRequest, getHttpHeaderWithUserToken());
@@ -60,10 +59,8 @@ class AccountControllerIT extends AbstractAuthControllerIT {
         Optional<Account> accountOptional =
                 accountRepository.findByEmail(Objects.requireNonNull(response.getBody()).email());
         assertTrue(accountOptional.isPresent());
-
         assertEquals(accountRequest.firstName(), accountOptional.get().getFirstName(), response.getBody().firstName());
         assertEquals(accountRequest.lastName(), accountOptional.get().getLastName(), response.getBody().lastName());
-        assertTrue(passwordEncoder.matches(accountRequest.password(), accountOptional.get().getPassword()));
     }
 
     @Test
@@ -74,15 +71,17 @@ class AccountControllerIT extends AbstractAuthControllerIT {
         String beforeUpdatePassword = getSavedUser().getPassword();
 
         ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
-                localhostUri + ACCOUNT_URI + "/password",
+                localhostUri + ACCOUNT_URI + "/passwords",
                 HttpMethod.PATCH,
                 httpEntity,
                 new ParameterizedTypeReference<>() {
                 }
         );
-        String afterUpdatePassword = getSavedUser().getPassword();
+        Optional<Account> account = accountRepository.findByEmail(getSavedUser().getEmail());
+        String afterUpdatePassword = account.get().getPassword();
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertTrue(passwordEncoder.matches(updatePasswordRequest.newPassword(), afterUpdatePassword));
         assertNotEquals(beforeUpdatePassword, afterUpdatePassword);
     }
 
