@@ -3,9 +3,6 @@ package com.example.portfolio.webstorespring.services.products;
 import com.example.portfolio.webstorespring.buildhelpers.products.PromotionBuilderHelper;
 import com.example.portfolio.webstorespring.exceptions.ProductHasAlreadyPromotionException;
 import com.example.portfolio.webstorespring.exceptions.PromotionPriceGreaterThanBasePriceException;
-import com.example.portfolio.webstorespring.mappers.ProducerMapper;
-import com.example.portfolio.webstorespring.mappers.ProductMapper;
-import com.example.portfolio.webstorespring.mappers.ProductTypeMapper;
 import com.example.portfolio.webstorespring.mappers.PromotionMapper;
 import com.example.portfolio.webstorespring.model.dto.products.request.PromotionRequest;
 import com.example.portfolio.webstorespring.model.dto.products.response.PromotionResponse;
@@ -15,13 +12,10 @@ import com.example.portfolio.webstorespring.repositories.products.PromotionRepos
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mapstruct.factory.Mappers;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import java.math.BigDecimal;
 import java.util.Set;
@@ -45,15 +39,11 @@ class PromotionServiceTest {
     private PromotionRepository promotionRepository;
     @Mock
     private ProductService productService;
-    @Spy
-    private PromotionMapper promotionMapper = Mappers.getMapper(PromotionMapper.class);
     @InjectMocks
     private PromotionService underTest;
 
     @Test
     void shouldSavePromotion() {
-        setMappers();
-
         Product product = make(a(BASIC_PRODUCT).but(with(PRICE_PROMOTIONS, Set.of())));
         PromotionRequest promotionRequest = PromotionBuilderHelper.createPromotionRequest();
 
@@ -67,18 +57,9 @@ class PromotionServiceTest {
         verify(promotionRepository).save(promotionArgumentCaptor.capture());
 
         PromotionResponse mappedPromotionResponse =
-                promotionMapper.mapToDto(promotionArgumentCaptor.getValue());
+                PromotionMapper.mapToDto(promotionArgumentCaptor.getValue());
 
         assertEquals(mappedPromotionResponse, savedPromotionRequest);
-    }
-
-    private void setMappers() {
-        ProductMapper productMapper = Mappers.getMapper(ProductMapper.class);
-        ReflectionTestUtils.setField(promotionMapper, "productMapper", productMapper);
-        ProductTypeMapper productTypeMapper = Mappers.getMapper(ProductTypeMapper.class);
-        ReflectionTestUtils.setField(productMapper, "productTypeMapper", productTypeMapper);
-        ProducerMapper producerMapper = Mappers.getMapper(ProducerMapper.class);
-        ReflectionTestUtils.setField(productMapper, "producerMapper", producerMapper);
     }
 
     @Test

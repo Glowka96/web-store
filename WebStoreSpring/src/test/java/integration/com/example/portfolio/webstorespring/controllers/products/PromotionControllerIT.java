@@ -1,6 +1,5 @@
 package com.example.portfolio.webstorespring.controllers.products;
 
-import com.example.portfolio.webstorespring.buildhelpers.products.PromotionBuilderHelper;
 import com.example.portfolio.webstorespring.controllers.AbstractAuthControllerIT;
 import com.example.portfolio.webstorespring.model.dto.products.request.PromotionRequest;
 import com.example.portfolio.webstorespring.model.dto.products.response.PromotionResponse;
@@ -16,6 +15,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
@@ -44,10 +44,13 @@ class PromotionControllerIT extends AbstractAuthControllerIT{
                 .but(withNull(PRICE_PROMOTIONS)))
         );
 
-        promotionRequest = PromotionBuilderHelper.createPromotionRequest();
         savedProductId = savedProduct.getId();
-        promotionRequest.setProductId(savedProductId);
-        promotionRequest.setEndDate(LocalDateTime.now().plusDays(15).truncatedTo(ChronoUnit.SECONDS));
+        promotionRequest = new PromotionRequest(
+                savedProductId,
+                BigDecimal.valueOf(10.0),
+                LocalDateTime.now(),
+                LocalDateTime.now().plusDays(15).truncatedTo(ChronoUnit.SECONDS)
+        );
     }
 
     @AfterEach
@@ -72,10 +75,10 @@ class PromotionControllerIT extends AbstractAuthControllerIT{
         PromotionResponse promotionResponse = response.getBody();
 
         assertNotNull(promotionResponse);
-        assertEquals(promotionRequest.getPromotionPrice(), promotionResponse.getPromotionPrice());
-        assertEquals(promotionRequest.getStartDate(), promotionResponse.getStartDate());
-        assertEquals(promotionRequest.getEndDate(), promotionResponse.getEndDate());
-        assertEquals(savedProductId, promotionRequest.getProductId(), promotionResponse.getProductResponse().getId());
+        assertEquals(promotionRequest.promotionPrice(), promotionResponse.promotionPrice());
+        assertEquals(promotionRequest.startDate(), promotionResponse.startDate());
+        assertEquals(promotionRequest.endDate(), promotionResponse.endDate());
+        assertEquals(savedProductId, promotionRequest.productId(), promotionResponse.productResponse().id());
     }
 
     @Test

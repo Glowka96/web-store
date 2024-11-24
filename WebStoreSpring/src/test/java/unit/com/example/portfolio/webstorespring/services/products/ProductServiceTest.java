@@ -2,9 +2,7 @@ package com.example.portfolio.webstorespring.services.products;
 
 import com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper;
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
-import com.example.portfolio.webstorespring.mappers.ProducerMapper;
 import com.example.portfolio.webstorespring.mappers.ProductMapper;
-import com.example.portfolio.webstorespring.mappers.ProductTypeMapper;
 import com.example.portfolio.webstorespring.model.dto.products.ProductWithProducerAndPromotionDTO;
 import com.example.portfolio.webstorespring.model.dto.products.request.ProductRequest;
 import com.example.portfolio.webstorespring.model.dto.products.response.ProductResponse;
@@ -13,16 +11,12 @@ import com.example.portfolio.webstorespring.model.entity.products.Product;
 import com.example.portfolio.webstorespring.model.entity.products.ProductType;
 import com.example.portfolio.webstorespring.model.entity.products.Subcategory;
 import com.example.portfolio.webstorespring.repositories.products.ProductRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mapstruct.factory.Mappers;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -43,8 +37,6 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class ProductServiceTest {
 
-    @Spy
-    private ProductMapper productMapper = Mappers.getMapper(ProductMapper.class);
     @Mock
     private ProductRepository productRepository;
     @Mock
@@ -55,14 +47,6 @@ class ProductServiceTest {
     private ProductTypeService productTypeService;
     @InjectMocks
     private ProductService underTest;
-
-    @BeforeEach
-    void initialization() {
-        ProductTypeMapper productTypeMapper = Mappers.getMapper(ProductTypeMapper.class);
-        ReflectionTestUtils.setField(productMapper, "productTypeMapper", productTypeMapper);
-        ProducerMapper producerMapper = Mappers.getMapper(ProducerMapper.class);
-        ReflectionTestUtils.setField(productMapper, "producerMapper", producerMapper);
-    }
 
     @Test
     void shouldGetProductById() {
@@ -115,7 +99,7 @@ class ProductServiceTest {
                 ArgumentCaptor.forClass(Product.class);
         verify(productRepository).save(productArgumentCaptor.capture());
 
-        ProductResponse mappedProductRequest = productMapper.mapToDto(productArgumentCaptor.getValue());
+        ProductResponse mappedProductRequest = ProductMapper.mapToDto(productArgumentCaptor.getValue());
 
         assertEquals(mappedProductRequest, savedProductResponse);
     }
@@ -152,13 +136,13 @@ class ProductServiceTest {
         verify(productRepository).save(productArgumentCaptor.capture());
 
         ProductResponse mappedProductRequest =
-                productMapper.mapToDto(productArgumentCaptor.getValue());
+                ProductMapper.mapToDto(productArgumentCaptor.getValue());
 
         assertEquals(mappedProductRequest, updatedProductResponse);
-        assertNotEquals(beforeUpdateName, updatedProductResponse.getName());
-        assertNotEquals(beforeUpdateDescription, updatedProductResponse.getDescription());
-        assertNotEquals(beforeUpdatePrice, updatedProductResponse.getPrice());
-        assertNotEquals(beforeUpdateQuantity, updatedProductResponse.getQuantity());
+        assertNotEquals(beforeUpdateName, updatedProductResponse.name());
+        assertNotEquals(beforeUpdateDescription, updatedProductResponse.description());
+        assertNotEquals(beforeUpdatePrice, updatedProductResponse.price());
+        assertNotEquals(beforeUpdateQuantity, updatedProductResponse.quantity());
     }
 
     @Test

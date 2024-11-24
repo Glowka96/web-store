@@ -2,28 +2,19 @@ package com.example.portfolio.webstorespring.model.dto.products.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
-public class PromotionResponse {
+public record PromotionResponse(Long id,
+                                @JsonProperty(value = "product")
+                                ProductResponse productResponse,
 
-    private Long id;
+                                BigDecimal promotionPrice,
 
-    @JsonProperty(value = "product")
-    private ProductResponse productResponse;
+                                @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+                                LocalDateTime startDate,
 
-    private BigDecimal promotionPrice;
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime startDate;
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime endDate;
+                                @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+                                LocalDateTime endDate) {
 }

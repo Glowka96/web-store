@@ -21,7 +21,6 @@ import java.util.List;
 public class ProductService {
 
     private final ProductRepository productRepository;
-    private final ProductMapper productMapper;
     private final ProducerService producerService;
     private final SubcategoryService subcategoryService;
     private final ProductTypeService productTypeService;
@@ -36,18 +35,18 @@ public class ProductService {
     }
 
     public List<ProductResponse> getAll() {
-        return productMapper.mapToDto(productRepository.findAll());
+        return ProductMapper.mapToDto(productRepository.findAll());
     }
 
     @Transactional
     public ProductResponse save(Long subcategoryId, Long producerId, ProductRequest productRequest) {
-        Product product = productMapper.mapToEntity(productRequest);
+        Product product = ProductMapper.mapToEntity(productRequest);
         product.setSubcategory(subcategoryService.findById(subcategoryId));
         product.setProducer(producerService.findById(producerId));
-        product.setType(productTypeService.findById(productRequest.getProductTypeId()));
+        product.setType(productTypeService.findById(productRequest.productTypeId()));
 
         productRepository.save(product);
-        return productMapper.mapToDto(product);
+        return ProductMapper.mapToDto(product);
     }
 
     @Transactional
@@ -56,11 +55,11 @@ public class ProductService {
                                   Long productId,
                                   ProductRequest productRequest) {
         Product foundProduct = findById(productId);
-        Product product = productMapper.mapToEntity(productRequest);
+        Product product = ProductMapper.mapToEntity(productRequest);
 
         foundProduct.setSubcategory(subcategoryService.findById(subcategoryId));
         foundProduct.setProducer(producerService.findById(producerId));
-        foundProduct.setType(productTypeService.findById(productRequest.getProductTypeId()));
+        foundProduct.setType(productTypeService.findById(productRequest.productTypeId()));
         foundProduct.setName(product.getName());
         foundProduct.setDescription(product.getDescription());
         foundProduct.setPrice(product.getPrice());
@@ -68,7 +67,7 @@ public class ProductService {
         foundProduct.setImageUrl(product.getImageUrl());
 
         productRepository.save(foundProduct);
-        return productMapper.mapToDto(foundProduct);
+        return ProductMapper.mapToDto(foundProduct);
     }
 
     public void deleteById(Long id) {

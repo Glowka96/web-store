@@ -19,19 +19,18 @@ public class PromotionService {
 
     private final PromotionRepository promotionRepository;
     private final ProductService productService;
-    private final PromotionMapper promotionMapper;
 
     @Transactional
     public PromotionResponse save(@NotNull PromotionRequest promotionRequest) {
-        Product product = productService.findWithPromotionById(promotionRequest.getProductId());
+        Product product = productService.findWithPromotionById(promotionRequest.productId());
 
         validateProduct(promotionRequest, product);
 
-        Promotion promotion = promotionMapper.mapToEntity(promotionRequest);
+        Promotion promotion = PromotionMapper.mapToEntity(promotionRequest);
         promotion.setProduct(product);
 
         promotionRepository.save(promotion);
-        return promotionMapper.mapToDto(promotion);
+        return PromotionMapper.mapToDto(promotion);
     }
 
     private void validateProduct(PromotionRequest promotionRequest, Product product) {
@@ -39,7 +38,7 @@ public class PromotionService {
             throw new ProductHasAlreadyPromotionException();
         }
 
-        if(product.getPrice().compareTo(promotionRequest.getPromotionPrice()) < 0) {
+        if(product.getPrice().compareTo(promotionRequest.promotionPrice()) < 0) {
             throw new PromotionPriceGreaterThanBasePriceException();
         }
     }
