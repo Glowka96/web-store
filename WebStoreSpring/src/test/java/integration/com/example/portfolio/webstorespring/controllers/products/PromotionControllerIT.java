@@ -3,7 +3,7 @@ package com.example.portfolio.webstorespring.controllers.products;
 import com.example.portfolio.webstorespring.controllers.AbstractAuthControllerIT;
 import com.example.portfolio.webstorespring.model.dto.products.request.PromotionRequest;
 import com.example.portfolio.webstorespring.model.dto.products.response.PromotionResponse;
-import com.example.portfolio.webstorespring.model.entity.products.Product;
+import com.example.portfolio.webstorespring.productsTestData.InitProductTestData;
 import com.example.portfolio.webstorespring.repositories.products.ProductRepository;
 import com.example.portfolio.webstorespring.repositories.products.PromotionRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -19,8 +19,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
-import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.*;
-import static com.natpryce.makeiteasy.MakeItEasy.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -31,20 +29,18 @@ class PromotionControllerIT extends AbstractAuthControllerIT{
     private PromotionRepository promotionRepository;
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private InitProductTestData initProductTestData;
     private static final String PRODUCTS_PROMOTIONS_URI = "/products/promotions";
     private Long savedProductId;
     private PromotionRequest promotionRequest;
 
     @BeforeEach
     public void initTestData() {
-        Product savedProduct = productRepository.save(make(a(BASIC_PRODUCT)
-                .but(withNull(SUBCATEGORY))
-                .but(withNull(PRODUCT_TYPE))
-                .but(withNull(PRODUCER))
-                .but(withNull(PRICE_PROMOTIONS)))
-        );
+        initProductTestData.initOneProduct();
 
-        savedProductId = savedProduct.getId();
+        savedProductId = initProductTestData.getProductIdThatHasNoPromotion();
+
         promotionRequest = new PromotionRequest(
                 savedProductId,
                 BigDecimal.valueOf(10.0),
@@ -56,7 +52,7 @@ class PromotionControllerIT extends AbstractAuthControllerIT{
     @AfterEach
     public void deleteTestData() {
         promotionRepository.deleteAll();
-        productRepository.deleteAll();
+        initProductTestData.deleteTestData();
     }
 
     @Test
@@ -76,7 +72,7 @@ class PromotionControllerIT extends AbstractAuthControllerIT{
 
         assertNotNull(promotionResponse);
         assertEquals(promotionRequest.promotionPrice(), promotionResponse.promotionPrice());
-        assertEquals(promotionRequest.startDate(), promotionResponse.startDate());
+        assertEquals(promotionRequest.startDate().truncatedTo(ChronoUnit.SECONDS), promotionResponse.startDate());
         assertEquals(promotionRequest.endDate(), promotionResponse.endDate());
         assertEquals(savedProductId, promotionRequest.productId(), promotionResponse.productResponse().id());
     }

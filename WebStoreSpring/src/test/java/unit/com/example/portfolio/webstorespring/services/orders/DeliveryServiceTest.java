@@ -1,5 +1,6 @@
 package com.example.portfolio.webstorespring.services.orders;
 
+import com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryBuilderHelper;
 import com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryTypeBuilderHelper;
 import com.example.portfolio.webstorespring.config.providers.ShipmentAddressProvider;
 import com.example.portfolio.webstorespring.model.dto.orders.request.DeliveryRequest;
@@ -12,7 +13,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryBuilderHelper.createDeliveryRequest;
-import static com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryBuilderHelper.getSHIPMENT_ADDRESS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -35,7 +35,7 @@ class DeliveryServiceTest {
         String deliveryAddressBeforeUpdate = deliveryRequest.deliveryAddress();
 
         given(deliveryTypeService.findById(anyLong())).willReturn(deliveryType);
-        given(shipmentAddressProvider.getAddress()).willReturn(getSHIPMENT_ADDRESS());
+        given(shipmentAddressProvider.getAddress()).willReturn(DeliveryBuilderHelper.getShipmentAddress());
 
         Delivery formatedDelivery = underTest.formatDelivery(deliveryRequest);
 
