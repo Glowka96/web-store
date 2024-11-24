@@ -1,24 +1,14 @@
 package com.example.portfolio.webstorespring.model.dto.orders.response;
 
 import com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionDTO;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class ShipmentResponse {
+public record ShipmentResponse(Long id,
 
-    private Long id;
+                               ProductWithPromotionDTO product,
 
-    private ProductWithPromotionDTO product;
+                               Integer quantity,
 
-    private Integer quantity;
-
-    private BigDecimal price;
+                               BigDecimal price) {
 }
