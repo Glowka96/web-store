@@ -13,4 +13,13 @@ public interface DeliveryMapper {
                 DeliveryTypeMapper.mapToDto(delivery.getDeliveryType())
         );
     }
+
+    static DeliveryResponse mapToWithoutDeliveryType(Delivery delivery) {
+        return new DeliveryResponse(
+                delivery.getId(),
+                delivery.getDeliveryAddress(),
+                delivery.getShipmentAddress(),
+                null
+        );
+    }
 }

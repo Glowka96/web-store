@@ -45,11 +45,12 @@ public class DeliveryBuilderHelper {
         );
     }
 
-    public static DeliveryResponseWithoutDeliveryType createDeliveryResponseWithoutDeliveryType() {
-        return new DeliveryResponseWithoutDeliveryType(
+    public static DeliveryResponse createDeliveryResponseWithoutDeliveryType() {
+        return new DeliveryResponse(
                 1L,
                 DELIVERY_ADDRESS,
-                SHIPMENT_ADDRESS
+                SHIPMENT_ADDRESS,
+                null
         );
     }
 }

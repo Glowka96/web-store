@@ -1,5 +1,6 @@
 package com.example.portfolio.webstorespring.mappers;
 
+import com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionDTO;
 import com.example.portfolio.webstorespring.model.dto.products.request.ProductRequest;
 import com.example.portfolio.webstorespring.model.dto.products.response.ProductResponse;
 import com.example.portfolio.webstorespring.model.entity.products.Product;
@@ -24,6 +25,19 @@ public interface ProductMapper {
                 product.getQuantity(),
                 ProductTypeMapper.mapToDto(product.getType()),
                 ProducerMapper.mapToDto(product.getProducer()),
+                null
+        );
+    }
+
+    static ProductWithPromotionDTO mapToDtoWithPromotion(Product product) {
+        return new ProductWithPromotionDTO(
+                product.getId(),
+                product.getName(),
+                product.getImageUrl(),
+                product.getQuantity(),
+                product.getSubcategory().getId(),
+                product.getPrice(),
+                product.getPromotions().isEmpty() ? null : product.getPromotions().iterator().next().getPromotionPrice(),
                 null
         );
     }

@@ -5,7 +5,6 @@ import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException
 import com.example.portfolio.webstorespring.mappers.OrderMapper;
 import com.example.portfolio.webstorespring.model.dto.orders.request.OrderRequest;
 import com.example.portfolio.webstorespring.model.dto.orders.response.OrderResponse;
-import com.example.portfolio.webstorespring.model.dto.orders.response.OrderResponseWithoutShipments;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.orders.Order;
 import com.example.portfolio.webstorespring.model.entity.orders.Shipment;
@@ -25,20 +24,19 @@ import java.util.List;
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final OrderMapper orderMapper;
     private final ShipmentService shipmentService;
     private final DeliveryService deliveryService;
 
-    public List<OrderResponseWithoutShipments> getAllAccountOrder(AccountDetails accountDetails) {
-        return orderMapper.mapToDtoWithoutShipments(
+    public List<OrderResponse> getAllAccountOrder(AccountDetails accountDetails) {
+        return OrderMapper.mapToDtoWithoutShipments(
                 orderRepository.findAllByAccountId(
                         accountDetails.getAccount().getId()
                 )
         );
     }
 
-    public List<OrderResponseWithoutShipments> getLastFiveAccountOrder(AccountDetails accountDetails) {
-        return orderMapper.mapToDtoWithoutShipments(
+    public List<OrderResponse> getLastFiveAccountOrder(AccountDetails accountDetails) {
+        return OrderMapper.mapToDtoWithoutShipments(
                 orderRepository.findLastFiveAccountOrder(
                         accountDetails.getAccount().getId()
                 )
@@ -50,7 +48,7 @@ public class OrderService {
 
         checkOwnerOfOrder(accountDetails, foundOrder);
 
-        return orderMapper.mapToDto(foundOrder);
+        return OrderMapper.mapToDto(foundOrder);
     }
 
     @Transactional
@@ -61,7 +59,7 @@ public class OrderService {
 
         orderRepository.save(order);
 
-        return orderMapper.mapToDto(order);
+        return OrderMapper.mapToDto(order);
     }
 
     private Order findById(Long id) {
@@ -82,8 +80,8 @@ public class OrderService {
                 .nameUser(loggedAccount.getFirstName() +
                           " " + loggedAccount.getLastName())
                 .status(OrderStatus.OPEN)
-                .shipments(shipmentService.setupShipments(orderRequest.getShipmentRequests(), orderRequest.getDiscountCode()))
-                .delivery(deliveryService.formatDelivery(orderRequest.getDeliveryRequest()))
+                .shipments(shipmentService.setupShipments(orderRequest.shipmentRequests(), orderRequest.discountCode()))
+                .delivery(deliveryService.formatDelivery(orderRequest.deliveryRequest()))
                 .build();
 
         setupTotalPrice(order);

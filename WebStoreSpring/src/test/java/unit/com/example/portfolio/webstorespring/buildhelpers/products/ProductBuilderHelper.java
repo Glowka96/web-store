@@ -11,7 +11,10 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 import static com.example.portfolio.webstorespring.buildhelpers.DateForTestBuilderHelper.LOCAL_DATE_TIME;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProducerBuilderHelper.createProducer;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProductTypeBuilderHelper.createProductType;
 import static com.example.portfolio.webstorespring.buildhelpers.products.PromotionBuilderHelper.BASIC_PROMOTION;
+import static com.example.portfolio.webstorespring.buildhelpers.products.SubcategoryBuilderHelper.createSubcategory;
 import static com.natpryce.makeiteasy.MakeItEasy.a;
 import static com.natpryce.makeiteasy.MakeItEasy.make;
 
@@ -43,9 +46,9 @@ public class ProductBuilderHelper {
                     .imageUrl(lookup.valueOf(IMAGE_URL, PRODUCT_IMAGE_URL))
                     .price(lookup.valueOf(PRICE, PRODUCT_PRICE))
                     .quantity(lookup.valueOf(QUANTITY, PRODUCT_QUANTITY))
-                    .type(lookup.valueOf(PRODUCT_TYPE, ProductTypeBuilderHelper.createProductType()))
-                    .subcategory(lookup.valueOf(SUBCATEGORY, SubcategoryBuilderHelper.createSubcategory()))
-                    .producer(lookup.valueOf(PRODUCER, ProducerBuilderHelper.createProducer()))
+                    .type(lookup.valueOf(PRODUCT_TYPE, createProductType()))
+                    .subcategory(lookup.valueOf(SUBCATEGORY, createSubcategory()))
+                    .producer(lookup.valueOf(PRODUCER, createProducer()))
                     .createdAt(lookup.valueOf(CREATED_AT, LOCAL_DATE_TIME))
                     .promotions(lookup.valueOf(PRICE_PROMOTIONS, Set.of(make(a(BASIC_PROMOTION)))))
                     .build();

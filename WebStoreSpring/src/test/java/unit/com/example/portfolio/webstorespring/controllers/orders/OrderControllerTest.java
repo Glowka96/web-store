@@ -3,7 +3,6 @@ package com.example.portfolio.webstorespring.controllers.orders;
 import com.example.portfolio.webstorespring.controllers.AccountDetailsArgumentResolver;
 import com.example.portfolio.webstorespring.model.dto.orders.request.OrderRequest;
 import com.example.portfolio.webstorespring.model.dto.orders.response.OrderResponse;
-import com.example.portfolio.webstorespring.model.dto.orders.response.OrderResponseWithoutShipments;
 import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
 import com.example.portfolio.webstorespring.services.orders.OrderService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -56,7 +55,7 @@ class OrderControllerTest {
 
     @Test
     void shouldGetAllOrders() throws Exception {
-        OrderResponseWithoutShipments orderResponse = createOrderResponseWithoutShipments();
+        OrderResponse orderResponse = createOrderResponseWithoutShipments();
         given(orderService.getAllAccountOrder(any(AccountDetails.class)))
                 .willReturn(List.of(orderResponse, orderResponse));
 
@@ -86,7 +85,7 @@ class OrderControllerTest {
 
     @Test
     void shouldGetLastFiveAccountOrders() throws Exception {
-        OrderResponseWithoutShipments orderResponse = createOrderResponseWithoutShipments();
+        OrderResponse orderResponse = createOrderResponseWithoutShipments();
 
         given(orderService.getLastFiveAccountOrder(any(AccountDetails.class)))
                 .willReturn(List.of(orderResponse, orderResponse, orderResponse, orderResponse, orderResponse));

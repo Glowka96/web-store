@@ -30,7 +30,7 @@ class ShipmentService {
 
     List<Shipment> setupShipments(List<ShipmentRequest> shipmentRequests, String discountCode) {
         Map<Long, Integer> productQuantities = shipmentRequests.stream()
-                .collect(Collectors.toMap(ShipmentRequest::getProductId, ShipmentRequest::getQuantity));
+                .collect(Collectors.toMap(ShipmentRequest::productId, ShipmentRequest::quantity));
 
         List<Product> products = productRepository.findWithPromotionByIds(
                 List.copyOf(productQuantities.keySet())

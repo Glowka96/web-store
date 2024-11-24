@@ -1,12 +1,10 @@
 package com.example.portfolio.webstorespring.controllers.orders;
 
 import com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryBuilderHelper;
-import com.example.portfolio.webstorespring.buildhelpers.orders.ShipmentBuilderHelper;
 import com.example.portfolio.webstorespring.controllers.AbstractAuthControllerIT;
 import com.example.portfolio.webstorespring.enums.OrderStatus;
 import com.example.portfolio.webstorespring.model.dto.orders.request.OrderRequest;
 import com.example.portfolio.webstorespring.model.dto.orders.response.OrderResponse;
-import com.example.portfolio.webstorespring.model.dto.orders.response.OrderResponseWithoutShipments;
 import com.example.portfolio.webstorespring.model.dto.products.ProductWithProducerAndPromotionDTO;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.orders.Delivery;
@@ -41,6 +39,7 @@ import java.util.Set;
 import static com.example.portfolio.webstorespring.buildhelpers.DateForTestBuilderHelper.LOCAL_DATE_TIME;
 import static com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryTypeBuilderHelper.createDeliveryType;
 import static com.example.portfolio.webstorespring.buildhelpers.orders.OrderBuilderHelper.createOrderRequest;
+import static com.example.portfolio.webstorespring.buildhelpers.orders.ShipmentBuilderHelper.createShipmentRequest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -101,7 +100,7 @@ class OrderControllerIT extends AbstractAuthControllerIT {
     void shouldGetAllAccountOrders_forAuthenticatedUser_thenStatusOk() {
         HttpEntity<?> httpEntity = new HttpEntity<>(getHttpHeaderWithUserToken());
 
-        ResponseEntity<List<OrderResponseWithoutShipments>> response = restTemplate.exchange(
+        ResponseEntity<List<OrderResponse>> response = restTemplate.exchange(
                 localhostUri + ORDER_URI,
                 HttpMethod.GET,
                 httpEntity,
@@ -117,7 +116,7 @@ class OrderControllerIT extends AbstractAuthControllerIT {
     void shouldGetLastFiveAccountOrders_forAuthenticatedUser_thenStatusOK() {
         HttpEntity<?> httpEntity = new HttpEntity<>(getHttpHeaderWithUserToken());
 
-        ResponseEntity<List<OrderResponseWithoutShipments>> response = restTemplate.exchange(
+        ResponseEntity<List<OrderResponse>> response = restTemplate.exchange(
                 localhostUri + ORDER_URI + "/last-five",
                 HttpMethod.GET,
                 httpEntity,
@@ -145,17 +144,17 @@ class OrderControllerIT extends AbstractAuthControllerIT {
 
         Optional<Order> optionalOrder = orderRepository.findById(orderId);
         assertThat(optionalOrder).isPresent();
-        assertEquals(optionalOrder.get().getId(), response.getBody().getId());
-        assertEquals(optionalOrder.get().getNameUser(), response.getBody().getNameUser());
-        assertEquals(optionalOrder.get().getStatus(), response.getBody().getStatus());
-        assertEquals(optionalOrder.get().getCreatedAt(), response.getBody().getCreatedAt());
-        assertEquals(optionalOrder.get().getTotalPrice(), response.getBody().getTotalPrice());
+        assertEquals(optionalOrder.get().getId(), response.getBody().id());
+        assertEquals(optionalOrder.get().getNameUser(), response.getBody().nameUser());
+        assertEquals(optionalOrder.get().getStatus(), response.getBody().status());
+        assertEquals(optionalOrder.get().getCreatedAt(), response.getBody().createdAt());
+        assertEquals(optionalOrder.get().getTotalPrice(), response.getBody().totalPrice());
     }
 
     @Test
     void shouldSaveOrder_whenUserNotUseDiscount_forAuthenticatedUser_thenStatusCreated() {
         OrderRequest orderRequest = createOrderRequest(
-                ShipmentBuilderHelper.createShipmentRequest(initProductTestData.getProductIdThatHasPromotion()),
+                createShipmentRequest(initProductTestData.getProductIdThatHasPromotion()),
                 DeliveryBuilderHelper.createDeliveryRequest(deliveryTypeId),
                 null
         );
@@ -176,7 +175,7 @@ class OrderControllerIT extends AbstractAuthControllerIT {
     @Test
     void shouldSaveOrder_whenUserUseDiscount_forAuthenticatedUser_thenStatusCreated() {
         OrderRequest orderRequest = createOrderRequest(
-                ShipmentBuilderHelper.createShipmentRequest(initProductTestData.getProductIdThatHasNoPromotion()),
+                createShipmentRequest(initProductTestData.getProductIdThatHasNoPromotion()),
                 DeliveryBuilderHelper.createDeliveryRequest(deliveryTypeId),
                 "test1"
         );
@@ -198,9 +197,9 @@ class OrderControllerIT extends AbstractAuthControllerIT {
     @Test
     void shouldSaveOrderWithTwoProducts_whenUserUseDiscount_forAuthenticatedUser_thenStatusCreated() {
         OrderRequest orderRequest = createOrderRequest(
-                List.of(ShipmentBuilderHelper.createShipmentRequest(initProductTestData.getProductIdThatHasNoPromotion()),
-                        ShipmentBuilderHelper.createShipmentRequest(initProductTestData.getProductIdThatHasOtherSubcategoryAndNoPromotion()),
-                        ShipmentBuilderHelper.createShipmentRequest(initProductTestData.getProductIdThatHasPromotion())),
+                List.of(createShipmentRequest(initProductTestData.getProductIdThatHasNoPromotion()),
+                        createShipmentRequest(initProductTestData.getProductIdThatHasOtherSubcategoryAndNoPromotion()),
+                        createShipmentRequest(initProductTestData.getProductIdThatHasPromotion())),
                 DeliveryBuilderHelper.createDeliveryRequest(deliveryTypeId),
                 "test1"
         );
@@ -264,15 +263,15 @@ class OrderControllerIT extends AbstractAuthControllerIT {
     private void assertsOrders(ResponseEntity<OrderResponse> response, Long exceptedShipmentSize, BigDecimal exceptedPrice) {
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertNotNull(response.getBody().getId());
-        assertNotNull(response.getBody().getCreatedAt());
-        assertNotNull(response.getBody().getDeliveryResponse());
+        assertNotNull(response.getBody().id());
+        assertNotNull(response.getBody().createdAt());
+        assertNotNull(response.getBody().deliveryResponse());
         assertEquals(getSavedUser().getFirstName() + " " + getSavedUser().getLastName(),
-                response.getBody().getNameUser());
-        assertEquals(OrderStatus.OPEN, response.getBody().getStatus());
-        assertEquals(exceptedShipmentSize, response.getBody().getShipmentResponses().size());
-        assertEquals(exceptedPrice.add(response.getBody().getDeliveryResponse().deliveryTypeResponse().price()).setScale(2, RoundingMode.HALF_UP),
-                response.getBody().getTotalPrice()
+                response.getBody().nameUser());
+        assertEquals(OrderStatus.OPEN, response.getBody().status());
+        assertEquals(exceptedShipmentSize, response.getBody().shipmentResponses().size());
+        assertEquals(exceptedPrice.add(response.getBody().deliveryResponse().deliveryTypeResponse().price()).setScale(2, RoundingMode.HALF_UP),
+                response.getBody().totalPrice()
         );
     }
 }
