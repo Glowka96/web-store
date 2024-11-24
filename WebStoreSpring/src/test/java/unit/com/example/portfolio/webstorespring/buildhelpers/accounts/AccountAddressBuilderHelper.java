@@ -24,12 +24,6 @@ public class AccountAddressBuilderHelper {
         return new AccountAddressRequest(CITY, POSTCODE, STREET);
     }
 
-    public static AccountAddressRequest createAccountAddressRequest(String city,
-                                                                    String postcode,
-                                                                    String street) {
-        return new AccountAddressRequest(city, street, postcode);
-    }
-
     public static AccountAddressResponse createAccountAddressResponse() {
         return new AccountAddressResponse(1L, CITY, STREET, POSTCODE);
     }
