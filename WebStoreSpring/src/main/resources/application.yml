@@ -18,15 +18,22 @@ spring:
 #    active: googlecloud
 
 logging:
-  level:
-    org.springframework.security: debug
-
   file:
     path: var/logs/app/
     name: application.log
 
   pattern:
-    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS XXX} %-5level [%t] %logger{36} - %msg%n"
+
+  logback:
+    rollingpolicy:
+      file-name-pattern: application-log.%d{yyyy-MM-dd}.%i.gz.log
+      max-file-size: 10MB
+      max-history: 7
+      total-size-cap: 1GB
+
+  level:
+    com.example.portfolio.webstorespring: info
 
 # Environment Variables
 sender:
