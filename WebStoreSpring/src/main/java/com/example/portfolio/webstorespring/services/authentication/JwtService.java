@@ -7,6 +7,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -18,15 +19,18 @@ import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class JwtService {
 
     private final JwtProvider jwtProvider;
 
     public String extractUsername(String token) {
+        log.debug("Extracting username.");
         return extractClaim(token, Claims::getSubject);
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        log.debug("Extracting claims.");
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
@@ -39,8 +43,10 @@ public class JwtService {
             Map<String, Object> extraClaims,
             UserDetails userDetails
     ) {
+        log.debug("Getting account role.");
         String role = userDetails.getAuthorities().toString().replaceAll("[\\[\\]]", "");
         extraClaims.put("role", role);
+        log.debug("Creating jwt");
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
@@ -73,6 +79,7 @@ public class JwtService {
     }
 
     private Key getSignInKey() {
+        log.debug("Decoding code.");
         byte[] keyBytes = Decoders.BASE64.decode(jwtProvider.getSecretKey());
         return Keys.hmacShaKeyFor(keyBytes);
     }
