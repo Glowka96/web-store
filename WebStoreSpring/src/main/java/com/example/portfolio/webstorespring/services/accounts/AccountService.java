@@ -79,9 +79,7 @@ public class AccountService {
 
         validatePassword(updatePasswordRequest.enteredPassword(), loggedAccount);
 
-        log.debug("Setting new password.");
-        loggedAccount.setPassword(encoder.encode(updatePasswordRequest.newPassword()));
-        accountRepository.save(loggedAccount);
+        setNewAccountPassword(loggedAccount, updatePasswordRequest.newPassword());
         log.info("Saved new password for account ID: {}", loggedAccount.getId());
         return Map.of("message", "Password updated successfully.");
     }
@@ -116,10 +114,10 @@ public class AccountService {
         account.setEnabled(true);
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
     public void setNewAccountPassword(Account account, String password) {
         log.debug("Setting password for account ID: {}", account.getId());
         account.setPassword(encoder.encode(password));
+        accountRepository.save(account);
     }
 
     public Account findByEmail(String email) {
