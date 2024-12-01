@@ -6,6 +6,7 @@ import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
 import com.example.portfolio.webstorespring.services.authentication.AuthService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class LoginService {
 
     private final AuthenticationManager authenticationManager;
@@ -22,6 +24,7 @@ public class LoginService {
 
     @Transactional
     public AuthenticationResponse login(LoginRequest loginRequest) {
+        log.info("Authenticating account");
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.email(),
@@ -29,13 +32,14 @@ public class LoginService {
                 )
         );
 
+        log.debug("Getting account from authentication principal.");
         UserDetails userDetails = (AccountDetails) authentication.getPrincipal();
         Account account = ((AccountDetails) authentication.getPrincipal()).getAccount();
         String jwtToken = authService.generateJwtToken(userDetails);
 
         authService.revokeAllAccountAuthTokensByAccountId(account.getId());
         authService.saveAccountAuthToken(account, jwtToken);
-
+        log.info("Sending JWT token.");
         return new AuthenticationResponse(jwtToken);
     }
 }
