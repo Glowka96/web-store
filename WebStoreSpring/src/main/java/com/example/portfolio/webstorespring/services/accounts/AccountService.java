@@ -87,9 +87,9 @@ public class AccountService {
     }
 
     void initializeAdminAccount(){
-        log.info("Checking if admin account exist");
+        log.debug("Checking if admin account exist");
         if(Boolean.FALSE.equals(accountRepository.existsByEmail(adminCredentialsProvider.getEmail()))){
-            log.info("Admin account doesn't exist. Creating new admin account.");
+            log.debug("Admin account doesn't exist. Creating new admin account.");
             accountRepository.save(Account.builder()
                     .firstName("Admin")
                     .lastName("Admin")
