@@ -53,7 +53,7 @@ class EmailSenderServiceImplTest {
         given(notificationStrategy.getEmailMessage()).willReturn(emailMessage);
         given(notificationStrategy.getResponseMessage()).willReturn(responseMessage);
         given(senderEmailProvider.getEmail()).willReturn("sender@email.com");
-
+        given(notificationStrategy.getNotificationType()).willReturn(notificationType);
 
         Map<String, Object> resultMap = underTest.sendEmail(notificationType, recipientEmail, confirmLinkWithToken);
 
