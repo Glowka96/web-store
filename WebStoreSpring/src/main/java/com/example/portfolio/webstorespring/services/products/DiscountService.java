@@ -7,12 +7,14 @@ import com.example.portfolio.webstorespring.model.dto.products.response.Discount
 import com.example.portfolio.webstorespring.model.entity.products.Discount;
 import com.example.portfolio.webstorespring.repositories.products.DiscountRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class DiscountService {
 
     private final DiscountRepository discountRepository;
@@ -27,6 +29,7 @@ public class DiscountService {
 
     @Transactional
     public DiscountAdminResponse save(DiscountRequest discountRequest) {
+        log.info("Saving discount from request: {}", discountRequest);
         Discount discount = Discount.builder()
                 .code(getCode(discountRequest))
                 .discountRate(discountRequest.discountRate())
@@ -36,22 +39,27 @@ public class DiscountService {
                 .build();
 
         discountRepository.save(discount);
+        log.info("Saved discount.");
         return DiscountAdminResponse.mapToResponse(discount);
     }
 
     @Transactional
     public void deleteUsedOrExpiredDiscount() {
+        log.info("Deleting used or expired discount.");
         discountRepository.deleteZeroQuantityOrExpiredDiscounts();
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
     public Discount applyByCode(String code) {
         Discount discount = findByCode(code);
+        log.debug("Decreasing discount quantity.");
         discount.setQuantity(discount.getQuantity() - 1);
+        log.info("Returning discount.");
         return discount;
     }
 
     private Discount findByCode(String code) {
+        log.info("Fetching discount for code: {}", code);
         return discountRepository.findByCode(code).orElseThrow(DiscountIsInvalid::new);
     }
 
