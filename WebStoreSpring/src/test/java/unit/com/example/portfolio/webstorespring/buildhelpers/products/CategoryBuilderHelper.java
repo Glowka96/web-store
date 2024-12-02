@@ -5,30 +5,24 @@ import com.example.portfolio.webstorespring.model.dto.products.response.Category
 import com.example.portfolio.webstorespring.model.entity.products.Category;
 
 public class CategoryBuilderHelper {
+    private static final String NAME = "Test";
 
     public static Category createCategory() {
         return Category.builder()
                 .id(1L)
-                .name("Test")
+                .name(NAME)
                 .build();
     }
 
     public static CategoryRequest createCategoryRequest() {
-        return CategoryRequest.builder()
-                .name("Test")
-                .build();
+        return createCategoryRequest(NAME);
     }
 
     public static CategoryRequest createCategoryRequest(String name) {
-        return CategoryRequest.builder()
-                .name(name)
-                .build();
+        return new CategoryRequest(name);
     }
 
     public static CategoryResponse createCategoryResponse() {
-        return CategoryResponse.builder()
-                .id(1L)
-                .name("Test")
-                .build();
+        return new CategoryResponse(1L, NAME, null);
     }
 }

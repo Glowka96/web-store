@@ -10,12 +10,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryTypeBuilderHelper.createDeliveryTypeRequest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -23,8 +21,6 @@ class DeliveryTypeServiceTest {
 
     @Mock
     private DeliveryTypeRepository deliveryTypeRepository;
-    @Spy
-    private DeliveryTypeMapper deliveryTypeMapper;
     @InjectMocks
     private DeliveryTypeService underTest;
 
@@ -34,8 +30,6 @@ class DeliveryTypeServiceTest {
 
         verify(deliveryTypeRepository, times(1)).findAll();
         verifyNoMoreInteractions(deliveryTypeRepository);
-        verify(deliveryTypeMapper, times(1)).mapToDto(anyList());
-        verifyNoMoreInteractions(deliveryTypeMapper);
     }
 
     @Test
@@ -49,7 +43,7 @@ class DeliveryTypeServiceTest {
         verify(deliveryTypeRepository).save(deliveryTypeArgumentCaptor.capture());
 
         DeliveryTypeResponse mappedDeliveryTypeResponse =
-                deliveryTypeMapper.mapToDto(deliveryTypeArgumentCaptor.getValue());
+                DeliveryTypeMapper.mapToDto(deliveryTypeArgumentCaptor.getValue());
 
         assertEquals(mappedDeliveryTypeResponse, savedDeliveryTypeResponse);
     }

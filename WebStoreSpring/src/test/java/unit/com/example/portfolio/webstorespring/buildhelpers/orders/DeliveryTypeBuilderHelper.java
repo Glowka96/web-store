@@ -18,25 +18,18 @@ public class DeliveryTypeBuilderHelper {
     }
 
     public static DeliveryTypeRequest createDeliveryTypeRequest() {
-        return DeliveryTypeRequest.builder()
-                .name(TYPE)
-                .price(BigDecimal.valueOf(10.0))
-                .build();
+        return createDeliveryTypeRequest(TYPE, BigDecimal.valueOf(10.0));
     }
-
 
     public static DeliveryTypeRequest createDeliveryTypeRequest(String type, BigDecimal price) {
-        return DeliveryTypeRequest.builder()
-                .name(type)
-                .price(price)
-                .build();
+        return new DeliveryTypeRequest(type, price);
     }
-    
+
     public static DeliveryTypeResponse createDeliveryTypeResponse() {
-        return DeliveryTypeResponse.builder()
-                .id(1L)
-                .name(TYPE)
-                .price(BigDecimal.valueOf(10.0))
-                .build();
+        return new DeliveryTypeResponse(
+                1L,
+                TYPE,
+                BigDecimal.valueOf(10.0)
+        );
     }
 }

@@ -11,7 +11,10 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 import static com.example.portfolio.webstorespring.buildhelpers.DateForTestBuilderHelper.LOCAL_DATE_TIME;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProducerBuilderHelper.createProducer;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProductTypeBuilderHelper.createProductType;
 import static com.example.portfolio.webstorespring.buildhelpers.products.PromotionBuilderHelper.BASIC_PROMOTION;
+import static com.example.portfolio.webstorespring.buildhelpers.products.SubcategoryBuilderHelper.createSubcategory;
 import static com.natpryce.makeiteasy.MakeItEasy.a;
 import static com.natpryce.makeiteasy.MakeItEasy.make;
 
@@ -37,42 +40,40 @@ public class ProductBuilderHelper {
 
     public static final Instantiator<Product> BASIC_PRODUCT = lookup ->
             Product.builder()
-            .id(lookup.valueOf(ID,1L))
-            .name(lookup.valueOf(NAME, PRODUCT_NAME))
-            .description(lookup.valueOf(DESCRIPTION, PRODUCT_DESCRIPTION))
-            .imageUrl(lookup.valueOf(IMAGE_URL, PRODUCT_IMAGE_URL))
-            .price(lookup.valueOf(PRICE, PRODUCT_PRICE))
-            .quantity(lookup.valueOf(QUANTITY,PRODUCT_QUANTITY))
-            .type(lookup.valueOf(PRODUCT_TYPE, ProductTypeBuilderHelper.createProductType()))
-            .subcategory(lookup.valueOf(SUBCATEGORY, SubcategoryBuilderHelper.createSubcategory()))
-            .producer(lookup.valueOf(PRODUCER, ProducerBuilderHelper.createProducer()))
-            .createdAt(lookup.valueOf(CREATED_AT, LOCAL_DATE_TIME))
-            .promotions(lookup.valueOf(PRICE_PROMOTIONS, Set.of(make(a(BASIC_PROMOTION)))))
-            .build();
+                    .id(lookup.valueOf(ID, 1L))
+                    .name(lookup.valueOf(NAME, PRODUCT_NAME))
+                    .description(lookup.valueOf(DESCRIPTION, PRODUCT_DESCRIPTION))
+                    .imageUrl(lookup.valueOf(IMAGE_URL, PRODUCT_IMAGE_URL))
+                    .price(lookup.valueOf(PRICE, PRODUCT_PRICE))
+                    .quantity(lookup.valueOf(QUANTITY, PRODUCT_QUANTITY))
+                    .type(lookup.valueOf(PRODUCT_TYPE, createProductType()))
+                    .subcategory(lookup.valueOf(SUBCATEGORY, createSubcategory()))
+                    .producer(lookup.valueOf(PRODUCER, createProducer()))
+                    .createdAt(lookup.valueOf(CREATED_AT, LOCAL_DATE_TIME))
+                    .promotions(lookup.valueOf(PRICE_PROMOTIONS, Set.of(make(a(BASIC_PROMOTION)))))
+                    .build();
 
     public static ProductRequest createProductRequest() {
-        return ProductRequest.builder()
-                .name(PRODUCT_NAME)
-                .description(PRODUCT_DESCRIPTION)
-                .price(PRODUCT_PRICE)
-                .quantity(PRODUCT_QUANTITY)
-                .imageUrl(PRODUCT_IMAGE_URL)
-                .productTypeId(1L)
-                .build();
+        return createProductRequest(
+                PRODUCT_NAME,
+                PRODUCT_DESCRIPTION,
+                PRODUCT_PRICE,
+                PRODUCT_QUANTITY
+        );
     }
 
     public static ProductRequest createProductRequest(String name,
                                                       String description,
                                                       BigDecimal price,
                                                       Long quantity) {
-        return ProductRequest.builder()
-                .name(name)
-                .description(description)
-                .price(price)
-                .quantity(quantity)
-                .imageUrl(PRODUCT_IMAGE_URL)
-                .productTypeId(1L)
-                .build();
+        return createProductRequest(
+                name,
+                description,
+                price,
+                PRODUCT_IMAGE_URL,
+                quantity,
+                1L
+        );
     }
 
     public static ProductRequest createProductRequest(String name,
@@ -81,24 +82,27 @@ public class ProductBuilderHelper {
                                                       String imageUrl,
                                                       Long quantity,
                                                       Long productTypeId) {
-        return ProductRequest.builder()
-                .name(name)
-                .description(description)
-                .price(price)
-                .quantity(quantity)
-                .imageUrl(imageUrl)
-                .productTypeId(productTypeId)
-                .build();
+        return new ProductRequest(
+                name,
+                description,
+                imageUrl,
+                price,
+                quantity,
+                productTypeId
+        );
     }
 
     public static ProductResponse createProductResponse() {
-        return ProductResponse.builder()
-                .id(1L)
-                .name(PRODUCT_NAME)
-                .description(PRODUCT_DESCRIPTION)
-                .price(PRODUCT_PRICE)
-                .quantity(PRODUCT_QUANTITY)
-                .imageUrl(PRODUCT_IMAGE_URL)
-                .build();
+        return new ProductResponse(
+                1L,
+                PRODUCT_NAME,
+                PRODUCT_DESCRIPTION,
+                PRODUCT_IMAGE_URL,
+                PRODUCT_PRICE,
+                PRODUCT_QUANTITY,
+                null,
+                null,
+                null
+        );
     }
 }

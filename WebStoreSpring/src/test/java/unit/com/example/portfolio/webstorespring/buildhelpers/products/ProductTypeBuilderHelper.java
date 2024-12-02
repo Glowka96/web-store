@@ -13,28 +13,24 @@ public class ProductTypeBuilderHelper {
                 .build();
     }
 
-    public static ProductType createProductType(String name) {
+    public static ProductType createProductTypeWithoutId(String name) {
         return ProductType.builder()
                 .name(name)
                 .build();
     }
 
     public static ProductTypeRequest createProductTypeRequest() {
-        return ProductTypeRequest.builder()
-                .name("Test type")
-                .build();
+        return createProductTypeRequest("Test type");
     }
 
     public static ProductTypeRequest createProductTypeRequest(String name) {
-        return ProductTypeRequest.builder()
-                .name(name)
-                .build();
+        return new ProductTypeRequest(name);
     }
 
     public static ProductTypeResponse createProductTypeResponse() {
-        return ProductTypeResponse.builder()
-                .id(1L)
-                .name("Test type")
-                .build();
+        return new ProductTypeResponse(
+                1L,
+                "Test type"
+        );
     }
 }

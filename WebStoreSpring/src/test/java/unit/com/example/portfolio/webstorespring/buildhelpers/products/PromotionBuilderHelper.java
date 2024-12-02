@@ -27,29 +27,25 @@ public class PromotionBuilderHelper {
                     .build();
 
     public static PromotionRequest createPromotionRequest() {
-        return PromotionRequest.builder()
-                .promotionPrice(BigDecimal.valueOf(10.0))
-                .startDate(LOCAL_DATE_TIME)
-                .endDate(LOCAL_DATE_TIME.plusDays(15))
-                .productId(1L)
-                .build();
+        return createPromotionRequest(BigDecimal.valueOf(10.0));
     }
 
     public static PromotionRequest createPromotionRequest(BigDecimal price) {
-        return PromotionRequest.builder()
-                .promotionPrice(price)
-                .startDate(LOCAL_DATE_TIME)
-                .endDate(LOCAL_DATE_TIME.plusDays(15))
-                .productId(1L)
-                .build();
+        return new PromotionRequest(
+                1L,
+                price,
+                LOCAL_DATE_TIME,
+                LOCAL_DATE_TIME.plusDays(15)
+        );
     }
 
     public static PromotionResponse createPromotionResponse() {
-        return PromotionResponse.builder()
-                .id(1L)
-                .promotionPrice(BigDecimal.valueOf(10.0))
-                .startDate(LOCAL_DATE_TIME)
-                .endDate(LOCAL_DATE_TIME.plusDays(15))
-                .build();
+        return new PromotionResponse(
+                1L,
+                null,
+                BigDecimal.valueOf(10.0),
+                LOCAL_DATE_TIME,
+                LOCAL_DATE_TIME.plusDays(15)
+        );
     }
 }

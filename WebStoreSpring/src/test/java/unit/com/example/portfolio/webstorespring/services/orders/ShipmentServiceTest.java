@@ -47,7 +47,7 @@ class ShipmentServiceTest {
         ShipmentRequest shipmentRequest = createShipmentRequest();
 
         List<Product> products = getProductListWhatProductHasNoPromotion();
-        BigDecimal exceptedPrice = BigDecimal.valueOf(shipmentRequest.getQuantity())
+        BigDecimal exceptedPrice = BigDecimal.valueOf(shipmentRequest.quantity())
                 .multiply(products.get(0).getPrice())
                 .setScale(2, RoundingMode.HALF_UP);
 
@@ -56,7 +56,7 @@ class ShipmentServiceTest {
 
         List<Shipment> result = underTest.setupShipments(List.of(shipmentRequest), null);
 
-        assertShipment(exceptedPrice, products.get(0), shipmentRequest.getQuantity(), result);
+        assertShipment(exceptedPrice, products.get(0), shipmentRequest.quantity(), result);
     }
 
     @Test
@@ -70,7 +70,7 @@ class ShipmentServiceTest {
 
         List<Shipment> result = underTest.setupShipments(List.of(shipmentRequest), null);
 
-        assertShipment(exceptedPrice, products.get(0), shipmentRequest.getQuantity(), result);
+        assertShipment(exceptedPrice, products.get(0), shipmentRequest.quantity(), result);
     }
 
     @Test
@@ -79,7 +79,7 @@ class ShipmentServiceTest {
         Discount discount = DiscountBuilderHelper.createDiscount();
 
         List<Product> products = getProductListWhatProductHasNoPromotion();
-        BigDecimal exceptedPrice = BigDecimal.valueOf(shipmentRequest.getQuantity())
+        BigDecimal exceptedPrice = BigDecimal.valueOf(shipmentRequest.quantity())
                 .multiply(products.get(0).getPrice().multiply(BigDecimal.ONE.subtract(discount.getDiscountRate())))
                 .setScale(2, RoundingMode.HALF_UP);
 
@@ -88,7 +88,7 @@ class ShipmentServiceTest {
 
         List<Shipment> result = underTest.setupShipments(List.of(shipmentRequest), discount.getCode());
 
-        assertShipment(exceptedPrice, products.get(0), shipmentRequest.getQuantity(), result);
+        assertShipment(exceptedPrice, products.get(0), shipmentRequest.quantity(), result);
     }
 
     @Test
@@ -104,7 +104,7 @@ class ShipmentServiceTest {
 
         List<Shipment> result = underTest.setupShipments(List.of(shipmentRequest), discount.getCode());
 
-        assertShipment(exceptedPrice, products.get(0), shipmentRequest.getQuantity(), result);
+        assertShipment(exceptedPrice, products.get(0), shipmentRequest.quantity(), result);
     }
 
 
@@ -119,7 +119,7 @@ class ShipmentServiceTest {
 
     @NotNull
     private static BigDecimal getExceptedPriceWhenProductHasPromotion(ShipmentRequest shipmentRequest, List<Product> products) {
-        return BigDecimal.valueOf(shipmentRequest.getQuantity())
+        return BigDecimal.valueOf(shipmentRequest.quantity())
                 .multiply(products.get(0).getPromotions().iterator().next().getPromotionPrice())
                 .setScale(2, RoundingMode.HALF_UP);
     }
@@ -144,8 +144,7 @@ class ShipmentServiceTest {
     @Test
     void willThrowShipmentQuantityExceedsProductQuantityException() {
         Product product = make(a(BASIC_PRODUCT));
-        ShipmentRequest shipmentRequest = createShipmentRequest();
-        shipmentRequest.setQuantity(10000);
+        ShipmentRequest shipmentRequest = new ShipmentRequest(1L, 1000);
 
         given(productRepository.findWithPromotionByIds(anyList())).willReturn(List.of(product));
 

@@ -41,12 +41,12 @@ class DeliveryTypeControllerIT extends AbstractBaseControllerIT<DeliveryTypeRequ
     public void assertsFieldsWhenSave(DeliveryTypeRequest request,
                                       DeliveryTypeResponse response) {
         Optional<DeliveryType> optionalDeliveryType =
-                deliveryTypeRepository.findById(response.getId());
+                deliveryTypeRepository.findById(response.id());
         assertTrue(optionalDeliveryType.isPresent());
 
-        assertThat(response.getId()).isNotNull().isEqualTo(optionalDeliveryType.get().getId());
-        assertEquals(optionalDeliveryType.get().getName(), response.getName());
-        assertEquals(optionalDeliveryType.get().getPrice(), response.getPrice());
+        assertThat(response.id()).isNotNull().isEqualTo(optionalDeliveryType.get().getId());
+        assertEquals(optionalDeliveryType.get().getName(), response.name());
+        assertEquals(optionalDeliveryType.get().getPrice(), response.price());
     }
 
     @Override
@@ -55,21 +55,21 @@ class DeliveryTypeControllerIT extends AbstractBaseControllerIT<DeliveryTypeRequ
                                         DeliveryType entityBeforeUpdate,
                                         DeliveryType entityAfterUpdate) {
         assertThat(entityAfterUpdate.getId()).isEqualTo(savedEntityId)
-                .isEqualTo(response.getId())
+                .isEqualTo(response.id())
                 .isEqualTo(entityBeforeUpdate.getId());
-        assertThat(entityAfterUpdate.getName()).isEqualTo(request.getName())
-                .isEqualTo(response.getName())
+        assertThat(entityAfterUpdate.getName()).isEqualTo(request.name())
+                .isEqualTo(response.name())
                 .isNotEqualTo(entityBeforeUpdate.getName());
-        assertThat(entityAfterUpdate.getPrice()).isEqualTo(request.getPrice())
-                .isEqualTo(response.getPrice())
+        assertThat(entityAfterUpdate.getPrice()).isEqualTo(request.price())
+                .isEqualTo(response.price())
                 .isNotEqualTo(entityBeforeUpdate.getPrice());
     }
 
     @Override
     public void assertsFieldsWhenNotUpdate(DeliveryTypeRequest request,
                                            DeliveryType entity) {
-        assertNotEquals(request.getName(), entity.getName());
-        assertNotEquals(request.getPrice(), entity.getPrice());
+        assertNotEquals(request.name(), entity.getName());
+        assertNotEquals(request.price(), entity.getPrice());
     }
 
     @Override

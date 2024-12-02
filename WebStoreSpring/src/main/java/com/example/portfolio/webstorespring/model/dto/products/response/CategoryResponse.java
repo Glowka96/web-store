@@ -1,23 +1,14 @@
 package com.example.portfolio.webstorespring.model.dto.products.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class CategoryResponse {
+public record CategoryResponse(Long id,
 
-    private Long id;
+                               String name,
 
-    private String name;
+                               @JsonProperty(value = "subcategories")
+                               List<SubcategoryResponse> subcategoryResponses) {
 
-    @JsonProperty(value = "subcategories")
-    private List<SubcategoryResponse> subcategoryResponses;
 }

@@ -53,19 +53,19 @@ class ProductControllerIT extends AbstractBaseControllerIT<ProductRequest, Produ
     @Override
     public void assertsFieldsWhenSave(ProductRequest request, ProductResponse response) {
         Optional<Product> optionalProduct = productRepository.findWithPromotionById(
-                response.getId()
+                response.id()
         );
         assertTrue(optionalProduct.isPresent());
 
-        assertThat(response.getId()).isNotNull().isEqualTo(optionalProduct.get().getId());
-        assertEquals(request.getName(), optionalProduct.get().getName(), response.getName());
-        assertEquals(request.getDescription(), optionalProduct.get().getDescription(), response.getDescription());
-        assertThat(response.getPrice()).isEqualByComparingTo(optionalProduct.get().getPrice())
-                .isEqualByComparingTo(request.getPrice());
-        assertEquals(request.getQuantity(), optionalProduct.get().getQuantity(), response.getQuantity());
-        assertEquals(request.getImageUrl(), optionalProduct.get().getImageUrl(), response.getImageUrl());
-        assertEquals(request.getProductTypeId(), optionalProduct.get().getType().getId(), response.getProductTypeResponse().getId());
-        assertEquals(producerId, optionalProduct.get().getProducer().getId(), response.getProducerResponse().getId());
+        assertThat(response.id()).isNotNull().isEqualTo(optionalProduct.get().getId());
+        assertEquals(request.name(), optionalProduct.get().getName(), response.name());
+        assertEquals(request.description(), optionalProduct.get().getDescription(), response.description());
+        assertThat(response.price()).isEqualByComparingTo(optionalProduct.get().getPrice())
+                .isEqualByComparingTo(request.price());
+        assertEquals(request.quantity(), optionalProduct.get().getQuantity(), response.quantity());
+        assertEquals(request.imageUrl(), optionalProduct.get().getImageUrl(), response.imageUrl());
+        assertEquals(request.productTypeId(), optionalProduct.get().getType().getId(), response.productTypeResponse().id());
+        assertEquals(producerId, optionalProduct.get().getProducer().getId(), response.producerResponse().id());
         assertEquals(subcategoryId, optionalProduct.get().getSubcategory().getId());
     }
 
@@ -75,32 +75,32 @@ class ProductControllerIT extends AbstractBaseControllerIT<ProductRequest, Produ
                                         Product entityBeforeUpdate,
                                         Product entityAfterUpdate) {
         assertThat(entityAfterUpdate.getId()).isEqualTo(savedEntityId)
-                .isEqualTo(response.getId())
+                .isEqualTo(response.id())
                 .isEqualTo(entityBeforeUpdate.getId());
-        assertThat(entityAfterUpdate.getName()).isEqualTo(request.getName())
-                .isEqualTo(response.getName())
+        assertThat(entityAfterUpdate.getName()).isEqualTo(request.name())
+                .isEqualTo(response.name())
                 .isNotEqualTo(entityBeforeUpdate.getName());
-        assertThat(entityAfterUpdate.getDescription()).isEqualTo(request.getDescription())
-                .isEqualTo(response.getDescription())
+        assertThat(entityAfterUpdate.getDescription()).isEqualTo(request.description())
+                .isEqualTo(response.description())
                 .isNotEqualTo(entityBeforeUpdate.getDescription());
-        assertThat(entityAfterUpdate.getPrice()).isEqualByComparingTo(request.getPrice())
-                .isEqualByComparingTo(response.getPrice())
+        assertThat(entityAfterUpdate.getPrice()).isEqualByComparingTo(request.price())
+                .isEqualByComparingTo(response.price())
                 .isNotEqualByComparingTo(entityBeforeUpdate.getPrice());
-        assertThat(entityAfterUpdate.getQuantity()).isEqualTo(request.getQuantity())
-                .isEqualTo(response.getQuantity())
+        assertThat(entityAfterUpdate.getQuantity()).isEqualTo(request.quantity())
+                .isEqualTo(response.quantity())
                 .isNotEqualTo(entityBeforeUpdate.getQuantity());
-        assertThat(entityAfterUpdate.getImageUrl()).isEqualTo(request.getImageUrl())
-                .isEqualTo(response.getImageUrl())
+        assertThat(entityAfterUpdate.getImageUrl()).isEqualTo(request.imageUrl())
+                .isEqualTo(response.imageUrl())
                 .isNotEqualTo(entityBeforeUpdate.getImageUrl());
     }
 
     @Override
     public void assertsFieldsWhenNotUpdate(ProductRequest request, Product entity) {
-        assertNotEquals(request.getName(), entity.getName());
-        assertNotEquals(request.getDescription(), entity.getDescription());
-        assertNotEquals(request.getPrice(), entity.getPrice());
-        assertNotEquals(request.getQuantity(), entity.getQuantity());
-        assertNotEquals(request.getImageUrl(), entity.getImageUrl());
+        assertNotEquals(request.name(), entity.getName());
+        assertNotEquals(request.description(), entity.getDescription());
+        assertNotEquals(request.price(), entity.getPrice());
+        assertNotEquals(request.quantity(), entity.getQuantity());
+        assertNotEquals(request.imageUrl(), entity.getImageUrl());
     }
 
     @Override

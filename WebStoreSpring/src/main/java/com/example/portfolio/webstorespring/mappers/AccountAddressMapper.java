@@ -3,17 +3,23 @@ package com.example.portfolio.webstorespring.mappers;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.AccountAddressRequest;
 import com.example.portfolio.webstorespring.model.dto.accounts.response.AccountAddressResponse;
 import com.example.portfolio.webstorespring.model.entity.accounts.AccountAddress;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
-@Mapper(
-        componentModel = "spring"
-)
 public interface AccountAddressMapper {
 
-    AccountAddressResponse mapToDto(AccountAddress address);
+    static AccountAddressResponse mapToDto(AccountAddress address) {
+        return new AccountAddressResponse(
+                address.getId(),
+                address.getCity(),
+                address.getPostcode(),
+                address.getStreet()
+                );
+    }
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "account", ignore = true)
-    AccountAddress mapToEntity(AccountAddressRequest accountAddressRequest);
+    static AccountAddress mapToEntity(AccountAddressRequest accountAddressRequest) {
+        return AccountAddress.builder()
+                .city(accountAddressRequest.city())
+                .street(accountAddressRequest.street())
+                .postcode(accountAddressRequest.postcode())
+                .build();
+    }
 }

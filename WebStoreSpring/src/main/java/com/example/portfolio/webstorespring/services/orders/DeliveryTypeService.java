@@ -7,38 +7,46 @@ import com.example.portfolio.webstorespring.model.dto.orders.response.DeliveryTy
 import com.example.portfolio.webstorespring.model.entity.orders.DeliveryType;
 import com.example.portfolio.webstorespring.repositories.orders.DeliveryTypeRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class DeliveryTypeService {
 
     private final DeliveryTypeRepository deliveryTypeRepository;
-    private final DeliveryTypeMapper deliveryTypeMapper;
 
     public List<DeliveryTypeResponse> getAll() {
-        return deliveryTypeMapper.mapToDto(deliveryTypeRepository.findAll());
+        log.info("Fetching all delivery type.");
+        return DeliveryTypeMapper.mapToDto(deliveryTypeRepository.findAll());
     }
 
     public DeliveryTypeResponse save(DeliveryTypeRequest deliveryTypeRequest){
-        DeliveryType deliveryType = deliveryTypeMapper.mapToEntity(deliveryTypeRequest);
+        log.info("Mapping delivery type request: {}", deliveryTypeRequest);
+        DeliveryType deliveryType = DeliveryTypeMapper.mapToEntity(deliveryTypeRequest);
 
         deliveryTypeRepository.save(deliveryType);
-        return deliveryTypeMapper.mapToDto(deliveryType);
+        log.info("Saved delivery type.");
+        return DeliveryTypeMapper.mapToDto(deliveryType);
     }
 
     public DeliveryTypeResponse update(Long id, DeliveryTypeRequest deliveryTypeRequest) {
+        log.info("Finding delivery type with ID: {}", id);
         DeliveryType foundDeliveryType = findById(id);
 
-        foundDeliveryType.setName(deliveryTypeRequest.getName());
-        foundDeliveryType.setPrice(deliveryTypeRequest.getPrice());
+        log.debug("Updating delivery type fields for ID: {}", id);
+        foundDeliveryType.setName(deliveryTypeRequest.name());
+        foundDeliveryType.setPrice(deliveryTypeRequest.price());
         deliveryTypeRepository.save(foundDeliveryType);
-        return deliveryTypeMapper.mapToDto(foundDeliveryType);
+        log.info("Updated delivery type.");
+        return DeliveryTypeMapper.mapToDto(foundDeliveryType);
     }
 
     public void deleteById(Long id){
+        log.info("Deleting delivery type for ID: {}", id);
         deliveryTypeRepository.deleteById(id);
     }
 

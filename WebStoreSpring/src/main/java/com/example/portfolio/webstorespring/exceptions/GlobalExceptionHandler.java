@@ -3,6 +3,7 @@ package com.example.portfolio.webstorespring.exceptions;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
@@ -18,13 +19,17 @@ import org.springframework.web.context.request.WebRequest;
 
 @ControllerAdvice
 @RequiredArgsConstructor
+@Slf4j
 public class GlobalExceptionHandler {
+
+    private static final String LOG_MSG = "Error at [{}]: {}";
 
     @ExceptionHandler({ResourceNotFoundException.class, AccountHasNoAddressException.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleResourceNotFoundException(RuntimeException exception,
-                                                                         WebRequest webRequest) {
+                                                         WebRequest webRequest) {
+        log.error(LOG_MSG, webRequest.getDescription(false), exception.getMessage(), exception);
         return createErrorResponse(HttpStatus.NOT_FOUND, exception, webRequest);
     }
 
@@ -32,7 +37,8 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException exception,
-                                                                               WebRequest webRequest) {
+                                                               WebRequest webRequest) {
+        log.error(LOG_MSG, webRequest.getDescription(false), exception.getMessage(), exception);
         return createErrorResponse(exception, webRequest);
     }
 
@@ -40,6 +46,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ErrorResponse handleBadCredentialsException(RuntimeException exception, WebRequest webRequest) {
+        log.error(LOG_MSG, webRequest.getDescription(false), exception.getMessage(), exception);
         return createErrorResponse(HttpStatus.UNAUTHORIZED, exception, webRequest);
     }
 
@@ -47,6 +54,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ErrorResponse handleAccessDeniedException(Exception exception, WebRequest webRequest) {
+        log.error(LOG_MSG, webRequest.getDescription(false), exception.getMessage(), exception);
         return createErrorResponse(HttpStatus.FORBIDDEN, exception, webRequest);
     }
 
@@ -62,7 +70,8 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleCanNotModifiedException(RuntimeException exception,
-                                                                       WebRequest webRequest) {
+                                                       WebRequest webRequest) {
+        log.error(LOG_MSG, webRequest.getDescription(false), exception.getMessage(), exception);
         return createErrorResponse(HttpStatus.BAD_REQUEST, exception, webRequest);
     }
 
@@ -72,7 +81,8 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleIllegalArgumentException(IllegalArgumentException exception,
-                                                                        WebRequest webRequest) {
+                                                        WebRequest webRequest) {
+        log.error(LOG_MSG, webRequest.getDescription(false), exception.getMessage(), exception);
         return createErrorResponse(exception, webRequest);
     }
 
@@ -80,7 +90,8 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handeConstraintViolationException(ConstraintViolationException exception,
-                                                                           WebRequest webRequest) {
+                                                           WebRequest webRequest) {
+        log.error(LOG_MSG, webRequest.getDescription(false), exception.getMessage(), exception);
         return createErrorResponse(exception, webRequest);
     }
 
@@ -88,7 +99,8 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleUnsupportedNotificationTypeException(UnsupportedNotificationTypeException exception,
-                                                                                    WebRequest webRequest) {
+                                                                    WebRequest webRequest) {
+        log.error(LOG_MSG, webRequest.getDescription(false), exception.getMessage(), exception);
         return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, exception, webRequest);
     }
 

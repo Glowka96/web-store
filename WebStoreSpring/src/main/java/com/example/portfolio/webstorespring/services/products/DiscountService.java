@@ -7,19 +7,19 @@ import com.example.portfolio.webstorespring.model.dto.products.response.Discount
 import com.example.portfolio.webstorespring.model.entity.products.Discount;
 import com.example.portfolio.webstorespring.repositories.products.DiscountRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Random;
-
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class DiscountService {
 
     private final DiscountRepository discountRepository;
     private final SubcategoryService subcategoryService;
-    private static final Random random = new Random();
+    private final DiscountRandomizer discountRandomizer;
 
     public DiscountUserResponse getByCode(String code) {
         return DiscountUserResponse.mapToResponse(
@@ -29,6 +29,7 @@ public class DiscountService {
 
     @Transactional
     public DiscountAdminResponse save(DiscountRequest discountRequest) {
+        log.info("Saving discount from request: {}", discountRequest);
         Discount discount = Discount.builder()
                 .code(getCode(discountRequest))
                 .discountRate(discountRequest.discountRate())
@@ -38,40 +39,35 @@ public class DiscountService {
                 .build();
 
         discountRepository.save(discount);
+        log.info("Saved discount.");
         return DiscountAdminResponse.mapToResponse(discount);
     }
 
     @Transactional
     public void deleteUsedOrExpiredDiscount() {
+        log.info("Deleting used or expired discount.");
         discountRepository.deleteZeroQuantityOrExpiredDiscounts();
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
     public Discount applyByCode(String code) {
         Discount discount = findByCode(code);
+        log.debug("Decreasing discount quantity.");
         discount.setQuantity(discount.getQuantity() - 1);
-        discountRepository.save(discount);
+        log.info("Returning discount.");
         return discount;
     }
 
     private Discount findByCode(String code) {
+        log.info("Fetching discount for code: {}", code);
         return discountRepository.findByCode(code).orElseThrow(DiscountIsInvalid::new);
     }
 
     private String getCode(DiscountRequest discountRequest) {
-        return discountRequest.code() != null ? discountRequest.code() : generateUniqueCode();
+        return discountRequest.code() != null
+                ? discountRequest.code()
+                : discountRandomizer.generateUniqueCode();
     }
 
-    private String generateUniqueCode() {
-        String code = generateCode();
-        return discountRepository.existsByCode(code) ? generateUniqueCode() : code;
-    }
 
-    private static String generateCode() {
-        return random.ints(48, 123)
-                .filter(num -> (num < 58 || num > 64) && (num < 91 || num > 96))
-                .limit(10)
-                .mapToObj(c -> (char) c).collect(StringBuffer::new, StringBuffer::append, StringBuffer::append)
-                .toString();
-    }
 }

@@ -7,6 +7,7 @@ import com.example.portfolio.webstorespring.model.dto.products.response.Producer
 import com.example.portfolio.webstorespring.model.entity.products.Producer;
 import com.example.portfolio.webstorespring.repositories.products.ProducerRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,54 +15,46 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ProducerService {
 
     private final ProducerRepository producerRepository;
-    private final ProducerMapper producerMapper;
 
     public ProducerResponse getById(Long id) {
-        Producer foundProducer = findById(id);
-        return producerMapper.mapToDto(foundProducer);
+        log.info("Fetching producer for ID: {}", id);
+        return ProducerMapper.mapToDto(findById(id));
     }
 
     public List<ProducerResponse> getAll() {
-        return producerMapper.mapToDto(producerRepository.findAll());
+        log.info("Fetching all producer.");
+        return ProducerMapper.mapToDto(producerRepository.findAll());
     }
 
     public ProducerResponse save(ProducerRequest producerRequest) {
-        Producer producer = producerMapper.mapToEntity(producerRequest);
+        log.info("Saving producer from request: {}", producerRequest);
+        Producer producer = ProducerMapper.mapToEntity(producerRequest);
         producerRepository.save(producer);
-        return producerMapper.mapToDto(producer);
+        log.info("Saved producer.");
+        return ProducerMapper.mapToDto(producer);
     }
 
     @Transactional
     public ProducerResponse update(Long id, ProducerRequest producerRequest) {
+        log.info("Updating producer for ID: {}, form request: {}", id, producerRequest);
         Producer foundProducer = findById(id);
-
-        Producer producer = producerMapper.mapToEntity(producerRequest);
-        setupUpdatedProducer(foundProducer, producer);
-
-        producerRepository.save(producer);
-        return producerMapper.mapToDto(producer);
+        foundProducer.setName(producerRequest.name());
+        producerRepository.save(foundProducer);
+        log.info("Updated producer.");
+        return ProducerMapper.mapToDto(foundProducer);
     }
 
     public void deleteById(Long id) {
+        log.info("Deleting producer for ID: {}", id);
         producerRepository.deleteById(id);
     }
 
     protected Producer findById(Long id) {
         return producerRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Producer", "id", id));
-    }
-
-    private void setupUpdatedProducer(Producer foundProducer,
-                                     Producer updatedProducer) {
-        updatedProducer.setId(foundProducer.getId());
-        if (updatedProducer.getName() == null) {
-            updatedProducer.setName(foundProducer.getName());
-        }
-        if (updatedProducer.getProducts() == null) {
-            updatedProducer.setProducts(foundProducer.getProducts());
-        }
     }
 }

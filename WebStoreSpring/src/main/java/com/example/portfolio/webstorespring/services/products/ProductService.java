@@ -8,6 +8,7 @@ import com.example.portfolio.webstorespring.model.dto.products.response.ProductR
 import com.example.portfolio.webstorespring.model.entity.products.Product;
 import com.example.portfolio.webstorespring.repositories.products.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,16 +19,17 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ProductService {
 
     private final ProductRepository productRepository;
-    private final ProductMapper productMapper;
     private final ProducerService producerService;
     private final SubcategoryService subcategoryService;
     private final ProductTypeService productTypeService;
     private final Clock clock = Clock.systemUTC();
 
     public ProductWithProducerAndPromotionDTO getById(Long id) {
+        log.info("Fetching product for ID: {}", id);
         ProductWithProducerAndPromotionDTO product = productRepository.findById(id, getLocalDataTime30DaysAgo());
         if (product == null) {
             throw new ResourceNotFoundException("Product", "id", id);
@@ -36,18 +38,23 @@ public class ProductService {
     }
 
     public List<ProductResponse> getAll() {
-        return productMapper.mapToDto(productRepository.findAll());
+        log.info("Fetching all products.");
+        return ProductMapper.mapToDto(productRepository.findAll());
     }
 
     @Transactional
     public ProductResponse save(Long subcategoryId, Long producerId, ProductRequest productRequest) {
-        Product product = productMapper.mapToEntity(productRequest);
+        log.info("Saving product from request: {}", productRequest);
+        Product product = ProductMapper.mapToEntity(productRequest);
+
+        log.debug("Finding others entities and setting them.");
         product.setSubcategory(subcategoryService.findById(subcategoryId));
         product.setProducer(producerService.findById(producerId));
-        product.setType(productTypeService.findById(productRequest.getProductTypeId()));
+        product.setType(productTypeService.findById(productRequest.productTypeId()));
 
         productRepository.save(product);
-        return productMapper.mapToDto(product);
+        log.info("Saved product.");
+        return ProductMapper.mapToDto(product);
     }
 
     @Transactional
@@ -55,12 +62,14 @@ public class ProductService {
                                   Long producerId,
                                   Long productId,
                                   ProductRequest productRequest) {
+        log.info("Updating product for ID: {}, from request: {}", productId, productRequest);
         Product foundProduct = findById(productId);
-        Product product = productMapper.mapToEntity(productRequest);
+        Product product = ProductMapper.mapToEntity(productRequest);
 
+        log.debug("Finding others entities. Setting found product fields.");
         foundProduct.setSubcategory(subcategoryService.findById(subcategoryId));
         foundProduct.setProducer(producerService.findById(producerId));
-        foundProduct.setType(productTypeService.findById(productRequest.getProductTypeId()));
+        foundProduct.setType(productTypeService.findById(productRequest.productTypeId()));
         foundProduct.setName(product.getName());
         foundProduct.setDescription(product.getDescription());
         foundProduct.setPrice(product.getPrice());
@@ -68,10 +77,12 @@ public class ProductService {
         foundProduct.setImageUrl(product.getImageUrl());
 
         productRepository.save(foundProduct);
-        return productMapper.mapToDto(foundProduct);
+        log.debug("Saved product");
+        return ProductMapper.mapToDto(foundProduct);
     }
 
     public void deleteById(Long id) {
+        log.info("Deleting product for ID: {}", id);
         productRepository.deleteById(id);
     }
 

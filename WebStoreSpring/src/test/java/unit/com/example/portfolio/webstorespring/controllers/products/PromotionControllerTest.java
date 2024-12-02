@@ -60,10 +60,10 @@ class PromotionControllerTest {
                         .content(objectMapper.writeValueAsString(promotionRequest))
                         .header("Authorization", "Bearer {JWT_TOKEN}"))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id", is(promotionResponse.getId().intValue())))
-                .andExpect(jsonPath("$.promotionPrice", is(promotionResponse.getPromotionPrice().doubleValue())))
-                .andExpect(jsonPath("$.startDate", is(promotionResponse.getStartDate().format(formatter))))
-                .andExpect(jsonPath("$.endDate", is(promotionResponse.getEndDate().format(formatter))))
+                .andExpect(jsonPath("$.id", is(promotionResponse.id().intValue())))
+                .andExpect(jsonPath("$.promotionPrice", is(promotionResponse.promotionPrice().doubleValue())))
+                .andExpect(jsonPath("$.startDate", is(promotionResponse.startDate().format(formatter))))
+                .andExpect(jsonPath("$.endDate", is(promotionResponse.endDate().format(formatter))))
                 .andDo(print());
     }
 }

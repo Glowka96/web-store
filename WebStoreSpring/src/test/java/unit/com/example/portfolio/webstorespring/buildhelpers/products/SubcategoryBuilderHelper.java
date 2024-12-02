@@ -6,35 +6,30 @@ import com.example.portfolio.webstorespring.model.entity.products.Subcategory;
 
 public class SubcategoryBuilderHelper {
 
+    private static final String NAME = "Test";
+
     public static Subcategory createSubcategory() {
         return Subcategory.builder()
                 .id(1L)
-                .name("Test")
+                .name(NAME)
                 .build();
     }
 
-    public static Subcategory createSubcategory(String name) {
+    public static Subcategory createSubcategoryWithoutId(String name) {
         return Subcategory.builder()
                 .name(name)
                 .build();
     }
 
     public static SubcategoryRequest createSubcategoryRequest() {
-        return SubcategoryRequest.builder()
-                .name("Test")
-                .build();
+        return createSubcategoryRequest(NAME);
     }
 
     public static SubcategoryRequest createSubcategoryRequest(String name) {
-        return SubcategoryRequest.builder()
-                .name(name)
-                .build();
+        return new SubcategoryRequest(name);
     }
 
-    public static SubcategoryResponse createSubcategoryResponse(){
-        return SubcategoryResponse.builder()
-                .id(1L)
-                .name("Test")
-                .build();
+    public static SubcategoryResponse createSubcategoryResponse() {
+        return new SubcategoryResponse(1L, NAME);
     }
 }

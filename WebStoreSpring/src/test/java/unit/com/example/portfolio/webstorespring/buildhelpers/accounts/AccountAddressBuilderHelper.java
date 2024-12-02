@@ -21,29 +21,10 @@ public class AccountAddressBuilderHelper {
     }
 
     public static AccountAddressRequest createAccountAddressRequest() {
-        return AccountAddressRequest.builder()
-                .city(CITY)
-                .postcode(POSTCODE)
-                .street(STREET)
-                .build();
-    }
-
-    public static AccountAddressRequest createAccountAddressRequest(String city,
-                                                                    String postcode,
-                                                                    String street) {
-        return AccountAddressRequest.builder()
-                .city(city)
-                .postcode(postcode)
-                .street(street)
-                .build();
+        return new AccountAddressRequest(CITY, POSTCODE, STREET);
     }
 
     public static AccountAddressResponse createAccountAddressResponse() {
-        return AccountAddressResponse.builder()
-                .id(1L)
-                .city(CITY)
-                .postcode(POSTCODE)
-                .street(STREET)
-                .build();
+        return new AccountAddressResponse(1L, CITY, STREET, POSTCODE);
     }
 }

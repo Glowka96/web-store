@@ -2,13 +2,9 @@ package com.example.portfolio.webstorespring.services.orders;
 
 import com.example.portfolio.webstorespring.buildhelpers.accounts.RoleBuilderHelper;
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
-import com.example.portfolio.webstorespring.mappers.DeliveryMapper;
-import com.example.portfolio.webstorespring.mappers.DeliveryTypeMapper;
 import com.example.portfolio.webstorespring.mappers.OrderMapper;
-import com.example.portfolio.webstorespring.mappers.ShipmentMapper;
 import com.example.portfolio.webstorespring.model.dto.orders.request.OrderRequest;
 import com.example.portfolio.webstorespring.model.dto.orders.response.OrderResponse;
-import com.example.portfolio.webstorespring.model.dto.orders.response.OrderResponseWithoutShipments;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.accounts.Role;
 import com.example.portfolio.webstorespring.model.entity.orders.Delivery;
@@ -16,18 +12,14 @@ import com.example.portfolio.webstorespring.model.entity.orders.Order;
 import com.example.portfolio.webstorespring.repositories.orders.OrderRepository;
 import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mapstruct.factory.Mappers;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -43,6 +35,7 @@ import static com.natpryce.makeiteasy.MakeItEasy.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.any;
@@ -56,22 +49,8 @@ class OrderServiceTest {
     private DeliveryService deliveryService;
     @Mock
     private ShipmentService shipmentService;
-    @Spy
-    private OrderMapper orderMapper = Mappers.getMapper(OrderMapper.class);
     @InjectMocks
     private OrderService underTest;
-
-    @BeforeEach
-    void initialization() {
-        ShipmentMapper shipmentMapper = Mappers.getMapper(ShipmentMapper.class);
-        ReflectionTestUtils.setField(orderMapper, "shipmentMapper", shipmentMapper);
-
-        DeliveryMapper deliveryMapper = Mappers.getMapper(DeliveryMapper.class);
-        ReflectionTestUtils.setField(orderMapper, "deliveryMapper", deliveryMapper);
-
-        DeliveryTypeMapper deliveryTypeMapper = Mappers.getMapper(DeliveryTypeMapper.class);
-        ReflectionTestUtils.setField(deliveryMapper, "deliveryTypeMapper", deliveryTypeMapper);
-    }
 
     @AfterEach
     void clearSecurityContext() {
@@ -85,9 +64,10 @@ class OrderServiceTest {
 
         given(orderRepository.findAllByAccountId(anyLong())).willReturn(Arrays.asList(order, order));
 
-        List<OrderResponseWithoutShipments> foundOrderResponses = underTest.getAllAccountOrder(accountDetails);
+        List<OrderResponse> foundOrderResponses = underTest.getAllAccountOrder(accountDetails);
 
         assertEquals(2, foundOrderResponses.size());
+        assertNullShipmentAndDeliveryType(foundOrderResponses);
     }
 
     @Test
@@ -99,8 +79,8 @@ class OrderServiceTest {
 
         OrderResponse orderResponse = underTest.getById(accountDetails,1L);
 
-        assertEquals(order.getId(), orderResponse.getId());
-        assertThat(orderResponse.getShipmentResponses()).hasSize(2);
+        assertEquals(order.getId(), orderResponse.id());
+        assertThat(orderResponse.shipmentResponses()).hasSize(2);
     }
 
     @Test
@@ -112,9 +92,10 @@ class OrderServiceTest {
         given(orderRepository.findLastFiveAccountOrder(anyLong()))
                 .willReturn(List.of(order, order, order, order, order));
 
-        List<OrderResponseWithoutShipments> findOrders = underTest.getLastFiveAccountOrder(accountDetails);
+        List<OrderResponse> findOrders = underTest.getLastFiveAccountOrder(accountDetails);
 
         assertThat(findOrders).hasSize(5);
+        assertNullShipmentAndDeliveryType(findOrders);
     }
 
     @Test
@@ -155,7 +136,7 @@ class OrderServiceTest {
                 ArgumentCaptor.forClass(Order.class);
         verify(orderRepository).save(orderArgumentCaptor.capture());
 
-        OrderResponse orderResponse = orderMapper.mapToDto(orderArgumentCaptor.getValue());
+        OrderResponse orderResponse = OrderMapper.mapToDto(orderArgumentCaptor.getValue());
 
         assertEquals(orderResponse, savedOrderResponse);
     }
@@ -171,5 +152,12 @@ class OrderServiceTest {
                 .id(2L)
                 .build();
         order.setAccount(otherAccount);
+    }
+
+    private static void assertNullShipmentAndDeliveryType(List<OrderResponse> foundOrderResponses) {
+        foundOrderResponses.forEach(orderResponse -> {
+            assertNull(orderResponse.shipmentResponses());
+            assertNull(orderResponse.deliveryResponse().deliveryTypeResponse());
+        });
     }
 }

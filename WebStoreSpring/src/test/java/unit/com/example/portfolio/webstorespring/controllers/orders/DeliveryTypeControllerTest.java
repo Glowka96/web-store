@@ -68,8 +68,8 @@ class DeliveryTypeControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(deliveryTypeRequest)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.name", is(deliveryTypeResponse.getName())))
-                .andExpect(jsonPath("$.price", is(deliveryTypeResponse.getPrice().doubleValue())))
+                .andExpect(jsonPath("$.name", is(deliveryTypeResponse.name())))
+                .andExpect(jsonPath("$.price", is(deliveryTypeResponse.price().doubleValue())))
                 .andDo(print());
     }
 

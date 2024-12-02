@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryBuilderHelper.createDeliveryRequest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -30,11 +31,11 @@ class DeliveryServiceTest {
     @Test
     void shouldFormatDelivery() {
         DeliveryType deliveryType = DeliveryTypeBuilderHelper.createDeliveryType();
-        DeliveryRequest deliveryRequest = DeliveryBuilderHelper.createDeliveryRequest();
-        String deliveryAddressBeforeUpdate = deliveryRequest.getDeliveryAddress();
+        DeliveryRequest deliveryRequest = createDeliveryRequest();
+        String deliveryAddressBeforeUpdate = deliveryRequest.deliveryAddress();
 
         given(deliveryTypeService.findById(anyLong())).willReturn(deliveryType);
-        given(shipmentAddressProvider.getAddress()).willReturn(DeliveryBuilderHelper.getSHIPMENT_ADDRESS());
+        given(shipmentAddressProvider.getAddress()).willReturn(DeliveryBuilderHelper.getShipmentAddress());
 
         Delivery formatedDelivery = underTest.formatDelivery(deliveryRequest);
 

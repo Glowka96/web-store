@@ -6,6 +6,7 @@ import com.example.portfolio.webstorespring.services.email.EmailSenderService;
 import com.example.portfolio.webstorespring.services.email.strategy.NotificationStrategy;
 import com.example.portfolio.webstorespring.services.email.strategy.NotificationStrategyFactory;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class EmailSenderServiceImpl implements EmailSenderService {
 
     private final JavaMailSender javaMailSender;
@@ -26,6 +28,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
                                          String confirmLinkWithToken) {
         NotificationStrategy notificationStrategy = notificationStrategyFactory.findNotificationStrategy(notificationType);
 
+        log.info("Sending {} email to: {}", notificationStrategy.getNotificationType().getName(), email);
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(email);
         mailMessage.setSubject(notificationStrategy.getEmailTitle());
@@ -33,7 +36,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
         mailMessage.setFrom(senderEmailProvider.getEmail());
 
         javaMailSender.send(mailMessage);
-
+        log.info("Sent email.");
         return Map.of("message", notificationStrategy.getResponseMessage());
     }
 }

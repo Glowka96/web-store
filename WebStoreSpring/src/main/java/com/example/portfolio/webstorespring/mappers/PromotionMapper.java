@@ -3,19 +3,24 @@ package com.example.portfolio.webstorespring.mappers;
 import com.example.portfolio.webstorespring.model.dto.products.request.PromotionRequest;
 import com.example.portfolio.webstorespring.model.dto.products.response.PromotionResponse;
 import com.example.portfolio.webstorespring.model.entity.products.Promotion;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring",
-        uses = {
-                ProductMapper.class
-        })
 public interface PromotionMapper {
 
-    @Mapping(target = "productResponse", source = "product")
-    PromotionResponse mapToDto(Promotion pricePromotion);
+    static PromotionResponse mapToDto(Promotion promotion) {
+        return new PromotionResponse(
+                promotion.getId(),
+                ProductMapper.mapToDto(promotion.getProduct()),
+                promotion.getPromotionPrice(),
+                promotion.getStartDate(),
+                promotion.getEndDate()
+        );
+    }
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "product", ignore = true)
-    Promotion mapToEntity(PromotionRequest promotionRequest);
+    static Promotion mapToEntity(PromotionRequest promotionRequest) {
+        return Promotion.builder()
+                .promotionPrice(promotionRequest.promotionPrice())
+                .startDate(promotionRequest.startDate())
+                .endDate(promotionRequest.endDate())
+                .build();
+    }
 }

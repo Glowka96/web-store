@@ -44,30 +44,25 @@ public class AccountBuilderHelper {
                     .build();
 
     public static AccountRequest createAccountRequest() {
-        return AccountRequest.builder()
-                .firstName(ACCOUNT_FIRST_NAME)
-                .lastName(ACCOUNT_LAST_NAME)
-                .password(ACCOUNT_PASSWORD)
-                .build();
+        return createAccountRequest(ACCOUNT_FIRST_NAME, ACCOUNT_LAST_NAME);
     }
 
     public static AccountRequest createAccountRequest(String firstname,
-                                                      String lastname,
-                                                      String password) {
-        return AccountRequest.builder()
-                .firstName(firstname)
-                .lastName(lastname)
-                .password(password)
-                .build();
+                                                      String lastname) {
+        return new AccountRequest(
+                firstname,
+                lastname,
+                ACCOUNT_IMAGE_URL
+        );
     }
 
     public static AccountResponse createAccountResponse() {
-        return AccountResponse.builder()
-                .id(1L)
-                .firstName(ACCOUNT_FIRST_NAME)
-                .lastName(ACCOUNT_LAST_NAME)
-                .email(ACCOUNT_EMAIL)
-                .imageUrl(ACCOUNT_IMAGE_URL)
-                .build();
+        return new AccountResponse(
+                1L,
+                ACCOUNT_FIRST_NAME,
+                ACCOUNT_LAST_NAME,
+                ACCOUNT_EMAIL,
+                ACCOUNT_IMAGE_URL
+        );
     }
 }

@@ -3,23 +3,30 @@ package com.example.portfolio.webstorespring.mappers;
 import com.example.portfolio.webstorespring.model.dto.orders.request.DeliveryTypeRequest;
 import com.example.portfolio.webstorespring.model.dto.orders.response.DeliveryTypeResponse;
 import com.example.portfolio.webstorespring.model.entity.orders.DeliveryType;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(
-        componentModel = "spring"
-)
+
 public interface DeliveryTypeMapper {
 
-    DeliveryTypeResponse mapToDto(DeliveryType deliveryType);
+    static List<DeliveryTypeResponse> mapToDto(List<DeliveryType> deliveryTypes) {
+        return deliveryTypes.stream()
+                .map(DeliveryTypeMapper::mapToDto)
+                .toList();
+    }
 
-    List<DeliveryTypeResponse> mapToDto(List<DeliveryType> deliveryTypes);
+    static DeliveryTypeResponse mapToDto(DeliveryType deliveryType) {
+        return new DeliveryTypeResponse(
+                deliveryType.getId(),
+                deliveryType.getName(),
+                deliveryType.getPrice()
+        );
+    }
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "deliveries", ignore = true)
-    DeliveryType mapToEntity(DeliveryTypeRequest deliveryTypeRequest);
-
-
+    static DeliveryType mapToEntity(DeliveryTypeRequest deliveryTypeRequest) {
+        return DeliveryType.builder()
+                .name(deliveryTypeRequest.name())
+                .price(deliveryTypeRequest.price())
+                .build();
+    }
 }

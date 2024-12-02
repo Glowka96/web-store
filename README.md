@@ -32,7 +32,6 @@ Project deployed on GCP: [Link](https://webstore-j5caa4355a-lm.a.run.app/)
 - Spring Security Test
 - Make-it-easy
 - Lombok
-- Mapstruct
 - Passay
 - Jsonwebtoken
 - Annotations
@@ -84,6 +83,19 @@ GCP:
 </div>
 
 ## Changelogs
+
+<details>
+<summary>Logger and mapper branch:</summary>
+
+- Add logs for services
+- Convert dto classes to records
+- Remove SortDirectionType
+- Add DiscountRandomizer
+- Add reset password method.
+- Rebuild mappers.
+- Remove Mapstruct dependency.
+
+</details>
 
 <details>
 <summary>Discount branch:</summary>

@@ -65,11 +65,11 @@ class ProductTypeControllerIT extends AbstractBaseControllerIT<ProductTypeReques
     public void assertsFieldsWhenSave(ProductTypeRequest request,
                                       ProductTypeResponse response) {
         Optional<ProductType> optionalProductType =
-                productTypeRepository.findById(response.getId());
+                productTypeRepository.findById(response.id());
         assertTrue(optionalProductType.isPresent());
 
-        assertThat(response.getId()).isNotNull().isEqualTo(optionalProductType.get().getId());
-        assertEquals(request.getName(), optionalProductType.get().getName(), response.getName());
+        assertThat(response.id()).isNotNull().isEqualTo(optionalProductType.get().getId());
+        assertEquals(request.name(), optionalProductType.get().getName(), response.name());
     }
 
     @Override
@@ -78,17 +78,17 @@ class ProductTypeControllerIT extends AbstractBaseControllerIT<ProductTypeReques
                                         ProductType entityBeforeUpdate,
                                         ProductType entityAfterUpdate) {
         assertThat(entityAfterUpdate.getId()).isEqualTo(savedEntityId)
-                .isEqualTo(response.getId())
+                .isEqualTo(response.id())
                 .isEqualTo(entityBeforeUpdate.getId());
-        assertThat(entityAfterUpdate.getName()).isEqualTo(request.getName())
-                .isEqualTo(response.getName())
+        assertThat(entityAfterUpdate.getName()).isEqualTo(request.name())
+                .isEqualTo(response.name())
                 .isNotEqualTo(entityBeforeUpdate.getName());
     }
 
     @Override
     public void assertsFieldsWhenNotUpdate(ProductTypeRequest request,
                                            ProductType entity) {
-        assertNotEquals(request.getName(), entity.getName());
+        assertNotEquals(request.name(), entity.getName());
     }
 
     @Test

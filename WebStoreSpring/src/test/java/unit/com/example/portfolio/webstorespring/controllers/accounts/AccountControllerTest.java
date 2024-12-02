@@ -3,6 +3,7 @@ package com.example.portfolio.webstorespring.controllers.accounts;
 import com.example.portfolio.webstorespring.controllers.AccountDetailsArgumentResolver;
 import com.example.portfolio.webstorespring.exceptions.GlobalExceptionHandler;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.AccountRequest;
+import com.example.portfolio.webstorespring.model.dto.accounts.request.UpdatePasswordRequest;
 import com.example.portfolio.webstorespring.model.dto.accounts.response.AccountResponse;
 import com.example.portfolio.webstorespring.services.accounts.AccountService;
 import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
@@ -16,6 +17,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.createAccountRequest;
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.createAccountResponse;
@@ -61,9 +65,9 @@ class AccountControllerTest {
                         .header("Authorization", "Bearer {JWT_TOKEN}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.firstName", is(accountResponse.getFirstName())))
-                .andExpect(jsonPath("$.lastName", is(accountResponse.getLastName())))
-                .andExpect(jsonPath("$.email", is(accountResponse.getEmail())))
+                .andExpect(jsonPath("$.firstName", is(accountResponse.firstName())))
+                .andExpect(jsonPath("$.lastName", is(accountResponse.lastName())))
+                .andExpect(jsonPath("$.email", is(accountResponse.email())))
                 .andDo(print());
     }
 
@@ -82,9 +86,30 @@ class AccountControllerTest {
                         .header("Authorization", "Bearer {JWT_TOKEN}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.firstName", is(accountResponse.getFirstName())))
-                .andExpect(jsonPath("$.lastName", is(accountResponse.getLastName())))
-                .andExpect(jsonPath("$.email", is(accountResponse.getEmail())))
+                .andExpect(jsonPath("$.firstName", is(accountResponse.firstName())))
+                .andExpect(jsonPath("$.lastName", is(accountResponse.lastName())))
+                .andExpect(jsonPath("$.email", is(accountResponse.email())))
+                .andDo(print());
+    }
+
+    @Test
+    void shouldUpdatePassword() throws Exception {
+        UpdatePasswordRequest updatePasswordRequest = new UpdatePasswordRequest("CurrentlyPassword1*", "NewPassword1*");
+
+        String msg = "Password updated successfully.";
+        Map<String, Object> message = new HashMap<>();
+        message.put("message", msg);
+
+        given(accountService.updatePassword(any(AccountDetails.class), any(UpdatePasswordRequest.class)))
+                .willReturn(message);
+
+        mvc.perform(patch(URI + "/passwords")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(updatePasswordRequest))
+                        .header("Authorization", "Bearer {JWT_TOKEN}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message", is(msg)))
                 .andDo(print());
     }
 

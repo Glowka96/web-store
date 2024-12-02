@@ -7,6 +7,7 @@ import com.example.portfolio.webstorespring.model.dto.products.response.Category
 import com.example.portfolio.webstorespring.model.entity.products.Category;
 import com.example.portfolio.webstorespring.repositories.products.CategoryRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,35 +15,37 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
-    private final CategoryMapper categoryMapper;
 
     public List<CategoryResponse> getAll() {
-        return categoryMapper.mapToDto(
-                categoryRepository.findAll());
+        log.info("Fetching all category.");
+        return CategoryMapper.mapToDto(categoryRepository.findAll());
     }
 
     public CategoryResponse save(CategoryRequest categoryRequest) {
-        Category category = categoryMapper.mapToEntity(categoryRequest);
+        log.info("Saving category from request: {}", categoryRequest);
+        Category category = CategoryMapper.mapToEntity(categoryRequest);
         categoryRepository.save(category);
-        return categoryMapper.mapToDto(category);
+        log.info("Saved category.");
+        return CategoryMapper.mapToDto(category);
     }
 
     @Transactional
     public CategoryResponse update(Long id, CategoryRequest categoryRequest) {
+        log.info("Updating category for ID: {}, from request: {}", id, categoryRequest);
         Category foundCategory = findById(id);
-
-        Category category = categoryMapper.mapToEntity(categoryRequest);
-
-        foundCategory.setName(category.getName());
+        foundCategory.setName(categoryRequest.name());
 
         categoryRepository.save(foundCategory);
-        return categoryMapper.mapToDto(foundCategory);
+        log.info("Updated category.");
+        return CategoryMapper.mapToDto(foundCategory);
     }
 
     public void deleteById(Long id) {
+        log.info("Deleting category by ID: {}", id);
         categoryRepository.deleteById(id);
     }
 

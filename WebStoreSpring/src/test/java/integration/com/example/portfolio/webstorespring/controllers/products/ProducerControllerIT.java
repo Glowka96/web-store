@@ -64,11 +64,11 @@ class ProducerControllerIT extends AbstractBaseControllerIT<ProducerRequest, Pro
     @Override
     public void assertsFieldsWhenSave(ProducerRequest request,
                                       ProducerResponse response) {
-        Optional<Producer> optionalProducer = producerRepository.findById(response.getId());
+        Optional<Producer> optionalProducer = producerRepository.findById(response.id());
         assertTrue(optionalProducer.isPresent());
 
-        assertThat(response.getId()).isNotNull().isEqualTo(optionalProducer.get().getId());
-        assertEquals(request.getName(), optionalProducer.get().getName(), response.getName());
+        assertThat(response.id()).isNotNull().isEqualTo(optionalProducer.get().getId());
+        assertEquals(request.name(), optionalProducer.get().getName(), response.name());
     }
 
     @Override
@@ -77,16 +77,16 @@ class ProducerControllerIT extends AbstractBaseControllerIT<ProducerRequest, Pro
                                         Producer entityBeforeUpdate,
                                         Producer entityAfterUpdate) {
         assertThat(entityAfterUpdate.getId()).isEqualTo(savedEntityId)
-                .isEqualTo(response.getId())
+                .isEqualTo(response.id())
                 .isEqualTo(entityBeforeUpdate.getId());
-        assertThat(entityAfterUpdate.getName()).isEqualTo(request.getName())
-                .isEqualTo(response.getName())
+        assertThat(entityAfterUpdate.getName()).isEqualTo(request.name())
+                .isEqualTo(response.name())
                 .isNotEqualTo(entityBeforeUpdate.getName());
     }
 
     @Override
     public void assertsFieldsWhenNotUpdate(ProducerRequest request, Producer entity) {
-        assertNotEquals(request.getName(), entity.getName());
+        assertNotEquals(request.name(), entity.getName());
     }
 
     @Test

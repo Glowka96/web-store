@@ -71,8 +71,8 @@ class SubcategoryControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(subcategoryRequest)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id", is(subcategoryResponse.getId().intValue())))
-                .andExpect(jsonPath("$.name", is(subcategoryResponse.getName())))
+                .andExpect(jsonPath("$.id", is(subcategoryResponse.id().intValue())))
+                .andExpect(jsonPath("$.name", is(subcategoryResponse.name())))
                 .andDo(print());
     }
 
@@ -88,8 +88,8 @@ class SubcategoryControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(subcategoryRequest)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(subcategoryResponse.getId().intValue())))
-                .andExpect(jsonPath("$.name", is(subcategoryResponse.getName())))
+                .andExpect(jsonPath("$.id", is(subcategoryResponse.id().intValue())))
+                .andExpect(jsonPath("$.name", is(subcategoryResponse.name())))
                 .andDo(print());
     }
 

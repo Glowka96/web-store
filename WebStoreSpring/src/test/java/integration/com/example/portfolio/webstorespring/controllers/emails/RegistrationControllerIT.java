@@ -73,7 +73,7 @@ class RegistrationControllerIT extends AbstractTestRestTemplateIT {
         assertTrue(requireNonNull(response.getBody())
                 .containsValue(REGISTER_MESSAGE));
 
-        Optional<Account> accountOptional = accountRepository.findByEmail(registrationRequest.getEmail());
+        Optional<Account> accountOptional = accountRepository.findByEmail(registrationRequest.email());
         assertTrue(accountOptional.isPresent());
         assertFalse(accountOptional.get().getEnabled());
     }

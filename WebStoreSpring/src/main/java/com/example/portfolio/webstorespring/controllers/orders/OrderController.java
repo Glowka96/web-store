@@ -2,7 +2,6 @@ package com.example.portfolio.webstorespring.controllers.orders;
 
 import com.example.portfolio.webstorespring.model.dto.orders.request.OrderRequest;
 import com.example.portfolio.webstorespring.model.dto.orders.response.OrderResponse;
-import com.example.portfolio.webstorespring.model.dto.orders.response.OrderResponseWithoutShipments;
 import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
 import com.example.portfolio.webstorespring.services.orders.OrderService;
 import jakarta.validation.Valid;
@@ -21,12 +20,12 @@ public class OrderController {
     private final OrderService orderService;
 
     @GetMapping
-    public List<OrderResponseWithoutShipments> getAllAccountOrders(@AuthenticationPrincipal AccountDetails accountDetails) {
+    public List<OrderResponse> getAllAccountOrders(@AuthenticationPrincipal AccountDetails accountDetails) {
         return orderService.getAllAccountOrder(accountDetails);
     }
 
     @GetMapping("/last-five")
-    public List<OrderResponseWithoutShipments> getLastFiveAccountOrder(@AuthenticationPrincipal AccountDetails accountDetails) {
+    public List<OrderResponse> getLastFiveAccountOrder(@AuthenticationPrincipal AccountDetails accountDetails) {
         return orderService.getLastFiveAccountOrder(accountDetails);
     }
 
