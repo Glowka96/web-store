@@ -11,15 +11,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Random;
-
 @Service
 @RequiredArgsConstructor
 public class DiscountService {
 
     private final DiscountRepository discountRepository;
     private final SubcategoryService subcategoryService;
-    private static final Random random = new Random();
+    private final DiscountRandomizer discountRandomizer;
 
     public DiscountUserResponse getByCode(String code) {
         return DiscountUserResponse.mapToResponse(
@@ -50,7 +48,6 @@ public class DiscountService {
     public Discount applyByCode(String code) {
         Discount discount = findByCode(code);
         discount.setQuantity(discount.getQuantity() - 1);
-        discountRepository.save(discount);
         return discount;
     }
 
@@ -59,19 +56,10 @@ public class DiscountService {
     }
 
     private String getCode(DiscountRequest discountRequest) {
-        return discountRequest.code() != null ? discountRequest.code() : generateUniqueCode();
+        return discountRequest.code() != null
+                ? discountRequest.code()
+                : discountRandomizer.generateUniqueCode();
     }
 
-    private String generateUniqueCode() {
-        String code = generateCode();
-        return discountRepository.existsByCode(code) ? generateUniqueCode() : code;
-    }
 
-    private static String generateCode() {
-        return random.ints(48, 123)
-                .filter(num -> (num < 58 || num > 64) && (num < 91 || num > 96))
-                .limit(10)
-                .mapToObj(c -> (char) c).collect(StringBuffer::new, StringBuffer::append, StringBuffer::append)
-                .toString();
-    }
 }
