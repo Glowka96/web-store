@@ -11,6 +11,7 @@ import com.example.portfolio.webstorespring.model.entity.orders.Shipment;
 import com.example.portfolio.webstorespring.repositories.orders.OrderRepository;
 import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class OrderService {
 
     private final OrderRepository orderRepository;
@@ -28,6 +30,7 @@ public class OrderService {
     private final DeliveryService deliveryService;
 
     public List<OrderResponse> getAllAccountOrder(AccountDetails accountDetails) {
+        log.info("Fetching all account order for account ID: {}", accountDetails.getAccount().getId());
         return OrderMapper.mapToDtoWithoutShipments(
                 orderRepository.findAllByAccountId(
                         accountDetails.getAccount().getId()
@@ -36,6 +39,7 @@ public class OrderService {
     }
 
     public List<OrderResponse> getLastFiveAccountOrder(AccountDetails accountDetails) {
+        log.info("Fetching last five account order for account ID: {}", accountDetails.getAccount().getId());
         return OrderMapper.mapToDtoWithoutShipments(
                 orderRepository.findLastFiveAccountOrder(
                         accountDetails.getAccount().getId()
@@ -44,21 +48,25 @@ public class OrderService {
     }
 
     public OrderResponse getById(AccountDetails accountDetails, Long orderId) {
+        log.info("Finding order with ID: {}", orderId);
         Order foundOrder = findById(orderId);
 
+        log.debug("Checking owner of order.");
         checkOwnerOfOrder(accountDetails, foundOrder);
 
+        log.info("Returning found order.");
         return OrderMapper.mapToDto(foundOrder);
     }
 
     @Transactional
     public OrderResponse save(AccountDetails accountDetails, OrderRequest orderRequest) {
+        log.info("Saving order for account ID: {}", accountDetails.getAccount().getId());
         Account loggedAccount = accountDetails.getAccount();
 
         Order order = setupOrder(loggedAccount, orderRequest);
 
         orderRepository.save(order);
-
+        log.info("Saved order for account ID: {}", accountDetails.getAccount().getId());
         return OrderMapper.mapToDto(order);
     }
 
@@ -75,6 +83,7 @@ public class OrderService {
 
     private Order setupOrder(Account loggedAccount,
                              OrderRequest orderRequest) {
+        log.debug("Setting up order.");
         Order order = Order.builder()
                 .account(loggedAccount)
                 .nameUser(loggedAccount.getFirstName() +
@@ -85,10 +94,12 @@ public class OrderService {
                 .build();
 
         setupTotalPrice(order);
+        log.debug("Set up order.");
         return order;
     }
 
     private void setupTotalPrice(Order order) {
+        log.debug("Setting total price of order.");
         order.setTotalPrice(order.getShipments()
                 .stream()
                 .map(Shipment::getPrice)
