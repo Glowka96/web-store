@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.buildhelpers.products;
 
 import com.example.portfolio.webstorespring.enums.SortByType;
-import com.example.portfolio.webstorespring.enums.SortDirectionType;
 import com.example.portfolio.webstorespring.model.dto.products.ProductsPageOptions;
+import org.springframework.data.domain.Sort;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,7 +19,7 @@ public class ProductsPageOptionsBuilderHelper {
 
     public static List<String> getSortOptions() {
         return Arrays.stream(SortByType.values())
-                .flatMap(s-> Arrays.stream(SortDirectionType.values())
+                .flatMap(s-> Arrays.stream(Sort.Direction.values())
                         .map(d -> s.getFieldName() + " - " + d.name().toLowerCase()))
                 .toList();
     }

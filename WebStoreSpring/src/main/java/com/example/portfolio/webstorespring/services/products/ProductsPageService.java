@@ -1,12 +1,12 @@
 package com.example.portfolio.webstorespring.services.products;
 
 import com.example.portfolio.webstorespring.enums.SortByType;
-import com.example.portfolio.webstorespring.enums.SortDirectionType;
 import com.example.portfolio.webstorespring.model.dto.products.PageProductsWithPromotionDTO;
 import com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionDTO;
 import com.example.portfolio.webstorespring.model.dto.products.ProductsPageOptions;
 import com.example.portfolio.webstorespring.repositories.products.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,6 +24,7 @@ import java.util.function.Function;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class ProductsPageService {
 
     private final ProductRepository productRepository;
@@ -59,10 +60,13 @@ public class ProductsPageService {
 
     private PageProductsWithPromotionDTO getProductsPage(ProductsPageOptions productsPageOptions,
                                                          Function<Pageable, Page<ProductWithPromotionDTO>> function) {
+        log.info("Fetching product for product page options: {}", productsPageOptions);
         Pageable pageable = getPageable(productsPageOptions);
         Page<ProductWithPromotionDTO> productPage = function.apply(pageable);
 
+        log.debug("Getting sort options.");
         List<String> sortOptions = getSortOptions();
+        log.info("Returning page.");
         return new PageProductsWithPromotionDTO(
                 productPage.getTotalElements(),
                 productPage.getTotalPages(),
@@ -94,8 +98,10 @@ public class ProductsPageService {
 
     @NotNull
     private Pageable getPageable(ProductsPageOptions productsPageOptions) {
+        log.debug("Separating sortType and sortDirection.");
         String[] sortTypeAndDirection = productsPageOptions.sortOption().split("\\s-\\s");
         String sortType = SortByType.findFieldNameOfSortByType(sortTypeAndDirection[0]);
+        log.debug("Returning pageable.");
         return PageRequest.of(
                 productsPageOptions.pageNo(),
                 productsPageOptions.size(),
@@ -106,7 +112,7 @@ public class ProductsPageService {
     @NotNull
     private static List<String> getSortOptions() {
         return Arrays.stream(SortByType.values())
-                .flatMap(s -> Arrays.stream(SortDirectionType.values())
+                .flatMap(s -> Arrays.stream(Sort.Direction.values())
                         .map(d -> s.toString().toLowerCase() + " - " + d.name().toLowerCase()))
                 .toList();
     }
