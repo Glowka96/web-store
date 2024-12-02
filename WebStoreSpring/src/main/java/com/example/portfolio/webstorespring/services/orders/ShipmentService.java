@@ -84,7 +84,7 @@ class ShipmentService {
         shipments.addAll(getCalculatedShipmentsWithoutDiscount(
                 partitionProductsByDiscount.get(false), productQuantities)
         );
-        log.debug("Returning all shipments.");
+        log.info("Returning all shipments.");
         return shipments;
     }
 
@@ -95,7 +95,7 @@ class ShipmentService {
 
     @NotNull
     private List<Shipment> getCalculatedShipmentsWithoutDiscount(List<Product> products, Map<Long, Integer> productQuantities) {
-        log.debug("Returning calculated shipment without discount");
+        log.info("Returning calculated shipment without discount");
         return products.stream()
                 .map(p -> createShipment(p, productQuantities.get(p.getId())))
                 .toList();
