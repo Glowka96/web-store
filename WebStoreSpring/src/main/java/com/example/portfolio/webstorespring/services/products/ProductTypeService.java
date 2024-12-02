@@ -7,6 +7,7 @@ import com.example.portfolio.webstorespring.model.dto.products.response.ProductT
 import com.example.portfolio.webstorespring.model.entity.products.ProductType;
 import com.example.portfolio.webstorespring.repositories.products.ProductTypeRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,34 +15,41 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ProductTypeService {
 
     private final ProductTypeRepository productTypeRepository;
 
     public List<ProductTypeResponse> getAll() {
+        log.info("Fetching all product type.");
         return ProductTypeMapper.mapToDto(productTypeRepository.findAll());
     }
 
     public ProductTypeResponse save(ProductTypeRequest productTypeRequest){
+        log.info("Saving product type from request: {}", productTypeRequest);
         ProductType productType = ProductTypeMapper.mapToEntity(productTypeRequest);
         productTypeRepository.save(productType);
+        log.info("Saved product type.");
         return ProductTypeMapper.mapToDto(productType);
     }
 
     @Transactional
     public ProductTypeResponse update(Long id, ProductTypeRequest productTypeRequest) {
+        log.info("Updating product type for ID: {}, from: {}", id, productTypeRequest);
         ProductType foundProductType = findById(id);
         foundProductType.setName(productTypeRequest.name());
         productTypeRepository.save(foundProductType);
+        log.info("Updated product type.");
         return ProductTypeMapper.mapToDto(foundProductType);
     }
 
-    public void deleteById(Long productTypeId) {
-        productTypeRepository.deleteById(productTypeId);
+    public void deleteById(Long id) {
+        log.info("Deleting product type for ID: {}", id);
+        productTypeRepository.deleteById(id);
     }
 
-    protected ProductType findById(Long productTypeId) {
-        return productTypeRepository.findById(productTypeId)
-                .orElseThrow(() -> new ResourceNotFoundException("ProductType", "id", productTypeId));
+    protected ProductType findById(Long id) {
+        return productTypeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("ProductType", "id", id));
     }
 }

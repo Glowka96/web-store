@@ -40,7 +40,7 @@ public class ProducerService {
 
     @Transactional
     public ProducerResponse update(Long id, ProducerRequest producerRequest) {
-        log.info("Updating producer. Finding producer for ID: {}", id);
+        log.info("Updating producer for ID: {}, form request: {}", id, producerRequest);
         Producer foundProducer = findById(id);
         foundProducer.setName(producerRequest.name());
         producerRepository.save(foundProducer);

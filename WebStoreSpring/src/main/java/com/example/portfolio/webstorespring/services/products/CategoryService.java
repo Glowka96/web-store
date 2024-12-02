@@ -35,7 +35,7 @@ public class CategoryService {
 
     @Transactional
     public CategoryResponse update(Long id, CategoryRequest categoryRequest) {
-        log.info("Updating category. Finding category for ID: {}", id);
+        log.info("Updating category for ID: {}, from request: {}", id, categoryRequest);
         Category foundCategory = findById(id);
         foundCategory.setName(categoryRequest.name());
 

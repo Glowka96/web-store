@@ -62,7 +62,7 @@ public class ProductService {
                                   Long producerId,
                                   Long productId,
                                   ProductRequest productRequest) {
-        log.info("Updating product. Finding product for ID: {}", productId);
+        log.info("Updating product for ID: {}, from request: {}", productId, productRequest);
         Product foundProduct = findById(productId);
         Product product = ProductMapper.mapToEntity(productRequest);
 
