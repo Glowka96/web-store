@@ -1,12 +1,11 @@
 package com.example.portfolio.webstorespring.services.accounts;
 
+import com.example.portfolio.webstorespring.annotations.ValidateEmailUpdate;
 import com.example.portfolio.webstorespring.config.providers.AccountImageUrlProvider;
 import com.example.portfolio.webstorespring.config.providers.AdminCredentialsProvider;
 import com.example.portfolio.webstorespring.enums.RoleType;
 import com.example.portfolio.webstorespring.mappers.AccountMapper;
-import com.example.portfolio.webstorespring.model.dto.accounts.request.AccountRequest;
-import com.example.portfolio.webstorespring.model.dto.accounts.request.RegistrationRequest;
-import com.example.portfolio.webstorespring.model.dto.accounts.request.UpdatePasswordRequest;
+import com.example.portfolio.webstorespring.model.dto.accounts.request.*;
 import com.example.portfolio.webstorespring.model.dto.accounts.response.AccountResponse;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
@@ -70,6 +69,17 @@ public class AccountService {
         accountRepository.save(loggedAccount);
         log.info("Updated account with account ID: {}", loggedAccount.getId());
         return AccountMapper.mapToDto(loggedAccount);
+    }
+
+    @ValidateEmailUpdate
+    public Map<String, Object> updateEmail(AccountDetails accountDetails,
+                                           UpdateEmailRequest emailRequest,
+                                           LoginRequest loginRequest) {
+        Account loggedAccount = accountDetails.getAccount();
+        loggedAccount.setBackupEmail(loggedAccount.getEmail());
+        loggedAccount.setEmail(emailRequest.email());
+        accountRepository.save(loggedAccount);
+        return Map.of("message", "Email updated successfully.");
     }
 
     @Transactional
