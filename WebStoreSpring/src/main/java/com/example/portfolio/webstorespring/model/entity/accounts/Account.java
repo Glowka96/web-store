@@ -31,6 +31,8 @@ public class Account {
     @Column(nullable = false, unique = true)
     private String email;
 
+    private String backupEmail;
+
     @Column(nullable = false)
     private String password;
 
