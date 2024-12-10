@@ -5,7 +5,10 @@ import com.example.portfolio.webstorespring.config.providers.AccountImageUrlProv
 import com.example.portfolio.webstorespring.config.providers.AdminCredentialsProvider;
 import com.example.portfolio.webstorespring.enums.RoleType;
 import com.example.portfolio.webstorespring.mappers.AccountMapper;
-import com.example.portfolio.webstorespring.model.dto.accounts.request.*;
+import com.example.portfolio.webstorespring.model.dto.accounts.request.AccountRequest;
+import com.example.portfolio.webstorespring.model.dto.accounts.request.RegistrationRequest;
+import com.example.portfolio.webstorespring.model.dto.accounts.request.UpdateEmailRequest;
+import com.example.portfolio.webstorespring.model.dto.accounts.request.UpdatePasswordRequest;
 import com.example.portfolio.webstorespring.model.dto.accounts.response.AccountResponse;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
@@ -73,8 +76,9 @@ public class AccountService {
 
     @ValidateEmailUpdate
     public Map<String, Object> updateEmail(AccountDetails accountDetails,
-                                           UpdateEmailRequest emailRequest,
-                                           LoginRequest loginRequest) {
+                                           UpdateEmailRequest emailRequest) {
+        log.info("Update email: {}", emailRequest);
+        log.info("Login: {}", emailRequest.loginRequest().email());
         Account loggedAccount = accountDetails.getAccount();
         loggedAccount.setBackupEmail(loggedAccount.getEmail());
         loggedAccount.setEmail(emailRequest.email());

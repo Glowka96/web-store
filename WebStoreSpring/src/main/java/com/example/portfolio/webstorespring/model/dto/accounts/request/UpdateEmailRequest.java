@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Email;
 
 public record UpdateEmailRequest(
         @Email
-        String email
+        String email,
+        LoginRequest loginRequest
 ) {
 }
