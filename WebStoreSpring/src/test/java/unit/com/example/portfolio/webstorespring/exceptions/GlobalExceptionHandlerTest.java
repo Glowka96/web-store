@@ -55,6 +55,8 @@ class GlobalExceptionHandlerTest {
     @Mock
     private ShipmentQuantityExceedsProductQuantityException shipmentQuantityExceedsProductQuantityException;
     @Mock
+    private EmailAlreadyUsedException emailAlreadyUsedException;
+    @Mock
     private IllegalArgumentException illegalArgumentException;
     @Mock
     private ConstraintViolationException constraintViolationException;
@@ -230,6 +232,17 @@ class GlobalExceptionHandlerTest {
 
         assertsResponse(resultErrorResponse, getExceptedErrorResponse(
                 HttpStatus.BAD_REQUEST, shipmentQuantityExceedsProductQuantityException
+        ));
+    }
+
+    @Test
+    void shouldHandleCanNotModification_whenEmailAlreadyUsed_thenStatusBadRequest() {
+        ErrorResponse resultErrorResponse = underTest.handleCanNotModifiedException(
+                emailAlreadyUsedException, webRequest
+        );
+
+        assertsResponse(resultErrorResponse, getExceptedErrorResponse(
+                HttpStatus.BAD_REQUEST, emailAlreadyUsedException
         ));
     }
 
