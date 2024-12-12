@@ -77,12 +77,12 @@ public class AccountService {
     @ValidateEmailUpdate
     public Map<String, Object> updateEmail(AccountDetails accountDetails,
                                            UpdateEmailRequest emailRequest) {
-        log.info("Update email: {}", emailRequest);
-        log.info("Login: {}", emailRequest.loginRequest().email());
+        log.info("Update email: {} for account: {}", emailRequest, accountDetails.getUsername());
         Account loggedAccount = accountDetails.getAccount();
         loggedAccount.setBackupEmail(loggedAccount.getEmail());
         loggedAccount.setEmail(emailRequest.email());
         accountRepository.save(loggedAccount);
+        log.info("Updated successful.");
         return Map.of("message", "Email updated successfully.");
     }
 
@@ -132,6 +132,12 @@ public class AccountService {
         log.debug("Setting password for account ID: {}", account.getId());
         account.setPassword(encoder.encode(password));
         accountRepository.save(account);
+    }
+
+    @Transactional
+    public void restoreEmail(Account account) {
+        account.setEmail(account.getBackupEmail());
+        account.setBackupEmail(null);
     }
 
     public Account findByEmail(String email) {

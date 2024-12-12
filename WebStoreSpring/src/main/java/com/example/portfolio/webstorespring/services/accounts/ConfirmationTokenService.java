@@ -34,6 +34,18 @@ public class ConfirmationTokenService {
                 ));
     }
 
+    @Transactional
+    public ConfirmationToken createWithoutExpiresDate(Account account) {
+        log.info("Saving confirmation token for account ID: {}", account.getId());
+        return confirmationTokenRepository.save(
+                new ConfirmationToken(
+                        UUID.randomUUID().toString(),
+                        LocalDateTime.now(clock),
+                        LocalDateTime.now(clock).plusYears(99),
+                        account
+                ));
+    }
+
     public ConfirmationToken getByToken(String token) {
         log.debug("Finding confirmation token by token: {}", token);
         return confirmationTokenRepository.findByToken(token)

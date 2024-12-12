@@ -6,7 +6,8 @@ import lombok.Getter;
 public enum NotificationType {
     RESET_PASSWORD("resetPassword"),
     CONFIRM_EMAIL("confirmEmail"),
-    RECONFIRM_EMAIL("reconfirmEmail");
+    RECONFIRM_EMAIL("reconfirmEmail"),
+    BACKUP_EMAIL("backupEmail");
 
     private final String name;
 

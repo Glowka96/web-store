@@ -3,8 +3,6 @@ package com.example.portfolio.webstorespring.services.email;
 import com.example.portfolio.webstorespring.config.providers.ConfirmationLinkProvider;
 import com.example.portfolio.webstorespring.enums.NotificationType;
 import com.example.portfolio.webstorespring.exceptions.TokenConfirmedException;
-import com.example.portfolio.webstorespring.exceptions.TokenExpiredException;
-import com.example.portfolio.webstorespring.model.dto.accounts.request.ResetPasswordRequest;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.accounts.ConfirmationToken;
 import com.example.portfolio.webstorespring.services.accounts.AccountService;
@@ -17,45 +15,33 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class ResetPasswordService {
+public class BackupEmailService {
+
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailSenderService emailSenderService;
     private final AccountService accountService;
     private final ConfirmationLinkProvider confirmationLinkProvider;
 
-    @Transactional
-    public Map<String, Object> resetPasswordByEmail(String email) {
-        Account account = accountService.findByEmail(email);
-
-        ConfirmationToken savedToken = confirmationTokenService.create(account);
+    public void sendBackupEmail(Account account) {
+        ConfirmationToken savedToken = confirmationTokenService.createWithoutExpiresDate(account);
         emailSenderService.sendEmail(
-                NotificationType.RESET_PASSWORD,
+                NotificationType.BACKUP_EMAIL,
                 account.getEmail(),
-                confirmationLinkProvider.getResetPassword() + savedToken.getToken()
+                confirmationLinkProvider.getBackupEmail() + savedToken.getToken()
         );
-        return Map.of("message", "Sent reset password link to your email");
     }
 
     @Transactional
-    public Map<String, Object> confirmResetPassword(ResetPasswordRequest resetPasswordRequest, String token) {
+    public Map<String, Object> confirmBackupEmail(String token) {
         ConfirmationToken confirmationToken = confirmationTokenService.getByToken(token);
         Account account = confirmationToken.getAccount();
 
-        validateConfirmationToken(confirmationToken);
-
-        confirmationTokenService.setConfirmedAt(confirmationToken);
-        accountService.setNewAccountPassword(account, resetPasswordRequest.password());
-
-        return Map.of("message", "Your new password has been saved");
-    }
-
-    private void validateConfirmationToken(ConfirmationToken confirmationToken) {
-        if (confirmationToken.getConfirmedAt() != null) {
+        if(confirmationToken.getConfirmedAt() != null) {
             throw new TokenConfirmedException();
         }
 
-        if (confirmationTokenService.isTokenExpired(confirmationToken)) {
-            throw new TokenExpiredException();
-        }
+        confirmationTokenService.setConfirmedAt(confirmationToken);
+        accountService.restoreEmail(account);
+        return Map.of("message", "Old account email restored");
     }
 }
