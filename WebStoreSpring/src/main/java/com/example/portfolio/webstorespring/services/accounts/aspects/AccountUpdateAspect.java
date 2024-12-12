@@ -33,10 +33,11 @@ public class AccountUpdateAspect {
             argNames = "accountDetails,updateEmailRequest")
     public void beforeValidateEmailUpdate(AccountDetails accountDetails,
                                           UpdateEmailRequest updateEmailRequest) {
-        log.info("In aspect");
+        log.info("Starting data validation for email update: {}", updateEmailRequest.email());
         validateUniqueNewEmail(updateEmailRequest.email());
         validateEmail(updateEmailRequest.loginRequest().email(), accountDetails.getUsername());
         validatePassword(updateEmailRequest.loginRequest().password(), accountDetails.getPassword());
+        log.info("Validation passed");
     }
 
     private void validateUniqueNewEmail(String email) {
