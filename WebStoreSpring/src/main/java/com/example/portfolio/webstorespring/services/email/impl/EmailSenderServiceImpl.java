@@ -22,9 +22,10 @@ public class EmailSenderServiceImpl implements EmailSenderService {
     private final SenderEmailProvider senderEmailProvider;
 
     @Override
-    public Map<String, Object> sendEmail(NotificationType notificationType,
-                                         String email,
-                                         String confirmLinkWithToken) {
+    @Async
+    public void sendEmail(NotificationType notificationType,
+                          String email,
+                          String confirmLinkWithToken) {
         NotificationStrategy notificationStrategy = notificationStrategyFactory.findNotificationStrategy(notificationType);
 
         log.info("Sending {} email to: {}", notificationStrategy.getNotificationType().getName(), email);
