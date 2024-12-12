@@ -29,9 +29,12 @@ public class ResetPasswordService {
         Account account = accountService.findByEmail(email);
 
         ConfirmationToken savedToken = confirmationTokenService.create(account);
-        return emailSenderService.sendEmail(NotificationType.RESET_PASSWORD,
+        emailSenderService.sendEmail(
+                NotificationType.RESET_PASSWORD,
                 account.getEmail(),
-                confirmationLinkProvider.getResetPassword() + savedToken.getToken());
+                confirmationLinkProvider.getResetPassword() + savedToken.getToken()
+        );
+        return Map.of("message", "Sent reset password link to your email");
     }
 
     @Transactional

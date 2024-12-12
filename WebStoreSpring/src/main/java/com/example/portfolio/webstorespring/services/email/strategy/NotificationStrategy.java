@@ -9,6 +9,4 @@ public interface NotificationStrategy {
     String getEmailTitle();
 
     String getEmailMessage();
-
-    String getResponseMessage();
 }

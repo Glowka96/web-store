@@ -53,13 +53,12 @@ class RegistrationServiceTest {
 
         given(confirmationTokenService.create(any(Account.class))).willReturn(confirmationToken);
         given(confirmationLinkProvider.getEmail()).willReturn("http://localhost:4200/registration/confirm?token=");
-        given(emailSenderService.sendEmail(any(NotificationType.class), anyString(), anyString()))
-                .willReturn(excepted);
         given(accountService.save(registrationRequest)).willReturn(account);
 
         Map<String, Object> result = underTest.registrationAccount(registrationRequest);
 
         assertEquals(excepted, result);
+        verify(emailSenderService, times(1)).sendEmail(any(NotificationType.class), anyString(), anyString());
     }
 
     @Test
@@ -106,12 +105,11 @@ class RegistrationServiceTest {
         given(confirmationTokenService.getByToken(anyString())).willReturn(confirmationToken);
         given(confirmationTokenService.isTokenExpired(any(ConfirmationToken.class))).willReturn(true);
         given(confirmationTokenService.create(any(Account.class))).willReturn(confirmationToken);
-        given(emailSenderService.sendEmail(any(NotificationType.class), anyString(), anyString()))
-                .willReturn(excepted);
 
         Map<String, Object> result = underTest.confirmToken(confirmationToken.getToken());
 
         assertEquals(excepted, result);
         verify(confirmationTokenService, times(1)).delete(any(ConfirmationToken.class));
+        verify(emailSenderService, times(1)).sendEmail(any(NotificationType.class), anyString(), anyString());
     }
 }

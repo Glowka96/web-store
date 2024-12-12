@@ -19,9 +19,4 @@ class ReconfirmEmailNotificationStrategy implements NotificationStrategy{
     public String getEmailMessage() {
         return "To confirm your account, please click here: \n";
     }
-
-    @Override
-    public String getResponseMessage() {
-        return "Your token is expired. Verify your email address using the new token link in your email.";
-    }
 }

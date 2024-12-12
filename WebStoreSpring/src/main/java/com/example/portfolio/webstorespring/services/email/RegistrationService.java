@@ -23,14 +23,19 @@ public class RegistrationService {
     private final AccountService accountService;
     private final ConfirmationLinkProvider confirmationLinkProvider;
 
+    private static final String MESSAGE = "message";
+
     @Transactional
     public Map<String, Object> registrationAccount(RegistrationRequest registrationRequest) {
         Account account = accountService.save(registrationRequest);
 
         ConfirmationToken savedToken = confirmationTokenService.create(account);
-        return emailSenderService.sendEmail(NotificationType.CONFIRM_EMAIL,
+        emailSenderService.sendEmail(
+                NotificationType.CONFIRM_EMAIL,
                 account.getEmail(),
-                getConfirmLinkWithToken(savedToken));
+                getConfirmLinkWithToken(savedToken)
+        );
+        return Map.of(MESSAGE, "Verify your email address using the link in your email.");
     }
 
     @Transactional
@@ -45,14 +50,17 @@ public class RegistrationService {
         if (Boolean.FALSE.equals(account.getEnabled()) && confirmationTokenService.isTokenExpired(confirmationToken)) {
             ConfirmationToken newToken = confirmationTokenService.create(account);
             confirmationTokenService.delete(confirmationToken);
-            return emailSenderService.sendEmail(NotificationType.RECONFIRM_EMAIL,
+            emailSenderService.sendEmail(
+                    NotificationType.RECONFIRM_EMAIL,
                     account.getEmail(),
-                    getConfirmLinkWithToken(newToken));
+                    getConfirmLinkWithToken(newToken)
+            );
+            return Map.of(MESSAGE, "Your token is expired. Verify your email address using the new token link in your email.");
         }
         confirmationTokenService.setConfirmedAt(confirmationToken);
         accountService.setEnabledAccount(account);
 
-        return Map.of("message", "Account confirmed.");
+        return Map.of(MESSAGE, "Account confirmed.");
     }
 
     @NotNull

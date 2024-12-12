@@ -53,11 +53,11 @@ class ResetPasswordServiceTest {
         given(accountService.findByEmail(anyString())).willReturn(account);
         given(confirmationLinkProvider.getResetPassword()).willReturn("http://localhost:4200/reset-password/confirm?token=");
         given(confirmationTokenService.create(any(Account.class))).willReturn(confirmationToken);
-        given(emailSenderService.sendEmail(any(NotificationType.class), anyString(), anyString())).willReturn(excepted);
 
         Map<String, Object> result = underTest.resetPasswordByEmail(account.getEmail());
 
         assertEquals(excepted, result);
+        verify(emailSenderService, times(1)).sendEmail(any(NotificationType.class), anyString(), anyString());
     }
 
     @Test

@@ -20,9 +20,4 @@ class ConfirmEmailNotificationStrategy implements NotificationStrategy {
     public String getEmailMessage() {
         return "To confirm your account, please click here: \n";
     }
-
-    @Override
-    public String getResponseMessage() {
-        return "Verify your email address using the link in your email.";
-    }
 }

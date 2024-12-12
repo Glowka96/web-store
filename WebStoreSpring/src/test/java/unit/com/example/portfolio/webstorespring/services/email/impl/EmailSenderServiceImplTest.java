@@ -14,9 +14,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
@@ -46,16 +45,14 @@ class EmailSenderServiceImplTest {
         String confirmLinkWithToken = "http://example.com/confirm?token=12345";
         String emailTitle = "Example title";
         String emailMessage = "Example message: ";
-        String responseMessage = "Example response";
 
         given(notificationStrategyFactory.findNotificationStrategy(any(NotificationType.class))).willReturn(notificationStrategy);
         given(notificationStrategy.getEmailTitle()).willReturn(emailTitle);
         given(notificationStrategy.getEmailMessage()).willReturn(emailMessage);
-        given(notificationStrategy.getResponseMessage()).willReturn(responseMessage);
         given(senderEmailProvider.getEmail()).willReturn("sender@email.com");
         given(notificationStrategy.getNotificationType()).willReturn(notificationType);
 
-        Map<String, Object> resultMap = underTest.sendEmail(notificationType, recipientEmail, confirmLinkWithToken);
+        underTest.sendEmail(notificationType, recipientEmail, confirmLinkWithToken);
 
         ArgumentCaptor<SimpleMailMessage> simpleMailMessageArgumentCaptor =
                 ArgumentCaptor.forClass(SimpleMailMessage.class);
@@ -65,7 +62,5 @@ class EmailSenderServiceImplTest {
         assertArrayEquals(new String[]{recipientEmail}, simpleMailMessage.getTo());
         assertEquals(emailTitle, simpleMailMessage.getSubject());
         assertEquals(emailMessage + confirmLinkWithToken, simpleMailMessage.getText());
-        assertTrue(resultMap.containsKey("message"));
-        assertEquals(responseMessage, resultMap.get("message"));
     }
 }
