@@ -23,7 +23,7 @@ public class BackupEmailService {
     private final ConfirmationLinkProvider confirmationLinkProvider;
 
     public void sendBackupEmail(Account account) {
-        ConfirmationToken savedToken = confirmationTokenService.createWithoutExpiresDate(account);
+        ConfirmationToken savedToken = confirmationTokenService.createWith7DaysExpires(account);
         emailSenderService.sendEmail(
                 NotificationType.BACKUP_EMAIL,
                 account.getEmail(),

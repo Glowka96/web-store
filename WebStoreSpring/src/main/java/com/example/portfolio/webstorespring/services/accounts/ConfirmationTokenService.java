@@ -25,25 +25,13 @@ public class ConfirmationTokenService {
     @Transactional
     public ConfirmationToken create(Account account) {
         log.info("Saving confirmation token for account ID: {}", account.getId());
-        return confirmationTokenRepository.save(
-                new ConfirmationToken(
-                        UUID.randomUUID().toString(),
-                        LocalDateTime.now(clock),
-                        LocalDateTime.now(clock).plusMinutes(15),
-                        account
-                ));
+        return createConfirmationToken(account, 15);
     }
 
     @Transactional
-    public ConfirmationToken createWithoutExpiresDate(Account account) {
+    public ConfirmationToken createWith7DaysExpires(Account account) {
         log.info("Saving confirmation token for account ID: {}", account.getId());
-        return confirmationTokenRepository.save(
-                new ConfirmationToken(
-                        UUID.randomUUID().toString(),
-                        LocalDateTime.now(clock),
-                        LocalDateTime.now(clock).plusYears(99),
-                        account
-                ));
+        return createConfirmationToken(account, 10_080);
     }
 
     public ConfirmationToken getByToken(String token) {
@@ -66,5 +54,15 @@ public class ConfirmationTokenService {
     public void delete(ConfirmationToken confirmationToken) {
         log.debug("Deleting confirmation token for token: {}", confirmationToken.getToken());
         confirmationTokenRepository.delete(confirmationToken);
+    }
+
+    private ConfirmationToken createConfirmationToken(Account account, long expiresMinute) {
+        return confirmationTokenRepository.save(
+                new ConfirmationToken(
+                        UUID.randomUUID().toString(),
+                        LocalDateTime.now(clock),
+                        LocalDateTime.now(clock).plusMinutes(expiresMinute),
+                        account
+                ));
     }
 }
