@@ -29,7 +29,7 @@ public class RestoreEmailService {
     }
 
     @Transactional
-    public Map<String, Object> confirmBackupEmail(String token) {
+    public Map<String, Object> confirmRestoreEmail(String token) {
         return confirmationTokenService.confirmTokenAndExecute(
                 token,
                 accountService::restoreEmail,
