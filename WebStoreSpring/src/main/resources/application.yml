@@ -47,7 +47,7 @@ confirmation:
   link:
     email: ${CONFIRMATION_LINK_EMAIL:http://localhost:4200/registration/confirm?token=}
     reset-password: ${CONFIRMATION_LINK_RESET_PASSWORD:http://localhost:4200/reset-password/confirm?token=}
-    backup-email: ${BACKUP_EMAIL_LINK:http://localhost:4200/backup-email/confirm?token=}
+    restore-email: ${BACKUP_EMAIL_LINK:http://localhost:4200/restore-email/confirm?token=}
 
 shipment:
   address: ${SHIPMENT_ADDRESS:your_shipment_address}

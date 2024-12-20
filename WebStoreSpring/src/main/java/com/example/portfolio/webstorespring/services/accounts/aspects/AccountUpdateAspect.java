@@ -4,7 +4,7 @@ import com.example.portfolio.webstorespring.exceptions.EmailAlreadyUsedException
 import com.example.portfolio.webstorespring.model.dto.accounts.request.UpdateEmailRequest;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
 import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
-import com.example.portfolio.webstorespring.services.email.BackupEmailService;
+import com.example.portfolio.webstorespring.services.email.RestoreEmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.annotation.After;
@@ -23,7 +23,7 @@ public class AccountUpdateAspect {
 
     private final PasswordEncoder passwordEncoder;
     private final AccountRepository accountRepository;
-    private final BackupEmailService backupEmailService;
+    private final RestoreEmailService restoreEmailService;
 
     @Pointcut(value = "@annotation(com.example.portfolio.webstorespring.annotations.ValidateEmailUpdate) " +
                       "&& args(accountDetails, updateEmailRequest)",
@@ -47,7 +47,7 @@ public class AccountUpdateAspect {
             argNames = "accountDetails,updateEmailRequest")
     public void afterValidateEmailUpdate(AccountDetails accountDetails,
                                          UpdateEmailRequest updateEmailRequest) {
-        backupEmailService.sendBackupEmail(accountDetails.getAccount());
+        restoreEmailService.sendBackupEmail(accountDetails.getAccount());
     }
 
     private void validateUniqueNewEmail(String email) {

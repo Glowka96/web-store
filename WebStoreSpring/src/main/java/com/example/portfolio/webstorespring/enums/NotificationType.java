@@ -7,7 +7,7 @@ public enum NotificationType {
     RESET_PASSWORD("resetPassword"),
     CONFIRM_EMAIL("confirmEmail"),
     RECONFIRM_EMAIL("reconfirmEmail"),
-    BACKUP_EMAIL("backupEmail");
+    RESTORE_EMAIL("restoreEmail");
 
     private final String name;
 

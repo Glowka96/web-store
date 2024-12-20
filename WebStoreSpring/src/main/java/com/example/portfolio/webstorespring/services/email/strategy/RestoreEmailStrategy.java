@@ -7,23 +7,23 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-class ResetPasswordNotificationStrategy implements NotificationStrategy {
+public class RestoreEmailStrategy implements NotificationStrategy {
 
     private final ConfirmationLinkProvider linkProvider;
 
     @Override
     public NotificationType getNotificationType() {
-        return NotificationType.RESET_PASSWORD;
+        return NotificationType.RESTORE_EMAIL;
     }
 
     @Override
     public String getEmailTitle() {
-        return "Complete reset password.";
+        return "Restore your email.";
     }
 
     @Override
     public String getEmailMessage() {
-        return "To reset your password, please click here: \n"
-               + linkProvider.getResetPassword();
+        return "To restore your email, please click here: \n"
+                + linkProvider.getRestoreEmail();
     }
 }

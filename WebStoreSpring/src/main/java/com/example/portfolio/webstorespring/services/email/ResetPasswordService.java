@@ -1,9 +1,6 @@
 package com.example.portfolio.webstorespring.services.email;
 
-import com.example.portfolio.webstorespring.config.providers.ConfirmationLinkProvider;
 import com.example.portfolio.webstorespring.enums.NotificationType;
-import com.example.portfolio.webstorespring.exceptions.TokenConfirmedException;
-import com.example.portfolio.webstorespring.exceptions.TokenExpiredException;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.ResetPasswordRequest;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.accounts.ConfirmationToken;
@@ -21,7 +18,6 @@ public class ResetPasswordService {
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailSenderService emailSenderService;
     private final AccountService accountService;
-    private final ConfirmationLinkProvider confirmationLinkProvider;
 
     @Transactional
     public Map<String, Object> resetPasswordByEmail(String email) {
@@ -31,7 +27,7 @@ public class ResetPasswordService {
         emailSenderService.sendEmail(
                 NotificationType.RESET_PASSWORD,
                 account.getEmail(),
-                confirmationLinkProvider.getResetPassword() + savedToken.getToken()
+                savedToken.getToken()
         );
         return Map.of("message", "Sent reset password link to your email");
     }
@@ -41,21 +37,11 @@ public class ResetPasswordService {
         ConfirmationToken confirmationToken = confirmationTokenService.getByToken(token);
         Account account = confirmationToken.getAccount();
 
-        validateConfirmationToken(confirmationToken);
+        confirmationTokenService.validateConfirmationToken(confirmationToken);
 
         confirmationTokenService.setConfirmedAt(confirmationToken);
         accountService.setNewAccountPassword(account, resetPasswordRequest.password());
 
         return Map.of("message", "Your new password has been saved");
-    }
-
-    private void validateConfirmationToken(ConfirmationToken confirmationToken) {
-        if (confirmationToken.getConfirmedAt() != null) {
-            throw new TokenConfirmedException();
-        }
-
-        if (confirmationTokenService.isTokenExpired(confirmationToken)) {
-            throw new TokenExpiredException();
-        }
     }
 }

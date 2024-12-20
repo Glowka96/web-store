@@ -1,6 +1,8 @@
 package com.example.portfolio.webstorespring.services.accounts;
 
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
+import com.example.portfolio.webstorespring.exceptions.TokenConfirmedException;
+import com.example.portfolio.webstorespring.exceptions.TokenExpiredException;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.accounts.ConfirmationToken;
 import com.example.portfolio.webstorespring.repositories.accounts.ConfirmationTokenRepository;
@@ -54,6 +56,16 @@ public class ConfirmationTokenService {
     public void delete(ConfirmationToken confirmationToken) {
         log.debug("Deleting confirmation token for token: {}", confirmationToken.getToken());
         confirmationTokenRepository.delete(confirmationToken);
+    }
+
+    public void validateConfirmationToken(ConfirmationToken confirmationToken) {
+        if (confirmationToken.getConfirmedAt() != null) {
+            throw new TokenConfirmedException();
+        }
+
+        if (isTokenExpired(confirmationToken)) {
+            throw new TokenExpiredException();
+        }
     }
 
     private ConfirmationToken createConfirmationToken(Account account, long expiresMinute) {

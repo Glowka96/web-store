@@ -1,6 +1,5 @@
 package com.example.portfolio.webstorespring.services.email;
 
-import com.example.portfolio.webstorespring.config.providers.ConfirmationLinkProvider;
 import com.example.portfolio.webstorespring.enums.NotificationType;
 import com.example.portfolio.webstorespring.exceptions.EmailAlreadyConfirmedException;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.RegistrationRequest;
@@ -9,7 +8,6 @@ import com.example.portfolio.webstorespring.model.entity.accounts.ConfirmationTo
 import com.example.portfolio.webstorespring.services.accounts.AccountService;
 import com.example.portfolio.webstorespring.services.accounts.ConfirmationTokenService;
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,10 +16,10 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class RegistrationService {
+
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailSenderService emailSenderService;
     private final AccountService accountService;
-    private final ConfirmationLinkProvider confirmationLinkProvider;
 
     private static final String MESSAGE = "message";
 
@@ -33,7 +31,7 @@ public class RegistrationService {
         emailSenderService.sendEmail(
                 NotificationType.CONFIRM_EMAIL,
                 account.getEmail(),
-                getConfirmLinkWithToken(savedToken)
+                savedToken.getToken()
         );
         return Map.of(MESSAGE, "Verify your email address using the link in your email.");
     }
@@ -53,7 +51,7 @@ public class RegistrationService {
             emailSenderService.sendEmail(
                     NotificationType.RECONFIRM_EMAIL,
                     account.getEmail(),
-                    getConfirmLinkWithToken(newToken)
+                    newToken.getToken()
             );
             return Map.of(MESSAGE, "Your token is expired. Verify your email address using the new token link in your email.");
         }
@@ -63,8 +61,4 @@ public class RegistrationService {
         return Map.of(MESSAGE, "Account confirmed.");
     }
 
-    @NotNull
-    private String getConfirmLinkWithToken(ConfirmationToken newToken) {
-        return confirmationLinkProvider.getEmail() + newToken.getToken();
-    }
 }
