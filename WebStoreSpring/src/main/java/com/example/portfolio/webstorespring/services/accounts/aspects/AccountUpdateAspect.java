@@ -47,7 +47,7 @@ public class AccountUpdateAspect {
             argNames = "accountDetails,updateEmailRequest")
     public void afterValidateEmailUpdate(AccountDetails accountDetails,
                                          UpdateEmailRequest updateEmailRequest) {
-        restoreEmailService.sendBackupEmail(accountDetails.getAccount());
+        restoreEmailService.sendRestoreEmail(accountDetails.getAccount());
     }
 
     private void validateUniqueNewEmail(String email) {

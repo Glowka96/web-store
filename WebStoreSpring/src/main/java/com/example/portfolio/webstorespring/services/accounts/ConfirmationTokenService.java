@@ -9,12 +9,13 @@ import com.example.portfolio.webstorespring.repositories.accounts.ConfirmationTo
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 @Service
 @RequiredArgsConstructor
@@ -42,30 +43,34 @@ public class ConfirmationTokenService {
                 .orElseThrow(() -> new ResourceNotFoundException("Confirmation token", "token", token));
     }
 
+    @Transactional
+    public Map<String, Object> confirmTokenAndExecute(String token,
+                                                      Consumer<Account> accountConsumer,
+                                                      String successMessage) {
+        log.info("Starting confirming token.");
+        ConfirmationToken confirmationToken = getByToken(token);
+        Account account = confirmationToken.getAccount();
+        validateConfirmationToken(confirmationToken);
+        setConfirmedAt(confirmationToken);
+        accountConsumer.accept(account);
+        log.info("Operation successful, sending message");
+        return Map.of("message", successMessage);
+    }
+
     public boolean isTokenExpired(ConfirmationToken token) {
         log.debug("Validating if confirmation token has expired.");
         return token.getExpiresAt().isBefore(LocalDateTime.now(clock));
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
     public void setConfirmedAt(ConfirmationToken token) {
         log.debug("Confirming token.");
         token.setConfirmedAt(LocalDateTime.now(clock));
+        confirmationTokenRepository.save(token);
     }
 
     public void delete(ConfirmationToken confirmationToken) {
         log.debug("Deleting confirmation token for token: {}", confirmationToken.getToken());
         confirmationTokenRepository.delete(confirmationToken);
-    }
-
-    public void validateConfirmationToken(ConfirmationToken confirmationToken) {
-        if (confirmationToken.getConfirmedAt() != null) {
-            throw new TokenConfirmedException();
-        }
-
-        if (isTokenExpired(confirmationToken)) {
-            throw new TokenExpiredException();
-        }
     }
 
     private ConfirmationToken createConfirmationToken(Account account, long expiresMinute) {
@@ -76,5 +81,19 @@ public class ConfirmationTokenService {
                         LocalDateTime.now(clock).plusMinutes(expiresMinute),
                         account
                 ));
+    }
+
+    private void validateConfirmationToken(ConfirmationToken confirmationToken) {
+        log.debug("Validating token.");
+        if (confirmationToken.getConfirmedAt() != null) {
+            log.debug("Invalid - token is confirmed.");
+            throw new TokenConfirmedException();
+        }
+
+        if (isTokenExpired(confirmationToken)) {
+            log.debug("Invalid token is expired");
+            throw new TokenExpiredException();
+        }
+        log.debug("Valid successful.");
     }
 }

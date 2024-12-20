@@ -19,7 +19,7 @@ public class RestoreEmailService {
     private final EmailSenderService emailSenderService;
     private final AccountService accountService;
 
-    public void sendBackupEmail(Account account) {
+    public void sendRestoreEmail(Account account) {
         ConfirmationToken savedToken = confirmationTokenService.createWith7DaysExpires(account);
         emailSenderService.sendEmail(
                 NotificationType.RESTORE_EMAIL,
@@ -30,13 +30,10 @@ public class RestoreEmailService {
 
     @Transactional
     public Map<String, Object> confirmBackupEmail(String token) {
-        ConfirmationToken confirmationToken = confirmationTokenService.getByToken(token);
-        Account account = confirmationToken.getAccount();
-
-        confirmationTokenService.validateConfirmationToken(confirmationToken);
-
-        confirmationTokenService.setConfirmedAt(confirmationToken);
-        accountService.restoreEmail(account);
-        return Map.of("message", "Old account email restored");
+        return confirmationTokenService.confirmTokenAndExecute(
+                token,
+                accountService::restoreEmail,
+                "Old account email restored"
+        );
     }
 }

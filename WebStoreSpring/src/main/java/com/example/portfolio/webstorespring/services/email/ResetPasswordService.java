@@ -15,6 +15,7 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class ResetPasswordService {
+
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailSenderService emailSenderService;
     private final AccountService accountService;
@@ -34,14 +35,10 @@ public class ResetPasswordService {
 
     @Transactional
     public Map<String, Object> confirmResetPassword(ResetPasswordRequest resetPasswordRequest, String token) {
-        ConfirmationToken confirmationToken = confirmationTokenService.getByToken(token);
-        Account account = confirmationToken.getAccount();
-
-        confirmationTokenService.validateConfirmationToken(confirmationToken);
-
-        confirmationTokenService.setConfirmedAt(confirmationToken);
-        accountService.setNewAccountPassword(account, resetPasswordRequest.password());
-
-        return Map.of("message", "Your new password has been saved");
+        return confirmationTokenService.confirmTokenAndExecute(
+                token,
+                account -> accountService.setNewAccountPassword(account, resetPasswordRequest.password()),
+                "Your new password has been saved"
+        );
     }
 }
