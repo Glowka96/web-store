@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class AccountUpdateAspect {
+class AccountUpdateAspect {
 
     private final PasswordEncoder passwordEncoder;
     private final AccountRepository accountRepository;
