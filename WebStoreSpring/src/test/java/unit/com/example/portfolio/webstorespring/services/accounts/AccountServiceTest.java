@@ -20,7 +20,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -156,7 +155,6 @@ class AccountServiceTest {
         Map<String, Object> excepted = new HashMap<>();
         excepted.put("message", "Password updated successfully.");
 
-        given(encoder.matches(anyString(), anyString())).willReturn(true);
         given(encoder.encode(anyString())).willReturn(HASHED_PASSWORD);
 
         Map<String, Object> result = underTest.updatePassword(new AccountDetails(account), new UpdatePasswordRequest(account.getPassword(), newPassword));
@@ -164,15 +162,6 @@ class AccountServiceTest {
         assertEquals(excepted, result);
         assertEquals(HASHED_PASSWORD, account.getPassword());
         assertNotEquals(newPassword, account.getPassword());
-    }
-
-    @Test
-    void willThrowBadCredential_whenEnteredPasswordIsInvalid() {
-        assertThrows(BadCredentialsException.class, () -> underTest.updatePassword(
-                        new AccountDetails(make(a(BASIC_ACCOUNT))),
-                        new UpdatePasswordRequest("enteredPassword", "newPassword1*")
-                )
-        );
     }
 
     @Test

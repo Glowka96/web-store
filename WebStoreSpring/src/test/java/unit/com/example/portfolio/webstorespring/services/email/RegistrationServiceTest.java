@@ -1,6 +1,5 @@
 package com.example.portfolio.webstorespring.services.email;
 
-import com.example.portfolio.webstorespring.config.providers.ConfirmationLinkProvider;
 import com.example.portfolio.webstorespring.enums.NotificationType;
 import com.example.portfolio.webstorespring.exceptions.EmailAlreadyConfirmedException;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.RegistrationRequest;
@@ -35,8 +34,6 @@ class RegistrationServiceTest {
     @Mock
     private ConfirmationTokenService confirmationTokenService;
     @Mock
-    private ConfirmationLinkProvider confirmationLinkProvider;
-    @Mock
     private EmailSenderService emailSenderService;
     @Mock
     private AccountService accountService;
@@ -52,7 +49,6 @@ class RegistrationServiceTest {
         Map<String, Object> excepted = Map.of("message", "Verify your email address using the link in your email.");
 
         given(confirmationTokenService.create(any(Account.class))).willReturn(confirmationToken);
-        given(confirmationLinkProvider.getEmail()).willReturn("http://localhost:4200/registration/confirm?token=");
         given(accountService.save(registrationRequest)).willReturn(account);
 
         Map<String, Object> result = underTest.registrationAccount(registrationRequest);
