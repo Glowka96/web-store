@@ -2,6 +2,7 @@ package com.example.portfolio.webstorespring.services.accounts.aspects;
 
 import com.example.portfolio.webstorespring.exceptions.EmailAlreadyUsedException;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.UpdateEmailRequest;
+import com.example.portfolio.webstorespring.model.dto.accounts.request.UpdatePasswordRequest;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
 import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
 import com.example.portfolio.webstorespring.services.email.RestoreEmailService;
@@ -50,20 +51,34 @@ public class AccountUpdateAspect {
         restoreEmailService.sendRestoreEmail(accountDetails.getAccount());
     }
 
+    @Before(value = "@annotation(com.example.portfolio.webstorespring.annotations.ValidatePasswordUpdate) " +
+                    "&& args(accountDetails, updatePasswordRequest)",
+            argNames = "accountDetails, updatePasswordRequest")
+    public void beforeValidatePasswordUpdate(AccountDetails accountDetails, UpdatePasswordRequest updatePasswordRequest){
+        log.info("Validating users passwords");
+        validatePassword(updatePasswordRequest.enteredPassword(), accountDetails.getPassword());
+    }
+
     private void validateUniqueNewEmail(String email) {
+        log.debug("Validating unique email: {}", email);
         if (Boolean.TRUE.equals(accountRepository.existsByEmail(email))) {
+            log.debug("Email already exists: {}", email);
             throw new EmailAlreadyUsedException();
         }
     }
 
     private void validateEmail(String enteredEmail, String currentlyLoggedEmail) {
+        log.debug("Validating email: {}", enteredEmail);
         if (!enteredEmail.equals(currentlyLoggedEmail)) {
+            log.debug("Invalid email: {}", enteredEmail);
             throw new BadCredentialsException("Email mismatch.");
         }
     }
 
     private void validatePassword(String rawPassword, String hashPassword) {
+        log.debug("Validating entered password.");
         if (!passwordEncoder.matches(rawPassword, hashPassword)) {
+            log.debug("Invalid entered password.");
             throw new BadCredentialsException("Password mismatch.");
         }
     }
