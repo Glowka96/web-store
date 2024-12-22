@@ -49,7 +49,7 @@ class ConfirmationTokenServiceTest {
 
     @Test
     void shouldCreateConfirmationTokenWith7DaysExpires() {
-        createConfirmationTokenTest(account -> underTest.createWith7DaysExpires(getAccountAndSetupClock()));
+        createConfirmationTokenTest(account -> underTest.createWith7DaysExpires(account));
     }
 
     @Test
