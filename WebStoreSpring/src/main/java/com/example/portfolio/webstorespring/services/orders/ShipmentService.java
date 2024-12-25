@@ -45,21 +45,30 @@ class ShipmentService {
 
         return discountCode != null
                 ? getCalculatedShipmentsWithDiscount(discountCode, products, productQuantities)
-                : getCalculatedShipmentsWithoutDiscount(products, productQuantities);
+                : getCalculatedShipments(products, productQuantities, null);
     }
 
     private static void validateShipment(List<Product> products, Map<Long, Integer> productQuantities) {
         log.debug("Validating if all products were found.");
-        if (products.size() != productQuantities.keySet().size()) {
-            throw new ProductsNotFoundException();
+        if (products.size() != productQuantities.size()) {
+            List<Long> missingIds = productQuantities.keySet().stream()
+                    .filter(id -> products.stream().noneMatch(p -> p.getId().equals(id)))
+                    .toList();
+            throw new ProductsNotFoundException(missingIds);
         }
 
         log.debug("Validating if product quantities is available.");
-        products.forEach(product -> {
+        List<String> insufficientProducts = new ArrayList<>();
+        for (Product product : products) {
             if (product.getQuantity() < productQuantities.get(product.getId())) {
-                throw new ShipmentQuantityExceedsProductQuantityException(productQuantities.get(product.getId()), product.getName());
+                insufficientProducts.add(product.getName());
             }
-        });
+        }
+        if (!insufficientProducts.isEmpty()) {
+            throw new ShipmentQuantityExceedsProductQuantityException(
+                    String.join(", ", insufficientProducts)
+            );
+        }
     }
 
     @NotNull
@@ -74,17 +83,12 @@ class ShipmentService {
         log.debug("Partitioning products for calculating shipment price.");
         Map<Boolean, List<Product>> partitionProductsByDiscount = getPartitionProductsByDiscount(products, subcategoryIdsWithDiscount);
 
-        List<Shipment> shipments = new ArrayList<>(
-                partitionProductsByDiscount.get(true)
-                        .stream()
-                        .map(p -> createShipmentPriceWithDiscount(p, productQuantities.get(p.getId()), multipleDiscountRate))
-                        .toList()
+        List<Shipment> shipments = new ArrayList<>(getCalculatedShipments(
+                partitionProductsByDiscount.get(true), productQuantities, multipleDiscountRate
+        ));
+        shipments.addAll(getCalculatedShipments(
+                partitionProductsByDiscount.get(false), productQuantities, null)
         );
-        log.info("Returning calculated shipment with discount");
-        shipments.addAll(getCalculatedShipmentsWithoutDiscount(
-                partitionProductsByDiscount.get(false), productQuantities)
-        );
-        log.info("Returning all shipments.");
         return shipments;
     }
 
@@ -94,20 +98,24 @@ class ShipmentService {
     }
 
     @NotNull
-    private List<Shipment> getCalculatedShipmentsWithoutDiscount(List<Product> products, Map<Long, Integer> productQuantities) {
-        log.info("Returning calculated shipment without discount");
+    private List<Shipment> getCalculatedShipments(List<Product> products,
+                                                              Map<Long, Integer> productQuantities,
+                                                              BigDecimal multipleDiscountRate) {
+        log.info("Returning calculated shipments with{} discount", multipleDiscountRate != null ? "" : "out");
         return products.stream()
-                .map(p -> createShipment(p, productQuantities.get(p.getId())))
+                .map(p -> createShipment(p, productQuantities.get(p.getId()), multipleDiscountRate))
                 .toList();
     }
 
-    private Shipment createShipment(Product product, Integer quantity) {
+
+    private Shipment createShipment(Product product, Integer quantity, BigDecimal multipleDiscountRate) {
         log.debug("Decreasing quantity of product, id: {}", product.getId());
         product.setQuantity(product.getQuantity() - quantity);
         log.debug("Setting shipment.");
         return Shipment.builder()
                 .product(product)
-                .price(calculateShipmentPrice(product, quantity))
+                .price(multipleDiscountRate != null ? calculateDiscountedShipmentPrice(product, quantity, multipleDiscountRate)
+                        : calculateShipmentPrice(product, quantity))
                 .quantity(quantity)
                 .build();
     }
@@ -123,19 +131,9 @@ class ShipmentService {
                 .setScale(2, RoundingMode.HALF_UP);
     }
 
-    private Shipment createShipmentPriceWithDiscount(Product product, Integer quantity, BigDecimal multipleDiscountRate) {
-        log.debug("Decreasing quantity of product, id: {}", product.getId());
-        product.setQuantity(product.getQuantity() - quantity);
-        log.debug("Setting shipment.");
-        return Shipment.builder()
-                .product(product)
-                .price(calculateShipmentPriceWithDiscount(product, quantity, multipleDiscountRate))
-                .quantity(quantity)
-                .build();
-    }
 
-    private BigDecimal calculateShipmentPriceWithDiscount(Product product, Integer quantity, BigDecimal multipleDiscountRate) {
-        log.debug("Calculating price of product, id: {}", product.getId());
+    private BigDecimal calculateDiscountedShipmentPrice(Product product, Integer quantity, BigDecimal multipleDiscountRate) {
+        log.debug("Calculating price of product, id: {}, with discount rate: {}", product.getId(), multipleDiscountRate);
         return BigDecimal.valueOf(quantity)
                 .multiply(product.getPrice().multiply(multipleDiscountRate))
                 .setScale(2, RoundingMode.HALF_UP);
