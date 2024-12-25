@@ -99,8 +99,8 @@ class ShipmentService {
 
     @NotNull
     private List<Shipment> getCalculatedShipments(List<Product> products,
-                                                              Map<Long, Integer> productQuantities,
-                                                              BigDecimal multipleDiscountRate) {
+                                                  Map<Long, Integer> productQuantities,
+                                                  BigDecimal multipleDiscountRate) {
         log.info("Returning calculated shipments with{} discount", multipleDiscountRate != null ? "" : "out");
         return products.stream()
                 .map(p -> createShipment(p, productQuantities.get(p.getId()), multipleDiscountRate))

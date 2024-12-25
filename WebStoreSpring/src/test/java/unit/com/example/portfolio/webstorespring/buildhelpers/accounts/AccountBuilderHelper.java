@@ -17,6 +17,7 @@ public class AccountBuilderHelper {
     public static final Property<Account, String> FIRST_NAME = new Property<>();
     public static final Property<Account, String> LAST_NAME = new Property<>();
     public static final Property<Account, String> EMAIL = new Property<>();
+    public static final Property<Account, String> BACKUPEMAIL = new Property<>();
     public static final Property<Account, String> PASSWORD = new Property<>();
     public static final Property<Account, Boolean> ENABLED = new Property<>();
     public static final Property<Account, Set<Role>> ROLES = new Property<>();
@@ -35,6 +36,7 @@ public class AccountBuilderHelper {
                     .firstName(lookup.valueOf(FIRST_NAME, ACCOUNT_FIRST_NAME))
                     .lastName(lookup.valueOf(LAST_NAME, ACCOUNT_LAST_NAME))
                     .email(lookup.valueOf(EMAIL, ACCOUNT_EMAIL))
+                    .backupEmail(lookup.valueOf(BACKUPEMAIL, ""))
                     .password(lookup.valueOf(PASSWORD, ACCOUNT_PASSWORD))
                     .enabled(lookup.valueOf(ENABLED, Boolean.TRUE))
                     .roles(lookup.valueOf(ROLES, Set.of(ROLE_USER)))

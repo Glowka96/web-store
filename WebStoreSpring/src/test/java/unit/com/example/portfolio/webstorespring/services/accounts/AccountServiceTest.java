@@ -5,9 +5,7 @@ import com.example.portfolio.webstorespring.buildhelpers.accounts.RoleBuilderHel
 import com.example.portfolio.webstorespring.config.providers.AccountImageUrlProvider;
 import com.example.portfolio.webstorespring.config.providers.AdminCredentialsProvider;
 import com.example.portfolio.webstorespring.mappers.AccountMapper;
-import com.example.portfolio.webstorespring.model.dto.accounts.request.AccountRequest;
-import com.example.portfolio.webstorespring.model.dto.accounts.request.RegistrationRequest;
-import com.example.portfolio.webstorespring.model.dto.accounts.request.UpdatePasswordRequest;
+import com.example.portfolio.webstorespring.model.dto.accounts.request.*;
 import com.example.portfolio.webstorespring.model.dto.accounts.response.AccountResponse;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.accounts.Role;
@@ -55,6 +53,7 @@ class AccountServiceTest {
 
     private static final String ADMIN_EMAIL = "mockadmin@example.com";
     private static final String HASHED_PASSWORD = "hashedPassword";
+
     @Test
     void shouldGetAccount() {
         AccountDetails accountDetails = getAccountDetails();
@@ -149,6 +148,22 @@ class AccountServiceTest {
     }
 
     @Test
+    void shouldUpdateEmail() {
+        AccountDetails accountDetails = getAccountDetails();
+        String newEmail = "newEmail@test.pl";
+        UpdateEmailRequest updateEmailRequest = new UpdateEmailRequest(newEmail,
+                new LoginRequest(accountDetails.getUsername(), accountDetails.getPassword()));
+
+        underTest.updateEmail(accountDetails, updateEmailRequest);
+
+        ArgumentCaptor<Account> accountArgumentCaptor = ArgumentCaptor.forClass(Account.class);
+        verify(accountRepository).save(accountArgumentCaptor.capture());
+
+        assertEquals(accountArgumentCaptor.getValue().getEmail(), accountDetails.getUsername(), newEmail);
+        verifyNoMoreInteractions(accountRepository);
+    }
+
+    @Test
     void shouldUpdatePassword() {
         Account account = make(a(BASIC_ACCOUNT));
         String newPassword = "new password";
@@ -172,6 +187,18 @@ class AccountServiceTest {
 
         verify(accountRepository, times(1)).delete(accountDetails.getAccount());
         verifyNoMoreInteractions(accountRepository);
+    }
+
+    @Test
+    void shouldRestoreEmail() {
+        Account account = make(a(BASIC_ACCOUNT)
+                .but(with(EMAIL, "newEmail@test.pl"))
+                .but(with(BACKUPEMAIL, "oldEmail@test.pl")));
+
+        underTest.restoreEmail(account);
+
+        assertEquals("oldEmail@test.pl", account.getEmail());
+        assertNull(account.getBackupEmail());
     }
 
     @Test
