@@ -1,7 +1,6 @@
 package com.example.portfolio.webstorespring.controllers.emails;
 
 import com.example.portfolio.webstorespring.services.email.RestoreEmailService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,13 +30,11 @@ class RestoreEmailControllerTest {
     private RestoreEmailController underTest;
 
     private MockMvc mvc;
-    private ObjectMapper mapper;
 
     private static final String URI = "/api/v1/restore-email/confirm";
 
     @BeforeEach
     void initialization() {
-        mapper = new ObjectMapper();
         mvc = MockMvcBuilders.standaloneSetup(underTest)
                 .build();
     }
