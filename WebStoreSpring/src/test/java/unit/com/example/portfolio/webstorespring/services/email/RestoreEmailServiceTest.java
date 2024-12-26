@@ -20,7 +20,7 @@ import static com.example.portfolio.webstorespring.buildhelpers.accounts.Account
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.ConfirmationTokenBuilderHelper.BASIC_CONFIRMATION_TOKEN;
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.ConfirmationTokenBuilderHelper.EXPIRED_AT;
 import static com.natpryce.makeiteasy.MakeItEasy.*;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
