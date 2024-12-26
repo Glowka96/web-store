@@ -30,8 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class AccountAddressServiceTest {
@@ -60,7 +59,7 @@ class AccountAddressServiceTest {
     }
 
     @Test
-    void shouldSaveAccountAddress() {
+    void shouldSaveAccountAddress_whenUserAlreadyHaveAddress() {
         AccountDetails accountDetails = getAccountDetails();
         AccountAddressRequest accountAddressRequest = createAccountAddressRequest();
         AccountAddress address = createAccountAddress();
@@ -78,6 +77,23 @@ class AccountAddressServiceTest {
 
         assertEquals(accountDetails.getAccount().getId(), mappedAddress.id());
         assertEquals(savedAccountAddressResponse, mappedAddress);
+    }
+
+    @Test
+    void shouldSaveAccountAddress_whenUserNotHaveSavedAddress() {
+        AccountDetails accountDetails = getAccountDetails();
+        AccountAddressRequest accountAddressRequest = createAccountAddressRequest();
+
+        given(addressRepository.findById(anyLong())).willReturn(Optional.empty());
+        given(accountRepository.save(any(Account.class))).willReturn(accountDetails.getAccount());
+
+        AccountAddressResponse savedAccountAddressResponse =
+                underTest.save(accountDetails, accountAddressRequest);
+
+        verify(addressRepository, times(1)).save(any(AccountAddress.class));
+        assertEquals(accountAddressRequest.city(), savedAccountAddressResponse.city());
+        assertEquals(accountAddressRequest.postcode(), savedAccountAddressResponse.postcode());
+        assertEquals(accountAddressRequest.street(), savedAccountAddressResponse.street());
     }
 
     @Test

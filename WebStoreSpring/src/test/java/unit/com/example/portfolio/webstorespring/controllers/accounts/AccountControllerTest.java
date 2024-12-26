@@ -3,6 +3,8 @@ package com.example.portfolio.webstorespring.controllers.accounts;
 import com.example.portfolio.webstorespring.controllers.AccountDetailsArgumentResolver;
 import com.example.portfolio.webstorespring.exceptions.GlobalExceptionHandler;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.AccountRequest;
+import com.example.portfolio.webstorespring.model.dto.accounts.request.LoginRequest;
+import com.example.portfolio.webstorespring.model.dto.accounts.request.UpdateEmailRequest;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.UpdatePasswordRequest;
 import com.example.portfolio.webstorespring.model.dto.accounts.response.AccountResponse;
 import com.example.portfolio.webstorespring.services.accounts.AccountService;
@@ -89,6 +91,29 @@ class AccountControllerTest {
                 .andExpect(jsonPath("$.firstName", is(accountResponse.firstName())))
                 .andExpect(jsonPath("$.lastName", is(accountResponse.lastName())))
                 .andExpect(jsonPath("$.email", is(accountResponse.email())))
+                .andDo(print());
+    }
+
+    @Test
+    void shouldUpdateEmail() throws Exception {
+        UpdateEmailRequest updateEmailRequest = new UpdateEmailRequest(
+                "newEmail@test.pl",
+                new LoginRequest("oldEmail@test.pl", "Password123*")
+        );
+        String msg = "Email updated successfully.";
+        Map<String, Object> message = new HashMap<>();
+        message.put("message", msg);
+
+        given(accountService.updateEmail(any(AccountDetails.class), any(UpdateEmailRequest.class)))
+                .willReturn(message);
+
+        mvc.perform(patch(URI + "/emails")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(updateEmailRequest))
+                        .header("Authorization", "Bearer {JWT_TOKEN}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message", is(msg)))
                 .andDo(print());
     }
 

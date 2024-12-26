@@ -12,8 +12,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
+import java.util.Optional;
+
+import static com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryTypeBuilderHelper.createDeliveryType;
 import static com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryTypeBuilderHelper.createDeliveryTypeRequest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -46,6 +52,21 @@ class DeliveryTypeServiceTest {
                 DeliveryTypeMapper.mapToDto(deliveryTypeArgumentCaptor.getValue());
 
         assertEquals(mappedDeliveryTypeResponse, savedDeliveryTypeResponse);
+    }
+
+    @Test
+    void shouldUpdateDeliveryType() {
+        DeliveryType deliveryType = createDeliveryType();
+        String nameBeforeUpdate = deliveryType.getName();
+        BigDecimal priceBeforeUpdate = deliveryType.getPrice();
+        DeliveryTypeRequest deliveryTypeRequest = createDeliveryTypeRequest("update", BigDecimal.valueOf(9));
+
+        given(deliveryTypeRepository.findById(anyLong())).willReturn(Optional.of(deliveryType));
+
+        DeliveryTypeResponse updateDeliveryTypeResponse = underTest.update(1L, deliveryTypeRequest);
+
+        assertNotEquals(nameBeforeUpdate, updateDeliveryTypeResponse.name());
+        assertNotEquals(priceBeforeUpdate, updateDeliveryTypeResponse.price());
     }
 
     @Test

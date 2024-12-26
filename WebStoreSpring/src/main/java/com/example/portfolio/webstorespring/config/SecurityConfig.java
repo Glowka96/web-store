@@ -40,6 +40,7 @@ public class SecurityConfig {
                                 "/api/v1/login",
                                 "/api/v1/logout/**",
                                 "/api/v1/reset-password/**",
+                                "/api/v1/restore-email/confirm",
                                 "/api/v1/delivery-types",
                                 "/api/v1/discounts").permitAll()
                         .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")

@@ -9,9 +9,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -23,9 +22,10 @@ public class EmailSenderServiceImpl implements EmailSenderService {
     private final SenderEmailProvider senderEmailProvider;
 
     @Override
-    public Map<String, Object> sendEmail(NotificationType notificationType,
-                                         String email,
-                                         String confirmLinkWithToken) {
+    @Async
+    public void sendEmail(NotificationType notificationType,
+                          String email,
+                          String confirmLinkWithToken) {
         NotificationStrategy notificationStrategy = notificationStrategyFactory.findNotificationStrategy(notificationType);
 
         log.info("Sending {} email to: {}", notificationStrategy.getNotificationType().getName(), email);
@@ -37,6 +37,5 @@ public class EmailSenderServiceImpl implements EmailSenderService {
 
         javaMailSender.send(mailMessage);
         log.info("Sent email.");
-        return Map.of("message", notificationStrategy.getResponseMessage());
     }
 }

@@ -24,7 +24,7 @@ public class ConfirmationTokenBuilderHelper {
                     .token(lookup.valueOf(TOKEN_NAME, "token"))
                     .account(lookup.valueOf(ACCOUNT, new Account()))
                     .createdAt(lookup.valueOf(CREATED_AT, LOCAL_DATE_TIME))
-                    .confirmedAt(lookup.valueOf(CONFIRMED_AT, LOCAL_DATE_TIME))
-                    .expiresAt(lookup.valueOf(EXPIRED_AT, LOCAL_DATE_TIME))
+                    .confirmedAt(lookup.valueOf(CONFIRMED_AT, LOCAL_DATE_TIME.plusMinutes(10)))
+                    .expiresAt(lookup.valueOf(EXPIRED_AT, LOCAL_DATE_TIME.plusMinutes(15)))
                     .build();
 }

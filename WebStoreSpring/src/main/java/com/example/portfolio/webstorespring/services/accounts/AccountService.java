@@ -1,11 +1,14 @@
 package com.example.portfolio.webstorespring.services.accounts;
 
+import com.example.portfolio.webstorespring.annotations.ValidateEmailUpdate;
+import com.example.portfolio.webstorespring.annotations.ValidatePasswordUpdate;
 import com.example.portfolio.webstorespring.config.providers.AccountImageUrlProvider;
 import com.example.portfolio.webstorespring.config.providers.AdminCredentialsProvider;
 import com.example.portfolio.webstorespring.enums.RoleType;
 import com.example.portfolio.webstorespring.mappers.AccountMapper;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.AccountRequest;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.RegistrationRequest;
+import com.example.portfolio.webstorespring.model.dto.accounts.request.UpdateEmailRequest;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.UpdatePasswordRequest;
 import com.example.portfolio.webstorespring.model.dto.accounts.response.AccountResponse;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
@@ -13,7 +16,6 @@ import com.example.portfolio.webstorespring.repositories.accounts.AccountReposit
 import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -73,12 +75,23 @@ public class AccountService {
     }
 
     @Transactional
+    @ValidateEmailUpdate
+    public Map<String, Object> updateEmail(AccountDetails accountDetails,
+                                           UpdateEmailRequest emailRequest) {
+        log.info("Update email: {} for account: {}", emailRequest, accountDetails.getUsername());
+        Account loggedAccount = accountDetails.getAccount();
+        loggedAccount.setBackupEmail(loggedAccount.getEmail());
+        loggedAccount.setEmail(emailRequest.email());
+        accountRepository.save(loggedAccount);
+        log.info("Updated successful.");
+        return Map.of("message", "Email updated successfully.");
+    }
+
+    @Transactional
+    @ValidatePasswordUpdate
     public Map<String, Object> updatePassword(AccountDetails accountDetails, UpdatePasswordRequest updatePasswordRequest) {
         log.info("Fetching logged account with account ID: {}", accountDetails.getAccount().getId());
         Account loggedAccount = accountDetails.getAccount();
-
-        validatePassword(updatePasswordRequest.enteredPassword(), loggedAccount);
-
         setNewAccountPassword(loggedAccount, updatePasswordRequest.newPassword());
         log.info("Saved new password for account ID: {}", loggedAccount.getId());
         return Map.of("message", "Password updated successfully.");
@@ -120,17 +133,17 @@ public class AccountService {
         accountRepository.save(account);
     }
 
+    @Transactional
+    public void restoreEmail(Account account) {
+        log.info("Restoring email for account ID: {}", account.getId());
+        account.setEmail(account.getBackupEmail());
+        account.setBackupEmail(null);
+        log.info("Restored email for account ID: {}", account.getId());
+    }
+
     public Account findByEmail(String email) {
         log.debug("Finding account by email: {}", email);
         return accountRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Account with email: " + email + " not found"));
-    }
-
-    private void validatePassword(String enteredPassword, Account account) {
-        log.debug("Validating entered password.");
-        if(!encoder.matches(enteredPassword, account.getPassword())) {
-            log.debug("Invalid entered password.");
-            throw new BadCredentialsException("Invalid password.");
-        }
     }
 }

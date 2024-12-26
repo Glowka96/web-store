@@ -2,6 +2,8 @@ package com.example.portfolio.webstorespring.controllers.accounts;
 
 import com.example.portfolio.webstorespring.controllers.AbstractAuthControllerIT;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.AccountRequest;
+import com.example.portfolio.webstorespring.model.dto.accounts.request.LoginRequest;
+import com.example.portfolio.webstorespring.model.dto.accounts.request.UpdateEmailRequest;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.UpdatePasswordRequest;
 import com.example.portfolio.webstorespring.model.dto.accounts.response.AccountResponse;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
@@ -61,6 +63,33 @@ class AccountControllerIT extends AbstractAuthControllerIT {
         assertTrue(accountOptional.isPresent());
         assertEquals(accountRequest.firstName(), accountOptional.get().getFirstName(), response.getBody().firstName());
         assertEquals(accountRequest.lastName(), accountOptional.get().getLastName(), response.getBody().lastName());
+    }
+
+    @Test
+    void shouldUpdateEmail_forAuthenticatedAccount_thenStatusOK() {
+        String newEmail = "newEmail@test.pl";
+        String oldEmail = getSavedUser().getEmail();
+        UpdateEmailRequest updateEmailRequest = new UpdateEmailRequest(
+                newEmail,
+                new LoginRequest(oldEmail, "Password123*")
+        );
+        HttpEntity<UpdateEmailRequest> httpEntity = new HttpEntity<>(updateEmailRequest, getHttpHeaderWithUserToken());
+
+        ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
+                localhostUri + ACCOUNT_URI + "/emails",
+                HttpMethod.PATCH,
+                httpEntity,
+                new ParameterizedTypeReference<>() {
+                }
+        );
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Email updated successfully.", Objects.requireNonNull(response.getBody()).get("message"));
+        Optional<Account> optionalAccount = accountRepository.findById(getSavedUser().getId());
+        optionalAccount.ifPresent(account -> {
+            assertEquals(newEmail, account.getEmail());
+            assertEquals(oldEmail, account.getBackupEmail());
+        });
     }
 
     @Test

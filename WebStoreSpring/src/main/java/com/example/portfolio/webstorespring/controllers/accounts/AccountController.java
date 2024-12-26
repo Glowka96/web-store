@@ -1,6 +1,7 @@
 package com.example.portfolio.webstorespring.controllers.accounts;
 
 import com.example.portfolio.webstorespring.model.dto.accounts.request.AccountRequest;
+import com.example.portfolio.webstorespring.model.dto.accounts.request.UpdateEmailRequest;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.UpdatePasswordRequest;
 import com.example.portfolio.webstorespring.model.dto.accounts.response.AccountResponse;
 import com.example.portfolio.webstorespring.services.accounts.AccountService;
@@ -29,6 +30,12 @@ public class AccountController {
     public AccountResponse updateAccount(@AuthenticationPrincipal AccountDetails accountDetails,
                                          @Valid @RequestBody AccountRequest accountRequest) {
         return accountService.update(accountDetails, accountRequest);
+    }
+
+    @PatchMapping("/emails")
+    public Map<String, Object> updateEmail(@AuthenticationPrincipal AccountDetails accountDetails,
+                                           @RequestBody UpdateEmailRequest emailRequest) {
+        return accountService.updateEmail(accountDetails, emailRequest);
     }
 
     @PatchMapping("/passwords")
