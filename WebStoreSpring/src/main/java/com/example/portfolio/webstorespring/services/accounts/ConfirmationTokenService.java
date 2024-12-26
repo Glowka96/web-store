@@ -27,13 +27,11 @@ public class ConfirmationTokenService {
 
     @Transactional
     public ConfirmationToken create(Account account) {
-        log.info("Saving confirmation token for account ID: {}", account.getId());
         return createConfirmationToken(account, 15);
     }
 
     @Transactional
     public ConfirmationToken createWith7DaysExpires(Account account) {
-        log.info("Saving confirmation token for account ID: {}", account.getId());
         return createConfirmationToken(account, 10_080);
     }
 
@@ -47,13 +45,13 @@ public class ConfirmationTokenService {
     public Map<String, Object> confirmTokenAndExecute(String token,
                                                       Consumer<Account> accountConsumer,
                                                       String successMessage) {
-        log.info("Starting confirming token.");
+        log.info("Starting confirming token: {}.", token);
         ConfirmationToken confirmationToken = getByToken(token);
         Account account = confirmationToken.getAccount();
         validateConfirmationToken(confirmationToken);
         setConfirmedAt(confirmationToken);
         accountConsumer.accept(account);
-        log.info("Operation successful, sending message");
+        log.info("Operation successful, sending message: {}", successMessage);
         return Map.of("message", successMessage);
     }
 
@@ -63,7 +61,7 @@ public class ConfirmationTokenService {
     }
 
     public void setConfirmedAt(ConfirmationToken token) {
-        log.debug("Confirming token.");
+        log.debug("Confirming token: {}.", token.getToken());
         token.setConfirmedAt(LocalDateTime.now(clock));
         confirmationTokenRepository.save(token);
     }
@@ -74,6 +72,7 @@ public class ConfirmationTokenService {
     }
 
     private ConfirmationToken createConfirmationToken(Account account, long expiresMinute) {
+        log.info("Saving confirmation token with expires minute: {} , for account ID: {}", expiresMinute, account.getId());
         return confirmationTokenRepository.save(
                 new ConfirmationToken(
                         UUID.randomUUID().toString(),
@@ -84,7 +83,7 @@ public class ConfirmationTokenService {
     }
 
     private void validateConfirmationToken(ConfirmationToken confirmationToken) {
-        log.debug("Validating token.");
+        log.debug("Validating token: {}.", confirmationToken.getToken());
         if (confirmationToken.getConfirmedAt() != null) {
             log.debug("Invalid - token is confirmed.");
             throw new TokenConfirmedException();
