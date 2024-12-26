@@ -85,6 +85,20 @@ GCP:
 ## Changelogs
 
 <details>
+<summary>Change email branch:</summary>
+  
+  - Add test of new methods
+  - Rebuild ShipmentService - more details in exception - clean code
+  - Add restoreEmail system
+  - Rebuild NotificationStrategy
+  - Rebuild email sender - now is async and return void
+  - Moved validation password of change password to aspect
+  - Use aspect for validation data and send email to old account email
+  - Add change email system
+  - Add annotion for Account Aspect
+</details>
+
+<details>
 <summary>Logger and mapper branch:</summary>
 
 - Add logs for services
