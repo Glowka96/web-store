@@ -281,8 +281,8 @@ class GlobalExceptionHandlerTest {
         ErrorResponse resultErrorResponse = underTest
                 .handeConstraintViolationException(constraintViolationException, webRequest);
 
-        assertEquals(exceptedErrorResponse.getStatusCode(), resultErrorResponse.getStatusCode());
-        assertTrue(Objects.requireNonNull(resultErrorResponse).getErrors().containsAll(exceptedErrorResponse.getErrors()));
+        assertEquals(exceptedErrorResponse.statusCode(), resultErrorResponse.statusCode());
+        assertTrue(Objects.requireNonNull(resultErrorResponse).errors().containsAll(exceptedErrorResponse.errors()));
     }
 
     @Test
@@ -300,7 +300,7 @@ class GlobalExceptionHandlerTest {
     }
 
     private void assertsResponse(ErrorResponse resultErrorResponse, ErrorResponse exceptedErrorResponse) {
-        assertEquals(exceptedErrorResponse.getStatusCode(), resultErrorResponse.getStatusCode());
+        assertEquals(exceptedErrorResponse.statusCode(), resultErrorResponse.statusCode());
         assertEquals(exceptedErrorResponse, resultErrorResponse);
     }
 
