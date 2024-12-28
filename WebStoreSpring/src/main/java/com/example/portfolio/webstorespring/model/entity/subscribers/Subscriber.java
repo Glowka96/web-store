@@ -18,4 +18,10 @@ public class Subscriber {
     private Long id;
 
     private String email;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private ProductSub productSub;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private NewsletterSub newsletterSub;
 }

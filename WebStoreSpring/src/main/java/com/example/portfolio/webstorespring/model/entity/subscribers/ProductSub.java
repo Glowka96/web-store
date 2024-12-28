@@ -16,14 +16,13 @@ import java.util.List;
 public class ProductSub {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false, unique = true)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    @OneToMany
+    @OneToMany(mappedBy = "productSub", cascade = CascadeType.ALL, orphanRemoval = true)
     List<Subscriber> subscriberList;
 }
