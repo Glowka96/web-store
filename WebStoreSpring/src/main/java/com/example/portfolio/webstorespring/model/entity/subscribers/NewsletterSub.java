@@ -27,4 +27,14 @@ public class NewsletterSub {
 
     @OneToMany(mappedBy = "newsletterSub", cascade = CascadeType.ALL, orphanRemoval = true)
     List<Subscriber> subscriberList;
+
+    public void addSubscriber(Subscriber subscriber) {
+        subscriberList.add(subscriber);
+        subscriber.setNewsletterSub(this);
+    }
+
+    public void removeSubscriber(Subscriber subscriber) {
+        subscriberList.remove(subscriber);
+        subscriber.setNewsletterSub(null);
+    }
 }

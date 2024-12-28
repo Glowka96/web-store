@@ -25,4 +25,14 @@ public class ProductSub {
 
     @OneToMany(mappedBy = "productSub", cascade = CascadeType.ALL, orphanRemoval = true)
     List<Subscriber> subscriberList;
+
+    public void addSubscriber(Subscriber subscriber) {
+        subscriberList.add(subscriber);
+        subscriber.setProductSub(this);
+    }
+
+    public void removeSubscriber(Subscriber subscriber) {
+        subscriberList.remove(subscriber);
+        subscriber.setProductSub(null);
+    }
 }
