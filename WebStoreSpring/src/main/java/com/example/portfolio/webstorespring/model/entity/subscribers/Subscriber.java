@@ -25,8 +25,7 @@ public class Subscriber {
     @ManyToOne(fetch = FetchType.LAZY)
     private ProductSub productSub;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private NewsletterSub newsletterSub;
+    private Boolean subToNewsletter;
 
     @Override
     public boolean equals(Object o) {
