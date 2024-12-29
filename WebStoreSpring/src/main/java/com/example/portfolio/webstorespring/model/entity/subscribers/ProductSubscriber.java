@@ -6,31 +6,29 @@ import lombok.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "subscribers")
+@Table(name = "product_subscriber")
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class Subscriber {
+@AllArgsConstructor
+public class ProductSubscriber {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false, unique = true)
+    @Column(unique = true, nullable = false)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private ProductSub productSub;
-
-    private Boolean subToNewsletter;
+    private ProductSubscription subscription;
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Subscriber that = (Subscriber) o;
+        ProductSubscriber that = (ProductSubscriber) o;
         return Objects.equals(email, that.email);
     }
 

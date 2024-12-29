@@ -7,13 +7,13 @@ import lombok.*;
 import java.util.List;
 
 @Entity
-@Table(name = "product_subscribers")
+@Table(name = "product_subscription")
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductSub {
+public class ProductSubscription {
 
     @Id
     private Long id;
@@ -24,15 +24,15 @@ public class ProductSub {
     private Product product;
 
     @OneToMany(mappedBy = "productSub", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<Subscriber> subscriberList;
+    List<ProductSubscriber> productSubscribers;
 
-    public void addSubscriber(Subscriber subscriber) {
-        subscriberList.add(subscriber);
-        subscriber.setProductSub(this);
+    public void addSubscriber(ProductSubscriber productSubscriber) {
+        productSubscribers.add(productSubscriber);
+        productSubscriber.setSubscription(this);
     }
 
-    public void removeSubscriber(Subscriber subscriber) {
-        subscriberList.remove(subscriber);
-        subscriber.setProductSub(null);
+    public void removeSubscriber(ProductSubscriber productSubscriber) {
+        productSubscribers.remove(productSubscriber);
+        productSubscriber.setSubscription(this);
     }
 }
