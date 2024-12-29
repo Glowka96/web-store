@@ -2,9 +2,9 @@ package com.example.portfolio.webstorespring.services.email;
 
 import com.example.portfolio.webstorespring.enums.NotificationType;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
-import com.example.portfolio.webstorespring.model.entity.accounts.ConfirmationToken;
+import com.example.portfolio.webstorespring.model.entity.confirmations.AccountConfToken;
 import com.example.portfolio.webstorespring.services.accounts.AccountService;
-import com.example.portfolio.webstorespring.services.accounts.ConfirmationTokenService;
+import com.example.portfolio.webstorespring.services.confirmations.AccountConfTokenService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -17,8 +17,8 @@ import java.util.function.Consumer;
 
 import static com.example.portfolio.webstorespring.buildhelpers.DateForTestBuilderHelper.LOCAL_DATE_TIME;
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.*;
-import static com.example.portfolio.webstorespring.buildhelpers.accounts.ConfirmationTokenBuilderHelper.BASIC_CONFIRMATION_TOKEN;
-import static com.example.portfolio.webstorespring.buildhelpers.accounts.ConfirmationTokenBuilderHelper.EXPIRED_AT;
+import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountConfTokenBuilderHelper.BASIC_CONFIRMATION_TOKEN;
+import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountConfTokenBuilderHelper.EXPIRED_AT;
 import static com.natpryce.makeiteasy.MakeItEasy.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.*;
@@ -30,7 +30,7 @@ import static org.mockito.Mockito.verify;
 class RestoreEmailServiceTest {
 
     @Mock
-    private ConfirmationTokenService confirmationTokenService;
+    private AccountConfTokenService accountConfTokenService;
     @Mock
     private EmailSenderService emailSenderService;
     @Mock
@@ -42,18 +42,18 @@ class RestoreEmailServiceTest {
     @Test
     void shouldSendRestoreEmail() {
         Account account = make(a(BASIC_ACCOUNT));
-        ConfirmationToken confirmationToken = make(a(BASIC_CONFIRMATION_TOKEN)
+        AccountConfToken accountConfToken = make(a(BASIC_CONFIRMATION_TOKEN)
                 .but(with(EXPIRED_AT, LOCAL_DATE_TIME.plusDays(7)))
         );
 
-        given(confirmationTokenService.createWith7DaysExpires(any(Account.class))).willReturn(confirmationToken);
+        given(accountConfTokenService.createWith7DaysExpires(any(Account.class))).willReturn(accountConfToken);
 
         underTest.sendRestoreEmail(account);
 
         verify(emailSenderService, times(1)).sendEmail(
                 NotificationType.RESTORE_EMAIL,
                 account.getEmail(),
-                confirmationToken.getToken()
+                accountConfToken.getToken()
         );
     }
 
@@ -65,17 +65,17 @@ class RestoreEmailServiceTest {
         Account account = make(a(BASIC_ACCOUNT)
                 .but(with(EMAIL, "newEmail@test.pl"))
                 .but(with(BACKUPEMAIL, oldEmail)));
-        ConfirmationToken confirmationToken = make(a(BASIC_CONFIRMATION_TOKEN));
+        AccountConfToken accountConfToken = make(a(BASIC_CONFIRMATION_TOKEN));
 
 
-        given(confirmationTokenService.confirmTokenAndExecute(anyString(), any(), anyString()))
+        given(accountConfTokenService.confirmTokenAndExecute(anyString(), any(), anyString()))
                 .willReturn(Map.of("message", message));
 
-        Map<String, Object> result = underTest.confirmRestoreEmail(confirmationToken.getToken());
+        Map<String, Object> result = underTest.confirmRestoreEmail(accountConfToken.getToken());
 
         assertEquals(message, result.get("message"));
         ArgumentCaptor<Consumer<Account>> consumerCaptor = ArgumentCaptor.forClass(Consumer.class);
-        verify(confirmationTokenService).confirmTokenAndExecute(eq(confirmationToken.getToken()), consumerCaptor.capture(), eq(message));
+        verify(accountConfTokenService).confirmTokenAndExecute(eq(accountConfToken.getToken()), consumerCaptor.capture(), eq(message));
 
         Consumer<Account> consumer = consumerCaptor.getValue();
         consumer.accept(account);

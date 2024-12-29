@@ -1,5 +1,6 @@
 package com.example.portfolio.webstorespring.model.entity.accounts;
 
+import com.example.portfolio.webstorespring.model.entity.confirmations.AccountConfToken;
 import com.example.portfolio.webstorespring.model.entity.orders.Order;
 import jakarta.persistence.*;
 import lombok.*;
@@ -62,7 +63,7 @@ public class Account {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<ConfirmationToken> confirmationTokens;
+    private List<AccountConfToken> accountConfTokens;
 
     @Override
     public boolean equals(Object o) {

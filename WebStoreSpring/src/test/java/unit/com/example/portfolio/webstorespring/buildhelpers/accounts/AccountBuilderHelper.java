@@ -42,7 +42,7 @@ public class AccountBuilderHelper {
                     .roles(lookup.valueOf(ROLES, Set.of(ROLE_USER)))
                     .imageUrl(ACCOUNT_IMAGE_URL)
                     .authTokens(List.of())
-                    .confirmationTokens(List.of())
+                    .accountConfTokens(List.of())
                     .build();
 
     public static AccountRequest createAccountRequest() {

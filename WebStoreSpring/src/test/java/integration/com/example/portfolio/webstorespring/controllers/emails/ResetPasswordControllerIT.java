@@ -5,9 +5,9 @@ import com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilder
 import com.example.portfolio.webstorespring.controllers.AbstractTestRestTemplateIT;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.ResetPasswordRequest;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
-import com.example.portfolio.webstorespring.model.entity.accounts.ConfirmationToken;
+import com.example.portfolio.webstorespring.model.entity.confirmations.AccountConfToken;
+import com.example.portfolio.webstorespring.repositories.accounts.AccountConfTokenRepository;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
-import com.example.portfolio.webstorespring.repositories.accounts.ConfirmationTokenRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import static com.example.portfolio.webstorespring.buildhelpers.accounts.ConfirmationTokenBuilderHelper.*;
+import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountConfTokenBuilderHelper.*;
 import static com.natpryce.makeiteasy.MakeItEasy.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -35,7 +35,7 @@ class ResetPasswordControllerIT extends AbstractTestRestTemplateIT {
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
-    private ConfirmationTokenRepository tokenRepository;
+    private AccountConfTokenRepository tokenRepository;
     @Autowired
     private PasswordEncoder encoder;
     private String resetPasswordUri;
@@ -71,7 +71,7 @@ class ResetPasswordControllerIT extends AbstractTestRestTemplateIT {
 
     @Test
     void shouldConfirmResetPassword_withValidToken_thenStatusOK() {
-        ConfirmationToken savedConfirmationToken = tokenRepository.save(
+        AccountConfToken savedAccountConfToken = tokenRepository.save(
                 make(a(BASIC_CONFIRMATION_TOKEN)
                         .but(with(ACCOUNT, savedAccount))
                         .but(with(CREATED_AT, LocalDateTime.now()))
@@ -83,7 +83,7 @@ class ResetPasswordControllerIT extends AbstractTestRestTemplateIT {
         HttpEntity<ResetPasswordRequest> requestEntity = new HttpEntity<>(resetPasswordRequest);
 
         ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
-                resetPasswordUri + "/confirm?token=" + savedConfirmationToken.getToken(),
+                resetPasswordUri + "/confirm?token=" + savedAccountConfToken.getToken(),
                 HttpMethod.PATCH,
                 requestEntity,
                 new ParameterizedTypeReference<>() {

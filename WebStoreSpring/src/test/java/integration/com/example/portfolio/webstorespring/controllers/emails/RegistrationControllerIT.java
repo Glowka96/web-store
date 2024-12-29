@@ -3,9 +3,9 @@ package com.example.portfolio.webstorespring.controllers.emails;
 import com.example.portfolio.webstorespring.controllers.AbstractTestRestTemplateIT;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.RegistrationRequest;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
-import com.example.portfolio.webstorespring.model.entity.accounts.ConfirmationToken;
+import com.example.portfolio.webstorespring.model.entity.confirmations.AccountConfToken;
+import com.example.portfolio.webstorespring.repositories.accounts.AccountConfTokenRepository;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
-import com.example.portfolio.webstorespring.repositories.accounts.ConfirmationTokenRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ import java.util.Optional;
 
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.BASIC_ACCOUNT;
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.ENABLED;
-import static com.example.portfolio.webstorespring.buildhelpers.accounts.ConfirmationTokenBuilderHelper.*;
+import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountConfTokenBuilderHelper.*;
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.RegistrationRequestBuilderHelper.createRegistrationRequest;
 import static com.natpryce.makeiteasy.MakeItEasy.*;
 import static java.util.Objects.requireNonNull;
@@ -34,7 +34,7 @@ class RegistrationControllerIT extends AbstractTestRestTemplateIT {
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
-    private ConfirmationTokenRepository tokenRepository;
+    private AccountConfTokenRepository tokenRepository;
     private String registrationURI;
     private String registrationConfirmTokenURI;
     private static final String CONFIRMED_MESSAGE = "Account confirmed.";
@@ -84,7 +84,7 @@ class RegistrationControllerIT extends AbstractTestRestTemplateIT {
                 make(a(BASIC_ACCOUNT)
                         .but(with(ENABLED, Boolean.FALSE)))
         );
-        ConfirmationToken savedConfirmationToken = tokenRepository.save(
+        AccountConfToken savedAccountConfToken = tokenRepository.save(
                 make(a(BASIC_CONFIRMATION_TOKEN)
                         .but(with(ACCOUNT, savedAccount))
                         .but(with(CREATED_AT, LocalDateTime.now()))
@@ -93,7 +93,7 @@ class RegistrationControllerIT extends AbstractTestRestTemplateIT {
         );
 
         ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
-                registrationConfirmTokenURI + savedConfirmationToken.getToken(),
+                registrationConfirmTokenURI + savedAccountConfToken.getToken(),
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<>() {
@@ -115,7 +115,7 @@ class RegistrationControllerIT extends AbstractTestRestTemplateIT {
                 make(a(BASIC_ACCOUNT)
                         .but(with(ENABLED, Boolean.FALSE)))
         );
-        ConfirmationToken savedConfirmationToken = tokenRepository.save(
+        AccountConfToken savedAccountConfToken = tokenRepository.save(
                 make(a(BASIC_CONFIRMATION_TOKEN)
                         .but(with(ACCOUNT, savedAccount))
                         .but(with(CREATED_AT, LocalDateTime.now().minusHours(1)))
@@ -124,7 +124,7 @@ class RegistrationControllerIT extends AbstractTestRestTemplateIT {
         );
 
         ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
-                registrationConfirmTokenURI + savedConfirmationToken.getToken(),
+                registrationConfirmTokenURI + savedAccountConfToken.getToken(),
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<>() {
