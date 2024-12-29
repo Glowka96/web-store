@@ -18,8 +18,6 @@ public interface ProductTypeMapper {
         return new ProductTypeResponse(productType.getId(), productType.getName());
     }
 
-    //    @Mapping(target = "id", ignore = true)
-//    @Mapping(target = "products", ignore = true)
     static ProductType mapToEntity(ProductTypeRequest productTypeRequest){
         return ProductType.builder()
                 .name(productTypeRequest.name())
