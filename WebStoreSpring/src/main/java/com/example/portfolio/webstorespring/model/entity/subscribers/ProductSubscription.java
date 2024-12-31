@@ -7,7 +7,7 @@ import lombok.*;
 import java.util.List;
 
 @Entity
-@Table(name = "product_subscription")
+@Table(name = "product_subscriptions")
 @Getter
 @Setter
 @Builder
@@ -23,7 +23,7 @@ public class ProductSubscription {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    @OneToMany(mappedBy = "productSub", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "subscription", cascade = CascadeType.ALL, orphanRemoval = true)
     List<ProductSubscriber> productSubscribers;
 
     public void addSubscriber(ProductSubscriber productSubscriber) {
