@@ -39,4 +39,9 @@ public class ProductSubscriber implements OwnerConfToken {
     public int hashCode() {
         return Objects.hash(email);
     }
+
+    @Override
+    public String getName() {
+        return "product_subscriber";
+    }
 }
