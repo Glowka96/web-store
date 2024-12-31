@@ -6,13 +6,13 @@ import lombok.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "product_subscriber")
+@Table(name = "product_subscribers")
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductSubscriber {
+public class ProductSubscriber implements OwnerConfToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +21,9 @@ public class ProductSubscriber {
 
     @Column(unique = true, nullable = false)
     private String email;
+
+    @Column(nullable = false)
+    private Boolean enabled;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private ProductSubscription subscription;
