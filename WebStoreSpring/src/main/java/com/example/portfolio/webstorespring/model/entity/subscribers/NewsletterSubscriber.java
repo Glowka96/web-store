@@ -10,7 +10,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class NewsletterSubscriber {
+public class NewsletterSubscriber implements OwnerConfToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,4 +19,12 @@ public class NewsletterSubscriber {
 
     @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(nullable = false)
+    private Boolean enabled;
+
+    @Override
+    public String getName() {
+        return "newsletter_subscriber";
+    }
 }
