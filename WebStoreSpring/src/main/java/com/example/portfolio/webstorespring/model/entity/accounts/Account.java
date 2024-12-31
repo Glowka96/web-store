@@ -2,6 +2,7 @@ package com.example.portfolio.webstorespring.model.entity.accounts;
 
 import com.example.portfolio.webstorespring.model.entity.confirmations.AccountConfToken;
 import com.example.portfolio.webstorespring.model.entity.orders.Order;
+import com.example.portfolio.webstorespring.model.entity.subscribers.OwnerConfToken;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,7 +17,7 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Account {
+public class Account implements OwnerConfToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
