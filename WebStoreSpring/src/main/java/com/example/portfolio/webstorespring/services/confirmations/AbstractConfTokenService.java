@@ -20,12 +20,13 @@ public abstract class AbstractConfTokenService<T extends BaseConfToken, S extend
     private final TokenDetailsService tokenDetailsService;
 
     public T getByToken(String token) {
-        log.debug("Finding confirmation token by token: {}", token);
+        log.info("Finding confirmation token by token: {}", token);
         return tokenRepository.findByTokenDetails_Token(token)
                 .orElseThrow(() -> new ResourceNotFoundException("Confirmation token", "token", token));
     }
 
     public T createConfirmationToken(S relatedEntity, Long expiresMinute) {
+        log.info("Creating confirmation token for: {}", relatedEntity.getName());
         return tokenRepository.save(createTokenEntity(relatedEntity, tokenDetailsService.createTokenDetails(expiresMinute)));
     }
 

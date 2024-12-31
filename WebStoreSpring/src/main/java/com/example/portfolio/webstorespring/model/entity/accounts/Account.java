@@ -78,4 +78,9 @@ public class Account implements OwnerConfToken {
     public int hashCode() {
         return Objects.hash(email);
     }
+
+    @Override
+    public String getName() {
+        return "account";
+    }
 }
