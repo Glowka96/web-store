@@ -19,6 +19,7 @@ public class TokenDetailsService {
     private final Clock clock;
 
     TokenDetails createTokenDetails(Long expiresMinute) {
+        log.info("Creating new token details, with expires: {}", expiresMinute);
         return TokenDetails.builder()
                 .token(UUID.randomUUID().toString())
                 .createdAt(LocalDateTime.now(clock))
