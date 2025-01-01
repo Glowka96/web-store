@@ -51,6 +51,4 @@ public abstract class AbstractConfTokenService<T extends BaseConfToken, S extend
     protected abstract T createTokenEntity(S relatedEntity, TokenDetails tokenDetails);
 
     protected abstract S extractRelatedEntity(T tokenEntity);
-
-
 }

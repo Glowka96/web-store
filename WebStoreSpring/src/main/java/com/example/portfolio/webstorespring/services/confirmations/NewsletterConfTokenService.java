@@ -7,8 +7,8 @@ import com.example.portfolio.webstorespring.repositories.confirmations.Confirmat
 import org.springframework.stereotype.Service;
 
 @Service
-public class NewsletterTokenService extends AbstractConfTokenService<NewsletterConfToken, NewsletterSubscriber> {
-    public NewsletterTokenService(ConfirmationTokenRepository<NewsletterConfToken> tokenRepository, TokenDetailsService tokenDetailsService) {
+public class NewsletterConfTokenService extends AbstractConfTokenService<NewsletterConfToken, NewsletterSubscriber> {
+    public NewsletterConfTokenService(ConfirmationTokenRepository<NewsletterConfToken> tokenRepository, TokenDetailsService tokenDetailsService) {
         super(tokenRepository, tokenDetailsService);
     }
 
