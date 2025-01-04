@@ -14,4 +14,6 @@ public class ConfirmationLinkProvider {
     private String email;
     private String resetPassword;
     private String restoreEmail;
+    private String newsletter;
+    private String productSubscription;
 }
