@@ -22,15 +22,15 @@ public class NotificationStrategyFactory {
     private void createNotificationStrategyMap(Set<NotificationStrategy> notificationStrategies) {
         notificationStrategies.forEach(n -> {
             notificationStrategyMap.put(n.getNotificationType(), n);
-            log.debug("Putted notification type: {} and strategy: {} into map.", n.getNotificationType().getName(), n.getClass().getSimpleName());
+            log.debug("Putted notification type: {} and strategy: {} into map.", n.getNotificationType().name(), n.getClass().getSimpleName());
         });
     }
 
     public NotificationStrategy findNotificationStrategy(NotificationType notificationType) {
-        log.info("Finding notification strategy for notification type: {}", notificationType.getName());
+        log.info("Finding notification strategy for notification type: {}", notificationType.name());
         NotificationStrategy notificationStrategy = notificationStrategyMap.get(notificationType);
         if(notificationStrategy == null) {
-            throw new UnsupportedNotificationTypeException(notificationType.getName());
+            throw new UnsupportedNotificationTypeException(notificationType.name());
         }
         log.info("Returning founder notification strategy.");
         return notificationStrategy;

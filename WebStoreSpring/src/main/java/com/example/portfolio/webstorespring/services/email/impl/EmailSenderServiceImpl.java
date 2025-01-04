@@ -28,7 +28,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
                           String confirmLinkWithToken) {
         NotificationStrategy notificationStrategy = notificationStrategyFactory.findNotificationStrategy(notificationType);
 
-        log.info("Sending {} email to: {}", notificationStrategy.getNotificationType().getName(), email);
+        log.info("Sending {} email to: {}", notificationStrategy.getNotificationType().name(), email);
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(email);
         mailMessage.setSubject(notificationStrategy.getEmailTitle());
