@@ -23,7 +23,7 @@ public class AccountConfTokenService extends AbstractConfTokenService<AccountCon
     }
 
     @Override
-    protected Account extractRelatedEntity(AccountConfToken tokenEntity) {
+    public Account extractRelatedEntity(AccountConfToken tokenEntity) {
         return tokenEntity.getAccount();
     }
 }

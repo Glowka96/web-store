@@ -21,7 +21,7 @@ public class NewsletterConfTokenService extends AbstractConfTokenService<Newslet
     }
 
     @Override
-    protected NewsletterSubscriber extractRelatedEntity(NewsletterConfToken tokenEntity) {
+    public NewsletterSubscriber extractRelatedEntity(NewsletterConfToken tokenEntity) {
         return tokenEntity.getSubscriber();
     }
 }

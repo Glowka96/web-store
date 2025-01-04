@@ -21,7 +21,7 @@ public class ProductConfTokenService extends AbstractConfTokenService<ProductCon
     }
 
     @Override
-    protected ProductSubscriber extractRelatedEntity(ProductConfToken tokenEntity) {
+    public ProductSubscriber extractRelatedEntity(ProductConfToken tokenEntity) {
         return tokenEntity.getSubscriber();
     }
 }

@@ -25,6 +25,7 @@ public abstract class AbstractConfTokenService<T extends BaseConfToken, S extend
                 .orElseThrow(() -> new ResourceNotFoundException("Confirmation token", "token", token));
     }
 
+    @Transactional
     public T createConfirmationToken(S relatedEntity, Long expiresMinute) {
         log.info("Creating confirmation token for: {}", relatedEntity.getName());
         return tokenRepository.save(createTokenEntity(relatedEntity, tokenDetailsService.createTokenDetails(expiresMinute)));
@@ -36,6 +37,7 @@ public abstract class AbstractConfTokenService<T extends BaseConfToken, S extend
                                                       String successMessage) {
         log.info("Starting confirming token: {}.", token);
         T tokenEntity = getByToken(token);
+        log.debug("Extract related entity from: {}", token);
         S relatedEntity = extractRelatedEntity(tokenEntity);
         tokenDetailsService.validateAndConfirmTokenDetails(tokenEntity.getTokenDetails());
         confirmationConsumer.accept(relatedEntity);
@@ -50,5 +52,5 @@ public abstract class AbstractConfTokenService<T extends BaseConfToken, S extend
 
     protected abstract T createTokenEntity(S relatedEntity, TokenDetails tokenDetails);
 
-    protected abstract S extractRelatedEntity(T tokenEntity);
+    public abstract S extractRelatedEntity(T tokenEntity);
 }
