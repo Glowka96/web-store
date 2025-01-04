@@ -18,12 +18,12 @@ class ReconfirmEmailNotificationStrategy implements NotificationStrategy {
 
     @Override
     public String getEmailTitle() {
-        return "Confirm email address.";
+        return "Re-confirm email address.";
     }
 
     @Override
     public String getEmailMessage() {
-        return "To confirm your account, please click here: \n"
+        return "To re-confirm your account, please click here: \n"
                 + linkProvider.getEmail();
     }
 }
