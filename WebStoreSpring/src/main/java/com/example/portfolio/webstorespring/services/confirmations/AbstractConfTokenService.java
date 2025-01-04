@@ -26,7 +26,7 @@ public abstract class AbstractConfTokenService<T extends BaseConfToken, S extend
     }
 
     @Transactional
-    public T createConfirmationToken(S relatedEntity, Long expiresMinute) {
+    public T create(S relatedEntity, Long expiresMinute) {
         log.info("Creating confirmation token for: {}", relatedEntity.getName());
         return tokenRepository.save(createTokenEntity(relatedEntity, tokenDetailsService.createTokenDetails(expiresMinute)));
     }
