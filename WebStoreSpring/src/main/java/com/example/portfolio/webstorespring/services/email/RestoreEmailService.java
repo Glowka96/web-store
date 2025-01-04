@@ -5,38 +5,33 @@ import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.confirmations.AccountConfToken;
 import com.example.portfolio.webstorespring.services.accounts.AccountService;
 import com.example.portfolio.webstorespring.services.confirmations.AccountConfTokenService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import com.example.portfolio.webstorespring.services.confirmations.TokenDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
 @Service
-@RequiredArgsConstructor
-@Slf4j
-public class RestoreEmailService {
-
-    private final AccountConfTokenService accountConfTokenService;
-    private final EmailSenderService emailSenderService;
+public class RestoreEmailService extends SenderConfirmationEmailService<AccountConfToken, Account, AccountConfTokenService> {
     private final AccountService accountService;
 
+    public RestoreEmailService(EmailSenderService emailSenderService,
+                               TokenDetailsService tokenDetailsService,
+                               AccountConfTokenService confirmationsService,
+                               AccountService accountService) {
+        super(emailSenderService, tokenDetailsService, confirmationsService);
+        this.accountService = accountService;
+    }
+
     public void sendRestoreEmail(Account account) {
-        log.info("Sending email for account " + account.getId());
-        AccountConfToken savedToken = accountConfTokenService.createWith7DaysExpires(account);
-        emailSenderService.sendEmail(
-                NotificationType.RESTORE_EMAIL,
-                account.getEmail(),
-                savedToken.getTokenDetails().getToken()
-        );
+        sendConfirmationEmail(account, NotificationType.RESTORE_EMAIL);
     }
 
     @Transactional
     public Map<String, Object> confirmRestoreEmail(String token) {
-        return accountConfTokenService.confirmTokenAndExecute(
+        return confirmationTokenService.confirmTokenAndExecute(
                 token,
                 accountService::restoreEmail,
-                "Old account email restored"
-        );
+                "Old account email restored");
     }
 }

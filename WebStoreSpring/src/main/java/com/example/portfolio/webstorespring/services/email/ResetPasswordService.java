@@ -6,36 +6,35 @@ import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.confirmations.AccountConfToken;
 import com.example.portfolio.webstorespring.services.accounts.AccountService;
 import com.example.portfolio.webstorespring.services.confirmations.AccountConfTokenService;
-import lombok.RequiredArgsConstructor;
+import com.example.portfolio.webstorespring.services.confirmations.TokenDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
 @Service
-@RequiredArgsConstructor
-public class ResetPasswordService {
+public class ResetPasswordService extends SenderConfirmationEmailService<AccountConfToken, Account, AccountConfTokenService> {
 
-    private final AccountConfTokenService accountConfTokenService;
-    private final EmailSenderService emailSenderService;
     private final AccountService accountService;
+
+    public ResetPasswordService(EmailSenderService emailSenderService,
+                                TokenDetailsService tokenDetailsService,
+                                AccountConfTokenService confirmationsService,
+                                AccountService accountService) {
+        super(emailSenderService, tokenDetailsService, confirmationsService);
+        this.accountService = accountService;
+    }
 
     @Transactional
     public Map<String, Object> resetPasswordByEmail(String email) {
         Account account = accountService.findByEmail(email);
-
-        AccountConfToken savedToken = accountConfTokenService.create(account);
-        emailSenderService.sendEmail(
-                NotificationType.RESET_PASSWORD,
-                account.getEmail(),
-                savedToken.getTokenDetails().getToken()
-        );
+        sendConfirmationEmail(account, NotificationType.RESET_PASSWORD);
         return Map.of("message", "Sent reset password link to your email");
     }
 
     @Transactional
     public Map<String, Object> confirmResetPassword(ResetPasswordRequest resetPasswordRequest, String token) {
-        return accountConfTokenService.confirmTokenAndExecute(
+        return confirmationTokenService.confirmTokenAndExecute(
                 token,
                 account -> accountService.setNewAccountPassword(account, resetPasswordRequest.password()),
                 "Your new password has been saved"
