@@ -21,8 +21,6 @@ public class RegistrationService extends SenderConfirmationEmailService<AccountC
     @Resource
     private SenderConfirmationEmailService<AccountConfToken, Account, AccountConfTokenService> senderConfirmationEmailService;
 
-    private static final String MESSAGE = "message";
-
     public RegistrationService(EmailSenderService emailSenderService, TokenDetailsService tokenDetailsService, AccountConfTokenService confirmationsService, AccountService accountService) {
         super(emailSenderService, tokenDetailsService, confirmationsService);
         this.accountService = accountService;

@@ -20,7 +20,7 @@ abstract class SenderConfirmationEmailService<T extends BaseConfToken, O extends
     private final TokenDetailsService tokenDetailsService;
     protected final S confirmationTokenService;
 
-    private static final String MESSAGE = "message";
+    protected static final String MESSAGE = "message";
 
     protected void sendConfirmationEmail(O ownerToken, NotificationType notificationType) {
         T savedToken = confirmationTokenService.create(ownerToken, notificationType.getExpiresMinute());
