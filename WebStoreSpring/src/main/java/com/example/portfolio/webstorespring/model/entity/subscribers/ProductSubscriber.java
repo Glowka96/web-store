@@ -42,6 +42,6 @@ public class ProductSubscriber implements OwnerConfToken {
 
     @Override
     public String getName() {
-        return "product_subscriber";
+        return "Product subscriber";
     }
 }

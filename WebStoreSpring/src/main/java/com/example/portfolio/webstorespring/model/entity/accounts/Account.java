@@ -81,6 +81,6 @@ public class Account implements OwnerConfToken {
 
     @Override
     public String getName() {
-        return "account";
+        return "Account";
     }
 }

@@ -25,6 +25,6 @@ public class NewsletterSubscriber implements OwnerConfToken {
 
     @Override
     public String getName() {
-        return "newsletter_subscriber";
+        return "Newsletter subscriber";
     }
 }
