@@ -8,23 +8,23 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-class ReconfirmNewsletterNotificationStrategy implements NotificationStrategy {
+public class ConfirmProductSubscriptionNotificationStrategy implements NotificationStrategy {
 
     private final ConfirmationLinkProvider linkProvider;
 
     @Override
     public NotificationType getNotificationType() {
-        return NotificationType.RECONFIRM_NEWSLETTER;
+        return NotificationType.CONFIRM_PRODUCT_SUBSCRIPTION;
     }
 
     @Override
     public String getEmailTitle() {
-        return "Re-confirm newsletter subscription";
+        return "Confirm product subscription";
     }
 
     @Override
     public String getEmailMessage() {
-        return "To re-confirm newsletter subscription, please click here: \n"
-                + linkProvider.getNewsletter();
+        return "To confirm your product subscription, please click here: \n"
+                + linkProvider.getProductSubscription();
     }
 }
