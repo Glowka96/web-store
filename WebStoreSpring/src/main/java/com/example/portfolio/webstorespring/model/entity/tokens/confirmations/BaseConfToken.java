@@ -1,4 +1,4 @@
-package com.example.portfolio.webstorespring.model.entity.confirmations;
+package com.example.portfolio.webstorespring.model.entity.tokens.confirmations;
 
 public interface BaseConfToken {
 

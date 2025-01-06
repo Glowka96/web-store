@@ -2,10 +2,10 @@ package com.example.portfolio.webstorespring.services.email;
 
 import com.example.portfolio.webstorespring.enums.NotificationType;
 import com.example.portfolio.webstorespring.exceptions.EmailAlreadyConfirmedException;
-import com.example.portfolio.webstorespring.model.entity.confirmations.BaseConfToken;
+import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.BaseConfToken;
 import com.example.portfolio.webstorespring.model.entity.subscribers.OwnerConfToken;
-import com.example.portfolio.webstorespring.services.confirmations.AbstractConfTokenService;
-import com.example.portfolio.webstorespring.services.confirmations.TokenDetailsService;
+import com.example.portfolio.webstorespring.services.tokens.confirmations.AbstractConfTokenService;
+import com.example.portfolio.webstorespring.services.tokens.confirmations.TokenDetailsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;

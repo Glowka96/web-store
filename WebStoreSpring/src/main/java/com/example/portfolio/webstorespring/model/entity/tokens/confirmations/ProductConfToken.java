@@ -1,4 +1,4 @@
-package com.example.portfolio.webstorespring.model.entity.confirmations;
+package com.example.portfolio.webstorespring.model.entity.tokens.confirmations;
 
 import com.example.portfolio.webstorespring.model.entity.subscribers.ProductSubscriber;
 import jakarta.persistence.*;
@@ -11,7 +11,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductConfToken implements BaseConfToken{
+public class ProductConfToken implements BaseConfToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

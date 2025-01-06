@@ -1,6 +1,6 @@
-package com.example.portfolio.webstorespring.repositories.confirmations;
+package com.example.portfolio.webstorespring.repositories.tokens.confirmations;
 
-import com.example.portfolio.webstorespring.model.entity.confirmations.BaseConfToken;
+import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.BaseConfToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 

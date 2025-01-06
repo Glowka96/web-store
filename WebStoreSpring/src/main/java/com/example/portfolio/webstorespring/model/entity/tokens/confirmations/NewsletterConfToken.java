@@ -1,4 +1,4 @@
-package com.example.portfolio.webstorespring.model.entity.confirmations;
+package com.example.portfolio.webstorespring.model.entity.tokens.confirmations;
 
 import com.example.portfolio.webstorespring.model.entity.subscribers.NewsletterSubscriber;
 import jakarta.persistence.*;

@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.model.entity.accounts;
 
-import com.example.portfolio.webstorespring.model.entity.confirmations.AccountConfToken;
+import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.AccountConfToken;
 import com.example.portfolio.webstorespring.model.entity.orders.Order;
 import com.example.portfolio.webstorespring.model.entity.subscribers.OwnerConfToken;
 import jakarta.persistence.*;

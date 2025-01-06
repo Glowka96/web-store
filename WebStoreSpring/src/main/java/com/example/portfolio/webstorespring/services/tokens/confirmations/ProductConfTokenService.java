@@ -1,9 +1,9 @@
-package com.example.portfolio.webstorespring.services.confirmations;
+package com.example.portfolio.webstorespring.services.tokens.confirmations;
 
-import com.example.portfolio.webstorespring.model.entity.confirmations.ProductConfToken;
-import com.example.portfolio.webstorespring.model.entity.confirmations.TokenDetails;
+import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.ProductConfToken;
+import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.TokenDetails;
 import com.example.portfolio.webstorespring.model.entity.subscribers.ProductSubscriber;
-import com.example.portfolio.webstorespring.repositories.confirmations.ConfirmationTokenRepository;
+import com.example.portfolio.webstorespring.repositories.tokens.confirmations.ConfirmationTokenRepository;
 import org.springframework.stereotype.Service;
 
 @Service
