@@ -1,4 +1,4 @@
-package com.example.portfolio.webstorespring.model.entity.confirmations;
+package com.example.portfolio.webstorespring.model.entity.tokens.confirmations;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
