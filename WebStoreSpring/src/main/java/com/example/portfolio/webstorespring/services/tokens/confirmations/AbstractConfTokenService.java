@@ -1,16 +1,13 @@
 package com.example.portfolio.webstorespring.services.tokens.confirmations;
 
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
+import com.example.portfolio.webstorespring.model.entity.subscribers.OwnerConfToken;
 import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.BaseConfToken;
 import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.TokenDetails;
-import com.example.portfolio.webstorespring.model.entity.subscribers.OwnerConfToken;
 import com.example.portfolio.webstorespring.repositories.tokens.confirmations.ConfirmationTokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Map;
-import java.util.function.Consumer;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -18,6 +15,7 @@ public abstract class AbstractConfTokenService<T extends BaseConfToken, S extend
 
     private final ConfirmationTokenRepository<T> tokenRepository;
     private final TokenDetailsService tokenDetailsService;
+    protected final TokenDetailsService tokenDetailsService;
 
     public T getByToken(String token) {
         log.info("Finding confirmation token by token: {}", token);
@@ -29,20 +27,6 @@ public abstract class AbstractConfTokenService<T extends BaseConfToken, S extend
     public T create(S relatedEntity, Long expiresMinute) {
         log.info("Creating confirmation token for: {}", relatedEntity.getName());
         return tokenRepository.save(createTokenEntity(relatedEntity, tokenDetailsService.createTokenDetails(expiresMinute)));
-    }
-
-    @Transactional
-    public Map<String, Object> confirmTokenAndExecute(String token,
-                                                      Consumer<S> confirmationConsumer,
-                                                      String successMessage) {
-        log.info("Starting confirming token: {}.", token);
-        T tokenEntity = getByToken(token);
-        log.debug("Extract related entity from: {}", token);
-        S relatedEntity = extractRelatedEntity(tokenEntity);
-        tokenDetailsService.validateAndConfirmTokenDetails(tokenEntity.getTokenDetails());
-        confirmationConsumer.accept(relatedEntity);
-        log.info("Operation successful, sending message: {}", successMessage);
-        return Map.of("message", successMessage);
     }
 
     public void delete(T tokenEntity) {
