@@ -18,7 +18,7 @@ public class ResetPasswordController {
 
     @GetMapping(params = "email")
     public Map<String, Object> resetPassword(@RequestParam("email") @Email(message = "Invalid email format") String email) {
-        return resetPasswordService.resetPasswordByEmail(email);
+        return resetPasswordService.sendResetPasswordLinkByEmail(email);
     }
 
     @PatchMapping(value = "/confirm", params = {"token"})

@@ -7,22 +7,21 @@ import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.Ac
 import com.example.portfolio.webstorespring.services.accounts.AccountService;
 import com.example.portfolio.webstorespring.services.tokens.confirmations.AccountConfTokenService;
 import com.example.portfolio.webstorespring.services.tokens.confirmations.TokenDetailsService;
-import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
 @Service
-public class RegistrationService extends SenderConfirmationEmailService<AccountConfToken, Account, AccountConfTokenService> {
+public class RegistrationService extends AbstractConfirmEmailService<AccountConfToken, Account, AccountConfTokenService> {
 
     private final AccountService accountService;
 
-    @Resource
-    private SenderConfirmationEmailService<AccountConfToken, Account, AccountConfTokenService> senderConfirmationEmailService;
-
-    public RegistrationService(EmailSenderService emailSenderService, TokenDetailsService tokenDetailsService, AccountConfTokenService confirmationsService, AccountService accountService) {
-        super(emailSenderService, tokenDetailsService, confirmationsService);
+    RegistrationService(EmailSenderService emailSenderService,
+                        AccountConfTokenService confirmationTokenService,
+                        TokenDetailsService tokenDetailsService,
+                        AccountService accountService) {
+        super(emailSenderService, confirmationTokenService, tokenDetailsService);
         this.accountService = accountService;
     }
 
@@ -30,11 +29,16 @@ public class RegistrationService extends SenderConfirmationEmailService<AccountC
     public Map<String, Object> registrationAccount(RegistrationRequest registrationRequest) {
         Account account = accountService.save(registrationRequest);
         sendConfirmationEmail(account, NotificationType.CONFIRM_EMAIL);
-        return Map.of(MESSAGE, "Verify your email address using the link in your email.");
+        return Map.of(RESPONSE_MESSAGE_KEY, "Verify your email address using the link in your email.");
     }
 
     @Transactional
     public Map<String, Object> confirmToken(String token) {
-        return senderConfirmationEmailService.confirmTokenOrResend(token, NotificationType.RESTORE_EMAIL);
+        return confirmTokenOrResend(token, NotificationType.RESTORE_EMAIL);
+    }
+
+    @Override
+    protected void executeAfterConfirm(Account ownerToken) {
+        ownerToken.setEnabled(Boolean.TRUE);
     }
 }

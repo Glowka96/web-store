@@ -5,21 +5,19 @@ import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.AccountConfToken;
 import com.example.portfolio.webstorespring.services.accounts.AccountService;
 import com.example.portfolio.webstorespring.services.tokens.confirmations.AccountConfTokenService;
-import com.example.portfolio.webstorespring.services.tokens.confirmations.TokenDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
 @Service
-public class RestoreEmailService extends SenderConfirmationEmailService<AccountConfToken, Account, AccountConfTokenService> {
+public class RestoreEmailService extends AbstractSenderConfEmailService<AccountConfToken, Account, AccountConfTokenService> {
     private final AccountService accountService;
 
     public RestoreEmailService(EmailSenderService emailSenderService,
-                               TokenDetailsService tokenDetailsService,
-                               AccountConfTokenService confirmationsService,
+                               AccountConfTokenService confirmationTokenService,
                                AccountService accountService) {
-        super(emailSenderService, tokenDetailsService, confirmationsService);
+        super(emailSenderService, confirmationTokenService);
         this.accountService = accountService;
     }
 
