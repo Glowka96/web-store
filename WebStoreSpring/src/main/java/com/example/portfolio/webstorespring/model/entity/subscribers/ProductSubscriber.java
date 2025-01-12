@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "product_subscribers")
@@ -25,8 +26,8 @@ public class ProductSubscriber implements OwnerConfToken {
     @Column(nullable = false)
     private Boolean enabled;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private ProductSubscription subscription;
+    @ManyToMany(mappedBy = "productSubscribers")
+    private Set<ProductSubscription> subscription;
 
     @Override
     public boolean equals(Object o) {
