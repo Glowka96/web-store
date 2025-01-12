@@ -1,5 +1,6 @@
 package com.example.portfolio.webstorespring.services.tokens.confirmations;
 
+import com.example.portfolio.webstorespring.enums.NotificationType;
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.model.entity.subscribers.OwnerConfToken;
 import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.BaseConfToken;
@@ -14,8 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 public abstract class AbstractConfTokenService<T extends BaseConfToken, S extends OwnerConfToken> {
 
     private final ConfirmationTokenRepository<T> tokenRepository;
-    private final TokenDetailsService tokenDetailsService;
     protected final TokenDetailsService tokenDetailsService;
+    private final NotificationExpirationManager notificationExpirationManager;
 
     public T getByToken(String token) {
         log.info("Finding confirmation token by token: {}", token);
@@ -24,9 +25,16 @@ public abstract class AbstractConfTokenService<T extends BaseConfToken, S extend
     }
 
     @Transactional
-    public T create(S relatedEntity, Long expiresMinute) {
+    public T create(S relatedEntity, NotificationType notificationType) {
         log.info("Creating confirmation token for: {}", relatedEntity.getName());
-        return tokenRepository.save(createTokenEntity(relatedEntity, tokenDetailsService.createTokenDetails(expiresMinute)));
+        return tokenRepository.save(
+                createTokenEntity(
+                        relatedEntity,
+                        tokenDetailsService.createTokenDetails(
+                                notificationExpirationManager.getExpirationMinutes(
+                                        notificationType))
+                )
+        );
     }
 
     public void delete(T tokenEntity) {

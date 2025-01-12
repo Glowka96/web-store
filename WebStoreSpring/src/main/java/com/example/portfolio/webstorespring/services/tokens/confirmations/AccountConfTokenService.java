@@ -4,7 +4,6 @@ import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.AccountConfToken;
 import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.TokenDetails;
 import com.example.portfolio.webstorespring.repositories.tokens.confirmations.ConfirmationTokenRepository;
-import com.example.portfolio.webstorespring.services.email.NotificationExpirationConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,8 +16,10 @@ import java.util.function.Consumer;
 @Slf4j
 public class AccountConfTokenService extends AbstractConfTokenService<AccountConfToken, Account> {
 
-    public AccountConfTokenService(ConfirmationTokenRepository<AccountConfToken> tokenRepository, TokenDetailsService tokenDetailsService, NotificationExpirationConfig notificationExpirationConfig) {
-        super(tokenRepository, tokenDetailsService, notificationExpirationConfig);
+    public AccountConfTokenService(ConfirmationTokenRepository<AccountConfToken> tokenRepository,
+                                   TokenDetailsService tokenDetailsService,
+                                   NotificationExpirationManager notificationExpirationManager) {
+        super(tokenRepository, tokenDetailsService, notificationExpirationManager);
     }
 
     @Transactional

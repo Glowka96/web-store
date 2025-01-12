@@ -1,15 +1,19 @@
 package com.example.portfolio.webstorespring.services.tokens.confirmations;
 
+import com.example.portfolio.webstorespring.model.entity.subscribers.ProductSubscriber;
 import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.ProductConfToken;
 import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.TokenDetails;
-import com.example.portfolio.webstorespring.model.entity.subscribers.ProductSubscriber;
 import com.example.portfolio.webstorespring.repositories.tokens.confirmations.ConfirmationTokenRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ProductConfTokenService extends AbstractConfTokenService<ProductConfToken, ProductSubscriber> {
-    public ProductConfTokenService(ConfirmationTokenRepository<ProductConfToken> tokenRepository, TokenDetailsService tokenDetailsService) {
-        super(tokenRepository, tokenDetailsService);
+
+
+    public ProductConfTokenService(ConfirmationTokenRepository<ProductConfToken> tokenRepository,
+                                   TokenDetailsService tokenDetailsService,
+                                   NotificationExpirationManager notificationExpirationManager) {
+        super(tokenRepository, tokenDetailsService, notificationExpirationManager);
     }
 
     @Override
