@@ -30,7 +30,7 @@ public class NotificationStrategyFactory {
         log.info("Finding notification strategy for notification type: {}", notificationType.name());
         NotificationStrategy notificationStrategy = notificationStrategyMap.get(notificationType);
         if(notificationStrategy == null) {
-            throw new UnsupportedNotificationTypeException(notificationType.name());
+            throw new UnsupportedNotificationTypeException(notificationType);
         }
         log.info("Returning founder notification strategy.");
         return notificationStrategy;

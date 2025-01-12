@@ -1,7 +1,9 @@
 package com.example.portfolio.webstorespring.exceptions;
 
+import com.example.portfolio.webstorespring.enums.NotificationType;
+
 public class UnsupportedNotificationTypeException extends RuntimeException {
-    public UnsupportedNotificationTypeException(String notificationTypeName) {
-        super(String.format("No strategy found for notification type: %s. Please try again later.", notificationTypeName));
+    public UnsupportedNotificationTypeException(NotificationType notificationType) {
+        super(String.format("For notification type: %s this operation is unsupported. Please try again later.", notificationType.name()));
     }
 }
