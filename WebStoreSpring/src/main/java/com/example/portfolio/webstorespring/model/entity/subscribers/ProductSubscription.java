@@ -4,6 +4,8 @@ import com.example.portfolio.webstorespring.model.entity.products.Product;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -20,7 +22,7 @@ public class ProductSubscription {
 
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
-    @JoinColumn(name = "product_id", nullable = false)
+    @JoinColumn(name = "product_id", nullable = false, unique = true)
     private Product product;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -28,7 +30,7 @@ public class ProductSubscription {
             joinColumns = @JoinColumn(name = "product_subscription_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "proudct_subscriber_id", referencedColumnName = "id")
     )
-    private Set<ProductSubscriber> productSubscribers;
+    private Set<ProductSubscriber> productSubscribers = new HashSet<>();
 
     public void addSubscriber(ProductSubscriber productSubscriber) {
         productSubscribers.add(productSubscriber);
@@ -38,5 +40,18 @@ public class ProductSubscription {
     public void removeSubscriber(ProductSubscriber productSubscriber) {
         productSubscribers.remove(productSubscriber);
         productSubscriber.getSubscription().remove(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductSubscription that = (ProductSubscription) o;
+        return Objects.equals(product.getId(), that.product.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(product.getId());
     }
 }
