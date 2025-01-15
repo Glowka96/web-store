@@ -3,7 +3,7 @@ package com.example.portfolio.webstorespring.services.tokens.confirmations;
 import com.example.portfolio.webstorespring.enums.NotificationType;
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.model.entity.subscribers.OwnerConfToken;
-import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.BaseConfToken;
+import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.ConfToken;
 import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.TokenDetails;
 import com.example.portfolio.webstorespring.repositories.tokens.confirmations.ConfirmationTokenRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @RequiredArgsConstructor
-public abstract class AbstractConfTokenService<T extends BaseConfToken, S extends OwnerConfToken> {
+public abstract class AbstractConfTokenService<T extends ConfToken, S extends OwnerConfToken> {
 
     private final ConfirmationTokenRepository<T> tokenRepository;
     protected final TokenDetailsService tokenDetailsService;

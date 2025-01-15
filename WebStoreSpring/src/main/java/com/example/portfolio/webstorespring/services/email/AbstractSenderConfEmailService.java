@@ -2,13 +2,13 @@ package com.example.portfolio.webstorespring.services.email;
 
 import com.example.portfolio.webstorespring.enums.NotificationType;
 import com.example.portfolio.webstorespring.model.entity.subscribers.OwnerConfToken;
-import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.BaseConfToken;
+import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.ConfToken;
 import com.example.portfolio.webstorespring.services.tokens.confirmations.AbstractConfTokenService;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 abstract class AbstractSenderConfEmailService<
-        T extends BaseConfToken,
+        T extends ConfToken,
         O extends OwnerConfToken,
         S extends AbstractConfTokenService<T, O>> {
 

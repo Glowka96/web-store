@@ -11,7 +11,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AccountConfToken implements BaseConfToken {
+public class AccountConfToken implements ConfToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
