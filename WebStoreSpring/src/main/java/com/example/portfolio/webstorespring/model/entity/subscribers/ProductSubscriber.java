@@ -27,7 +27,7 @@ public class ProductSubscriber implements OwnerConfToken {
     private Boolean enabled;
 
     @ManyToMany(mappedBy = "productSubscribers")
-    private Set<ProductSubscription> subscription;
+    private Set<ProductSubscription> subscription = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {
