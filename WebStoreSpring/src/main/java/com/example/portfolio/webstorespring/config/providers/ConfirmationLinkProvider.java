@@ -16,4 +16,6 @@ public class ConfirmationLinkProvider {
     private String restoreEmail;
     private String newsletter;
     private String productSubscription;
+    private String unsubscribeNewsletter;
+    private String unsubscribeProductSubscription;
 }

@@ -50,6 +50,8 @@ confirmation:
     restore-email: ${BACKUP_EMAIL_LINK:http://localhost:4200/restore-email/confirm?token=}
     newsletter: ${CONFIRMATION_NEWSLETTER_LINK:http://localhost:4200/newsletter/confirm?token=}
     product-subscription: ${CONFIRMATION_PROD_SUB_LINK:http://localhost:4200/product-subscription/confirm?token=}
+    unsubscribe-newsletter: ${UNSUBSCRIBE_NEWSLETTER:http://localhost:4200/unsubscriber-newsletter/confirm?token=}
+    unsubscribe-product-subscription: ${UNSUBSCRIBE_PRODUCT_SUBSCRIPTION:http://localhost:4200/unsubscriber-products-subscription/confirm?token=}
 
 shipment:
   address: ${SHIPMENT_ADDRESS:your_shipment_address}
