@@ -26,7 +26,7 @@ public class RestoreEmailService extends AbstractSenderConfEmailService<AccountC
     }
 
     @Transactional
-    public Map<String, Object> confirmRestoreEmail(String token) {
+    public Map<String, Object> confirm(String token) {
         return confirmationTokenService.confirmTokenAndExecute(
                 token,
                 accountService::restoreEmail,

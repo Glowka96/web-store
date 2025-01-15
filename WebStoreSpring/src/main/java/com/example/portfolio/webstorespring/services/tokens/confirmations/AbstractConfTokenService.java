@@ -30,7 +30,7 @@ public abstract class AbstractConfTokenService<T extends ConfToken, S extends Ow
         return tokenRepository.save(
                 createTokenEntity(
                         relatedEntity,
-                        tokenDetailsService.createTokenDetails(
+                        tokenDetailsService.create(
                                 notificationExpirationManager.getExpirationMinutes(
                                         notificationType))
                 )

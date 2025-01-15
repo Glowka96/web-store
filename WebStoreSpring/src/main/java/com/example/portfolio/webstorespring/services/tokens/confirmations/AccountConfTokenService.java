@@ -30,7 +30,7 @@ public class AccountConfTokenService extends AbstractConfTokenService<AccountCon
         AccountConfToken tokenEntity = getByToken(token);
         log.debug("Extract related entity from: {}", token);
         Account relatedEntity = extractRelatedEntity(tokenEntity);
-        tokenDetailsService.validateAndConfirmTokenDetails(tokenEntity.getTokenDetails());
+        tokenDetailsService.validateAndConfirm(tokenEntity.getTokenDetails());
         confirmationConsumer.accept(relatedEntity);
         log.info("Operation successful, sending message: {}", successMessage);
         return Map.of("message", successMessage);

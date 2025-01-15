@@ -31,7 +31,7 @@ public class ResetPasswordService extends AbstractSenderConfEmailService<Account
     }
 
     @Transactional
-    public Map<String, Object> confirmResetPassword(ResetPasswordRequest resetPasswordRequest, String token) {
+    public Map<String, Object> confirm(ResetPasswordRequest resetPasswordRequest, String token) {
         return confirmationTokenService.confirmTokenAndExecute(
                 token,
                 account -> accountService.setNewAccountPassword(account, resetPasswordRequest.password()),

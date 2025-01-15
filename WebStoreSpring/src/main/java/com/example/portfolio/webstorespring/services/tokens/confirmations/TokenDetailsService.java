@@ -18,7 +18,7 @@ public class TokenDetailsService {
 
     private final Clock clock;
 
-    TokenDetails createTokenDetails(Long expiresMinute) {
+    TokenDetails create(Long expiresMinute) {
         log.info("Creating new token details, with expires: {}", expiresMinute);
         return TokenDetails.builder()
                 .token(UUID.randomUUID().toString())
@@ -27,12 +27,12 @@ public class TokenDetailsService {
                 .build();
     }
 
-    void validateAndConfirmTokenDetails(TokenDetails tokenDetails) {
-        validateConfirmationToken(tokenDetails);
+    void validateAndConfirm(TokenDetails tokenDetails) {
+        validate(tokenDetails);
         setConfirmedAt(tokenDetails);
     }
 
-    private void validateConfirmationToken(TokenDetails tokenDetails) {
+    private void validate(TokenDetails tokenDetails) {
         log.debug("Validating token: {}.", tokenDetails.getToken());
         if (tokenDetails.getConfirmedAt() != null) {
             log.debug("Invalid - token is confirmed.");

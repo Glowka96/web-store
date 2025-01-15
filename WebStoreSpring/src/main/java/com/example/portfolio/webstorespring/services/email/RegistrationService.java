@@ -26,14 +26,14 @@ public class RegistrationService extends AbstractConfirmEmailService<AccountConf
     }
 
     @Transactional
-    public Map<String, Object> registrationAccount(RegistrationRequest registrationRequest) {
+    public Map<String, Object> register(RegistrationRequest registrationRequest) {
         Account account = accountService.save(registrationRequest);
         sendConfirmationEmail(account, NotificationType.CONFIRM_EMAIL);
         return Map.of(RESPONSE_MESSAGE_KEY, "Verify your email address using the link in your email.");
     }
 
     @Transactional
-    public Map<String, Object> confirmToken(String token) {
+    public Map<String, Object> confirm(String token) {
         return confirmTokenOrResend(token, NotificationType.RESTORE_EMAIL);
     }
 
