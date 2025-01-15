@@ -24,7 +24,13 @@ public class GlobalExceptionHandler {
 
     private static final String LOG_MSG = "Error at [{}]: {}";
 
-    @ExceptionHandler({ResourceNotFoundException.class, AccountHasNoAddressException.class})
+    @ExceptionHandler({
+            ResourceNotFoundException.class,
+            AccountHasNoAddressException.class,
+            DiscountIsInvalid.class,
+            NotFoundSubcategoriesByNamesException.class,
+            ProductsNotFoundException.class,
+    })
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleResourceNotFoundException(RuntimeException exception,
@@ -64,9 +70,9 @@ public class GlobalExceptionHandler {
             TokenExpiredException.class,
             PromotionPriceGreaterThanBasePriceException.class,
             ProductHasAlreadyPromotionException.class,
-            ProductsNotFoundException.class,
             ShipmentQuantityExceedsProductQuantityException.class,
-            EmailAlreadyUsedException.class
+            EmailAlreadyUsedException.class,
+            SubscriberAlreadyRegisterException.class,
     })
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
