@@ -15,16 +15,16 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Map;
 
 @Service
-public class RegisterNewsletterSubService extends AbstractConfirmEmailService<NewsletterConfToken, NewsletterSubscriber, NewsletterConfTokenService> {
+public class RegisterNewsletterSubscriberService extends AbstractConfirmEmailService<NewsletterConfToken, NewsletterSubscriber, NewsletterConfTokenService> {
 
     private final NewsletterSubscriberService newsletterSubscriberService;
     private final NewsletterRemovalTokenService newsletterRemovalTokenService;
 
-    RegisterNewsletterSubService(EmailSenderService emailSenderService,
-                                 NewsletterConfTokenService confirmationTokenService,
-                                 TokenDetailsService tokenDetailsService,
-                                 NewsletterSubscriberService newsletterSubscriberService,
-                                 NewsletterRemovalTokenService newsletterRemovalTokenService) {
+    RegisterNewsletterSubscriberService(EmailSenderService emailSenderService,
+                                        NewsletterConfTokenService confirmationTokenService,
+                                        TokenDetailsService tokenDetailsService,
+                                        NewsletterSubscriberService newsletterSubscriberService,
+                                        NewsletterRemovalTokenService newsletterRemovalTokenService) {
         super(emailSenderService, confirmationTokenService, tokenDetailsService);
         this.newsletterSubscriberService = newsletterSubscriberService;
         this.newsletterRemovalTokenService = newsletterRemovalTokenService;
