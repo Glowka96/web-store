@@ -1,4 +1,4 @@
-package com.example.portfolio.webstorespring.services.email.strategy.impl;
+package com.example.portfolio.webstorespring.services.email.strategy.impl.newsletters;
 
 import com.example.portfolio.webstorespring.config.providers.ConfirmationLinkProvider;
 import com.example.portfolio.webstorespring.enums.NotificationType;

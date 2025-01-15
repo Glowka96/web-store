@@ -1,4 +1,4 @@
-package com.example.portfolio.webstorespring.services.email.strategy.impl;
+package com.example.portfolio.webstorespring.services.email.strategy.impl.accounts;
 
 import com.example.portfolio.webstorespring.config.providers.ConfirmationLinkProvider;
 import com.example.portfolio.webstorespring.enums.NotificationType;
@@ -8,23 +8,23 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-class ReconfirmNewsletterNotificationStrategy implements NotificationStrategy {
+class ResetPasswordNotificationStrategy implements NotificationStrategy {
 
     private final ConfirmationLinkProvider linkProvider;
 
     @Override
     public NotificationType getNotificationType() {
-        return NotificationType.RECONFIRM_NEWSLETTER;
+        return NotificationType.RESET_PASSWORD;
     }
 
     @Override
     public String getEmailTitle() {
-        return "Re-confirm newsletter subscription";
+        return "Complete reset password.";
     }
 
     @Override
     public String getEmailMessage() {
-        return "To re-confirm newsletter subscription, please click here: \n"
-                + linkProvider.getNewsletter();
+        return "To reset your password, please click here: \n"
+               + linkProvider.getResetPassword();
     }
 }

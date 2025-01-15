@@ -1,4 +1,4 @@
-package com.example.portfolio.webstorespring.services.email.strategy.impl;
+package com.example.portfolio.webstorespring.services.email.strategy.impl.subscriptions;
 
 import com.example.portfolio.webstorespring.config.providers.ConfirmationLinkProvider;
 import com.example.portfolio.webstorespring.enums.NotificationType;
@@ -8,23 +8,23 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-class ConfirmEmailNotificationStrategy implements NotificationStrategy {
+public class ConfirmProductSubscriptionNotificationStrategy implements NotificationStrategy {
 
     private final ConfirmationLinkProvider linkProvider;
 
     @Override
     public NotificationType getNotificationType() {
-        return NotificationType.CONFIRM_EMAIL;
+        return NotificationType.CONFIRM_PRODUCT_SUBSCRIPTION;
     }
 
     @Override
     public String getEmailTitle() {
-        return "Confirm email address";
+        return "Confirm product subscription";
     }
 
     @Override
     public String getEmailMessage() {
-        return "To confirm your account, please click here: \n"
-               + linkProvider.getEmail();
+        return "To confirm your product subscription, please click here: \n"
+                + linkProvider.getProductSubscription();
     }
 }
