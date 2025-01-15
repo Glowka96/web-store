@@ -3,6 +3,7 @@ package com.example.portfolio.webstorespring.model.entity.subscribers;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -13,7 +14,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductSubscriber implements OwnerConfToken {
+public class ProductSubscriber implements OwnerConfToken, Subscriber {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

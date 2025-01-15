@@ -10,7 +10,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class NewsletterSubscriber implements OwnerConfToken {
+public class NewsletterSubscriber implements OwnerConfToken, Subscriber {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
