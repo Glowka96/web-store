@@ -11,7 +11,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductRemovalToken {
+public class ProductRemovalToken implements RemovalToken {
 
     @Id
     @Column(unique = true, nullable = false)

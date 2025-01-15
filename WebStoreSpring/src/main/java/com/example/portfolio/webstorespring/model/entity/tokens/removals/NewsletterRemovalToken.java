@@ -11,7 +11,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class NewsletterRemovalToken {
+public class NewsletterRemovalToken implements RemovalToken{
 
     @Id
     @Column(unique = true, nullable = false)
