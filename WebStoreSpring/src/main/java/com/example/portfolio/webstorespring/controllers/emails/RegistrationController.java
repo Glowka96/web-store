@@ -18,12 +18,12 @@ public class RegistrationController {
 
     @GetMapping(value = "/confirm", params = "token")
     public Map<String, Object> confirm(@RequestParam("token") String token) {
-        return registrationService.confirmToken(token);
+        return registrationService.confirm(token);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Map<String, Object> registration(@Valid @RequestBody RegistrationRequest request) {
-        return registrationService.registrationAccount(request);
+        return registrationService.register(request);
     }
 }

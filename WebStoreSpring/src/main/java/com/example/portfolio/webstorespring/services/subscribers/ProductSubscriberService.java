@@ -2,23 +2,40 @@ package com.example.portfolio.webstorespring.services.subscribers;
 
 import com.example.portfolio.webstorespring.model.dto.subscribers.SubscriberRequest;
 import com.example.portfolio.webstorespring.model.entity.subscribers.ProductSubscriber;
-import com.example.portfolio.webstorespring.repositories.subscribers.SubscriberRepository;
+import com.example.portfolio.webstorespring.repositories.subscribers.ProductSubscriberRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-@Service
-@Slf4j
-public class ProductSubscriberService extends AbstractSubscriberService<ProductSubscriber> {
+import java.util.Map;
+import java.util.Optional;
 
-    public ProductSubscriberService(SubscriberRepository<ProductSubscriber> subscriberRepository) {
-        super(subscriberRepository);
+@Service
+@RequiredArgsConstructor
+@Slf4j
+public class ProductSubscriberService  {
+
+   private final ProductSubscriberRepository productSubscriberRepository;
+
+    public ProductSubscriber save(SubscriberRequest subscriber) {
+        log.info("Saving subscriber with email: {}", subscriber.email());
+        Optional<ProductSubscriber> productSubscriber = productSubscriberRepository.findByEmail(subscriber.email());
+        if(productSubscriber.isPresent()) {
+            log.debug("Product subscriber with email: {} already exists. Returning it.", subscriber.email());
+            return productSubscriber.get();
+        }
+        log.info("Saved subscriber with email: {}", subscriber.email());
+        return productSubscriberRepository.save(
+                ProductSubscriber.builder()
+                        .email(subscriber.email())
+                        .enabled(Boolean.FALSE)
+                        .build()
+        );
     }
 
-    @Override
-    protected ProductSubscriber createEntity(SubscriberRequest subscriber) {
-        return ProductSubscriber.builder()
-                .email(subscriber.email())
-                .enabled(Boolean.FALSE)
-                .build();
+    public Map<String, Object> remove(ProductSubscriber subscriber) {
+        log.info("Deleting subscriber with email: {}", subscriber.getEmail());
+        productSubscriberRepository.delete(subscriber);
+        return Map.of("message", "Subscriber is unsubscribed.");
     }
 }

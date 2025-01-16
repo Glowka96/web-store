@@ -18,6 +18,6 @@ public class RestoreEmailController {
 
     @PatchMapping(params = {"token"})
     public Map<String, Object> confirmRestoreEmail(@RequestParam("token") String token) {
-        return restoreEmailService.confirmRestoreEmail(token);
+        return restoreEmailService.confirm(token);
     }
 }
