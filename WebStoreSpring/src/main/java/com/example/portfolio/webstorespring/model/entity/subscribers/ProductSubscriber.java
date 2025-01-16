@@ -2,7 +2,9 @@ package com.example.portfolio.webstorespring.model.entity.subscribers;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -26,6 +28,11 @@ public class ProductSubscriber implements OwnerConfToken, Subscriber {
 
     @Column(nullable = false)
     private Boolean enabled;
+
+    private Boolean firstRegistration;
+
+    @CreatedDate
+    private LocalDateTime createdAt;
 
     @ManyToMany(mappedBy = "productSubscribers")
     private Set<ProductSubscription> subscription = new HashSet<>();

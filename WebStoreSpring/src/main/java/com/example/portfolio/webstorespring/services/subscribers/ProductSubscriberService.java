@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.Clock;
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
 
@@ -16,8 +18,9 @@ import java.util.Optional;
 public class ProductSubscriberService  {
 
    private final ProductSubscriberRepository productSubscriberRepository;
+   private final Clock clock;
 
-    public ProductSubscriber save(SubscriberRequest subscriber) {
+    public ProductSubscriber saveOrReturnExistEntity(SubscriberRequest subscriber) {
         log.info("Saving subscriber with email: {}", subscriber.email());
         Optional<ProductSubscriber> productSubscriber = productSubscriberRepository.findByEmail(subscriber.email());
         if(productSubscriber.isPresent()) {
@@ -38,4 +41,12 @@ public class ProductSubscriberService  {
         productSubscriberRepository.delete(subscriber);
         return Map.of("message", "Subscriber is unsubscribed.");
     }
+
+    public Boolean isFirstRegistration(ProductSubscriber productSubscriber) {
+        LocalDateTime now = LocalDateTime.now(clock);
+        return Boolean.FALSE.equals(productSubscriber.getEnabled()) &&
+               productSubscriber.getCreatedAt().isBefore(now.plusMinutes(1)) &&
+               productSubscriber.getCreatedAt().isAfter(now.minusMinutes(1));
+    }
+
 }
