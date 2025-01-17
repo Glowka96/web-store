@@ -61,7 +61,7 @@ abstract class AbstractConfirmEmailService<
         T savedToken = confirmationTokenService.create(ownerToken, reNotificationType);
         confirmationTokenService.delete(confToken);
         sendEmail(reNotificationType, ownerToken.getEmail(), savedToken.getToken());
-        return Map.of(RESPONSE_MESSAGE_KEY, "Your token is expired. Verify your email address using the new token link in your email.");
+        return Map.of(RESPONSE_MESSAGE_KEY, "Your token is expired. There is new confirmation link in your email.");
     }
 
     protected abstract void executeAfterConfirm(O ownerToken);
