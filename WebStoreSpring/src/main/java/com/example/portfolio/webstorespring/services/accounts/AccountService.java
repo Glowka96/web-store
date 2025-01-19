@@ -19,7 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
@@ -119,12 +118,6 @@ public class AccountService {
         addressService.deleteByAccountDetails(accountDetails);
         log.info("Deleting account for account id: {}", accountDetails.getAccount().getId());
         accountRepository.delete(accountDetails.getAccount());
-    }
-
-    @Transactional(propagation = Propagation.REQUIRED)
-    public void setEnabledAccount(Account account) {
-        log.debug("Enabling account with ID: {}", account.getId());
-        account.setEnabled(true);
     }
 
     public void setNewAccountPassword(Account account, String password) {
