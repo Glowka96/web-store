@@ -39,7 +39,7 @@ public class RegisterProductSubscriberService extends AbstractConfirmEmailServic
     public Map<String, Object> register(ProductSubscriberRequest productSubscriberRequest) {
         ProductSubscriber productSubscriber = productSubscriberService.saveOrReturnExistEntity(productSubscriberRequest.subscriberRequest());
         productSubscriptionService.add(productSubscriber, productSubscriberRequest.productId());
-        if (productSubscriberService.isFirstRegistration(productSubscriber)) {
+        if (Boolean.TRUE.equals(productSubscriberService.isFirstRegistration(productSubscriber))) {
             sendConfirmationEmail(productSubscriber, NotificationType.CONFIRM_PRODUCT_SUBSCRIPTION);
             return Map.of(RESPONSE_MESSAGE_KEY, "Verify your email address using the link in your email.");
         }
