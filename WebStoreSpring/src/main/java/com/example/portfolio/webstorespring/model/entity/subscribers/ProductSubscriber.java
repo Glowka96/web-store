@@ -29,8 +29,6 @@ public class ProductSubscriber implements OwnerConfToken, Subscriber {
     @Column(nullable = false)
     private Boolean enabled;
 
-    private Boolean firstRegistration;
-
     @CreatedDate
     private LocalDateTime createdAt;
 
