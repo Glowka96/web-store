@@ -26,8 +26,8 @@ public class ProductSubscription {
     private Product product;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "subscriber_products",
-            joinColumns = @JoinColumn(name = "product_subscription_id", referencedColumnName = "id"),
+    @JoinTable(name = "product_subscribers",
+            joinColumns = @JoinColumn(name = "product_subscription_id", referencedColumnName = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "proudct_subscriber_id", referencedColumnName = "id")
     )
     private Set<ProductSubscriber> productSubscribers = new HashSet<>();
