@@ -34,7 +34,7 @@ abstract class AbstractConfirmEmailService<
         validateTokenConfirmedOrOwnerEnabled(confToken, ownerToken);
 
         if (isOwnerDisabledAndTokenExpired(ownerToken, confToken)) {
-            log.debug("Owner is disabled and token expired");
+            log.warn("Owner is disabled and token expired");
             return resendConfirmationEmail(reNotificationType, ownerToken, confToken);
         }
 
@@ -48,7 +48,7 @@ abstract class AbstractConfirmEmailService<
     private void validateTokenConfirmedOrOwnerEnabled(T confToken, O ownerToken) {
         log.debug("Checking if token confirmed or owner is enabled");
         if (confToken.getTokenDetails().getConfirmedAt() != null || Boolean.TRUE.equals(ownerToken.getEnabled())) {
-            log.debug("Token confirmed or owner is enabled");
+            log.warn("Token confirmed or owner is enabled");
             throw new EmailAlreadyConfirmedException();
         }
     }
