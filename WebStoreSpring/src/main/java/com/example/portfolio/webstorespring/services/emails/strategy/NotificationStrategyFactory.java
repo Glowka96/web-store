@@ -1,4 +1,4 @@
-package com.example.portfolio.webstorespring.services.email.strategy;
+package com.example.portfolio.webstorespring.services.emails.strategy;
 
 import com.example.portfolio.webstorespring.enums.NotificationType;
 import com.example.portfolio.webstorespring.exceptions.UnsupportedNotificationTypeException;

@@ -5,7 +5,7 @@ import com.example.portfolio.webstorespring.model.dto.accounts.request.UpdateEma
 import com.example.portfolio.webstorespring.model.dto.accounts.request.UpdatePasswordRequest;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
 import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
-import com.example.portfolio.webstorespring.services.email.RestoreEmailService;
+import com.example.portfolio.webstorespring.services.emails.RestoreEmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.annotation.After;

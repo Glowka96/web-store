@@ -1,4 +1,4 @@
-package com.example.portfolio.webstorespring.services.email;
+package com.example.portfolio.webstorespring.services.emails;
 
 import com.example.portfolio.webstorespring.enums.NotificationType;
 import com.example.portfolio.webstorespring.model.dto.subscribers.SubscriberRequest;

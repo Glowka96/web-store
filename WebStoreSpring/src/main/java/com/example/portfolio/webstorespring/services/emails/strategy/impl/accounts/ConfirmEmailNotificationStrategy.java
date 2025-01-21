@@ -1,8 +1,8 @@
-package com.example.portfolio.webstorespring.services.email.strategy.impl.accounts;
+package com.example.portfolio.webstorespring.services.emails.strategy.impl.accounts;
 
 import com.example.portfolio.webstorespring.config.providers.ConfirmationLinkProvider;
 import com.example.portfolio.webstorespring.enums.NotificationType;
-import com.example.portfolio.webstorespring.services.email.strategy.NotificationStrategy;
+import com.example.portfolio.webstorespring.services.emails.strategy.NotificationStrategy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

@@ -1,10 +1,10 @@
-package com.example.portfolio.webstorespring.services.email.impl;
+package com.example.portfolio.webstorespring.services.emails.impl;
 
 import com.example.portfolio.webstorespring.config.providers.SenderEmailProvider;
 import com.example.portfolio.webstorespring.enums.NotificationType;
-import com.example.portfolio.webstorespring.services.email.EmailSenderService;
-import com.example.portfolio.webstorespring.services.email.strategy.NotificationStrategy;
-import com.example.portfolio.webstorespring.services.email.strategy.NotificationStrategyFactory;
+import com.example.portfolio.webstorespring.services.emails.EmailSenderService;
+import com.example.portfolio.webstorespring.services.emails.strategy.NotificationStrategy;
+import com.example.portfolio.webstorespring.services.emails.strategy.NotificationStrategyFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;
