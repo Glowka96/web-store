@@ -1,5 +1,6 @@
 package com.example.portfolio.webstorespring.services.subscribers;
 
+import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.model.dto.subscribers.SubscriberRequest;
 import com.example.portfolio.webstorespring.model.entity.subscribers.ProductSubscriber;
 import com.example.portfolio.webstorespring.repositories.subscribers.ProductSubscriberRepository;
@@ -15,20 +16,25 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class ProductSubscriberService  {
+public class ProductSubscriberService {
 
-   private final ProductSubscriberRepository productSubscriberRepository;
-   private final Clock clock;
+    private final ProductSubscriberRepository subscriberRepository;
+    private final Clock clock;
+
+    public ProductSubscriber findWithSubscriptionById(Long id) {
+        return subscriberRepository.findWithSubscriptionById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("ProductSubscriber", "id",id));
+    }
 
     public ProductSubscriber saveOrReturnExistEntity(SubscriberRequest subscriber) {
         log.info("Saving subscriber with email: {}", subscriber.email());
-        Optional<ProductSubscriber> productSubscriber = productSubscriberRepository.findByEmail(subscriber.email());
-        if(productSubscriber.isPresent()) {
+        Optional<ProductSubscriber> productSubscriber = subscriberRepository.findByEmail(subscriber.email());
+        if (productSubscriber.isPresent()) {
             log.debug("Product subscriber with email: {} already exists. Returning it.", subscriber.email());
             return productSubscriber.get();
         }
         log.info("Saved subscriber with email: {}", subscriber.email());
-        return productSubscriberRepository.save(
+        return subscriberRepository.save(
                 ProductSubscriber.builder()
                         .email(subscriber.email())
                         .enabled(Boolean.FALSE)
@@ -36,9 +42,9 @@ public class ProductSubscriberService  {
         );
     }
 
-    public Map<String, Object> remove(ProductSubscriber subscriber) {
+    public Map<String, Object> delete(ProductSubscriber subscriber) {
         log.info("Deleting subscriber with email: {}", subscriber.getEmail());
-        productSubscriberRepository.delete(subscriber);
+        subscriberRepository.delete(subscriber);
         return Map.of("message", "Subscriber is unsubscribed.");
     }
 
