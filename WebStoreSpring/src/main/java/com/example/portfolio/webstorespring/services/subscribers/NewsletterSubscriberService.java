@@ -24,7 +24,7 @@ public class NewsletterSubscriberService {
 
     public NewsletterSubscriber save(SubscriberRequest subscriber) {
         log.info("Saving subscriber with email: {}", subscriber.email());
-        if (newsletterSubscriberRepository.existsByEmail(subscriber.email())) {
+        if (Boolean.TRUE.equals(newsletterSubscriberRepository.existsByEmail(subscriber.email()))) {
             throw new SubscriberAlreadyRegisterException(subscriber.email());
         }
         log.info("Saved subscriber with email: {}", subscriber.email());
