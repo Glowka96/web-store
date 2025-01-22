@@ -1,11 +1,13 @@
 package com.example.portfolio.webstorespring.model.entity.subscribers;
 
+import com.example.portfolio.webstorespring.model.entity.tokens.removals.SingleProductRemovalToken;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -31,6 +33,9 @@ public class ProductSubscriber implements OwnerConfToken, Subscriber {
 
     @CreatedDate
     private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "subscriber", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SingleProductRemovalToken> token;
 
     @ManyToMany(mappedBy = "productSubscribers")
     private Set<ProductSubscription> subscription = new HashSet<>();
