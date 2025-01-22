@@ -14,7 +14,7 @@ public interface ProductSubscriberRepository extends JpaRepository<ProductSubscr
     @Query("""
             SELECT subscriber FROM ProductSubscriber subscriber
             JOIN subscriber.subscription subscription
-            WHERE subscriber.email = :email
+            WHERE subscriber.id = :id
             """)
-    Optional<ProductSubscriber> findSubscriberAndSubscriptionByEmail(@Param("email") String email);
+    Optional<ProductSubscriber> findWithSubscriptionById(@Param("id") Long id);
 }
