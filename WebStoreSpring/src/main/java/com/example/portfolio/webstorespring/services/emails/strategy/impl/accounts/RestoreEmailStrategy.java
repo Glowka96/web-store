@@ -25,6 +25,6 @@ class RestoreEmailStrategy implements NotificationStrategy {
     @Override
     public String getEmailMessage() {
         return "To restore your email, please click here: \n"
-                + linkProvider.getRestoreEmail();
+                + linkProvider.getRestoreEmail() + "%s";
     }
 }

@@ -31,6 +31,6 @@ public class WelcomeNewsletterNotificationStrategy implements NotificationStrate
                "Exciting updates and tips\n" +
                "Stay tuned—great things are coming your way!" +
                "If you want to unsubscribe newsletter clink here: " +
-               linkProvider.getUnsubscribeNewsletter();
+               linkProvider.getUnsubscribeNewsletter() + "%s";
     }
 }

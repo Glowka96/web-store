@@ -25,6 +25,6 @@ class ReconfirmEmailNotificationStrategy implements NotificationStrategy {
     @Override
     public String getEmailMessage() {
         return "To re-confirm your account, please click here: \n"
-                + linkProvider.getEmail();
+                + linkProvider.getEmail() + "%s";
     }
 }

@@ -25,6 +25,6 @@ public class ReconfirmProductSubscriptionNotificationStrategy implements Notific
     @Override
     public String getEmailMessage() {
         return "To reconfirm your product subscription, please click here: \n"
-               + linkProvider.getProductSubscription();
+               + linkProvider.getProductSubscription() + "%s";
     }
 }

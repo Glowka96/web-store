@@ -25,6 +25,6 @@ class ResetPasswordNotificationStrategy implements NotificationStrategy {
     @Override
     public String getEmailMessage() {
         return "To reset your password, please click here: \n"
-               + linkProvider.getResetPassword();
+               + linkProvider.getResetPassword() + "%s";
     }
 }

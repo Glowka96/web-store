@@ -25,6 +25,6 @@ class ConfirmNewsletterNotificationStrategy implements NotificationStrategy {
     @Override
     public String getEmailMessage() {
         return "To confirm newsletter subscription, please click here: \n"
-                + linkProvider.getNewsletter();
+                + linkProvider.getNewsletter() + "%s";
     }
 }
