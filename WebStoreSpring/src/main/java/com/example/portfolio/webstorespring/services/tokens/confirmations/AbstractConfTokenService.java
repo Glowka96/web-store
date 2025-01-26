@@ -1,6 +1,7 @@
 package com.example.portfolio.webstorespring.services.tokens.confirmations;
 
 import com.example.portfolio.webstorespring.enums.NotificationType;
+import com.example.portfolio.webstorespring.exceptions.EmailAlreadyConfirmedException;
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.model.entity.subscribers.OwnerConfToken;
 import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.ConfToken;
@@ -12,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @RequiredArgsConstructor
-public abstract class AbstractConfTokenService<T extends ConfToken, S extends OwnerConfToken> {
+public abstract class AbstractConfTokenService<T extends ConfToken, O extends OwnerConfToken> {
 
     private final ConfirmationTokenRepository<T> tokenRepository;
     protected final TokenDetailsService tokenDetailsService;
@@ -25,14 +26,15 @@ public abstract class AbstractConfTokenService<T extends ConfToken, S extends Ow
     }
 
     @Transactional
-    public T create(S relatedEntity, NotificationType notificationType) {
+    public T create(O relatedEntity, NotificationType notificationType) {
         log.info("Creating confirmation token for: {}", relatedEntity.getName());
         return tokenRepository.save(
                 createTokenEntity(
                         relatedEntity,
                         tokenDetailsService.create(
                                 notificationExpirationManager.getExpirationMinutes(
-                                        notificationType))
+                                        notificationType)
+                        )
                 )
         );
     }
@@ -42,7 +44,23 @@ public abstract class AbstractConfTokenService<T extends ConfToken, S extends Ow
         tokenRepository.delete(tokenEntity);
     }
 
-    protected abstract T createTokenEntity(S relatedEntity, TokenDetails tokenDetails);
+    public void validateTokenConfirmedOrOwnerEnabled(T confToken, O ownerToken) {
+        log.debug("Checking if token confirmed or owner is enabled");
+        if (confToken.getTokenDetails().getConfirmedAt() != null || Boolean.TRUE.equals(ownerToken.getEnabled())) {
+            log.warn("Token confirmed or owner is enabled");
+            throw new EmailAlreadyConfirmedException();
+        }
+    }
 
-    public abstract S extractRelatedEntity(T tokenEntity);
+    public boolean isOwnerDisabledAndTokenExpired(O ownerToken, T confToken) {
+        return Boolean.FALSE.equals(ownerToken.getEnabled()) && tokenDetailsService.isTokenExpired(confToken.getTokenDetails());
+    }
+
+    public void setConfirmedAt(T confToken) {
+        tokenDetailsService.setConfirmedAt(confToken.getTokenDetails());
+    }
+
+    protected abstract T createTokenEntity(O relatedEntity, TokenDetails tokenDetails);
+
+    public abstract O extractRelatedEntity(T tokenEntity);
 }

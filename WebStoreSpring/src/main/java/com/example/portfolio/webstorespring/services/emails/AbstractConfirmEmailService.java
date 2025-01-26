@@ -1,11 +1,9 @@
 package com.example.portfolio.webstorespring.services.emails;
 
 import com.example.portfolio.webstorespring.enums.NotificationType;
-import com.example.portfolio.webstorespring.exceptions.EmailAlreadyConfirmedException;
 import com.example.portfolio.webstorespring.model.entity.subscribers.OwnerConfToken;
 import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.ConfToken;
 import com.example.portfolio.webstorespring.services.tokens.confirmations.AbstractConfTokenService;
-import com.example.portfolio.webstorespring.services.tokens.confirmations.TokenDetailsService;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,13 +15,10 @@ abstract class AbstractConfirmEmailService<
         O extends OwnerConfToken,
         S extends AbstractConfTokenService<T, O>> extends AbstractSenderConfEmailService<T,O,S> {
 
-    private final TokenDetailsService tokenDetailsService;
-
     protected static final String RESPONSE_MESSAGE_KEY = "message";
 
-    AbstractConfirmEmailService(EmailSenderService emailSenderService, S confirmationTokenService, TokenDetailsService tokenDetailsService) {
+    AbstractConfirmEmailService(EmailSenderService emailSenderService, S confirmationTokenService) {
         super(emailSenderService, confirmationTokenService);
-        this.tokenDetailsService = tokenDetailsService;
     }
 
      protected Map<String, Object> confirmTokenOrResend(String token, NotificationType reNotificationType) {
@@ -31,30 +26,18 @@ abstract class AbstractConfirmEmailService<
         T confToken = confirmationTokenService.getByToken(token);
         O ownerToken = confirmationTokenService.extractRelatedEntity(confToken);
 
-        validateTokenConfirmedOrOwnerEnabled(confToken, ownerToken);
+        confirmationTokenService.validateTokenConfirmedOrOwnerEnabled(confToken, ownerToken);
 
-        if (isOwnerDisabledAndTokenExpired(ownerToken, confToken)) {
+        if (confirmationTokenService.isOwnerDisabledAndTokenExpired(ownerToken, confToken)) {
             log.warn("Owner is disabled and token expired");
             return resendConfirmationEmail(reNotificationType, ownerToken, confToken);
         }
 
         log.debug("Setting up confirmed token and enabled owner");
-        tokenDetailsService.setConfirmedAt(confToken.getTokenDetails());
+        confirmationTokenService.setConfirmedAt(confToken);
         executeAfterConfirm(ownerToken);
         log.info("Operation successful, sending message");
         return Map.of(RESPONSE_MESSAGE_KEY, String.format("%s confirmed", ownerToken.getName()));
-    }
-
-    private void validateTokenConfirmedOrOwnerEnabled(T confToken, O ownerToken) {
-        log.debug("Checking if token confirmed or owner is enabled");
-        if (confToken.getTokenDetails().getConfirmedAt() != null || Boolean.TRUE.equals(ownerToken.getEnabled())) {
-            log.warn("Token confirmed or owner is enabled");
-            throw new EmailAlreadyConfirmedException();
-        }
-    }
-
-    private boolean isOwnerDisabledAndTokenExpired(O ownerToken, T confToken) {
-        return Boolean.FALSE.equals(ownerToken.getEnabled()) && tokenDetailsService.isTokenExpired(confToken.getTokenDetails());
     }
 
     private @NotNull Map<String, Object> resendConfirmationEmail(NotificationType reNotificationType, O ownerToken, T confToken) {
