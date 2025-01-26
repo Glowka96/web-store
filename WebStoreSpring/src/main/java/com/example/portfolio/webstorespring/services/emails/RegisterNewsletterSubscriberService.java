@@ -7,7 +7,6 @@ import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.Ne
 import com.example.portfolio.webstorespring.model.entity.tokens.removals.NewsletterRemovalToken;
 import com.example.portfolio.webstorespring.services.subscribers.NewsletterSubscriberService;
 import com.example.portfolio.webstorespring.services.tokens.confirmations.NewsletterConfTokenService;
-import com.example.portfolio.webstorespring.services.tokens.confirmations.TokenDetailsService;
 import com.example.portfolio.webstorespring.services.tokens.removals.NewsletterRemovalTokenService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,10 +21,9 @@ public class RegisterNewsletterSubscriberService extends AbstractConfirmEmailSer
 
     RegisterNewsletterSubscriberService(EmailSenderService emailSenderService,
                                         NewsletterConfTokenService confirmationTokenService,
-                                        TokenDetailsService tokenDetailsService,
                                         NewsletterSubscriberService newsletterSubscriberService,
                                         NewsletterRemovalTokenService newsletterRemovalTokenService) {
-        super(emailSenderService, confirmationTokenService, tokenDetailsService);
+        super(emailSenderService, confirmationTokenService);
         this.newsletterSubscriberService = newsletterSubscriberService;
         this.newsletterRemovalTokenService = newsletterRemovalTokenService;
     }

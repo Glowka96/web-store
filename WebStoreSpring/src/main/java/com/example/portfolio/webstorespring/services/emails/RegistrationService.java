@@ -6,7 +6,6 @@ import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.AccountConfToken;
 import com.example.portfolio.webstorespring.services.accounts.AccountService;
 import com.example.portfolio.webstorespring.services.tokens.confirmations.AccountConfTokenService;
-import com.example.portfolio.webstorespring.services.tokens.confirmations.TokenDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,9 +18,8 @@ public class RegistrationService extends AbstractConfirmEmailService<AccountConf
 
     RegistrationService(EmailSenderService emailSenderService,
                         AccountConfTokenService confirmationTokenService,
-                        TokenDetailsService tokenDetailsService,
                         AccountService accountService) {
-        super(emailSenderService, confirmationTokenService, tokenDetailsService);
+        super(emailSenderService, confirmationTokenService);
         this.accountService = accountService;
     }
 
