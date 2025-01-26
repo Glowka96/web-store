@@ -38,7 +38,7 @@ public class ProductSubscriptionService {
     }
 
     @Transactional
-    public void remove(ProductSubscriber productSubscriber, Long productId) {
+    public void removeForSingleProduct(ProductSubscriber productSubscriber, Long productId) {
         log.info("Removing product subscription for product id {}", productId);
         ProductSubscription productSubscription = subscriptionRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Subscription", "id", productId));
