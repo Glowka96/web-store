@@ -40,7 +40,7 @@ public class ProductSubscriptionService {
     @Transactional
     public void removeForSingleProduct(ProductSubscriber productSubscriber, Long productId) {
         log.info("Removing product subscription for product id {}", productId);
-        ProductSubscription productSubscription = subscriptionRepository.findById(productId)
+        ProductSubscription productSubscription = subscriptionRepository.findByIdAndSubscriberEmail(productId, productSubscriber.getEmail())
                 .orElseThrow(() -> new ResourceNotFoundException("Subscription", "id", productId));
         log.debug("Removing subscribers for product id {}", productId);
         productSubscription.removeSubscriber(productSubscriber);
