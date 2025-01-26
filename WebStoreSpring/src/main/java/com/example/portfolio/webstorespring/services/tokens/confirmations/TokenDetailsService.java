@@ -6,6 +6,8 @@ import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.To
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -27,31 +29,27 @@ public class TokenDetailsService {
                 .build();
     }
 
-    void validateAndConfirm(TokenDetails tokenDetails) {
-        validate(tokenDetails);
-        setConfirmedAt(tokenDetails);
-    }
-
-    private void validate(TokenDetails tokenDetails) {
+    void validate(TokenDetails tokenDetails) {
         log.debug("Validating token: {}.", tokenDetails.getToken());
         if (tokenDetails.getConfirmedAt() != null) {
-            log.debug("Invalid - token is confirmed.");
+            log.warn("Invalid - token is confirmed.");
             throw new TokenConfirmedException();
         }
 
         if (isTokenExpired(tokenDetails)) {
-            log.debug("Invalid token is expired");
+            log.warn("Invalid token is expired");
             throw new TokenExpiredException();
         }
         log.debug("Valid successful.");
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     public void setConfirmedAt(TokenDetails token) {
         log.debug("Confirming token: {}.", token.getToken());
         token.setConfirmedAt(LocalDateTime.now(clock));
     }
 
-    public boolean isTokenExpired(TokenDetails token) {
+    boolean isTokenExpired(TokenDetails token) {
         log.debug("Validating if confirmation token has expired.");
         return token.getExpiresAt().isBefore(LocalDateTime.now(clock));
     }
