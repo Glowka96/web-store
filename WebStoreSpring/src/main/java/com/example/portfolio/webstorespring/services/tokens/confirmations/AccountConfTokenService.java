@@ -6,6 +6,7 @@ import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.To
 import com.example.portfolio.webstorespring.repositories.tokens.confirmations.ConfirmationTokenRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
@@ -22,7 +23,7 @@ public class AccountConfTokenService extends AbstractConfTokenService<AccountCon
         super(tokenRepository, tokenDetailsService, notificationExpirationManager);
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     public Map<String, Object> confirmTokenAndExecute(String token,
                                                       Consumer<Account> confirmationConsumer,
                                                       String successMessage) {
@@ -30,7 +31,8 @@ public class AccountConfTokenService extends AbstractConfTokenService<AccountCon
         AccountConfToken tokenEntity = getByToken(token);
         log.debug("Extract related entity from: {}", token);
         Account relatedEntity = extractRelatedEntity(tokenEntity);
-        tokenDetailsService.validateAndConfirm(tokenEntity.getTokenDetails());
+        tokenDetailsService.validate(tokenEntity.getTokenDetails());
+        tokenDetailsService.setConfirmedAt(tokenEntity.getTokenDetails());
         confirmationConsumer.accept(relatedEntity);
         log.info("Operation successful, sending message: {}", successMessage);
         return Map.of("message", successMessage);
