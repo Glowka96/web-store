@@ -20,11 +20,11 @@ abstract class AbstractSenderConfEmailService<
         sendEmail(notificationType, ownerToken.getEmail(), savedToken.getToken());
     }
 
-    protected void sendEmail(NotificationType notificationType, String email, String token) {
+    protected void sendEmail(NotificationType notificationType, String email, String ... tokensOrMessages) {
         emailSenderService.sendEmail(
                 notificationType,
                 email,
-                token
+                tokensOrMessages
         );
     }
 }
