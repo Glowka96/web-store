@@ -5,20 +5,24 @@ import com.example.portfolio.webstorespring.model.entity.subscribers.ProductSubs
 import com.example.portfolio.webstorespring.model.entity.tokens.removals.SingleProductRemovalToken;
 import com.example.portfolio.webstorespring.repositories.tokens.removals.SingleProductRemovalRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class SingleProductRemovalTokenService {
 
     private final SingleProductRemovalRepository removalTokenRepository;
 
     public SingleProductRemovalToken getByToken(String token) {
+        log.info("Fetching removal token for token {}", token);
         return removalTokenRepository.findByToken(token)
                 .orElseThrow(()-> new ResourceNotFoundException("Removal token","token", token));
     }
 
     public SingleProductRemovalToken save(ProductSubscriber subscriber, Long productId) {
+        log.info("Saving removal token for subscriber email: {} and product id {}", subscriber.getEmail(), productId);
         return removalTokenRepository.save(SingleProductRemovalToken.builder()
                 .subscriber(subscriber)
                 .productId(productId)
@@ -26,6 +30,7 @@ public class SingleProductRemovalTokenService {
     }
 
     public void deleteByToken(String token) {
+        log.info("Deleting removal token for token {}", token);
         removalTokenRepository.deleteByToken(token);
     }
 }
