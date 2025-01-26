@@ -42,7 +42,7 @@ public class ProductSubscriptionService {
         log.info("Removing product subscription for product id {}", productId);
         ProductSubscription productSubscription = subscriptionRepository.findByIdAndSubscriberEmail(productId, productSubscriber.getEmail())
                 .orElseThrow(() -> new ResourceNotFoundException("Subscription", "id", productId));
-        log.debug("Removing subscribers for product id {}", productId);
+        log.debug("Removing subscriber with email: {}, for product id {}", productSubscriber.getEmail(), productId);
         productSubscription.removeSubscriber(productSubscriber);
         subscriptionRepository.save(productSubscription);
         log.info("Removed subscriber with email: {}, for product id {}", productSubscriber.getEmail(), productId);
