@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,22 +22,20 @@ public class ProductSubscriberService {
 
     public ProductSubscriber findWithSubscriptionById(Long id) {
         return subscriberRepository.findWithSubscriptionById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("ProductSubscriber", "id",id));
+                .orElseThrow(() -> new ResourceNotFoundException("ProductSubscriber", "id", id));
     }
 
     public ProductSubscriber saveOrReturnExistEntity(SubscriberRequest subscriber) {
         log.info("Saving subscriber with email: {}", subscriber.email());
-        Optional<ProductSubscriber> productSubscriber = subscriberRepository.findByEmail(subscriber.email());
-        if (productSubscriber.isPresent()) {
-            log.debug("Product subscriber with email: {} already exists. Returning it.", subscriber.email());
-            return productSubscriber.get();
-        }
-        log.info("Saved subscriber with email: {}", subscriber.email());
-        return subscriberRepository.save(
-                ProductSubscriber.builder()
-                        .email(subscriber.email())
-                        .enabled(Boolean.FALSE)
-                        .build()
+        return subscriberRepository.findByEmail(subscriber.email()).orElseGet(() -> {
+                    log.debug("Subscriber with email: {}:  not exist, saved it.", subscriber.email());
+                    return subscriberRepository.save(
+                            ProductSubscriber.builder()
+                                    .email(subscriber.email())
+                                    .enabled(Boolean.FALSE)
+                                    .build()
+                    );
+                }
         );
     }
 
@@ -51,8 +48,8 @@ public class ProductSubscriberService {
     public Boolean isFirstRegistration(ProductSubscriber productSubscriber) {
         LocalDateTime now = LocalDateTime.now(clock);
         return Boolean.FALSE.equals(productSubscriber.getEnabled()) &&
-               productSubscriber.getCreatedAt().isBefore(now.plusMinutes(1)) &&
-               productSubscriber.getCreatedAt().isAfter(now.minusMinutes(1));
+                productSubscriber.getCreatedAt().isBefore(now.plusMinutes(1)) &&
+                productSubscriber.getCreatedAt().isAfter(now.minusMinutes(1));
     }
 
 }
