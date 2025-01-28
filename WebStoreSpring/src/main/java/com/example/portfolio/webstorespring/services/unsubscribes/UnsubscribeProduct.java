@@ -24,7 +24,7 @@ public class UnsubscribeProduct {
 
     @Transactional
     public Map<String, Object> deleteAllSubscriptions(String token) {
-        ProductRemovalToken productRemovalToken = productRemovalTokenService.get(token);
+        ProductRemovalToken productRemovalToken = productRemovalTokenService.getByToken(token);
         ProductSubscriber subscriber = subscriberService.findWithSubscriptionById(productRemovalToken.getId());
         subscriber.getSubscription().forEach(
                 subscription -> subscription.removeSubscriber(subscriber)

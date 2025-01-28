@@ -11,7 +11,7 @@ public abstract class AbstractRemovalTokenService<T extends RemovalToken, S exte
 
     private final RemovalTokenRepository<T> removalTokenRepository;
 
-    public T get(String token) {
+    public T getByToken(String token) {
         return removalTokenRepository.findByToken(token)
                 .orElseThrow(()-> new ResourceNotFoundException("Removal token","token", token));
     }
