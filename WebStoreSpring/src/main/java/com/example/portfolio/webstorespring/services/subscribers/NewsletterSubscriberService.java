@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
 import java.util.Set;
 
 @Service
@@ -36,10 +35,9 @@ public class NewsletterSubscriberService {
         );
     }
 
-    public Map<String, Object> remove(NewsletterSubscriber subscriber) {
-        log.info("Deleting subscriber with email: {}", subscriber.getEmail());
-        newsletterSubscriberRepository.delete(subscriber);
-        return Map.of("message", "Subscriber is unsubscribed.");
+    public void deleteById(Long id) {
+        log.info("Deleting subscriber with id: {}", id);
+        newsletterSubscriberRepository.deleteById(id);
     }
 }
 
