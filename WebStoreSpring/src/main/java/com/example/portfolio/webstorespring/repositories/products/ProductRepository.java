@@ -1,5 +1,6 @@
 package com.example.portfolio.webstorespring.repositories.products;
 
+import com.example.portfolio.webstorespring.model.dto.products.ProductNameView;
 import com.example.portfolio.webstorespring.model.dto.products.ProductWithProducerAndPromotionDTO;
 import com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionDTO;
 import com.example.portfolio.webstorespring.model.entity.products.Product;
@@ -14,6 +15,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
+
+    ProductNameView findNameById(@Param("id") Long id);
 
     @Query("""
             SELECT NEW com.example.portfolio.webstorespring.model.dto.products.ProductWithProducerAndPromotionDTO(

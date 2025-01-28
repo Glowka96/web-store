@@ -2,6 +2,7 @@ package com.example.portfolio.webstorespring.services.products;
 
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.ProductMapper;
+import com.example.portfolio.webstorespring.model.dto.products.ProductNameView;
 import com.example.portfolio.webstorespring.model.dto.products.ProductWithProducerAndPromotionDTO;
 import com.example.portfolio.webstorespring.model.dto.products.request.ProductRequest;
 import com.example.portfolio.webstorespring.model.dto.products.response.ProductResponse;
@@ -35,6 +36,11 @@ public class ProductService {
             throw new ResourceNotFoundException("Product", "id", id);
         }
         return product;
+    }
+
+    public ProductNameView getNameById(Long id) {
+        log.info("Fetching product name for ID: {}", id);
+        return productRepository.findNameById(id);
     }
 
     public List<ProductResponse> getAll() {
