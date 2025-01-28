@@ -15,7 +15,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class UnsubscribeProduct {
+public class UnsubscribeProductService {
 
     private final ProductRemovalTokenService productRemovalTokenService;
     private final SingleProductRemovalTokenService singleProductRemovalTokenService;
