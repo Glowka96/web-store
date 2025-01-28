@@ -46,7 +46,7 @@ public class RegisterProductSubscriberService extends AbstractConfirmEmailServic
             sendConfirmationEmail(productSubscriber, NotificationType.CONFIRM_PRODUCT_SUBSCRIPTION);
         }
 
-        SingleProductRemovalToken singleProductRemovalToken = singleProductRemovalTokenService.create(productSubscriber, productSubscriberRequest.productId());
+        SingleProductRemovalToken singleProductRemovalToken = singleProductRemovalTokenService.save(productSubscriber, productSubscriberRequest.productId());
         ProductRemovalToken productRemovalToken = productRemovalTokenService.save(productSubscriber);
         sendEmail(NotificationType.WELCOME_PRODUCT_SUBSCRIPTION,
                 productSubscriber.getEmail(),
