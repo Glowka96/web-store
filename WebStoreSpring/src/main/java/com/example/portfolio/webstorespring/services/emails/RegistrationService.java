@@ -1,6 +1,7 @@
 package com.example.portfolio.webstorespring.services.emails;
 
 import com.example.portfolio.webstorespring.enums.NotificationType;
+import com.example.portfolio.webstorespring.model.dto.ResponseMessageDTO;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.RegistrationRequest;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.AccountConfToken;
@@ -9,12 +10,12 @@ import com.example.portfolio.webstorespring.services.tokens.confirmations.Accoun
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Map;
-
 @Service
 public class RegistrationService extends AbstractConfirmEmailService<AccountConfToken, Account, AccountConfTokenService> {
 
     private final AccountService accountService;
+
+    private static final String RESPONSE_MESSAGE = "Verify your email address using the link in your email.";
 
     RegistrationService(EmailSenderService emailSenderService,
                         AccountConfTokenService confirmationTokenService,
@@ -24,14 +25,14 @@ public class RegistrationService extends AbstractConfirmEmailService<AccountConf
     }
 
     @Transactional
-    public Map<String, Object> register(RegistrationRequest registrationRequest) {
-        Account account = accountService.save(registrationRequest);
+    public ResponseMessageDTO register(RegistrationRequest request) {
+        Account account = accountService.save(request);
         sendConfirmationEmail(account, NotificationType.CONFIRM_EMAIL);
-        return Map.of(RESPONSE_MESSAGE_KEY, "Verify your email address using the link in your email.");
+        return new ResponseMessageDTO(RESPONSE_MESSAGE);
     }
 
     @Transactional
-    public Map<String, Object> confirm(String token) {
+    public ResponseMessageDTO confirm(String token) {
         return confirmTokenOrResend(token, NotificationType.RESTORE_EMAIL);
     }
 

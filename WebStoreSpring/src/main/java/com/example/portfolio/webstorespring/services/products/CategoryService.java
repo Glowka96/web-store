@@ -25,19 +25,19 @@ public class CategoryService {
         return CategoryMapper.mapToDto(categoryRepository.findAll());
     }
 
-    public CategoryResponse save(CategoryRequest categoryRequest) {
-        log.info("Saving category from request: {}", categoryRequest);
-        Category category = CategoryMapper.mapToEntity(categoryRequest);
+    public CategoryResponse save(CategoryRequest request) {
+        log.info("Saving category from request: {}", request);
+        Category category = CategoryMapper.mapToEntity(request);
         categoryRepository.save(category);
         log.info("Saved category.");
         return CategoryMapper.mapToDto(category);
     }
 
     @Transactional
-    public CategoryResponse update(Long id, CategoryRequest categoryRequest) {
-        log.info("Updating category for ID: {}, from request: {}", id, categoryRequest);
+    public CategoryResponse update(Long id, CategoryRequest request) {
+        log.info("Updating category for ID: {}, from request: {}", id, request);
         Category foundCategory = findById(id);
-        foundCategory.setName(categoryRequest.name());
+        foundCategory.setName(request.name());
 
         categoryRepository.save(foundCategory);
         log.info("Updated category.");

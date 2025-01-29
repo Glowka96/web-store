@@ -25,19 +25,19 @@ public class ProductTypeService {
         return ProductTypeMapper.mapToDto(productTypeRepository.findAll());
     }
 
-    public ProductTypeResponse save(ProductTypeRequest productTypeRequest){
-        log.info("Saving product type from request: {}", productTypeRequest);
-        ProductType productType = ProductTypeMapper.mapToEntity(productTypeRequest);
+    public ProductTypeResponse save(ProductTypeRequest request){
+        log.info("Saving product type from request: {}", request);
+        ProductType productType = ProductTypeMapper.mapToEntity(request);
         productTypeRepository.save(productType);
         log.info("Saved product type.");
         return ProductTypeMapper.mapToDto(productType);
     }
 
     @Transactional
-    public ProductTypeResponse update(Long id, ProductTypeRequest productTypeRequest) {
-        log.info("Updating product type for ID: {}, from: {}", id, productTypeRequest);
+    public ProductTypeResponse update(Long id, ProductTypeRequest request) {
+        log.info("Updating product type for ID: {}, from: {}", id, request);
         ProductType foundProductType = findById(id);
-        foundProductType.setName(productTypeRequest.name());
+        foundProductType.setName(request.name());
         productTypeRepository.save(foundProductType);
         log.info("Updated product type.");
         return ProductTypeMapper.mapToDto(foundProductType);

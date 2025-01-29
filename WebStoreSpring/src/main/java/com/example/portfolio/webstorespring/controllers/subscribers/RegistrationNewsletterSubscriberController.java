@@ -1,13 +1,12 @@
 package com.example.portfolio.webstorespring.controllers.subscribers;
 
+import com.example.portfolio.webstorespring.model.dto.ResponseMessageDTO;
 import com.example.portfolio.webstorespring.model.dto.subscribers.SubscriberRequest;
 import com.example.portfolio.webstorespring.services.emails.RegisterNewsletterSubscriberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/newsletter/registrations")
@@ -17,13 +16,13 @@ public class RegistrationNewsletterSubscriberController {
     private final RegisterNewsletterSubscriberService registerNewsletterSubscriberService;
 
     @GetMapping(value = "/confirm", params = "token")
-    public Map<String, Object> confirm(@RequestParam("token") String token) {
+    public ResponseMessageDTO confirm(@RequestParam("token") String token) {
         return registerNewsletterSubscriberService.confirm(token);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Map<String, Object> registration(@Valid @RequestBody SubscriberRequest request) {
+    public ResponseMessageDTO registration(@Valid @RequestBody SubscriberRequest request) {
         return registerNewsletterSubscriberService.register(request);
     }
 }

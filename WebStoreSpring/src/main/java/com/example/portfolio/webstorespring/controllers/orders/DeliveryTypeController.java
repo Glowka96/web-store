@@ -23,14 +23,14 @@ public class DeliveryTypeController {
 
     @PostMapping("/admin/delivery-types")
     @ResponseStatus(HttpStatus.CREATED)
-    public DeliveryTypeResponse saveDeliveryType(@RequestBody DeliveryTypeRequest deliveryTypeRequest) {
-        return deliveryTypeService.save(deliveryTypeRequest);
+    public DeliveryTypeResponse saveDeliveryType(@RequestBody DeliveryTypeRequest request) {
+        return deliveryTypeService.save(request);
     }
 
     @PutMapping("/admin/delivery-types/{deliveryId}")
     public DeliveryTypeResponse updateDeliveryType(@PathVariable("deliveryId") Long deliveryId,
-                                                   @RequestBody DeliveryTypeRequest deliveryTypeRequest) {
-        return deliveryTypeService.update(deliveryId, deliveryTypeRequest);
+                                                   @RequestBody DeliveryTypeRequest request) {
+        return deliveryTypeService.update(deliveryId, request);
     }
 
     @DeleteMapping("/admin/delivery-types/{deliveryId}")

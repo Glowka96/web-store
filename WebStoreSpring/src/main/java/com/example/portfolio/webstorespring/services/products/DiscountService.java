@@ -63,9 +63,9 @@ public class DiscountService {
         return discountRepository.findByCode(code).orElseThrow(DiscountIsInvalid::new);
     }
 
-    private String getCode(DiscountRequest discountRequest) {
-        return discountRequest.code() != null
-                ? discountRequest.code()
+    private String getCode(DiscountRequest request) {
+        return request.code() != null
+                ? request.code()
                 : discountRandomizer.generateUniqueCode();
     }
 

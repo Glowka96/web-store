@@ -15,15 +15,15 @@ class DeliveryService {
     private final ShipmentAddressProvider shipmentAddressProvider;
     private final DeliveryTypeService deliveryTypeService;
 
-    Delivery formatDelivery(DeliveryRequest deliveryRequest) {
+    Delivery formatDelivery(DeliveryRequest request) {
         log.info("Returning delivery.");
         return Delivery.builder()
                 .shipmentAddress(shipmentAddressProvider.getAddress())
                 .deliveryAddress(
                         formatDeliveryAddress(
-                                deliveryRequest.deliveryAddress().split(", ")))
+                                request.deliveryAddress().split(", ")))
                 .deliveryType(deliveryTypeService.findById(
-                        deliveryRequest.deliveryTypeId()))
+                        request.deliveryTypeId()))
                 .build();
     }
 

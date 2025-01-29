@@ -25,14 +25,14 @@ public class CategoryController {
 
     @PostMapping("/admin/categories")
     @ResponseStatus(HttpStatus.CREATED)
-    public CategoryResponse saveCategory(@Valid @RequestBody CategoryRequest categoryRequest) {
-        return categoryService.save(categoryRequest);
+    public CategoryResponse saveCategory(@Valid @RequestBody CategoryRequest request) {
+        return categoryService.save(request);
     }
 
     @PutMapping("/admin/categories/{categoryId}")
     public CategoryResponse updateCategory(@PathVariable("categoryId") Long categoryId,
-                                           @Valid @RequestBody CategoryRequest categoryRequest) {
-        return categoryService.update(categoryId, categoryRequest);
+                                           @Valid @RequestBody CategoryRequest request) {
+        return categoryService.update(categoryId, request);
     }
 
     @DeleteMapping("/admin/categories/{categoryId}")

@@ -1,5 +1,6 @@
 package com.example.portfolio.webstorespring.controllers.accounts;
 
+import com.example.portfolio.webstorespring.model.dto.ResponseMessageDTO;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.AccountRequest;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.UpdateEmailRequest;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.UpdatePasswordRequest;
@@ -11,8 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping("api/v1/accounts")
@@ -33,15 +32,15 @@ public class AccountController {
     }
 
     @PatchMapping("/emails")
-    public Map<String, Object> updateEmail(@AuthenticationPrincipal AccountDetails accountDetails,
-                                           @RequestBody UpdateEmailRequest emailRequest) {
-        return accountService.updateEmail(accountDetails, emailRequest);
+    public ResponseMessageDTO updateEmail(@AuthenticationPrincipal AccountDetails accountDetails,
+                                          @RequestBody UpdateEmailRequest request) {
+        return accountService.updateEmail(accountDetails, request);
     }
 
     @PatchMapping("/passwords")
-    public Map<String, Object> updatePassword(@AuthenticationPrincipal AccountDetails accountDetails,
-                                              @Valid @RequestBody UpdatePasswordRequest updatePasswordRequest) {
-        return accountService.updatePassword(accountDetails, updatePasswordRequest);
+    public ResponseMessageDTO updatePassword(@AuthenticationPrincipal AccountDetails accountDetails,
+                                              @Valid @RequestBody UpdatePasswordRequest request) {
+        return accountService.updatePassword(accountDetails, request);
     }
 
     @DeleteMapping

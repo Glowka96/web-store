@@ -24,14 +24,14 @@ public class ProducerController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ProducerResponse saveProducer(@Valid @RequestBody ProducerRequest producerRequest) {
-        return producerService.save(producerRequest);
+    public ProducerResponse saveProducer(@Valid @RequestBody ProducerRequest request) {
+        return producerService.save(request);
     }
 
     @PutMapping("/{id}")
     public ProducerResponse updateProducer(@PathVariable("id") Long id,
-                                           @Valid @RequestBody ProducerRequest producerRequest) {
-        return producerService.update(id, producerRequest);
+                                           @Valid @RequestBody ProducerRequest request) {
+        return producerService.update(id, request);
     }
 
     @DeleteMapping("/{id}")

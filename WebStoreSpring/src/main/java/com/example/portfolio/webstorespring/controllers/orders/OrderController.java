@@ -38,7 +38,7 @@ public class OrderController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public OrderResponse saveOrder(@AuthenticationPrincipal AccountDetails accountDetails,
-                                   @Valid @RequestBody OrderRequest orderRequest) {
-        return orderService.save(accountDetails, orderRequest);
+                                   @Valid @RequestBody OrderRequest request) {
+        return orderService.save(accountDetails, request);
     }
 }

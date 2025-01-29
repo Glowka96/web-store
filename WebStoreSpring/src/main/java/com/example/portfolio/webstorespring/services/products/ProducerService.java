@@ -30,19 +30,19 @@ public class ProducerService {
         return ProducerMapper.mapToDto(producerRepository.findAll());
     }
 
-    public ProducerResponse save(ProducerRequest producerRequest) {
-        log.info("Saving producer from request: {}", producerRequest);
-        Producer producer = ProducerMapper.mapToEntity(producerRequest);
+    public ProducerResponse save(ProducerRequest request) {
+        log.info("Saving producer from request: {}", request);
+        Producer producer = ProducerMapper.mapToEntity(request);
         producerRepository.save(producer);
         log.info("Saved producer.");
         return ProducerMapper.mapToDto(producer);
     }
 
     @Transactional
-    public ProducerResponse update(Long id, ProducerRequest producerRequest) {
-        log.info("Updating producer for ID: {}, form request: {}", id, producerRequest);
+    public ProducerResponse update(Long id, ProducerRequest request) {
+        log.info("Updating producer for ID: {}, form request: {}", id, request);
         Producer foundProducer = findById(id);
-        foundProducer.setName(producerRequest.name());
+        foundProducer.setName(request.name());
         producerRepository.save(foundProducer);
         log.info("Updated producer.");
         return ProducerMapper.mapToDto(foundProducer);

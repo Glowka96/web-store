@@ -1,6 +1,7 @@
 package com.example.portfolio.webstorespring.services.emails;
 
 import com.example.portfolio.webstorespring.enums.NotificationType;
+import com.example.portfolio.webstorespring.model.dto.ResponseMessageDTO;
 import com.example.portfolio.webstorespring.model.dto.subscribers.SubscriberRequest;
 import com.example.portfolio.webstorespring.model.entity.subscribers.NewsletterSubscriber;
 import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.NewsletterConfToken;
@@ -11,13 +12,13 @@ import com.example.portfolio.webstorespring.services.tokens.removals.NewsletterR
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Map;
-
 @Service
 public class RegisterNewsletterSubscriberService extends AbstractConfirmEmailService<NewsletterConfToken, NewsletterSubscriber, NewsletterConfTokenService> {
 
     private final NewsletterSubscriberService newsletterSubscriberService;
     private final NewsletterRemovalTokenService newsletterRemovalTokenService;
+
+    private static final String RESPONSE_MESSAGE = "Verify your email address using the link in your email.";
 
     RegisterNewsletterSubscriberService(EmailSenderService emailSenderService,
                                         NewsletterConfTokenService confirmationTokenService,
@@ -29,14 +30,14 @@ public class RegisterNewsletterSubscriberService extends AbstractConfirmEmailSer
     }
 
     @Transactional
-    public Map<String, Object> register(SubscriberRequest subscriberRequest) {
-        NewsletterSubscriber newsletterSubscriber = newsletterSubscriberService.save(subscriberRequest);
+    public ResponseMessageDTO register(SubscriberRequest request) {
+        NewsletterSubscriber newsletterSubscriber = newsletterSubscriberService.save(request);
         sendConfirmationEmail(newsletterSubscriber, NotificationType.CONFIRM_NEWSLETTER);
-        return Map.of(RESPONSE_MESSAGE_KEY, "Verify your email address using the link in your email.");
+        return new ResponseMessageDTO(RESPONSE_MESSAGE);
     }
 
     @Transactional
-    public Map<String, Object> confirm(String token) {
+    public ResponseMessageDTO confirm(String token) {
         return confirmTokenOrResend(token, NotificationType.RECONFIRM_NEWSLETTER);
     }
 

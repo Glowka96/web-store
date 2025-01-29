@@ -23,12 +23,12 @@ public class LoginService {
     private final AuthService authService;
 
     @Transactional
-    public AuthenticationResponse login(LoginRequest loginRequest) {
+    public AuthenticationResponse login(LoginRequest request) {
         log.info("Authenticating account");
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        loginRequest.email(),
-                        loginRequest.password()
+                        request.email(),
+                        request.password()
                 )
         );
 

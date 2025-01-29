@@ -17,7 +17,7 @@ public class LoginController {
     private final LoginService loginService;
 
     @PostMapping
-    public AuthenticationResponse login(@RequestBody LoginRequest loginRequest) {
-        return loginService.login(loginRequest);
+    public AuthenticationResponse login(@RequestBody LoginRequest request) {
+        return loginService.login(request);
     }
 }

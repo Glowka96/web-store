@@ -24,22 +24,22 @@ public class DeliveryTypeService {
         return DeliveryTypeMapper.mapToDto(deliveryTypeRepository.findAll());
     }
 
-    public DeliveryTypeResponse save(DeliveryTypeRequest deliveryTypeRequest){
-        log.info("Mapping delivery type request: {}", deliveryTypeRequest);
-        DeliveryType deliveryType = DeliveryTypeMapper.mapToEntity(deliveryTypeRequest);
+    public DeliveryTypeResponse save(DeliveryTypeRequest request){
+        log.info("Mapping delivery type request: {}", request);
+        DeliveryType deliveryType = DeliveryTypeMapper.mapToEntity(request);
 
         deliveryTypeRepository.save(deliveryType);
         log.info("Saved delivery type.");
         return DeliveryTypeMapper.mapToDto(deliveryType);
     }
 
-    public DeliveryTypeResponse update(Long id, DeliveryTypeRequest deliveryTypeRequest) {
+    public DeliveryTypeResponse update(Long id, DeliveryTypeRequest request) {
         log.info("Finding delivery type with ID: {}", id);
         DeliveryType foundDeliveryType = findById(id);
 
         log.debug("Updating delivery type fields for ID: {}", id);
-        foundDeliveryType.setName(deliveryTypeRequest.name());
-        foundDeliveryType.setPrice(deliveryTypeRequest.price());
+        foundDeliveryType.setName(request.name());
+        foundDeliveryType.setPrice(request.price());
         deliveryTypeRepository.save(foundDeliveryType);
         log.info("Updated delivery type.");
         return DeliveryTypeMapper.mapToDto(foundDeliveryType);

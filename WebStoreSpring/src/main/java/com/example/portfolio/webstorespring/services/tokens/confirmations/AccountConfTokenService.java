@@ -1,5 +1,6 @@
 package com.example.portfolio.webstorespring.services.tokens.confirmations;
 
+import com.example.portfolio.webstorespring.model.dto.ResponseMessageDTO;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.AccountConfToken;
 import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.TokenDetails;
@@ -9,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Map;
 import java.util.function.Consumer;
 
 
@@ -24,9 +24,9 @@ public class AccountConfTokenService extends AbstractConfTokenService<AccountCon
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public Map<String, Object> confirmTokenAndExecute(String token,
-                                                      Consumer<Account> confirmationConsumer,
-                                                      String successMessage) {
+    public ResponseMessageDTO confirmTokenAndExecute(String token,
+                                                     Consumer<Account> confirmationConsumer,
+                                                     String successMessage) {
         log.info("Starting confirming token: {}.", token);
         AccountConfToken tokenEntity = getByToken(token);
         log.debug("Extract related entity from: {}", token);
@@ -35,7 +35,7 @@ public class AccountConfTokenService extends AbstractConfTokenService<AccountCon
         tokenDetailsService.setConfirmedAt(tokenEntity.getTokenDetails());
         confirmationConsumer.accept(relatedEntity);
         log.info("Operation successful, sending message: {}", successMessage);
-        return Map.of("message", successMessage);
+        return new ResponseMessageDTO(successMessage);
     }
 
     @Override

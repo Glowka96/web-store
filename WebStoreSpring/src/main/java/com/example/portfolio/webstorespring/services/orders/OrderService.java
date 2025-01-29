@@ -59,11 +59,11 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderResponse save(AccountDetails accountDetails, OrderRequest orderRequest) {
+    public OrderResponse save(AccountDetails accountDetails, OrderRequest request) {
         log.info("Saving order for account ID: {}", accountDetails.getAccount().getId());
         Account loggedAccount = accountDetails.getAccount();
 
-        Order order = setupOrder(loggedAccount, orderRequest);
+        Order order = setupOrder(loggedAccount, request);
 
         orderRepository.save(order);
         log.info("Saved order for account ID: {}", accountDetails.getAccount().getId());
@@ -82,15 +82,15 @@ public class OrderService {
     }
 
     private Order setupOrder(Account loggedAccount,
-                             OrderRequest orderRequest) {
+                             OrderRequest request) {
         log.debug("Setting up order.");
         Order order = Order.builder()
                 .account(loggedAccount)
                 .nameUser(loggedAccount.getFirstName() +
                           " " + loggedAccount.getLastName())
                 .status(OrderStatus.OPEN)
-                .shipments(shipmentService.setupShipments(orderRequest.shipmentRequests(), orderRequest.discountCode()))
-                .delivery(deliveryService.formatDelivery(orderRequest.deliveryRequest()))
+                .shipments(shipmentService.setupShipments(request.shipmentRequests(), request.discountCode()))
+                .delivery(deliveryService.formatDelivery(request.deliveryRequest()))
                 .build();
 
         setupTotalPrice(order);

@@ -49,14 +49,14 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductResponse save(Long subcategoryId, Long producerId, ProductRequest productRequest) {
-        log.info("Saving product from request: {}", productRequest);
-        Product product = ProductMapper.mapToEntity(productRequest);
+    public ProductResponse save(Long subcategoryId, Long producerId, ProductRequest request) {
+        log.info("Saving product from request: {}", request);
+        Product product = ProductMapper.mapToEntity(request);
 
         log.debug("Finding others entities and setting them.");
         product.setSubcategory(subcategoryService.findById(subcategoryId));
         product.setProducer(producerService.findById(producerId));
-        product.setType(productTypeService.findById(productRequest.productTypeId()));
+        product.setType(productTypeService.findById(request.productTypeId()));
 
         productRepository.save(product);
         log.info("Saved product.");
@@ -67,15 +67,15 @@ public class ProductService {
     public ProductResponse update(Long subcategoryId,
                                   Long producerId,
                                   Long productId,
-                                  ProductRequest productRequest) {
-        log.info("Updating product for ID: {}, from request: {}", productId, productRequest);
+                                  ProductRequest request) {
+        log.info("Updating product for ID: {}, from request: {}", productId, request);
         Product foundProduct = findById(productId);
-        Product product = ProductMapper.mapToEntity(productRequest);
+        Product product = ProductMapper.mapToEntity(request);
 
         log.debug("Finding others entities. Setting found product fields.");
         foundProduct.setSubcategory(subcategoryService.findById(subcategoryId));
         foundProduct.setProducer(producerService.findById(producerId));
-        foundProduct.setType(productTypeService.findById(productRequest.productTypeId()));
+        foundProduct.setType(productTypeService.findById(request.productTypeId()));
         foundProduct.setName(product.getName());
         foundProduct.setDescription(product.getDescription());
         foundProduct.setPrice(product.getPrice());

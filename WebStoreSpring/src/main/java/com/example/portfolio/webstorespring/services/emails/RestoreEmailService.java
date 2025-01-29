@@ -1,6 +1,7 @@
 package com.example.portfolio.webstorespring.services.emails;
 
 import com.example.portfolio.webstorespring.enums.NotificationType;
+import com.example.portfolio.webstorespring.model.dto.ResponseMessageDTO;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.AccountConfToken;
 import com.example.portfolio.webstorespring.services.accounts.AccountService;
@@ -8,11 +9,13 @@ import com.example.portfolio.webstorespring.services.tokens.confirmations.Accoun
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Map;
-
 @Service
 public class RestoreEmailService extends AbstractSenderConfEmailService<AccountConfToken, Account, AccountConfTokenService> {
+
     private final AccountService accountService;
+
+    private static final String SUCCESS_RESPONSE_MESSAGE = "Old account email restored";
+
 
     public RestoreEmailService(EmailSenderService emailSenderService,
                                AccountConfTokenService confirmationTokenService,
@@ -26,10 +29,10 @@ public class RestoreEmailService extends AbstractSenderConfEmailService<AccountC
     }
 
     @Transactional
-    public Map<String, Object> confirm(String token) {
+    public ResponseMessageDTO confirm(String token) {
         return confirmationTokenService.confirmTokenAndExecute(
                 token,
                 accountService::restoreEmail,
-                "Old account email restored");
+                SUCCESS_RESPONSE_MESSAGE);
     }
 }

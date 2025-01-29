@@ -32,16 +32,16 @@ public class ProductController {
     @ResponseStatus(HttpStatus.CREATED)
     public ProductResponse saveProduct(@PathVariable("subcategoryId") Long subcategoryId,
                                        @PathVariable("producerId") Long producerId,
-                                       @Valid @RequestBody ProductRequest productRequest) {
-        return productService.save(subcategoryId, producerId, productRequest);
+                                       @Valid @RequestBody ProductRequest request) {
+        return productService.save(subcategoryId, producerId, request);
     }
 
     @PutMapping("/admin/subcategories/{subcategoryId}/producers/{producerId}/products/{productId}")
     public ProductResponse updateProduct(@PathVariable("subcategoryId") Long subcategoryId,
                                          @PathVariable("producerId") Long producerId,
                                          @PathVariable("productId") Long productId,
-                                         @Valid @RequestBody ProductRequest productRequest) {
-        return productService.update(subcategoryId, producerId, productId, productRequest);
+                                         @Valid @RequestBody ProductRequest request) {
+        return productService.update(subcategoryId, producerId, productId, request);
     }
 
     @DeleteMapping("/admin/products/{productId}")

@@ -30,10 +30,10 @@ class ShipmentService {
     private final ProductRepository productRepository;
     private final DiscountService discountService;
 
-    List<Shipment> setupShipments(List<ShipmentRequest> shipmentRequests, String discountCode) {
+    List<Shipment> setupShipments(List<ShipmentRequest> requests, String discountCode) {
         log.info("Setting shipments.");
         log.debug("Putting shipment request and shipment quantity into map.");
-        Map<Long, Integer> productQuantities = shipmentRequests.stream()
+        Map<Long, Integer> productQuantities = requests.stream()
                 .collect(Collectors.toMap(ShipmentRequest::productId, ShipmentRequest::quantity));
 
         log.debug("Finding products by ids.");

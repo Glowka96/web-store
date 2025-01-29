@@ -1,5 +1,6 @@
 package com.example.portfolio.webstorespring.services.unsubscribes;
 
+import com.example.portfolio.webstorespring.model.dto.ResponseMessageDTO;
 import com.example.portfolio.webstorespring.model.entity.subscribers.ProductSubscriber;
 import com.example.portfolio.webstorespring.model.entity.tokens.removals.ProductRemovalToken;
 import com.example.portfolio.webstorespring.model.entity.tokens.removals.SingleProductRemovalToken;
@@ -11,8 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Map;
-
 @Service
 @RequiredArgsConstructor
 public class UnsubscribeProductService {
@@ -22,8 +21,10 @@ public class UnsubscribeProductService {
     private final ProductSubscriberService subscriberService;
     private final ProductSubscriptionService subscriptionService;
 
+    private static final String RESPONSE_MESSAGE = "Your all subscription was removed";
+
     @Transactional
-    public Map<String, Object> deleteAllSubscriptions(String token) {
+    public ResponseMessageDTO deleteAllSubscriptions(String token) {
         ProductRemovalToken productRemovalToken = productRemovalTokenService.getByToken(token);
         ProductSubscriber subscriber = subscriberService.findWithSubscriptionById(productRemovalToken.getId());
         subscriber.getSubscription().forEach(
@@ -31,14 +32,14 @@ public class UnsubscribeProductService {
         );
         subscriberService.delete(subscriber);
         productRemovalTokenService.delete(token);
-        return Map.of("message", "Your all subscription was removed");
+        return new ResponseMessageDTO(RESPONSE_MESSAGE);
     }
 
     @Transactional
-    public Map<String, Object> deleteFromSingleProduct(String token) {
+    public ResponseMessageDTO deleteFromSingleProduct(String token) {
         SingleProductRemovalToken singleProductRemovalToken = singleProductRemovalTokenService.getByToken(token);
-        Map<String, Object> result = subscriptionService.removeForSingleProduct(singleProductRemovalToken.getSubscriber(), singleProductRemovalToken.getProductId());
+        ResponseMessageDTO responseMessageDTO = subscriptionService.removeForSingleProduct(singleProductRemovalToken.getSubscriber(), singleProductRemovalToken.getProductId());
         productRemovalTokenService.delete(token);
-        return result;
+        return responseMessageDTO;
     }
 }

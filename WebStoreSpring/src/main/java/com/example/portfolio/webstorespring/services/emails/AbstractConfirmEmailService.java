@@ -1,27 +1,26 @@
 package com.example.portfolio.webstorespring.services.emails;
 
 import com.example.portfolio.webstorespring.enums.NotificationType;
+import com.example.portfolio.webstorespring.model.dto.ResponseMessageDTO;
 import com.example.portfolio.webstorespring.model.entity.subscribers.OwnerConfToken;
 import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.ConfToken;
 import com.example.portfolio.webstorespring.services.tokens.confirmations.AbstractConfTokenService;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Map;
-
 @Slf4j
-abstract class AbstractConfirmEmailService<
+public abstract class AbstractConfirmEmailService<
         T extends ConfToken,
         O extends OwnerConfToken,
         S extends AbstractConfTokenService<T, O>> extends AbstractSenderConfEmailService<T,O,S> {
 
-    protected static final String RESPONSE_MESSAGE_KEY = "message";
+    private static final String RESEND_RESPONSE_MESSAGE = "Your token is expired. There is new confirmation link in your email.";
 
     AbstractConfirmEmailService(EmailSenderService emailSenderService, S confirmationTokenService) {
         super(emailSenderService, confirmationTokenService);
     }
 
-     protected Map<String, Object> confirmTokenOrResend(String token, NotificationType reNotificationType) {
+     protected ResponseMessageDTO confirmTokenOrResend(String token, NotificationType reNotificationType) {
         log.info("Starting confirmation token: {}", token);
         T confToken = confirmationTokenService.getByToken(token);
         O ownerToken = confirmationTokenService.extractRelatedEntity(confToken);
@@ -37,14 +36,14 @@ abstract class AbstractConfirmEmailService<
         confirmationTokenService.setConfirmedAt(confToken);
         executeAfterConfirm(ownerToken);
         log.info("Operation successful, sending message");
-        return Map.of(RESPONSE_MESSAGE_KEY, String.format("%s confirmed", ownerToken.getName()));
+        return new ResponseMessageDTO(String.format("%s confirmed", ownerToken.getName()));
     }
 
-    private @NotNull Map<String, Object> resendConfirmationEmail(NotificationType reNotificationType, O ownerToken, T confToken) {
+    private @NotNull ResponseMessageDTO resendConfirmationEmail(NotificationType reNotificationType, O ownerToken, T confToken) {
         T savedToken = confirmationTokenService.create(ownerToken, reNotificationType);
         confirmationTokenService.delete(confToken);
         sendEmail(reNotificationType, ownerToken.getEmail(), savedToken.getToken());
-        return Map.of(RESPONSE_MESSAGE_KEY, "Your token is expired. There is new confirmation link in your email.");
+        return new ResponseMessageDTO(RESEND_RESPONSE_MESSAGE);
     }
 
     protected abstract void executeAfterConfirm(O ownerToken);

@@ -23,8 +23,8 @@ public class DiscountController {
 
     @PostMapping("/admin/discounts")
     @ResponseStatus(HttpStatus.CREATED)
-    public DiscountAdminResponse saveDiscount(@Valid @RequestBody DiscountRequest discountRequest) {
-        return discountService.save(discountRequest);
+    public DiscountAdminResponse saveDiscount(@Valid @RequestBody DiscountRequest request) {
+        return discountService.save(request);
     }
 
     @DeleteMapping("/admin/discounts")

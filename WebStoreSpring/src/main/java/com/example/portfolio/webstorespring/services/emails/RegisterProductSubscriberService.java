@@ -1,6 +1,7 @@
 package com.example.portfolio.webstorespring.services.emails;
 
 import com.example.portfolio.webstorespring.enums.NotificationType;
+import com.example.portfolio.webstorespring.model.dto.ResponseMessageDTO;
 import com.example.portfolio.webstorespring.model.dto.subscribers.ProductSubscriberRequest;
 import com.example.portfolio.webstorespring.model.entity.subscribers.ProductSubscriber;
 import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.ProductConfToken;
@@ -14,8 +15,6 @@ import com.example.portfolio.webstorespring.services.tokens.removals.SingleProdu
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Map;
-
 @Service
 public class RegisterProductSubscriberService extends AbstractConfirmEmailService<ProductConfToken, ProductSubscriber, ProductConfTokenService> {
 
@@ -23,6 +22,8 @@ public class RegisterProductSubscriberService extends AbstractConfirmEmailServic
     private final ProductSubscriberService productSubscriberService;
     private final ProductRemovalTokenService productRemovalTokenService;
     private final SingleProductRemovalTokenService singleProductRemovalTokenService;
+
+    private static final String RESPONSE_MESSAGE = "You have successfully subscribed to this product.";
 
     RegisterProductSubscriberService(EmailSenderService emailSenderService,
                                      ProductConfTokenService confirmationTokenService,
@@ -38,7 +39,7 @@ public class RegisterProductSubscriberService extends AbstractConfirmEmailServic
 
 
     @Transactional
-    public Map<String, Object> register(ProductSubscriberRequest productSubscriberRequest) {
+    public ResponseMessageDTO register(ProductSubscriberRequest productSubscriberRequest) {
         ProductSubscriber productSubscriber = productSubscriberService.saveOrReturnExistEntity(productSubscriberRequest.subscriberRequest());
         productSubscriptionService.add(productSubscriber, productSubscriberRequest.productId());
 
@@ -53,11 +54,11 @@ public class RegisterProductSubscriberService extends AbstractConfirmEmailServic
                 singleProductRemovalToken.getToken(),
                 productRemovalToken.getToken()
         );
-        return Map.of(RESPONSE_MESSAGE_KEY, "You have successfully subscribed to this product.");
+        return new ResponseMessageDTO(RESPONSE_MESSAGE);
     }
 
     @Transactional
-    public Map<String, Object> confirm(String token) {
+    public ResponseMessageDTO confirm(String token) {
         return confirmTokenOrResend(token, NotificationType.RECONFIRM_PRODUCT_SUBSCRIPTION);
     }
 

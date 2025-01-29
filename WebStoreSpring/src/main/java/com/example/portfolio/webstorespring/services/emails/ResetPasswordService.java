@@ -1,6 +1,7 @@
 package com.example.portfolio.webstorespring.services.emails;
 
 import com.example.portfolio.webstorespring.enums.NotificationType;
+import com.example.portfolio.webstorespring.model.dto.ResponseMessageDTO;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.ResetPasswordRequest;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.AccountConfToken;
@@ -9,12 +10,13 @@ import com.example.portfolio.webstorespring.services.tokens.confirmations.Accoun
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Map;
-
 @Service
-public class ResetPasswordService extends AbstractSenderConfEmailService<AccountConfToken, Account, AccountConfTokenService>{
+public class ResetPasswordService extends AbstractSenderConfEmailService<AccountConfToken, Account, AccountConfTokenService> {
 
     private final AccountService accountService;
+
+    private static final String SEND_RESPONSE_MESSAGE = "Sent reset password link to your email";
+    private static final String SUCCESS_RESPONSE_MESSAGE = "Your new password has been saved";
 
     public ResetPasswordService(EmailSenderService emailSenderService,
                                 AccountConfTokenService confirmationTokenService,
@@ -24,18 +26,18 @@ public class ResetPasswordService extends AbstractSenderConfEmailService<Account
     }
 
     @Transactional
-    public Map<String, Object> sendResetPasswordLinkByEmail(String email) {
+    public ResponseMessageDTO sendResetPasswordLinkByEmail(String email) {
         Account account = accountService.findByEmail(email);
-        sendConfirmationEmail(account,NotificationType.RESET_PASSWORD);
-        return Map.of("message", "Sent reset password link to your email");
+        sendConfirmationEmail(account, NotificationType.RESET_PASSWORD);
+        return new ResponseMessageDTO(SEND_RESPONSE_MESSAGE);
     }
 
     @Transactional
-    public Map<String, Object> confirm(ResetPasswordRequest resetPasswordRequest, String token) {
+    public ResponseMessageDTO confirm(ResetPasswordRequest request, String token) {
         return confirmationTokenService.confirmTokenAndExecute(
                 token,
-                account -> accountService.setNewAccountPassword(account, resetPasswordRequest.password()),
-                "Your new password has been saved"
+                account -> accountService.setNewAccountPassword(account, request.password()),
+                SUCCESS_RESPONSE_MESSAGE
         );
     }
 }

@@ -24,14 +24,14 @@ public class ProductTypeController {
 
     @PostMapping("/admin/product-types")
     @ResponseStatus(HttpStatus.CREATED)
-    public ProductTypeResponse saveProductType(@Valid @RequestBody ProductTypeRequest productTypeRequest) {
-        return productTypeService.save(productTypeRequest);
+    public ProductTypeResponse saveProductType(@Valid @RequestBody ProductTypeRequest request) {
+        return productTypeService.save(request);
     }
 
     @PutMapping("/admin/product-types/{productTypeId}")
     public ProductTypeResponse updateProductType(@PathVariable("productTypeId") Long productTypeId,
-                                                 @Valid @RequestBody ProductTypeRequest productTypeRequest) {
-        return productTypeService.update(productTypeId, productTypeRequest);
+                                                 @Valid @RequestBody ProductTypeRequest request) {
+        return productTypeService.update(productTypeId, request);
     }
 
     @DeleteMapping("/admin/product-types/{productTypeId}")

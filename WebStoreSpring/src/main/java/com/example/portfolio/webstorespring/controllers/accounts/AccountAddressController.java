@@ -25,14 +25,14 @@ public class AccountAddressController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public AccountAddressResponse saveAccountAddress(@AuthenticationPrincipal AccountDetails accountDetails,
-                                                     @Valid @RequestBody AccountAddressRequest accountAddressRequest) {
-        return addressService.save(accountDetails, accountAddressRequest);
+                                                     @Valid @RequestBody AccountAddressRequest request) {
+        return addressService.save(accountDetails, request);
     }
 
     @PutMapping
     public AccountAddressResponse updateAccountAddress(@AuthenticationPrincipal AccountDetails accountDetails,
-                                                       @Valid @RequestBody AccountAddressRequest accountAddressRequest) {
-        return addressService.update(accountDetails, accountAddressRequest);
+                                                       @Valid @RequestBody AccountAddressRequest request) {
+        return addressService.update(accountDetails, request);
     }
 
     @DeleteMapping
