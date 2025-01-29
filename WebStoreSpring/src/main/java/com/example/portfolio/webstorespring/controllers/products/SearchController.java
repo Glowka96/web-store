@@ -8,14 +8,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "api/v1/products/search")
+@RequestMapping("api/v1/products/search")
 @RequiredArgsConstructor
 public class SearchController {
 
     private final ProductsPageService productsPageService;
 
     @GetMapping(params = {"query"})
-  
     public PageProductsWithPromotionDTO getPageSearchProductsByText(@RequestParam(value = "query", defaultValue = "puzzle") String text,
                                                                     @Valid @RequestBody ProductsPageOptions productsPageOptions) {
         return productsPageService.getSearchProductsPage(text, productsPageOptions);
