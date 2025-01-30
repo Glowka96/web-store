@@ -2,8 +2,9 @@ package com.example.portfolio.webstorespring.services.email.impl;
 
 import com.example.portfolio.webstorespring.config.providers.SenderEmailProvider;
 import com.example.portfolio.webstorespring.enums.NotificationType;
-import com.example.portfolio.webstorespring.services.email.strategy.NotificationStrategy;
-import com.example.portfolio.webstorespring.services.email.strategy.NotificationStrategyFactory;
+import com.example.portfolio.webstorespring.services.emails.impl.EmailSenderServiceImpl;
+import com.example.portfolio.webstorespring.services.emails.strategy.NotificationStrategy;
+import com.example.portfolio.webstorespring.services.emails.strategy.NotificationStrategyFactory;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -36,15 +37,21 @@ class EmailSenderServiceImplTest {
 
     @ParameterizedTest
     @EnumSource(value = NotificationType.class, names = {
-            "RECONFIRM_EMAIL",
+            "RESET_PASSWORD",
             "CONFIRM_EMAIL",
-            "RESET_PASSWORD"
+            "RECONFIRM_EMAIL",
+            "CONFIRM_NEWSLETTER",
+            "RECONFIRM_NEWSLETTER",
+            "WELCOME_NEWSLETTER",
+            "CONFIRM_PRODUCT_SUBSCRIPTION",
+            "RECONFIRM_PRODUCT_SUBSCRIPTION",
+            "WELCOME_PRODUCT_SUBSCRIPTION",
     })
     void shouldSendEmail(NotificationType notificationType) {
         String recipientEmail = "test@example.com";
         String confirmLinkWithToken = "http://example.com/confirm?token=12345";
         String emailTitle = "Example title";
-        String emailMessage = "Example message: ";
+        String emailMessage = "Example message: %s";
 
         given(notificationStrategyFactory.findNotificationStrategy(any(NotificationType.class))).willReturn(notificationStrategy);
         given(notificationStrategy.getEmailTitle()).willReturn(emailTitle);
@@ -61,6 +68,6 @@ class EmailSenderServiceImplTest {
         SimpleMailMessage simpleMailMessage = simpleMailMessageArgumentCaptor.getValue();
         assertArrayEquals(new String[]{recipientEmail}, simpleMailMessage.getTo());
         assertEquals(emailTitle, simpleMailMessage.getSubject());
-        assertEquals(emailMessage + confirmLinkWithToken, simpleMailMessage.getText());
+        assertEquals(String.format(emailMessage, confirmLinkWithToken), simpleMailMessage.getText());
     }
 }
