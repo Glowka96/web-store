@@ -1,7 +1,8 @@
 package com.example.portfolio.webstorespring.controllers.accounts;
 
 import com.example.portfolio.webstorespring.controllers.emails.RegistrationController;
-import com.example.portfolio.webstorespring.services.email.RegistrationService;
+import com.example.portfolio.webstorespring.model.dto.ResponseMessageDTO;
+import com.example.portfolio.webstorespring.services.emails.RegistrationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,8 +12,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import java.util.Map;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -39,15 +38,15 @@ class RegistrationControllerTest {
 
     @Test
     void shouldConfirm() throws Exception {
-        Map<String, Object> result = Map.of("message", "Account confirmed");
+        ResponseMessageDTO result = new ResponseMessageDTO("Account confirmed");
 
-        given(registrationService.confirmToken(anyString())).willReturn(result);
+        given(registrationService.confirm(anyString())).willReturn(result);
 
         mvc.perform(get(URI + "/confirm")
                         .param("token", "token123")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", is(result)))
+                .andExpect(jsonPath("$.message", is(result.message())))
                 .andDo(print());
     }
 }

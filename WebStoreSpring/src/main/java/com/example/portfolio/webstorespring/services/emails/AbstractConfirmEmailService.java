@@ -36,7 +36,7 @@ public abstract class AbstractConfirmEmailService<
         confirmationTokenService.setConfirmedAt(confToken);
         executeAfterConfirm(ownerToken);
         log.info("Operation successful, sending message");
-        return new ResponseMessageDTO(String.format("%s confirmed", ownerToken.getName()));
+        return new ResponseMessageDTO(String.format("%s confirmed.", ownerToken.getName()));
     }
 
     private @NotNull ResponseMessageDTO resendConfirmationEmail(NotificationType reNotificationType, O ownerToken, T confToken) {

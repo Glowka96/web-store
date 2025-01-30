@@ -1,11 +1,12 @@
 package com.example.portfolio.webstorespring.controllers.emails;
 
 import com.example.portfolio.webstorespring.controllers.AbstractTestRestTemplateIT;
+import com.example.portfolio.webstorespring.model.dto.ResponseMessageDTO;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.RegistrationRequest;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
-import com.example.portfolio.webstorespring.model.entity.confirmations.AccountConfToken;
-import com.example.portfolio.webstorespring.repositories.accounts.AccountConfTokenRepository;
+import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.AccountConfToken;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
+import com.example.portfolio.webstorespring.repositories.tokens.confirmations.AccountConfTokenRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,8 +23,9 @@ import java.util.Optional;
 
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.BASIC_ACCOUNT;
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.ENABLED;
-import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountConfTokenBuilderHelper.*;
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.RegistrationRequestBuilderHelper.createRegistrationRequest;
+import static com.example.portfolio.webstorespring.buildhelpers.tokens.confirmations.AccountConfTokenBuilderHelper.createAccountConfToken;
+import static com.example.portfolio.webstorespring.buildhelpers.tokens.confirmations.TokenDetailsBuilderHelper.*;
 import static com.natpryce.makeiteasy.MakeItEasy.*;
 import static java.util.Objects.requireNonNull;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -41,7 +43,7 @@ class RegistrationControllerIT extends AbstractTestRestTemplateIT {
     private static final String REGISTER_MESSAGE =
             "Verify your email address using the link in your email.";
     private static final String RESEND_TOKEN_MESSAGE =
-            "Your token is expired. Verify your email address using the new token link in your email.";
+            "Your token is expired. There is new confirmation link in your email.";
 
     @BeforeEach
     public void initTestData() {
@@ -85,24 +87,26 @@ class RegistrationControllerIT extends AbstractTestRestTemplateIT {
                         .but(with(ENABLED, Boolean.FALSE)))
         );
         AccountConfToken savedAccountConfToken = tokenRepository.save(
-                make(a(BASIC_CONFIRMATION_TOKEN)
-                        .but(with(ACCOUNT, savedAccount))
-                        .but(with(CREATED_AT, LocalDateTime.now()))
-                        .but(withNull(CONFIRMED_AT))
-                        .but(with(EXPIRED_AT, LocalDateTime.now().plusMinutes(15))))
+                createAccountConfToken(
+                        savedAccount,
+                        make(a(BASIC_TOKEN_DETAILS)
+                                .but(with(CREATED_AT, LocalDateTime.now()))
+                                .but(withNull(CONFIRMED_AT))
+                                .but(with(EXPIRES_AT, LocalDateTime.now().plusMinutes(15)))
+                        )
+                )
         );
 
-        ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
+        ResponseEntity<ResponseMessageDTO> response = restTemplate.exchange(
                 registrationConfirmTokenURI + savedAccountConfToken.getToken(),
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<>() {
-                }
+                ResponseMessageDTO.class
         );
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertThat(response.getBody()).isNotNull();
-        assertTrue(requireNonNull(response.getBody()).containsValue(CONFIRMED_MESSAGE));
+        assertEquals(CONFIRMED_MESSAGE, requireNonNull(response.getBody().message()));
 
         Optional<Account> accountOptional = accountRepository.findByEmail(savedAccount.getEmail());
         assertTrue(accountOptional.isPresent());
@@ -116,24 +120,26 @@ class RegistrationControllerIT extends AbstractTestRestTemplateIT {
                         .but(with(ENABLED, Boolean.FALSE)))
         );
         AccountConfToken savedAccountConfToken = tokenRepository.save(
-                make(a(BASIC_CONFIRMATION_TOKEN)
-                        .but(with(ACCOUNT, savedAccount))
-                        .but(with(CREATED_AT, LocalDateTime.now().minusHours(1)))
-                        .but(withNull(CONFIRMED_AT))
-                        .but(with(EXPIRED_AT, LocalDateTime.now().minusHours(1))))
+                createAccountConfToken(
+                        savedAccount,
+                        make(a(BASIC_TOKEN_DETAILS)
+                                .but(with(CREATED_AT, LocalDateTime.now().minusHours(1)))
+                                .but(withNull(CONFIRMED_AT))
+                                .but(with(EXPIRES_AT, LocalDateTime.now().minusHours(1)))
+                        )
+                )
         );
 
-        ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
+        ResponseEntity<ResponseMessageDTO> response = restTemplate.exchange(
                 registrationConfirmTokenURI + savedAccountConfToken.getToken(),
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<>() {
-                }
+                ResponseMessageDTO.class
         );
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertTrue(requireNonNull(response.getBody()).containsValue(RESEND_TOKEN_MESSAGE));
+        assertEquals(RESEND_TOKEN_MESSAGE, requireNonNull(response.getBody().message()));
 
         Optional<Account> accountOptional = accountRepository.findByEmail(savedAccount.getEmail());
         assertTrue(accountOptional.isPresent());

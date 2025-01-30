@@ -2,6 +2,7 @@ package com.example.portfolio.webstorespring.controllers.accounts;
 
 import com.example.portfolio.webstorespring.controllers.AccountDetailsArgumentResolver;
 import com.example.portfolio.webstorespring.exceptions.GlobalExceptionHandler;
+import com.example.portfolio.webstorespring.model.dto.ResponseMessageDTO;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.AccountRequest;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.LoginRequest;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.UpdateEmailRequest;
@@ -19,9 +20,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.createAccountRequest;
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.createAccountResponse;
@@ -101,8 +99,7 @@ class AccountControllerTest {
                 new LoginRequest("oldEmail@test.pl", "Password123*")
         );
         String msg = "Email updated successfully.";
-        Map<String, Object> message = new HashMap<>();
-        message.put("message", msg);
+        ResponseMessageDTO message = new ResponseMessageDTO(msg);
 
         given(accountService.updateEmail(any(AccountDetails.class), any(UpdateEmailRequest.class)))
                 .willReturn(message);
@@ -122,8 +119,8 @@ class AccountControllerTest {
         UpdatePasswordRequest updatePasswordRequest = new UpdatePasswordRequest("CurrentlyPassword1*", "NewPassword1*");
 
         String msg = "Password updated successfully.";
-        Map<String, Object> message = new HashMap<>();
-        message.put("message", msg);
+        ResponseMessageDTO message = new ResponseMessageDTO(msg);
+
 
         given(accountService.updatePassword(any(AccountDetails.class), any(UpdatePasswordRequest.class)))
                 .willReturn(message);

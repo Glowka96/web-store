@@ -2,9 +2,9 @@ package com.example.portfolio.webstorespring.controllers.emails;
 
 import com.example.portfolio.webstorespring.controllers.AbstractTestRestTemplateIT;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
-import com.example.portfolio.webstorespring.model.entity.confirmations.AccountConfToken;
-import com.example.portfolio.webstorespring.repositories.accounts.AccountConfTokenRepository;
+import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.AccountConfToken;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
+import com.example.portfolio.webstorespring.repositories.tokens.confirmations.AccountConfTokenRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,8 @@ import java.util.Map;
 import java.util.Objects;
 
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.*;
-import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountConfTokenBuilderHelper.*;
+import static com.example.portfolio.webstorespring.buildhelpers.tokens.confirmations.AccountConfTokenBuilderHelper.createAccountConfToken;
+import static com.example.portfolio.webstorespring.buildhelpers.tokens.confirmations.TokenDetailsBuilderHelper.*;
 import static com.natpryce.makeiteasy.MakeItEasy.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -40,12 +41,17 @@ class RestoreEmailControllerIT extends AbstractTestRestTemplateIT {
                 .but(with(BACKUPEMAIL, "oldEmail@test.pl")))
         );
 
-        AccountConfToken accountConfToken = accountConfTokenRepository.save(make(a(BASIC_CONFIRMATION_TOKEN)
-                .but(with(ACCOUNT, account))
-                .but(with(CREATED_AT, LocalDateTime.now()))
-                .but(withNull(CONFIRMED_AT))
-                .but(with(EXPIRED_AT, LocalDateTime.now().plusDays(7))))
+        AccountConfToken accountConfToken = accountConfTokenRepository.save(
+                createAccountConfToken(
+                        account,
+                        make(a(BASIC_TOKEN_DETAILS)
+                                .but(with(CREATED_AT, LocalDateTime.now()))
+                                .but(withNull(CONFIRMED_AT))
+                                .but(with(EXPIRES_AT, LocalDateTime.now().plusDays(7)))
+                        )
+                )
         );
+
         confirmRestoreEmailUrl = localhostUri + "/restore-email/confirm?token=" + accountConfToken.getToken();
     }
 

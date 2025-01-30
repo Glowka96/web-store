@@ -5,6 +5,7 @@ import com.example.portfolio.webstorespring.buildhelpers.accounts.RoleBuilderHel
 import com.example.portfolio.webstorespring.config.providers.AccountImageUrlProvider;
 import com.example.portfolio.webstorespring.config.providers.AdminCredentialsProvider;
 import com.example.portfolio.webstorespring.mappers.AccountMapper;
+import com.example.portfolio.webstorespring.model.dto.ResponseMessageDTO;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.*;
 import com.example.portfolio.webstorespring.model.dto.accounts.response.AccountResponse;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
@@ -21,8 +22,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -111,15 +110,6 @@ class AccountServiceTest {
     }
 
     @Test
-    void shouldSetEnableAccount() {
-        Account account = make(a(BASIC_ACCOUNT).but(with(ENABLED, Boolean.FALSE)));
-
-        underTest.setEnabledAccount(account);
-
-        assertTrue(account.getEnabled());
-    }
-
-    @Test
     void shouldSetNewAccountPassword() {
         Account account = make(a(BASIC_ACCOUNT));
         String oldAccountPassword = account.getPassword();
@@ -167,12 +157,11 @@ class AccountServiceTest {
     void shouldUpdatePassword() {
         Account account = make(a(BASIC_ACCOUNT));
         String newPassword = "new password";
-        Map<String, Object> excepted = new HashMap<>();
-        excepted.put("message", "Password updated successfully.");
+        ResponseMessageDTO excepted = new ResponseMessageDTO("Password updated successfully.");
 
         given(encoder.encode(anyString())).willReturn(HASHED_PASSWORD);
 
-        Map<String, Object> result = underTest.updatePassword(new AccountDetails(account), new UpdatePasswordRequest(account.getPassword(), newPassword));
+        ResponseMessageDTO result = underTest.updatePassword(new AccountDetails(account), new UpdatePasswordRequest(account.getPassword(), newPassword));
 
         assertEquals(excepted, result);
         assertEquals(HASHED_PASSWORD, account.getPassword());

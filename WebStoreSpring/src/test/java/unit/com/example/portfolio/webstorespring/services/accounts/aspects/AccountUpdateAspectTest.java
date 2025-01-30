@@ -7,7 +7,7 @@ import com.example.portfolio.webstorespring.model.dto.accounts.request.UpdatePas
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
 import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
-import com.example.portfolio.webstorespring.services.email.RestoreEmailService;
+import com.example.portfolio.webstorespring.services.emails.RestoreEmailService;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

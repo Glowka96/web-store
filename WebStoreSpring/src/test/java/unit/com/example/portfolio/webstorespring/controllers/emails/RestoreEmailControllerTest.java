@@ -1,6 +1,7 @@
 package com.example.portfolio.webstorespring.controllers.emails;
 
-import com.example.portfolio.webstorespring.services.email.RestoreEmailService;
+import com.example.portfolio.webstorespring.model.dto.ResponseMessageDTO;
+import com.example.portfolio.webstorespring.services.emails.RestoreEmailService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,8 +10,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import java.util.HashMap;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -42,10 +41,10 @@ class RestoreEmailControllerTest {
     @Test
     void shouldConfirmRestoreEmail() throws Exception {
         String msg = "Old account email restored";
-        HashMap message = new HashMap();
-        message.put("message", msg);
+        ResponseMessageDTO message = new ResponseMessageDTO(msg);
 
-        given(restoreEmailService.confirmRestoreEmail(anyString())).willReturn(message);
+
+        given(restoreEmailService.confirm(anyString())).willReturn(message);
 
         mvc.perform(patch(URI)
                         .param("token", "token"))

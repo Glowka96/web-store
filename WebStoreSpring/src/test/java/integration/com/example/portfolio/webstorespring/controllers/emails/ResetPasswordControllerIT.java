@@ -5,9 +5,9 @@ import com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilder
 import com.example.portfolio.webstorespring.controllers.AbstractTestRestTemplateIT;
 import com.example.portfolio.webstorespring.model.dto.accounts.request.ResetPasswordRequest;
 import com.example.portfolio.webstorespring.model.entity.accounts.Account;
-import com.example.portfolio.webstorespring.model.entity.confirmations.AccountConfToken;
-import com.example.portfolio.webstorespring.repositories.accounts.AccountConfTokenRepository;
+import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.AccountConfToken;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
+import com.example.portfolio.webstorespring.repositories.tokens.confirmations.AccountConfTokenRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,7 +25,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountConfTokenBuilderHelper.*;
+import static com.example.portfolio.webstorespring.buildhelpers.tokens.confirmations.AccountConfTokenBuilderHelper.createAccountConfToken;
+import static com.example.portfolio.webstorespring.buildhelpers.tokens.confirmations.TokenDetailsBuilderHelper.*;
 import static com.natpryce.makeiteasy.MakeItEasy.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -72,11 +73,14 @@ class ResetPasswordControllerIT extends AbstractTestRestTemplateIT {
     @Test
     void shouldConfirmResetPassword_withValidToken_thenStatusOK() {
         AccountConfToken savedAccountConfToken = tokenRepository.save(
-                make(a(BASIC_CONFIRMATION_TOKEN)
-                        .but(with(ACCOUNT, savedAccount))
-                        .but(with(CREATED_AT, LocalDateTime.now()))
-                        .but(withNull(CONFIRMED_AT))
-                        .but(with(EXPIRED_AT, LocalDateTime.now().plusMinutes(15))))
+                createAccountConfToken(
+                        savedAccount,
+                        make(a(BASIC_TOKEN_DETAILS)
+                                .but(with(CREATED_AT, LocalDateTime.now()))
+                                .but(withNull(CONFIRMED_AT))
+                                .but(with(EXPIRES_AT, LocalDateTime.now().plusMinutes(15)))
+                        )
+                )
         );
         ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest("newPassword123*");
 
