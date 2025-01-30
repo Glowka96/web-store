@@ -1,4 +1,4 @@
-package com.example.portfolio.webstorespring.config;
+package com.example.portfolio.webstorespring.configs;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;

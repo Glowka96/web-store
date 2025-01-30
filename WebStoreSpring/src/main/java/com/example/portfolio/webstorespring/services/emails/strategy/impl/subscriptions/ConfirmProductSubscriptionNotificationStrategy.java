@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.services.emails.strategy.impl.subscriptions;
 
-import com.example.portfolio.webstorespring.config.providers.ConfirmationLinkProvider;
+import com.example.portfolio.webstorespring.configs.providers.ConfirmationLinkProvider;
 import com.example.portfolio.webstorespring.enums.NotificationType;
 import com.example.portfolio.webstorespring.services.emails.strategy.NotificationStrategy;
 import lombok.RequiredArgsConstructor;

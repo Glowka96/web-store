@@ -1,4 +1,4 @@
-package com.example.portfolio.webstorespring.config;
+package com.example.portfolio.webstorespring.configs;
 
 import com.example.portfolio.webstorespring.services.authentication.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
-package com.example.portfolio.webstorespring.config;
+package com.example.portfolio.webstorespring.configs;
 
-import com.example.portfolio.webstorespring.config.providers.SenderEmailProvider;
+import com.example.portfolio.webstorespring.configs.providers.SenderEmailProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

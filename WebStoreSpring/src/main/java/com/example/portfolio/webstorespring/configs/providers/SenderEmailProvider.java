@@ -1,4 +1,4 @@
-package com.example.portfolio.webstorespring.config.providers;
+package com.example.portfolio.webstorespring.configs.providers;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,10 +6,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConfigurationProperties(prefix = "admin")
+@ConfigurationProperties(prefix = "sender")
 @Getter
 @Setter
-public class AdminCredentialsProvider {
+public class SenderEmailProvider {
 
     private String email;
     private String password;

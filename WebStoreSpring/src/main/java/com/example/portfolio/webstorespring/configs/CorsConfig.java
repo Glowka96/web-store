@@ -1,6 +1,6 @@
-package com.example.portfolio.webstorespring.config;
+package com.example.portfolio.webstorespring.configs;
 
-import com.example.portfolio.webstorespring.config.providers.CorsProvider;
+import com.example.portfolio.webstorespring.configs.providers.CorsProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

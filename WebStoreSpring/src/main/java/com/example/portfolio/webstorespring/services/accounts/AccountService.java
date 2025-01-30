@@ -2,8 +2,8 @@ package com.example.portfolio.webstorespring.services.accounts;
 
 import com.example.portfolio.webstorespring.annotations.ValidateEmailUpdate;
 import com.example.portfolio.webstorespring.annotations.ValidatePasswordUpdate;
-import com.example.portfolio.webstorespring.config.providers.AccountImageUrlProvider;
-import com.example.portfolio.webstorespring.config.providers.AdminCredentialsProvider;
+import com.example.portfolio.webstorespring.configs.providers.AccountImageUrlProvider;
+import com.example.portfolio.webstorespring.configs.providers.AdminCredentialsProvider;
 import com.example.portfolio.webstorespring.enums.RoleType;
 import com.example.portfolio.webstorespring.mappers.AccountMapper;
 import com.example.portfolio.webstorespring.model.dto.ResponseMessageDTO;

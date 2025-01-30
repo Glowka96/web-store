@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.services.authentication;
 
-import com.example.portfolio.webstorespring.config.providers.JwtProvider;
+import com.example.portfolio.webstorespring.configs.providers.JwtProvider;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

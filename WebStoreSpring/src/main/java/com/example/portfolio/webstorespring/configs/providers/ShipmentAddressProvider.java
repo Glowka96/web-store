@@ -1,4 +1,4 @@
-package com.example.portfolio.webstorespring.config.providers;
+package com.example.portfolio.webstorespring.configs.providers;
 
 import lombok.Getter;
 import lombok.Setter;

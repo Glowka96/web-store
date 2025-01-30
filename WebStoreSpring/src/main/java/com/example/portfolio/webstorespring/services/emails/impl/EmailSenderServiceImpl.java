@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.services.emails.impl;
 
-import com.example.portfolio.webstorespring.config.providers.SenderEmailProvider;
+import com.example.portfolio.webstorespring.configs.providers.SenderEmailProvider;
 import com.example.portfolio.webstorespring.enums.NotificationType;
 import com.example.portfolio.webstorespring.services.emails.EmailSenderService;
 import com.example.portfolio.webstorespring.services.emails.strategy.NotificationStrategy;
