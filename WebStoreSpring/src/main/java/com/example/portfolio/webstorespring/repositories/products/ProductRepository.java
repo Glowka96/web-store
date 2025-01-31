@@ -19,7 +19,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     ProductNameView findNameById(@Param("id") Long id);
 
     @Query("""
-            SELECT NEW com.example.portfolio.webstorespring.model.dto.products.ProductWithProducerAndPromotionDTO(
+            SELECT NEW com.example.portfolio.webstorespring.models.dto.products.ProductWithProducerAndPromotionDTO(
                     p.id, p.name, p.imageUrl, p.quantity, t.name, s.id, p.price, prom_1.promotionPrice, MIN(prom_2.promotionPrice), prom_1.endDate,
                 p.description, t.name)
             FROM Product p
@@ -36,7 +36,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
 
     @Query("""
-            SELECT NEW com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionDTO(
+            SELECT NEW com.example.portfolio.webstorespring.models.dto.products.ProductWithPromotionDTO(
                 p.id, p.name, p.imageUrl, p.quantity,s.id, p.price, prom_1.promotionPrice, MIN(prom_2.promotionPrice))
             FROM Product p
             INNER JOIN p.subcategory s
@@ -50,7 +50,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                                                                 Pageable pageable);
 
     @Query(value = """ 
-            SELECT NEW com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionDTO(
+            SELECT NEW com.example.portfolio.webstorespring.models.dto.products.ProductWithPromotionDTO(
                                  p.id, p.name, p.imageUrl, p.quantity, s.id, p.price, prom_1.promotionPrice, MIN(prom_2.promotionPrice))
             FROM Product p
             INNER JOIN p.subcategory s
@@ -70,7 +70,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                                                                 Pageable pageable);
 
     @Query(value = """
-            SELECT NEW com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionDTO(
+            SELECT NEW com.example.portfolio.webstorespring.models.dto.products.ProductWithPromotionDTO(
                                  p.id, p.name, p.imageUrl, p.quantity, s.id, p.price, prom_1.promotionPrice, MIN(prom_2.promotionPrice))
             FROM Product p
             INNER JOIN p.subcategory s
@@ -85,7 +85,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                                                                   Pageable pageable);
 
     @Query(value = """
-            SELECT NEW com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionDTO(
+            SELECT NEW com.example.portfolio.webstorespring.models.dto.products.ProductWithPromotionDTO(
                                  p.id, p.name, p.imageUrl, p.quantity, s.id, p.price, prom_1.promotionPrice, MIN(prom_2.promotionPrice))
             FROM Product p
             INNER JOIN p.subcategory s
