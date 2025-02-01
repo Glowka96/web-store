@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.controllers.orders;
 
-import com.example.portfolio.webstorespring.model.dto.orders.request.DeliveryTypeRequest;
-import com.example.portfolio.webstorespring.model.dto.orders.response.DeliveryTypeResponse;
+import com.example.portfolio.webstorespring.models.dto.orders.request.DeliveryTypeRequest;
+import com.example.portfolio.webstorespring.models.dto.orders.response.DeliveryTypeResponse;
 import com.example.portfolio.webstorespring.services.orders.DeliveryTypeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,6 +21,7 @@ import static com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryT
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -68,6 +69,23 @@ class DeliveryTypeControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(deliveryTypeRequest)))
                 .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.name", is(deliveryTypeResponse.name())))
+                .andExpect(jsonPath("$.price", is(deliveryTypeResponse.price().doubleValue())))
+                .andDo(print());
+    }
+
+    @Test
+    void shouldUpdateDeliveryType() throws Exception {
+        DeliveryTypeRequest deliveryTypeRequest = createDeliveryTypeRequest();
+        DeliveryTypeResponse deliveryTypeResponse = createDeliveryTypeResponse();
+
+        given(deliveryTypeService.update(anyLong(), any(DeliveryTypeRequest.class))).willReturn(deliveryTypeResponse);
+
+        mvc.perform(put(URI + "/admin/delivery-types/{deliveryId}", 1)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(deliveryTypeRequest)))
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", is(deliveryTypeResponse.name())))
                 .andExpect(jsonPath("$.price", is(deliveryTypeResponse.price().doubleValue())))
                 .andDo(print());
