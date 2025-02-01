@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.services.tokens.removals;
 
-import com.example.portfolio.webstorespring.model.entity.subscribers.ProductSubscriber;
-import com.example.portfolio.webstorespring.model.entity.tokens.removals.ProductRemovalToken;
+import com.example.portfolio.webstorespring.models.entity.subscribers.ProductSubscriber;
+import com.example.portfolio.webstorespring.models.entity.tokens.removals.ProductRemovalToken;
 import com.example.portfolio.webstorespring.repositories.tokens.removals.RemovalTokenRepository;
 import org.springframework.stereotype.Service;
 

@@ -1,12 +1,12 @@
 package com.example.portfolio.webstorespring.services.emails;
 
 import com.example.portfolio.webstorespring.enums.NotificationType;
-import com.example.portfolio.webstorespring.model.dto.ResponseMessageDTO;
-import com.example.portfolio.webstorespring.model.dto.subscribers.ProductSubscriberRequest;
-import com.example.portfolio.webstorespring.model.entity.subscribers.ProductSubscriber;
-import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.ProductConfToken;
-import com.example.portfolio.webstorespring.model.entity.tokens.removals.ProductRemovalToken;
-import com.example.portfolio.webstorespring.model.entity.tokens.removals.SingleProductRemovalToken;
+import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
+import com.example.portfolio.webstorespring.models.dto.subscribers.ProductSubscriberRequest;
+import com.example.portfolio.webstorespring.models.entity.subscribers.ProductSubscriber;
+import com.example.portfolio.webstorespring.models.entity.tokens.confirmations.ProductConfToken;
+import com.example.portfolio.webstorespring.models.entity.tokens.removals.ProductRemovalToken;
+import com.example.portfolio.webstorespring.models.entity.tokens.removals.SingleProductRemovalToken;
 import com.example.portfolio.webstorespring.services.subscribers.ProductSubscriberService;
 import com.example.portfolio.webstorespring.services.subscribers.ProductSubscriptionService;
 import com.example.portfolio.webstorespring.services.tokens.confirmations.ProductConfTokenService;

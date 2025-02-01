@@ -1,9 +1,9 @@
 package com.example.portfolio.webstorespring.mappers;
 
-import com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionDTO;
-import com.example.portfolio.webstorespring.model.dto.products.request.ProductRequest;
-import com.example.portfolio.webstorespring.model.dto.products.response.ProductResponse;
-import com.example.portfolio.webstorespring.model.entity.products.Product;
+import com.example.portfolio.webstorespring.models.dto.products.ProductWithPromotionDTO;
+import com.example.portfolio.webstorespring.models.dto.products.request.ProductRequest;
+import com.example.portfolio.webstorespring.models.dto.products.response.ProductResponse;
+import com.example.portfolio.webstorespring.models.entity.products.Product;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.services.authentication;
 
-import com.example.portfolio.webstorespring.model.entity.accounts.Account;
-import com.example.portfolio.webstorespring.model.entity.accounts.AuthToken;
+import com.example.portfolio.webstorespring.models.entity.accounts.Account;
+import com.example.portfolio.webstorespring.models.entity.accounts.AuthToken;
 import com.example.portfolio.webstorespring.repositories.accounts.AuthTokenRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

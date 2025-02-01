@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.productsTestData.impl;
 
 import com.example.portfolio.webstorespring.buildhelpers.products.PromotionBuilderHelper;
-import com.example.portfolio.webstorespring.model.entity.products.*;
+import com.example.portfolio.webstorespring.models.entity.products.*;
 import com.example.portfolio.webstorespring.productsTestData.InitProductTestData;
 import com.example.portfolio.webstorespring.repositories.products.*;
 import com.natpryce.makeiteasy.Maker;

@@ -1,9 +1,9 @@
 package com.example.portfolio.webstorespring.services.tokens.confirmations;
 
-import com.example.portfolio.webstorespring.model.dto.ResponseMessageDTO;
-import com.example.portfolio.webstorespring.model.entity.accounts.Account;
-import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.AccountConfToken;
-import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.TokenDetails;
+import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
+import com.example.portfolio.webstorespring.models.entity.accounts.Account;
+import com.example.portfolio.webstorespring.models.entity.tokens.confirmations.AccountConfToken;
+import com.example.portfolio.webstorespring.models.entity.tokens.confirmations.TokenDetails;
 import com.example.portfolio.webstorespring.repositories.tokens.confirmations.ConfirmationTokenRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

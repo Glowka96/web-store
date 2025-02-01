@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.mappers;
 
-import com.example.portfolio.webstorespring.model.dto.products.request.PromotionRequest;
-import com.example.portfolio.webstorespring.model.dto.products.response.PromotionResponse;
-import com.example.portfolio.webstorespring.model.entity.products.Promotion;
+import com.example.portfolio.webstorespring.models.dto.products.request.PromotionRequest;
+import com.example.portfolio.webstorespring.models.dto.products.response.PromotionResponse;
+import com.example.portfolio.webstorespring.models.entity.products.Promotion;
 
 public interface PromotionMapper {
 

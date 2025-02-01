@@ -5,11 +5,11 @@ import com.example.portfolio.webstorespring.buildhelpers.accounts.RoleBuilderHel
 import com.example.portfolio.webstorespring.configs.providers.AccountImageUrlProvider;
 import com.example.portfolio.webstorespring.configs.providers.AdminCredentialsProvider;
 import com.example.portfolio.webstorespring.mappers.AccountMapper;
-import com.example.portfolio.webstorespring.model.dto.ResponseMessageDTO;
-import com.example.portfolio.webstorespring.model.dto.accounts.request.*;
-import com.example.portfolio.webstorespring.model.dto.accounts.response.AccountResponse;
-import com.example.portfolio.webstorespring.model.entity.accounts.Account;
-import com.example.portfolio.webstorespring.model.entity.accounts.Role;
+import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
+import com.example.portfolio.webstorespring.models.dto.accounts.request.*;
+import com.example.portfolio.webstorespring.models.dto.accounts.response.AccountResponse;
+import com.example.portfolio.webstorespring.models.entity.accounts.Account;
+import com.example.portfolio.webstorespring.models.entity.accounts.Role;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
 import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
 import org.jetbrains.annotations.NotNull;

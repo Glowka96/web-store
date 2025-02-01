@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.services.subscribers;
 
 import com.example.portfolio.webstorespring.exceptions.SubscriberAlreadyRegisterException;
-import com.example.portfolio.webstorespring.model.dto.subscribers.SubscriberRequest;
-import com.example.portfolio.webstorespring.model.entity.subscribers.NewsletterSubscriber;
+import com.example.portfolio.webstorespring.models.dto.subscribers.SubscriberRequest;
+import com.example.portfolio.webstorespring.models.entity.subscribers.NewsletterSubscriber;
 import com.example.portfolio.webstorespring.repositories.subscribers.NewsletterSubscriberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

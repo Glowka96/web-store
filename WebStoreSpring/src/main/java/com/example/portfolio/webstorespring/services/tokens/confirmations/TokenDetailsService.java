@@ -2,7 +2,7 @@ package com.example.portfolio.webstorespring.services.tokens.confirmations;
 
 import com.example.portfolio.webstorespring.exceptions.TokenConfirmedException;
 import com.example.portfolio.webstorespring.exceptions.TokenExpiredException;
-import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.TokenDetails;
+import com.example.portfolio.webstorespring.models.entity.tokens.confirmations.TokenDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

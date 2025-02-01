@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.repositories.subscribers;
 
-import com.example.portfolio.webstorespring.model.entity.subscribers.ProductSubscription;
+import com.example.portfolio.webstorespring.models.entity.subscribers.ProductSubscription;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

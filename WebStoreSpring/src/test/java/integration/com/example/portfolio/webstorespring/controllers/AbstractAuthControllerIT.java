@@ -1,9 +1,9 @@
 package com.example.portfolio.webstorespring.controllers;
 
 import com.example.portfolio.webstorespring.buildhelpers.accounts.AccountAddressBuilderHelper;
-import com.example.portfolio.webstorespring.model.entity.accounts.Account;
-import com.example.portfolio.webstorespring.model.entity.accounts.AccountAddress;
-import com.example.portfolio.webstorespring.model.entity.accounts.Role;
+import com.example.portfolio.webstorespring.models.entity.accounts.Account;
+import com.example.portfolio.webstorespring.models.entity.accounts.AccountAddress;
+import com.example.portfolio.webstorespring.models.entity.accounts.Role;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountAddressRepository;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
 import com.example.portfolio.webstorespring.repositories.accounts.RoleRepository;

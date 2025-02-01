@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.controllers.emails;
 
-import com.example.portfolio.webstorespring.model.dto.ResponseMessageDTO;
-import com.example.portfolio.webstorespring.model.dto.accounts.request.ResetPasswordRequest;
+import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
+import com.example.portfolio.webstorespring.models.dto.accounts.request.ResetPasswordRequest;
 import com.example.portfolio.webstorespring.services.emails.ResetPasswordService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;

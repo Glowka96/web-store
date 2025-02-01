@@ -2,9 +2,9 @@ package com.example.portfolio.webstorespring.services.products;
 
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.ProducerMapper;
-import com.example.portfolio.webstorespring.model.dto.products.request.ProducerRequest;
-import com.example.portfolio.webstorespring.model.dto.products.response.ProducerResponse;
-import com.example.portfolio.webstorespring.model.entity.products.Producer;
+import com.example.portfolio.webstorespring.models.dto.products.request.ProducerRequest;
+import com.example.portfolio.webstorespring.models.dto.products.response.ProducerResponse;
+import com.example.portfolio.webstorespring.models.entity.products.Producer;
 import com.example.portfolio.webstorespring.repositories.products.ProducerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

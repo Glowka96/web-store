@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.services.tokens.removals;
 
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
-import com.example.portfolio.webstorespring.model.entity.subscribers.Subscriber;
-import com.example.portfolio.webstorespring.model.entity.tokens.removals.RemovalToken;
+import com.example.portfolio.webstorespring.models.entity.subscribers.Subscriber;
+import com.example.portfolio.webstorespring.models.entity.tokens.removals.RemovalToken;
 import com.example.portfolio.webstorespring.repositories.tokens.removals.RemovalTokenRepository;
 import lombok.RequiredArgsConstructor;
 

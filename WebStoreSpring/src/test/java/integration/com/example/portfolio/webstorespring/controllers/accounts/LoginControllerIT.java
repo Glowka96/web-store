@@ -1,10 +1,10 @@
 package com.example.portfolio.webstorespring.controllers.accounts;
 
 import com.example.portfolio.webstorespring.controllers.AbstractTestRestTemplateIT;
-import com.example.portfolio.webstorespring.model.dto.accounts.request.LoginRequest;
-import com.example.portfolio.webstorespring.model.dto.accounts.response.AuthenticationResponse;
-import com.example.portfolio.webstorespring.model.entity.accounts.Account;
-import com.example.portfolio.webstorespring.model.entity.accounts.AuthToken;
+import com.example.portfolio.webstorespring.models.dto.accounts.request.LoginRequest;
+import com.example.portfolio.webstorespring.models.dto.accounts.response.AuthenticationResponse;
+import com.example.portfolio.webstorespring.models.entity.accounts.Account;
+import com.example.portfolio.webstorespring.models.entity.accounts.AuthToken;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
 import com.example.portfolio.webstorespring.repositories.accounts.AuthTokenRepository;
 import com.natpryce.makeiteasy.Maker;

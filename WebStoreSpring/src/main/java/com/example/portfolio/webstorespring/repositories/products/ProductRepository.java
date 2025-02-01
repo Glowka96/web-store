@@ -1,9 +1,9 @@
 package com.example.portfolio.webstorespring.repositories.products;
 
-import com.example.portfolio.webstorespring.model.dto.products.ProductNameView;
-import com.example.portfolio.webstorespring.model.dto.products.ProductWithProducerAndPromotionDTO;
-import com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionDTO;
-import com.example.portfolio.webstorespring.model.entity.products.Product;
+import com.example.portfolio.webstorespring.models.dto.products.ProductNameView;
+import com.example.portfolio.webstorespring.models.dto.products.ProductWithProducerAndPromotionDTO;
+import com.example.portfolio.webstorespring.models.dto.products.ProductWithPromotionDTO;
+import com.example.portfolio.webstorespring.models.entity.products.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

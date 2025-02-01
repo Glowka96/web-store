@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.buildhelpers.accounts;
 
 import com.example.portfolio.webstorespring.enums.AuthTokenType;
-import com.example.portfolio.webstorespring.model.entity.accounts.Account;
-import com.example.portfolio.webstorespring.model.entity.accounts.AuthToken;
+import com.example.portfolio.webstorespring.models.entity.accounts.Account;
+import com.example.portfolio.webstorespring.models.entity.accounts.AuthToken;
 
 public class AuthTokenBuilderHelper {
 

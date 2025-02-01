@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.controllers.orders;
 
-import com.example.portfolio.webstorespring.model.dto.orders.request.DeliveryTypeRequest;
-import com.example.portfolio.webstorespring.model.dto.orders.response.DeliveryTypeResponse;
+import com.example.portfolio.webstorespring.models.dto.orders.request.DeliveryTypeRequest;
+import com.example.portfolio.webstorespring.models.dto.orders.response.DeliveryTypeResponse;
 import com.example.portfolio.webstorespring.services.orders.DeliveryTypeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

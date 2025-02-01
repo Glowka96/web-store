@@ -1,10 +1,10 @@
 package com.example.portfolio.webstorespring.services.accounts;
 
 import com.example.portfolio.webstorespring.exceptions.AccountHasNoAddressException;
-import com.example.portfolio.webstorespring.model.dto.accounts.request.AccountAddressRequest;
-import com.example.portfolio.webstorespring.model.dto.accounts.response.AccountAddressResponse;
-import com.example.portfolio.webstorespring.model.entity.accounts.Account;
-import com.example.portfolio.webstorespring.model.entity.accounts.AccountAddress;
+import com.example.portfolio.webstorespring.models.dto.accounts.request.AccountAddressRequest;
+import com.example.portfolio.webstorespring.models.dto.accounts.response.AccountAddressResponse;
+import com.example.portfolio.webstorespring.models.entity.accounts.Account;
+import com.example.portfolio.webstorespring.models.entity.accounts.AccountAddress;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountAddressRepository;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
 import com.example.portfolio.webstorespring.services.authentication.AccountDetails;

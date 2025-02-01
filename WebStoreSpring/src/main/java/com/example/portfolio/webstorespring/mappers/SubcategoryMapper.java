@@ -1,9 +1,9 @@
 package com.example.portfolio.webstorespring.mappers;
 
-import com.example.portfolio.webstorespring.model.dto.products.request.SubcategoryRequest;
-import com.example.portfolio.webstorespring.model.dto.products.response.SubcategoryResponse;
-import com.example.portfolio.webstorespring.model.entity.products.Category;
-import com.example.portfolio.webstorespring.model.entity.products.Subcategory;
+import com.example.portfolio.webstorespring.models.dto.products.request.SubcategoryRequest;
+import com.example.portfolio.webstorespring.models.dto.products.response.SubcategoryResponse;
+import com.example.portfolio.webstorespring.models.entity.products.Category;
+import com.example.portfolio.webstorespring.models.entity.products.Subcategory;
 
 import java.util.List;
 

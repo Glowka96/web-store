@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.repositories.orders;
 
-import com.example.portfolio.webstorespring.model.entity.orders.Order;
+import com.example.portfolio.webstorespring.models.entity.orders.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

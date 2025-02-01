@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.controllers.products;
 
-import com.example.portfolio.webstorespring.model.dto.products.PageProductsWithPromotionDTO;
-import com.example.portfolio.webstorespring.model.dto.products.ProductsPageOptions;
+import com.example.portfolio.webstorespring.models.dto.products.PageProductsWithPromotionDTO;
+import com.example.portfolio.webstorespring.models.dto.products.ProductsPageOptions;
 import com.example.portfolio.webstorespring.services.products.ProductsPageService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

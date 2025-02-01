@@ -1,11 +1,11 @@
 package com.example.portfolio.webstorespring.services.emails;
 
 import com.example.portfolio.webstorespring.enums.NotificationType;
-import com.example.portfolio.webstorespring.model.dto.ResponseMessageDTO;
-import com.example.portfolio.webstorespring.model.dto.subscribers.SubscriberRequest;
-import com.example.portfolio.webstorespring.model.entity.subscribers.NewsletterSubscriber;
-import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.NewsletterConfToken;
-import com.example.portfolio.webstorespring.model.entity.tokens.removals.NewsletterRemovalToken;
+import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
+import com.example.portfolio.webstorespring.models.dto.subscribers.SubscriberRequest;
+import com.example.portfolio.webstorespring.models.entity.subscribers.NewsletterSubscriber;
+import com.example.portfolio.webstorespring.models.entity.tokens.confirmations.NewsletterConfToken;
+import com.example.portfolio.webstorespring.models.entity.tokens.removals.NewsletterRemovalToken;
 import com.example.portfolio.webstorespring.services.subscribers.NewsletterSubscriberService;
 import com.example.portfolio.webstorespring.services.tokens.confirmations.NewsletterConfTokenService;
 import com.example.portfolio.webstorespring.services.tokens.removals.NewsletterRemovalTokenService;

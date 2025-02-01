@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.buildhelpers.tokens.confirmations;
 
-import com.example.portfolio.webstorespring.model.entity.accounts.Account;
-import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.AccountConfToken;
-import com.example.portfolio.webstorespring.model.entity.tokens.confirmations.TokenDetails;
+import com.example.portfolio.webstorespring.models.entity.accounts.Account;
+import com.example.portfolio.webstorespring.models.entity.tokens.confirmations.AccountConfToken;
+import com.example.portfolio.webstorespring.models.entity.tokens.confirmations.TokenDetails;
 
 public class AccountConfTokenBuilderHelper {
 

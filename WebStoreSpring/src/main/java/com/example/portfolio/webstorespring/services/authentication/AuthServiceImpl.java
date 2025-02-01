@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.services.authentication;
 
 import com.example.portfolio.webstorespring.enums.AuthTokenType;
-import com.example.portfolio.webstorespring.model.entity.accounts.Account;
-import com.example.portfolio.webstorespring.model.entity.accounts.AuthToken;
+import com.example.portfolio.webstorespring.models.entity.accounts.Account;
+import com.example.portfolio.webstorespring.models.entity.accounts.AuthToken;
 import com.example.portfolio.webstorespring.repositories.accounts.AuthTokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

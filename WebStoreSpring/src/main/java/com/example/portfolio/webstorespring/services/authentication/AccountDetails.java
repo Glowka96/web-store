@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.services.authentication;
 
-import com.example.portfolio.webstorespring.model.entity.accounts.Account;
+import com.example.portfolio.webstorespring.models.entity.accounts.Account;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

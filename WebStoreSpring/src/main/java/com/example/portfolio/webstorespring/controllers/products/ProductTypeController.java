@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.controllers.products;
 
-import com.example.portfolio.webstorespring.model.dto.products.request.ProductTypeRequest;
-import com.example.portfolio.webstorespring.model.dto.products.response.ProductTypeResponse;
+import com.example.portfolio.webstorespring.models.dto.products.request.ProductTypeRequest;
+import com.example.portfolio.webstorespring.models.dto.products.response.ProductTypeResponse;
 import com.example.portfolio.webstorespring.services.products.ProductTypeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

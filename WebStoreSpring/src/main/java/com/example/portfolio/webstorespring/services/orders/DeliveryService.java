@@ -1,9 +1,8 @@
 package com.example.portfolio.webstorespring.services.orders;
 
-import com.example.portfolio.webstorespring.model.dto.orders.request.DeliveryRequest;
-import com.example.portfolio.webstorespring.model.entity.orders.Delivery;
 import com.example.portfolio.webstorespring.configs.providers.ShipmentAddressProvider;
-
+import com.example.portfolio.webstorespring.models.dto.orders.request.DeliveryRequest;
+import com.example.portfolio.webstorespring.models.entity.orders.Delivery;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

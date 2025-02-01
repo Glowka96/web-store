@@ -1,12 +1,12 @@
 package com.example.portfolio.webstorespring.controllers.accounts;
 
 import com.example.portfolio.webstorespring.controllers.AbstractAuthControllerIT;
-import com.example.portfolio.webstorespring.model.dto.accounts.request.AccountRequest;
-import com.example.portfolio.webstorespring.model.dto.accounts.request.LoginRequest;
-import com.example.portfolio.webstorespring.model.dto.accounts.request.UpdateEmailRequest;
-import com.example.portfolio.webstorespring.model.dto.accounts.request.UpdatePasswordRequest;
-import com.example.portfolio.webstorespring.model.dto.accounts.response.AccountResponse;
-import com.example.portfolio.webstorespring.model.entity.accounts.Account;
+import com.example.portfolio.webstorespring.models.dto.accounts.request.AccountRequest;
+import com.example.portfolio.webstorespring.models.dto.accounts.request.LoginRequest;
+import com.example.portfolio.webstorespring.models.dto.accounts.request.UpdateEmailRequest;
+import com.example.portfolio.webstorespring.models.dto.accounts.request.UpdatePasswordRequest;
+import com.example.portfolio.webstorespring.models.dto.accounts.response.AccountResponse;
+import com.example.portfolio.webstorespring.models.entity.accounts.Account;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;

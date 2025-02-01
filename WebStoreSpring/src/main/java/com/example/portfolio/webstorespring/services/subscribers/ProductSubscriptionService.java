@@ -1,10 +1,10 @@
 package com.example.portfolio.webstorespring.services.subscribers;
 
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
-import com.example.portfolio.webstorespring.model.dto.ResponseMessageDTO;
-import com.example.portfolio.webstorespring.model.dto.products.ProductNameView;
-import com.example.portfolio.webstorespring.model.entity.subscribers.ProductSubscriber;
-import com.example.portfolio.webstorespring.model.entity.subscribers.ProductSubscription;
+import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
+import com.example.portfolio.webstorespring.models.dto.products.ProductNameView;
+import com.example.portfolio.webstorespring.models.entity.subscribers.ProductSubscriber;
+import com.example.portfolio.webstorespring.models.entity.subscribers.ProductSubscription;
 import com.example.portfolio.webstorespring.repositories.subscribers.ProductSubscriptionRepository;
 import com.example.portfolio.webstorespring.services.products.ProductService;
 import lombok.RequiredArgsConstructor;

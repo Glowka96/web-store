@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.services.accounts.aspects;
 
 import com.example.portfolio.webstorespring.exceptions.EmailAlreadyUsedException;
-import com.example.portfolio.webstorespring.model.dto.accounts.request.UpdateEmailRequest;
-import com.example.portfolio.webstorespring.model.dto.accounts.request.UpdatePasswordRequest;
+import com.example.portfolio.webstorespring.models.dto.accounts.request.UpdateEmailRequest;
+import com.example.portfolio.webstorespring.models.dto.accounts.request.UpdatePasswordRequest;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
 import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
 import com.example.portfolio.webstorespring.services.emails.RestoreEmailService;
