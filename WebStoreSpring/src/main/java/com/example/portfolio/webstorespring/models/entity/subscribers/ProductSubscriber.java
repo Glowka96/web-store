@@ -35,10 +35,10 @@ public class ProductSubscriber implements OwnerConfToken, Subscriber {
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "subscriber", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<SingleProductRemovalToken> token;
+    private List<SingleProductRemovalToken> tokens;
 
     @ManyToMany(mappedBy = "productSubscribers")
-    private Set<ProductSubscription> subscription = new HashSet<>();
+    private Set<ProductSubscription> subscriptions = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {

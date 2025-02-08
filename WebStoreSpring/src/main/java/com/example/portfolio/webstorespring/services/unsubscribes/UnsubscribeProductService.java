@@ -27,7 +27,7 @@ public class UnsubscribeProductService {
     public ResponseMessageDTO deleteAllSubscriptions(String token) {
         ProductRemovalToken productRemovalToken = productRemovalTokenService.getByToken(token);
         ProductSubscriber subscriber = subscriberService.findWithSubscriptionById(productRemovalToken.getId());
-        subscriber.getSubscription().forEach(
+        subscriber.getSubscriptions().forEach(
                 subscription -> subscription.removeSubscriber(subscriber)
         );
         subscriberService.delete(subscriber);

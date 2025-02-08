@@ -34,12 +34,12 @@ public class ProductSubscription {
 
     public void addSubscriber(ProductSubscriber productSubscriber) {
         productSubscribers.add(productSubscriber);
-        productSubscriber.getSubscription().add(this);
+        productSubscriber.getSubscriptions().add(this);
     }
 
     public void removeSubscriber(ProductSubscriber productSubscriber) {
         productSubscribers.remove(productSubscriber);
-        productSubscriber.getSubscription().remove(this);
+        productSubscriber.getSubscriptions().remove(this);
     }
 
     @Override
