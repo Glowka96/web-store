@@ -1,6 +1,8 @@
 package com.example.portfolio.webstorespring.buildhelpers.products;
 
 import com.example.portfolio.webstorespring.models.dto.products.request.DiscountRequest;
+import com.example.portfolio.webstorespring.models.dto.products.response.DiscountAdminResponse;
+import com.example.portfolio.webstorespring.models.dto.products.response.DiscountUserResponse;
 import com.example.portfolio.webstorespring.models.entity.products.Discount;
 import com.example.portfolio.webstorespring.models.entity.products.Subcategory;
 
@@ -40,6 +42,23 @@ public class DiscountBuilderHelper {
                 1L,
                 null,
                 Set.of("Test")
+        );
+    }
+
+    public static DiscountUserResponse createDiscountUserResponse() {
+        return new DiscountUserResponse(
+                BigDecimal.valueOf(0.1),
+                Set.of(1L, 2L)
+        );
+    }
+
+    public static DiscountAdminResponse createDiscountAdminResponse() {
+        return new DiscountAdminResponse(
+                "test01",
+                BigDecimal.valueOf(0.1),
+                1L,
+                null,
+                Set.of("Puzzle")
         );
     }
 }
