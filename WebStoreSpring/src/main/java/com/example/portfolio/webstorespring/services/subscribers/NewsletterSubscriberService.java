@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.services.subscribers;
 
-import com.example.portfolio.webstorespring.exceptions.SubscriberAlreadyRegisterException;
+import com.example.portfolio.webstorespring.exceptions.EmailAlreadyUsedException;
 import com.example.portfolio.webstorespring.models.dto.subscribers.SubscriberRequest;
 import com.example.portfolio.webstorespring.models.entity.subscribers.NewsletterSubscriber;
 import com.example.portfolio.webstorespring.repositories.subscribers.NewsletterSubscriberRepository;
@@ -24,7 +24,7 @@ public class NewsletterSubscriberService {
     public NewsletterSubscriber save(SubscriberRequest subscriber) {
         log.info("Saving subscriber with email: {}", subscriber.email());
         if (Boolean.TRUE.equals(newsletterSubscriberRepository.existsByEmail(subscriber.email()))) {
-            throw new SubscriberAlreadyRegisterException(subscriber.email());
+            throw new EmailAlreadyUsedException(subscriber.email());
         }
         log.info("Saved subscriber with email: {}", subscriber.email());
         return newsletterSubscriberRepository.save(

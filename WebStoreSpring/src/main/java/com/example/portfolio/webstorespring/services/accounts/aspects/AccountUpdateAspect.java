@@ -63,7 +63,7 @@ class AccountUpdateAspect {
         log.debug("Validating unique email: {}", email);
         if (Boolean.TRUE.equals(accountRepository.existsByEmail(email))) {
             log.debug("Email already exists: {}", email);
-            throw new EmailAlreadyUsedException();
+            throw new EmailAlreadyUsedException(email);
         }
     }
 

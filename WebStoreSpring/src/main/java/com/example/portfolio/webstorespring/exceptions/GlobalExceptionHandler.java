@@ -72,7 +72,6 @@ public class GlobalExceptionHandler {
             ProductHasAlreadyPromotionException.class,
             ShipmentQuantityExceedsProductQuantityException.class,
             EmailAlreadyUsedException.class,
-            SubscriberAlreadyRegisterException.class,
     })
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
