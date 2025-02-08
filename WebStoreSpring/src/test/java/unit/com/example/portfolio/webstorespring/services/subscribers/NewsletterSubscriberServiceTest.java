@@ -30,7 +30,7 @@ class NewsletterSubscriberServiceTest {
     private NewsletterSubscriberService underTest;
 
     @Test
-    void shoulGetAllEnabled() {
+    void shouldGetAllEnabled() {
         Set<NewsletterSubscriber> enabledSubscribers = Set.of(createEnabledNewsletterSubscriber(), createEnabledNewsletterSubscriber());
 
         given(newsletterSubscriberRepository.findAllByEnabledIsTrue()).willReturn(enabledSubscribers);
