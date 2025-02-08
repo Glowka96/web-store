@@ -31,6 +31,12 @@ class GlobalExceptionHandlerTest {
     @Mock
     private AccountHasNoAddressException accountHasNoAddressException;
     @Mock
+    private DiscountIsInvalid discountIsInvalid;
+    @Mock
+    private NotFoundSubcategoriesByNamesException notFoundSubcategoriesByNamesException;
+    @Mock
+    private ProductsNotFoundException productsNotFoundException;
+    @Mock
     private MethodArgumentNotValidException argumentNotValidException;
     @Mock
     private BadCredentialsException badCredentialsException;
@@ -50,8 +56,6 @@ class GlobalExceptionHandlerTest {
     private PromotionPriceGreaterThanBasePriceException promotionPriceGreaterThanBasePriceException;
     @Mock
     private ProductHasAlreadyPromotionException productHasAlreadyPromotionException;
-    @Mock
-    private ProductsNotFoundException productsNotFoundException;
     @Mock
     private ShipmentQuantityExceedsProductQuantityException shipmentQuantityExceedsProductQuantityException;
     @Mock
@@ -86,6 +90,39 @@ class GlobalExceptionHandlerTest {
 
         assertsResponse(resultErrorResponse, getExceptedErrorResponse(
                 HttpStatus.NOT_FOUND, accountHasNoAddressException
+        ));
+    }
+
+    @Test
+    void shouldHandleDiscountIsInvalid_thenStatusNotFound() {
+        ErrorResponse resultErrorResponse = underTest.handleResourceNotFoundException(
+                discountIsInvalid, webRequest
+        );
+
+        assertsResponse(resultErrorResponse, getExceptedErrorResponse(
+                HttpStatus.NOT_FOUND, discountIsInvalid
+        ));
+    }
+
+    @Test
+    void shouldHandleNotFoundSubcategoriesByNamesException_thenStatusNotFound() {
+        ErrorResponse resultErrorResponse = underTest.handleResourceNotFoundException(
+                notFoundSubcategoriesByNamesException, webRequest
+        );
+
+        assertsResponse(resultErrorResponse, getExceptedErrorResponse(
+                HttpStatus.NOT_FOUND, notFoundSubcategoriesByNamesException
+        ));
+    }
+
+    @Test
+    void shouldHandleProductsNotFound_thenStatusBadRequest() {
+        ErrorResponse resultErrorResponse = underTest.handleCanNotModifiedException(
+                productsNotFoundException, webRequest
+        );
+
+        assertsResponse(resultErrorResponse, getExceptedErrorResponse(
+                HttpStatus.BAD_REQUEST, productsNotFoundException
         ));
     }
 
@@ -210,17 +247,6 @@ class GlobalExceptionHandlerTest {
 
         assertsResponse(resultErrorResponse, getExceptedErrorResponse(
                 HttpStatus.BAD_REQUEST, productHasAlreadyPromotionException
-        ));
-    }
-
-    @Test
-    void shouldHandleCanNotModification_whenProductsNotFound_thenStatusBadRequest() {
-        ErrorResponse resultErrorResponse = underTest.handleCanNotModifiedException(
-                productsNotFoundException, webRequest
-        );
-
-        assertsResponse(resultErrorResponse, getExceptedErrorResponse(
-                HttpStatus.BAD_REQUEST, productsNotFoundException
         ));
     }
 
