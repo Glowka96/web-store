@@ -7,6 +7,8 @@ import com.natpryce.makeiteasy.Instantiator;
 import com.natpryce.makeiteasy.Property;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -29,7 +31,7 @@ public class ProductSubscriberBuilderHelper {
                     .email(lookup.valueOf(EMAIL, PRODUCT_SUBSCRIBER_EMAIL))
                     .enabled(lookup.valueOf(ENABLED, Boolean.TRUE))
                     .createdAt(lookup.valueOf(CREATED_AT, LOCAL_DATE_TIME))
-                    .tokens(lookup.valueOf(TOKENS, List.of()))
-                    .subscriptions(lookup.valueOf(SUBSCRIPTIONS, Set.of()))
+                    .tokens(lookup.valueOf(TOKENS, new ArrayList<>()))
+                    .subscriptions(lookup.valueOf(SUBSCRIPTIONS, new HashSet<>()))
                     .build();
 }
