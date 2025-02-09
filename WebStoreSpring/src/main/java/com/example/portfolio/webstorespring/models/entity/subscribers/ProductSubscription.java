@@ -44,10 +44,11 @@ public class ProductSubscription {
 
     @Override
     public boolean equals(Object o) {
-        if(this == o) return true;
+        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProductSubscription that = (ProductSubscription) o;
-        return Objects.equals(product.getId(), that.product.getId());
+        return Objects.equals(product.getId(), that.product.getId()) &&
+                Objects.equals(productSubscribers, that.productSubscribers);
     }
 
     @Override
