@@ -9,18 +9,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/unsubscribe-product-subscription/confirm")
+@RequestMapping("/api/v1/unsubscribe-product-subscription")
 @RequiredArgsConstructor
 public class UnsubscribeProductController {
 
     private final UnsubscribeProductService unsubscribeProductService;
 
-    @DeleteMapping()
+    @DeleteMapping("/confirm")
     public ResponseMessageDTO unsubscribeAllSubscriptions(@RequestParam("token") String token) {
         return unsubscribeProductService.deleteAllSubscriptions(token);
     }
 
-    @DeleteMapping("/single")
+    @DeleteMapping("/single/confirm")
     public ResponseMessageDTO unsubscribeSingleProduct(@RequestParam("token") String token) {
         return unsubscribeProductService.deleteFromSingleProduct(token);
     }
