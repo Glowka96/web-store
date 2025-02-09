@@ -23,7 +23,7 @@ public class ProductSubscriptionService {
 
     public ProductSubscription getWithEnabledSubscribersByProductId(Long productId) {
         log.info("Fetching product subscription for product id {}", productId);
-        return subscriptionRepository.findByProductSubscribersEnabled(productId)
+        return subscriptionRepository.findByIdWithEnabledSubscribers(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Subscription", "id", productId));
     }
 

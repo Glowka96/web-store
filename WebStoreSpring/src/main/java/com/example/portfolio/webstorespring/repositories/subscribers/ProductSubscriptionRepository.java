@@ -14,7 +14,7 @@ public interface ProductSubscriptionRepository extends JpaRepository<ProductSubs
         JOIN ps.productSubscribers s ON s.enabled = true
         WHERE ps.product.id = :productId
 """)
-    Optional<ProductSubscription> findByProductSubscribersEnabled(@Param("productId") Long productId);
+    Optional<ProductSubscription> findByIdWithEnabledSubscribers(@Param("productId") Long productId);
 
     @Query("""
         SELECT ps FROM ProductSubscription ps
