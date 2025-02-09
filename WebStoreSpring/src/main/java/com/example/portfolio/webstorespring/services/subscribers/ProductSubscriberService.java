@@ -53,5 +53,4 @@ public class ProductSubscriberService {
                 subscriber.getCreatedAt().isBefore(now.plusMinutes(1)) &&
                 subscriber.getCreatedAt().isAfter(now.minusMinutes(1));
     }
-
 }

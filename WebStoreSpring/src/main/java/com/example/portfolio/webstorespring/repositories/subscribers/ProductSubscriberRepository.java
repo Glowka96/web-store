@@ -13,7 +13,7 @@ public interface ProductSubscriberRepository extends JpaRepository<ProductSubscr
 
     @Query("""
             SELECT subscriber FROM ProductSubscriber subscriber
-            JOIN subscriber.subscription subscription
+            JOIN subscriber.subscriptions subscriptions
             WHERE subscriber.id = :id
             """)
     Optional<ProductSubscriber> findWithSubscriptionById(@Param("id") Long id);
