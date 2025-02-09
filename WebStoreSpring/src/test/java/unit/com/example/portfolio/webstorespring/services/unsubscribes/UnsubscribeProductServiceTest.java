@@ -56,7 +56,7 @@ class UnsubscribeProductServiceTest {
 
         ResponseMessageDTO result = underTest.deleteAllSubscriptions("token123");
         verify(productSubscriberService, times(1)).delete(productSubscriber);
-        verify(productRemovalTokenService, times(1)).delete(removalToken.getToken());
+        verify(productRemovalTokenService, times(1)).deleteByToken(removalToken.getToken());
 
         assertEquals(response, result);
         assertTrue(productSubscriber.getSubscriptions().isEmpty());
@@ -71,7 +71,7 @@ class UnsubscribeProductServiceTest {
         given(productSubscriptionService.removeForSingleProduct(any(ProductSubscriber.class), anyLong())).willReturn(response);
 
         ResponseMessageDTO result = underTest.deleteFromSingleProduct("token123");
-        verify(productRemovalTokenService, times(1)).delete(removalToken.getToken());
+        verify(productRemovalTokenService, times(1)).deleteByToken(removalToken.getToken());
 
         assertEquals(response, result);
     }

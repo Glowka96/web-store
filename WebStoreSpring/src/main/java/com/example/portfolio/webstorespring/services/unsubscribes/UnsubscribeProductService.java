@@ -31,7 +31,7 @@ public class UnsubscribeProductService {
                 subscription -> subscription.removeSubscriber(subscriber)
         );
         subscriberService.delete(subscriber);
-        productRemovalTokenService.delete(token);
+        productRemovalTokenService.deleteByToken(token);
         return new ResponseMessageDTO(RESPONSE_MESSAGE);
     }
 
@@ -39,7 +39,7 @@ public class UnsubscribeProductService {
     public ResponseMessageDTO deleteFromSingleProduct(String token) {
         SingleProductRemovalToken singleProductRemovalToken = singleProductRemovalTokenService.getByToken(token);
         ResponseMessageDTO responseMessageDTO = subscriptionService.removeForSingleProduct(singleProductRemovalToken.getSubscriber(), singleProductRemovalToken.getProductId());
-        productRemovalTokenService.delete(token);
+        productRemovalTokenService.deleteByToken(token);
         return responseMessageDTO;
     }
 }

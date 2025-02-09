@@ -37,7 +37,7 @@ class UnsubscribeNewsletterServiceTest {
         ResponseMessageDTO result = underTest.deleteSubscription("token123");
 
         verify(newsletterSubscriberService, times(1)).deleteById(removalToken.getId());
-        verify(newsletterRemovalTokenService, times(1)).delete(removalToken.getToken());
+        verify(newsletterRemovalTokenService, times(1)).deleteByToken(removalToken.getToken());
         assertEquals(response, result);
     }
 }

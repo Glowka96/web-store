@@ -21,7 +21,7 @@ public class UnsubscribeNewsletterService {
     public ResponseMessageDTO deleteSubscription(String token) {
         NewsletterRemovalToken removalToken = removalTokenService.getByToken(token);
         subscriberService.deleteById(removalToken.getId());
-        removalTokenService.delete(token);
+        removalTokenService.deleteByToken(token);
         return new ResponseMessageDTO(RESPONSE_MESSAGE);
     }
 }

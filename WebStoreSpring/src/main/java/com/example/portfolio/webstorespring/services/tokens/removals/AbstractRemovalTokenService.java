@@ -20,7 +20,7 @@ public abstract class AbstractRemovalTokenService<T extends RemovalToken, S exte
         return removalTokenRepository.save(createRemovalEntity(subscriber));
     }
 
-    public void delete(String token) {
+    public void deleteByToken(String token) {
         removalTokenRepository.deleteByToken(token);
     }
 
