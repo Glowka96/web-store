@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -33,6 +35,7 @@ public class ProductSubscriptionService {
         ProductSubscription productSubscription = subscriptionRepository.findById(productId)
                 .orElse(ProductSubscription.builder()
                         .product(productService.findById(productId))
+                        .productSubscribers(new HashSet<>())
                         .build());
         log.debug("Adding subscriber for product id {}", productId);
         productSubscription.addSubscriber(subscriber);
