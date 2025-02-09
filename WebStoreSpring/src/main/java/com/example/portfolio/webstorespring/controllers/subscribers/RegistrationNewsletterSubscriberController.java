@@ -13,16 +13,16 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class RegistrationNewsletterSubscriberController {
 
-    private final RegisterNewsletterSubscriberService registerNewsletterSubscriberService;
+    private final RegisterNewsletterSubscriberService service;
 
     @GetMapping(value = "/confirm", params = "token")
     public ResponseMessageDTO confirm(@RequestParam("token") String token) {
-        return registerNewsletterSubscriberService.confirm(token);
+        return service.confirm(token);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseMessageDTO registration(@Valid @RequestBody SubscriberRequest request) {
-        return registerNewsletterSubscriberService.register(request);
+        return service.register(request);
     }
 }
