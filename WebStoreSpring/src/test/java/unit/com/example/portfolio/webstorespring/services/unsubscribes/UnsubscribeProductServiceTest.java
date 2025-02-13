@@ -64,7 +64,7 @@ class UnsubscribeProductServiceTest {
 
     @Test
     void shouldDeleteFromSingleProduct() {
-        SingleProductRemovalToken removalToken = SingleProductRemovalTokenBuilderHelper.createNewsletterRemovalTokenWithEnabledSubscriber();
+        SingleProductRemovalToken removalToken = SingleProductRemovalTokenBuilderHelper.createSingleProductRemovalTokenWithEnabledSubscriber();
         ResponseMessageDTO response = new ResponseMessageDTO("Your subscription for this: test was removed.");
 
         given(singleProductRemovalTokenService.getByToken(anyString())).willReturn(removalToken);

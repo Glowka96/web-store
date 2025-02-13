@@ -8,7 +8,7 @@ import static com.natpryce.makeiteasy.MakeItEasy.make;
 
 public class SingleProductRemovalTokenBuilderHelper {
 
-    public static SingleProductRemovalToken createNewsletterRemovalTokenWithEnabledSubscriber() {
+    public static SingleProductRemovalToken createSingleProductRemovalTokenWithEnabledSubscriber() {
         return SingleProductRemovalToken.builder()
                 .id(1L)
                 .token("token123")
