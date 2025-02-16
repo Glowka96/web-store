@@ -215,8 +215,8 @@ class AbstractConfTokenServiceTest {
             AbstractConfTokenService<ConfToken, OwnerConfToken> underTest = (AbstractConfTokenService<ConfToken, OwnerConfToken>) args.get()[3];
 
             return Stream.of(
-                    Arguments.of(confToken, ownerConfToken, underTest, Boolean.FALSE, Boolean.FALSE, Boolean.TRUE),
-                    Arguments.of(confToken, ownerConfToken, underTest, Boolean.FALSE, Boolean.TRUE, Boolean.FALSE),
+                    Arguments.of(confToken, ownerConfToken, underTest, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE),
+                    Arguments.of(confToken, ownerConfToken, underTest, Boolean.FALSE, Boolean.TRUE, Boolean.TRUE),
                     Arguments.of(confToken, ownerConfToken, underTest, Boolean.TRUE, Boolean.FALSE, Boolean.FALSE),
                     Arguments.of(confToken, ownerConfToken, underTest, Boolean.TRUE, Boolean.TRUE, Boolean.FALSE)
             );
