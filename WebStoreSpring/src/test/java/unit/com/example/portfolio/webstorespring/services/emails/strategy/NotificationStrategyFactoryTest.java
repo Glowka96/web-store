@@ -1,8 +1,6 @@
-package com.example.portfolio.webstorespring.services.email.strategy;
+package com.example.portfolio.webstorespring.services.emails.strategy;
 
 import com.example.portfolio.webstorespring.enums.NotificationType;
-import com.example.portfolio.webstorespring.services.emails.strategy.NotificationStrategy;
-import com.example.portfolio.webstorespring.services.emails.strategy.NotificationStrategyFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;

@@ -1,8 +1,7 @@
-package com.example.portfolio.webstorespring.services.email.impl;
+package com.example.portfolio.webstorespring.services.emails.impl;
 
 import com.example.portfolio.webstorespring.configs.providers.SenderEmailProvider;
 import com.example.portfolio.webstorespring.enums.NotificationType;
-import com.example.portfolio.webstorespring.services.emails.impl.EmailSenderServiceImpl;
 import com.example.portfolio.webstorespring.services.emails.strategy.NotificationStrategy;
 import com.example.portfolio.webstorespring.services.emails.strategy.NotificationStrategyFactory;
 import org.junit.jupiter.api.extension.ExtendWith;
