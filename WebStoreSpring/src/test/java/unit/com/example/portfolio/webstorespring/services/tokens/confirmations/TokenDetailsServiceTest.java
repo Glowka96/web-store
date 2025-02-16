@@ -41,14 +41,14 @@ class TokenDetailsServiceTest {
                 .but(withNull(CONFIRMED_AT)));
         setupClock();
 
-        underTest.validate(tokenDetails);
+        assertDoesNotThrow(() -> underTest.validate(tokenDetails));
     }
 
     @Test
     void willThrowTokenConfirmedException_whenTokenIsConfirmed() {
         TokenDetails tokenDetails = make(a(BASIC_TOKEN_DETAILS));
 
-        assertThrows(TokenConfirmedException.class, ()-> underTest.validate(tokenDetails));
+        assertThrows(TokenConfirmedException.class, () -> underTest.validate(tokenDetails));
     }
 
     @Test
@@ -58,11 +58,11 @@ class TokenDetailsServiceTest {
                 .but(with(EXPIRES_AT, LOCAL_DATE_TIME.minusMinutes(1))));
         setupClock();
 
-        assertThrows(TokenExpiredException.class, ()-> underTest.validate(tokenDetails));
+        assertThrows(TokenExpiredException.class, () -> underTest.validate(tokenDetails));
     }
 
     @Test
-    void setConfirmedAt() {
+    void shouldSetConfirmedAt() {
         TokenDetails tokenDetails = make(a(BASIC_TOKEN_DETAILS)
                 .but(withNull(CONFIRMED_AT)));
         setupClock();
