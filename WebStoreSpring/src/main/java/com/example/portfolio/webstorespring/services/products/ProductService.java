@@ -2,6 +2,7 @@ package com.example.portfolio.webstorespring.services.products;
 
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.ProductMapper;
+import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
 import com.example.portfolio.webstorespring.models.dto.products.ProductNameView;
 import com.example.portfolio.webstorespring.models.dto.products.ProductWithProducerAndPromotionDTO;
 import com.example.portfolio.webstorespring.models.dto.products.request.ProductRequest;
@@ -85,6 +86,13 @@ public class ProductService {
         productRepository.save(foundProduct);
         log.debug("Saved product");
         return ProductMapper.mapToDto(foundProduct);
+    }
+
+    @NotifySubscribers
+    public ResponseMessageDTO updateQuality(ProductQualityRequest request) {
+        Product foundProduct = findById(request.id());
+        foundProduct.setQuantity(request.quantity());
+        return new ResponseMessageDTO("The product quantity was updated successfully.");
     }
 
     public void deleteById(Long id) {
