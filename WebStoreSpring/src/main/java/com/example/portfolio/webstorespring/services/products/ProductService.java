@@ -5,6 +5,7 @@ import com.example.portfolio.webstorespring.mappers.ProductMapper;
 import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
 import com.example.portfolio.webstorespring.models.dto.products.ProductNameView;
 import com.example.portfolio.webstorespring.models.dto.products.ProductWithProducerAndPromotionDTO;
+import com.example.portfolio.webstorespring.models.dto.products.request.ProductQualityRequest;
 import com.example.portfolio.webstorespring.models.dto.products.request.ProductRequest;
 import com.example.portfolio.webstorespring.models.dto.products.response.ProductResponse;
 import com.example.portfolio.webstorespring.models.entity.products.Product;
@@ -90,7 +91,7 @@ public class ProductService {
 
     @NotifySubscribers
     public ResponseMessageDTO updateQuality(ProductQualityRequest request) {
-        Product foundProduct = findById(request.id());
+        Product foundProduct = findById(request.productId());
         foundProduct.setQuantity(request.quantity());
         return new ResponseMessageDTO("The product quantity was updated successfully.");
     }
