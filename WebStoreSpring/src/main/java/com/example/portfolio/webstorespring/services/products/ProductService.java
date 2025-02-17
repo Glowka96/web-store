@@ -1,5 +1,6 @@
 package com.example.portfolio.webstorespring.services.products;
 
+import com.example.portfolio.webstorespring.annotations.NotifySubscribers;
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.ProductMapper;
 import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
