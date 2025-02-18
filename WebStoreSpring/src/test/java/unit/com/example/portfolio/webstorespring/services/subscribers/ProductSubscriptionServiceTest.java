@@ -98,7 +98,6 @@ class ProductSubscriptionServiceTest {
         ProductSubscriber productSubscriber = make(a(BASIC_PRODUCT_SUBSCRIBER));
         ProductSubscription productSubscription = createProductSubscription();
         productSubscription.addSubscriber(productSubscriber);
-        Product product = productSubscription.getProduct();
 
         ProductNameView productNameView = mock(ProductNameView.class);
         given(productService.getNameById(anyLong())).willReturn(productNameView);
