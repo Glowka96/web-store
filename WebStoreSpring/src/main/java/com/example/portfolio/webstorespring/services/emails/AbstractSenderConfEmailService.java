@@ -7,7 +7,7 @@ import com.example.portfolio.webstorespring.services.tokens.confirmations.Abstra
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-abstract class AbstractSenderConfEmailService<
+public abstract class AbstractSenderConfEmailService<
         T extends ConfToken,
         O extends OwnerConfToken,
         S extends AbstractConfTokenService<T, O>> {
