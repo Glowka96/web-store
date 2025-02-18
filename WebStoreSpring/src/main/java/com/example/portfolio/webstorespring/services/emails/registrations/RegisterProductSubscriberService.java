@@ -7,7 +7,6 @@ import com.example.portfolio.webstorespring.models.entity.subscribers.ProductSub
 import com.example.portfolio.webstorespring.models.entity.tokens.confirmations.ProductConfToken;
 import com.example.portfolio.webstorespring.models.entity.tokens.removals.ProductRemovalToken;
 import com.example.portfolio.webstorespring.models.entity.tokens.removals.SingleProductRemovalToken;
-import com.example.portfolio.webstorespring.services.emails.AbstractConfirmEmailService;
 import com.example.portfolio.webstorespring.services.emails.EmailSenderService;
 import com.example.portfolio.webstorespring.services.subscribers.ProductSubscriberService;
 import com.example.portfolio.webstorespring.services.subscribers.ProductSubscriptionService;

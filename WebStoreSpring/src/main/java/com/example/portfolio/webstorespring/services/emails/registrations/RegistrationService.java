@@ -6,7 +6,6 @@ import com.example.portfolio.webstorespring.models.dto.accounts.request.Registra
 import com.example.portfolio.webstorespring.models.entity.accounts.Account;
 import com.example.portfolio.webstorespring.models.entity.tokens.confirmations.AccountConfToken;
 import com.example.portfolio.webstorespring.services.accounts.AccountService;
-import com.example.portfolio.webstorespring.services.emails.AbstractConfirmEmailService;
 import com.example.portfolio.webstorespring.services.emails.EmailSenderService;
 import com.example.portfolio.webstorespring.services.tokens.confirmations.AccountConfTokenService;
 import org.springframework.stereotype.Service;
