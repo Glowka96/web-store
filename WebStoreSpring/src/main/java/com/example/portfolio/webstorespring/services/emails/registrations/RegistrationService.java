@@ -6,6 +6,7 @@ import com.example.portfolio.webstorespring.models.dto.accounts.request.Registra
 import com.example.portfolio.webstorespring.models.entity.accounts.Account;
 import com.example.portfolio.webstorespring.models.entity.tokens.confirmations.AccountConfToken;
 import com.example.portfolio.webstorespring.services.accounts.AccountService;
+import com.example.portfolio.webstorespring.services.emails.AbstractConfirmEmailService;
 import com.example.portfolio.webstorespring.services.emails.EmailSenderService;
 import com.example.portfolio.webstorespring.services.tokens.confirmations.AccountConfTokenService;
 import org.springframework.stereotype.Service;
@@ -18,9 +19,9 @@ public class RegistrationService extends AbstractConfirmEmailService<AccountConf
 
     private static final String RESPONSE_MESSAGE = "Verify your email address using the link in your email.";
 
-    RegistrationService(EmailSenderService emailSenderService,
-                        AccountConfTokenService confirmationTokenService,
-                        AccountService accountService) {
+    public RegistrationService(EmailSenderService emailSenderService,
+                               AccountConfTokenService confirmationTokenService,
+                               AccountService accountService) {
         super(emailSenderService, confirmationTokenService);
         this.accountService = accountService;
     }

@@ -10,6 +10,8 @@ import com.example.portfolio.webstorespring.models.entity.tokens.confirmations.C
 import com.example.portfolio.webstorespring.models.entity.tokens.confirmations.NewsletterConfToken;
 import com.example.portfolio.webstorespring.models.entity.tokens.confirmations.ProductConfToken;
 import com.example.portfolio.webstorespring.services.accounts.AccountService;
+import com.example.portfolio.webstorespring.services.emails.accountactions.ResetPasswordService;
+import com.example.portfolio.webstorespring.services.emails.accountactions.RestoreEmailService;
 import com.example.portfolio.webstorespring.services.emails.registrations.RegisterNewsletterSubscriberService;
 import com.example.portfolio.webstorespring.services.emails.registrations.RegisterProductSubscriberService;
 import com.example.portfolio.webstorespring.services.emails.registrations.RegistrationService;

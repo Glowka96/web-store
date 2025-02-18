@@ -6,6 +6,7 @@ import com.example.portfolio.webstorespring.models.dto.subscribers.SubscriberReq
 import com.example.portfolio.webstorespring.models.entity.subscribers.NewsletterSubscriber;
 import com.example.portfolio.webstorespring.models.entity.tokens.confirmations.NewsletterConfToken;
 import com.example.portfolio.webstorespring.models.entity.tokens.removals.NewsletterRemovalToken;
+import com.example.portfolio.webstorespring.services.emails.AbstractConfirmEmailService;
 import com.example.portfolio.webstorespring.services.emails.EmailSenderService;
 import com.example.portfolio.webstorespring.services.subscribers.NewsletterSubscriberService;
 import com.example.portfolio.webstorespring.services.tokens.confirmations.NewsletterConfTokenService;
@@ -21,10 +22,10 @@ public class RegisterNewsletterSubscriberService extends AbstractConfirmEmailSer
 
     private static final String RESPONSE_MESSAGE = "Verify your email address using the link in your email.";
 
-    RegisterNewsletterSubscriberService(EmailSenderService emailSenderService,
-                                        NewsletterConfTokenService confirmationTokenService,
-                                        NewsletterSubscriberService newsletterSubscriberService,
-                                        NewsletterRemovalTokenService newsletterRemovalTokenService) {
+    public RegisterNewsletterSubscriberService(EmailSenderService emailSenderService,
+                                               NewsletterConfTokenService confirmationTokenService,
+                                               NewsletterSubscriberService newsletterSubscriberService,
+                                               NewsletterRemovalTokenService newsletterRemovalTokenService) {
         super(emailSenderService, confirmationTokenService);
         this.newsletterSubscriberService = newsletterSubscriberService;
         this.newsletterRemovalTokenService = newsletterRemovalTokenService;

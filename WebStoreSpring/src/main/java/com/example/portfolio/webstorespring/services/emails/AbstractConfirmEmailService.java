@@ -1,11 +1,9 @@
-package com.example.portfolio.webstorespring.services.emails.registrations;
+package com.example.portfolio.webstorespring.services.emails;
 
 import com.example.portfolio.webstorespring.enums.EmailType;
 import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
 import com.example.portfolio.webstorespring.models.entity.subscribers.OwnerConfToken;
 import com.example.portfolio.webstorespring.models.entity.tokens.confirmations.ConfToken;
-import com.example.portfolio.webstorespring.services.emails.AbstractSenderConfEmailService;
-import com.example.portfolio.webstorespring.services.emails.EmailSenderService;
 import com.example.portfolio.webstorespring.services.tokens.confirmations.AbstractConfTokenService;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -18,7 +16,7 @@ public abstract class AbstractConfirmEmailService<
 
     private static final String RESEND_RESPONSE_MESSAGE = "Your token is expired. There is new confirmation link in your email.";
 
-    AbstractConfirmEmailService(EmailSenderService emailSenderService, S confirmationTokenService) {
+    protected AbstractConfirmEmailService(EmailSenderService emailSenderService, S confirmationTokenService) {
         super(emailSenderService, confirmationTokenService);
     }
 

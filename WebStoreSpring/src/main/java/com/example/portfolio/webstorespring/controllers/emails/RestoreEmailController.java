@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.controllers.emails;
 
 import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
-import com.example.portfolio.webstorespring.services.emails.RestoreEmailService;
+import com.example.portfolio.webstorespring.services.emails.accountactions.RestoreEmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

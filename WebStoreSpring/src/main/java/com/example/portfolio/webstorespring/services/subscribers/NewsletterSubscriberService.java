@@ -33,6 +33,7 @@ public class NewsletterSubscriberService {
                         .enabled(Boolean.FALSE)
                         .build()
         );
+
     }
 
     public void deleteById(Long id) {

@@ -1,4 +1,4 @@
-package com.example.portfolio.webstorespring.services.emails.registrations;
+package com.example.portfolio.webstorespring.services.emails;
 
 import com.example.portfolio.webstorespring.enums.EmailType;
 import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
@@ -14,7 +14,9 @@ import com.example.portfolio.webstorespring.models.entity.tokens.confirmations.P
 import com.example.portfolio.webstorespring.models.entity.tokens.removals.NewsletterRemovalToken;
 import com.example.portfolio.webstorespring.models.entity.tokens.removals.RemovalToken;
 import com.example.portfolio.webstorespring.services.accounts.AccountService;
-import com.example.portfolio.webstorespring.services.emails.EmailSenderService;
+import com.example.portfolio.webstorespring.services.emails.registrations.RegisterNewsletterSubscriberService;
+import com.example.portfolio.webstorespring.services.emails.registrations.RegisterProductSubscriberService;
+import com.example.portfolio.webstorespring.services.emails.registrations.RegistrationService;
 import com.example.portfolio.webstorespring.services.subscribers.NewsletterSubscriberService;
 import com.example.portfolio.webstorespring.services.subscribers.ProductSubscriberService;
 import com.example.portfolio.webstorespring.services.subscribers.ProductSubscriptionService;

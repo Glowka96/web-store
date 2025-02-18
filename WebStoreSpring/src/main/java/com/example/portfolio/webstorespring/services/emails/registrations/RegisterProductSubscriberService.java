@@ -7,6 +7,7 @@ import com.example.portfolio.webstorespring.models.entity.subscribers.ProductSub
 import com.example.portfolio.webstorespring.models.entity.tokens.confirmations.ProductConfToken;
 import com.example.portfolio.webstorespring.models.entity.tokens.removals.ProductRemovalToken;
 import com.example.portfolio.webstorespring.models.entity.tokens.removals.SingleProductRemovalToken;
+import com.example.portfolio.webstorespring.services.emails.AbstractConfirmEmailService;
 import com.example.portfolio.webstorespring.services.emails.EmailSenderService;
 import com.example.portfolio.webstorespring.services.subscribers.ProductSubscriberService;
 import com.example.portfolio.webstorespring.services.subscribers.ProductSubscriptionService;
@@ -26,11 +27,11 @@ public class RegisterProductSubscriberService extends AbstractConfirmEmailServic
 
     private static final String RESPONSE_MESSAGE = "You have successfully subscribed to this product.";
 
-    RegisterProductSubscriberService(EmailSenderService emailSenderService,
-                                     ProductConfTokenService confirmationTokenService,
-                                     ProductSubscriptionService productSubscriptionService,
-                                     ProductSubscriberService productSubscriberService,
-                                     ProductRemovalTokenService productRemovalTokenService, SingleProductRemovalTokenService singleProductRemovalTokenService) {
+    public RegisterProductSubscriberService(EmailSenderService emailSenderService,
+                                            ProductConfTokenService confirmationTokenService,
+                                            ProductSubscriptionService productSubscriptionService,
+                                            ProductSubscriberService productSubscriberService,
+                                            ProductRemovalTokenService productRemovalTokenService, SingleProductRemovalTokenService singleProductRemovalTokenService) {
         super(emailSenderService, confirmationTokenService);
         this.productSubscriptionService = productSubscriptionService;
         this.productSubscriberService = productSubscriberService;
