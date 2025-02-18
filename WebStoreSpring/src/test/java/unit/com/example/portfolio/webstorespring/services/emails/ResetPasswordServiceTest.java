@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.services.emails;
 
-import com.example.portfolio.webstorespring.enums.NotificationType;
+import com.example.portfolio.webstorespring.enums.EmailType;
 import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
 import com.example.portfolio.webstorespring.models.dto.accounts.request.ResetPasswordRequest;
 import com.example.portfolio.webstorespring.models.entity.accounts.Account;
@@ -55,12 +55,12 @@ class ResetPasswordServiceTest {
         ResponseMessageDTO excepted = new ResponseMessageDTO("Sent reset password link to your email");
 
         given(accountService.findByEmail(anyString())).willReturn(account);
-        given(accountConfTokenService.create(any(Account.class), any(NotificationType.class))).willReturn(accountConfToken);
+        given(accountConfTokenService.create(any(Account.class), any(EmailType.class))).willReturn(accountConfToken);
 
         ResponseMessageDTO result = underTest.sendResetPasswordLinkByEmail(account.getEmail());
 
         assertEquals(excepted, result);
-        verify(emailSenderService, times(1)).sendEmail(any(NotificationType.class), anyString(), anyString());
+        verify(emailSenderService, times(1)).sendEmail(any(EmailType.class), anyString(), anyString());
     }
 
     @Test

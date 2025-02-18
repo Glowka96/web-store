@@ -1,20 +1,20 @@
 package com.example.portfolio.webstorespring.services.emails.strategy.impl.subscriptions;
 
 import com.example.portfolio.webstorespring.configs.providers.ConfirmationLinkProvider;
-import com.example.portfolio.webstorespring.enums.NotificationType;
-import com.example.portfolio.webstorespring.services.emails.strategy.NotificationStrategy;
+import com.example.portfolio.webstorespring.enums.EmailType;
+import com.example.portfolio.webstorespring.services.emails.strategy.EmailStrategy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class ReconfirmProductSubscriptionNotificationStrategy implements NotificationStrategy {
+public class ReconfirmProductSubscriptionEmailStrategy implements EmailStrategy {
 
     private final ConfirmationLinkProvider linkProvider;
 
     @Override
-    public NotificationType getNotificationType() {
-        return NotificationType.RECONFIRM_PRODUCT_SUBSCRIPTION;
+    public EmailType getNotificationType() {
+        return EmailType.RECONFIRM_PRODUCT_SUBSCRIPTION;
     }
 
     @Override

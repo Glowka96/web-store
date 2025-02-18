@@ -1,10 +1,10 @@
 package com.example.portfolio.webstorespring.services.emails.impl;
 
 import com.example.portfolio.webstorespring.configs.providers.SenderEmailProvider;
-import com.example.portfolio.webstorespring.enums.NotificationType;
+import com.example.portfolio.webstorespring.enums.EmailType;
 import com.example.portfolio.webstorespring.services.emails.EmailSenderService;
-import com.example.portfolio.webstorespring.services.emails.strategy.NotificationStrategy;
-import com.example.portfolio.webstorespring.services.emails.strategy.NotificationStrategyFactory;
+import com.example.portfolio.webstorespring.services.emails.strategy.EmailStrategy;
+import com.example.portfolio.webstorespring.services.emails.strategy.EmailStrategyFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;
@@ -18,21 +18,21 @@ import org.springframework.stereotype.Service;
 public class EmailSenderServiceImpl implements EmailSenderService {
 
     private final JavaMailSender javaMailSender;
-    private final NotificationStrategyFactory notificationStrategyFactory;
+    private final EmailStrategyFactory emailStrategyFactory;
     private final SenderEmailProvider senderEmailProvider;
 
     @Override
     @Async
-    public void sendEmail(NotificationType notificationType,
+    public void sendEmail(EmailType emailType,
                           String email,
                           String ... tokensOrMessages) {
-        NotificationStrategy notificationStrategy = notificationStrategyFactory.findNotificationStrategy(notificationType);
+        EmailStrategy emailStrategy = emailStrategyFactory.findNotificationStrategy(emailType);
 
-        log.info("Sending {} email to: {}", notificationStrategy.getNotificationType().name(), email);
+        log.info("Sending {} email to: {}", emailStrategy.getNotificationType().name(), email);
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(email);
-        mailMessage.setSubject(notificationStrategy.getEmailTitle());
-        mailMessage.setText(String.format(notificationStrategy.getEmailMessage(), (Object[]) tokensOrMessages));
+        mailMessage.setSubject(emailStrategy.getEmailTitle());
+        mailMessage.setText(String.format(emailStrategy.getEmailMessage(), (Object[]) tokensOrMessages));
         mailMessage.setFrom(senderEmailProvider.getEmail());
         javaMailSender.send(mailMessage);
         log.info("Sent email.");

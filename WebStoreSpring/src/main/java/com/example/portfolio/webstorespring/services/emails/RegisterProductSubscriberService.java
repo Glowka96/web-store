@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.services.emails;
 
-import com.example.portfolio.webstorespring.enums.NotificationType;
+import com.example.portfolio.webstorespring.enums.EmailType;
 import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
 import com.example.portfolio.webstorespring.models.dto.subscribers.ProductSubscriberRequest;
 import com.example.portfolio.webstorespring.models.entity.subscribers.ProductSubscriber;
@@ -44,12 +44,12 @@ public class RegisterProductSubscriberService extends AbstractConfirmEmailServic
         productSubscriptionService.add(productSubscriber, productSubscriberRequest.productId());
 
         if (Boolean.TRUE.equals(productSubscriberService.isFirstRegistration(productSubscriber))) {
-            sendConfirmationEmail(productSubscriber, NotificationType.CONFIRM_PRODUCT_SUBSCRIPTION);
+            sendConfirmationEmail(productSubscriber, EmailType.CONFIRM_PRODUCT_SUBSCRIPTION);
         }
 
         SingleProductRemovalToken singleProductRemovalToken = singleProductRemovalTokenService.save(productSubscriber, productSubscriberRequest.productId());
         ProductRemovalToken productRemovalToken = productRemovalTokenService.save(productSubscriber);
-        sendEmail(NotificationType.WELCOME_PRODUCT_SUBSCRIPTION,
+        sendEmail(EmailType.WELCOME_PRODUCT_SUBSCRIPTION,
                 productSubscriber.getEmail(),
                 singleProductRemovalToken.getToken(),
                 productRemovalToken.getToken()
@@ -59,7 +59,7 @@ public class RegisterProductSubscriberService extends AbstractConfirmEmailServic
 
     @Transactional
     public ResponseMessageDTO confirm(String token) {
-        return confirmTokenOrResend(token, NotificationType.RECONFIRM_PRODUCT_SUBSCRIPTION);
+        return confirmTokenOrResend(token, EmailType.RECONFIRM_PRODUCT_SUBSCRIPTION);
     }
 
     @Override

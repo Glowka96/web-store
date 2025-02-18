@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.services.emails;
 
 import com.example.portfolio.webstorespring.buildhelpers.tokens.confirmations.NewsletterConfTokenBuilderHelper;
-import com.example.portfolio.webstorespring.enums.NotificationType;
+import com.example.portfolio.webstorespring.enums.EmailType;
 import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
 import com.example.portfolio.webstorespring.models.dto.subscribers.SubscriberRequest;
 import com.example.portfolio.webstorespring.models.entity.subscribers.NewsletterSubscriber;
@@ -48,12 +48,12 @@ class RegisterNewsletterSubscriberServiceTest {
         ResponseMessageDTO excepted = new ResponseMessageDTO("Verify your email address using the link in your email.");
 
         given(newsletterSubscriberService.save(any(SubscriberRequest.class))).willReturn(newsletterSubscriber);
-        given(newsletterConfTokenService.create(any(NewsletterSubscriber.class), any(NotificationType.class))).willReturn(newsletterConfToken);
+        given(newsletterConfTokenService.create(any(NewsletterSubscriber.class), any(EmailType.class))).willReturn(newsletterConfToken);
 
         ResponseMessageDTO result = underTest.register(subscriberRequest);
 
         assertNotNull(result);
         assertEquals(excepted, result);
-        verify(emailSenderService, times(1)).sendEmail(eq(NotificationType.CONFIRM_NEWSLETTER), eq(newsletterSubscriber.getEmail()), anyString());
+        verify(emailSenderService, times(1)).sendEmail(eq(EmailType.CONFIRM_NEWSLETTER), eq(newsletterSubscriber.getEmail()), anyString());
     }
 }

@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.services.tokens.confirmations;
 
-import com.example.portfolio.webstorespring.enums.NotificationType;
+import com.example.portfolio.webstorespring.enums.EmailType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,13 +17,13 @@ class NotificationExpirationManagerTest {
 
     @Test
     void shouldReturnCorrectExpirationMinutes_forNotificationTypes() {
-        assertThat(expirationManager.getExpirationMinutes(NotificationType.RESET_PASSWORD)).isEqualTo(15L);
-        assertThat(expirationManager.getExpirationMinutes(NotificationType.CONFIRM_EMAIL)).isEqualTo(15L);
-        assertThat(expirationManager.getExpirationMinutes(NotificationType.RECONFIRM_EMAIL)).isEqualTo(15L);
-        assertThat(expirationManager.getExpirationMinutes(NotificationType.RESTORE_EMAIL)).isEqualTo(10_800L);
-        assertThat(expirationManager.getExpirationMinutes(NotificationType.CONFIRM_NEWSLETTER)).isEqualTo(2_880L);
-        assertThat(expirationManager.getExpirationMinutes(NotificationType.RECONFIRM_NEWSLETTER)).isEqualTo(2_880L);
-        assertThat(expirationManager.getExpirationMinutes(NotificationType.CONFIRM_PRODUCT_SUBSCRIPTION)).isEqualTo(2_880L);
-        assertThat(expirationManager.getExpirationMinutes(NotificationType.RECONFIRM_PRODUCT_SUBSCRIPTION)).isEqualTo(2_880L);
+        assertThat(expirationManager.getExpirationMinutes(EmailType.RESET_PASSWORD)).isEqualTo(15L);
+        assertThat(expirationManager.getExpirationMinutes(EmailType.CONFIRM_EMAIL)).isEqualTo(15L);
+        assertThat(expirationManager.getExpirationMinutes(EmailType.RECONFIRM_EMAIL)).isEqualTo(15L);
+        assertThat(expirationManager.getExpirationMinutes(EmailType.RESTORE_EMAIL)).isEqualTo(10_800L);
+        assertThat(expirationManager.getExpirationMinutes(EmailType.CONFIRM_NEWSLETTER)).isEqualTo(2_880L);
+        assertThat(expirationManager.getExpirationMinutes(EmailType.RECONFIRM_NEWSLETTER)).isEqualTo(2_880L);
+        assertThat(expirationManager.getExpirationMinutes(EmailType.CONFIRM_PRODUCT_SUBSCRIPTION)).isEqualTo(2_880L);
+        assertThat(expirationManager.getExpirationMinutes(EmailType.RECONFIRM_PRODUCT_SUBSCRIPTION)).isEqualTo(2_880L);
     }
 }

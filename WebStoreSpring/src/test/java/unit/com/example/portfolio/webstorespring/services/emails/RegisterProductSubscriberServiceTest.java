@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.services.emails;
 
-import com.example.portfolio.webstorespring.enums.NotificationType;
+import com.example.portfolio.webstorespring.enums.EmailType;
 import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
 import com.example.portfolio.webstorespring.models.dto.subscribers.ProductSubscriberRequest;
 import com.example.portfolio.webstorespring.models.dto.subscribers.SubscriberRequest;
@@ -64,11 +64,11 @@ class RegisterProductSubscriberServiceTest {
     @Test
     void shouldRegisterNewUser() {
         ProductConfToken productConfToken = createProductConfToken(productSubscriber, make(a(BASIC_TOKEN_DETAILS)));
-        given(productConfTokenService.create(any(ProductSubscriber.class), any(NotificationType.class))).willReturn(productConfToken);
+        given(productConfTokenService.create(any(ProductSubscriber.class), any(EmailType.class))).willReturn(productConfToken);
 
         shouldRegister(Boolean.TRUE);
 
-        verify(emailSenderService, times(1)).sendEmail(eq(NotificationType.CONFIRM_PRODUCT_SUBSCRIPTION), eq(productSubscriber.getEmail()), anyString());
+        verify(emailSenderService, times(1)).sendEmail(eq(EmailType.CONFIRM_PRODUCT_SUBSCRIPTION), eq(productSubscriber.getEmail()), anyString());
     }
 
     @Test
@@ -97,6 +97,6 @@ class RegisterProductSubscriberServiceTest {
         assertEquals(excepted, result);
 
         verify(productSubscriptionService, times(1)).add(productSubscriber, 1L);
-        verify(emailSenderService, times(1)).sendEmail(eq(NotificationType.WELCOME_PRODUCT_SUBSCRIPTION), eq(productSubscriber.getEmail()), anyString(), anyString());
+        verify(emailSenderService, times(1)).sendEmail(eq(EmailType.WELCOME_PRODUCT_SUBSCRIPTION), eq(productSubscriber.getEmail()), anyString(), anyString());
     }
 }

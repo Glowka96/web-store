@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.services.emails;
 
-import com.example.portfolio.webstorespring.enums.NotificationType;
+import com.example.portfolio.webstorespring.enums.EmailType;
 import com.example.portfolio.webstorespring.models.entity.subscribers.OwnerConfToken;
 import com.example.portfolio.webstorespring.models.entity.tokens.confirmations.ConfToken;
 import com.example.portfolio.webstorespring.services.tokens.confirmations.AbstractConfTokenService;
@@ -15,14 +15,14 @@ abstract class AbstractSenderConfEmailService<
     protected final EmailSenderService emailSenderService;
     protected final S confirmationTokenService;
 
-    protected void sendConfirmationEmail(O ownerToken, NotificationType notificationType) {
-        T savedToken = confirmationTokenService.create(ownerToken, notificationType);
-        sendEmail(notificationType, ownerToken.getEmail(), savedToken.getToken());
+    protected void sendConfirmationEmail(O ownerToken, EmailType emailType) {
+        T savedToken = confirmationTokenService.create(ownerToken, emailType);
+        sendEmail(emailType, ownerToken.getEmail(), savedToken.getToken());
     }
 
-    protected void sendEmail(NotificationType notificationType, String email, String ... tokensOrMessages) {
+    protected void sendEmail(EmailType emailType, String email, String ... tokensOrMessages) {
         emailSenderService.sendEmail(
-                notificationType,
+                emailType,
                 email,
                 tokensOrMessages
         );

@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.services.emails;
 
-import com.example.portfolio.webstorespring.enums.NotificationType;
+import com.example.portfolio.webstorespring.enums.EmailType;
 import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
 import com.example.portfolio.webstorespring.models.dto.accounts.request.ResetPasswordRequest;
 import com.example.portfolio.webstorespring.models.entity.accounts.Account;
@@ -28,7 +28,7 @@ public class ResetPasswordService extends AbstractSenderConfEmailService<Account
     @Transactional
     public ResponseMessageDTO sendResetPasswordLinkByEmail(String email) {
         Account account = accountService.findByEmail(email);
-        sendConfirmationEmail(account, NotificationType.RESET_PASSWORD);
+        sendConfirmationEmail(account, EmailType.RESET_PASSWORD);
         return new ResponseMessageDTO(SEND_RESPONSE_MESSAGE);
     }
 

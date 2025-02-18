@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.services.emails;
 
-import com.example.portfolio.webstorespring.enums.NotificationType;
+import com.example.portfolio.webstorespring.enums.EmailType;
 import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
 import com.example.portfolio.webstorespring.models.entity.subscribers.OwnerConfToken;
 import com.example.portfolio.webstorespring.models.entity.tokens.confirmations.ConfToken;
@@ -20,7 +20,7 @@ public abstract class AbstractConfirmEmailService<
         super(emailSenderService, confirmationTokenService);
     }
 
-     protected ResponseMessageDTO confirmTokenOrResend(String token, NotificationType reNotificationType) {
+     protected ResponseMessageDTO confirmTokenOrResend(String token, EmailType reEmailType) {
         log.info("Starting confirmation token: {}", token);
         T confToken = confirmationTokenService.getByToken(token);
         O ownerToken = confirmationTokenService.extractRelatedEntity(confToken);
@@ -29,7 +29,7 @@ public abstract class AbstractConfirmEmailService<
 
         if (confirmationTokenService.isOwnerDisabledAndTokenExpired(ownerToken, confToken)) {
             log.warn("Owner is disabled and token expired");
-            return resendConfirmationEmail(reNotificationType, ownerToken, confToken);
+            return resendConfirmationEmail(reEmailType, ownerToken, confToken);
         }
 
         log.debug("Setting up confirmed token and enabled owner");
@@ -39,10 +39,10 @@ public abstract class AbstractConfirmEmailService<
         return new ResponseMessageDTO(String.format("%s confirmed.", ownerToken.getName()));
     }
 
-    private @NotNull ResponseMessageDTO resendConfirmationEmail(NotificationType reNotificationType, O ownerToken, T confToken) {
-        T savedToken = confirmationTokenService.create(ownerToken, reNotificationType);
+    private @NotNull ResponseMessageDTO resendConfirmationEmail(EmailType reEmailType, O ownerToken, T confToken) {
+        T savedToken = confirmationTokenService.create(ownerToken, reEmailType);
         confirmationTokenService.delete(confToken);
-        sendEmail(reNotificationType, ownerToken.getEmail(), savedToken.getToken());
+        sendEmail(reEmailType, ownerToken.getEmail(), savedToken.getToken());
         return new ResponseMessageDTO(RESEND_RESPONSE_MESSAGE);
     }
 

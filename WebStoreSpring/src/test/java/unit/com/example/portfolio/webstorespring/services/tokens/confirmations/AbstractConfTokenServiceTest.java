@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.services.tokens.confirmations;
 
-import com.example.portfolio.webstorespring.enums.NotificationType;
+import com.example.portfolio.webstorespring.enums.EmailType;
 import com.example.portfolio.webstorespring.exceptions.EmailAlreadyConfirmedException;
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.models.entity.accounts.Account;
@@ -74,11 +74,11 @@ class AbstractConfTokenServiceTest {
         TokenDetails tokenDetails = make(a(BASIC_TOKEN_DETAILS));
 
         given(ownerConfToken.getName()).willCallRealMethod();
-        given(notificationExpirationManager.getExpirationMinutes(any(NotificationType.class))).willReturn(15L);
+        given(notificationExpirationManager.getExpirationMinutes(any(EmailType.class))).willReturn(15L);
         given(tokenDetailsService.create(anyLong())).willReturn(tokenDetails);
         given(repository.save(any(ConfToken.class))).willReturn(confToken);
 
-        ConfToken result = underTest.create(ownerConfToken, NotificationType.CONFIRM_EMAIL);
+        ConfToken result = underTest.create(ownerConfToken, EmailType.CONFIRM_EMAIL);
 
         assertNotNull(result);
         assertEquals(confToken, result);

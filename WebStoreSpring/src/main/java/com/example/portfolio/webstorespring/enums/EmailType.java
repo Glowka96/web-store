@@ -3,7 +3,7 @@ package com.example.portfolio.webstorespring.enums;
 import lombok.Getter;
 
 @Getter
-public enum NotificationType {
+public enum EmailType {
     RESET_PASSWORD,
 
     CONFIRM_EMAIL,

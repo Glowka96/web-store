@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.services.emails;
 
-import com.example.portfolio.webstorespring.enums.NotificationType;
+import com.example.portfolio.webstorespring.enums.EmailType;
 import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
 import com.example.portfolio.webstorespring.models.dto.accounts.request.RegistrationRequest;
 import com.example.portfolio.webstorespring.models.entity.accounts.Account;
@@ -44,13 +44,13 @@ class RegistrationServiceTest {
 
         given(accountConfToken.getToken()).willReturn("token123");
         given(accountService.save(any(RegistrationRequest.class))).willReturn(account);
-        given(confTokenService.create(any(Account.class), any(NotificationType.class))).willReturn(accountConfToken);
+        given(confTokenService.create(any(Account.class), any(EmailType.class))).willReturn(accountConfToken);
 
         ResponseMessageDTO result = underTest.register(request);
 
         assertNotNull(result);
         assertEquals(excepted, result);
-        verify(emailSenderService, times(1)).sendEmail(eq(NotificationType.CONFIRM_EMAIL), eq(account.getEmail()), anyString());
+        verify(emailSenderService, times(1)).sendEmail(eq(EmailType.CONFIRM_EMAIL), eq(account.getEmail()), anyString());
 
     }
 }

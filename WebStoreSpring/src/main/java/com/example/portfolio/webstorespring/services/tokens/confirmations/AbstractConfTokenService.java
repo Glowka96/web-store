@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.services.tokens.confirmations;
 
-import com.example.portfolio.webstorespring.enums.NotificationType;
+import com.example.portfolio.webstorespring.enums.EmailType;
 import com.example.portfolio.webstorespring.exceptions.EmailAlreadyConfirmedException;
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.models.entity.subscribers.OwnerConfToken;
@@ -26,14 +26,14 @@ public abstract class AbstractConfTokenService<T extends ConfToken, O extends Ow
     }
 
     @Transactional
-    public T create(O relatedEntity, NotificationType notificationType) {
+    public T create(O relatedEntity, EmailType emailType) {
         log.info("Creating confirmation token for: {}", relatedEntity.getName());
         return tokenRepository.save(
                 createTokenEntity(
                         relatedEntity,
                         tokenDetailsService.create(
                                 notificationExpirationManager.getExpirationMinutes(
-                                        notificationType)
+                                        emailType)
                         )
                 )
         );

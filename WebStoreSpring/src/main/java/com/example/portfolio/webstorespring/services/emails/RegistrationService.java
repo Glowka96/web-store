@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.services.emails;
 
-import com.example.portfolio.webstorespring.enums.NotificationType;
+import com.example.portfolio.webstorespring.enums.EmailType;
 import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
 import com.example.portfolio.webstorespring.models.dto.accounts.request.RegistrationRequest;
 import com.example.portfolio.webstorespring.models.entity.accounts.Account;
@@ -27,13 +27,13 @@ public class RegistrationService extends AbstractConfirmEmailService<AccountConf
     @Transactional
     public ResponseMessageDTO register(RegistrationRequest request) {
         Account account = accountService.save(request);
-        sendConfirmationEmail(account, NotificationType.CONFIRM_EMAIL);
+        sendConfirmationEmail(account, EmailType.CONFIRM_EMAIL);
         return new ResponseMessageDTO(RESPONSE_MESSAGE);
     }
 
     @Transactional
     public ResponseMessageDTO confirm(String token) {
-        return confirmTokenOrResend(token, NotificationType.RESTORE_EMAIL);
+        return confirmTokenOrResend(token, EmailType.RESTORE_EMAIL);
     }
 
     @Override

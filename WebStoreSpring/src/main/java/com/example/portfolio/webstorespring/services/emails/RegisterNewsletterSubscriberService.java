@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.services.emails;
 
-import com.example.portfolio.webstorespring.enums.NotificationType;
+import com.example.portfolio.webstorespring.enums.EmailType;
 import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
 import com.example.portfolio.webstorespring.models.dto.subscribers.SubscriberRequest;
 import com.example.portfolio.webstorespring.models.entity.subscribers.NewsletterSubscriber;
@@ -32,19 +32,19 @@ public class RegisterNewsletterSubscriberService extends AbstractConfirmEmailSer
     @Transactional
     public ResponseMessageDTO register(SubscriberRequest request) {
         NewsletterSubscriber newsletterSubscriber = newsletterSubscriberService.save(request);
-        sendConfirmationEmail(newsletterSubscriber, NotificationType.CONFIRM_NEWSLETTER);
+        sendConfirmationEmail(newsletterSubscriber, EmailType.CONFIRM_NEWSLETTER);
         return new ResponseMessageDTO(RESPONSE_MESSAGE);
     }
 
     @Transactional
     public ResponseMessageDTO confirm(String token) {
-        return confirmTokenOrResend(token, NotificationType.RECONFIRM_NEWSLETTER);
+        return confirmTokenOrResend(token, EmailType.RECONFIRM_NEWSLETTER);
     }
 
     @Override
     protected void executeAfterConfirm(NewsletterSubscriber ownerToken) {
         ownerToken.setEnabled(Boolean.TRUE);
         NewsletterRemovalToken newsletterRemovalToken = newsletterRemovalTokenService.save(ownerToken);
-        sendEmail(NotificationType.WELCOME_NEWSLETTER, ownerToken.getEmail(), newsletterRemovalToken.getToken());
+        sendEmail(EmailType.WELCOME_NEWSLETTER, ownerToken.getEmail(), newsletterRemovalToken.getToken());
     }
 }

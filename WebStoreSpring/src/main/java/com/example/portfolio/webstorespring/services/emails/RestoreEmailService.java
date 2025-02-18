@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.services.emails;
 
-import com.example.portfolio.webstorespring.enums.NotificationType;
+import com.example.portfolio.webstorespring.enums.EmailType;
 import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
 import com.example.portfolio.webstorespring.models.entity.accounts.Account;
 import com.example.portfolio.webstorespring.models.entity.tokens.confirmations.AccountConfToken;
@@ -25,7 +25,7 @@ public class RestoreEmailService extends AbstractSenderConfEmailService<AccountC
     }
 
     public void sendRestoreEmail(Account account) {
-        sendConfirmationEmail(account, NotificationType.RESTORE_EMAIL);
+        sendConfirmationEmail(account, EmailType.RESTORE_EMAIL);
     }
 
     @Transactional

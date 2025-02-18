@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.services.emails;
 
-import com.example.portfolio.webstorespring.enums.NotificationType;
+import com.example.portfolio.webstorespring.enums.EmailType;
 import com.example.portfolio.webstorespring.models.entity.accounts.Account;
 import com.example.portfolio.webstorespring.models.entity.subscribers.NewsletterSubscriber;
 import com.example.portfolio.webstorespring.models.entity.subscribers.OwnerConfToken;
@@ -44,15 +44,15 @@ class AbstractSenderConfEmailServiceTest {
     void shouldSendConfirmationEmail(ConfToken confToken,
                                      OwnerConfToken ownerConfToken,
                                      AbstractConfTokenService<ConfToken, OwnerConfToken> confTokenService,
-                                     NotificationType notificationType,
+                                     EmailType emailType,
                                      AbstractSenderConfEmailService<ConfToken, OwnerConfToken, AbstractConfTokenService<ConfToken, OwnerConfToken>> underTest) {
         given(ownerConfToken.getEmail()).willReturn("test@test.pl");
         given(confToken.getToken()).willReturn("token123");
-        given(confTokenService.create(any(OwnerConfToken.class), any(NotificationType.class))).willReturn(confToken);
+        given(confTokenService.create(any(OwnerConfToken.class), any(EmailType.class))).willReturn(confToken);
 
-        underTest.sendConfirmationEmail(ownerConfToken, notificationType);
+        underTest.sendConfirmationEmail(ownerConfToken, emailType);
 
-        verify(emailSenderService, times(1)).sendEmail(notificationType, ownerConfToken.getEmail(), confToken.getToken());
+        verify(emailSenderService, times(1)).sendEmail(emailType, ownerConfToken.getEmail(), confToken.getToken());
     }
 
     private Stream<Arguments> serviceProviderForConfirmationEmail() {
@@ -81,11 +81,11 @@ class AbstractSenderConfEmailServiceTest {
         ResetPasswordService underTest4 = new ResetPasswordService(emailSenderService, accountConfTokenService, accountService);
         RestoreEmailService underTest5 = new RestoreEmailService(emailSenderService, accountConfTokenService, accountService);
         return Stream.of(
-                Arguments.of(newsletterConfToken, newsletterSubscriber, newsletterConfTokenService, NotificationType.CONFIRM_NEWSLETTER, underTest1),
-                Arguments.of(productConfToken, productSubscriber, productConfTokenService, NotificationType.CONFIRM_PRODUCT_SUBSCRIPTION, underTest2),
-                Arguments.of(accountConfToken, account, accountConfTokenService, NotificationType.CONFIRM_EMAIL, underTest3),
-                Arguments.of(accountConfToken, account, accountConfTokenService, NotificationType.RESET_PASSWORD, underTest4),
-                Arguments.of(accountConfToken, account, accountConfTokenService, NotificationType.RESTORE_EMAIL, underTest5)
+                Arguments.of(newsletterConfToken, newsletterSubscriber, newsletterConfTokenService, EmailType.CONFIRM_NEWSLETTER, underTest1),
+                Arguments.of(productConfToken, productSubscriber, productConfTokenService, EmailType.CONFIRM_PRODUCT_SUBSCRIPTION, underTest2),
+                Arguments.of(accountConfToken, account, accountConfTokenService, EmailType.CONFIRM_EMAIL, underTest3),
+                Arguments.of(accountConfToken, account, accountConfTokenService, EmailType.RESET_PASSWORD, underTest4),
+                Arguments.of(accountConfToken, account, accountConfTokenService, EmailType.RESTORE_EMAIL, underTest5)
         );
     }
 }

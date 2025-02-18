@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.services.emails;
 
-import com.example.portfolio.webstorespring.enums.NotificationType;
+import com.example.portfolio.webstorespring.enums.EmailType;
 import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
 import com.example.portfolio.webstorespring.models.entity.accounts.Account;
 import com.example.portfolio.webstorespring.models.entity.subscribers.NewsletterSubscriber;
@@ -53,11 +53,11 @@ class AbstractConfirmEmailServiceTest {
     void shouldConfirmTokenOrResend(ConfToken confToken,
                                     OwnerConfToken ownerConfToken,
                                     AbstractConfTokenService<ConfToken, OwnerConfToken> confTokenService,
-                                    NotificationType notificationType,
+                                    EmailType emailType,
                                     AbstractConfirmEmailService<ConfToken, OwnerConfToken, AbstractConfTokenService<ConfToken, OwnerConfToken>> underTest) {
         setupTest(confToken, ownerConfToken, confTokenService);
 
-        ResponseMessageDTO result = underTest.confirmTokenOrResend(TOKEN, notificationType);
+        ResponseMessageDTO result = underTest.confirmTokenOrResend(TOKEN, emailType);
 
         assertsTest(ownerConfToken, result);
     }
@@ -69,7 +69,7 @@ class AbstractConfirmEmailServiceTest {
                                               RemovalToken removalToken,
                                               AbstractRemovalTokenService<RemovalToken, Subscriber> removalTokenService,
                                               AbstractConfTokenService<ConfToken, OwnerConfToken> confTokenService,
-                                              NotificationType reconfirmNotificationType,
+                                              EmailType reconfirmEmailType,
                                               AbstractConfirmEmailService<ConfToken, OwnerConfToken, AbstractConfTokenService<ConfToken, OwnerConfToken>> underTest) {
         setupTest(confToken, ownerConfToken, confTokenService);
 
@@ -77,7 +77,7 @@ class AbstractConfirmEmailServiceTest {
         given(ownerConfToken.getEmail()).willReturn(EMAIL);
         given(removalToken.getToken()).willReturn("removalToken123");
 
-        ResponseMessageDTO result = underTest.confirmTokenOrResend(TOKEN, reconfirmNotificationType);
+        ResponseMessageDTO result = underTest.confirmTokenOrResend(TOKEN, reconfirmEmailType);
 
         assertsTest(ownerConfToken, result);
     }
@@ -87,17 +87,17 @@ class AbstractConfirmEmailServiceTest {
     void shouldResendConfirmationEmail_whenOwnerDisabledAndTokenExpired(ConfToken confToken,
                                                                         OwnerConfToken ownerConfToken,
                                                                         AbstractConfTokenService<ConfToken, OwnerConfToken> confTokenService,
-                                                                        NotificationType notificationType,
+                                                                        EmailType emailType,
                                                                         AbstractConfirmEmailService<ConfToken, OwnerConfToken, AbstractConfTokenService<ConfToken, OwnerConfToken>> underTest) {
         given(confTokenService.getByToken(anyString())).willReturn(confToken);
         given(confTokenService.extractRelatedEntity(any(ConfToken.class))).willReturn(ownerConfToken);
         doNothing().when(confTokenService).validateTokenConfirmedOrOwnerEnabled(any(ConfToken.class), any(OwnerConfToken.class));
         given(confTokenService.isOwnerDisabledAndTokenExpired(ownerConfToken, confToken)).willReturn(Boolean.TRUE);
-        given(confTokenService.create(ownerConfToken, notificationType)).willReturn(confToken);
+        given(confTokenService.create(ownerConfToken, emailType)).willReturn(confToken);
         given(ownerConfToken.getEmail()).willReturn(EMAIL);
         given(confToken.getToken()).willReturn("newToken123");
 
-        ResponseMessageDTO result = underTest.confirmTokenOrResend(TOKEN, notificationType);
+        ResponseMessageDTO result = underTest.confirmTokenOrResend(TOKEN, emailType);
 
         assertNotNull(result);
         verify(confTokenService, times(1)).delete(confToken);
@@ -137,8 +137,8 @@ class AbstractConfirmEmailServiceTest {
         AccountConfTokenService accountConfTokenService = mock(AccountConfTokenService.class);
         RegistrationService underTest3 = new RegistrationService(emailSenderService, accountConfTokenService, accountService);
         return Stream.of(
-                Arguments.of(productConfToken, productSubscriber, productConfTokenService, NotificationType.RECONFIRM_PRODUCT_SUBSCRIPTION, underTest2),
-                Arguments.of(accountConfToken, account, accountConfTokenService, NotificationType.RECONFIRM_EMAIL, underTest3)
+                Arguments.of(productConfToken, productSubscriber, productConfTokenService, EmailType.RECONFIRM_PRODUCT_SUBSCRIPTION, underTest2),
+                Arguments.of(accountConfToken, account, accountConfTokenService, EmailType.RECONFIRM_EMAIL, underTest3)
         );
     }
 
@@ -152,7 +152,7 @@ class AbstractConfirmEmailServiceTest {
         NewsletterRemovalTokenService newsletterRemovalTokenService = mock(NewsletterRemovalTokenService.class);
         RegisterNewsletterSubscriberService underTest1 = new RegisterNewsletterSubscriberService(emailSenderService, newsletterConfTokenService, newsletterSubscriberService, newsletterRemovalTokenService);
         return Stream.of(
-                Arguments.of(newsletterConfToken, newsletterSubscriber, newsletterRemovalToken, newsletterRemovalTokenService, newsletterConfTokenService, NotificationType.RECONFIRM_NEWSLETTER, underTest1)
+                Arguments.of(newsletterConfToken, newsletterSubscriber, newsletterRemovalToken, newsletterRemovalTokenService, newsletterConfTokenService, EmailType.RECONFIRM_NEWSLETTER, underTest1)
         );
     }
 

@@ -1,9 +1,9 @@
 package com.example.portfolio.webstorespring.services.emails.impl;
 
 import com.example.portfolio.webstorespring.configs.providers.SenderEmailProvider;
-import com.example.portfolio.webstorespring.enums.NotificationType;
-import com.example.portfolio.webstorespring.services.emails.strategy.NotificationStrategy;
-import com.example.portfolio.webstorespring.services.emails.strategy.NotificationStrategyFactory;
+import com.example.portfolio.webstorespring.enums.EmailType;
+import com.example.portfolio.webstorespring.services.emails.strategy.EmailStrategy;
+import com.example.portfolio.webstorespring.services.emails.strategy.EmailStrategyFactory;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -26,16 +26,16 @@ class EmailSenderServiceImplTest {
     @Mock
     private JavaMailSender javaMailSender;
     @Mock
-    private NotificationStrategyFactory notificationStrategyFactory;
+    private EmailStrategyFactory emailStrategyFactory;
     @Mock
-    private NotificationStrategy notificationStrategy;
+    private EmailStrategy emailStrategy;
     @Mock
     private SenderEmailProvider senderEmailProvider;
     @InjectMocks
     private EmailSenderServiceImpl underTest;
 
     @ParameterizedTest
-    @EnumSource(value = NotificationType.class, names = {
+    @EnumSource(value = EmailType.class, names = {
             "RESET_PASSWORD",
             "CONFIRM_EMAIL",
             "RECONFIRM_EMAIL",
@@ -46,19 +46,19 @@ class EmailSenderServiceImplTest {
             "RECONFIRM_PRODUCT_SUBSCRIPTION",
             "WELCOME_PRODUCT_SUBSCRIPTION",
     })
-    void shouldSendEmail(NotificationType notificationType) {
+    void shouldSendEmail(EmailType emailType) {
         String recipientEmail = "test@example.com";
         String confirmLinkWithToken = "http://example.com/confirm?token=12345";
         String emailTitle = "Example title";
         String emailMessage = "Example message: %s";
 
-        given(notificationStrategyFactory.findNotificationStrategy(any(NotificationType.class))).willReturn(notificationStrategy);
-        given(notificationStrategy.getEmailTitle()).willReturn(emailTitle);
-        given(notificationStrategy.getEmailMessage()).willReturn(emailMessage);
+        given(emailStrategyFactory.findNotificationStrategy(any(EmailType.class))).willReturn(emailStrategy);
+        given(emailStrategy.getEmailTitle()).willReturn(emailTitle);
+        given(emailStrategy.getEmailMessage()).willReturn(emailMessage);
         given(senderEmailProvider.getEmail()).willReturn("sender@email.com");
-        given(notificationStrategy.getNotificationType()).willReturn(notificationType);
+        given(emailStrategy.getNotificationType()).willReturn(emailType);
 
-        underTest.sendEmail(notificationType, recipientEmail, confirmLinkWithToken);
+        underTest.sendEmail(emailType, recipientEmail, confirmLinkWithToken);
 
         ArgumentCaptor<SimpleMailMessage> simpleMailMessageArgumentCaptor =
                 ArgumentCaptor.forClass(SimpleMailMessage.class);
