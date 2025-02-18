@@ -2,7 +2,7 @@ package com.example.portfolio.webstorespring.controllers.emails;
 
 import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
 import com.example.portfolio.webstorespring.models.dto.accounts.request.RegistrationRequest;
-import com.example.portfolio.webstorespring.services.emails.RegistrationService;
+import com.example.portfolio.webstorespring.services.emails.registrations.RegistrationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

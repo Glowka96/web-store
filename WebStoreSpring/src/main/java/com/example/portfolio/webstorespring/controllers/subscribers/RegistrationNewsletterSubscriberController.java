@@ -2,7 +2,7 @@ package com.example.portfolio.webstorespring.controllers.subscribers;
 
 import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
 import com.example.portfolio.webstorespring.models.dto.subscribers.SubscriberRequest;
-import com.example.portfolio.webstorespring.services.emails.RegisterNewsletterSubscriberService;
+import com.example.portfolio.webstorespring.services.emails.registrations.RegisterNewsletterSubscriberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

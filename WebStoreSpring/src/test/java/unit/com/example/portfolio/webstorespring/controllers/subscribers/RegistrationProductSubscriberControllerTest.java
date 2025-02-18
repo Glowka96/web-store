@@ -3,7 +3,7 @@ package com.example.portfolio.webstorespring.controllers.subscribers;
 import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
 import com.example.portfolio.webstorespring.models.dto.subscribers.ProductSubscriberRequest;
 import com.example.portfolio.webstorespring.models.dto.subscribers.SubscriberRequest;
-import com.example.portfolio.webstorespring.services.emails.RegisterProductSubscriberService;
+import com.example.portfolio.webstorespring.services.emails.registrations.RegisterProductSubscriberService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
