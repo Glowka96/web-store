@@ -1,6 +1,5 @@
 package com.example.portfolio.webstorespring.services.products;
 
-import com.example.portfolio.webstorespring.annotations.NotifySubscribers;
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.ProductMapper;
 import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
@@ -11,6 +10,7 @@ import com.example.portfolio.webstorespring.models.dto.products.request.ProductR
 import com.example.portfolio.webstorespring.models.dto.products.response.ProductResponse;
 import com.example.portfolio.webstorespring.models.entity.products.Product;
 import com.example.portfolio.webstorespring.repositories.products.ProductRepository;
+import com.example.portfolio.webstorespring.services.emails.notifications.NotifyProductSubscribersService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -30,6 +30,7 @@ public class ProductService {
     private final ProducerService producerService;
     private final SubcategoryService subcategoryService;
     private final ProductTypeService productTypeService;
+    private final NotifyProductSubscribersService notifyProductSubscribersService;
     private final Clock clock = Clock.systemUTC();
 
     public ProductWithProducerAndPromotionDTO getById(Long id) {
@@ -90,11 +91,22 @@ public class ProductService {
         return ProductMapper.mapToDto(foundProduct);
     }
 
-    @NotifySubscribers
+    @Transactional
     public ResponseMessageDTO updateQuality(ProductQualityRequest request) {
+        log.info("Fetching product for ID: {}", request.productId());
         Product foundProduct = findById(request.productId());
+
+        checkDoSendNotification(foundProduct);
+
         foundProduct.setQuantity(request.quantity());
+        log.info("Saved new quantity of product.");
         return new ResponseMessageDTO("The product quantity was updated successfully.");
+    }
+
+    private void checkDoSendNotification(Product product) {
+        log.debug("Checking product quantity, is equals 0");
+        if (product.getQuantity() != 0) return;
+        notifyProductSubscribersService.notifyEnabledSubscribers(product.getId(), product.getName());
     }
 
     public void deleteById(Long id) {
