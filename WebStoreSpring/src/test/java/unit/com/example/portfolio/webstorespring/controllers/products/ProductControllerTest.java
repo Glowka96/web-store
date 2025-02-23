@@ -1,6 +1,8 @@
 package com.example.portfolio.webstorespring.controllers.products;
 
+import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
 import com.example.portfolio.webstorespring.models.dto.products.ProductWithProducerAndPromotionDTO;
+import com.example.portfolio.webstorespring.models.dto.products.request.ProductQualityRequest;
 import com.example.portfolio.webstorespring.models.dto.products.request.ProductRequest;
 import com.example.portfolio.webstorespring.models.dto.products.response.ProductResponse;
 import com.example.portfolio.webstorespring.services.products.ProductService;
@@ -125,6 +127,22 @@ class ProductControllerTest {
                 .andExpect(jsonPath("$.name", is(productResponse.name())))
                 .andExpect(jsonPath("$.description", is(productResponse.description())))
                 .andExpect(jsonPath("$.price", is(productResponse.price().doubleValue())))
+                .andDo(print());
+    }
+
+    @Test
+    void shouldUpdateProductQuantity() throws Exception {
+        ProductQualityRequest request = new ProductQualityRequest(1L, 10L);
+        ResponseMessageDTO response = new ResponseMessageDTO("The product quantity was updated successfully.");
+
+        given(productService.updateQuality(any(ProductQualityRequest.class))).willReturn(response);
+
+        mvc.perform(patch(URI + "/admin/products")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message", is(response.message())))
                 .andDo(print());
     }
 
