@@ -6,7 +6,6 @@ import com.example.portfolio.webstorespring.services.emails.EmailSenderService;
 import com.example.portfolio.webstorespring.services.subscribers.ProductSubscriptionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,9 +16,8 @@ public class NotifyProductSubscribersService {
     private final EmailSenderService emailSenderService;
     private final ProductSubscriptionService productSubscriptionService;
 
-    @Async
     public void notifyEnabledSubscribers(Long productId, String productName) {
-        log.info("Starting send notification for subscribers.");
+        log.info("Notifying subscribers for product: {}", productName);
         ProductSubscription productSubscription = productSubscriptionService.getWithEnabledSubscribersByProductId(productId);
         productSubscription.getProductSubscribers().forEach(
                 subscriber -> emailSenderService.sendEmail(
