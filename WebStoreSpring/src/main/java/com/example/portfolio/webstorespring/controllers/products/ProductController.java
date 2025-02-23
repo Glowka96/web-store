@@ -1,6 +1,8 @@
 package com.example.portfolio.webstorespring.controllers.products;
 
+import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
 import com.example.portfolio.webstorespring.models.dto.products.ProductWithProducerAndPromotionDTO;
+import com.example.portfolio.webstorespring.models.dto.products.request.ProductQualityRequest;
 import com.example.portfolio.webstorespring.models.dto.products.request.ProductRequest;
 import com.example.portfolio.webstorespring.models.dto.products.response.ProductResponse;
 import com.example.portfolio.webstorespring.services.products.ProductService;
@@ -42,6 +44,11 @@ public class ProductController {
                                          @PathVariable("productId") Long productId,
                                          @Valid @RequestBody ProductRequest request) {
         return productService.update(subcategoryId, producerId, productId, request);
+    }
+
+    @PatchMapping("/admin/products")
+    public ResponseMessageDTO updateProductQuantity(@Valid @RequestBody ProductQualityRequest request) {
+        return productService.updateQuality(request);
     }
 
     @DeleteMapping("/admin/products/{productId}")
