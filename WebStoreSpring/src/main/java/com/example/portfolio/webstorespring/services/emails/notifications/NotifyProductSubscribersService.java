@@ -22,7 +22,11 @@ public class NotifyProductSubscribersService {
         log.info("Starting send notification for subscribers.");
         ProductSubscription productSubscription = productSubscriptionService.getWithEnabledSubscribersByProductId(productId);
         productSubscription.getProductSubscribers().forEach(
-                subscriber -> emailSenderService.sendEmail(EmailType.AVAILABLE_PRODUCT, subscriber.getEmail(), productName)
+                subscriber -> emailSenderService.sendEmail(
+                        EmailType.AVAILABLE_PRODUCT,
+                        subscriber.getEmail(),
+                        productName, productId.toString()
+                )
         );
         log.info("Sent all emails.");
     }
