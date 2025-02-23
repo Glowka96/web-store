@@ -24,13 +24,17 @@ public class WelcomeNewsletterEmailStrategy implements EmailStrategy {
 
     @Override
     public String getEmailMessage() {
-        return "Hi, Welcome to the ToysLand family! \n" +
-               "We're thrilled to have you on board. By joining our newsletter, you'll be the first to know about:\n\n" +
-               "Promotions\n" +
-               "New product launches\n" +
-               "Exciting updates and tips\n" +
-               "Stay tuned—great things are coming your way!" +
-               "If you want to unsubscribe newsletter clink here: " +
-               linkProvider.getUnsubscribeNewsletter() + "%s";
+        return """
+                Hi, Welcome to the ToysLand family!
+                We're thrilled to have you on board. By joining our newsletter, you'll be the first to know about:
+                
+                Promotions
+                New product launches
+                Exciting updates and tips
+                Stay tuned—great things are coming your way!
+                
+                If you want to unsubscribe newsletter clink here:
+                """
+                + linkProvider.getUnsubscribeNewsletter() + "%s";
     }
 }

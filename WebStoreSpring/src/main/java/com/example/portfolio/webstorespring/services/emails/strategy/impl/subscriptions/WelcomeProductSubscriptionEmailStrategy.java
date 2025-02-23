@@ -24,13 +24,17 @@ public class WelcomeProductSubscriptionEmailStrategy implements EmailStrategy {
 
     @Override
     public String getEmailMessage() {
-        return "Hi, Welcome to the ToysLand family! \n" +
-                "We're thrilled to have you on board. By joining our product subscription, you'll be the first to know about:\n\n" +
-                "When the product you subscribe to is available" +
-                "Thank you for trusting us to keep you informed about your favorite toys.\n\n" +
-                "If you want to unsubscribe this product click here: " +
-                linkProvider.getUnsubscribeSingleProduct() + "%s \n\n" +
-                "If you want to unsubscribe all products clink here: " +
+        return """
+                Hi, Welcome to the ToysLand family!
+                We're thrilled to have you on board. By joining our product subscription, you'll be the first to know about:
+                When the product you subscribe to is available
+                Thank you for trusting us to keep you informed about your favorite toys.
+                
+                If you want to unsubscribe this product click here:
+                """ +
+                linkProvider.getUnsubscribeSingleProduct() + "%s" +
+
+                "If you want to unsubscribe all products clink here: \n" +
                 linkProvider.getUnsubscribeProductSubscription() + "%s";
     }
 }
