@@ -93,6 +93,7 @@ class OrderControllerIT extends AbstractAuthControllerIT {
     void deleteTestData() {
         orderRepository.deleteAll();
         discountRepository.deleteAll();
+        deliveryTypeRepository.deleteAll();
         initProductTestData.deleteTestData();
     }
 
