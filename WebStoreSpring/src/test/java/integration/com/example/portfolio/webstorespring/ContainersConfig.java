@@ -11,6 +11,6 @@ public class ContainersConfig {
     @Bean
     @ServiceConnection
     MySQLContainer<?> mySQLContainer() {
-        return new MySQLContainer<>("mysql:8.0.31");
+        return new MySQLContainer<>("mysql:8.0.31").withReuse(Boolean.TRUE);
     }
 }
