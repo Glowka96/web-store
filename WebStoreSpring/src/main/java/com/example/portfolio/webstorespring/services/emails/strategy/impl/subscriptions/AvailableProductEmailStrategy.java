@@ -32,6 +32,8 @@ public class AvailableProductEmailStrategy implements EmailStrategy {
                 """ +
                 corsProvider.getAllowedOriginPatterns() + "/api/v1/products/%s" +
                 """
+                
+                
                 Best regards,
                 The Webshop Team
                 """;
