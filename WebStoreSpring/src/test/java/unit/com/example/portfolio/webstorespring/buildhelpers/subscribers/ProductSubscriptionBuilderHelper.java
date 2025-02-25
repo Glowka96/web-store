@@ -1,6 +1,7 @@
 package com.example.portfolio.webstorespring.buildhelpers.subscribers;
 
 
+import com.example.portfolio.webstorespring.models.entity.products.Product;
 import com.example.portfolio.webstorespring.models.entity.subscribers.ProductSubscription;
 
 import java.util.HashSet;
@@ -15,6 +16,13 @@ public class ProductSubscriptionBuilderHelper {
         return ProductSubscription.builder()
                 .id(1L)
                 .product(make(a(BASIC_PRODUCT)))
+                .productSubscribers(new HashSet<>())
+                .build();
+    }
+
+    public static ProductSubscription createProductSubscription(Product product) {
+        return ProductSubscription.builder()
+                .product(product)
                 .productSubscribers(new HashSet<>())
                 .build();
     }
