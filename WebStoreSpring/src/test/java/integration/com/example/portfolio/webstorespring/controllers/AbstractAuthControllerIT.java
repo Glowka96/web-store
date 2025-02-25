@@ -55,7 +55,7 @@ public abstract class AbstractAuthControllerIT extends AbstractTestRestTemplateI
         Set<Role> adminRole = roleRepository.findByName("ROLE_ADMIN");
 
         Account user = createAccount("user@test.pl",userRole);
-        Account admin = createAccount("admin@test.p", adminRole);
+        Account admin = createAccount("admin@test.pl", adminRole);
 
         TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());
         try{
