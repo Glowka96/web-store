@@ -28,7 +28,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             INNER JOIN p.type t
             LEFT JOIN p.promotions prom_1 ON (CURRENT_TIMESTAMP BETWEEN prom_1.startDate AND prom_1.endDate)
             LEFT JOIN p.promotions prom_2 ON (prom_2.endDate >= :date30DaysAgo AND prom_1.id IS NOT NULL)
-            WHERE p.id = :productId AND p.quantity > 0
+            WHERE p.id = :productId
             GROUP BY p.id, p.name, p.imageUrl, p.quantity, t.name, p.price, prom_1.promotionPrice, prom_1.endDate, p.description, p.producer.name
             """)
     ProductWithProducerAndPromotionDTO findById(@Param("productId") Long productId,
@@ -42,7 +42,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             INNER JOIN p.subcategory s
             LEFT JOIN p.promotions prom_1 ON (CURRENT_TIMESTAMP BETWEEN prom_1.startDate AND prom_1.endDate)
             LEFT JOIN p.promotions prom_2 ON (prom_2.endDate >= :date30DaysAgo AND prom_1.id IS NOT NULL)
-            WHERE p.subcategory.id = :subcategoryId AND p.quantity > 0
+            WHERE p.subcategory.id = :subcategoryId
             GROUP BY p.id, p.name, p.imageUrl, p.quantity, p.price, prom_1.promotionPrice
             """)
     Optional<Page<ProductWithPromotionDTO>> findBySubcategoryId(@Param("subcategoryId") Long subcategoryId,
@@ -62,7 +62,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             OR LOWER(p.description) LIKE LOWER(CONCAT('%', :text, '%'))
             OR LOWER(pr.name) LIKE LOWER(CONCAT('%', :text, '%'))
             OR LOWER(t.name) LIKE LOWER(CONCAT('%', :text, '%')))
-            AND p.quantity > 0
             GROUP BY p.id, p.name, p.imageUrl, p.quantity, t.name, p.price, prom_1.promotionPrice
             """)
     Optional<Page<ProductWithPromotionDTO>> searchByEnteredText(@Param("text") String text,
@@ -78,7 +77,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             LEFT JOIN p.promotions prom_2
             WHERE (CURRENT_TIMESTAMP BETWEEN prom_1.startDate AND prom_1.endDate)
             AND prom_2.endDate >= :date30DaysAgo
-            AND p.quantity > 0
             GROUP BY p.id, p.name, p.imageUrl, p.quantity, p.price, prom_1.promotionPrice, prom_1.endDate
             """)
     Optional<Page<ProductWithPromotionDTO>> findPromotionProducts(@Param("date30DaysAgo") LocalDateTime date30DaysAgo,
@@ -94,7 +92,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             WHERE p.createdAt >= :date30DaysAgo
             AND p.quantity > 0
             GROUP BY p.id, p.name, p.imageUrl, p.quantity, p.price, prom_1.promotionPrice
-                     """)
+            """)
     Optional<Page<ProductWithPromotionDTO>> findNewProducts(@Param("date30DaysAgo") LocalDateTime date30DaysAgo,
                                                             Pageable pageable);
 
