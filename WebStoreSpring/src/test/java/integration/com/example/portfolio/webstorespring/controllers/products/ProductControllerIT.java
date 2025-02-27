@@ -10,6 +10,9 @@ import com.example.portfolio.webstorespring.models.dto.products.response.Product
 import com.example.portfolio.webstorespring.models.entity.products.Product;
 import com.example.portfolio.webstorespring.productsTestData.InitProductTestData;
 import com.example.portfolio.webstorespring.repositories.products.ProductRepository;
+import com.example.portfolio.webstorespring.repositories.subscribers.InitSubscriptionData;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,7 +31,11 @@ class ProductControllerIT extends AbstractBaseControllerIT<ProductRequest, Produ
     @Autowired
     private InitProductTestData initProductTestData;
     @Autowired
+    private InitSubscriptionData initSubscriptionData;
+    @Autowired
     private ProductRepository productRepository;
+    @PersistenceContext
+    private EntityManager entityManager;
     private static final String URI_PRODUCT = "/products";
     private String uri;
     private Long subcategoryId;
@@ -176,6 +183,26 @@ class ProductControllerIT extends AbstractBaseControllerIT<ProductRequest, Produ
     }
 
     @Test
+    void shouldUpdateProductQuantityAndSendEmail_whenOldQuantityProductIsZero_forAuthenticationAdmin_thenStatusOK() {
+        initSubscriptionData.init();
+        ProductQualityRequest request = new ProductQualityRequest(initSubscriptionData.getProductId(), 100L);
+        HttpEntity<ProductQualityRequest> httpEntity = new HttpEntity<>(request, getHttpHeadersWithAdminToken());
+
+        ResponseEntity<ResponseMessageDTO> response = restTemplate.exchange(
+                localhostAdminUri + "/products",
+                HttpMethod.PATCH,
+                httpEntity,
+                ResponseMessageDTO.class
+        );
+
+        assertNotNull(response);
+
+        Optional<Product> productAfterUpdated = productRepository.findById(initSubscriptionData.getProductId());
+        assertEquals(100L, productAfterUpdated.get().getQuantity());
+        initSubscriptionData.deleteTestData();
+    }
+
+    @Test
     void shouldUpdateProductQuantity_forAuthenticationAdmin_thenStatusOK() {
         testOfUpdateProductQuantity(getHttpHeadersWithAdminToken(), HttpStatus.OK);
 
@@ -191,7 +218,7 @@ class ProductControllerIT extends AbstractBaseControllerIT<ProductRequest, Produ
         assertNotEquals(100L, productAfterUpdated.get().getQuantity());
     }
 
-    private void testOfUpdateProductQuantity(HttpHeaders httpHeaders, HttpStatus forbidden) {
+    private void testOfUpdateProductQuantity(HttpHeaders httpHeaders, HttpStatus httpStatus) {
         ProductQualityRequest request = new ProductQualityRequest(savedEntityId, 100L);
         HttpEntity<ProductQualityRequest> httpEntity = new HttpEntity<>(request, httpHeaders);
 
@@ -203,7 +230,7 @@ class ProductControllerIT extends AbstractBaseControllerIT<ProductRequest, Produ
         );
 
         assertNotNull(response);
-        assertEquals(forbidden, response.getStatusCode());
+        assertEquals(httpStatus, response.getStatusCode());
     }
 
     @Test

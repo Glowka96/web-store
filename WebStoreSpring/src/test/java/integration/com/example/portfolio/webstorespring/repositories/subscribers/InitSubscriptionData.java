@@ -7,6 +7,7 @@ import com.example.portfolio.webstorespring.models.entity.subscribers.ProductSub
 import com.example.portfolio.webstorespring.repositories.products.ProductRepository;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.ID;
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.*;
@@ -26,6 +27,7 @@ public class InitSubscriptionData {
     @Getter
     private Long productId;
 
+    @Transactional
     public void init() {
         ProductSubscriber enabledSubscriber = make(a(BASIC_PRODUCT_SUBSCRIBER)
                 .but(withNull(ProductSubscriberBuilderHelper.ID)));
