@@ -10,16 +10,16 @@ import java.util.Optional;
 public interface ProductSubscriptionRepository extends JpaRepository<ProductSubscription, Long> {
 
     @Query("""
-        SELECT ps FROM ProductSubscription ps
-        JOIN ps.productSubscribers s ON s.enabled = true
-        WHERE ps.product.id = :productId
-""")
+                SELECT ps FROM ProductSubscription ps
+                JOIN FETCH ps.productSubscribers s
+                WHERE ps.id = :productId AND s.enabled = true
+            """)
     Optional<ProductSubscription> findByIdWithEnabledSubscribers(@Param("productId") Long productId);
 
     @Query("""
-        SELECT ps FROM ProductSubscription ps
-        JOIN ps.productSubscribers s
-        WHERE ps.product.id = :productId AND s.email = :email
-""")
+                SELECT ps FROM ProductSubscription ps
+                LEFT JOIN FETCH ps.productSubscribers s
+                WHERE ps.id = :productId AND s.email = :email
+            """)
     Optional<ProductSubscription> findByIdAndSubscriberEmail(@Param("productId") Long productId, @Param("email") String email);
 }
