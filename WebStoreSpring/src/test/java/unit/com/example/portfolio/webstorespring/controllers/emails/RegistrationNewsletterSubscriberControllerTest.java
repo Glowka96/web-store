@@ -1,9 +1,8 @@
-package com.example.portfolio.webstorespring.controllers.subscribers;
+package com.example.portfolio.webstorespring.controllers.emails;
 
 import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
-import com.example.portfolio.webstorespring.models.dto.subscribers.ProductSubscriberRequest;
 import com.example.portfolio.webstorespring.models.dto.subscribers.SubscriberRequest;
-import com.example.portfolio.webstorespring.services.emails.registrations.RegisterProductSubscriberService;
+import com.example.portfolio.webstorespring.services.emails.registrations.RegisterNewsletterSubscriberService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,17 +25,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
-class RegistrationProductSubscriberControllerTest {
+class RegistrationNewsletterSubscriberControllerTest {
 
     @Mock
-    private RegisterProductSubscriberService registerProductSubscriberService;
+    private RegisterNewsletterSubscriberService registerNewsletterSubscriberService;
     @InjectMocks
-    private RegistrationProductSubscriberController underTest;
+    private RegistrationNewsletterSubscriberController underTest;
 
     private MockMvc mvc;
     private ObjectMapper mapper;
 
-    private static final String URI = "/api/v1/product-subscription/registrations";
+    private static final String URI = "/api/v1/newsletter/registrations";
 
     @BeforeEach
     void init() {
@@ -46,9 +45,9 @@ class RegistrationProductSubscriberControllerTest {
 
     @Test
     void shouldConfirm() throws Exception {
-        ResponseMessageDTO response = new ResponseMessageDTO("Product subscriber confirmed.");
+        ResponseMessageDTO response = new ResponseMessageDTO("Newsletter subscriber confirmed.");
 
-        given(registerProductSubscriberService.confirm(anyString())).willReturn(response);
+        given(registerNewsletterSubscriberService.confirm(anyString())).willReturn(response);
 
         mvc.perform(get(URI + "/confirm")
                         .param("token", "token123"))
@@ -59,11 +58,10 @@ class RegistrationProductSubscriberControllerTest {
 
     @Test
     void shouldRegistration() throws Exception {
-        SubscriberRequest subscriberRequest = new SubscriberRequest("test@test.pl");
-        ProductSubscriberRequest request = new ProductSubscriberRequest(subscriberRequest, 1L);
+        SubscriberRequest request = new SubscriberRequest("test@test.pl");
         ResponseMessageDTO response = new ResponseMessageDTO("Verify your email address using the link in your email.");
 
-        given(registerProductSubscriberService.register(any(ProductSubscriberRequest.class))).willReturn(response);
+        given(registerNewsletterSubscriberService.register(any(SubscriberRequest.class))).willReturn(response);
 
         mvc.perform(post(URI)
                         .contentType(MediaType.APPLICATION_JSON)

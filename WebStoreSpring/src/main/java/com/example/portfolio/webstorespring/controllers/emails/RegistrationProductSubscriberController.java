@@ -1,4 +1,4 @@
-package com.example.portfolio.webstorespring.controllers.subscribers;
+package com.example.portfolio.webstorespring.controllers.emails;
 
 import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
 import com.example.portfolio.webstorespring.models.dto.subscribers.ProductSubscriberRequest;
