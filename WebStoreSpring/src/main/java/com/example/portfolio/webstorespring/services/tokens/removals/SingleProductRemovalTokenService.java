@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -24,6 +26,7 @@ public class SingleProductRemovalTokenService {
     public SingleProductRemovalToken save(ProductSubscriber subscriber, Long productId) {
         log.info("Saving removal token for subscriber email: {} and product id {}", subscriber.getEmail(), productId);
         return removalTokenRepository.save(SingleProductRemovalToken.builder()
+                .token(UUID.randomUUID().toString())
                 .subscriber(subscriber)
                 .productId(productId)
                 .build());
