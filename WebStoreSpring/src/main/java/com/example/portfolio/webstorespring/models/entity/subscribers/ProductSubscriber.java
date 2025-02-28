@@ -4,6 +4,7 @@ import com.example.portfolio.webstorespring.models.entity.tokens.removals.Single
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -16,6 +17,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Builder
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductSubscriber implements OwnerConfToken, Subscriber {
