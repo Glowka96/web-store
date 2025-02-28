@@ -1,6 +1,7 @@
 package com.example.portfolio.webstorespring.repositories.subscribers;
 
 import com.example.portfolio.webstorespring.configs.ContainersConfig;
+import com.example.portfolio.webstorespring.initTestData.InitSubscriptionData;
 import com.example.portfolio.webstorespring.models.entity.subscribers.ProductSubscriber;
 import com.example.portfolio.webstorespring.models.entity.subscribers.ProductSubscription;
 import jakarta.persistence.EntityManager;

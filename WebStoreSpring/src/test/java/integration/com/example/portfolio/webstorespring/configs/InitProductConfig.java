@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.configs;
 
-import com.example.portfolio.webstorespring.productsTestData.impl.InitProductTestDataImpl;
+import com.example.portfolio.webstorespring.initTestData.impl.InitProductTestDataImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

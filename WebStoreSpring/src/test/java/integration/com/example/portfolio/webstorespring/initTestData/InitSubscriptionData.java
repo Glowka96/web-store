@@ -1,10 +1,12 @@
-package com.example.portfolio.webstorespring.repositories.subscribers;
+package com.example.portfolio.webstorespring.initTestData;
 
 import com.example.portfolio.webstorespring.buildhelpers.subscribers.ProductSubscriberBuilderHelper;
 import com.example.portfolio.webstorespring.models.entity.products.Product;
 import com.example.portfolio.webstorespring.models.entity.subscribers.ProductSubscriber;
 import com.example.portfolio.webstorespring.models.entity.subscribers.ProductSubscription;
 import com.example.portfolio.webstorespring.repositories.products.ProductRepository;
+import com.example.portfolio.webstorespring.repositories.subscribers.ProductSubscriberRepository;
+import com.example.portfolio.webstorespring.repositories.subscribers.ProductSubscriptionRepository;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;

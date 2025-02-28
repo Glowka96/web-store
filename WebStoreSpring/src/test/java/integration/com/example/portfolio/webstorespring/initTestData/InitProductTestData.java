@@ -1,4 +1,4 @@
-package com.example.portfolio.webstorespring.productsTestData;
+package com.example.portfolio.webstorespring.initTestData;
 
 import com.example.portfolio.webstorespring.controllers.InitTestData;
 import org.springframework.data.domain.Pageable;

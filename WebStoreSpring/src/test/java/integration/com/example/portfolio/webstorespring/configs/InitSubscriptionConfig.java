@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.configs;
 
-import com.example.portfolio.webstorespring.repositories.subscribers.InitSubscriptionData;
+import com.example.portfolio.webstorespring.initTestData.InitSubscriptionData;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
