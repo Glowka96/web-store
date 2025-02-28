@@ -20,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.BASIC_ACCOUNT;
 import static com.natpryce.makeiteasy.MakeItEasy.a;
 import static com.natpryce.makeiteasy.MakeItEasy.make;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -50,7 +51,7 @@ class AccountUpdateAspectTest {
         given(accountRepository.existsByEmail(anyString())).willReturn(Boolean.FALSE);
         given(passwordEncoder.matches(anyString(), anyString())).willReturn(Boolean.TRUE);
 
-        underTest.beforeValidateEmailUpdate(accountDetails, updateEmailRequest);
+        assertDoesNotThrow(() -> underTest.beforeValidateEmailUpdate(accountDetails, updateEmailRequest));
     }
 
     @Test

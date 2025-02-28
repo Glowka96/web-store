@@ -32,8 +32,7 @@ public abstract class AbstractConfTokenService<T extends ConfToken, O extends Ow
                 createTokenEntity(
                         relatedEntity,
                         tokenDetailsService.create(
-                                notificationExpirationManager.getExpirationMinutes(
-                                        emailType)
+                                notificationExpirationManager.getExpirationMinutes(emailType)
                         )
                 )
         );
