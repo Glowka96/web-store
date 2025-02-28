@@ -1,4 +1,4 @@
-package com.example.portfolio.webstorespring;
+package com.example.portfolio.webstorespring.configs;
 
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
@@ -11,6 +11,6 @@ public class ContainersConfig {
     @Bean
     @ServiceConnection
     MySQLContainer<?> mySQLContainer() {
-        return new MySQLContainer<>("mysql:8.0.31").withReuse(Boolean.TRUE);
+        return new MySQLContainer<>("mysql:8.0.31");
     }
 }

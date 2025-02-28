@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.repositories.subscribers;
 
-import com.example.portfolio.webstorespring.ContainersConfig;
+import com.example.portfolio.webstorespring.configs.ContainersConfig;
 import com.example.portfolio.webstorespring.models.entity.products.Product;
 import com.example.portfolio.webstorespring.models.entity.subscribers.ProductSubscriber;
 import com.example.portfolio.webstorespring.models.entity.subscribers.ProductSubscription;

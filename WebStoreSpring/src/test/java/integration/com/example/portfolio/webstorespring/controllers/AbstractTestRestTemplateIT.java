@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.controllers;
 
-import com.example.portfolio.webstorespring.ContainersConfig;
+import com.example.portfolio.webstorespring.configs.ContainersConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;

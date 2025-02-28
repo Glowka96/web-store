@@ -61,7 +61,7 @@ public class InitSubscriptionData {
         subscriptionRepository.save(subscription);
     }
 
-    void deleteTestData() {
+    public void deleteTestData() {
         subscriptionRepository.deleteAll();
         subscriberRepository.deleteAll();
         productRepository.deleteAll();
