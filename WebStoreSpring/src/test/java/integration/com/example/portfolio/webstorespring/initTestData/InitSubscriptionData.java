@@ -1,6 +1,7 @@
 package com.example.portfolio.webstorespring.initTestData;
 
 import com.example.portfolio.webstorespring.buildhelpers.subscribers.ProductSubscriberBuilderHelper;
+import com.example.portfolio.webstorespring.controllers.InitTestData;
 import com.example.portfolio.webstorespring.models.entity.products.Product;
 import com.example.portfolio.webstorespring.models.entity.subscribers.ProductSubscriber;
 import com.example.portfolio.webstorespring.models.entity.subscribers.ProductSubscription;
@@ -17,7 +18,7 @@ import static com.example.portfolio.webstorespring.buildhelpers.subscribers.Prod
 import static com.example.portfolio.webstorespring.buildhelpers.subscribers.ProductSubscriptionBuilderHelper.createProductSubscription;
 import static com.natpryce.makeiteasy.MakeItEasy.*;
 
-public class InitSubscriptionData {
+public class InitSubscriptionData implements InitTestData {
 
     @Autowired
     private ProductSubscriptionRepository subscriptionRepository;
@@ -30,7 +31,7 @@ public class InitSubscriptionData {
     private Long productId;
 
     @Transactional
-    public void init() {
+    public void initTestData() {
         ProductSubscriber enabledSubscriber = make(a(BASIC_PRODUCT_SUBSCRIBER)
                 .but(withNull(ProductSubscriberBuilderHelper.ID)));
         ProductSubscriber enabledSubscriber2 = make(a(BASIC_PRODUCT_SUBSCRIBER)

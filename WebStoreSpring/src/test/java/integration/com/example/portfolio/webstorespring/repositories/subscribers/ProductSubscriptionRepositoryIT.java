@@ -36,7 +36,7 @@ class ProductSubscriptionRepositoryIT {
 
     @BeforeEach
     void init() {
-        initSubscriptionData.init();
+        initSubscriptionData.initTestData();
         entityManager.flush();
         entityManager.clear();
     }

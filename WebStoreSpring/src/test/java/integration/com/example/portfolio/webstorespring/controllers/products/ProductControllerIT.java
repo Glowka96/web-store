@@ -184,7 +184,7 @@ class ProductControllerIT extends AbstractBaseControllerIT<ProductRequest, Produ
 
     @Test
     void shouldUpdateProductQuantityAndSendEmail_whenOldQuantityProductIsZero_forAuthenticationAdmin_thenStatusOK() {
-        initSubscriptionData.init();
+        initSubscriptionData.initTestData();
         ProductQualityRequest request = new ProductQualityRequest(initSubscriptionData.getProductId(), 100L);
         HttpEntity<ProductQualityRequest> httpEntity = new HttpEntity<>(request, getHttpHeadersWithAdminToken());
 
