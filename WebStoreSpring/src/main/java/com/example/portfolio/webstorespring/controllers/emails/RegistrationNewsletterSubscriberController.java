@@ -8,8 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-// TODO: Think about moved these classes for emails directory or emails' classes moved to other directory
-
 @RestController
 @RequestMapping("/api/v1/newsletter/registrations")
 @RequiredArgsConstructor
