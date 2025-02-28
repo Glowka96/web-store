@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +36,7 @@ public class ProductSubscriberService {
                             ProductSubscriber.builder()
                                     .email(subscriber.email())
                                     .enabled(Boolean.FALSE)
+                                    .subscriptions(new HashSet<>())
                                     .build()
                     );
                 }
