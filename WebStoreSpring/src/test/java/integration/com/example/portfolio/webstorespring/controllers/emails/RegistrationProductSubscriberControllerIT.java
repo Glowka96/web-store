@@ -54,6 +54,8 @@ class RegistrationProductSubscriberControllerIT extends AbstractTestRestTemplate
     @Autowired
     private ProductRepository productRepository;
 
+    private static final String URI = "/product-subscription/registrations";
+
     @AfterEach
     void delete() {
         confTokenRepository.deleteAll();
@@ -84,14 +86,14 @@ class RegistrationProductSubscriberControllerIT extends AbstractTestRestTemplate
         confTokenRepository.save(productConfToken);
 
         ResponseEntity<ResponseMessageDTO> response = restTemplate.exchange(
-                localhostUri + "/product-subscription/registrations/confirm?token=test_example",
+                localhostUri + URI + "/confirm?token=test_example",
                 HttpMethod.GET,
                 null,
                 ResponseMessageDTO.class
         );
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(response);
+        assertNotNull(response.getBody());
 
         ConfToken confToken = confTokenRepository.findByTokenDetails_Token("test_example").get();
         assertNotNull(confToken.getTokenDetails().getConfirmedAt());
@@ -121,14 +123,14 @@ class RegistrationProductSubscriberControllerIT extends AbstractTestRestTemplate
         HttpEntity<ProductSubscriberRequest> httpEntity = new HttpEntity<>(request);
 
         ResponseEntity<ResponseMessageDTO> response = restTemplate.exchange(
-                localhostUri + "/product-subscription/registrations",
+                localhostUri + URI,
                 HttpMethod.POST,
                 httpEntity,
                 ResponseMessageDTO.class
         );
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertNotNull(response);
+        assertNotNull(response.getBody());
         assertEquals("You have successfully subscribed to this product.", response.getBody().message());
 
         assertEquals(1L, singleProductRemovalRepository.findAll().size());
