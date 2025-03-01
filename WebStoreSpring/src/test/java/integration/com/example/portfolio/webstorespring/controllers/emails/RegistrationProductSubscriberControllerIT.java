@@ -64,7 +64,7 @@ class RegistrationProductSubscriberControllerIT extends AbstractTestRestTemplate
     }
 
     @Test
-    void shouldConfirmNewsletterSubscription_thenStatusIsOK() {
+    void shouldConfirmProductSubscription_thenStatusIsOK() {
         ProductSubscriber subscriber = make(a(BASIC_PRODUCT_SUBSCRIBER)
                 .but(withNull(ProductSubscriberBuilderHelper.ID))
                 .but(with(ENABLED, Boolean.FALSE))
@@ -103,7 +103,7 @@ class RegistrationProductSubscriberControllerIT extends AbstractTestRestTemplate
     }
 
     @Test
-    void registration() {
+    void shouldRegistrationProductSubscriber_thenStatusIsCreated() {
         Product product = make(a(BASIC_PRODUCT)
                 .but(withNull(ProductBuilderHelper.ID))
                 .but(withNull(SUBCATEGORY))
