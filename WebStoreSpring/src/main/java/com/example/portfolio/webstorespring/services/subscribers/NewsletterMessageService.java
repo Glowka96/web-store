@@ -5,6 +5,7 @@ import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
 import com.example.portfolio.webstorespring.models.dto.subscribers.NewsletterMessageRequest;
 import com.example.portfolio.webstorespring.models.entity.subscribers.NewsletterMessage;
 import com.example.portfolio.webstorespring.repositories.subscribers.NewsletterMessageRepository;
+import com.example.portfolio.webstorespring.services.emails.notifications.NotifyNewsletterSubscriberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
