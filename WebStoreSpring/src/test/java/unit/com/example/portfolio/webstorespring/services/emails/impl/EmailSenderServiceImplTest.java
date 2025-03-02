@@ -56,7 +56,7 @@ class EmailSenderServiceImplTest {
         given(emailStrategy.getEmailTitle()).willReturn(emailTitle);
         given(emailStrategy.getEmailMessage()).willReturn(emailMessage);
         given(senderEmailProvider.getEmail()).willReturn("sender@email.com");
-        given(emailStrategy.getNotificationType()).willReturn(emailType);
+        given(emailStrategy.getEmailType()).willReturn(emailType);
 
         underTest.sendEmail(emailType, recipientEmail, confirmLinkWithToken);
 

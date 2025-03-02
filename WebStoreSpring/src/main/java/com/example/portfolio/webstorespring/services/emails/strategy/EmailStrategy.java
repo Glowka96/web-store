@@ -4,7 +4,7 @@ import com.example.portfolio.webstorespring.enums.EmailType;
 
 public interface EmailStrategy {
 
-    EmailType getNotificationType();
+    EmailType getEmailType();
 
     String getEmailTitle();
 

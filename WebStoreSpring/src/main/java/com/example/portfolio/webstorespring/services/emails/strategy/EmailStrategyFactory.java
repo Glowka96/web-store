@@ -21,8 +21,8 @@ public class EmailStrategyFactory {
 
     private void createNotificationStrategyMap(Set<EmailStrategy> notificationStrategies) {
         notificationStrategies.forEach(n -> {
-            notificationStrategyMap.put(n.getNotificationType(), n);
-            log.debug("Putted notification type: {} and strategy: {} into map.", n.getNotificationType().name(), n.getClass().getSimpleName());
+            notificationStrategyMap.put(n.getEmailType(), n);
+            log.debug("Putted notification type: {} and strategy: {} into map.", n.getEmailType().name(), n.getClass().getSimpleName());
         });
     }
 

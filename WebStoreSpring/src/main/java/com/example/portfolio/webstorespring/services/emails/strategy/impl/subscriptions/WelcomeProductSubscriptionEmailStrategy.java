@@ -13,7 +13,7 @@ public class WelcomeProductSubscriptionEmailStrategy implements EmailStrategy {
     private final ConfirmationLinkProvider linkProvider;
 
     @Override
-    public EmailType getNotificationType() {
+    public EmailType getEmailType() {
         return EmailType.WELCOME_PRODUCT_SUBSCRIPTION;
     }
 

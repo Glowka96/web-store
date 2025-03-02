@@ -28,7 +28,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
                           String ... tokensOrMessages) {
         EmailStrategy emailStrategy = emailStrategyFactory.findNotificationStrategy(emailType);
 
-        log.info("Sending {} email to: {}", emailStrategy.getNotificationType().name(), email);
+        log.info("Sending {} email to: {}", emailStrategy.getEmailType().name(), email);
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(email);
         mailMessage.setSubject(emailStrategy.getEmailTitle());

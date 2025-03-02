@@ -59,16 +59,16 @@ class EmailStrategyFactoryTest {
 
     @BeforeEach
     void setUp() {
-        when(resetPasswordStrategy.getNotificationType()).thenReturn(EmailType.RESET_PASSWORD);
-        when(confirmEmailStrategy.getNotificationType()).thenReturn(EmailType.CONFIRM_EMAIL);
-        when(reconfirmEmailStrategy.getNotificationType()).thenReturn(EmailType.RECONFIRM_EMAIL);
-        when(restoreEmailStrategy.getNotificationType()).thenReturn(EmailType.RESTORE_EMAIL);
-        when(confirmNewsletterEmailStrategy.getNotificationType()).thenReturn(EmailType.CONFIRM_NEWSLETTER);
-        when(reconfirmNewsletterEmailStrategy.getNotificationType()).thenReturn(EmailType.RECONFIRM_NEWSLETTER);
-        when(welcomeNewsletterEmailStrategy.getNotificationType()).thenReturn(EmailType.WELCOME_NEWSLETTER);
-        when(confirmProfileSubscriptionEmailStrategy.getNotificationType()).thenReturn(EmailType.CONFIRM_PRODUCT_SUBSCRIPTION);
-        when(reconfirmProfileSubscriptionEmailStrategy.getNotificationType()).thenReturn(EmailType.RECONFIRM_PRODUCT_SUBSCRIPTION);
-        when(welcomeProductSubscriptionEmailStrategy.getNotificationType()).thenReturn(EmailType.WELCOME_PRODUCT_SUBSCRIPTION);
+        when(resetPasswordStrategy.getEmailType()).thenReturn(EmailType.RESET_PASSWORD);
+        when(confirmEmailStrategy.getEmailType()).thenReturn(EmailType.CONFIRM_EMAIL);
+        when(reconfirmEmailStrategy.getEmailType()).thenReturn(EmailType.RECONFIRM_EMAIL);
+        when(restoreEmailStrategy.getEmailType()).thenReturn(EmailType.RESTORE_EMAIL);
+        when(confirmNewsletterEmailStrategy.getEmailType()).thenReturn(EmailType.CONFIRM_NEWSLETTER);
+        when(reconfirmNewsletterEmailStrategy.getEmailType()).thenReturn(EmailType.RECONFIRM_NEWSLETTER);
+        when(welcomeNewsletterEmailStrategy.getEmailType()).thenReturn(EmailType.WELCOME_NEWSLETTER);
+        when(confirmProfileSubscriptionEmailStrategy.getEmailType()).thenReturn(EmailType.CONFIRM_PRODUCT_SUBSCRIPTION);
+        when(reconfirmProfileSubscriptionEmailStrategy.getEmailType()).thenReturn(EmailType.RECONFIRM_PRODUCT_SUBSCRIPTION);
+        when(welcomeProductSubscriptionEmailStrategy.getEmailType()).thenReturn(EmailType.WELCOME_PRODUCT_SUBSCRIPTION);
 
         Set<EmailStrategy> strategies = Set.of(
                 resetPasswordStrategy,

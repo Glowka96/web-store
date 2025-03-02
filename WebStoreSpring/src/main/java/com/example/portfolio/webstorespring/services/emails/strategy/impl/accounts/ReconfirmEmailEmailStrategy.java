@@ -13,7 +13,7 @@ class ReconfirmEmailEmailStrategy implements EmailStrategy {
     private final ConfirmationLinkProvider linkProvider;
 
     @Override
-    public EmailType getNotificationType() {
+    public EmailType getEmailType() {
         return EmailType.RECONFIRM_EMAIL;
     }
 

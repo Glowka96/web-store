@@ -13,7 +13,7 @@ public class AvailableProductEmailStrategy implements EmailStrategy {
     private final CorsProvider corsProvider;
 
     @Override
-    public EmailType getNotificationType() {
+    public EmailType getEmailType() {
         return EmailType.AVAILABLE_PRODUCT;
     }
 

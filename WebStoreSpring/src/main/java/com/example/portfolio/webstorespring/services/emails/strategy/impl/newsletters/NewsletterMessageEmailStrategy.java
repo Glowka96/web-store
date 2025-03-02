@@ -4,9 +4,9 @@ import com.example.portfolio.webstorespring.enums.EmailType;
 import com.example.portfolio.webstorespring.services.emails.strategy.EmailStrategy;
 
 public class NewsletterMessageEmailStrategy implements EmailStrategy {
-
+    
     @Override
-    public EmailType getNotificationType() {
+    public EmailType getEmailType() {
         return EmailType.NEWSLETTER_MESSAGE;
     }
 
