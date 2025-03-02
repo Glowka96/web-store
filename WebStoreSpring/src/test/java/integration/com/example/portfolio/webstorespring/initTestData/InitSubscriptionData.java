@@ -12,6 +12,8 @@ import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Set;
+
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.ID;
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.*;
 import static com.example.portfolio.webstorespring.buildhelpers.subscribers.ProductSubscriberBuilderHelper.*;
@@ -29,10 +31,14 @@ public class InitSubscriptionData implements InitTestData {
 
     @Getter
     private Long productId;
+    @Getter
+    private Long enabledSubscriberId;
+    @Getter
+    private ProductSubscriber enabledSubscriber;
 
     @Transactional
     public void initTestData() {
-        ProductSubscriber enabledSubscriber = make(a(BASIC_PRODUCT_SUBSCRIBER)
+        enabledSubscriber = make(a(BASIC_PRODUCT_SUBSCRIBER)
                 .but(withNull(ProductSubscriberBuilderHelper.ID)));
         ProductSubscriber enabledSubscriber2 = make(a(BASIC_PRODUCT_SUBSCRIBER)
                 .but(withNull(ProductSubscriberBuilderHelper.ID))
@@ -42,10 +48,31 @@ public class InitSubscriptionData implements InitTestData {
                 .but(with(EMAIL, "disabled@test.pl"))
                 .but(with(ENABLED, Boolean.FALSE)));
         enabledSubscriber = subscriberRepository.save(enabledSubscriber);
+        enabledSubscriberId = enabledSubscriber.getId();
         enabledSubscriber2 = subscriberRepository.save(enabledSubscriber2);
         disabledSubscriber = subscriberRepository.save(disabledSubscriber);
 
-        Product product = make(a(BASIC_PRODUCT)
+        Product product = getProduct();
+        product = productRepository.save(product);
+        productId = product.getId();
+
+        ProductSubscription subscription1 = createProductSubscription(product);
+        subscription1.addSubscriber(enabledSubscriber);
+        subscription1.addSubscriber(enabledSubscriber2);
+        subscription1.addSubscriber(disabledSubscriber);
+
+        Product product2 = getProduct();
+        product2.setName("Product 2");
+        product2 = productRepository.save(product2);
+
+        ProductSubscription subscription2 = createProductSubscription(product2);
+        subscription2.addSubscriber(enabledSubscriber);
+
+        subscriptionRepository.saveAll(Set.of(subscription1, subscription2));
+    }
+
+    private static Product getProduct() {
+        return make(a(BASIC_PRODUCT)
                 .but(withNull(ID))
                 .but(withNull(SUBCATEGORY))
                 .but(withNull(PRODUCT_TYPE))
@@ -53,15 +80,6 @@ public class InitSubscriptionData implements InitTestData {
                 .but(withNull(PRICE_PROMOTIONS))
                 .but(with(QUANTITY, 0L))
         );
-        product = productRepository.save(product);
-        productId = product.getId();
-
-        ProductSubscription subscription = createProductSubscription(product);
-        subscription.addSubscriber(enabledSubscriber);
-        subscription.addSubscriber(enabledSubscriber2);
-        subscription.addSubscriber(disabledSubscriber);
-
-        subscriptionRepository.save(subscription);
     }
 
     public void deleteTestData() {
