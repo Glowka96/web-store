@@ -1,14 +1,17 @@
 package com.example.portfolio.webstorespring.models.entity.subscribers;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "newsletter_messages")
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class NewsletterMessage {
 
     @Id
