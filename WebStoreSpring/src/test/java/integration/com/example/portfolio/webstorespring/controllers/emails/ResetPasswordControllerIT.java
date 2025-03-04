@@ -44,7 +44,7 @@ class ResetPasswordControllerIT extends AbstractTestRestTemplateIT {
 
     @BeforeEach
     void initTestData() {
-        resetPasswordUri = localhostUri + "/reset-password";
+        resetPasswordUri = localhostUri + "/reset-passwords";
         savedAccount = accountRepository.save(make(a(AccountBuilderHelper.BASIC_ACCOUNT)));
     }
 

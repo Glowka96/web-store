@@ -52,7 +52,7 @@ class RestoreEmailControllerIT extends AbstractTestRestTemplateIT {
                 )
         );
 
-        confirmRestoreEmailUrl = localhostUri + "/restore-email/confirm?token=" + accountConfToken.getToken();
+        confirmRestoreEmailUrl = localhostUri + "/restore-emails/confirm?token=" + accountConfToken.getToken();
     }
 
     @AfterEach

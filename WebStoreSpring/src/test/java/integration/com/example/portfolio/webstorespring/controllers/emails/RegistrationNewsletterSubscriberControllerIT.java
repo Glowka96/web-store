@@ -37,7 +37,7 @@ class RegistrationNewsletterSubscriberControllerIT extends AbstractTestRestTempl
     @Autowired
     private NewsletterRemovalTokenRepository removalTokenRepository;
 
-    private static final String URI = "/newsletter/registrations";
+    private static final String URI = "/newsletters/registrations";
 
     @AfterEach
     void delete() {

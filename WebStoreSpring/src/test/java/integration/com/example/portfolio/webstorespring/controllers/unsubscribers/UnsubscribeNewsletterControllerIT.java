@@ -29,7 +29,7 @@ class UnsubscribeNewsletterControllerIT extends AbstractTestRestTemplateIT {
     @Autowired
     private PlatformTransactionManager transactionManager;
 
-    private static final String URI = "/unsubscribe-newsletter/confirm";
+    private static final String URI = "/unsubscribe-newsletters/confirm";
     private Long subscriberId;
 
     @BeforeEach

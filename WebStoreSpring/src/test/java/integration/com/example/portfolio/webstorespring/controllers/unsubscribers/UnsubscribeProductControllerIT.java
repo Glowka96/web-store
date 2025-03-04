@@ -43,7 +43,7 @@ class UnsubscribeProductControllerIT extends AbstractTestRestTemplateIT {
     @Autowired
     private PlatformTransactionManager transactionManager;
 
-    private static final String URI = "/unsubscribe-product-subscription";
+    private static final String URI = "/unsubscribe-product-subscriptions";
 
     @BeforeEach
     void init() {

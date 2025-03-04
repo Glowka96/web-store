@@ -54,7 +54,7 @@ class RegistrationProductSubscriberControllerIT extends AbstractTestRestTemplate
     @Autowired
     private ProductRepository productRepository;
 
-    private static final String URI = "/product-subscription/registrations";
+    private static final String URI = "/product-subscriptions/registrations";
 
     @AfterEach
     void delete() {
