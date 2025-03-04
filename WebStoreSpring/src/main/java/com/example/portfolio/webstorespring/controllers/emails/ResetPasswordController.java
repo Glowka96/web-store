@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping( "api/v1/reset-password")
+@RequestMapping( "api/v1/reset-passwords")
 @RequiredArgsConstructor
 public class ResetPasswordController {
 

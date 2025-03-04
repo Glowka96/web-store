@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/product-subscription/registrations")
+@RequestMapping("/api/v1/product-subscriptions/registrations")
 @RequiredArgsConstructor
 public class RegistrationProductSubscriberController {
 
