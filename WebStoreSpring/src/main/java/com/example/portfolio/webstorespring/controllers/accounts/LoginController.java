@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.controllers.accounts;
 
-import com.example.portfolio.webstorespring.model.dto.accounts.request.LoginRequest;
-import com.example.portfolio.webstorespring.model.dto.accounts.response.AuthenticationResponse;
+import com.example.portfolio.webstorespring.models.dto.accounts.request.LoginRequest;
+import com.example.portfolio.webstorespring.models.dto.accounts.response.AuthenticationResponse;
 import com.example.portfolio.webstorespring.services.accounts.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +17,7 @@ public class LoginController {
     private final LoginService loginService;
 
     @PostMapping
-    public AuthenticationResponse login(@RequestBody LoginRequest loginRequest) {
-        return loginService.login(loginRequest);
+    public AuthenticationResponse login(@RequestBody LoginRequest request) {
+        return loginService.login(request);
     }
 }

@@ -3,17 +3,17 @@ package com.example.portfolio.webstorespring.controllers.orders;
 import com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryBuilderHelper;
 import com.example.portfolio.webstorespring.controllers.AbstractAuthControllerIT;
 import com.example.portfolio.webstorespring.enums.OrderStatus;
-import com.example.portfolio.webstorespring.model.dto.orders.request.OrderRequest;
-import com.example.portfolio.webstorespring.model.dto.orders.response.OrderResponse;
-import com.example.portfolio.webstorespring.model.dto.products.ProductWithProducerAndPromotionDTO;
-import com.example.portfolio.webstorespring.model.entity.accounts.Account;
-import com.example.portfolio.webstorespring.model.entity.orders.Delivery;
-import com.example.portfolio.webstorespring.model.entity.orders.DeliveryType;
-import com.example.portfolio.webstorespring.model.entity.orders.Order;
-import com.example.portfolio.webstorespring.model.entity.orders.Shipment;
-import com.example.portfolio.webstorespring.model.entity.products.Discount;
-import com.example.portfolio.webstorespring.model.entity.products.Product;
-import com.example.portfolio.webstorespring.productsTestData.InitProductTestData;
+import com.example.portfolio.webstorespring.initTestData.InitProductTestData;
+import com.example.portfolio.webstorespring.models.dto.orders.request.OrderRequest;
+import com.example.portfolio.webstorespring.models.dto.orders.response.OrderResponse;
+import com.example.portfolio.webstorespring.models.dto.products.ProductWithProducerAndPromotionDTO;
+import com.example.portfolio.webstorespring.models.entity.accounts.Account;
+import com.example.portfolio.webstorespring.models.entity.orders.Delivery;
+import com.example.portfolio.webstorespring.models.entity.orders.DeliveryType;
+import com.example.portfolio.webstorespring.models.entity.orders.Order;
+import com.example.portfolio.webstorespring.models.entity.orders.Shipment;
+import com.example.portfolio.webstorespring.models.entity.products.Discount;
+import com.example.portfolio.webstorespring.models.entity.products.Product;
 import com.example.portfolio.webstorespring.repositories.orders.DeliveryTypeRepository;
 import com.example.portfolio.webstorespring.repositories.orders.OrderRepository;
 import com.example.portfolio.webstorespring.repositories.products.DiscountRepository;
@@ -93,6 +93,7 @@ class OrderControllerIT extends AbstractAuthControllerIT {
     void deleteTestData() {
         orderRepository.deleteAll();
         discountRepository.deleteAll();
+        deliveryTypeRepository.deleteAll();
         initProductTestData.deleteTestData();
     }
 

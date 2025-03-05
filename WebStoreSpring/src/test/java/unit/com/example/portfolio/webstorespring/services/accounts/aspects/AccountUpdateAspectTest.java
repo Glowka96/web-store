@@ -1,13 +1,13 @@
 package com.example.portfolio.webstorespring.services.accounts.aspects;
 
 import com.example.portfolio.webstorespring.exceptions.EmailAlreadyUsedException;
-import com.example.portfolio.webstorespring.model.dto.accounts.request.LoginRequest;
-import com.example.portfolio.webstorespring.model.dto.accounts.request.UpdateEmailRequest;
-import com.example.portfolio.webstorespring.model.dto.accounts.request.UpdatePasswordRequest;
-import com.example.portfolio.webstorespring.model.entity.accounts.Account;
+import com.example.portfolio.webstorespring.models.dto.accounts.request.LoginRequest;
+import com.example.portfolio.webstorespring.models.dto.accounts.request.UpdateEmailRequest;
+import com.example.portfolio.webstorespring.models.dto.accounts.request.UpdatePasswordRequest;
+import com.example.portfolio.webstorespring.models.entity.accounts.Account;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
 import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
-import com.example.portfolio.webstorespring.services.email.RestoreEmailService;
+import com.example.portfolio.webstorespring.services.emails.accountactions.RestoreEmailService;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import static com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper.BASIC_ACCOUNT;
 import static com.natpryce.makeiteasy.MakeItEasy.a;
 import static com.natpryce.makeiteasy.MakeItEasy.make;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -50,7 +51,7 @@ class AccountUpdateAspectTest {
         given(accountRepository.existsByEmail(anyString())).willReturn(Boolean.FALSE);
         given(passwordEncoder.matches(anyString(), anyString())).willReturn(Boolean.TRUE);
 
-        underTest.beforeValidateEmailUpdate(accountDetails, updateEmailRequest);
+        assertDoesNotThrow(() -> underTest.beforeValidateEmailUpdate(accountDetails, updateEmailRequest));
     }
 
     @Test

@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.services.authentication;
 
-import com.example.portfolio.webstorespring.model.entity.accounts.Account;
+import com.example.portfolio.webstorespring.models.entity.accounts.Account;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;

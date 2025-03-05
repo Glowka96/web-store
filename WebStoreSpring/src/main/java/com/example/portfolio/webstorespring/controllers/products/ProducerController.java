@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.controllers.products;
 
-import com.example.portfolio.webstorespring.model.dto.products.request.ProducerRequest;
-import com.example.portfolio.webstorespring.model.dto.products.response.ProducerResponse;
+import com.example.portfolio.webstorespring.models.dto.products.request.ProducerRequest;
+import com.example.portfolio.webstorespring.models.dto.products.response.ProducerResponse;
 import com.example.portfolio.webstorespring.services.products.ProducerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,14 +24,14 @@ public class ProducerController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ProducerResponse saveProducer(@Valid @RequestBody ProducerRequest producerRequest) {
-        return producerService.save(producerRequest);
+    public ProducerResponse saveProducer(@Valid @RequestBody ProducerRequest request) {
+        return producerService.save(request);
     }
 
     @PutMapping("/{id}")
     public ProducerResponse updateProducer(@PathVariable("id") Long id,
-                                           @Valid @RequestBody ProducerRequest producerRequest) {
-        return producerService.update(id, producerRequest);
+                                           @Valid @RequestBody ProducerRequest request) {
+        return producerService.update(id, request);
     }
 
     @DeleteMapping("/{id}")

@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.controllers.orders;
 
-import com.example.portfolio.webstorespring.model.dto.orders.request.DeliveryTypeRequest;
-import com.example.portfolio.webstorespring.model.dto.orders.response.DeliveryTypeResponse;
+import com.example.portfolio.webstorespring.models.dto.orders.request.DeliveryTypeRequest;
+import com.example.portfolio.webstorespring.models.dto.orders.response.DeliveryTypeResponse;
 import com.example.portfolio.webstorespring.services.orders.DeliveryTypeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,14 +23,14 @@ public class DeliveryTypeController {
 
     @PostMapping("/admin/delivery-types")
     @ResponseStatus(HttpStatus.CREATED)
-    public DeliveryTypeResponse saveDeliveryType(@RequestBody DeliveryTypeRequest deliveryTypeRequest) {
-        return deliveryTypeService.save(deliveryTypeRequest);
+    public DeliveryTypeResponse saveDeliveryType(@RequestBody DeliveryTypeRequest request) {
+        return deliveryTypeService.save(request);
     }
 
     @PutMapping("/admin/delivery-types/{deliveryId}")
     public DeliveryTypeResponse updateDeliveryType(@PathVariable("deliveryId") Long deliveryId,
-                                                   @RequestBody DeliveryTypeRequest deliveryTypeRequest) {
-        return deliveryTypeService.update(deliveryId, deliveryTypeRequest);
+                                                   @RequestBody DeliveryTypeRequest request) {
+        return deliveryTypeService.update(deliveryId, request);
     }
 
     @DeleteMapping("/admin/delivery-types/{deliveryId}")

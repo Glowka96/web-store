@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.controllers.accounts;
 
-import com.example.portfolio.webstorespring.model.dto.accounts.request.AccountAddressRequest;
-import com.example.portfolio.webstorespring.model.dto.accounts.response.AccountAddressResponse;
+import com.example.portfolio.webstorespring.models.dto.accounts.request.AccountAddressRequest;
+import com.example.portfolio.webstorespring.models.dto.accounts.response.AccountAddressResponse;
 import com.example.portfolio.webstorespring.services.accounts.AccountAddressService;
 import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
 import jakarta.validation.Valid;
@@ -25,14 +25,14 @@ public class AccountAddressController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public AccountAddressResponse saveAccountAddress(@AuthenticationPrincipal AccountDetails accountDetails,
-                                                     @Valid @RequestBody AccountAddressRequest accountAddressRequest) {
-        return addressService.save(accountDetails, accountAddressRequest);
+                                                     @Valid @RequestBody AccountAddressRequest request) {
+        return addressService.save(accountDetails, request);
     }
 
     @PutMapping
     public AccountAddressResponse updateAccountAddress(@AuthenticationPrincipal AccountDetails accountDetails,
-                                                       @Valid @RequestBody AccountAddressRequest accountAddressRequest) {
-        return addressService.update(accountDetails, accountAddressRequest);
+                                                       @Valid @RequestBody AccountAddressRequest request) {
+        return addressService.update(accountDetails, request);
     }
 
     @DeleteMapping

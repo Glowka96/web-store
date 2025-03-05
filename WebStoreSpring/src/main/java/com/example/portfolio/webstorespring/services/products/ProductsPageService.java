@@ -1,9 +1,9 @@
 package com.example.portfolio.webstorespring.services.products;
 
 import com.example.portfolio.webstorespring.enums.SortByType;
-import com.example.portfolio.webstorespring.model.dto.products.PageProductsWithPromotionDTO;
-import com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionDTO;
-import com.example.portfolio.webstorespring.model.dto.products.ProductsPageOptions;
+import com.example.portfolio.webstorespring.models.dto.products.PageProductsWithPromotionDTO;
+import com.example.portfolio.webstorespring.models.dto.products.ProductWithPromotionDTO;
+import com.example.portfolio.webstorespring.models.dto.products.ProductsPageOptions;
 import com.example.portfolio.webstorespring.repositories.products.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

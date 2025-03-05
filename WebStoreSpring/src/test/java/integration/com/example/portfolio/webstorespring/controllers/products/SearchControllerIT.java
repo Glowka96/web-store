@@ -1,9 +1,9 @@
 package com.example.portfolio.webstorespring.controllers.products;
 
 import com.example.portfolio.webstorespring.controllers.AbstractTestRestTemplateIT;
-import com.example.portfolio.webstorespring.model.dto.products.PageProductsWithPromotionDTO;
-import com.example.portfolio.webstorespring.model.dto.products.ProductsPageOptions;
-import com.example.portfolio.webstorespring.productsTestData.InitProductTestData;
+import com.example.portfolio.webstorespring.initTestData.InitProductTestData;
+import com.example.portfolio.webstorespring.models.dto.products.PageProductsWithPromotionDTO;
+import com.example.portfolio.webstorespring.models.dto.products.ProductsPageOptions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

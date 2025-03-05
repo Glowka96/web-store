@@ -3,9 +3,9 @@ package com.example.portfolio.webstorespring.controllers.products;
 
 import com.example.portfolio.webstorespring.buildhelpers.products.ProducerBuilderHelper;
 import com.example.portfolio.webstorespring.controllers.AbstractBaseControllerIT;
-import com.example.portfolio.webstorespring.model.dto.products.request.ProducerRequest;
-import com.example.portfolio.webstorespring.model.dto.products.response.ProducerResponse;
-import com.example.portfolio.webstorespring.model.entity.products.Producer;
+import com.example.portfolio.webstorespring.models.dto.products.request.ProducerRequest;
+import com.example.portfolio.webstorespring.models.dto.products.response.ProducerResponse;
+import com.example.portfolio.webstorespring.models.entity.products.Producer;
 import com.example.portfolio.webstorespring.repositories.products.ProducerRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

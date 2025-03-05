@@ -1,9 +1,9 @@
 package com.example.portfolio.webstorespring.repositories;
 
-import com.example.portfolio.webstorespring.ContainersConfig;
 import com.example.portfolio.webstorespring.buildhelpers.products.SubcategoryBuilderHelper;
-import com.example.portfolio.webstorespring.model.entity.products.Discount;
-import com.example.portfolio.webstorespring.model.entity.products.Subcategory;
+import com.example.portfolio.webstorespring.configs.ContainersConfig;
+import com.example.portfolio.webstorespring.models.entity.products.Discount;
+import com.example.portfolio.webstorespring.models.entity.products.Subcategory;
 import com.example.portfolio.webstorespring.repositories.products.DiscountRepository;
 import com.example.portfolio.webstorespring.repositories.products.SubcategoryRepository;
 import org.junit.jupiter.api.BeforeEach;

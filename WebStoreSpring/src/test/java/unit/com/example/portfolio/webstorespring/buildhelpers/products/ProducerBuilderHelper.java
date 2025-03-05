@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.buildhelpers.products;
 
-import com.example.portfolio.webstorespring.model.dto.products.request.ProducerRequest;
-import com.example.portfolio.webstorespring.model.dto.products.response.ProducerResponse;
-import com.example.portfolio.webstorespring.model.entity.products.Producer;
+import com.example.portfolio.webstorespring.models.dto.products.request.ProducerRequest;
+import com.example.portfolio.webstorespring.models.dto.products.response.ProducerResponse;
+import com.example.portfolio.webstorespring.models.entity.products.Producer;
 
 public class ProducerBuilderHelper {
 

@@ -1,10 +1,10 @@
 package com.example.portfolio.webstorespring.buildhelpers.orders;
 
-import com.example.portfolio.webstorespring.model.dto.orders.request.DeliveryRequest;
-import com.example.portfolio.webstorespring.model.dto.orders.response.DeliveryResponse;
-import com.example.portfolio.webstorespring.model.dto.orders.response.DeliveryTypeResponse;
-import com.example.portfolio.webstorespring.model.entity.orders.Delivery;
-import com.example.portfolio.webstorespring.model.entity.orders.DeliveryType;
+import com.example.portfolio.webstorespring.models.dto.orders.request.DeliveryRequest;
+import com.example.portfolio.webstorespring.models.dto.orders.response.DeliveryResponse;
+import com.example.portfolio.webstorespring.models.dto.orders.response.DeliveryTypeResponse;
+import com.example.portfolio.webstorespring.models.entity.orders.Delivery;
+import com.example.portfolio.webstorespring.models.entity.orders.DeliveryType;
 
 import static com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryTypeBuilderHelper.createDeliveryType;
 import static com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryTypeBuilderHelper.createDeliveryTypeResponse;

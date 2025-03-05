@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.repositories.accounts;
 
-import com.example.portfolio.webstorespring.model.entity.accounts.Role;
+import com.example.portfolio.webstorespring.models.entity.accounts.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Set;

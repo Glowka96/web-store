@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.controllers.orders;
 
-import com.example.portfolio.webstorespring.model.dto.orders.request.OrderRequest;
-import com.example.portfolio.webstorespring.model.dto.orders.response.OrderResponse;
+import com.example.portfolio.webstorespring.models.dto.orders.request.OrderRequest;
+import com.example.portfolio.webstorespring.models.dto.orders.response.OrderResponse;
 import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
 import com.example.portfolio.webstorespring.services.orders.OrderService;
 import jakarta.validation.Valid;
@@ -38,7 +38,7 @@ public class OrderController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public OrderResponse saveOrder(@AuthenticationPrincipal AccountDetails accountDetails,
-                                   @Valid @RequestBody OrderRequest orderRequest) {
-        return orderService.save(accountDetails, orderRequest);
+                                   @Valid @RequestBody OrderRequest request) {
+        return orderService.save(accountDetails, request);
     }
 }

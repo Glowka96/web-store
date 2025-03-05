@@ -2,8 +2,8 @@ package com.example.portfolio.webstorespring.controllers.accounts;
 
 import com.example.portfolio.webstorespring.controllers.AccountDetailsArgumentResolver;
 import com.example.portfolio.webstorespring.exceptions.GlobalExceptionHandler;
-import com.example.portfolio.webstorespring.model.dto.accounts.request.AccountAddressRequest;
-import com.example.portfolio.webstorespring.model.dto.accounts.response.AccountAddressResponse;
+import com.example.portfolio.webstorespring.models.dto.accounts.request.AccountAddressRequest;
+import com.example.portfolio.webstorespring.models.dto.accounts.response.AccountAddressResponse;
 import com.example.portfolio.webstorespring.services.accounts.AccountAddressService;
 import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
 import com.fasterxml.jackson.databind.ObjectMapper;

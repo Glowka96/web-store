@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.buildhelpers.products;
 
-import com.example.portfolio.webstorespring.model.dto.products.request.ProductTypeRequest;
-import com.example.portfolio.webstorespring.model.dto.products.response.ProductTypeResponse;
-import com.example.portfolio.webstorespring.model.entity.products.ProductType;
+import com.example.portfolio.webstorespring.models.dto.products.request.ProductTypeRequest;
+import com.example.portfolio.webstorespring.models.dto.products.response.ProductTypeResponse;
+import com.example.portfolio.webstorespring.models.entity.products.ProductType;
 
 public class ProductTypeBuilderHelper {
 

@@ -1,9 +1,9 @@
 package com.example.portfolio.webstorespring.buildhelpers.accounts;
 
-import com.example.portfolio.webstorespring.model.dto.accounts.request.AccountRequest;
-import com.example.portfolio.webstorespring.model.dto.accounts.response.AccountResponse;
-import com.example.portfolio.webstorespring.model.entity.accounts.Account;
-import com.example.portfolio.webstorespring.model.entity.accounts.Role;
+import com.example.portfolio.webstorespring.models.dto.accounts.request.AccountRequest;
+import com.example.portfolio.webstorespring.models.dto.accounts.response.AccountResponse;
+import com.example.portfolio.webstorespring.models.entity.accounts.Account;
+import com.example.portfolio.webstorespring.models.entity.accounts.Role;
 import com.natpryce.makeiteasy.Instantiator;
 import com.natpryce.makeiteasy.Property;
 import lombok.Getter;
@@ -42,7 +42,7 @@ public class AccountBuilderHelper {
                     .roles(lookup.valueOf(ROLES, Set.of(ROLE_USER)))
                     .imageUrl(ACCOUNT_IMAGE_URL)
                     .authTokens(List.of())
-                    .confirmationTokens(List.of())
+                    .accountConfTokens(List.of())
                     .build();
 
     public static AccountRequest createAccountRequest() {

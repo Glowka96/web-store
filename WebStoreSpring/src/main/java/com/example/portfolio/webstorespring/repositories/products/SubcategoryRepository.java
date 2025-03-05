@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.repositories.products;
 
-import com.example.portfolio.webstorespring.model.entity.products.Subcategory;
+import com.example.portfolio.webstorespring.models.entity.products.Subcategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

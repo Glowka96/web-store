@@ -2,10 +2,10 @@ package com.example.portfolio.webstorespring.services.orders;
 
 import com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryBuilderHelper;
 import com.example.portfolio.webstorespring.buildhelpers.orders.DeliveryTypeBuilderHelper;
-import com.example.portfolio.webstorespring.config.providers.ShipmentAddressProvider;
-import com.example.portfolio.webstorespring.model.dto.orders.request.DeliveryRequest;
-import com.example.portfolio.webstorespring.model.entity.orders.Delivery;
-import com.example.portfolio.webstorespring.model.entity.orders.DeliveryType;
+import com.example.portfolio.webstorespring.configs.providers.ShipmentAddressProvider;
+import com.example.portfolio.webstorespring.models.dto.orders.request.DeliveryRequest;
+import com.example.portfolio.webstorespring.models.entity.orders.Delivery;
+import com.example.portfolio.webstorespring.models.entity.orders.DeliveryType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

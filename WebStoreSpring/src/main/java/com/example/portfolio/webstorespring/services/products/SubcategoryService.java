@@ -3,9 +3,9 @@ package com.example.portfolio.webstorespring.services.products;
 import com.example.portfolio.webstorespring.exceptions.NotFoundSubcategoriesByNamesException;
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.SubcategoryMapper;
-import com.example.portfolio.webstorespring.model.dto.products.request.SubcategoryRequest;
-import com.example.portfolio.webstorespring.model.dto.products.response.SubcategoryResponse;
-import com.example.portfolio.webstorespring.model.entity.products.Subcategory;
+import com.example.portfolio.webstorespring.models.dto.products.request.SubcategoryRequest;
+import com.example.portfolio.webstorespring.models.dto.products.response.SubcategoryResponse;
+import com.example.portfolio.webstorespring.models.entity.products.Subcategory;
 import com.example.portfolio.webstorespring.repositories.products.SubcategoryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,10 +40,10 @@ public class SubcategoryService {
 
     @Transactional
     public SubcategoryResponse save(Long categoryId,
-                                    SubcategoryRequest subcategoryRequest) {
-        log.info("Saving subcategory from request: {}", subcategoryRequest);
+                                    SubcategoryRequest request) {
+        log.info("Saving subcategory from request: {}", request);
         Subcategory subcategory = SubcategoryMapper.mapToEntity(
-                subcategoryRequest,
+                request,
                 categoryService.findById(categoryId)
         );
         subcategoryRepository.save(subcategory);
@@ -54,11 +54,11 @@ public class SubcategoryService {
     @Transactional
     public SubcategoryResponse update(Long categoryId,
                                       Long subcategoryId,
-                                      SubcategoryRequest subcategoryRequest) {
-        log.info("Updating subcategory for ID: {}, form request: {}", subcategoryId, subcategoryRequest);
+                                      SubcategoryRequest request) {
+        log.info("Updating subcategory for ID: {}, form request: {}", subcategoryId, request);
         Subcategory foundSubcategory = findById(subcategoryId);
 
-        foundSubcategory.setName(subcategoryRequest.name());
+        foundSubcategory.setName(request.name());
         foundSubcategory.setCategory(categoryService.findById(categoryId));
 
         subcategoryRepository.save(foundSubcategory);

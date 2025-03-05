@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.services.accounts;
 
-import com.example.portfolio.webstorespring.model.entity.accounts.Role;
+import com.example.portfolio.webstorespring.models.entity.accounts.Role;
 import com.example.portfolio.webstorespring.repositories.accounts.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +20,7 @@ class RoleService {
     }
 
     void initializeRole(String roleName) {
-        log.debug("Checkin if role exist by name: {}",  roleName);
+        log.debug("Checking if role exist by name: {}",  roleName);
         if (!roleRepository.existsByName(roleName)) {
             log.debug("Role doesn't exist.");
             Role role = Role.builder()

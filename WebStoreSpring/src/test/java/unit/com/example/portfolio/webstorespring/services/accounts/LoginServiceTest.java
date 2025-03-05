@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.services.accounts;
 
-import com.example.portfolio.webstorespring.model.dto.accounts.request.LoginRequest;
-import com.example.portfolio.webstorespring.model.dto.accounts.response.AuthenticationResponse;
-import com.example.portfolio.webstorespring.model.entity.accounts.Account;
+import com.example.portfolio.webstorespring.models.dto.accounts.request.LoginRequest;
+import com.example.portfolio.webstorespring.models.dto.accounts.response.AuthenticationResponse;
+import com.example.portfolio.webstorespring.models.entity.accounts.Account;
 import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
 import com.example.portfolio.webstorespring.services.authentication.AuthService;
 import org.junit.jupiter.api.AfterEach;

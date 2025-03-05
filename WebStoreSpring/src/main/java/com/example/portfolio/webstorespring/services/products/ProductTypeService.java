@@ -2,9 +2,9 @@ package com.example.portfolio.webstorespring.services.products;
 
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.ProductTypeMapper;
-import com.example.portfolio.webstorespring.model.dto.products.request.ProductTypeRequest;
-import com.example.portfolio.webstorespring.model.dto.products.response.ProductTypeResponse;
-import com.example.portfolio.webstorespring.model.entity.products.ProductType;
+import com.example.portfolio.webstorespring.models.dto.products.request.ProductTypeRequest;
+import com.example.portfolio.webstorespring.models.dto.products.response.ProductTypeResponse;
+import com.example.portfolio.webstorespring.models.entity.products.ProductType;
 import com.example.portfolio.webstorespring.repositories.products.ProductTypeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,19 +25,19 @@ public class ProductTypeService {
         return ProductTypeMapper.mapToDto(productTypeRepository.findAll());
     }
 
-    public ProductTypeResponse save(ProductTypeRequest productTypeRequest){
-        log.info("Saving product type from request: {}", productTypeRequest);
-        ProductType productType = ProductTypeMapper.mapToEntity(productTypeRequest);
+    public ProductTypeResponse save(ProductTypeRequest request){
+        log.info("Saving product type from request: {}", request);
+        ProductType productType = ProductTypeMapper.mapToEntity(request);
         productTypeRepository.save(productType);
         log.info("Saved product type.");
         return ProductTypeMapper.mapToDto(productType);
     }
 
     @Transactional
-    public ProductTypeResponse update(Long id, ProductTypeRequest productTypeRequest) {
-        log.info("Updating product type for ID: {}, from: {}", id, productTypeRequest);
+    public ProductTypeResponse update(Long id, ProductTypeRequest request) {
+        log.info("Updating product type for ID: {}, from: {}", id, request);
         ProductType foundProductType = findById(id);
-        foundProductType.setName(productTypeRequest.name());
+        foundProductType.setName(request.name());
         productTypeRepository.save(foundProductType);
         log.info("Updated product type.");
         return ProductTypeMapper.mapToDto(foundProductType);

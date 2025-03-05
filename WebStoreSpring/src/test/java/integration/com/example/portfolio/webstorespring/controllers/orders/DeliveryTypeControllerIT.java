@@ -1,9 +1,9 @@
 package com.example.portfolio.webstorespring.controllers.orders;
 
 import com.example.portfolio.webstorespring.controllers.AbstractBaseControllerIT;
-import com.example.portfolio.webstorespring.model.dto.orders.request.DeliveryTypeRequest;
-import com.example.portfolio.webstorespring.model.dto.orders.response.DeliveryTypeResponse;
-import com.example.portfolio.webstorespring.model.entity.orders.DeliveryType;
+import com.example.portfolio.webstorespring.models.dto.orders.request.DeliveryTypeRequest;
+import com.example.portfolio.webstorespring.models.dto.orders.response.DeliveryTypeResponse;
+import com.example.portfolio.webstorespring.models.entity.orders.DeliveryType;
 import com.example.portfolio.webstorespring.repositories.orders.DeliveryTypeRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

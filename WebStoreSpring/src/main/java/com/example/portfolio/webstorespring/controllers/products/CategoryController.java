@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.controllers.products;
 
-import com.example.portfolio.webstorespring.model.dto.products.request.CategoryRequest;
-import com.example.portfolio.webstorespring.model.dto.products.response.CategoryResponse;
+import com.example.portfolio.webstorespring.models.dto.products.request.CategoryRequest;
+import com.example.portfolio.webstorespring.models.dto.products.response.CategoryResponse;
 import com.example.portfolio.webstorespring.services.products.CategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,14 +25,14 @@ public class CategoryController {
 
     @PostMapping("/admin/categories")
     @ResponseStatus(HttpStatus.CREATED)
-    public CategoryResponse saveCategory(@Valid @RequestBody CategoryRequest categoryRequest) {
-        return categoryService.save(categoryRequest);
+    public CategoryResponse saveCategory(@Valid @RequestBody CategoryRequest request) {
+        return categoryService.save(request);
     }
 
     @PutMapping("/admin/categories/{categoryId}")
     public CategoryResponse updateCategory(@PathVariable("categoryId") Long categoryId,
-                                           @Valid @RequestBody CategoryRequest categoryRequest) {
-        return categoryService.update(categoryId, categoryRequest);
+                                           @Valid @RequestBody CategoryRequest request) {
+        return categoryService.update(categoryId, request);
     }
 
     @DeleteMapping("/admin/categories/{categoryId}")

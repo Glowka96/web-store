@@ -24,7 +24,13 @@ public class GlobalExceptionHandler {
 
     private static final String LOG_MSG = "Error at [{}]: {}";
 
-    @ExceptionHandler({ResourceNotFoundException.class, AccountHasNoAddressException.class})
+    @ExceptionHandler({
+            ResourceNotFoundException.class,
+            AccountHasNoAddressException.class,
+            DiscountIsInvalid.class,
+            NotFoundSubcategoriesByNamesException.class,
+            ProductsNotFoundException.class,
+    })
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleResourceNotFoundException(RuntimeException exception,
@@ -64,9 +70,8 @@ public class GlobalExceptionHandler {
             TokenExpiredException.class,
             PromotionPriceGreaterThanBasePriceException.class,
             ProductHasAlreadyPromotionException.class,
-            ProductsNotFoundException.class,
             ShipmentQuantityExceedsProductQuantityException.class,
-            EmailAlreadyUsedException.class
+            EmailAlreadyUsedException.class,
     })
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -96,10 +101,10 @@ public class GlobalExceptionHandler {
         return createErrorResponse(exception, webRequest);
     }
 
-    @ExceptionHandler(UnsupportedNotificationTypeException.class)
+    @ExceptionHandler(UnsupportedEmailTypeException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorResponse handleUnsupportedNotificationTypeException(UnsupportedNotificationTypeException exception,
+    public ErrorResponse handleUnsupportedNotificationTypeException(UnsupportedEmailTypeException exception,
                                                                     WebRequest webRequest) {
         log.error(LOG_MSG, webRequest.getDescription(false), exception.getMessage(), exception);
         return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, exception, webRequest);

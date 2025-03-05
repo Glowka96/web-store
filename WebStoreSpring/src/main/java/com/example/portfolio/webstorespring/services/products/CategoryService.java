@@ -2,9 +2,9 @@ package com.example.portfolio.webstorespring.services.products;
 
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.CategoryMapper;
-import com.example.portfolio.webstorespring.model.dto.products.request.CategoryRequest;
-import com.example.portfolio.webstorespring.model.dto.products.response.CategoryResponse;
-import com.example.portfolio.webstorespring.model.entity.products.Category;
+import com.example.portfolio.webstorespring.models.dto.products.request.CategoryRequest;
+import com.example.portfolio.webstorespring.models.dto.products.response.CategoryResponse;
+import com.example.portfolio.webstorespring.models.entity.products.Category;
 import com.example.portfolio.webstorespring.repositories.products.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,19 +25,19 @@ public class CategoryService {
         return CategoryMapper.mapToDto(categoryRepository.findAll());
     }
 
-    public CategoryResponse save(CategoryRequest categoryRequest) {
-        log.info("Saving category from request: {}", categoryRequest);
-        Category category = CategoryMapper.mapToEntity(categoryRequest);
+    public CategoryResponse save(CategoryRequest request) {
+        log.info("Saving category from request: {}", request);
+        Category category = CategoryMapper.mapToEntity(request);
         categoryRepository.save(category);
         log.info("Saved category.");
         return CategoryMapper.mapToDto(category);
     }
 
     @Transactional
-    public CategoryResponse update(Long id, CategoryRequest categoryRequest) {
-        log.info("Updating category for ID: {}, from request: {}", id, categoryRequest);
+    public CategoryResponse update(Long id, CategoryRequest request) {
+        log.info("Updating category for ID: {}, from request: {}", id, request);
         Category foundCategory = findById(id);
-        foundCategory.setName(categoryRequest.name());
+        foundCategory.setName(request.name());
 
         categoryRepository.save(foundCategory);
         log.info("Updated category.");

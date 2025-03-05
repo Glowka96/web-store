@@ -31,6 +31,12 @@ class GlobalExceptionHandlerTest {
     @Mock
     private AccountHasNoAddressException accountHasNoAddressException;
     @Mock
+    private DiscountIsInvalid discountIsInvalid;
+    @Mock
+    private NotFoundSubcategoriesByNamesException notFoundSubcategoriesByNamesException;
+    @Mock
+    private ProductsNotFoundException productsNotFoundException;
+    @Mock
     private MethodArgumentNotValidException argumentNotValidException;
     @Mock
     private BadCredentialsException badCredentialsException;
@@ -51,8 +57,6 @@ class GlobalExceptionHandlerTest {
     @Mock
     private ProductHasAlreadyPromotionException productHasAlreadyPromotionException;
     @Mock
-    private ProductsNotFoundException productsNotFoundException;
-    @Mock
     private ShipmentQuantityExceedsProductQuantityException shipmentQuantityExceedsProductQuantityException;
     @Mock
     private EmailAlreadyUsedException emailAlreadyUsedException;
@@ -61,7 +65,7 @@ class GlobalExceptionHandlerTest {
     @Mock
     private ConstraintViolationException constraintViolationException;
     @Mock
-    private UnsupportedNotificationTypeException unsupportedNotificationTypeException;
+    private UnsupportedEmailTypeException unsupportedEmailTypeException;
     @Mock
     private WebRequest webRequest;
     @InjectMocks
@@ -86,6 +90,39 @@ class GlobalExceptionHandlerTest {
 
         assertsResponse(resultErrorResponse, getExceptedErrorResponse(
                 HttpStatus.NOT_FOUND, accountHasNoAddressException
+        ));
+    }
+
+    @Test
+    void shouldHandleDiscountIsInvalid_thenStatusNotFound() {
+        ErrorResponse resultErrorResponse = underTest.handleResourceNotFoundException(
+                discountIsInvalid, webRequest
+        );
+
+        assertsResponse(resultErrorResponse, getExceptedErrorResponse(
+                HttpStatus.NOT_FOUND, discountIsInvalid
+        ));
+    }
+
+    @Test
+    void shouldHandleNotFoundSubcategoriesByNamesException_thenStatusNotFound() {
+        ErrorResponse resultErrorResponse = underTest.handleResourceNotFoundException(
+                notFoundSubcategoriesByNamesException, webRequest
+        );
+
+        assertsResponse(resultErrorResponse, getExceptedErrorResponse(
+                HttpStatus.NOT_FOUND, notFoundSubcategoriesByNamesException
+        ));
+    }
+
+    @Test
+    void shouldHandleProductsNotFound_thenStatusBadRequest() {
+        ErrorResponse resultErrorResponse = underTest.handleCanNotModifiedException(
+                productsNotFoundException, webRequest
+        );
+
+        assertsResponse(resultErrorResponse, getExceptedErrorResponse(
+                HttpStatus.BAD_REQUEST, productsNotFoundException
         ));
     }
 
@@ -214,17 +251,6 @@ class GlobalExceptionHandlerTest {
     }
 
     @Test
-    void shouldHandleCanNotModification_whenProductsNotFound_thenStatusBadRequest() {
-        ErrorResponse resultErrorResponse = underTest.handleCanNotModifiedException(
-                productsNotFoundException, webRequest
-        );
-
-        assertsResponse(resultErrorResponse, getExceptedErrorResponse(
-                HttpStatus.BAD_REQUEST, productsNotFoundException
-        ));
-    }
-
-    @Test
     void shouldHandleCanNotModification_whenShipmentQualityExceedsProductQuantity_thenStatusBadRequest() {
         ErrorResponse resultErrorResponse = underTest.handleCanNotModifiedException(
                 shipmentQuantityExceedsProductQuantityException, webRequest
@@ -281,26 +307,26 @@ class GlobalExceptionHandlerTest {
         ErrorResponse resultErrorResponse = underTest
                 .handeConstraintViolationException(constraintViolationException, webRequest);
 
-        assertEquals(exceptedErrorResponse.getStatusCode(), resultErrorResponse.getStatusCode());
-        assertTrue(Objects.requireNonNull(resultErrorResponse).getErrors().containsAll(exceptedErrorResponse.getErrors()));
+        assertEquals(exceptedErrorResponse.statusCode(), resultErrorResponse.statusCode());
+        assertTrue(Objects.requireNonNull(resultErrorResponse).errors().containsAll(exceptedErrorResponse.errors()));
     }
 
     @Test
     void shouldHandleUnsupportedNotificationTypeException() {
         ErrorResponse resultErrorResponse = underTest.handleUnsupportedNotificationTypeException(
-                unsupportedNotificationTypeException,
+                unsupportedEmailTypeException,
                 webRequest
         );
 
         assertsResponse(resultErrorResponse, getExceptedErrorResponse(
                         HttpStatus.INTERNAL_SERVER_ERROR,
-                        unsupportedNotificationTypeException
+                unsupportedEmailTypeException
                 )
         );
     }
 
     private void assertsResponse(ErrorResponse resultErrorResponse, ErrorResponse exceptedErrorResponse) {
-        assertEquals(exceptedErrorResponse.getStatusCode(), resultErrorResponse.getStatusCode());
+        assertEquals(exceptedErrorResponse.statusCode(), resultErrorResponse.statusCode());
         assertEquals(exceptedErrorResponse, resultErrorResponse);
     }
 

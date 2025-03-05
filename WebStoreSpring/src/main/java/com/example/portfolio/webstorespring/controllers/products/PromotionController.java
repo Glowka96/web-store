@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.controllers.products;
 
-import com.example.portfolio.webstorespring.model.dto.products.request.PromotionRequest;
-import com.example.portfolio.webstorespring.model.dto.products.response.PromotionResponse;
+import com.example.portfolio.webstorespring.models.dto.products.request.PromotionRequest;
+import com.example.portfolio.webstorespring.models.dto.products.response.PromotionResponse;
 import com.example.portfolio.webstorespring.services.products.PromotionService;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ public class PromotionController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public PromotionResponse savePromotion(@NotNull @RequestBody PromotionRequest promotionRequest) {
-        return promotionService.save(promotionRequest);
+    public PromotionResponse savePromotion(@NotNull @RequestBody PromotionRequest request) {
+        return promotionService.save(request);
     }
 }

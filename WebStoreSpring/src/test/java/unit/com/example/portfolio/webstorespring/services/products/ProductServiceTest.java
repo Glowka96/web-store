@@ -3,13 +3,16 @@ package com.example.portfolio.webstorespring.services.products;
 import com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper;
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.ProductMapper;
-import com.example.portfolio.webstorespring.model.dto.products.ProductWithProducerAndPromotionDTO;
-import com.example.portfolio.webstorespring.model.dto.products.request.ProductRequest;
-import com.example.portfolio.webstorespring.model.dto.products.response.ProductResponse;
-import com.example.portfolio.webstorespring.model.entity.products.Producer;
-import com.example.portfolio.webstorespring.model.entity.products.Product;
-import com.example.portfolio.webstorespring.model.entity.products.ProductType;
-import com.example.portfolio.webstorespring.model.entity.products.Subcategory;
+import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
+import com.example.portfolio.webstorespring.models.dto.products.ProductAvailableEvent;
+import com.example.portfolio.webstorespring.models.dto.products.ProductWithProducerAndPromotionDTO;
+import com.example.portfolio.webstorespring.models.dto.products.request.ProductQualityRequest;
+import com.example.portfolio.webstorespring.models.dto.products.request.ProductRequest;
+import com.example.portfolio.webstorespring.models.dto.products.response.ProductResponse;
+import com.example.portfolio.webstorespring.models.entity.products.Producer;
+import com.example.portfolio.webstorespring.models.entity.products.Product;
+import com.example.portfolio.webstorespring.models.entity.products.ProductType;
+import com.example.portfolio.webstorespring.models.entity.products.Subcategory;
 import com.example.portfolio.webstorespring.repositories.products.ProductRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,18 +20,17 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 
 import java.math.BigDecimal;
 import java.util.Optional;
 
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProducerBuilderHelper.createProducer;
-import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.BASIC_PRODUCT;
-import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.createProductRequest;
+import static com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper.*;
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductTypeBuilderHelper.createProductType;
 import static com.example.portfolio.webstorespring.buildhelpers.products.ProductWithProducerAndPromotionDTOBuilderHelper.createProductWithProducerAndPromotionDTO;
 import static com.example.portfolio.webstorespring.buildhelpers.products.SubcategoryBuilderHelper.createSubcategory;
-import static com.natpryce.makeiteasy.MakeItEasy.a;
-import static com.natpryce.makeiteasy.MakeItEasy.make;
+import static com.natpryce.makeiteasy.MakeItEasy.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
@@ -45,6 +47,8 @@ class ProductServiceTest {
     private ProducerService producerService;
     @Mock
     private ProductTypeService productTypeService;
+    @Mock
+    private ApplicationEventPublisher eventPublisher;
     @InjectMocks
     private ProductService underTest;
 
@@ -143,6 +147,32 @@ class ProductServiceTest {
         assertNotEquals(beforeUpdateDescription, updatedProductResponse.description());
         assertNotEquals(beforeUpdatePrice, updatedProductResponse.price());
         assertNotEquals(beforeUpdateQuantity, updatedProductResponse.quantity());
+    }
+
+    @Test
+    void shouldUpdateProductQuantityAndPublishProductAvailableEvent_whenOldQuantityIs0() {
+        updateProductQuantityTest(0L);
+        verify(eventPublisher, times(1)).publishEvent(any(ProductAvailableEvent.class));
+    }
+
+    @Test
+    void shouldUpdateProductQuantityAndNotPublishProductAvailableEvent_whenOldQuantityIsBiggerThan0() {
+        updateProductQuantityTest(1L);
+        verifyNoInteractions(eventPublisher);
+    }
+
+    private void updateProductQuantityTest(Long quantity) {
+        Product product = make(a(BASIC_PRODUCT)
+                .but(with(QUANTITY, quantity)));
+        ProductQualityRequest productQualityRequest = new ProductQualityRequest(product.getId(), 10L);
+
+        given(productRepository.findById(anyLong())).willReturn(Optional.of(product));
+
+        ResponseMessageDTO result = underTest.updateQuality(productQualityRequest);
+
+        assertNotNull(result);
+        assertEquals("The product quantity was updated successfully." ,result.message());
+        assertEquals(10L, product.getQuantity());
     }
 
     @Test

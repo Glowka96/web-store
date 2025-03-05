@@ -67,12 +67,18 @@ GCP:
 - Modification account data
 - Admin board - modification: category, subcategory, product, producer, product type, promotion, delivery type
 - Reset password system- send email with a link
+- Change email system with option to restore old email - send email to old;
+- Newsletter system with confirmation users and usubscribe;
+- Product available notification system with confirmation and usubscribe;
+
+### Currently working on:
+ 
+ - New UX/UI
+ - Implement systems form backend to frontend
 
 ### To-Do
 
 - Fillter products
-- Message box
-- Newsletter
 - Send order email
 - Refactoring a monolith to microservices 
 - New UX/UI
@@ -83,6 +89,41 @@ GCP:
 </div>
 
 ## Changelogs
+
+<details>
+<summary>Newsletter branch:</summary>
+
+  - Add ShedulerService to check your newsletters and send them when they are due  
+  - Add unit and integration tests for new systems
+  - Add new link providers
+  - Add new EmailTypes
+  - Add missed URI to SecurityConfig
+  - Add registrations controllers
+  - Add unsubscriber controllers
+  - Add ApplicationEventPublisher for public event to notify product subscribers 
+  - Add ProductQuantityRequest, ProductAvailableEvent
+  - Add ProductNameView - projection
+  - Change Map<String, Object> in return type to ResponseMessageDto 
+  - Add generic repository and service for RemovalTokens;
+  - Add RemovalToken interface
+  - Add Removals token for unsubscriber notifications
+  - Add NotificationExpirationManager 
+  - Rebuild Email Strategy getMessage() - now return String.format() - for in some case takes multiple arguments
+  - Rename NotificationStrategy/Type to EmailStrategy/Type
+  - Clean code, simplify names;
+  - Change some directories, correct directory names
+  - Add abastract generic services for sending emails with tokens/confirmed entities
+  - Add extends services for abstract repositories and service
+  - Add abstract generic repositories and services for confirmation tokens; 
+  - Add helper service for TokenDetails;
+  - Add BaseConfToken, OwnerConfToken, Subscriber interface for generic type in abstract services;
+  - Rebuild ConfirmationToken - now is seprate for Account, NewsletterSubscriber and ProductSubscriber
+  - TokenDetails is Embeddable, using in conf tokes
+  - To separte TokenDetails from ConfirmationToken
+  - Add entities: ProductSubscriber, ProductSubscription, NewsletterSubscriber, NewslettereMessage
+  - ErrorResponse convert to record
+</details>
+
 
 <details>
 <summary>Change email branch:</summary>

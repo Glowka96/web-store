@@ -2,19 +2,22 @@ package com.example.portfolio.webstorespring.controllers.products;
 
 import com.example.portfolio.webstorespring.buildhelpers.products.ProductBuilderHelper;
 import com.example.portfolio.webstorespring.controllers.AbstractBaseControllerIT;
-import com.example.portfolio.webstorespring.model.dto.products.ProductWithProducerAndPromotionDTO;
-import com.example.portfolio.webstorespring.model.dto.products.request.ProductRequest;
-import com.example.portfolio.webstorespring.model.dto.products.response.ProductResponse;
-import com.example.portfolio.webstorespring.model.entity.products.Product;
-import com.example.portfolio.webstorespring.productsTestData.InitProductTestData;
+import com.example.portfolio.webstorespring.initTestData.InitProductTestData;
+import com.example.portfolio.webstorespring.initTestData.InitSubscriptionData;
+import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
+import com.example.portfolio.webstorespring.models.dto.products.ProductWithProducerAndPromotionDTO;
+import com.example.portfolio.webstorespring.models.dto.products.request.ProductQualityRequest;
+import com.example.portfolio.webstorespring.models.dto.products.request.ProductRequest;
+import com.example.portfolio.webstorespring.models.dto.products.response.ProductResponse;
+import com.example.portfolio.webstorespring.models.entity.products.Product;
 import com.example.portfolio.webstorespring.repositories.products.ProductRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -28,7 +31,11 @@ class ProductControllerIT extends AbstractBaseControllerIT<ProductRequest, Produ
     @Autowired
     private InitProductTestData initProductTestData;
     @Autowired
+    private InitSubscriptionData initSubscriptionData;
+    @Autowired
     private ProductRepository productRepository;
+    @PersistenceContext
+    private EntityManager entityManager;
     private static final String URI_PRODUCT = "/products";
     private String uri;
     private Long subcategoryId;
@@ -173,6 +180,57 @@ class ProductControllerIT extends AbstractBaseControllerIT<ProductRequest, Produ
     @Test
     void shouldNotUpdateProduct_forAuthenticatedUser_thenStatusForbidden() {
         shouldNotUpdateEntity_forAuthenticatedUser_thenStatusForbidden();
+    }
+
+    @Test
+    void shouldUpdateProductQuantityAndSendEmail_whenOldQuantityProductIsZero_forAuthenticationAdmin_thenStatusOK() {
+        initSubscriptionData.initTestData();
+        ProductQualityRequest request = new ProductQualityRequest(initSubscriptionData.getProductId(), 100L);
+        HttpEntity<ProductQualityRequest> httpEntity = new HttpEntity<>(request, getHttpHeadersWithAdminToken());
+
+        ResponseEntity<ResponseMessageDTO> response = restTemplate.exchange(
+                localhostAdminUri + "/products",
+                HttpMethod.PATCH,
+                httpEntity,
+                ResponseMessageDTO.class
+        );
+
+        assertNotNull(response);
+
+        Optional<Product> productAfterUpdated = productRepository.findById(initSubscriptionData.getProductId());
+        assertEquals(100L, productAfterUpdated.get().getQuantity());
+        initSubscriptionData.deleteTestData();
+    }
+
+    @Test
+    void shouldUpdateProductQuantity_forAuthenticationAdmin_thenStatusOK() {
+        testOfUpdateProductQuantity(getHttpHeadersWithAdminToken(), HttpStatus.OK);
+
+        Optional<Product> productAfterUpdated = getOptionalEntityBySavedId();
+        assertEquals(100L, productAfterUpdated.get().getQuantity());
+    }
+
+    @Test
+    void shouldNotUpdateProductQuantity_forAuthenticateUser_thenStatusForbidden() {
+        testOfUpdateProductQuantity(getHttpHeaderWithUserToken(), HttpStatus.FORBIDDEN);
+
+        Optional<Product> productAfterUpdated = getOptionalEntityBySavedId();
+        assertNotEquals(100L, productAfterUpdated.get().getQuantity());
+    }
+
+    private void testOfUpdateProductQuantity(HttpHeaders httpHeaders, HttpStatus httpStatus) {
+        ProductQualityRequest request = new ProductQualityRequest(savedEntityId, 100L);
+        HttpEntity<ProductQualityRequest> httpEntity = new HttpEntity<>(request, httpHeaders);
+
+        ResponseEntity<ResponseMessageDTO> response = restTemplate.exchange(
+                localhostAdminUri + "/products",
+                HttpMethod.PATCH,
+                httpEntity,
+                ResponseMessageDTO.class
+        );
+
+        assertNotNull(response);
+        assertEquals(httpStatus, response.getStatusCode());
     }
 
     @Test

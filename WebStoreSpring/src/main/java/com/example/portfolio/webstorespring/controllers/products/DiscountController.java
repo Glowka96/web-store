@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.controllers.products;
 
-import com.example.portfolio.webstorespring.model.dto.products.request.DiscountRequest;
-import com.example.portfolio.webstorespring.model.dto.products.response.DiscountAdminResponse;
-import com.example.portfolio.webstorespring.model.dto.products.response.DiscountUserResponse;
+import com.example.portfolio.webstorespring.models.dto.products.request.DiscountRequest;
+import com.example.portfolio.webstorespring.models.dto.products.response.DiscountAdminResponse;
+import com.example.portfolio.webstorespring.models.dto.products.response.DiscountUserResponse;
 import com.example.portfolio.webstorespring.services.products.DiscountService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +23,8 @@ public class DiscountController {
 
     @PostMapping("/admin/discounts")
     @ResponseStatus(HttpStatus.CREATED)
-    public DiscountAdminResponse saveDiscount(@Valid @RequestBody DiscountRequest discountRequest) {
-        return discountService.save(discountRequest);
+    public DiscountAdminResponse saveDiscount(@Valid @RequestBody DiscountRequest request) {
+        return discountService.save(request);
     }
 
     @DeleteMapping("/admin/discounts")

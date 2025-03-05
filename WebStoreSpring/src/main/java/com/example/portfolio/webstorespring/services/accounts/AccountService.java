@@ -2,16 +2,17 @@ package com.example.portfolio.webstorespring.services.accounts;
 
 import com.example.portfolio.webstorespring.annotations.ValidateEmailUpdate;
 import com.example.portfolio.webstorespring.annotations.ValidatePasswordUpdate;
-import com.example.portfolio.webstorespring.config.providers.AccountImageUrlProvider;
-import com.example.portfolio.webstorespring.config.providers.AdminCredentialsProvider;
+import com.example.portfolio.webstorespring.configs.providers.AccountImageUrlProvider;
+import com.example.portfolio.webstorespring.configs.providers.AdminCredentialsProvider;
 import com.example.portfolio.webstorespring.enums.RoleType;
 import com.example.portfolio.webstorespring.mappers.AccountMapper;
-import com.example.portfolio.webstorespring.model.dto.accounts.request.AccountRequest;
-import com.example.portfolio.webstorespring.model.dto.accounts.request.RegistrationRequest;
-import com.example.portfolio.webstorespring.model.dto.accounts.request.UpdateEmailRequest;
-import com.example.portfolio.webstorespring.model.dto.accounts.request.UpdatePasswordRequest;
-import com.example.portfolio.webstorespring.model.dto.accounts.response.AccountResponse;
-import com.example.portfolio.webstorespring.model.entity.accounts.Account;
+import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
+import com.example.portfolio.webstorespring.models.dto.accounts.request.AccountRequest;
+import com.example.portfolio.webstorespring.models.dto.accounts.request.RegistrationRequest;
+import com.example.portfolio.webstorespring.models.dto.accounts.request.UpdateEmailRequest;
+import com.example.portfolio.webstorespring.models.dto.accounts.request.UpdatePasswordRequest;
+import com.example.portfolio.webstorespring.models.dto.accounts.response.AccountResponse;
+import com.example.portfolio.webstorespring.models.entity.accounts.Account;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
 import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
 import lombok.RequiredArgsConstructor;
@@ -19,10 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -36,19 +34,22 @@ public class AccountService {
     private final AdminCredentialsProvider adminCredentialsProvider;
     private final AccountImageUrlProvider accountImageUrlProvider;
 
+    private static final String SUCCESS_UPDATE_EMAIL_RESPONSE_MESSAGE = "Email updated successfully.";
+    private static final String SUCCESS_RESET_PASSWORD_RESPONSE_MESSAGE = "Password updated successfully.";
+
     public AccountResponse getByAccountDetails(AccountDetails accountDetails) {
         log.info("Mapping logged account with account ID: {}", accountDetails.getAccount().getId());
         return AccountMapper.mapToDto(accountDetails.getAccount());
     }
 
     @Transactional
-    public Account save(RegistrationRequest registrationRequest) {
+    public Account save(RegistrationRequest request) {
         log.info("Saving new account.");
         return accountRepository.save(Account.builder()
-                .firstName(registrationRequest.firstName())
-                .lastName(registrationRequest.lastName())
-                .email(registrationRequest.email())
-                .password(encoder.encode(registrationRequest.password()))
+                .firstName(request.firstName())
+                .lastName(request.lastName())
+                .email(request.email())
+                .password(encoder.encode(request.password()))
                 .roles(roleService.findByName(RoleType.ROLE_USER.name()))
                 .enabled(Boolean.FALSE)
                 .imageUrl(accountImageUrlProvider.getUrl())
@@ -57,12 +58,12 @@ public class AccountService {
     }
 
     @Transactional
-    public AccountResponse update(AccountDetails accountDetails, AccountRequest accountRequest) {
+    public AccountResponse update(AccountDetails accountDetails, AccountRequest request) {
         log.info("Fetching logged account with account ID: {}", accountDetails.getAccount().getId());
         Account loggedAccount = accountDetails.getAccount();
 
-        log.debug("Mapping request: {}", accountRequest);
-        Account updatedAccount = AccountMapper.mapToEntity(accountRequest);
+        log.debug("Mapping request: {}", request);
+        Account updatedAccount = AccountMapper.mapToEntity(request);
 
         log.debug("Setting new data.");
         loggedAccount.setFirstName(updatedAccount.getFirstName());
@@ -76,25 +77,25 @@ public class AccountService {
 
     @Transactional
     @ValidateEmailUpdate
-    public Map<String, Object> updateEmail(AccountDetails accountDetails,
-                                           UpdateEmailRequest emailRequest) {
-        log.info("Update email: {} for account: {}", emailRequest, accountDetails.getUsername());
+    public ResponseMessageDTO updateEmail(AccountDetails accountDetails,
+                                          UpdateEmailRequest request) {
+        log.info("Update email: {} for account: {}", request, accountDetails.getUsername());
         Account loggedAccount = accountDetails.getAccount();
         loggedAccount.setBackupEmail(loggedAccount.getEmail());
-        loggedAccount.setEmail(emailRequest.email());
+        loggedAccount.setEmail(request.email());
         accountRepository.save(loggedAccount);
         log.info("Updated successful.");
-        return Map.of("message", "Email updated successfully.");
+        return new ResponseMessageDTO(SUCCESS_UPDATE_EMAIL_RESPONSE_MESSAGE);
     }
 
     @Transactional
     @ValidatePasswordUpdate
-    public Map<String, Object> updatePassword(AccountDetails accountDetails, UpdatePasswordRequest updatePasswordRequest) {
+    public ResponseMessageDTO updatePassword(AccountDetails accountDetails, UpdatePasswordRequest request) {
         log.info("Fetching logged account with account ID: {}", accountDetails.getAccount().getId());
         Account loggedAccount = accountDetails.getAccount();
-        setNewAccountPassword(loggedAccount, updatePasswordRequest.newPassword());
+        setNewAccountPassword(loggedAccount, request.newPassword());
         log.info("Saved new password for account ID: {}", loggedAccount.getId());
-        return Map.of("message", "Password updated successfully.");
+        return new ResponseMessageDTO(SUCCESS_RESET_PASSWORD_RESPONSE_MESSAGE);
     }
 
     void initializeAdminAccount(){
@@ -119,12 +120,6 @@ public class AccountService {
         addressService.deleteByAccountDetails(accountDetails);
         log.info("Deleting account for account id: {}", accountDetails.getAccount().getId());
         accountRepository.delete(accountDetails.getAccount());
-    }
-
-    @Transactional(propagation = Propagation.REQUIRED)
-    public void setEnabledAccount(Account account) {
-        log.debug("Enabling account with ID: {}", account.getId());
-        account.setEnabled(true);
     }
 
     public void setNewAccountPassword(Account account, String password) {

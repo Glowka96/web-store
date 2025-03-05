@@ -1,11 +1,11 @@
 package com.example.portfolio.webstorespring.repositories;
 
-import com.example.portfolio.webstorespring.ContainersConfig;
-import com.example.portfolio.webstorespring.model.dto.products.ProductWithProducerAndPromotionDTO;
-import com.example.portfolio.webstorespring.model.dto.products.ProductWithPromotionDTO;
-import com.example.portfolio.webstorespring.model.entity.products.Product;
-import com.example.portfolio.webstorespring.productsTestData.InitProductConfig;
-import com.example.portfolio.webstorespring.productsTestData.InitProductTestData;
+import com.example.portfolio.webstorespring.configs.ContainersConfig;
+import com.example.portfolio.webstorespring.configs.InitProductConfig;
+import com.example.portfolio.webstorespring.initTestData.InitProductTestData;
+import com.example.portfolio.webstorespring.models.dto.products.ProductWithProducerAndPromotionDTO;
+import com.example.portfolio.webstorespring.models.dto.products.ProductWithPromotionDTO;
+import com.example.portfolio.webstorespring.models.entity.products.Product;
 import com.example.portfolio.webstorespring.repositories.products.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

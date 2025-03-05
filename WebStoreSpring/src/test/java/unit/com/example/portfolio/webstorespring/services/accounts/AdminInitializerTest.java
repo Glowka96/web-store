@@ -18,7 +18,7 @@ class AdminInitializerTest {
     private AdminInitializer adminInitializer;
 
     @Test
-    void run() throws Exception {
+    void run() {
         adminInitializer.run();
 
         verify(accountService, times(1)).initializeAdminAccount();

@@ -2,9 +2,9 @@ package com.example.portfolio.webstorespring.services.products;
 
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.ProducerMapper;
-import com.example.portfolio.webstorespring.model.dto.products.request.ProducerRequest;
-import com.example.portfolio.webstorespring.model.dto.products.response.ProducerResponse;
-import com.example.portfolio.webstorespring.model.entity.products.Producer;
+import com.example.portfolio.webstorespring.models.dto.products.request.ProducerRequest;
+import com.example.portfolio.webstorespring.models.dto.products.response.ProducerResponse;
+import com.example.portfolio.webstorespring.models.entity.products.Producer;
 import com.example.portfolio.webstorespring.repositories.products.ProducerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,19 +30,19 @@ public class ProducerService {
         return ProducerMapper.mapToDto(producerRepository.findAll());
     }
 
-    public ProducerResponse save(ProducerRequest producerRequest) {
-        log.info("Saving producer from request: {}", producerRequest);
-        Producer producer = ProducerMapper.mapToEntity(producerRequest);
+    public ProducerResponse save(ProducerRequest request) {
+        log.info("Saving producer from request: {}", request);
+        Producer producer = ProducerMapper.mapToEntity(request);
         producerRepository.save(producer);
         log.info("Saved producer.");
         return ProducerMapper.mapToDto(producer);
     }
 
     @Transactional
-    public ProducerResponse update(Long id, ProducerRequest producerRequest) {
-        log.info("Updating producer for ID: {}, form request: {}", id, producerRequest);
+    public ProducerResponse update(Long id, ProducerRequest request) {
+        log.info("Updating producer for ID: {}, form request: {}", id, request);
         Producer foundProducer = findById(id);
-        foundProducer.setName(producerRequest.name());
+        foundProducer.setName(request.name());
         producerRepository.save(foundProducer);
         log.info("Updated producer.");
         return ProducerMapper.mapToDto(foundProducer);

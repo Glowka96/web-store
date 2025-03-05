@@ -1,11 +1,11 @@
 package com.example.portfolio.webstorespring.services.accounts.aspects;
 
 import com.example.portfolio.webstorespring.exceptions.EmailAlreadyUsedException;
-import com.example.portfolio.webstorespring.model.dto.accounts.request.UpdateEmailRequest;
-import com.example.portfolio.webstorespring.model.dto.accounts.request.UpdatePasswordRequest;
+import com.example.portfolio.webstorespring.models.dto.accounts.request.UpdateEmailRequest;
+import com.example.portfolio.webstorespring.models.dto.accounts.request.UpdatePasswordRequest;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
 import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
-import com.example.portfolio.webstorespring.services.email.RestoreEmailService;
+import com.example.portfolio.webstorespring.services.emails.accountactions.RestoreEmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.annotation.After;
@@ -63,7 +63,7 @@ class AccountUpdateAspect {
         log.debug("Validating unique email: {}", email);
         if (Boolean.TRUE.equals(accountRepository.existsByEmail(email))) {
             log.debug("Email already exists: {}", email);
-            throw new EmailAlreadyUsedException();
+            throw new EmailAlreadyUsedException(email);
         }
     }
 

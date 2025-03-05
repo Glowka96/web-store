@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.buildhelpers.products;
 
 import com.example.portfolio.webstorespring.enums.SortByType;
-import com.example.portfolio.webstorespring.model.dto.products.ProductsPageOptions;
+import com.example.portfolio.webstorespring.models.dto.products.ProductsPageOptions;
 import org.springframework.data.domain.Sort;
 
 import java.util.Arrays;

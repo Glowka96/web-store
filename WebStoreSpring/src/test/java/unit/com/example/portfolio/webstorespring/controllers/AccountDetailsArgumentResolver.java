@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.controllers;
 
-import com.example.portfolio.webstorespring.model.entity.accounts.Account;
+import com.example.portfolio.webstorespring.models.entity.accounts.Account;
 import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;

@@ -1,0 +1,23 @@
+package com.example.portfolio.webstorespring.enums;
+
+import lombok.Getter;
+
+@Getter
+public enum EmailType {
+    RESET_PASSWORD,
+
+    CONFIRM_EMAIL,
+    RECONFIRM_EMAIL,
+    RESTORE_EMAIL,
+
+    CONFIRM_NEWSLETTER,
+    RECONFIRM_NEWSLETTER,
+    WELCOME_NEWSLETTER,
+
+    CONFIRM_PRODUCT_SUBSCRIPTION,
+    RECONFIRM_PRODUCT_SUBSCRIPTION,
+    WELCOME_PRODUCT_SUBSCRIPTION,
+
+    AVAILABLE_PRODUCT,
+    NEWSLETTER_MESSAGE,
+}

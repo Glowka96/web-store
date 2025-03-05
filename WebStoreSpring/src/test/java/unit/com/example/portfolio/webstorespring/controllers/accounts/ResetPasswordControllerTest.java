@@ -1,8 +1,9 @@
 package com.example.portfolio.webstorespring.controllers.accounts;
 
 import com.example.portfolio.webstorespring.controllers.emails.ResetPasswordController;
-import com.example.portfolio.webstorespring.model.dto.accounts.request.ResetPasswordRequest;
-import com.example.portfolio.webstorespring.services.email.ResetPasswordService;
+import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
+import com.example.portfolio.webstorespring.models.dto.accounts.request.ResetPasswordRequest;
+import com.example.portfolio.webstorespring.services.emails.accountactions.ResetPasswordService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,8 +14,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import java.util.Map;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
@@ -36,7 +35,6 @@ class ResetPasswordControllerTest {
     private ObjectMapper objectMapper;
     private MockMvc mvc;
     private static final String URI = "/api/v1";
-    private Map<String, Object> result;
 
     @BeforeEach
     void initialization() {
@@ -47,24 +45,24 @@ class ResetPasswordControllerTest {
 
     @Test
     void shouldResetPassword() throws Exception {
-        result = Map.of("message", "Sent reset password link to your email");
+        ResponseMessageDTO result = new ResponseMessageDTO("Sent reset password link to your email");
 
-        given(resetPasswordService.resetPasswordByEmail(anyString())).willReturn(result);
+        given(resetPasswordService.sendResetPasswordLinkByEmail(anyString())).willReturn(result);
 
         mvc.perform(get(URI + "/reset-password")
                         .param("email", "test@test.pl")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", is(result)))
+                .andExpect(jsonPath("$.message", is(result.message())))
                 .andDo(print());
     }
 
     @Test
     void shouldConfirmResetPassword() throws Exception {
-        result = Map.of("message", "Your new password has been saved");
+        ResponseMessageDTO result = new ResponseMessageDTO("Your new password has been saved");
         ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest("Password123$");
 
-        given(resetPasswordService.confirmResetPassword(any(ResetPasswordRequest.class), anyString())).willReturn(result);
+        given(resetPasswordService.confirm(any(ResetPasswordRequest.class), anyString())).willReturn(result);
 
         mvc.perform(patch(URI + "/reset-password/confirm")
                         .param("token", "Token123")
@@ -72,7 +70,7 @@ class ResetPasswordControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(resetPasswordRequest)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", is(result)))
+                .andExpect(jsonPath("$.message", is(result.message())))
                 .andDo(print());
     }
 }

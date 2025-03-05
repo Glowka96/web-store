@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.controllers.products;
 
-import com.example.portfolio.webstorespring.model.dto.products.request.SubcategoryRequest;
-import com.example.portfolio.webstorespring.model.dto.products.response.SubcategoryResponse;
+import com.example.portfolio.webstorespring.models.dto.products.request.SubcategoryRequest;
+import com.example.portfolio.webstorespring.models.dto.products.response.SubcategoryResponse;
 import com.example.portfolio.webstorespring.services.products.SubcategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,15 +25,15 @@ public class SubcategoryController {
     @PostMapping("/{categoryId}/subcategories")
     @ResponseStatus(HttpStatus.CREATED)
     public SubcategoryResponse saveSubcategory(@PathVariable("categoryId") Long id,
-                                               @Valid @RequestBody SubcategoryRequest subcategoryRequest) {
-        return subcategoryService.save(id, subcategoryRequest);
+                                               @Valid @RequestBody SubcategoryRequest request) {
+        return subcategoryService.save(id, request);
     }
 
     @PutMapping("/{categoryId}/subcategories/{subcategoryId}")
     public SubcategoryResponse updateSubcategory(@PathVariable("categoryId") Long categoryId,
                                                  @PathVariable("subcategoryId") Long subcategoryId,
-                                                 @Valid @RequestBody SubcategoryRequest subCategoryRequest) {
-        return subcategoryService.update(categoryId, subcategoryId, subCategoryRequest);
+                                                 @Valid @RequestBody SubcategoryRequest request) {
+        return subcategoryService.update(categoryId, subcategoryId, request);
     }
 
     @DeleteMapping("/subcategories/{subcategoryId}")

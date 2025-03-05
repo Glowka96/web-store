@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.buildhelpers.products;
 
-import com.example.portfolio.webstorespring.model.dto.products.request.PromotionRequest;
-import com.example.portfolio.webstorespring.model.dto.products.response.PromotionResponse;
-import com.example.portfolio.webstorespring.model.entity.products.Promotion;
+import com.example.portfolio.webstorespring.models.dto.products.request.PromotionRequest;
+import com.example.portfolio.webstorespring.models.dto.products.response.PromotionResponse;
+import com.example.portfolio.webstorespring.models.entity.products.Promotion;
 import com.natpryce.makeiteasy.Instantiator;
 import com.natpryce.makeiteasy.Property;
 
