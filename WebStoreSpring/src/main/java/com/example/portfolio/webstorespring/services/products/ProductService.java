@@ -105,7 +105,7 @@ public class ProductService {
     }
 
     private void checkDoSendNotification(Product product) {
-        log.debug("Checking product quantity, is equals 0");
+        log.debug("Checking if product quantity is equal to 0");
         if (product.getQuantity() != 0) return;
         eventPublisher.publishEvent(new ProductAvailableEvent(this, product.getId(), product.getName()));
     }
