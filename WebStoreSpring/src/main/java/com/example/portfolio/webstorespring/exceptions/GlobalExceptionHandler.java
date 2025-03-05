@@ -101,10 +101,10 @@ public class GlobalExceptionHandler {
         return createErrorResponse(exception, webRequest);
     }
 
-    @ExceptionHandler(UnsupportedNotificationTypeException.class)
+    @ExceptionHandler(UnsupportedEmailTypeException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorResponse handleUnsupportedNotificationTypeException(UnsupportedNotificationTypeException exception,
+    public ErrorResponse handleUnsupportedNotificationTypeException(UnsupportedEmailTypeException exception,
                                                                     WebRequest webRequest) {
         log.error(LOG_MSG, webRequest.getDescription(false), exception.getMessage(), exception);
         return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, exception, webRequest);

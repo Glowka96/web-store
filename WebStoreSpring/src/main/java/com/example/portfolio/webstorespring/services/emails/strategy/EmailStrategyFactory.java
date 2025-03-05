@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.services.emails.strategy;
 
 import com.example.portfolio.webstorespring.enums.EmailType;
-import com.example.portfolio.webstorespring.exceptions.UnsupportedNotificationTypeException;
+import com.example.portfolio.webstorespring.exceptions.UnsupportedEmailTypeException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -30,7 +30,7 @@ public class EmailStrategyFactory {
         log.info("Finding notification strategy for notification type: {}", emailType.name());
         EmailStrategy emailStrategy = notificationStrategyMap.get(emailType);
         if(emailStrategy == null) {
-            throw new UnsupportedNotificationTypeException(emailType);
+            throw new UnsupportedEmailTypeException(emailType);
         }
         log.info("Returning founder notification strategy.");
         return emailStrategy;

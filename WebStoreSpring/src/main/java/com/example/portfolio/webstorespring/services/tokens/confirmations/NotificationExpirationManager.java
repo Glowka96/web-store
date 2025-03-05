@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.services.tokens.confirmations;
 
 import com.example.portfolio.webstorespring.enums.EmailType;
-import com.example.portfolio.webstorespring.exceptions.UnsupportedNotificationTypeException;
+import com.example.portfolio.webstorespring.exceptions.UnsupportedEmailTypeException;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -23,7 +23,7 @@ public class NotificationExpirationManager {
     Long getExpirationMinutes(EmailType type) {
         Long expiresMinute = expirationMinutes.get(type);
         if(expiresMinute == null) {
-            throw new UnsupportedNotificationTypeException(type);
+            throw new UnsupportedEmailTypeException(type);
         }
         return expiresMinute;
     }

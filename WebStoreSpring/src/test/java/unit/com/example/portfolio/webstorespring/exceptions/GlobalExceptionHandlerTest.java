@@ -65,7 +65,7 @@ class GlobalExceptionHandlerTest {
     @Mock
     private ConstraintViolationException constraintViolationException;
     @Mock
-    private UnsupportedNotificationTypeException unsupportedNotificationTypeException;
+    private UnsupportedEmailTypeException unsupportedEmailTypeException;
     @Mock
     private WebRequest webRequest;
     @InjectMocks
@@ -314,13 +314,13 @@ class GlobalExceptionHandlerTest {
     @Test
     void shouldHandleUnsupportedNotificationTypeException() {
         ErrorResponse resultErrorResponse = underTest.handleUnsupportedNotificationTypeException(
-                unsupportedNotificationTypeException,
+                unsupportedEmailTypeException,
                 webRequest
         );
 
         assertsResponse(resultErrorResponse, getExceptedErrorResponse(
                         HttpStatus.INTERNAL_SERVER_ERROR,
-                        unsupportedNotificationTypeException
+                unsupportedEmailTypeException
                 )
         );
     }
