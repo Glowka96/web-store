@@ -6,7 +6,7 @@ import com.example.portfolio.webstorespring.models.entities.products.Promotion;
 
 public interface PromotionMapper {
 
-    static PromotionResponse mapToDto(Promotion promotion) {
+    static PromotionResponse mapToResponse(Promotion promotion) {
         return new PromotionResponse(
                 promotion.getId(),
                 ProductMapper.mapToDto(promotion.getProduct()),

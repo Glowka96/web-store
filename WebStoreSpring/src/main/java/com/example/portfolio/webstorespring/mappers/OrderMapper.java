@@ -13,10 +13,10 @@ public interface OrderMapper {
                 order.getId(),
                 order.getNameUser(),
                 order.getTotalPrice(),
-                DeliveryMapper.mapToDto(order.getDelivery()),
+                DeliveryMapper.mapToResponse(order.getDelivery()),
                 order.getCreatedAt(),
                 order.getStatus(),
-                ShipmentMapper.mapToDto(order.getShipments())
+                ShipmentMapper.mapToResponse(order.getShipments())
         );
     }
 
@@ -31,7 +31,7 @@ public interface OrderMapper {
                 order.getId(),
                 order.getNameUser(),
                 order.getTotalPrice(),
-                DeliveryMapper.mapToWithoutDeliveryType(order.getDelivery()),
+                DeliveryMapper.mapToResponseWithoutDeliveryType(order.getDelivery()),
                 order.getCreatedAt(),
                 order.getStatus(),
                 null

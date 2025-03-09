@@ -9,13 +9,13 @@ import java.util.List;
 
 public interface SubcategoryMapper {
 
-    static List<SubcategoryResponse> mapToDto(List<Subcategory> subcategories) {
+    static List<SubcategoryResponse> mapToResponse(List<Subcategory> subcategories) {
         return subcategories.stream()
-                .map(SubcategoryMapper::mapToDto)
+                .map(SubcategoryMapper::mapToResponse)
                 .toList();
     }
 
-     static SubcategoryResponse mapToDto(Subcategory subcategory) {
+     static SubcategoryResponse mapToResponse(Subcategory subcategory) {
         return new SubcategoryResponse(subcategory.getId(), subcategory.getName());
 
     }

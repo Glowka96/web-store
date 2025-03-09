@@ -29,7 +29,7 @@ public class NewsletterMessageService {
     @Transactional
     public ResponseMessageDTO save(NewsletterMessageRequest request) {
         log.info("Saving newsletter message.");
-        NewsletterMessage newsletterMessage = NewsletterMapper.mapToEntity(request);
+        NewsletterMessage newsletterMessage = NewsletterMapper.mapToResponse(request);
         newsletterMessageRepository.save(newsletterMessage);
         log.info("Saved newsletter message.");
         if(newsletterMessage.getSendDate() == null) {

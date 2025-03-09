@@ -71,7 +71,7 @@ class ProducerServiceTest {
         verify(producerRepository).save(producerArgumentCaptor.capture());
 
         ProducerResponse mappedProducerResponse =
-                ProducerMapper.mapToDto(producerArgumentCaptor.getValue());
+                ProducerMapper.mapToResponse(producerArgumentCaptor.getValue());
 
         assertEquals(mappedProducerResponse, savedProducerResponse);
     }
@@ -89,7 +89,7 @@ class ProducerServiceTest {
                 ArgumentCaptor.forClass(Producer.class);
         verify(producerRepository).save(producerArgumentCaptor.capture());
 
-        ProducerResponse mappedCategoryResponse = ProducerMapper.mapToDto(producerArgumentCaptor.getValue());
+        ProducerResponse mappedCategoryResponse = ProducerMapper.mapToResponse(producerArgumentCaptor.getValue());
 
         assertEquals(mappedCategoryResponse, updatedProducerResponse);
         assertNotEquals(producerNameBeforeUpdate, mappedCategoryResponse.name());

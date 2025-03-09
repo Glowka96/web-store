@@ -13,8 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.example.portfolio.webstorespring.mappers.AccountAddressMapper.mapToDto;
 import static com.example.portfolio.webstorespring.mappers.AccountAddressMapper.mapToEntity;
+import static com.example.portfolio.webstorespring.mappers.AccountAddressMapper.mapToResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +26,7 @@ public class AccountAddressService {
 
     public AccountAddressResponse getByAccountDetails(AccountDetails accountDetails) {
         log.info("Fetching address for account ID: {}", accountDetails.getAccount().getId());
-        return mapToDto(findByAccountDetails(accountDetails));
+        return mapToResponse(findByAccountDetails(accountDetails));
     }
 
     @Transactional
@@ -46,14 +46,14 @@ public class AccountAddressService {
                     setupUpdatedAddress(existAddress, accountAddress);
                     addressRepository.save(existAddress);
                     log.debug("Updated address");
-                    return mapToDto(existAddress);
+                    return mapToResponse(existAddress);
                 }
         ).orElseGet(() -> {
             log.info("No address exists for account ID: {}, saving it", accountDetails.getAccount().getId());
             accountAddress.setAccount(finalLoggedAccount);
             addressRepository.save(accountAddress);
             log.debug("Created new address");
-            return mapToDto(accountAddress);
+            return mapToResponse(accountAddress);
         });
     }
 
@@ -69,7 +69,7 @@ public class AccountAddressService {
         setupUpdatedAddress(loggedAccountAddress, accountAddress);
         addressRepository.save(loggedAccountAddress);
         log.info("Updated address");
-        return mapToDto(loggedAccountAddress);
+        return mapToResponse(loggedAccountAddress);
     }
 
     public void deleteByAccountDetails(AccountDetails accountDetails) {

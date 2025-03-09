@@ -35,7 +35,7 @@ public class PromotionService {
 
         promotionRepository.save(promotion);
         log.info("Saved promotion.");
-        return PromotionMapper.mapToDto(promotion);
+        return PromotionMapper.mapToResponse(promotion);
     }
 
     private void validateProduct(PromotionRequest request, Product product) {

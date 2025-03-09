@@ -132,7 +132,7 @@ class AccountServiceTest {
         ArgumentCaptor<Account> accountArgumentCaptor = ArgumentCaptor.forClass(Account.class);
         verify(accountRepository).save(accountArgumentCaptor.capture());
 
-        AccountResponse mappedAccount = AccountMapper.mapToDto(accountArgumentCaptor.getValue());
+        AccountResponse mappedAccount = AccountMapper.mapToResponse(accountArgumentCaptor.getValue());
 
         assertEquals(mappedAccount, updatedAccountResponse);
     }

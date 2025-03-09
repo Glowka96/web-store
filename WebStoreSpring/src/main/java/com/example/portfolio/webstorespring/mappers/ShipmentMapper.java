@@ -7,13 +7,13 @@ import java.util.List;
 
 public interface ShipmentMapper {
 
-    static List<ShipmentResponse> mapToDto(List<Shipment> shipments) {
+    static List<ShipmentResponse> mapToResponse(List<Shipment> shipments) {
         return shipments.stream()
-                .map(ShipmentMapper::mapToDto)
+                .map(ShipmentMapper::mapToResponse)
                 .toList();
     }
 
-    private static ShipmentResponse mapToDto(Shipment shipment) {
+    private static ShipmentResponse mapToResponse(Shipment shipment) {
         return new ShipmentResponse(
                 shipment.getId(),
                 ProductMapper.mapToDtoWithPromotion(shipment.getProduct()),

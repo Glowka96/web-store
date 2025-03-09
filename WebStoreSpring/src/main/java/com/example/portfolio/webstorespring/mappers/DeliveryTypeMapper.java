@@ -9,13 +9,13 @@ import java.util.List;
 
 public interface DeliveryTypeMapper {
 
-    static List<DeliveryTypeResponse> mapToDto(List<DeliveryType> deliveryTypes) {
+    static List<DeliveryTypeResponse> mapToResponse(List<DeliveryType> deliveryTypes) {
         return deliveryTypes.stream()
-                .map(DeliveryTypeMapper::mapToDto)
+                .map(DeliveryTypeMapper::mapToResponse)
                 .toList();
     }
 
-    static DeliveryTypeResponse mapToDto(DeliveryType deliveryType) {
+    static DeliveryTypeResponse mapToResponse(DeliveryType deliveryType) {
         return new DeliveryTypeResponse(
                 deliveryType.getId(),
                 deliveryType.getName(),

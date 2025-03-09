@@ -23,8 +23,8 @@ public interface ProductMapper {
                 product.getImageUrl(),
                 product.getPrice(),
                 product.getQuantity(),
-                ProductTypeMapper.mapToDto(product.getType()),
-                ProducerMapper.mapToDto(product.getProducer()),
+                ProductTypeMapper.mapToResponse(product.getType()),
+                ProducerMapper.mapToResponse(product.getProducer()),
                 null
         );
     }

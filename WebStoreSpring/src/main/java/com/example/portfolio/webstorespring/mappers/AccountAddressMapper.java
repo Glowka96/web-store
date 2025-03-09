@@ -6,7 +6,7 @@ import com.example.portfolio.webstorespring.models.entities.accounts.AccountAddr
 
 public interface AccountAddressMapper {
 
-    static AccountAddressResponse mapToDto(AccountAddress address) {
+    static AccountAddressResponse mapToResponse(AccountAddress address) {
         return new AccountAddressResponse(
                 address.getId(),
                 address.getCity(),

@@ -49,7 +49,7 @@ class DeliveryTypeServiceTest {
         verify(deliveryTypeRepository).save(deliveryTypeArgumentCaptor.capture());
 
         DeliveryTypeResponse mappedDeliveryTypeResponse =
-                DeliveryTypeMapper.mapToDto(deliveryTypeArgumentCaptor.getValue());
+                DeliveryTypeMapper.mapToResponse(deliveryTypeArgumentCaptor.getValue());
 
         assertEquals(mappedDeliveryTypeResponse, savedDeliveryTypeResponse);
     }

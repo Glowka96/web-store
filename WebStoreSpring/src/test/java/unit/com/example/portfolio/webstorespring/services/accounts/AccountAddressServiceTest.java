@@ -73,7 +73,7 @@ class AccountAddressServiceTest {
         ArgumentCaptor<AccountAddress> accountAddressArgumentCaptor =
                 ArgumentCaptor.forClass(AccountAddress.class);
         verify(addressRepository).save(accountAddressArgumentCaptor.capture());
-        AccountAddressResponse mappedAddress = AccountAddressMapper.mapToDto(accountAddressArgumentCaptor.getValue());
+        AccountAddressResponse mappedAddress = AccountAddressMapper.mapToResponse(accountAddressArgumentCaptor.getValue());
 
         assertEquals(accountDetails.getAccount().getId(), mappedAddress.id());
         assertEquals(savedAccountAddressResponse, mappedAddress);
@@ -111,7 +111,7 @@ class AccountAddressServiceTest {
                 ArgumentCaptor.forClass(AccountAddress.class);
         verify(addressRepository).save(accountAddressArgumentCaptor.capture());
 
-        AccountAddressResponse mappedAccount = AccountAddressMapper.mapToDto(accountAddressArgumentCaptor.getValue());
+        AccountAddressResponse mappedAccount = AccountAddressMapper.mapToResponse(accountAddressArgumentCaptor.getValue());
 
         assertEquals(mappedAccount, updatedAccountAddressResponse);
     }

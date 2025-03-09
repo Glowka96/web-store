@@ -5,7 +5,7 @@ import com.example.portfolio.webstorespring.models.entities.subscribers.Newslett
 
 public interface NewsletterMapper {
 
-    static NewsletterMessage mapToEntity(NewsletterMessageRequest request) {
+    static NewsletterMessage mapToResponse(NewsletterMessageRequest request) {
         return NewsletterMessage.builder()
                 .message(request.message())
                 .sendDate(request.sendDate())

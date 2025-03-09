@@ -39,7 +39,7 @@ public class AccountService {
 
     public AccountResponse getByAccountDetails(AccountDetails accountDetails) {
         log.info("Mapping logged account with account ID: {}", accountDetails.getAccount().getId());
-        return AccountMapper.mapToDto(accountDetails.getAccount());
+        return AccountMapper.mapToResponse(accountDetails.getAccount());
     }
 
     @Transactional
@@ -72,7 +72,7 @@ public class AccountService {
 
         accountRepository.save(loggedAccount);
         log.info("Updated account with account ID: {}", loggedAccount.getId());
-        return AccountMapper.mapToDto(loggedAccount);
+        return AccountMapper.mapToResponse(loggedAccount);
     }
 
     @Transactional

@@ -9,18 +9,18 @@ import java.util.List;
 
 public interface CategoryMapper {
 
-    static List<CategoryResponse> mapToDto(List<Category> categories) {
+    static List<CategoryResponse> mapToResponse(List<Category> categories) {
         return categories.stream()
-                .map(CategoryMapper::mapToDto)
+                .map(CategoryMapper::mapToResponse)
                 .toList();
     }
 
-    static CategoryResponse mapToDto(Category category) {
+    static CategoryResponse mapToResponse(Category category) {
         return new CategoryResponse(
                 category.getId(),
                 category.getName(),
                 category.getSubcategories() == null ? null
-                        : SubcategoryMapper.mapToDto(category.getSubcategories())
+                        : SubcategoryMapper.mapToResponse(category.getSubcategories())
         );
     }
 

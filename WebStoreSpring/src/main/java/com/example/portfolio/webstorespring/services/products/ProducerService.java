@@ -22,12 +22,12 @@ public class ProducerService {
 
     public ProducerResponse getById(Long id) {
         log.info("Fetching producer for ID: {}", id);
-        return ProducerMapper.mapToDto(findById(id));
+        return ProducerMapper.mapToResponse(findById(id));
     }
 
     public List<ProducerResponse> getAll() {
         log.info("Fetching all producer.");
-        return ProducerMapper.mapToDto(producerRepository.findAll());
+        return ProducerMapper.mapToResponse(producerRepository.findAll());
     }
 
     public ProducerResponse save(ProducerRequest request) {
@@ -35,7 +35,7 @@ public class ProducerService {
         Producer producer = ProducerMapper.mapToEntity(request);
         producerRepository.save(producer);
         log.info("Saved producer.");
-        return ProducerMapper.mapToDto(producer);
+        return ProducerMapper.mapToResponse(producer);
     }
 
     @Transactional
@@ -45,7 +45,7 @@ public class ProducerService {
         foundProducer.setName(request.name());
         producerRepository.save(foundProducer);
         log.info("Updated producer.");
-        return ProducerMapper.mapToDto(foundProducer);
+        return ProducerMapper.mapToResponse(foundProducer);
     }
 
     public void deleteById(Long id) {

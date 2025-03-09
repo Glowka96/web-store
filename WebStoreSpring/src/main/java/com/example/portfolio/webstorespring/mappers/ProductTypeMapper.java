@@ -8,13 +8,13 @@ import java.util.List;
 
 public interface ProductTypeMapper {
 
-    static List<ProductTypeResponse> mapToDto(List<ProductType> productTypes) {
+    static List<ProductTypeResponse> mapToResponse(List<ProductType> productTypes) {
         return productTypes.stream()
-                .map(ProductTypeMapper::mapToDto)
+                .map(ProductTypeMapper::mapToResponse)
                 .toList();
     }
 
-    static ProductTypeResponse mapToDto(ProductType productType) {
+    static ProductTypeResponse mapToResponse(ProductType productType) {
         return new ProductTypeResponse(productType.getId(), productType.getName());
     }
 

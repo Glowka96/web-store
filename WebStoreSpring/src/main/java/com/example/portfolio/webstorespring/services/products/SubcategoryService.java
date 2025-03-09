@@ -25,7 +25,7 @@ public class SubcategoryService {
 
     public List<SubcategoryResponse> getAll() {
         log.info("Fetching all subcategory.");
-        return SubcategoryMapper.mapToDto(subcategoryRepository.findAll());
+        return SubcategoryMapper.mapToResponse(subcategoryRepository.findAll());
     }
 
     Set<Subcategory> findAllByNames(Set<String> names) {
@@ -48,7 +48,7 @@ public class SubcategoryService {
         );
         subcategoryRepository.save(subcategory);
         log.info("Saved subcategory.");
-        return SubcategoryMapper.mapToDto(subcategory);
+        return SubcategoryMapper.mapToResponse(subcategory);
     }
 
     @Transactional
@@ -63,7 +63,7 @@ public class SubcategoryService {
 
         subcategoryRepository.save(foundSubcategory);
         log.info("Updated subcategory.");
-        return SubcategoryMapper.mapToDto(foundSubcategory);
+        return SubcategoryMapper.mapToResponse(foundSubcategory);
     }
 
     public void deleteById(Long id) {

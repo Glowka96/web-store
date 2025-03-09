@@ -57,7 +57,7 @@ class PromotionServiceTest {
         verify(promotionRepository).save(promotionArgumentCaptor.capture());
 
         PromotionResponse mappedPromotionResponse =
-                PromotionMapper.mapToDto(promotionArgumentCaptor.getValue());
+                PromotionMapper.mapToResponse(promotionArgumentCaptor.getValue());
 
         assertEquals(mappedPromotionResponse, savedPromotionRequest);
     }

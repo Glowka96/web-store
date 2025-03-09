@@ -55,7 +55,7 @@ class CategoryServiceTest {
         verify(categoryRepository).save(categoryArgumentCaptor.capture());
 
         CategoryResponse mappedCategoryResponse =
-                CategoryMapper.mapToDto(categoryArgumentCaptor.getValue());
+                CategoryMapper.mapToResponse(categoryArgumentCaptor.getValue());
 
         assertEquals(mappedCategoryResponse, savedCategoryResponse);
     }
@@ -74,7 +74,7 @@ class CategoryServiceTest {
         verify(categoryRepository).save(categoryArgumentCaptor.capture());
 
         CategoryResponse mappedCategoryResponse =
-                CategoryMapper.mapToDto(categoryArgumentCaptor.getValue());
+                CategoryMapper.mapToResponse(categoryArgumentCaptor.getValue());
 
         assertEquals(mappedCategoryResponse, updatedCategoryResponse);
         assertNotEquals(categoryNameBeforeUpdate, updatedCategoryResponse.name());

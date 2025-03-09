@@ -9,13 +9,13 @@ import java.util.List;
 
 public interface ProducerMapper {
 
-    static List<ProducerResponse> mapToDto(List<Producer> producers) {
+    static List<ProducerResponse> mapToResponse(List<Producer> producers) {
         return producers.stream()
-                .map(ProducerMapper::mapToDto)
+                .map(ProducerMapper::mapToResponse)
                 .toList();
     }
 
-    static ProducerResponse mapToDto(Producer producer) {
+    static ProducerResponse mapToResponse(Producer producer) {
         return new ProducerResponse(
                 producer.getId(),
                 producer.getName()

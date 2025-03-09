@@ -55,7 +55,7 @@ class ProductTypeServiceTest {
                 ArgumentCaptor.forClass(ProductType.class);
         verify(productTypeRepository).save(productTypeArgumentCaptor.capture());
 
-        ProductTypeResponse mappedProductTypeResponse = ProductTypeMapper.mapToDto(productTypeArgumentCaptor.getValue());
+        ProductTypeResponse mappedProductTypeResponse = ProductTypeMapper.mapToResponse(productTypeArgumentCaptor.getValue());
 
         assertEquals(mappedProductTypeResponse, result);
     }
@@ -75,7 +75,7 @@ class ProductTypeServiceTest {
         verify(productTypeRepository).save(productTypeArgumentCaptor.capture());
 
         ProductTypeResponse mappedProductType =
-                ProductTypeMapper.mapToDto(productTypeArgumentCaptor.getValue());
+                ProductTypeMapper.mapToResponse(productTypeArgumentCaptor.getValue());
 
         assertEquals(mappedProductType, updatedProductTypeResponse);
         assertNotEquals(productTypeNameBeforeUpdate, updatedProductTypeResponse.name());

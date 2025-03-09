@@ -5,16 +5,16 @@ import com.example.portfolio.webstorespring.models.entities.orders.Delivery;
 
 public interface DeliveryMapper {
 
-    static DeliveryResponse mapToDto(Delivery delivery) {
+    static DeliveryResponse mapToResponse(Delivery delivery) {
         return new DeliveryResponse(
                 delivery.getId(),
                 delivery.getDeliveryAddress(),
                 delivery.getShipmentAddress(),
-                DeliveryTypeMapper.mapToDto(delivery.getDeliveryType())
+                DeliveryTypeMapper.mapToResponse(delivery.getDeliveryType())
         );
     }
 
-    static DeliveryResponse mapToWithoutDeliveryType(Delivery delivery) {
+    static DeliveryResponse mapToResponseWithoutDeliveryType(Delivery delivery) {
         return new DeliveryResponse(
                 delivery.getId(),
                 delivery.getDeliveryAddress(),

@@ -6,7 +6,7 @@ import com.example.portfolio.webstorespring.models.entities.accounts.Account;
 
 public interface AccountMapper {
 
-    static AccountResponse mapToDto(Account account) {
+    static AccountResponse mapToResponse(Account account) {
         return new AccountResponse(
                 account.getId(),
                 account.getFirstName(),

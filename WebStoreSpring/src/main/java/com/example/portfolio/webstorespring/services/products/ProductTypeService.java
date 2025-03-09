@@ -22,7 +22,7 @@ public class ProductTypeService {
 
     public List<ProductTypeResponse> getAll() {
         log.info("Fetching all product type.");
-        return ProductTypeMapper.mapToDto(productTypeRepository.findAll());
+        return ProductTypeMapper.mapToResponse(productTypeRepository.findAll());
     }
 
     public ProductTypeResponse save(ProductTypeRequest request){
@@ -30,7 +30,7 @@ public class ProductTypeService {
         ProductType productType = ProductTypeMapper.mapToEntity(request);
         productTypeRepository.save(productType);
         log.info("Saved product type.");
-        return ProductTypeMapper.mapToDto(productType);
+        return ProductTypeMapper.mapToResponse(productType);
     }
 
     @Transactional
@@ -40,7 +40,7 @@ public class ProductTypeService {
         foundProductType.setName(request.name());
         productTypeRepository.save(foundProductType);
         log.info("Updated product type.");
-        return ProductTypeMapper.mapToDto(foundProductType);
+        return ProductTypeMapper.mapToResponse(foundProductType);
     }
 
     public void deleteById(Long id) {

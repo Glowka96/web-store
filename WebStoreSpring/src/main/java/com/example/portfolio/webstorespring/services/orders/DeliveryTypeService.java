@@ -21,7 +21,7 @@ public class DeliveryTypeService {
 
     public List<DeliveryTypeResponse> getAll() {
         log.info("Fetching all delivery type.");
-        return DeliveryTypeMapper.mapToDto(deliveryTypeRepository.findAll());
+        return DeliveryTypeMapper.mapToResponse(deliveryTypeRepository.findAll());
     }
 
     public DeliveryTypeResponse save(DeliveryTypeRequest request){
@@ -30,7 +30,7 @@ public class DeliveryTypeService {
 
         deliveryTypeRepository.save(deliveryType);
         log.info("Saved delivery type.");
-        return DeliveryTypeMapper.mapToDto(deliveryType);
+        return DeliveryTypeMapper.mapToResponse(deliveryType);
     }
 
     public DeliveryTypeResponse update(Long id, DeliveryTypeRequest request) {
@@ -42,7 +42,7 @@ public class DeliveryTypeService {
         foundDeliveryType.setPrice(request.price());
         deliveryTypeRepository.save(foundDeliveryType);
         log.info("Updated delivery type.");
-        return DeliveryTypeMapper.mapToDto(foundDeliveryType);
+        return DeliveryTypeMapper.mapToResponse(foundDeliveryType);
     }
 
     public void deleteById(Long id){
