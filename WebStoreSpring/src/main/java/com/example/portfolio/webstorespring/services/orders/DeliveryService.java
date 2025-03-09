@@ -20,19 +20,18 @@ class DeliveryService {
         return Delivery.builder()
                 .shipmentAddress(shipmentAddressProvider.getAddress())
                 .deliveryAddress(
-                        formatDeliveryAddress(
-                                request.deliveryAddress().split(", ")))
+                        formatDeliveryAddress(request))
                 .deliveryType(deliveryTypeService.findById(
                         request.deliveryTypeId()))
                 .build();
     }
 
-    private String formatDeliveryAddress(String... address) {
+    private String formatDeliveryAddress(DeliveryRequest request) {
         return "City: " +
-               address[0] +
+               request.city() +
                ", Postcode: " +
-               address[1] +
+               request.postcode() +
                ", Street: " +
-               address[2];
+               request.street();
     }
 }
