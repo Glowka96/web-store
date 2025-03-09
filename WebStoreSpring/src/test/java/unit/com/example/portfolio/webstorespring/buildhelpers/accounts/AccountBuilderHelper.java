@@ -1,9 +1,9 @@
 package com.example.portfolio.webstorespring.buildhelpers.accounts;
 
-import com.example.portfolio.webstorespring.models.dto.accounts.request.AccountRequest;
-import com.example.portfolio.webstorespring.models.dto.accounts.response.AccountResponse;
-import com.example.portfolio.webstorespring.models.entity.accounts.Account;
-import com.example.portfolio.webstorespring.models.entity.accounts.Role;
+import com.example.portfolio.webstorespring.models.dtos.accounts.requests.AccountRequest;
+import com.example.portfolio.webstorespring.models.dtos.accounts.responses.AccountResponse;
+import com.example.portfolio.webstorespring.models.entities.accounts.Account;
+import com.example.portfolio.webstorespring.models.entities.accounts.Role;
 import com.natpryce.makeiteasy.Instantiator;
 import com.natpryce.makeiteasy.Property;
 import lombok.Getter;

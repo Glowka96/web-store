@@ -1,9 +1,9 @@
 package com.example.portfolio.webstorespring.services.subscribers;
 
 import com.example.portfolio.webstorespring.mappers.NewsletterMapper;
-import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
-import com.example.portfolio.webstorespring.models.dto.subscribers.NewsletterMessageRequest;
-import com.example.portfolio.webstorespring.models.entity.subscribers.NewsletterMessage;
+import com.example.portfolio.webstorespring.models.dtos.ResponseMessageDTO;
+import com.example.portfolio.webstorespring.models.dtos.subscribers.NewsletterMessageRequest;
+import com.example.portfolio.webstorespring.models.entities.subscribers.NewsletterMessage;
 import com.example.portfolio.webstorespring.repositories.subscribers.NewsletterMessageRepository;
 import com.example.portfolio.webstorespring.services.emails.notifications.NotifyNewsletterSubscriberService;
 import lombok.RequiredArgsConstructor;

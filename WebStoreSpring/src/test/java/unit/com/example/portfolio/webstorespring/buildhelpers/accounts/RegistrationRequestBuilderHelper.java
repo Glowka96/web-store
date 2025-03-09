@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.buildhelpers.accounts;
 
-import com.example.portfolio.webstorespring.models.dto.accounts.request.RegistrationRequest;
+import com.example.portfolio.webstorespring.models.dtos.accounts.requests.RegistrationRequest;
 
 public class RegistrationRequestBuilderHelper {
 

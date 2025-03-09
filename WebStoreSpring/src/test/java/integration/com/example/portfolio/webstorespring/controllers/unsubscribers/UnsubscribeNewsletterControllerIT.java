@@ -1,9 +1,9 @@
 package com.example.portfolio.webstorespring.controllers.unsubscribers;
 
 import com.example.portfolio.webstorespring.controllers.AbstractTestRestTemplateIT;
-import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
-import com.example.portfolio.webstorespring.models.entity.subscribers.NewsletterSubscriber;
-import com.example.portfolio.webstorespring.models.entity.tokens.removals.NewsletterRemovalToken;
+import com.example.portfolio.webstorespring.models.dtos.ResponseMessageDTO;
+import com.example.portfolio.webstorespring.models.entities.subscribers.NewsletterSubscriber;
+import com.example.portfolio.webstorespring.models.entities.tokens.removals.NewsletterRemovalToken;
 import com.example.portfolio.webstorespring.repositories.subscribers.NewsletterSubscriberRepository;
 import com.example.portfolio.webstorespring.repositories.tokens.removals.NewsletterRemovalTokenRepository;
 import org.junit.jupiter.api.AfterEach;

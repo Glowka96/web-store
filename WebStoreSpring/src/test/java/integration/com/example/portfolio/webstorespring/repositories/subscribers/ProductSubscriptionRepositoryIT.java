@@ -2,8 +2,8 @@ package com.example.portfolio.webstorespring.repositories.subscribers;
 
 import com.example.portfolio.webstorespring.configs.ContainersConfig;
 import com.example.portfolio.webstorespring.initTestData.InitSubscriptionData;
-import com.example.portfolio.webstorespring.models.entity.subscribers.ProductSubscriber;
-import com.example.portfolio.webstorespring.models.entity.subscribers.ProductSubscription;
+import com.example.portfolio.webstorespring.models.entities.subscribers.ProductSubscriber;
+import com.example.portfolio.webstorespring.models.entities.subscribers.ProductSubscription;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.BeforeEach;

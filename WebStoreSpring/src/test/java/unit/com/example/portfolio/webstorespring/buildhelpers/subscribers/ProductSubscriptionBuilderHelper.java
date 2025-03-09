@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.buildhelpers.subscribers;
 
 
-import com.example.portfolio.webstorespring.models.entity.products.Product;
-import com.example.portfolio.webstorespring.models.entity.subscribers.ProductSubscription;
+import com.example.portfolio.webstorespring.models.entities.products.Product;
+import com.example.portfolio.webstorespring.models.entities.subscribers.ProductSubscription;
 
 import java.util.HashSet;
 

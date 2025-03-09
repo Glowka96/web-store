@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.repositories.subscribers;
 
-import com.example.portfolio.webstorespring.models.entity.subscribers.NewsletterSubscriber;
+import com.example.portfolio.webstorespring.models.entities.subscribers.NewsletterSubscriber;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Set;

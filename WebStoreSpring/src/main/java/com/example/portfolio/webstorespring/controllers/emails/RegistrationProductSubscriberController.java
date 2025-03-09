@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.controllers.emails;
 
-import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
-import com.example.portfolio.webstorespring.models.dto.subscribers.ProductSubscriberRequest;
+import com.example.portfolio.webstorespring.models.dtos.ResponseMessageDTO;
+import com.example.portfolio.webstorespring.models.dtos.subscribers.ProductSubscriberRequest;
 import com.example.portfolio.webstorespring.services.emails.registrations.RegisterProductSubscriberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

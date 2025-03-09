@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.services.emails;
 
 import com.example.portfolio.webstorespring.enums.EmailType;
-import com.example.portfolio.webstorespring.models.entity.subscribers.OwnerConfToken;
-import com.example.portfolio.webstorespring.models.entity.tokens.confirmations.ConfToken;
+import com.example.portfolio.webstorespring.models.entities.subscribers.OwnerConfToken;
+import com.example.portfolio.webstorespring.models.entities.tokens.confirmations.ConfToken;
 import com.example.portfolio.webstorespring.services.tokens.confirmations.AbstractConfTokenService;
 import lombok.RequiredArgsConstructor;
 

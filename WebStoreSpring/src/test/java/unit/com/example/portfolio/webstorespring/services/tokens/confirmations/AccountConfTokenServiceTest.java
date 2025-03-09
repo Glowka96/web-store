@@ -1,9 +1,9 @@
 package com.example.portfolio.webstorespring.services.tokens.confirmations;
 
-import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
-import com.example.portfolio.webstorespring.models.entity.accounts.Account;
-import com.example.portfolio.webstorespring.models.entity.tokens.confirmations.AccountConfToken;
-import com.example.portfolio.webstorespring.models.entity.tokens.confirmations.TokenDetails;
+import com.example.portfolio.webstorespring.models.dtos.ResponseMessageDTO;
+import com.example.portfolio.webstorespring.models.entities.accounts.Account;
+import com.example.portfolio.webstorespring.models.entities.tokens.confirmations.AccountConfToken;
+import com.example.portfolio.webstorespring.models.entities.tokens.confirmations.TokenDetails;
 import com.example.portfolio.webstorespring.repositories.tokens.confirmations.AccountConfTokenRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

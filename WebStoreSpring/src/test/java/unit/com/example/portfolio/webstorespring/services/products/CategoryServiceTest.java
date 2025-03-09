@@ -2,9 +2,9 @@ package com.example.portfolio.webstorespring.services.products;
 
 
 import com.example.portfolio.webstorespring.mappers.CategoryMapper;
-import com.example.portfolio.webstorespring.models.dto.products.request.CategoryRequest;
-import com.example.portfolio.webstorespring.models.dto.products.response.CategoryResponse;
-import com.example.portfolio.webstorespring.models.entity.products.Category;
+import com.example.portfolio.webstorespring.models.dtos.products.requests.CategoryRequest;
+import com.example.portfolio.webstorespring.models.dtos.products.responses.CategoryResponse;
+import com.example.portfolio.webstorespring.models.entities.products.Category;
 import com.example.portfolio.webstorespring.repositories.products.CategoryRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

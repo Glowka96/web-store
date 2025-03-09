@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.services.tokens.removals;
 
-import com.example.portfolio.webstorespring.models.entity.tokens.removals.SingleProductRemovalToken;
+import com.example.portfolio.webstorespring.models.entities.tokens.removals.SingleProductRemovalToken;
 import com.example.portfolio.webstorespring.repositories.tokens.removals.SingleProductRemovalRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

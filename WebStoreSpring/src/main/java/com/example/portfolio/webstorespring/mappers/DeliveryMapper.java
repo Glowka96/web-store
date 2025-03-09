@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.mappers;
 
-import com.example.portfolio.webstorespring.models.dto.orders.response.DeliveryResponse;
-import com.example.portfolio.webstorespring.models.entity.orders.Delivery;
+import com.example.portfolio.webstorespring.models.dtos.orders.responses.DeliveryResponse;
+import com.example.portfolio.webstorespring.models.entities.orders.Delivery;
 
 public interface DeliveryMapper {
 

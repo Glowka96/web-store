@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.mappers;
 
-import com.example.portfolio.webstorespring.models.dto.products.request.ProductTypeRequest;
-import com.example.portfolio.webstorespring.models.dto.products.response.ProductTypeResponse;
-import com.example.portfolio.webstorespring.models.entity.products.ProductType;
+import com.example.portfolio.webstorespring.models.dtos.products.requests.ProductTypeRequest;
+import com.example.portfolio.webstorespring.models.dtos.products.responses.ProductTypeResponse;
+import com.example.portfolio.webstorespring.models.entities.products.ProductType;
 
 import java.util.List;
 

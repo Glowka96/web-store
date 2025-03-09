@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.buildhelpers.orders;
 
-import com.example.portfolio.webstorespring.models.dto.orders.request.DeliveryTypeRequest;
-import com.example.portfolio.webstorespring.models.dto.orders.response.DeliveryTypeResponse;
-import com.example.portfolio.webstorespring.models.entity.orders.DeliveryType;
+import com.example.portfolio.webstorespring.models.dtos.orders.requests.DeliveryTypeRequest;
+import com.example.portfolio.webstorespring.models.dtos.orders.responses.DeliveryTypeResponse;
+import com.example.portfolio.webstorespring.models.entities.orders.DeliveryType;
 
 import java.math.BigDecimal;
 

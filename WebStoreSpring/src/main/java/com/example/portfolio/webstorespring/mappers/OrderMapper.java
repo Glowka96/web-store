@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.mappers;
 
-import com.example.portfolio.webstorespring.models.dto.orders.response.OrderResponse;
-import com.example.portfolio.webstorespring.models.entity.orders.Order;
+import com.example.portfolio.webstorespring.models.dtos.orders.responses.OrderResponse;
+import com.example.portfolio.webstorespring.models.entities.orders.Order;
 
 import java.util.List;
 

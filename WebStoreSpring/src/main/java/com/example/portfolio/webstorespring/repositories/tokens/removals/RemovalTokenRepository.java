@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.repositories.tokens.removals;
 
-import com.example.portfolio.webstorespring.models.entity.tokens.removals.RemovalToken;
+import com.example.portfolio.webstorespring.models.entities.tokens.removals.RemovalToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 

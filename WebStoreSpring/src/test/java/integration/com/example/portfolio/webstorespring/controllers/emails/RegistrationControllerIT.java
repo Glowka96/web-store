@@ -1,10 +1,10 @@
 package com.example.portfolio.webstorespring.controllers.emails;
 
 import com.example.portfolio.webstorespring.controllers.AbstractTestRestTemplateIT;
-import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
-import com.example.portfolio.webstorespring.models.dto.accounts.request.RegistrationRequest;
-import com.example.portfolio.webstorespring.models.entity.accounts.Account;
-import com.example.portfolio.webstorespring.models.entity.tokens.confirmations.AccountConfToken;
+import com.example.portfolio.webstorespring.models.dtos.ResponseMessageDTO;
+import com.example.portfolio.webstorespring.models.dtos.accounts.requests.RegistrationRequest;
+import com.example.portfolio.webstorespring.models.entities.accounts.Account;
+import com.example.portfolio.webstorespring.models.entities.tokens.confirmations.AccountConfToken;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
 import com.example.portfolio.webstorespring.repositories.tokens.confirmations.AccountConfTokenRepository;
 import org.junit.jupiter.api.AfterEach;

@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.services.emails.notifications;
 
 import com.example.portfolio.webstorespring.enums.EmailType;
-import com.example.portfolio.webstorespring.models.entity.subscribers.ProductSubscription;
+import com.example.portfolio.webstorespring.models.entities.subscribers.ProductSubscription;
 import com.example.portfolio.webstorespring.services.emails.EmailSenderService;
 import com.example.portfolio.webstorespring.services.subscribers.ProductSubscriptionService;
 import lombok.RequiredArgsConstructor;

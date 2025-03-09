@@ -2,11 +2,11 @@ package com.example.portfolio.webstorespring.services.unsubscribes;
 
 import com.example.portfolio.webstorespring.buildhelpers.subscribers.ProductSubscriptionBuilderHelper;
 import com.example.portfolio.webstorespring.buildhelpers.tokens.removals.SingleProductRemovalTokenBuilderHelper;
-import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
-import com.example.portfolio.webstorespring.models.entity.subscribers.ProductSubscriber;
-import com.example.portfolio.webstorespring.models.entity.subscribers.ProductSubscription;
-import com.example.portfolio.webstorespring.models.entity.tokens.removals.ProductRemovalToken;
-import com.example.portfolio.webstorespring.models.entity.tokens.removals.SingleProductRemovalToken;
+import com.example.portfolio.webstorespring.models.dtos.ResponseMessageDTO;
+import com.example.portfolio.webstorespring.models.entities.subscribers.ProductSubscriber;
+import com.example.portfolio.webstorespring.models.entities.subscribers.ProductSubscription;
+import com.example.portfolio.webstorespring.models.entities.tokens.removals.ProductRemovalToken;
+import com.example.portfolio.webstorespring.models.entities.tokens.removals.SingleProductRemovalToken;
 import com.example.portfolio.webstorespring.services.subscribers.ProductSubscriberService;
 import com.example.portfolio.webstorespring.services.subscribers.ProductSubscriptionService;
 import com.example.portfolio.webstorespring.services.tokens.removals.ProductRemovalTokenService;

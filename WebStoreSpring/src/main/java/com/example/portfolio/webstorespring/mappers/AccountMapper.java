@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.mappers;
 
-import com.example.portfolio.webstorespring.models.dto.accounts.request.AccountRequest;
-import com.example.portfolio.webstorespring.models.dto.accounts.response.AccountResponse;
-import com.example.portfolio.webstorespring.models.entity.accounts.Account;
+import com.example.portfolio.webstorespring.models.dtos.accounts.requests.AccountRequest;
+import com.example.portfolio.webstorespring.models.dtos.accounts.responses.AccountResponse;
+import com.example.portfolio.webstorespring.models.entities.accounts.Account;
 
 public interface AccountMapper {
 

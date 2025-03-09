@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.services.products.listeners;
 
-import com.example.portfolio.webstorespring.models.dto.products.ProductAvailableEvent;
+import com.example.portfolio.webstorespring.models.dtos.products.ProductAvailableEvent;
 import com.example.portfolio.webstorespring.services.emails.notifications.NotifyProductSubscribersService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;

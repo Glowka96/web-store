@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.mappers;
 
-import com.example.portfolio.webstorespring.models.dto.subscribers.NewsletterMessageRequest;
-import com.example.portfolio.webstorespring.models.entity.subscribers.NewsletterMessage;
+import com.example.portfolio.webstorespring.models.dtos.subscribers.NewsletterMessageRequest;
+import com.example.portfolio.webstorespring.models.entities.subscribers.NewsletterMessage;
 
 public interface NewsletterMapper {
 

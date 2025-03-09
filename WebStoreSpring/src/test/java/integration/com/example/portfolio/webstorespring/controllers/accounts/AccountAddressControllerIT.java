@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.controllers.accounts;
 
 import com.example.portfolio.webstorespring.controllers.AbstractAuthControllerIT;
-import com.example.portfolio.webstorespring.models.dto.accounts.request.AccountAddressRequest;
-import com.example.portfolio.webstorespring.models.dto.accounts.response.AccountAddressResponse;
+import com.example.portfolio.webstorespring.models.dtos.accounts.requests.AccountAddressRequest;
+import com.example.portfolio.webstorespring.models.dtos.accounts.responses.AccountAddressResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;

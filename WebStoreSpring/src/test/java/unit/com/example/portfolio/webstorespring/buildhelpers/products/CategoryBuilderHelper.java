@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.buildhelpers.products;
 
-import com.example.portfolio.webstorespring.models.dto.products.request.CategoryRequest;
-import com.example.portfolio.webstorespring.models.dto.products.response.CategoryResponse;
-import com.example.portfolio.webstorespring.models.entity.products.Category;
+import com.example.portfolio.webstorespring.models.dtos.products.requests.CategoryRequest;
+import com.example.portfolio.webstorespring.models.dtos.products.responses.CategoryResponse;
+import com.example.portfolio.webstorespring.models.entities.products.Category;
 
 public class CategoryBuilderHelper {
     private static final String NAME = "Test";

@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.services.subscribers;
 
 import com.example.portfolio.webstorespring.exceptions.EmailAlreadyUsedException;
-import com.example.portfolio.webstorespring.models.dto.subscribers.SubscriberRequest;
-import com.example.portfolio.webstorespring.models.entity.subscribers.NewsletterSubscriber;
+import com.example.portfolio.webstorespring.models.dtos.subscribers.SubscriberRequest;
+import com.example.portfolio.webstorespring.models.entities.subscribers.NewsletterSubscriber;
 import com.example.portfolio.webstorespring.repositories.subscribers.NewsletterSubscriberRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

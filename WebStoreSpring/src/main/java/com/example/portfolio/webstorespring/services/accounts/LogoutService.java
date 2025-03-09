@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.services.accounts;
 
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
-import com.example.portfolio.webstorespring.models.entity.accounts.AuthToken;
+import com.example.portfolio.webstorespring.models.entities.accounts.AuthToken;
 import com.example.portfolio.webstorespring.repositories.accounts.AuthTokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

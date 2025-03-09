@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.controllers.subscribers;
 
 import com.example.portfolio.webstorespring.controllers.AbstractAuthControllerIT;
-import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
-import com.example.portfolio.webstorespring.models.dto.subscribers.NewsletterMessageRequest;
+import com.example.portfolio.webstorespring.models.dtos.ResponseMessageDTO;
+import com.example.portfolio.webstorespring.models.dtos.subscribers.NewsletterMessageRequest;
 import com.example.portfolio.webstorespring.repositories.subscribers.NewsletterMessageRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;

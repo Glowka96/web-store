@@ -1,10 +1,10 @@
 package com.example.portfolio.webstorespring.services.products;
 
 import com.example.portfolio.webstorespring.exceptions.DiscountIsInvalid;
-import com.example.portfolio.webstorespring.models.dto.products.request.DiscountRequest;
-import com.example.portfolio.webstorespring.models.dto.products.response.DiscountAdminResponse;
-import com.example.portfolio.webstorespring.models.dto.products.response.DiscountUserResponse;
-import com.example.portfolio.webstorespring.models.entity.products.Discount;
+import com.example.portfolio.webstorespring.models.dtos.products.requests.DiscountRequest;
+import com.example.portfolio.webstorespring.models.dtos.products.responses.DiscountAdminResponse;
+import com.example.portfolio.webstorespring.models.dtos.products.responses.DiscountUserResponse;
+import com.example.portfolio.webstorespring.models.entities.products.Discount;
 import com.example.portfolio.webstorespring.repositories.products.DiscountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

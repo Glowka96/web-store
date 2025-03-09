@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.buildhelpers.subscribers;
 
-import com.example.portfolio.webstorespring.models.entity.subscribers.ProductSubscriber;
-import com.example.portfolio.webstorespring.models.entity.subscribers.ProductSubscription;
-import com.example.portfolio.webstorespring.models.entity.tokens.removals.SingleProductRemovalToken;
+import com.example.portfolio.webstorespring.models.entities.subscribers.ProductSubscriber;
+import com.example.portfolio.webstorespring.models.entities.subscribers.ProductSubscription;
+import com.example.portfolio.webstorespring.models.entities.tokens.removals.SingleProductRemovalToken;
 import com.natpryce.makeiteasy.Instantiator;
 import com.natpryce.makeiteasy.Property;
 

@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.buildhelpers.products;
 
-import com.example.portfolio.webstorespring.models.dto.products.request.SubcategoryRequest;
-import com.example.portfolio.webstorespring.models.dto.products.response.SubcategoryResponse;
-import com.example.portfolio.webstorespring.models.entity.products.Subcategory;
+import com.example.portfolio.webstorespring.models.dtos.products.requests.SubcategoryRequest;
+import com.example.portfolio.webstorespring.models.dtos.products.responses.SubcategoryResponse;
+import com.example.portfolio.webstorespring.models.entities.products.Subcategory;
 
 public class SubcategoryBuilderHelper {
 

@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.controllers.emails;
 
-import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
+import com.example.portfolio.webstorespring.models.dtos.ResponseMessageDTO;
 import com.example.portfolio.webstorespring.services.emails.accountactions.RestoreEmailService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
