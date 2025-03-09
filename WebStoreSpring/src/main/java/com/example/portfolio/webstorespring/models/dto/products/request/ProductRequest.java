@@ -26,7 +26,6 @@ public record ProductRequest(
         @Max(value = 10_000, message = "The quantity must be less than or equal to 10000")
         Long quantity,
 
-        @Positive(message = "The product type id must be positive number")
         @NotNull(message = "The product type id can't be null")
         Long productTypeId) {
 }

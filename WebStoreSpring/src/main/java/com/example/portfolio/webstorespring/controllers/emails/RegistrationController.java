@@ -15,14 +15,14 @@ public class RegistrationController {
 
     private final RegistrationService registrationService;
 
-    @GetMapping(value = "/confirm", params = "token")
-    public ResponseMessageDTO confirm(@RequestParam("token") String token) {
-        return registrationService.confirm(token);
-    }
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseMessageDTO registration(@Valid @RequestBody RegistrationRequest request) {
         return registrationService.register(request);
+    }
+
+    @PatchMapping(value = "/confirm", params = "token")
+    public ResponseMessageDTO confirm(@RequestParam("token") String token) {
+        return registrationService.confirm(token);
     }
 }

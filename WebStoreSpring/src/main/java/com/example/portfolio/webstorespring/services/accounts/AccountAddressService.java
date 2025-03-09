@@ -84,7 +84,6 @@ public class AccountAddressService {
     }
 
     private void setupUpdatedAddress(AccountAddress loggedAccountAddress, AccountAddress accountAddress) {
-        log.debug("Updating address field for ID: {}", loggedAccountAddress.getId());
         loggedAccountAddress.setCity(accountAddress.getCity());
         loggedAccountAddress.setPostcode(accountAddress.getPostcode());
         loggedAccountAddress.setStreet(accountAddress.getStreet());

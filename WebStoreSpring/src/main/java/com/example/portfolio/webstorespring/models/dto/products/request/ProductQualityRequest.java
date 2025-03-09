@@ -2,10 +2,10 @@ package com.example.portfolio.webstorespring.models.dto.products.request;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.NotNull;
 
 public record ProductQualityRequest(
-        @Positive(message = "The product id must be a positive number.")
+        @NotNull(message = "The product id can't be null")
         Long productId,
 
         @Min(value = 1, message = "The quantity must be greater than or equal to one")

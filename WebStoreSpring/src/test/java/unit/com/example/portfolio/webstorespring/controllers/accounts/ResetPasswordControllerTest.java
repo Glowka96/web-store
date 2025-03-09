@@ -44,7 +44,7 @@ class ResetPasswordControllerTest {
     }
 
     @Test
-    void shouldResetPassword() throws Exception {
+    void shouldSendResetPasswordLink() throws Exception {
         ResponseMessageDTO result = new ResponseMessageDTO("Sent reset password link to your email");
 
         given(resetPasswordService.sendResetPasswordLinkByEmail(anyString())).willReturn(result);
@@ -58,7 +58,7 @@ class ResetPasswordControllerTest {
     }
 
     @Test
-    void shouldConfirmResetPassword() throws Exception {
+    void shouldConfirmSendResetPasswordLink() throws Exception {
         ResponseMessageDTO result = new ResponseMessageDTO("Your new password has been saved");
         ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest("Password123$");
 

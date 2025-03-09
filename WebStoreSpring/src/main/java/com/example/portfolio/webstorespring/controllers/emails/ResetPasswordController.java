@@ -16,7 +16,7 @@ public class ResetPasswordController {
     private final ResetPasswordService resetPasswordService;
 
     @GetMapping(params = "email")
-    public ResponseMessageDTO resetPassword(@RequestParam("email") @Email(message = "Invalid email format") String email) {
+    public ResponseMessageDTO sendResetPasswordLink(@RequestParam("email") @Email(message = "Invalid email format") String email) {
         return resetPasswordService.sendResetPasswordLinkByEmail(email);
     }
 

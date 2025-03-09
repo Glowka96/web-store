@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 
 public record PromotionRequest(
         @NotNull(message = "The product id can't be null")
-        @Positive(message = "The product id must be positive number")
         Long productId,
 
         @DecimalMin(value = "0.01", message = "The price must be greater than or equal to 0.01")

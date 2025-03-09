@@ -55,7 +55,7 @@ class ResetPasswordControllerIT extends AbstractTestRestTemplateIT {
     }
 
     @Test
-    void shouldResetPassword_forEverybody_thenStatusOk() {
+    void shouldSendResetPassword_Link_forEverybody_thenStatusOk() {
         ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
                 resetPasswordUri + "?email=" + savedAccount.getEmail(),
                 HttpMethod.GET,
@@ -71,7 +71,7 @@ class ResetPasswordControllerIT extends AbstractTestRestTemplateIT {
     }
 
     @Test
-    void shouldConfirmResetPassword_withValidToken_thenStatusOK() {
+    void shouldConfirmSendResetPassword_Link_withValidToken_thenStatusOK() {
         AccountConfToken savedAccountConfToken = tokenRepository.save(
                 createAccountConfToken(
                         savedAccount,

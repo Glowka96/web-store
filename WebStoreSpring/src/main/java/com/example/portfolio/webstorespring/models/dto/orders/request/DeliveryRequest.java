@@ -3,7 +3,6 @@ package com.example.portfolio.webstorespring.models.dto.orders.request;
 import com.example.portfolio.webstorespring.models.dto.AddressRegex;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Positive;
 
 public record DeliveryRequest(
 
@@ -19,7 +18,6 @@ public record DeliveryRequest(
                 message = "The street format is invalid")
         String street,
 
-        @Positive(message = "The delivery type id must be positive number")
         @NotNull(message = "The delivery type id can't be null")
         Long deliveryTypeId
 ) {

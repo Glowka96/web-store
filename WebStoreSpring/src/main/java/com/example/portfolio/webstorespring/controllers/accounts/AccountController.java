@@ -39,7 +39,7 @@ public class AccountController {
 
     @PatchMapping("/passwords")
     public ResponseMessageDTO updatePassword(@AuthenticationPrincipal AccountDetails accountDetails,
-                                              @Valid @RequestBody UpdatePasswordRequest request) {
+                                             @Valid @RequestBody UpdatePasswordRequest request) {
         return accountService.updatePassword(accountDetails, request);
     }
 
