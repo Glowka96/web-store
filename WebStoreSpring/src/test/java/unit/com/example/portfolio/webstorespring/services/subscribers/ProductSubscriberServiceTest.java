@@ -1,10 +1,10 @@
 package com.example.portfolio.webstorespring.services.subscribers;
 
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
-import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
-import com.example.portfolio.webstorespring.models.dto.subscribers.SubscriberRequest;
-import com.example.portfolio.webstorespring.models.entity.subscribers.ProductSubscriber;
-import com.example.portfolio.webstorespring.models.entity.subscribers.ProductSubscription;
+import com.example.portfolio.webstorespring.models.dtos.ResponseMessageDTO;
+import com.example.portfolio.webstorespring.models.dtos.subscribers.SubscriberRequest;
+import com.example.portfolio.webstorespring.models.entities.subscribers.ProductSubscriber;
+import com.example.portfolio.webstorespring.models.entities.subscribers.ProductSubscription;
 import com.example.portfolio.webstorespring.repositories.subscribers.ProductSubscriberRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

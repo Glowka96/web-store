@@ -3,9 +3,9 @@ package com.example.portfolio.webstorespring.services.products;
 import com.example.portfolio.webstorespring.exceptions.NotFoundSubcategoriesByNamesException;
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.SubcategoryMapper;
-import com.example.portfolio.webstorespring.models.dto.products.request.SubcategoryRequest;
-import com.example.portfolio.webstorespring.models.dto.products.response.SubcategoryResponse;
-import com.example.portfolio.webstorespring.models.entity.products.Subcategory;
+import com.example.portfolio.webstorespring.models.dtos.products.requests.SubcategoryRequest;
+import com.example.portfolio.webstorespring.models.dtos.products.responses.SubcategoryResponse;
+import com.example.portfolio.webstorespring.models.entities.products.Subcategory;
 import com.example.portfolio.webstorespring.repositories.products.SubcategoryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +25,7 @@ public class SubcategoryService {
 
     public List<SubcategoryResponse> getAll() {
         log.info("Fetching all subcategory.");
-        return SubcategoryMapper.mapToDto(subcategoryRepository.findAll());
+        return SubcategoryMapper.mapToResponse(subcategoryRepository.findAll());
     }
 
     Set<Subcategory> findAllByNames(Set<String> names) {
@@ -48,7 +48,7 @@ public class SubcategoryService {
         );
         subcategoryRepository.save(subcategory);
         log.info("Saved subcategory.");
-        return SubcategoryMapper.mapToDto(subcategory);
+        return SubcategoryMapper.mapToResponse(subcategory);
     }
 
     @Transactional
@@ -63,7 +63,7 @@ public class SubcategoryService {
 
         subcategoryRepository.save(foundSubcategory);
         log.info("Updated subcategory.");
-        return SubcategoryMapper.mapToDto(foundSubcategory);
+        return SubcategoryMapper.mapToResponse(foundSubcategory);
     }
 
     public void deleteById(Long id) {

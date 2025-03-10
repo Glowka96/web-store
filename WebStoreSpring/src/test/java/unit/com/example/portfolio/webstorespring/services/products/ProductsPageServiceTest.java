@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.services.products;
 
-import com.example.portfolio.webstorespring.models.dto.products.PageProductsWithPromotionDTO;
-import com.example.portfolio.webstorespring.models.dto.products.ProductWithPromotionDTO;
+import com.example.portfolio.webstorespring.models.dtos.products.PageProductsWithPromotionDTO;
+import com.example.portfolio.webstorespring.models.dtos.products.ProductWithPromotionDTO;
 import com.example.portfolio.webstorespring.repositories.products.ProductRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

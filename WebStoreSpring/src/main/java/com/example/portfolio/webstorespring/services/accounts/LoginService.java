@@ -1,10 +1,10 @@
 package com.example.portfolio.webstorespring.services.accounts;
 
-import com.example.portfolio.webstorespring.models.dto.accounts.request.LoginRequest;
-import com.example.portfolio.webstorespring.models.dto.accounts.response.AuthenticationResponse;
-import com.example.portfolio.webstorespring.models.entity.accounts.Account;
-import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
-import com.example.portfolio.webstorespring.services.authentication.AuthService;
+import com.example.portfolio.webstorespring.models.dtos.accounts.requests.LoginRequest;
+import com.example.portfolio.webstorespring.models.dtos.accounts.responses.AuthenticationResponse;
+import com.example.portfolio.webstorespring.models.entities.accounts.Account;
+import com.example.portfolio.webstorespring.services.authentications.AccountDetails;
+import com.example.portfolio.webstorespring.services.authentications.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;

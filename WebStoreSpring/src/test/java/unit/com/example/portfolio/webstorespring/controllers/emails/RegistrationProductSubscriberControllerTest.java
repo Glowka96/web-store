@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.controllers.emails;
 
-import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
-import com.example.portfolio.webstorespring.models.dto.subscribers.ProductSubscriberRequest;
-import com.example.portfolio.webstorespring.models.dto.subscribers.SubscriberRequest;
+import com.example.portfolio.webstorespring.models.dtos.ResponseMessageDTO;
+import com.example.portfolio.webstorespring.models.dtos.subscribers.ProductSubscriberRequest;
+import com.example.portfolio.webstorespring.models.dtos.subscribers.SubscriberRequest;
 import com.example.portfolio.webstorespring.services.emails.registrations.RegisterProductSubscriberService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;

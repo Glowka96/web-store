@@ -2,9 +2,9 @@ package com.example.portfolio.webstorespring.services.orders;
 
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.DeliveryTypeMapper;
-import com.example.portfolio.webstorespring.models.dto.orders.request.DeliveryTypeRequest;
-import com.example.portfolio.webstorespring.models.dto.orders.response.DeliveryTypeResponse;
-import com.example.portfolio.webstorespring.models.entity.orders.DeliveryType;
+import com.example.portfolio.webstorespring.models.dtos.orders.requests.DeliveryTypeRequest;
+import com.example.portfolio.webstorespring.models.dtos.orders.responses.DeliveryTypeResponse;
+import com.example.portfolio.webstorespring.models.entities.orders.DeliveryType;
 import com.example.portfolio.webstorespring.repositories.orders.DeliveryTypeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,7 @@ public class DeliveryTypeService {
 
     public List<DeliveryTypeResponse> getAll() {
         log.info("Fetching all delivery type.");
-        return DeliveryTypeMapper.mapToDto(deliveryTypeRepository.findAll());
+        return DeliveryTypeMapper.mapToResponse(deliveryTypeRepository.findAll());
     }
 
     public DeliveryTypeResponse save(DeliveryTypeRequest request){
@@ -30,7 +30,7 @@ public class DeliveryTypeService {
 
         deliveryTypeRepository.save(deliveryType);
         log.info("Saved delivery type.");
-        return DeliveryTypeMapper.mapToDto(deliveryType);
+        return DeliveryTypeMapper.mapToResponse(deliveryType);
     }
 
     public DeliveryTypeResponse update(Long id, DeliveryTypeRequest request) {
@@ -42,7 +42,7 @@ public class DeliveryTypeService {
         foundDeliveryType.setPrice(request.price());
         deliveryTypeRepository.save(foundDeliveryType);
         log.info("Updated delivery type.");
-        return DeliveryTypeMapper.mapToDto(foundDeliveryType);
+        return DeliveryTypeMapper.mapToResponse(foundDeliveryType);
     }
 
     public void deleteById(Long id){

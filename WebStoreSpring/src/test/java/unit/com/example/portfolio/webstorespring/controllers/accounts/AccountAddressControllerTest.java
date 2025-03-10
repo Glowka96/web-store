@@ -2,10 +2,10 @@ package com.example.portfolio.webstorespring.controllers.accounts;
 
 import com.example.portfolio.webstorespring.controllers.AccountDetailsArgumentResolver;
 import com.example.portfolio.webstorespring.exceptions.GlobalExceptionHandler;
-import com.example.portfolio.webstorespring.models.dto.accounts.request.AccountAddressRequest;
-import com.example.portfolio.webstorespring.models.dto.accounts.response.AccountAddressResponse;
+import com.example.portfolio.webstorespring.models.dtos.accounts.requests.AccountAddressRequest;
+import com.example.portfolio.webstorespring.models.dtos.accounts.responses.AccountAddressResponse;
 import com.example.portfolio.webstorespring.services.accounts.AccountAddressService;
-import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
+import com.example.portfolio.webstorespring.services.authentications.AccountDetails;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

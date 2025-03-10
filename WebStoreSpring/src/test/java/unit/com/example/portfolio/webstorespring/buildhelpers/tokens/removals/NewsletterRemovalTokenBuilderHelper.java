@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.buildhelpers.tokens.removals;
 
-import com.example.portfolio.webstorespring.models.entity.tokens.removals.NewsletterRemovalToken;
+import com.example.portfolio.webstorespring.models.entities.tokens.removals.NewsletterRemovalToken;
 
 import static com.example.portfolio.webstorespring.buildhelpers.subscribers.NewsletterSubscriberBuilderHelper.createEnabledNewsletterSubscriber;
 

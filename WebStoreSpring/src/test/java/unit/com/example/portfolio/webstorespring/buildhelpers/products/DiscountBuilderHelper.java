@@ -1,10 +1,10 @@
 package com.example.portfolio.webstorespring.buildhelpers.products;
 
-import com.example.portfolio.webstorespring.models.dto.products.request.DiscountRequest;
-import com.example.portfolio.webstorespring.models.dto.products.response.DiscountAdminResponse;
-import com.example.portfolio.webstorespring.models.dto.products.response.DiscountUserResponse;
-import com.example.portfolio.webstorespring.models.entity.products.Discount;
-import com.example.portfolio.webstorespring.models.entity.products.Subcategory;
+import com.example.portfolio.webstorespring.models.dtos.products.requests.DiscountRequest;
+import com.example.portfolio.webstorespring.models.dtos.products.responses.DiscountAdminResponse;
+import com.example.portfolio.webstorespring.models.dtos.products.responses.DiscountUserResponse;
+import com.example.portfolio.webstorespring.models.entities.products.Discount;
+import com.example.portfolio.webstorespring.models.entities.products.Subcategory;
 
 import java.math.BigDecimal;
 import java.util.Set;

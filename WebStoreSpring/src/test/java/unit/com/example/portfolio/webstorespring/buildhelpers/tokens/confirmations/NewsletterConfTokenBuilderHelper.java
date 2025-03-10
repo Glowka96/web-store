@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.buildhelpers.tokens.confirmations;
 
-import com.example.portfolio.webstorespring.models.entity.subscribers.NewsletterSubscriber;
-import com.example.portfolio.webstorespring.models.entity.tokens.confirmations.NewsletterConfToken;
-import com.example.portfolio.webstorespring.models.entity.tokens.confirmations.TokenDetails;
+import com.example.portfolio.webstorespring.models.entities.subscribers.NewsletterSubscriber;
+import com.example.portfolio.webstorespring.models.entities.tokens.confirmations.NewsletterConfToken;
+import com.example.portfolio.webstorespring.models.entities.tokens.confirmations.TokenDetails;
 
 public class NewsletterConfTokenBuilderHelper {
 

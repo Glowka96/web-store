@@ -1,9 +1,9 @@
 package com.example.portfolio.webstorespring.services.orders;
 
 import com.example.portfolio.webstorespring.mappers.DeliveryTypeMapper;
-import com.example.portfolio.webstorespring.models.dto.orders.request.DeliveryTypeRequest;
-import com.example.portfolio.webstorespring.models.dto.orders.response.DeliveryTypeResponse;
-import com.example.portfolio.webstorespring.models.entity.orders.DeliveryType;
+import com.example.portfolio.webstorespring.models.dtos.orders.requests.DeliveryTypeRequest;
+import com.example.portfolio.webstorespring.models.dtos.orders.responses.DeliveryTypeResponse;
+import com.example.portfolio.webstorespring.models.entities.orders.DeliveryType;
 import com.example.portfolio.webstorespring.repositories.orders.DeliveryTypeRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -49,7 +49,7 @@ class DeliveryTypeServiceTest {
         verify(deliveryTypeRepository).save(deliveryTypeArgumentCaptor.capture());
 
         DeliveryTypeResponse mappedDeliveryTypeResponse =
-                DeliveryTypeMapper.mapToDto(deliveryTypeArgumentCaptor.getValue());
+                DeliveryTypeMapper.mapToResponse(deliveryTypeArgumentCaptor.getValue());
 
         assertEquals(mappedDeliveryTypeResponse, savedDeliveryTypeResponse);
     }

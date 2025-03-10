@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.mappers;
 
-import com.example.portfolio.webstorespring.models.dto.orders.response.OrderResponse;
-import com.example.portfolio.webstorespring.models.entity.orders.Order;
+import com.example.portfolio.webstorespring.models.dtos.orders.responses.OrderResponse;
+import com.example.portfolio.webstorespring.models.entities.orders.Order;
 
 import java.util.List;
 
@@ -13,10 +13,10 @@ public interface OrderMapper {
                 order.getId(),
                 order.getNameUser(),
                 order.getTotalPrice(),
-                DeliveryMapper.mapToDto(order.getDelivery()),
+                DeliveryMapper.mapToResponse(order.getDelivery()),
                 order.getCreatedAt(),
                 order.getStatus(),
-                ShipmentMapper.mapToDto(order.getShipments())
+                ShipmentMapper.mapToResponse(order.getShipments())
         );
     }
 
@@ -31,7 +31,7 @@ public interface OrderMapper {
                 order.getId(),
                 order.getNameUser(),
                 order.getTotalPrice(),
-                DeliveryMapper.mapToWithoutDeliveryType(order.getDelivery()),
+                DeliveryMapper.mapToResponseWithoutDeliveryType(order.getDelivery()),
                 order.getCreatedAt(),
                 order.getStatus(),
                 null

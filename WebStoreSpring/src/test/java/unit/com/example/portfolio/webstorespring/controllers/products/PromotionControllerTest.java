@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.controllers.products;
 
 import com.example.portfolio.webstorespring.buildhelpers.products.PromotionBuilderHelper;
-import com.example.portfolio.webstorespring.models.dto.products.request.PromotionRequest;
-import com.example.portfolio.webstorespring.models.dto.products.response.PromotionResponse;
+import com.example.portfolio.webstorespring.models.dtos.products.requests.PromotionRequest;
+import com.example.portfolio.webstorespring.models.dtos.products.responses.PromotionResponse;
 import com.example.portfolio.webstorespring.services.products.PromotionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;

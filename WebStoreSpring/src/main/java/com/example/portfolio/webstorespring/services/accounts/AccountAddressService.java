@@ -1,20 +1,20 @@
 package com.example.portfolio.webstorespring.services.accounts;
 
 import com.example.portfolio.webstorespring.exceptions.AccountHasNoAddressException;
-import com.example.portfolio.webstorespring.models.dto.accounts.request.AccountAddressRequest;
-import com.example.portfolio.webstorespring.models.dto.accounts.response.AccountAddressResponse;
-import com.example.portfolio.webstorespring.models.entity.accounts.Account;
-import com.example.portfolio.webstorespring.models.entity.accounts.AccountAddress;
+import com.example.portfolio.webstorespring.models.dtos.accounts.requests.AccountAddressRequest;
+import com.example.portfolio.webstorespring.models.dtos.accounts.responses.AccountAddressResponse;
+import com.example.portfolio.webstorespring.models.entities.accounts.Account;
+import com.example.portfolio.webstorespring.models.entities.accounts.AccountAddress;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountAddressRepository;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
-import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
+import com.example.portfolio.webstorespring.services.authentications.AccountDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.example.portfolio.webstorespring.mappers.AccountAddressMapper.mapToDto;
 import static com.example.portfolio.webstorespring.mappers.AccountAddressMapper.mapToEntity;
+import static com.example.portfolio.webstorespring.mappers.AccountAddressMapper.mapToResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +26,7 @@ public class AccountAddressService {
 
     public AccountAddressResponse getByAccountDetails(AccountDetails accountDetails) {
         log.info("Fetching address for account ID: {}", accountDetails.getAccount().getId());
-        return mapToDto(findByAccountDetails(accountDetails));
+        return mapToResponse(findByAccountDetails(accountDetails));
     }
 
     @Transactional
@@ -46,14 +46,14 @@ public class AccountAddressService {
                     setupUpdatedAddress(existAddress, accountAddress);
                     addressRepository.save(existAddress);
                     log.debug("Updated address");
-                    return mapToDto(existAddress);
+                    return mapToResponse(existAddress);
                 }
         ).orElseGet(() -> {
             log.info("No address exists for account ID: {}, saving it", accountDetails.getAccount().getId());
             accountAddress.setAccount(finalLoggedAccount);
             addressRepository.save(accountAddress);
             log.debug("Created new address");
-            return mapToDto(accountAddress);
+            return mapToResponse(accountAddress);
         });
     }
 
@@ -69,7 +69,7 @@ public class AccountAddressService {
         setupUpdatedAddress(loggedAccountAddress, accountAddress);
         addressRepository.save(loggedAccountAddress);
         log.info("Updated address");
-        return mapToDto(loggedAccountAddress);
+        return mapToResponse(loggedAccountAddress);
     }
 
     public void deleteByAccountDetails(AccountDetails accountDetails) {
@@ -84,7 +84,6 @@ public class AccountAddressService {
     }
 
     private void setupUpdatedAddress(AccountAddress loggedAccountAddress, AccountAddress accountAddress) {
-        log.debug("Updating address field for ID: {}", loggedAccountAddress.getId());
         loggedAccountAddress.setCity(accountAddress.getCity());
         loggedAccountAddress.setPostcode(accountAddress.getPostcode());
         loggedAccountAddress.setStreet(accountAddress.getStreet());

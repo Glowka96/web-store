@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.services.unsubscribes;
 
-import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
-import com.example.portfolio.webstorespring.models.entity.tokens.removals.NewsletterRemovalToken;
+import com.example.portfolio.webstorespring.models.dtos.ResponseMessageDTO;
+import com.example.portfolio.webstorespring.models.entities.tokens.removals.NewsletterRemovalToken;
 import com.example.portfolio.webstorespring.services.subscribers.NewsletterSubscriberService;
 import com.example.portfolio.webstorespring.services.tokens.removals.NewsletterRemovalTokenService;
 import org.junit.jupiter.api.Test;

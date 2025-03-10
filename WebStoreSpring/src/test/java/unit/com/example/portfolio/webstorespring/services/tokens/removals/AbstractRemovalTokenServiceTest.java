@@ -1,11 +1,11 @@
 package com.example.portfolio.webstorespring.services.tokens.removals;
 
-import com.example.portfolio.webstorespring.models.entity.subscribers.NewsletterSubscriber;
-import com.example.portfolio.webstorespring.models.entity.subscribers.ProductSubscriber;
-import com.example.portfolio.webstorespring.models.entity.subscribers.Subscriber;
-import com.example.portfolio.webstorespring.models.entity.tokens.removals.NewsletterRemovalToken;
-import com.example.portfolio.webstorespring.models.entity.tokens.removals.ProductRemovalToken;
-import com.example.portfolio.webstorespring.models.entity.tokens.removals.RemovalToken;
+import com.example.portfolio.webstorespring.models.entities.subscribers.NewsletterSubscriber;
+import com.example.portfolio.webstorespring.models.entities.subscribers.ProductSubscriber;
+import com.example.portfolio.webstorespring.models.entities.subscribers.Subscriber;
+import com.example.portfolio.webstorespring.models.entities.tokens.removals.NewsletterRemovalToken;
+import com.example.portfolio.webstorespring.models.entities.tokens.removals.ProductRemovalToken;
+import com.example.portfolio.webstorespring.models.entities.tokens.removals.RemovalToken;
 import com.example.portfolio.webstorespring.repositories.tokens.removals.NewsletterRemovalTokenRepository;
 import com.example.portfolio.webstorespring.repositories.tokens.removals.ProductRemovalTokenRepository;
 import com.example.portfolio.webstorespring.repositories.tokens.removals.RemovalTokenRepository;

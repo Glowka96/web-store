@@ -1,16 +1,16 @@
 package com.example.portfolio.webstorespring.buildhelpers.orders;
 
 import com.example.portfolio.webstorespring.enums.OrderStatus;
-import com.example.portfolio.webstorespring.models.dto.orders.request.DeliveryRequest;
-import com.example.portfolio.webstorespring.models.dto.orders.request.OrderRequest;
-import com.example.portfolio.webstorespring.models.dto.orders.request.ShipmentRequest;
-import com.example.portfolio.webstorespring.models.dto.orders.response.DeliveryResponse;
-import com.example.portfolio.webstorespring.models.dto.orders.response.OrderResponse;
-import com.example.portfolio.webstorespring.models.dto.orders.response.ShipmentResponse;
-import com.example.portfolio.webstorespring.models.entity.accounts.Account;
-import com.example.portfolio.webstorespring.models.entity.orders.Delivery;
-import com.example.portfolio.webstorespring.models.entity.orders.Order;
-import com.example.portfolio.webstorespring.models.entity.orders.Shipment;
+import com.example.portfolio.webstorespring.models.dtos.orders.requests.DeliveryRequest;
+import com.example.portfolio.webstorespring.models.dtos.orders.requests.OrderRequest;
+import com.example.portfolio.webstorespring.models.dtos.orders.requests.ShipmentRequest;
+import com.example.portfolio.webstorespring.models.dtos.orders.responses.DeliveryResponse;
+import com.example.portfolio.webstorespring.models.dtos.orders.responses.OrderResponse;
+import com.example.portfolio.webstorespring.models.dtos.orders.responses.ShipmentResponse;
+import com.example.portfolio.webstorespring.models.entities.accounts.Account;
+import com.example.portfolio.webstorespring.models.entities.orders.Delivery;
+import com.example.portfolio.webstorespring.models.entities.orders.Order;
+import com.example.portfolio.webstorespring.models.entities.orders.Shipment;
 
 import java.math.BigDecimal;
 import java.util.List;

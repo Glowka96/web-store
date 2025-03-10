@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.buildhelpers.products;
 
-import com.example.portfolio.webstorespring.models.dto.products.ProductWithProducerAndPromotionDTO;
+import com.example.portfolio.webstorespring.models.dtos.products.ProductWithProducerAndPromotionDTO;
 
 import java.math.BigDecimal;
 

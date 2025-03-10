@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.buildhelpers.products;
 
-import com.example.portfolio.webstorespring.models.dto.products.PageProductsWithPromotionDTO;
-import com.example.portfolio.webstorespring.models.dto.products.ProductWithPromotionDTO;
+import com.example.portfolio.webstorespring.models.dtos.products.PageProductsWithPromotionDTO;
+import com.example.portfolio.webstorespring.models.dtos.products.ProductWithPromotionDTO;
 
 import java.util.List;
 

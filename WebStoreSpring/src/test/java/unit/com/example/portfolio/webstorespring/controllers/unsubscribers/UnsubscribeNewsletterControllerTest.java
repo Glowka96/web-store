@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.controllers.unsubscribers;
 
-import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
+import com.example.portfolio.webstorespring.models.dtos.ResponseMessageDTO;
 import com.example.portfolio.webstorespring.services.unsubscribes.UnsubscribeNewsletterService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

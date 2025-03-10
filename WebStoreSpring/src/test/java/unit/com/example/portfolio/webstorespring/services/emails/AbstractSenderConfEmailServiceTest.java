@@ -1,14 +1,14 @@
 package com.example.portfolio.webstorespring.services.emails;
 
 import com.example.portfolio.webstorespring.enums.EmailType;
-import com.example.portfolio.webstorespring.models.entity.accounts.Account;
-import com.example.portfolio.webstorespring.models.entity.subscribers.NewsletterSubscriber;
-import com.example.portfolio.webstorespring.models.entity.subscribers.OwnerConfToken;
-import com.example.portfolio.webstorespring.models.entity.subscribers.ProductSubscriber;
-import com.example.portfolio.webstorespring.models.entity.tokens.confirmations.AccountConfToken;
-import com.example.portfolio.webstorespring.models.entity.tokens.confirmations.ConfToken;
-import com.example.portfolio.webstorespring.models.entity.tokens.confirmations.NewsletterConfToken;
-import com.example.portfolio.webstorespring.models.entity.tokens.confirmations.ProductConfToken;
+import com.example.portfolio.webstorespring.models.entities.accounts.Account;
+import com.example.portfolio.webstorespring.models.entities.subscribers.NewsletterSubscriber;
+import com.example.portfolio.webstorespring.models.entities.subscribers.OwnerConfToken;
+import com.example.portfolio.webstorespring.models.entities.subscribers.ProductSubscriber;
+import com.example.portfolio.webstorespring.models.entities.tokens.confirmations.AccountConfToken;
+import com.example.portfolio.webstorespring.models.entities.tokens.confirmations.ConfToken;
+import com.example.portfolio.webstorespring.models.entities.tokens.confirmations.NewsletterConfToken;
+import com.example.portfolio.webstorespring.models.entities.tokens.confirmations.ProductConfToken;
 import com.example.portfolio.webstorespring.services.accounts.AccountService;
 import com.example.portfolio.webstorespring.services.emails.accountactions.ResetPasswordService;
 import com.example.portfolio.webstorespring.services.emails.accountactions.RestoreEmailService;

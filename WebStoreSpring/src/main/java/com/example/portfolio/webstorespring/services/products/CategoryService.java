@@ -2,9 +2,9 @@ package com.example.portfolio.webstorespring.services.products;
 
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.CategoryMapper;
-import com.example.portfolio.webstorespring.models.dto.products.request.CategoryRequest;
-import com.example.portfolio.webstorespring.models.dto.products.response.CategoryResponse;
-import com.example.portfolio.webstorespring.models.entity.products.Category;
+import com.example.portfolio.webstorespring.models.dtos.products.requests.CategoryRequest;
+import com.example.portfolio.webstorespring.models.dtos.products.responses.CategoryResponse;
+import com.example.portfolio.webstorespring.models.entities.products.Category;
 import com.example.portfolio.webstorespring.repositories.products.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ public class CategoryService {
 
     public List<CategoryResponse> getAll() {
         log.info("Fetching all category.");
-        return CategoryMapper.mapToDto(categoryRepository.findAll());
+        return CategoryMapper.mapToResponse(categoryRepository.findAll());
     }
 
     public CategoryResponse save(CategoryRequest request) {
@@ -30,7 +30,7 @@ public class CategoryService {
         Category category = CategoryMapper.mapToEntity(request);
         categoryRepository.save(category);
         log.info("Saved category.");
-        return CategoryMapper.mapToDto(category);
+        return CategoryMapper.mapToResponse(category);
     }
 
     @Transactional
@@ -41,7 +41,7 @@ public class CategoryService {
 
         categoryRepository.save(foundCategory);
         log.info("Updated category.");
-        return CategoryMapper.mapToDto(foundCategory);
+        return CategoryMapper.mapToResponse(foundCategory);
     }
 
     public void deleteById(Long id) {

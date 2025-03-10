@@ -1,10 +1,10 @@
 package com.example.portfolio.webstorespring.controllers.products;
 
-import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
-import com.example.portfolio.webstorespring.models.dto.products.ProductWithProducerAndPromotionDTO;
-import com.example.portfolio.webstorespring.models.dto.products.request.ProductQualityRequest;
-import com.example.portfolio.webstorespring.models.dto.products.request.ProductRequest;
-import com.example.portfolio.webstorespring.models.dto.products.response.ProductResponse;
+import com.example.portfolio.webstorespring.models.dtos.ResponseMessageDTO;
+import com.example.portfolio.webstorespring.models.dtos.products.ProductWithProducerAndPromotionDTO;
+import com.example.portfolio.webstorespring.models.dtos.products.requests.ProductQualityRequest;
+import com.example.portfolio.webstorespring.models.dtos.products.requests.ProductRequest;
+import com.example.portfolio.webstorespring.models.dtos.products.responses.ProductResponse;
 import com.example.portfolio.webstorespring.services.products.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

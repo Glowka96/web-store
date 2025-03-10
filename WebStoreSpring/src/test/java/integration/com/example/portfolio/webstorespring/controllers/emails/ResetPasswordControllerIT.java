@@ -3,9 +3,9 @@ package com.example.portfolio.webstorespring.controllers.emails;
 
 import com.example.portfolio.webstorespring.buildhelpers.accounts.AccountBuilderHelper;
 import com.example.portfolio.webstorespring.controllers.AbstractTestRestTemplateIT;
-import com.example.portfolio.webstorespring.models.dto.accounts.request.ResetPasswordRequest;
-import com.example.portfolio.webstorespring.models.entity.accounts.Account;
-import com.example.portfolio.webstorespring.models.entity.tokens.confirmations.AccountConfToken;
+import com.example.portfolio.webstorespring.models.dtos.accounts.requests.ResetPasswordRequest;
+import com.example.portfolio.webstorespring.models.entities.accounts.Account;
+import com.example.portfolio.webstorespring.models.entities.tokens.confirmations.AccountConfToken;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
 import com.example.portfolio.webstorespring.repositories.tokens.confirmations.AccountConfTokenRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -55,7 +55,7 @@ class ResetPasswordControllerIT extends AbstractTestRestTemplateIT {
     }
 
     @Test
-    void shouldResetPassword_forEverybody_thenStatusOk() {
+    void shouldSendResetPassword_Link_forEverybody_thenStatusOk() {
         ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
                 resetPasswordUri + "?email=" + savedAccount.getEmail(),
                 HttpMethod.GET,
@@ -71,7 +71,7 @@ class ResetPasswordControllerIT extends AbstractTestRestTemplateIT {
     }
 
     @Test
-    void shouldConfirmResetPassword_withValidToken_thenStatusOK() {
+    void shouldConfirmSendResetPassword_Link_withValidToken_thenStatusOK() {
         AccountConfToken savedAccountConfToken = tokenRepository.save(
                 createAccountConfToken(
                         savedAccount,

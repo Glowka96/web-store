@@ -1,15 +1,15 @@
 package com.example.portfolio.webstorespring.controllers;
 
 import com.example.portfolio.webstorespring.buildhelpers.accounts.AccountAddressBuilderHelper;
-import com.example.portfolio.webstorespring.models.entity.accounts.Account;
-import com.example.portfolio.webstorespring.models.entity.accounts.AccountAddress;
-import com.example.portfolio.webstorespring.models.entity.accounts.Role;
+import com.example.portfolio.webstorespring.models.entities.accounts.Account;
+import com.example.portfolio.webstorespring.models.entities.accounts.AccountAddress;
+import com.example.portfolio.webstorespring.models.entities.accounts.Role;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountAddressRepository;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
 import com.example.portfolio.webstorespring.repositories.accounts.RoleRepository;
-import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
-import com.example.portfolio.webstorespring.services.authentication.AuthService;
-import com.example.portfolio.webstorespring.services.authentication.JwtService;
+import com.example.portfolio.webstorespring.services.authentications.AccountDetails;
+import com.example.portfolio.webstorespring.services.authentications.AuthService;
+import com.example.portfolio.webstorespring.services.authentications.JwtService;
 import lombok.Getter;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.buildhelpers.accounts;
 
-import com.example.portfolio.webstorespring.models.dto.accounts.request.AccountAddressRequest;
-import com.example.portfolio.webstorespring.models.dto.accounts.response.AccountAddressResponse;
-import com.example.portfolio.webstorespring.models.entity.accounts.AccountAddress;
+import com.example.portfolio.webstorespring.models.dtos.accounts.requests.AccountAddressRequest;
+import com.example.portfolio.webstorespring.models.dtos.accounts.responses.AccountAddressResponse;
+import com.example.portfolio.webstorespring.models.entities.accounts.AccountAddress;
 
 public class AccountAddressBuilderHelper {
 

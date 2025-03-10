@@ -3,10 +3,10 @@ package com.example.portfolio.webstorespring.services.products;
 import com.example.portfolio.webstorespring.exceptions.ProductHasAlreadyPromotionException;
 import com.example.portfolio.webstorespring.exceptions.PromotionPriceGreaterThanBasePriceException;
 import com.example.portfolio.webstorespring.mappers.PromotionMapper;
-import com.example.portfolio.webstorespring.models.dto.products.request.PromotionRequest;
-import com.example.portfolio.webstorespring.models.dto.products.response.PromotionResponse;
-import com.example.portfolio.webstorespring.models.entity.products.Product;
-import com.example.portfolio.webstorespring.models.entity.products.Promotion;
+import com.example.portfolio.webstorespring.models.dtos.products.requests.PromotionRequest;
+import com.example.portfolio.webstorespring.models.dtos.products.responses.PromotionResponse;
+import com.example.portfolio.webstorespring.models.entities.products.Product;
+import com.example.portfolio.webstorespring.models.entities.products.Promotion;
 import com.example.portfolio.webstorespring.repositories.products.PromotionRepository;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +35,7 @@ public class PromotionService {
 
         promotionRepository.save(promotion);
         log.info("Saved promotion.");
-        return PromotionMapper.mapToDto(promotion);
+        return PromotionMapper.mapToResponse(promotion);
     }
 
     private void validateProduct(PromotionRequest request, Product product) {

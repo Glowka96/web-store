@@ -6,15 +6,15 @@ import com.example.portfolio.webstorespring.configs.providers.AccountImageUrlPro
 import com.example.portfolio.webstorespring.configs.providers.AdminCredentialsProvider;
 import com.example.portfolio.webstorespring.enums.RoleType;
 import com.example.portfolio.webstorespring.mappers.AccountMapper;
-import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
-import com.example.portfolio.webstorespring.models.dto.accounts.request.AccountRequest;
-import com.example.portfolio.webstorespring.models.dto.accounts.request.RegistrationRequest;
-import com.example.portfolio.webstorespring.models.dto.accounts.request.UpdateEmailRequest;
-import com.example.portfolio.webstorespring.models.dto.accounts.request.UpdatePasswordRequest;
-import com.example.portfolio.webstorespring.models.dto.accounts.response.AccountResponse;
-import com.example.portfolio.webstorespring.models.entity.accounts.Account;
+import com.example.portfolio.webstorespring.models.dtos.ResponseMessageDTO;
+import com.example.portfolio.webstorespring.models.dtos.accounts.requests.AccountRequest;
+import com.example.portfolio.webstorespring.models.dtos.accounts.requests.RegistrationRequest;
+import com.example.portfolio.webstorespring.models.dtos.accounts.requests.UpdateEmailRequest;
+import com.example.portfolio.webstorespring.models.dtos.accounts.requests.UpdatePasswordRequest;
+import com.example.portfolio.webstorespring.models.dtos.accounts.responses.AccountResponse;
+import com.example.portfolio.webstorespring.models.entities.accounts.Account;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
-import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
+import com.example.portfolio.webstorespring.services.authentications.AccountDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -39,7 +39,7 @@ public class AccountService {
 
     public AccountResponse getByAccountDetails(AccountDetails accountDetails) {
         log.info("Mapping logged account with account ID: {}", accountDetails.getAccount().getId());
-        return AccountMapper.mapToDto(accountDetails.getAccount());
+        return AccountMapper.mapToResponse(accountDetails.getAccount());
     }
 
     @Transactional
@@ -72,7 +72,7 @@ public class AccountService {
 
         accountRepository.save(loggedAccount);
         log.info("Updated account with account ID: {}", loggedAccount.getId());
-        return AccountMapper.mapToDto(loggedAccount);
+        return AccountMapper.mapToResponse(loggedAccount);
     }
 
     @Transactional

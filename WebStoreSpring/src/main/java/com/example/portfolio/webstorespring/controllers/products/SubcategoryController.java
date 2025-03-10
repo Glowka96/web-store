@@ -1,7 +1,7 @@
 package com.example.portfolio.webstorespring.controllers.products;
 
-import com.example.portfolio.webstorespring.models.dto.products.request.SubcategoryRequest;
-import com.example.portfolio.webstorespring.models.dto.products.response.SubcategoryResponse;
+import com.example.portfolio.webstorespring.models.dtos.products.requests.SubcategoryRequest;
+import com.example.portfolio.webstorespring.models.dtos.products.responses.SubcategoryResponse;
 import com.example.portfolio.webstorespring.services.products.SubcategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

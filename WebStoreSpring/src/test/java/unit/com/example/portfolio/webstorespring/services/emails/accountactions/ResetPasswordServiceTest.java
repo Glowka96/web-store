@@ -1,10 +1,10 @@
 package com.example.portfolio.webstorespring.services.emails.accountactions;
 
 import com.example.portfolio.webstorespring.enums.EmailType;
-import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
-import com.example.portfolio.webstorespring.models.dto.accounts.request.ResetPasswordRequest;
-import com.example.portfolio.webstorespring.models.entity.accounts.Account;
-import com.example.portfolio.webstorespring.models.entity.tokens.confirmations.AccountConfToken;
+import com.example.portfolio.webstorespring.models.dtos.ResponseMessageDTO;
+import com.example.portfolio.webstorespring.models.dtos.accounts.requests.ResetPasswordRequest;
+import com.example.portfolio.webstorespring.models.entities.accounts.Account;
+import com.example.portfolio.webstorespring.models.entities.tokens.confirmations.AccountConfToken;
 import com.example.portfolio.webstorespring.services.accounts.AccountService;
 import com.example.portfolio.webstorespring.services.emails.EmailSenderService;
 import com.example.portfolio.webstorespring.services.tokens.confirmations.AccountConfTokenService;

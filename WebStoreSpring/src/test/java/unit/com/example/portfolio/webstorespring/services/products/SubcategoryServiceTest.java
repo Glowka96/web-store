@@ -2,10 +2,10 @@ package com.example.portfolio.webstorespring.services.products;
 
 import com.example.portfolio.webstorespring.buildhelpers.products.SubcategoryBuilderHelper;
 import com.example.portfolio.webstorespring.mappers.SubcategoryMapper;
-import com.example.portfolio.webstorespring.models.dto.products.request.SubcategoryRequest;
-import com.example.portfolio.webstorespring.models.dto.products.response.SubcategoryResponse;
-import com.example.portfolio.webstorespring.models.entity.products.Category;
-import com.example.portfolio.webstorespring.models.entity.products.Subcategory;
+import com.example.portfolio.webstorespring.models.dtos.products.requests.SubcategoryRequest;
+import com.example.portfolio.webstorespring.models.dtos.products.responses.SubcategoryResponse;
+import com.example.portfolio.webstorespring.models.entities.products.Category;
+import com.example.portfolio.webstorespring.models.entities.products.Subcategory;
 import com.example.portfolio.webstorespring.repositories.products.SubcategoryRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -66,7 +66,7 @@ class SubcategoryServiceTest {
         verify(subcategoryRepository).save(subcategoryArgumentCaptor.capture());
 
         SubcategoryResponse mappedSubcategory =
-                SubcategoryMapper.mapToDto(subcategoryArgumentCaptor.getValue());
+                SubcategoryMapper.mapToResponse(subcategoryArgumentCaptor.getValue());
 
         assertEquals(mappedSubcategory, savedSubcategoryResponse);
     }
@@ -88,7 +88,7 @@ class SubcategoryServiceTest {
         verify(subcategoryRepository).save(subCategoryArgumentCaptor.capture());
 
         SubcategoryResponse mappedSubcategoryRequest =
-                SubcategoryMapper.mapToDto(subCategoryArgumentCaptor.getValue());
+                SubcategoryMapper.mapToResponse(subCategoryArgumentCaptor.getValue());
 
         assertEquals(mappedSubcategoryRequest, updatedSubcategoryRequest);
         assertNotEquals(subcategoryNameBeforeUpdate, updatedSubcategoryRequest.name());

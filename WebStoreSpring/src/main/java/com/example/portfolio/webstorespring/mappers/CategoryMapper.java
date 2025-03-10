@@ -1,26 +1,26 @@
 package com.example.portfolio.webstorespring.mappers;
 
-import com.example.portfolio.webstorespring.models.dto.products.request.CategoryRequest;
-import com.example.portfolio.webstorespring.models.dto.products.response.CategoryResponse;
-import com.example.portfolio.webstorespring.models.entity.products.Category;
+import com.example.portfolio.webstorespring.models.dtos.products.requests.CategoryRequest;
+import com.example.portfolio.webstorespring.models.dtos.products.responses.CategoryResponse;
+import com.example.portfolio.webstorespring.models.entities.products.Category;
 
 import java.util.List;
 
 
 public interface CategoryMapper {
 
-    static List<CategoryResponse> mapToDto(List<Category> categories) {
+    static List<CategoryResponse> mapToResponse(List<Category> categories) {
         return categories.stream()
-                .map(CategoryMapper::mapToDto)
+                .map(CategoryMapper::mapToResponse)
                 .toList();
     }
 
-    static CategoryResponse mapToDto(Category category) {
+    static CategoryResponse mapToResponse(Category category) {
         return new CategoryResponse(
                 category.getId(),
                 category.getName(),
                 category.getSubcategories() == null ? null
-                        : SubcategoryMapper.mapToDto(category.getSubcategories())
+                        : SubcategoryMapper.mapToResponse(category.getSubcategories())
         );
     }
 

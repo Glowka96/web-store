@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.controllers.products;
 
-import com.example.portfolio.webstorespring.models.dto.products.request.DiscountRequest;
-import com.example.portfolio.webstorespring.models.dto.products.response.DiscountAdminResponse;
-import com.example.portfolio.webstorespring.models.dto.products.response.DiscountUserResponse;
+import com.example.portfolio.webstorespring.models.dtos.products.requests.DiscountRequest;
+import com.example.portfolio.webstorespring.models.dtos.products.responses.DiscountAdminResponse;
+import com.example.portfolio.webstorespring.models.dtos.products.responses.DiscountUserResponse;
 import com.example.portfolio.webstorespring.services.products.DiscountService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

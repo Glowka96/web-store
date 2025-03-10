@@ -1,9 +1,9 @@
 package com.example.portfolio.webstorespring.services.emails;
 
 import com.example.portfolio.webstorespring.enums.EmailType;
-import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
-import com.example.portfolio.webstorespring.models.entity.subscribers.OwnerConfToken;
-import com.example.portfolio.webstorespring.models.entity.tokens.confirmations.ConfToken;
+import com.example.portfolio.webstorespring.models.dtos.ResponseMessageDTO;
+import com.example.portfolio.webstorespring.models.entities.subscribers.OwnerConfToken;
+import com.example.portfolio.webstorespring.models.entities.tokens.confirmations.ConfToken;
 import com.example.portfolio.webstorespring.services.tokens.confirmations.AbstractConfTokenService;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;

@@ -1,12 +1,12 @@
 package com.example.portfolio.webstorespring.services.emails.registrations;
 
 import com.example.portfolio.webstorespring.enums.EmailType;
-import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
-import com.example.portfolio.webstorespring.models.dto.subscribers.ProductSubscriberRequest;
-import com.example.portfolio.webstorespring.models.entity.subscribers.ProductSubscriber;
-import com.example.portfolio.webstorespring.models.entity.tokens.confirmations.ProductConfToken;
-import com.example.portfolio.webstorespring.models.entity.tokens.removals.ProductRemovalToken;
-import com.example.portfolio.webstorespring.models.entity.tokens.removals.SingleProductRemovalToken;
+import com.example.portfolio.webstorespring.models.dtos.ResponseMessageDTO;
+import com.example.portfolio.webstorespring.models.dtos.subscribers.ProductSubscriberRequest;
+import com.example.portfolio.webstorespring.models.entities.subscribers.ProductSubscriber;
+import com.example.portfolio.webstorespring.models.entities.tokens.confirmations.ProductConfToken;
+import com.example.portfolio.webstorespring.models.entities.tokens.removals.ProductRemovalToken;
+import com.example.portfolio.webstorespring.models.entities.tokens.removals.SingleProductRemovalToken;
 import com.example.portfolio.webstorespring.services.emails.AbstractConfirmEmailService;
 import com.example.portfolio.webstorespring.services.emails.EmailSenderService;
 import com.example.portfolio.webstorespring.services.subscribers.ProductSubscriberService;

@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.repositories.products;
 
-import com.example.portfolio.webstorespring.models.entity.products.Category;
+import com.example.portfolio.webstorespring.models.entities.products.Category;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;

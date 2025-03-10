@@ -2,10 +2,10 @@ package com.example.portfolio.webstorespring.controllers.unsubscribers;
 
 import com.example.portfolio.webstorespring.controllers.AbstractTestRestTemplateIT;
 import com.example.portfolio.webstorespring.initTestData.InitSubscriptionData;
-import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
-import com.example.portfolio.webstorespring.models.entity.subscribers.ProductSubscriber;
-import com.example.portfolio.webstorespring.models.entity.tokens.removals.ProductRemovalToken;
-import com.example.portfolio.webstorespring.models.entity.tokens.removals.SingleProductRemovalToken;
+import com.example.portfolio.webstorespring.models.dtos.ResponseMessageDTO;
+import com.example.portfolio.webstorespring.models.entities.subscribers.ProductSubscriber;
+import com.example.portfolio.webstorespring.models.entities.tokens.removals.ProductRemovalToken;
+import com.example.portfolio.webstorespring.models.entities.tokens.removals.SingleProductRemovalToken;
 import com.example.portfolio.webstorespring.repositories.subscribers.ProductSubscriberRepository;
 import com.example.portfolio.webstorespring.repositories.subscribers.ProductSubscriptionRepository;
 import com.example.portfolio.webstorespring.repositories.tokens.removals.ProductRemovalTokenRepository;

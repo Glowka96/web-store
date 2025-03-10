@@ -1,8 +1,8 @@
 package com.example.portfolio.webstorespring.controllers.accounts;
 
 import com.example.portfolio.webstorespring.controllers.emails.ResetPasswordController;
-import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
-import com.example.portfolio.webstorespring.models.dto.accounts.request.ResetPasswordRequest;
+import com.example.portfolio.webstorespring.models.dtos.ResponseMessageDTO;
+import com.example.portfolio.webstorespring.models.dtos.accounts.requests.ResetPasswordRequest;
 import com.example.portfolio.webstorespring.services.emails.accountactions.ResetPasswordService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,7 +44,7 @@ class ResetPasswordControllerTest {
     }
 
     @Test
-    void shouldResetPassword() throws Exception {
+    void shouldSendResetPasswordLink() throws Exception {
         ResponseMessageDTO result = new ResponseMessageDTO("Sent reset password link to your email");
 
         given(resetPasswordService.sendResetPasswordLinkByEmail(anyString())).willReturn(result);
@@ -58,7 +58,7 @@ class ResetPasswordControllerTest {
     }
 
     @Test
-    void shouldConfirmResetPassword() throws Exception {
+    void shouldConfirmSendResetPasswordLink() throws Exception {
         ResponseMessageDTO result = new ResponseMessageDTO("Your new password has been saved");
         ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest("Password123$");
 

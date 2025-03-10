@@ -1,21 +1,21 @@
 package com.example.portfolio.webstorespring.mappers;
 
-import com.example.portfolio.webstorespring.models.dto.products.request.ProducerRequest;
-import com.example.portfolio.webstorespring.models.dto.products.response.ProducerResponse;
-import com.example.portfolio.webstorespring.models.entity.products.Producer;
+import com.example.portfolio.webstorespring.models.dtos.products.requests.ProducerRequest;
+import com.example.portfolio.webstorespring.models.dtos.products.responses.ProducerResponse;
+import com.example.portfolio.webstorespring.models.entities.products.Producer;
 
 import java.util.List;
 
 
 public interface ProducerMapper {
 
-    static List<ProducerResponse> mapToDto(List<Producer> producers) {
+    static List<ProducerResponse> mapToResponse(List<Producer> producers) {
         return producers.stream()
-                .map(ProducerMapper::mapToDto)
+                .map(ProducerMapper::mapToResponse)
                 .toList();
     }
 
-    static ProducerResponse mapToDto(Producer producer) {
+    static ProducerResponse mapToResponse(Producer producer) {
         return new ProducerResponse(
                 producer.getId(),
                 producer.getName()

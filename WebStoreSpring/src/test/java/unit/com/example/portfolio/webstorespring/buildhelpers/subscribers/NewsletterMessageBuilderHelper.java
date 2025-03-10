@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.buildhelpers.subscribers;
 
-import com.example.portfolio.webstorespring.models.entity.subscribers.NewsletterMessage;
+import com.example.portfolio.webstorespring.models.entities.subscribers.NewsletterMessage;
 
 public class NewsletterMessageBuilderHelper {
 

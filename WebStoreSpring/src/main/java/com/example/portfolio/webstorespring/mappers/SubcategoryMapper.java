@@ -1,21 +1,21 @@
 package com.example.portfolio.webstorespring.mappers;
 
-import com.example.portfolio.webstorespring.models.dto.products.request.SubcategoryRequest;
-import com.example.portfolio.webstorespring.models.dto.products.response.SubcategoryResponse;
-import com.example.portfolio.webstorespring.models.entity.products.Category;
-import com.example.portfolio.webstorespring.models.entity.products.Subcategory;
+import com.example.portfolio.webstorespring.models.dtos.products.requests.SubcategoryRequest;
+import com.example.portfolio.webstorespring.models.dtos.products.responses.SubcategoryResponse;
+import com.example.portfolio.webstorespring.models.entities.products.Category;
+import com.example.portfolio.webstorespring.models.entities.products.Subcategory;
 
 import java.util.List;
 
 public interface SubcategoryMapper {
 
-    static List<SubcategoryResponse> mapToDto(List<Subcategory> subcategories) {
+    static List<SubcategoryResponse> mapToResponse(List<Subcategory> subcategories) {
         return subcategories.stream()
-                .map(SubcategoryMapper::mapToDto)
+                .map(SubcategoryMapper::mapToResponse)
                 .toList();
     }
 
-     static SubcategoryResponse mapToDto(Subcategory subcategory) {
+     static SubcategoryResponse mapToResponse(Subcategory subcategory) {
         return new SubcategoryResponse(subcategory.getId(), subcategory.getName());
 
     }

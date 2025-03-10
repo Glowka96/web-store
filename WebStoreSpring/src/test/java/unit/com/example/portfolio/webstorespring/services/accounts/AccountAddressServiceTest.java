@@ -2,13 +2,13 @@ package com.example.portfolio.webstorespring.services.accounts;
 
 import com.example.portfolio.webstorespring.exceptions.AccountHasNoAddressException;
 import com.example.portfolio.webstorespring.mappers.AccountAddressMapper;
-import com.example.portfolio.webstorespring.models.dto.accounts.request.AccountAddressRequest;
-import com.example.portfolio.webstorespring.models.dto.accounts.response.AccountAddressResponse;
-import com.example.portfolio.webstorespring.models.entity.accounts.Account;
-import com.example.portfolio.webstorespring.models.entity.accounts.AccountAddress;
+import com.example.portfolio.webstorespring.models.dtos.accounts.requests.AccountAddressRequest;
+import com.example.portfolio.webstorespring.models.dtos.accounts.responses.AccountAddressResponse;
+import com.example.portfolio.webstorespring.models.entities.accounts.Account;
+import com.example.portfolio.webstorespring.models.entities.accounts.AccountAddress;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountAddressRepository;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
-import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
+import com.example.portfolio.webstorespring.services.authentications.AccountDetails;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -73,7 +73,7 @@ class AccountAddressServiceTest {
         ArgumentCaptor<AccountAddress> accountAddressArgumentCaptor =
                 ArgumentCaptor.forClass(AccountAddress.class);
         verify(addressRepository).save(accountAddressArgumentCaptor.capture());
-        AccountAddressResponse mappedAddress = AccountAddressMapper.mapToDto(accountAddressArgumentCaptor.getValue());
+        AccountAddressResponse mappedAddress = AccountAddressMapper.mapToResponse(accountAddressArgumentCaptor.getValue());
 
         assertEquals(accountDetails.getAccount().getId(), mappedAddress.id());
         assertEquals(savedAccountAddressResponse, mappedAddress);
@@ -111,7 +111,7 @@ class AccountAddressServiceTest {
                 ArgumentCaptor.forClass(AccountAddress.class);
         verify(addressRepository).save(accountAddressArgumentCaptor.capture());
 
-        AccountAddressResponse mappedAccount = AccountAddressMapper.mapToDto(accountAddressArgumentCaptor.getValue());
+        AccountAddressResponse mappedAccount = AccountAddressMapper.mapToResponse(accountAddressArgumentCaptor.getValue());
 
         assertEquals(mappedAccount, updatedAccountAddressResponse);
     }

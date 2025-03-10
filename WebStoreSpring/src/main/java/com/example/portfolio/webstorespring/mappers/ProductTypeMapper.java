@@ -1,20 +1,20 @@
 package com.example.portfolio.webstorespring.mappers;
 
-import com.example.portfolio.webstorespring.models.dto.products.request.ProductTypeRequest;
-import com.example.portfolio.webstorespring.models.dto.products.response.ProductTypeResponse;
-import com.example.portfolio.webstorespring.models.entity.products.ProductType;
+import com.example.portfolio.webstorespring.models.dtos.products.requests.ProductTypeRequest;
+import com.example.portfolio.webstorespring.models.dtos.products.responses.ProductTypeResponse;
+import com.example.portfolio.webstorespring.models.entities.products.ProductType;
 
 import java.util.List;
 
 public interface ProductTypeMapper {
 
-    static List<ProductTypeResponse> mapToDto(List<ProductType> productTypes) {
+    static List<ProductTypeResponse> mapToResponse(List<ProductType> productTypes) {
         return productTypes.stream()
-                .map(ProductTypeMapper::mapToDto)
+                .map(ProductTypeMapper::mapToResponse)
                 .toList();
     }
 
-    static ProductTypeResponse mapToDto(ProductType productType) {
+    static ProductTypeResponse mapToResponse(ProductType productType) {
         return new ProductTypeResponse(productType.getId(), productType.getName());
     }
 

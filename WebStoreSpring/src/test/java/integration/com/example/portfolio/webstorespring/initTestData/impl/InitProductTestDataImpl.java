@@ -2,7 +2,7 @@ package com.example.portfolio.webstorespring.initTestData.impl;
 
 import com.example.portfolio.webstorespring.buildhelpers.products.PromotionBuilderHelper;
 import com.example.portfolio.webstorespring.initTestData.InitProductTestData;
-import com.example.portfolio.webstorespring.models.entity.products.*;
+import com.example.portfolio.webstorespring.models.entities.products.*;
 import com.example.portfolio.webstorespring.repositories.products.*;
 import com.natpryce.makeiteasy.Maker;
 import lombok.Getter;

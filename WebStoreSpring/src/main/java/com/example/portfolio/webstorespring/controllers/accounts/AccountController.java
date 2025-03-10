@@ -1,12 +1,12 @@
 package com.example.portfolio.webstorespring.controllers.accounts;
 
-import com.example.portfolio.webstorespring.models.dto.ResponseMessageDTO;
-import com.example.portfolio.webstorespring.models.dto.accounts.request.AccountRequest;
-import com.example.portfolio.webstorespring.models.dto.accounts.request.UpdateEmailRequest;
-import com.example.portfolio.webstorespring.models.dto.accounts.request.UpdatePasswordRequest;
-import com.example.portfolio.webstorespring.models.dto.accounts.response.AccountResponse;
+import com.example.portfolio.webstorespring.models.dtos.ResponseMessageDTO;
+import com.example.portfolio.webstorespring.models.dtos.accounts.requests.AccountRequest;
+import com.example.portfolio.webstorespring.models.dtos.accounts.requests.UpdateEmailRequest;
+import com.example.portfolio.webstorespring.models.dtos.accounts.requests.UpdatePasswordRequest;
+import com.example.portfolio.webstorespring.models.dtos.accounts.responses.AccountResponse;
 import com.example.portfolio.webstorespring.services.accounts.AccountService;
-import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
+import com.example.portfolio.webstorespring.services.authentications.AccountDetails;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -39,7 +39,7 @@ public class AccountController {
 
     @PatchMapping("/passwords")
     public ResponseMessageDTO updatePassword(@AuthenticationPrincipal AccountDetails accountDetails,
-                                              @Valid @RequestBody UpdatePasswordRequest request) {
+                                             @Valid @RequestBody UpdatePasswordRequest request) {
         return accountService.updatePassword(accountDetails, request);
     }
 

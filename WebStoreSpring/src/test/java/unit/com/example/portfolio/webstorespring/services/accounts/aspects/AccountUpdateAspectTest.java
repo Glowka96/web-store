@@ -1,12 +1,12 @@
 package com.example.portfolio.webstorespring.services.accounts.aspects;
 
 import com.example.portfolio.webstorespring.exceptions.EmailAlreadyUsedException;
-import com.example.portfolio.webstorespring.models.dto.accounts.request.LoginRequest;
-import com.example.portfolio.webstorespring.models.dto.accounts.request.UpdateEmailRequest;
-import com.example.portfolio.webstorespring.models.dto.accounts.request.UpdatePasswordRequest;
-import com.example.portfolio.webstorespring.models.entity.accounts.Account;
+import com.example.portfolio.webstorespring.models.dtos.accounts.requests.LoginRequest;
+import com.example.portfolio.webstorespring.models.dtos.accounts.requests.UpdateEmailRequest;
+import com.example.portfolio.webstorespring.models.dtos.accounts.requests.UpdatePasswordRequest;
+import com.example.portfolio.webstorespring.models.entities.accounts.Account;
 import com.example.portfolio.webstorespring.repositories.accounts.AccountRepository;
-import com.example.portfolio.webstorespring.services.authentication.AccountDetails;
+import com.example.portfolio.webstorespring.services.authentications.AccountDetails;
 import com.example.portfolio.webstorespring.services.emails.accountactions.RestoreEmailService;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;

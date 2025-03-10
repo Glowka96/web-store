@@ -2,9 +2,9 @@ package com.example.portfolio.webstorespring.services.products;
 
 import com.example.portfolio.webstorespring.exceptions.ResourceNotFoundException;
 import com.example.portfolio.webstorespring.mappers.ProducerMapper;
-import com.example.portfolio.webstorespring.models.dto.products.request.ProducerRequest;
-import com.example.portfolio.webstorespring.models.dto.products.response.ProducerResponse;
-import com.example.portfolio.webstorespring.models.entity.products.Producer;
+import com.example.portfolio.webstorespring.models.dtos.products.requests.ProducerRequest;
+import com.example.portfolio.webstorespring.models.dtos.products.responses.ProducerResponse;
+import com.example.portfolio.webstorespring.models.entities.products.Producer;
 import com.example.portfolio.webstorespring.repositories.products.ProducerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,12 +22,12 @@ public class ProducerService {
 
     public ProducerResponse getById(Long id) {
         log.info("Fetching producer for ID: {}", id);
-        return ProducerMapper.mapToDto(findById(id));
+        return ProducerMapper.mapToResponse(findById(id));
     }
 
     public List<ProducerResponse> getAll() {
         log.info("Fetching all producer.");
-        return ProducerMapper.mapToDto(producerRepository.findAll());
+        return ProducerMapper.mapToResponse(producerRepository.findAll());
     }
 
     public ProducerResponse save(ProducerRequest request) {
@@ -35,7 +35,7 @@ public class ProducerService {
         Producer producer = ProducerMapper.mapToEntity(request);
         producerRepository.save(producer);
         log.info("Saved producer.");
-        return ProducerMapper.mapToDto(producer);
+        return ProducerMapper.mapToResponse(producer);
     }
 
     @Transactional
@@ -45,7 +45,7 @@ public class ProducerService {
         foundProducer.setName(request.name());
         producerRepository.save(foundProducer);
         log.info("Updated producer.");
-        return ProducerMapper.mapToDto(foundProducer);
+        return ProducerMapper.mapToResponse(foundProducer);
     }
 
     public void deleteById(Long id) {

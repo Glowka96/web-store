@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.repositories.accounts;
 
-import com.example.portfolio.webstorespring.models.entity.accounts.Account;
+import com.example.portfolio.webstorespring.models.entities.accounts.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

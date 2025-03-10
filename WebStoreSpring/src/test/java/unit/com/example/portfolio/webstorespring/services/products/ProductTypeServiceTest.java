@@ -1,9 +1,9 @@
 package com.example.portfolio.webstorespring.services.products;
 
 import com.example.portfolio.webstorespring.mappers.ProductTypeMapper;
-import com.example.portfolio.webstorespring.models.dto.products.request.ProductTypeRequest;
-import com.example.portfolio.webstorespring.models.dto.products.response.ProductTypeResponse;
-import com.example.portfolio.webstorespring.models.entity.products.ProductType;
+import com.example.portfolio.webstorespring.models.dtos.products.requests.ProductTypeRequest;
+import com.example.portfolio.webstorespring.models.dtos.products.responses.ProductTypeResponse;
+import com.example.portfolio.webstorespring.models.entities.products.ProductType;
 import com.example.portfolio.webstorespring.repositories.products.ProductTypeRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -55,7 +55,7 @@ class ProductTypeServiceTest {
                 ArgumentCaptor.forClass(ProductType.class);
         verify(productTypeRepository).save(productTypeArgumentCaptor.capture());
 
-        ProductTypeResponse mappedProductTypeResponse = ProductTypeMapper.mapToDto(productTypeArgumentCaptor.getValue());
+        ProductTypeResponse mappedProductTypeResponse = ProductTypeMapper.mapToResponse(productTypeArgumentCaptor.getValue());
 
         assertEquals(mappedProductTypeResponse, result);
     }
@@ -75,7 +75,7 @@ class ProductTypeServiceTest {
         verify(productTypeRepository).save(productTypeArgumentCaptor.capture());
 
         ProductTypeResponse mappedProductType =
-                ProductTypeMapper.mapToDto(productTypeArgumentCaptor.getValue());
+                ProductTypeMapper.mapToResponse(productTypeArgumentCaptor.getValue());
 
         assertEquals(mappedProductType, updatedProductTypeResponse);
         assertNotEquals(productTypeNameBeforeUpdate, updatedProductTypeResponse.name());

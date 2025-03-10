@@ -1,6 +1,6 @@
 package com.example.portfolio.webstorespring.services.subscribers;
 
-import com.example.portfolio.webstorespring.models.entity.subscribers.NewsletterMessage;
+import com.example.portfolio.webstorespring.models.entities.subscribers.NewsletterMessage;
 import com.example.portfolio.webstorespring.services.emails.notifications.NotifyNewsletterSubscriberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -2,7 +2,7 @@ package com.example.portfolio.webstorespring.services.tokens.confirmations;
 
 import com.example.portfolio.webstorespring.exceptions.TokenConfirmedException;
 import com.example.portfolio.webstorespring.exceptions.TokenExpiredException;
-import com.example.portfolio.webstorespring.models.entity.tokens.confirmations.TokenDetails;
+import com.example.portfolio.webstorespring.models.entities.tokens.confirmations.TokenDetails;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

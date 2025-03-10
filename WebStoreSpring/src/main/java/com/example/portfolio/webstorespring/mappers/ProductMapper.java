@@ -1,9 +1,9 @@
 package com.example.portfolio.webstorespring.mappers;
 
-import com.example.portfolio.webstorespring.models.dto.products.ProductWithPromotionDTO;
-import com.example.portfolio.webstorespring.models.dto.products.request.ProductRequest;
-import com.example.portfolio.webstorespring.models.dto.products.response.ProductResponse;
-import com.example.portfolio.webstorespring.models.entity.products.Product;
+import com.example.portfolio.webstorespring.models.dtos.products.ProductWithPromotionDTO;
+import com.example.portfolio.webstorespring.models.dtos.products.requests.ProductRequest;
+import com.example.portfolio.webstorespring.models.dtos.products.responses.ProductResponse;
+import com.example.portfolio.webstorespring.models.entities.products.Product;
 
 import java.util.List;
 
@@ -23,8 +23,8 @@ public interface ProductMapper {
                 product.getImageUrl(),
                 product.getPrice(),
                 product.getQuantity(),
-                ProductTypeMapper.mapToDto(product.getType()),
-                ProducerMapper.mapToDto(product.getProducer()),
+                ProductTypeMapper.mapToResponse(product.getType()),
+                ProducerMapper.mapToResponse(product.getProducer()),
                 null
         );
     }
